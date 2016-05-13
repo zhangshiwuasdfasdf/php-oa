@@ -1,0 +1,61 @@
+<layout name='Layout/ace_layout' />
+
+{:W('PageHeader',array('name'=>'节假日设置','search'=>'S'))}
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-right" >
+			<a onclick="add()" class="btn btn-sm btn-primary">新增</a>
+		</div>
+	</div>
+</div>
+<table  class="table table-bordered">
+	<tr>
+		<th >
+		<nobr>
+			日期
+		</nobr></th>
+
+		<th >
+		<nobr>
+			放假/上班
+		</nobr></th>
+		<th >
+		<nobr>
+			备注
+		</nobr></th>
+		<th >
+		<nobr>
+			操作
+		</nobr></th>
+	</tr>
+	<foreach name="list" item="vo">
+		<tr>
+			<td>
+			<nobr>
+				<nobr>
+					{$vo.date}
+				</nobr>
+			</nobr></td>
+			<td>
+			<nobr>
+			<select onchange="change({$vo.id},this.value)"  name="is_holiday" id="is_holiday" class="form-control">
+				<option value="1"  <if condition="$vo.is_holiday eq 1"> selected ="selected "</if>>放假</option>
+				<option value="0"  <if condition="$vo.is_holiday eq 0"> selected ="selected "</if>>上班</option>
+			</select>
+			</nobr></td>
+			<td>
+			<nobr>
+			<input onchange="remark({$vo.id},this.value)" value="{$vo.remark}"/>
+			
+			</nobr></td>
+			<td>
+			<nobr>
+			<a onclick="del({$vo.id});">删除</a>
+			</nobr></td>
+		</tr>
+	</foreach>
+</table>
+<div class="pagination">
+	{$page}
+</div>
+

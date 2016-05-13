@@ -1,0 +1,32 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body,input{ margin:0; padding:0;}
+li,ul{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+h3{ display:inline;}
+/*nav*/
+nav{ width:100%; height:38px; background:url(../image/shenpinav.png); overflow:hidden; border-bottom:solid 1px #797979; border-top:solid 1px #797979;}
+nav div{ float:left;}
+nav span{ font-size:18px; line-height:38px; color:#333; font-weight:bold; margin-left:30px; margin-right:12px;}
+nav select{ width:137px; height:22px; margin-top:8px;}
+.nav1{ width:200px; height:25px; margin-top:7px; margin-right:20px;}
+.nav2{ width:58px; height:23px; border:solid 1px #797979; border-radius:5px; margin-top:7px; margin-right:10px;}
+.nav3{ width:58px; height:23px; border:solid 1px #797979; border-radius:5px; margin-top:7px;}
+/*main*/
+.main_tr1 div{ border-bottom:solid 3px #a7c865;}
+.main_tr2 div{ border-bottom:solid 1px #797979;}
+.main_tr1 h3{ line-height:38px; font:"微软雅黑"; font-size:16px; color:#333;}
+.main_tr2 span{ line-height:44px; font:"微软雅黑"; font-size:16px; color:#333;}
+.main_tr2 a{ cursor:pointer; line-height:44px; font:"微软雅黑"; font-size:16px; color:#0000ff;}
+.main_d1{ padding:10px 12px 10px 15px; background:#eeeeee; display:block; float:left; margin-left:40%;}
+.main_d1 div{ float:left; height:22px; overflow:hidden;}
+.main_li1{ display:block; margin-bottom:40px; max-height: 640px; height:640px;}
+.main_d1 a{ display:block; width:21px; height:21px; border:solid 1px #e0e6cf; line-height:21px; text-align:center; font-size:12px; color:#9c9c9c; margin-right:3px; background:#fff; cursor:pointer;}
+.main_d1 span{ font-size:12px; color:#9c9c9c; line-height:22px;}
+.d1_d2{ margin-left:3px; margin-right:6px;font-size:12px; color:#9c9c9c; line-height:22px;}
+.main_d1 input{ width:28px; height:21px; border:solid 1px #e0e6cf; line-height:21px;font-size:12px; color:#9c9c9c; outline:none;}
+.d1_d3{ margin-left:-1px;}
+.main_d1 .d1_d3 .go{  width:21px; height:21px; border:solid 1px #e0e6cf; line-height:21px;font-size:12px; color:#9c9c9c; cursor:pointer;background:#edf3d9;}
+.main_d1 .bian_a{ background:#bad069; color:#fff;}
+

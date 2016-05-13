@@ -1,0 +1,29 @@
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<input type="hidden" id="dept_id" name="dept_id" value="{$user_info.dept_id}">
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="109" height="36" align="center">发起人</td>
+    <td width="182" height="36"><input id="user_name" name="user_name" value="{$vo.user_name}" style="width:97%; height:36px; text-align:center;" type="text" /></td>
+    <td width="106" height="36" align="center">所属部门</td>
+    <td width="176" height="36"><input id="dept_name" name="dept_name" value="{$vo.dept_name}" style="width:97%; height:36px; text-align:center;" type="text" disabled/></td>
+    <td width="99" height="36" align="center">岗位</td>
+    <td width="186" height="36"><input id="duty" name="duty" value="{$vo.duty}" style="width:97%; height:36px; text-align:center;" type="text" /></td>
+  </tr>
+  <tr>
+    <td width="109" height="36" align="center">主题</td>
+    <td height="36" colspan="5"><input id="title" name="title" value="{$vo.title}" style="width:97%; height:36px;padding-left:5px;" type="text" /></td>
+  </tr>
+  <tr>
+    <td width="109" height="50" align="center">时间</td>
+    <td height="50" colspan="5">自
+    	<input id="start_time" name="start_time" value="{$vo.start_time}" onchange="cal($('#start_time').val(),$('#end_time').val(),'metting')" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date-time" >至
+    	<input id="end_time" name="end_time" value="{$vo.end_time}" onchange="cal($('#start_time').val(),$('#end_time').val(),'metting')" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date-time" >止，共计
+    	<input id="day_num" name="day_num" value="{$vo.day_num}" style=" width:5%;text-align:center; border-bottom:1px #000 solid" type="text" />天
+    	<input id="hour_num" name="hour_num" value="{$vo.hour_num}" style=" width:5%;text-align:center; border-bottom:1px #000 solid" type="text" />时
+    </td>
+  </tr>
+  <tr>
+    <td width="109" height="70" align="center">人员名单</td>
+    <td height="70" colspan="5"><textarea id="persons" name="persons" style="width:97%; height:70px; padding-left:5px;padding-top:5px;" rows="4" >{$vo.persons}</textarea></td>
+  </tr>
+</table>

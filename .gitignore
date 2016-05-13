@@ -1,0 +1,9 @@
+Runtime
+Cache
+Logs
+/App/Tpl/Post
+*.settings
+*.project
+db.php
+Data/Files
+!Data/Files/notice

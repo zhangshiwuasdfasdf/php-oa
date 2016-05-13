@@ -1,0 +1,37 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body{ margin:0; padding:0; min-width:1024px;}
+input{ margin:0; padding:0;}
+li,ul{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+/*nav*/
+nav{ height:38px; width:100%; border-bottom:solid 1px #797979; border-top:solid 1px #797979; background:url(../image/shenpinav.png); overflow:hidden;}
+nav div{ float:left;}
+nav span{ font-size:18px; color:#333333; font-weight:bold; line-height:38px; display:block; margin-left:30px; margin-right:12px;}
+nav select{ width:137px; height:22px; margin-top:8px;}
+nav .nav3{ width:107px;}
+.nav1{ width:200px; height:25px; margin-top:7px;}
+.nav2{ width:58px; height:23px; border:solid 1px #696969; border-radius:5px; margin-top:7px; margin-left:20px; cursor:pointer;}
+/*main*/
+.main1,.ma8{ width:100%; height:291px; border-bottom:solid 1px #797979; overflow:hidden;}
+.ma2{ width:20%; height:291px; float:left;}
+.ma2 span{ display:block; font-size:18px; color:#333333; font-weight:bold; width:100px; margin:auto; margin-top:25%; margin-bottom:10px;}
+.ma2 select{ display:block; width:137px; height:22px;  margin:auto;}
+.ma3{ height:291px; float:left; padding-left:30px; width:70%; border-left:solid 1px #797979;}
+.ma4{ height:64px;}
+.ma4 span{ line-height:64px; font-size:16px; color:#333333;}
+.ma5{ width:120px; float:left;}
+.ma5 span{ color:#333; font-size:16px; line-height:41px;}
+.ma6{ margin-left:160px; overflow:hidden;}
+.ma6 li{ float:left;}
+.ma6 span{ line-height:41px;}
+.ma7{ padding-right:25px;}
+.ma9{ float:left; width:20%; height:291px;}
+.ma9 span{ font-size:18px; color:#333333; font-weight:bold; line-height:291px; display:block; width:100px; margin:auto;}
+.ma10{ padding-left:30px; padding-top:30px; border-left:solid 1px #797979; float:left; height:291px;}
+.ma10 p{ font-size:16px; color:#333;}
+.jue1{ float:left; border-left:solid 1px #797979; height:291px; padding-left:30px; padding-top:30px; width:70%;}
+.jue1 ul{ overflow:hidden;}
+.jue1 li{ display:block; float:left; padding-right:25px;}
+.jue1 span{ line-height:41px; font-size:16px; color:#333;}

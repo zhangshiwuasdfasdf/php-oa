@@ -1,0 +1,52 @@
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<div class="ma2">
+    <input data-date-format="yyyy-mm-dd" id="write_time" name="write_time" type="text" class="form-control input-date in1" value="{$vo.write_time}" disabled>
+    <span class="sp1">填表日期：</span>
+</div>
+<table width="100%" border="1" cellspacing="0" cellpadding="0" class="ma1">
+  <tr>
+    <td width="18%" height="33" align="center" bgcolor="#fff">申请人</td>
+    <td width="16%" align="center" bgcolor="#fff"><input id="user_name" name="user_name" type="text" value="{$vo.user_name}" class="in2" disabled></td>
+    <td width="18%" colspan="3" align="center" bgcolor="#fff">所属部门</td>
+    <td width="16%" align="center" bgcolor="#fff"><input id="dept_name" name="dept_name" type="text" value="{$vo.dept_name}" class="in2" disabled></td>
+    <td width="16%" colspan="2" align="center" bgcolor="#fff">职务</td>
+    <td width="16%" align="center" bgcolor="#fff"><input id="duty" name="duty" type="text" value="{$vo.duty}" class="in2" disabled></td>
+  </tr>
+  <tr>
+    <td width="18%" height="33" align="center" bgcolor="#fff">证明人</td>
+    <td width="16%" align="center" bgcolor="#fff"><input id="approve" name="approve" type="text" value="{$vo.approve}" class="in2" disabled></td>
+    <td width="18%" colspan="3" align="center" bgcolor="#fff">离岗期间代理人</td>
+    <td width="16%" align="center" bgcolor="#fff"><input id="agent" name="agent" type="text" class="in2" value="{$vo.agent}" disabled></td>
+    <td width="16%" colspan="2" align="center" bgcolor="#fff">联系方式</td>
+    <td width="16%" align="center" bgcolor="#fff"><input id="tel" name="tel" type="text" value="{$vo.tel}" class="in2" disabled></td>
+  </tr>
+  <tr>
+    <td width="18%" height="90" align="center" bgcolor="#fff">事由（详写）</td>
+    <td height="90" colspan="8" align="left" bgcolor="#fff"><textarea id="content" name="content" rows="4" class="ma5" disabled>{$vo.content}</textarea></td>
+  </tr>
+  <tr>
+    <td width="18%" height="90" align="center" bgcolor="#fff">时间</td>
+    <td height="90" colspan="8" align="left" bgcolor="#fff">
+    	<div class="ma6">自
+    		<input data-date-format="yyyy-mm-dd" type="text" id="start_time" name="start_time" class="form-control input-date-time" value="{$vo.start_time}" disabled>至
+    		<input data-date-format="yyyy-mm-dd" type="text" id="end_time" name="end_time" class="form-control input-date-time" value="{$vo.end_time}" disabled>止，共计
+    		<input id="day_num" name="day_num" type="number" min="0" class="in4" value="{$vo.day_num}" disabled>天
+    		<input id="hour_num" name="hour_num" type="number" min="0" class="in4" value="{$vo.hour_num}" disabled>时
+    	</div>
+    </td>
+  </tr>
+  <tr>
+    <td width="18%" height="90" align="center" bgcolor="#fff">部门领导/总监审批</td>
+    <td height="90" colspan="3" align="center" bgcolor="#fff"><span><if condition="($flow_log_all[0])">{$flow_log_all[0].result|show_result}</if></span></td>
+    <td height="90" colspan="3" align="center" bgcolor="#fff">行政人事部</td>
+    <td height="90" colspan="2" align="center" bgcolor="#fff"><span><if condition="($flow_log_all[1])">{$flow_log_all[1].result|show_result}</if></span></td>
+  </tr>
+  <tr>
+    <td width="18%" height="90" align="center" bgcolor="#fff">总经理审批</td>
+    <td height="90" colspan="8" align="left" bgcolor="#fff"><span><if condition="($flow_log_all[2])">{$flow_log_all[2].result|show_result}</if></span></td>
+  </tr>
+</table>
+<div class="ma3">
+	<strong>备注：</strong>所有请假/调休单须提前申请,或事后1个工作日内补填写
+  <div class="ma4">3天以内（含3天）由部门领导审批，3天以上报行政副总审批，7天以上（含7天）呈总经理审批</div>
+</div>

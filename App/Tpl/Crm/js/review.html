@@ -1,0 +1,54 @@
+<script type="text/javascript">
+	function mark(action){
+		var vars = $("#form_data").serialize();
+		switch(action) {
+			case "del":
+				ui_confirm('确定要删除吗?',function(){
+					sendAjax("{:U('mark','action=del')}", vars, function(data) {
+						if (data.status) {
+							ui_alert(data.info,function(){
+								location.reload();
+							});
+						}
+					});
+				});
+				break;
+			default:
+		}
+	}
+
+	function add() {
+		window.open("{:U('add')}", "_self");
+	}
+
+	function reject(id){
+		ui_confirm('确定要否决吗?',function(){
+			sendAjax("{:U('reject')}", "id=" + id, function(data) {
+				if (data.status) {
+					ui_alert(data.info,function(){
+						$(obj).parent().parent().remove();
+					});	
+				}
+			});
+		});
+	}
+
+	function approve(id){
+		ui_confirm('确定要通过吗?',function(){
+			sendAjax("{:U('approve')}", "id=" + id, function(data) {
+				if (data.status) {
+					ui_alert(data.info,function(){
+						$(obj).parent().parent().remove();
+					});	
+				}
+			});
+		});
+	}
+
+	$(document).ready(function() {
+		set_return_url();
+		$("#move_to li").click(function() {
+			move_to($(this).attr("id"));
+		});
+	}); 
+</script>

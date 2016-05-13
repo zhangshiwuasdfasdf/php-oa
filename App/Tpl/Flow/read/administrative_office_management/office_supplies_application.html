@@ -1,0 +1,30 @@
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<input type="hidden" id="dept_id" name="dept_id" value="{$user_info.dept_id}">
+<table width="100%" border="1" cellspacing="0" cellpadding="0" style="font-size: 14px;">
+  <tr>
+    <td width="14%" height="36" align="center" style="font-weight: bold; font-size:16px;">序号</td>
+    <td width="15%" height="36" align="center" style="font-weight: bold">品名</td>
+    <td width="14%" height="36" align="center" style="font-weight: bold">规格</td>
+    <td width="14%" height="36" align="center" style="font-weight: bold">数量</td>
+    <td width="14%" height="36" align="center" style="font-weight: bold">单价</td>
+    <td width="14%" height="36" align="center" style="font-weight: bold">金额</td>
+    <td width="15%" height="36" align="center" style="font-weight: bold">备注</td>
+  </tr>
+  <?php for ($i=0;$i<count($vo[ids])-1;$i++){ ?>
+  	<tr>
+    	<td width="14%" height="36"><input name="ids[]" value="{$vo.ids.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="15%" height="36"><input name="names[]" value="{$vo.names.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
+   		<td width="14%" height="36"><input name="types[]" value="{$vo.types.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="14%" height="36"><input name="nums[]" value="{$vo.nums.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="14%" height="36"><input name="prices[]" value="{$vo.prices.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="14%" height="36"><input name="amounts[]" value="{$vo.amounts.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="15%" height="36"><input name="marks[]" value="{$vo.marks.$i}" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" disabled/></td>
+  	</tr>
+  <?php }?>
+  <tr>
+    <td height="36" colspan="7">申请人：<input id="user_name" name="user_name" value="{$vo.user_name}" style="outline:none; border:none; width:80%; height:36px; padding-left:5px;" type="text" disabled/></td>
+  </tr>
+  <tr>
+    <td height="36" colspan="7">金额合计：<input id="sum" name="sum" value="{$vo.sum}" style="outline:none; border:none; width:80%; height:36px; padding-left:5px;" type="text" disabled/></td>
+  </tr>
+</table>

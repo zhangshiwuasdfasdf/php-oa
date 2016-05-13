@@ -1,0 +1,48 @@
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<input type="hidden" id="dept_id" name="dept_id" value="{$user_info.dept_id}">
+<style>
+	input{ border:none; outline:none;}
+	textarea{ border:none; outline:none; resize:none;}
+</style>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="88" height="36" align="center">申请人</td>
+    <td width="168" height="36"><input id="user_name" name="user_name" value="{$vo.user_name}" style="width:97%; height:36px; text-align:center;" type="text" disabled/></td>
+    <td width="124" height="36" align="center">所属部门</td>
+    <td width="168" height="36"><input id="dept_name" name="dept_name" value="{$vo.dept_name}" style="width:97%; height:36px; text-align:center;" type="text" disabled/></td>
+    <td width="92" height="36" align="center">岗位</td>
+    <td width="234" height="36"><input id="duty" name="duty" value="{$vo.duty}" style="width:97%; height:36px; text-align:center;" type="text" disabled/></td>
+  </tr>
+  <tr>
+    <td width="88" height="60" align="center">加班事由（详写）</td>
+    <td height="60" colspan="5"><textarea id="reason" name="reason" style="width:97%; height:70px; padding-left:5px;padding-top:5px;" rows="4" disabled>{$vo.reason}</textarea></td>
+  </tr>
+  <tr>
+    <td width="88" height="50" align="center">加班时间</td>
+    <td height="50" colspan="5">自
+    	<input id="start_time" name="start_time" value="{$vo.start_time}" onchange="cal($('#start_time').val(),$('#end_time').val(),'direct')" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date-time" disabled/>至
+    	<input id="end_time" name="end_time" value="{$vo.end_time}" onchange="cal($('#start_time').val(),$('#end_time').val(),'direct')" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date-time" disabled/>止，共计
+    	<input id="day_num" name="day_num" value="{$vo.day_num}" style=" width:5%;text-align:center; border-bottom:1px #000 solid" type="text" readonly/>天
+    	<input id="hour_num" name="hour_num" value="{$vo.hour_num}" style=" width:5%;text-align:center; border-bottom:1px #000 solid" type="text" readonly/>时
+    </td>
+  </tr>
+  <tr>
+    <td width="88" height="50" align="center">加班效率评估</td>
+    <td height="50" colspan="5"><textarea id="efficiency" name="efficiency" style="width:97%; height:70px; padding-left:5px;padding-top:5px;" rows="4" disabled>{$vo.efficiency}</textarea></td>
+  </tr>
+  <tr>
+    <td width="88" height="50" align="center">加班抵用方式</td>
+    <td height="50" colspan="5">
+    	<input name="use_type" value="调休" <if condition="($vo.use_type eq '调休')">checked="checked"</if> style="margin-left:15px;" type="radio" disabled>调休
+    	<input name="use_type" value="申请加班费" <if condition="($vo.use_type eq '申请加班费')">checked="checked"</if> style="margin-left:15px;" type="radio" disabled>申请加班费
+    </td>
+  </tr>
+  <tr>
+    <td width="88" height="50" align="center">部门领导审批</td>
+    <td height="50" colspan="5"><input style="width:97%; height:50px; padding-left:20px;" type="text" <if condition="($flow_log_all[0])">value="{$flow_log_all[0].result|show_result}"</if> disabled/></td>
+  </tr>
+  <tr>
+    <td width="88" height="50" align="center">行政部审核</td>
+    <td height="50" colspan="5"><input style="width:97%; height:50px;padding-left:20px;" type="text" <if condition="($flow_log_all[1])">value="{$flow_log_all[1].result|show_result}"</if> disabled/></td>
+  </tr>
+</table>

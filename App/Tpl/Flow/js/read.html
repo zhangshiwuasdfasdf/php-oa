@@ -1,0 +1,429 @@
+<script type="text/javascript">
+	function approve() {
+		sendForm("form_confirm", "{:U('mark','action=approve')}", "{:U('read','id='.$vo['id'])}");
+	}
+
+	function reject() {
+		sendForm("form_confirm", "{:U('mark','action=reject')}", "{:U('read','id='.$vo['id'])}");
+	}
+
+	function back_to(emp_no) {
+		sendForm("form_confirm", fix_url("{:U('mark','action=back')}?emp_no=" + emp_no), "{:U('read','id='.$vo['id'])}");
+	}
+
+	function save() {
+		window.onbeforeunload = null;
+		sendForm("form_data", "{:U('save')}");
+	}
+
+	function select_confirm() {
+		winopen("{:U('popup/confirm')}", 730, 750);
+	};
+	function setRetrial(is_retrial,id,flow_id){
+		if(is_retrial=='0'){
+			is_retrial = '否';
+		}else{
+			is_retrial = '是';
+		}
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{is_retrial:is_retrial,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	} 
+	function setRecruit(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{recruit_difficult:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setRealArriveDate(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{real_arrive_date:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setHandOverTime(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{hand_over_time:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setNonCompetitionCompensation(val,id,flow_id){
+		if(val=='0'){
+			val = '不支付';
+		}else{
+			val = '支付';
+		}
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{non_competition_compensation:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setDeptLeaderReview(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{dept_leader_review:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setDeptLeaderType(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{dept_leader_type:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setDeptLeaderDay(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{dept_leader_day:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	
+	function setDeptLeaderDate(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{dept_leader_date:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setDeptDirectorReview(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{dept_director_review:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setDeptDirectorDate(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{dept_director_date:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setHrType(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{hr_type:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setHrAddDate(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{hr_add_date:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setHrExecute(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{hr_execute:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setHrDismiss(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{hr_dismiss:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setFromLeaderReview(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{from_leader_review:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setFromLeaderDate(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{from_leader_date:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setToLeaderReview(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{to_leader_review:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setToLeaderDate(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{to_leader_date:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setFromDirectorReview(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{from_director_review:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setSuperiorEstimate(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{superior_estimate:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function setToDirectorReview(val,id,flow_id){
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{to_director_review:val,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+	}
+	function sum2(id,flow_id){
+		var sum = 0;
+		var attitude_leader = '';
+		$(" input[name='attitude_leader[]']").each(function() {
+			if($(this).val()!=''){
+				if($(this).val()<1){
+					$(this).val(1);
+				}else if($(this).val()>5){
+					$(this).val(5);
+				}
+				sum +=Number($(this).val());
+			}
+			attitude_leader +=$(this).val()+'|';
+		});
+		var ability_leader = '';
+		$(" input[name='ability_leader[]']").each(function() {
+			if($(this).val()!=''){
+				if($(this).val()<1){
+					$(this).val(1);
+				}else if($(this).val()>5){
+					$(this).val(5);
+				}
+				sum +=Number($(this).val());
+			}
+			ability_leader +=$(this).val()+'|';
+		});
+		var responsibility_leader = '';
+		$(" input[name='responsibility_leader[]']").each(function() {
+			if($(this).val()!=''){
+				if($(this).val()<1){
+					$(this).val(1);
+				}else if($(this).val()>5){
+					$(this).val(5);
+				}
+				sum +=Number($(this).val());
+			}
+			responsibility_leader +=$(this).val()+'|';
+		});
+		var coordinate_leader = '';
+		$(" input[name='coordinate_leader[]']").each(function() {
+			if($(this).val()!=''){
+				if($(this).val()<1){
+					$(this).val(1);
+				}else if($(this).val()>5){
+					$(this).val(5);
+				}
+				sum +=Number($(this).val());
+			}
+			coordinate_leader +=$(this).val()+'|';
+		});
+		var develop_leader = '';
+		$(" input[name='develop_leader[]']").each(function() {
+			if($(this).val()!=''){
+				if($(this).val()<1){
+					$(this).val(1);
+				}else if($(this).val()>5){
+					$(this).val(5);
+				}
+				sum +=Number($(this).val());
+			}
+			develop_leader +=$(this).val()+'|';
+		});
+		$("#sum_leader").val(sum);
+		
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/editflow')}",    
+			data:{attitude_leader:attitude_leader,ability_leader:ability_leader,responsibility_leader:responsibility_leader,coordinate_leader:coordinate_leader,develop_leader:develop_leader,sum_leader:sum,id:id,flow_id:flow_id},
+			dataType: "json",
+			async:true, 
+			success: function(result){
+			},
+			error:function(e){
+				alert('修改失败');
+			}
+		});
+		
+	}
+	$(document).ready(function(){
+		set_return_url(document.location,1);
+		$("#confirm span").on("dblclick", function() {
+			$("#confirm span").last().find("b").remove();
+		});
+		$("#consult span").on("dblclick", function() {
+			$("#consult span").last().find("b").remove();
+		});
+		show_content();		
+	}); 
+</script>

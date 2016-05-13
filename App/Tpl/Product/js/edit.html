@@ -1,0 +1,18 @@
+<script type="text/javascript">
+
+	function save(step) {
+		window.onbeforeunload=null;
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+
+	function popup_confirm() {
+		winopen("{:U('popup/confirm')}", 730, 574);
+	}
+
+
+	$(document).ready(function() {
+		set_val('size',"{$vo.size}");
+	}); 
+</script>

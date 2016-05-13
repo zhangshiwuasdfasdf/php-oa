@@ -1,0 +1,21 @@
+<div class="uploader" style="position:relative;">
+	<notempty name="file_list">
+	<ul class="file_list">
+		<volist name="file_list" id="file">
+			<if condition="($file.extension eq 'jpg') OR ($file.extension eq 'jpeg') OR ($file.extension eq 'png')">
+				<div class="data_img"><img src="./Data/Files/{$file.savename}" style="width:80%;height: auto;"/></div>
+				<else/>
+				<li class="tbody" id="{$file.id|f_encode}" add_file="{$file.id|f_encode}" size="{$file.size}" filename="{$file.name}">
+					<div class="loading"></div>
+					<div class="data">
+						<span class="del text-center"> <a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode($file['id']))}">下载</a> </span>
+						<span class="size" >{$file.size|reunit}</span>
+						<span class="auto autocut" title="{$file.name}">{$file.name}
+						</span>
+					</div>
+				</li>
+			</if>
+		 </volist>
+		</ul>
+	</notempty>
+</div>

@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body,input{ margin:0; padding:0;}
+ul,li{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+/*nav*/
+nav{ width:100%; height:38px; background:url(../image/shenpinav.png); border-bottom:solid 1px #ccc;}
+nav span{ font-size:14px; display:block; text-align:center; line-height:38px; font-weight:bold;}
+/*main*/
+.main1{ background:#797979; margin-left:1%; margin-top:16px; margin-bottom:16px;}
+.main1 span{ font-size:12px; color:#333;}
+.main1 div{ margin-left:15px; font-size:12px; color:#333;}
+.te1{ width:96%; outline:none; border:none;}
+.main2{ width:100%; background:url(../image/shenpinav.png); overflow:hidden; margin-bottom:16px; height:38px;border-bottom:solid 1px #ccc;}
+.main2 span{ font-size:14px; display:block; text-align:center; line-height:38px; font-weight:bold;}
+.main2 input{ float:right; margin-top:-30px; margin-right:3%; width:67px; height:23px; border-radius:5px; outline:none; font-size:12px; color:#333;}
+.main3{ background:#797979; margin-left:1%; margin-bottom:16px;}
+.in1{ width:60px; height:22px; outline:none; border-color:#fff; font-size:12px; color:#333;}
+.main3 span{ font-size:12px; color:#333;}
+.main4{ width:195px; margin:auto; height:24px; overflow:hidden;}
+.main4 li{ float:left;}
+.main4 input{ color:#fff; font-size:12px; width:90px; height:24px;}
+.in2{ margin-right:15px; background:#99cc66;}
+.in3{ background:#cccccc;}

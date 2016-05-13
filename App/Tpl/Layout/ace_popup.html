@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- basic styles -->
+
+		<link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="__PUBLIC__/css/font-awesome.min.css" />
+
+		<!-- page specific plugin styles -->
+		<include file="Widget:css"/>
+
+		<!-- fonts -->
+
+		<!-- ace styles -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ace.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/ace-skins.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/idangerous.swiper.css">
+		<link rel="stylesheet" href="__PUBLIC__/css/idangerous.swiper.scrollbar.css">
+
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="__PUBLIC__/css/ace-ie.min.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+		<!-- ace settings handler -->
+		<style>
+			.swiper-container{
+				overflow-y: auto;				
+			}
+			.swiper-slide {
+				padding: 0px;
+				background: #fff;
+			}
+			.red-slide {
+				background: #ca4040;
+			}
+			.blue-slide {
+				background: #4390ee;
+			}
+			.orange-slide {
+				background: #ff8604;
+			}
+			.green-slide {
+				background: #49a430;
+			}
+			.pink-slide {
+				background: #973e76;
+			}
+			.swiper-scrollbar {
+				width: 100%;
+				height: 4px;
+				position: relative;
+				left: 0;
+				bottom: 5px;
+				z-index: 1;
+			}
+		</style>
+		<script src="__PUBLIC__/js/ace-extra.min.js"></script>
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+		<!--[if lt IE 9]>
+		<script src="__PUBLIC__/js/html5shiv.js"></script>
+		<script src="__PUBLIC__/js/respond.min.js"></script>
+		<![endif]-->
+		<!-- basic scripts -->
+
+		<!--[if !IE]> -->
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='__PUBLIC__/js/jquery-2.1.0.min.js'>" + "<" + "/script>");
+		</script>
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+		<script type="text/javascript">
+		window.jQuery || document.write("<script src='__PUBLIC__/js/jquery-1.11.0.min.js'>"+"<"+"/script>");
+		</script>
+		<![endif]-->
+
+		<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+
+		<script src="__PUBLIC__/js/idangerous.swiper-2.1.min.js"></script>
+		<script src="__PUBLIC__/js/idangerous.swiper.scrollbar-2.1.js"></script>
+		<include file="Widget:plugin"/>
+
+		<!-- ace scripts -->
+		<script src="__PUBLIC__/js/ace-elements.min.js"></script>
+		<script src="__PUBLIC__/js/ace.min.js"></script>
+		<script src="__PUBLIC__/js/common.js"></script>
+		<!-- inline scripts related to this page -->
+		<include file="Public:script" />
+		<include file="$js_file" />
+	</head>
+	<body>
+		<div class="swiper-container">
+			<div class="swiper-scrollbar"></div>
+			<div class="swiper-wrapper">
+				<div class="swiper-slide">
+					<div class="container popup">
+						{__CONTENT__}
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			$(document).ready(function(){
+				if(is_mobile()){
+					$(".swiper-container").width($("#dialog",parent.document).width());
+					$(".swiper-container").height(window.screen.height-40);													
+					var mySwiper = new Swiper('.swiper-container', {
+						scrollContainer : true,
+						scrollbar : {
+							container : '.swiper-scrollbar'
+						}
+					});						
+				}else{
+					$(".swiper-container").width(700);
+				}	
+			});
+		</script>
+	</body>
+</html>

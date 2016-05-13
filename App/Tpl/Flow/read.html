@@ -1,0 +1,157 @@
+<layout name='Layout/ace_layout' />
+<style>
+body{ margin:0; padding:0;}
+ul,li{ list-style:none; margin:0; padding:0;}
+.ma1{ background:#000; font-family:"微软雅黑"; font-size:14px;}
+h1{ text-align:center;}
+.ma2{ height:30px; width:95%; overflow:hidden; margin-bottom:10px; padding-right:5%;}
+.sp1{ float:right; line-height:30px; font-family:"微软雅黑"; font-size:14px;}
+.in1{ float:right; height:26px;}
+.ma3{ margin-top:20px; font-family:"微软雅黑"; font-size:14px; line-height:16px; margin-left:5%;}
+.ma4{ padding-left:40px; line-height:16px;}
+.in2{ border:none; outline:none; width:92%;}
+.in3{outline:none; margin-left:1%; margin-right:1%;}
+.in4{ width:40px; outline:none; margin-left:1%; margin-right:1%;}
+.ma5{ width:96%; outline:none; margin-left:2%; border:none;}
+.ma6{ padding-left:2%;}
+.ma7{ width:98%; margin-left:1%; overflow:hidden;}
+.ma7 li{ float:left; margin-right:1%;}
+</style>
+{:W('PageHeader',array('name'=>array($flow_type['name']),'search'=>'N'))}
+<div class="operate panel panel-default hidden-print">
+	<div class="panel-body">
+		<div class="pull-left">
+			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+			<a href="#flow_status"  class="btn btn-sm btn-primary">审批情况</a>
+			<notempty name="to_confirm">
+				<a href="#confirm"  class="btn btn-sm btn-primary">办理意见</a>
+			</notempty>
+		</div>
+		<div class="pull-right">
+			<a onclick="winprint();" class="btn btn-sm btn-primary">打印</a>
+			<eq name="is_edit" value="1">
+				<a onclick="save();" class="btn btn-sm btn-primary">保存</a>
+			</eq>
+		</div>
+	</div>
+</div>
+<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"  class="well form-horizontal">
+	<input type="hidden" id="ajax" name="ajax" value="0">
+	<input type="hidden" id="opmode" name="opmode" value="edit">
+	<input type="hidden" id="name" name="name" value="{$vo.name}">
+	<input type="hidden" id="add_file" name="add_file" value="{$vo.add_file}" >
+	<input type="hidden" id="id" name="id" value="{$vo.id}">
+	<input type="hidden" id="flow_id" name="flow_id" value="{$vo.flow_id}">
+	
+<if condition="($flow_type.name eq '内部联络单')">
+<include file="Flow/read/daily_office:internal_contact_list" />
+<elseif condition="($flow_type.name eq '会务证明流程')"/>
+<include file="Flow/read/daily_office:meeting_communicate" />
+<elseif condition="($flow_type.name eq '名片使用')"/>
+<include file="Flow/read/daily_office:card_application" />
+
+<elseif condition="($flow_type.name eq '请假/调休单')"/>
+<include file="Flow/read/personnel_management:leave" />
+<elseif condition="($flow_type.name eq '外勤/出差单')"/>
+<include file="Flow/read/personnel_management:outside" />
+<elseif condition="($flow_type.name eq '出勤证明流程')"/>
+<include file="Flow/read/personnel_management:attendance" />
+<elseif condition="($flow_type.name eq '加班调休申请')"/>
+<include file="Flow/read/personnel_management:over_time" />
+<elseif condition="($flow_type.name eq '用人申请流程')"/>
+<include file="Flow/read/personnel_management:employment_application" />
+<elseif condition="($flow_type.name eq '试用期评估表')"/>
+<include file="Flow/read/personnel_management:probation_evaluate" />
+<elseif condition="($flow_type.name eq '转正申请')"/>
+<include file="Flow/read/personnel_management:regular_worker_application" />
+<elseif condition="($flow_type.name eq '离职申请流程')"/>
+<include file="Flow/read/personnel_management:resignation_application" />
+<elseif condition="($flow_type.name eq '离职交接流程')"/>
+<include file="Flow/read/personnel_management:resignation_list" />
+<elseif condition="($flow_type.name eq '员工调岗、调职申请')"/>
+<include file="Flow/read/personnel_management:personnel_changes" />
+<elseif condition="($flow_type.name eq '员工调薪申请')"/>
+<include file="Flow/read/personnel_management:salary_changes" />
+<elseif condition="($flow_type.name eq '简历')"/>
+<include file="Flow/read/personnel_management:resume" />
+
+<elseif condition="($flow_type.name eq '办公用品领用')"/>
+<include file="Flow/read/administrative_office_management:office_use_application" />
+<elseif condition="($flow_type.name eq '办公用品采购')"/>
+<include file="Flow/read/administrative_office_management:office_supplies_application" />
+<elseif condition="($flow_type.name eq '物品采购调拨申请单')"/>
+<include file="Flow/read/administrative_office_management:goods_procurement_allocation" />
+<else/>
+<include file="Flow/read/:common" />
+
+</if>
+
+</form>
+
+<a id="flow_status"></a>
+{:W('PageHeader',array('name'=>'审批情况','search'=>'N'))}
+<div class="ul_table border-bottom">
+	<ul>
+		<li class="thead">
+			<span class="col-9 text-center">类型</span>
+			<span class="col-9 text-center">审批人</span>
+			<span class="col-9 text-center">日期</span>
+			<span class="col-9 text-center">结果</span>
+			<span class="auto">意见</span>
+		</li>
+		<volist name="flow_log" id="item">
+			<li class="tbody">
+				<span style="width:90px;" class="text-center">{$item.step|show_step_type}</span>
+				<span style="width:90px;" class="text-center">{$item.user_name}</span>
+				<span style="width:90px;" class="text-center">{$item.create_time|toDate='Y-m-d'}</span>
+				<span style="width:90px;" class="text-center">{$item.result|show_result}</span>
+				<span class="auto">
+					<div style="overflow:hidden">
+						{$item.comment}
+					</div> </span>
+			</li>
+		</volist>
+	</ul>
+</div>
+<notempty name="to_confirm">
+	<a id="confirm"></a>
+	{:W('PageHeader',array('name'=>'办理意见','search'=>'N'))}
+	<form method="post" action="" name="form_confirm" id="form_confirm">
+		<input type="hidden" name="id" value="{$to_confirm.id}">
+		<input type="hidden" name="flow_id" value="{$vo.flow_id}">
+		<input type="hidden" name="step" value="{$to_confirm.step}">
+		<div class="operate panel panel-default">
+			<div class="panel-heading clearfix">
+				<div class="pull-left">
+					<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+				</div>
+				<div class="pull-right">
+					<notempty name="is_edit">
+						<div class="btn-group">
+							<a class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" href="#">退回到<span class="fa fa-caret-down"></span> </a>
+							<ul class="dropdown-menu col-5">
+								<volist name="confirmed" id="vo">
+									<li onclick="back_to('{$vo.emp_no}');">
+										<a>{$vo.user_name}</a>
+									</li>
+								</volist>
+								<li onclick="back_to('{$emp_no}');">
+									<a>{$user_name}</a>
+								</li>
+							</ul>
+						</div>
+					</notempty>
+					<a onclick="reject();" class="btn btn-sm btn-danger">否决</a>
+					|
+					<a onclick="approve();" class="btn btn-sm btn-primary">同意</a>
+				</div>
+			</div>
+			<div class="form-group panel-body">
+				<label class="col-sm-2 control-label" >办理意见：</label>
+				<div class="col-sm-10">
+					<textarea name="comment" class="col-xs-12" style="height:120px"></textarea>
+				</div>
+			</div>
+		</div>
+	</form>
+</notempty>

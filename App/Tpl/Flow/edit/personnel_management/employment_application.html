@@ -1,0 +1,98 @@
+<style>
+	input{ border:none; outline:none; width:90%; padding-left:5px;}
+	textarea{ resize:none; border:none; outline:none; width:99%; padding-left:5px;}
+</style>
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<table width="100%" border="1" cellspacing="0" cellpadding="0" style="font-size: 14px; font-family: '微软雅黑';">
+  <tr>
+    <td width="13%" height="36" align="center">申请部门</td>
+    <td width="13%" height="36">
+    	<input id="dept_name" name="dept_name" type="text" value="{$vo.dept_name}"  readonly/>
+    	<input id="dept_id" name="dept_id" type="hidden" value="{$vo.dept_id}" />
+	</td>
+    <td width="13%" height="36" align="center">申请人</td>
+    <td width="13%" height="36"><input id="user_name" name="user_name" type="text" value="{$vo.user_name}"  check="require" msg="请输入申请人"/></td>
+    <td width="13%" height="36" align="center">申请时间</td>
+    <td width="13%" height="36"><input data-date-format="yyyy-mm-dd" class="form-control input-date" id="write_time" name="write_time" type="text" value="{$vo.write_time}"  check="require" msg="请输入申请时间"/></td>
+    <td width="13%" height="36" align="center">到岗时间</td>
+    <td width="13%" height="36"><input data-date-format="yyyy-mm-dd" class="form-control input-date" id="arrive_time" name="arrive_time" type="text" value="{$vo.arrive_time}" /></td>
+  </tr>
+  <tr>
+    <td width="13%" height="36" align="center">申请人数</td>
+    <td width="13%" height="36"><input id="apply_num" name="apply_num" type="text" value="{$vo.apply_num}"  check="require" msg="请输入申请人数"/></td>
+    <td width="13%" height="36" align="center">薪资范围</td>
+    <td width="13%" height="36"><input id="salary_range" name="salary_range" type="text" value="{$vo.salary_range}" /></td>
+    <td width="13%" height="36" align="center">申请岗位</td>
+    <td height="36" colspan="3"><input id="apply_position" name="apply_position" type="text" value="{$vo.apply_position}"  check="require" msg="请输入申请岗位"/></td>
+  </tr>
+  <tr>
+    <td width="13%" height="36" align="center">申请原因</td>
+    <td height="36" colspan="7">
+    	<div>
+        	<input style="width:2%;" name="apply_reason_1" type="checkbox" value="岗位缺员" <if condition="($vo.apply_reason_1 eq '岗位缺员')">checked="checked"</if> />岗位缺员
+            <input style="width:2%;" name="apply_reason_2" id="apply_reason_2" type="checkbox" value="辞职补充" <if condition="($vo.apply_reason_2 eq '辞职补充')">checked="checked"</if> />辞职补充
+            <input style="width:2%;" name="apply_reason_3" type="checkbox" value="短期需要" <if condition="($vo.apply_reason_3 eq '短期需要')">checked="checked"</if> />短期需要 
+            <input style="width:2%;" name="apply_reason_4" type="checkbox" value="储备人力" <if condition="($vo.apply_reason_4 eq '储备人力')">checked="checked"</if> />储备人力
+            <input style="width:2%;" name="apply_reason_5" type="checkbox" value="业务扩大增加编制" <if condition="($vo.apply_reason_5 eq '业务扩大增加编制')">checked="checked"</if> />业务扩大增加编制
+        </div>
+    </td>
+  </tr>
+  <tr>
+    <td width="13%" height="36" rowspan="4" align="center">任职资格</td>
+    <td height="36" colspan="2" style="padding-left:10px;">性别要求：<input id="sex_require" name="sex_require" style="width:50%;" type="text" value="{$vo.sex_require}" /></td>
+    <td height="36" colspan="2" style="padding-left:10px;">年龄要求：<input id="age_require" name="age_require" style="width:50%;" type="text" value="{$vo.age_require}" /></td>
+    <td height="36" colspan="3" style="padding-left:10px;">学历要求：<input id="degree_require" name="degree_require" style="width:50%;" type="text" value="{$vo.degree_require}" /></td>
+  </tr>
+  <tr>
+    <td height="36" colspan="4" style="padding-left:10px;">专业要求：<input id="major_require" name="major_require" style="width:50%;" type="text" value="{$vo.major_require}" /></td>
+    <td height="36" colspan="3" style="padding-left:10px;">外语要求：<input id="lang_require" name="lang_require" style="width:50%;" type="text" value="{$vo.lang_require}" /></td>
+  </tr>
+  <tr>
+    <td height="36" colspan="4" style="padding-left:10px;">职称/证书要求：<input id="title_require" name="title_require" style="width:50%;" type="text" value="{$vo.title_require}" /></td>
+    <td height="36" colspan="3"style="padding-left:10px;">其他要求：<input id="other_require" name="other_require" style="width:50%;" type="text" value="{$vo.other_require}" /></td>
+  </tr>
+  <tr>
+    <td colspan="7"><textarea id="qualification" name="qualification" rows="5" >{$vo.qualification}</textarea></td>
+  </tr>
+  <tr>
+    <td width="13%" align="center">岗位职责</td>
+    <td colspan="7"><textarea rows="5" id="position_duty" name="position_duty"  check="require" msg="请输入岗位职责">{$vo.position_duty}</textarea></td>
+  </tr>
+  <tr>
+    <td width="13%" align="center">职权</td>
+    <td colspan="7"><textarea rows="3" id="authority" name="authority" >{$vo.authority}</textarea></td>
+  </tr>
+  <tr>
+    <td width="13%" colspan="4"><p style="padding-left:10px;" align="left">部门总监意见：
+    <textarea style="width:98%" rows="3" id="directors_opinion" name="directors_opinion" disabled><if condition="($flow_log_all[0])">{$flow_log_all[0].result|show_result}</if></textarea>
+    <p style="margin-left:60%;">签名/日期: 
+    	<input id="directors_sign_date" name="directors_sign_date" style="width:50%;" type="text" <if condition="($flow_log_all[0])"> value="{$flow_log_all[0].user_name}/{$flow_log_all[0].create_time|toDate='Y-m-d'}"</if> disabled/></p>
+    </p>
+    </td>
+    <td colspan="4"><p style="padding-left:10px;" align="left">人事行政部审核/审批意见：
+    	<textarea style="width:98%" rows="3" id="hr_opinion" name="hr_opinion" disabled><if condition="($flow_log[1])">{$flow_log[1].result|show_result}</if></textarea>
+    <p style="margin-left:60%;">签名/日期:
+    	<input id="hr_sign_date" name="hr_sign_date" style="width:50%;" type="text" <if condition="($flow_log[1])"> value="{$flow_log[1].user_name}/{$flow_log[1].create_time|toDate='Y-m-d'}" </if> disabled/></p>
+    </p>
+    </td>
+  </tr>
+  <tr>
+    <td width="13%" align="center"><p align="center">总经理</p>
+    <p align="center">审核/审批</p></td>
+    <td colspan="7"><textarea id="general_manager_opinion" name="general_manager_opinion" rows="3" disabled><if condition="($flow_log[2])">{$flow_log[2].result|show_result}</if></textarea>
+    	<div>是否需要参加复试：
+        	<input value="是" style="width:2%;" type="radio" name="is_retrial" onclick="setRetrial(1,{$vo.id})" <if condition="($vo.is_retrial eq '是')">checked="checked"</if> <if condition="($flow_index.3 neq 3)">disabled</if>/>是
+            <input value="否" style="width:2%;" type="radio" name="is_retrial" onclick="setRetrial(0,{$vo.id})" <if condition="($vo.is_retrial eq '否')">checked="checked"</if> <if condition="($flow_index.3 neq 3)">disabled</if>/>否
+        </div>
+    </td>
+  </tr>
+  <tr>
+    <td width="13%" height="36" rowspan="2" align="center">招聘主管</td>
+    <td width="13%" height="36" align="center">实际到岗日期：</td>
+    <td height="36" colspan="6"><input id="real_arrive_date" name="real_arrive_date" type="date" value="{$vo.real_arrive_date}" Onchange="setRealArriveDate($('#real_arrive_date').val(),{$vo.id})" <if condition="(!$isZhaopinDirector)">disabled</if>/></td>
+  </tr>
+  <tr>
+    <td width="13%" align="center">招聘难点及原因</td>
+    <td colspan="6"><textarea id="recruit_difficult" name="recruit_difficult" rows="5" Onchange="setRecruit($('#recruit_difficult').val(),{$vo.id})" <if condition="(!$isZhaopinDirector)">disabled</if>>{$vo.recruit_difficult}</textarea></td>
+  </tr>
+</table>

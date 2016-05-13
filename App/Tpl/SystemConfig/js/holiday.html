@@ -1,0 +1,99 @@
+<script type="text/javascript">
+	function add() {
+		window.open("{:U('holiday_add')}", "_self");
+	}
+	function remark(id,val){
+		$.ajax({
+			type: "post",
+			url: "{:U('holiday_edit')}",    
+			data:{id:id,remark:val},
+			dataType: "json",
+			success: function(result){
+				if(result){
+					if(result.data){
+					}else{
+						ui_alert("修改失败",function(){
+							location.reload();
+						});
+					}
+				}else{
+					ui_alert("修改失败",function(){
+						location.reload();
+					});
+				}
+				
+			},
+			error:function(e){
+				ui_alert("系统发生错误",function(){
+					location.reload();
+				});
+			}
+		});
+	}
+	function change(id,val){
+		$.ajax({
+			type: "post",
+			url: "{:U('holiday_edit')}",    
+			data:{id:id,is_holiday:val},
+			dataType: "json",
+			success: function(result){
+				if(result){
+					if(result.data){
+					}else{
+						ui_alert("修改失败",function(){
+							location.reload();
+						});
+					}
+				}else{
+					ui_alert("修改失败",function(){
+						location.reload();
+					});
+				}
+				
+			},
+			error:function(e){
+				ui_alert("系统发生错误",function(){
+					location.reload();
+				});
+			}
+		});
+	}
+	function del(id) {
+		ui_confirm('确定要删除吗?',function(){
+			$.ajax({
+				type: "post",
+				url: "{:U('holiday_del')}",    
+				data:{id:id},
+				dataType: "json",
+				success: function(result){
+					if(result){
+						if(result.data){
+							ui_alert("删除成功",function(){
+								location.reload();
+							});
+						}else{
+							ui_alert("删除失败",function(){
+								location.reload();
+							});
+						}
+					}else{
+						ui_alert("删除失败",function(){
+							location.reload();
+						});
+					}
+					
+				},
+				error:function(e){
+					ui_alert("系统发生错误",function(){
+						location.reload();
+					});
+				}
+			});
+			//sendForm("form_data", "{:U('holiday_del')}");
+		});
+	}
+
+	$(document).ready(function(){
+		set_return_url();
+	})
+</script>

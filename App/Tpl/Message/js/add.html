@@ -1,0 +1,170 @@
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		/*单击删除已选联系人*/
+		$(document).on("click", ".inputbox .address_list a.del", function() {
+			$(this).parent().parent().remove();
+		});
+
+		/* 查找联系人input 功能*/
+		$(document).on("click", ".inputbox .search li", function() {
+			name = $(this).text().replace(/<.*>/, '');
+			email = $(this).find("a").attr("title");
+			id = $(this).find("a").attr("data");
+			html = conv_inputbox_item(email, name, email, id);
+
+			inputbox = $(this).parents(".inputbox");
+			inputbox.find("span.address_list").append(html);
+			inputbox.find("input.letter").val("");
+			inputbox.find(".search ul").html("");
+			inputbox.find(".search ul").hide();
+			inputbox.find(".search").hide();
+		});
+		/* 查找联系人input 功能*/
+		$(".inputbox .letter").keyup(function(e) {
+			switch(e.keyCode) {
+				case 40:
+					var $curr = $(this).parents(".inputbox").find(".search li.active").next();
+					if ($curr.html() != null) {
+						$(this).parents(".inputbox").find(".search li").removeClass("active");
+						$curr.addClass("active");
+					}
+					break;
+				case 38:
+					var $curr = $(this).parents(".inputbox").find(".search li.active").prev();
+					if ($curr.html() != null) {
+						$(this).parents(".inputbox").find(".search li").removeClass("active");
+						$curr.addClass("active");
+					}
+					break;
+				case 13:
+					if ($(this).parents(".inputbox").find(".search ul").html() != "") {
+						name = $(".search li.active").text().replace(/<.*>/, '');
+						email = $(".search li.active a").attr("title");
+						id = $(".search li.active a").attr("data");
+						html = conv_inputbox_item(id, name, id, id);
+						$(this).parents(".inputbox").find("span.address_list").append(html);
+						$(this).parents(".inputbox").find(".search ul").html("");
+
+						$(this).val("");
+						$(this).parents(".inputbox").find(".search ul").hide();
+					} else {
+						email = $(this).val();
+						if (validate(email, 'email')) {
+							name = email;
+							html = conv_inputbox_item(email, name, email, email);
+							$(this).parents(".inputbox").find("span.address_list").append(html);
+							$(this).val("");
+						} else {
+							ui_error("邮件格式错误");
+							return false;
+						}
+					}
+					break;
+				default:
+					var search = $(this).parents(".inputbox").find("div.search ul");
+					if ($(this).val().length > 1) {
+						$.getJSON("{:U('popup/json')}", {
+							key : $(this).val()
+						}, function(json) {
+							if (json != "") {
+								if (json.length > 0) {
+									search.html("");
+									$.each(json, function(i) {
+										search.append('<li><a data="' + json[i].id + '" title="' + json[i].email + '">' + json[i].name + '&lt;' + json[i].email + '&gt;</a></li>');
+									});
+									search.children("li:first").addClass("active");
+									search.show();
+								}
+							} else {
+								search.html("");
+								search.hide();
+							}
+						});
+					} else {
+						search.hide();
+					}
+			}
+		});
+		
+		//异步查询部门对应的员工
+		$(".rli2 .tree_menu a").click(function() {
+				$(".rli2 .tree_menu a").each(function() {
+					$(this).attr("class", "");
+				});
+				$(this).attr("class", "active");
+				var no = $(this);
+				sendAjax("{:U('staffList')}", "id=" + $(this).attr("node"), function(data) {
+					showdata(data,no);
+				});
+				$(".rli2 .tree_menu .tree_staff").slideToggle();
+				return false;
+			});
+		
+		//默认子公司节点收起
+		$(".rli2 .tree_menu .group_node").next().hide();
+		//子公司节点的展开和收起
+		$(".rli2 .tree_menu .group_node").click(function(){
+			$(this).next().slideToggle();
+		});
+		
+	});
+	function save() {
+		window.onbeforeunload = null;
+		$("#to").val("");
+		$("#recever .address_list span").each(function() {
+			$("#to").val($("#to").val() + $(this).find("b").text() + '|' + $(this).attr("id") + ";");
+		});
+		if ($("#to").val() == "") {
+			ui_error("请选择收信人");
+			$("#recever .letter").focus();
+			return false;
+		}
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+
+	function popup_contact() {
+		winopen("{:U('popup/message')}", 730, 570);
+	}
+	
+	
+	// JavaScript Document
+	//添加消息时,右边快捷选择的js
+	$(".rli2").hide()
+	$("#sp1").addClass("rb")	
+	$(".span5").click(function(){
+		$(".rli1").show()
+		$(".rli2").hide()
+		$("#sp1").addClass("rb")	
+		$("#sp2").removeClass("rb")	
+	})
+	$(".span6").click(function(){
+		$(".rli2").show()
+		$(".rli1").hide()
+		$("#sp2").addClass("rb")	
+		$("#sp1").removeClass("rb")		
+	})
+
+	//更多
+	$("#g2,#g4,#g6,#g8,#g10,#g12").hide()
+	$("#g1").click(function(){
+		$("#g2").slideToggle()
+		$("#g4,#g6,#g8,#g10,#g12").slideUp()
+		$("#g1").addClass("blue")
+		$("#g3,#g5,#g7,#g9,#g11").removeClass("blue")
+	})
+
+
+	//显示部门下的员工
+	function showdata(result,no) {
+		$(".tree_staff").remove();
+		html = "<ul class='tree_staff'>";
+		for (var s in result.data) {
+			html += "<li><a id = " +result.data[s].id+ " class='staff' onclick=\"contact_save(this)\"><i class=\"level4\"></i><span>" + result.data[s].name; + "</span><a></li>";
+		}
+		html += "</ul>";
+		no.parent('li').append(html);
+	}
+</script>

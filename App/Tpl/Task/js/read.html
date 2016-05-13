@@ -1,0 +1,126 @@
+<script type="text/javascript">
+	$(function() {
+		show_content();
+	});
+	function del() {
+		ui_confirm('确定要删除吗?', function() {
+			sendAjax("{:U('mark','action=del')}", 'id=' + $("#id").val(), function(data) {
+				if (data.status) {
+					ui_alert(data.info, function() {
+						go_return_url();
+					});
+				}
+			});
+		});
+	}
+
+	function popup_actor() {
+		winopen("{:U('popup/task')}", 730, 574);
+	}
+
+	function edit() {
+		window.open(fix_url("{:U('edit')}?id=" + $("#id").val()), "_self");
+	}
+
+	function accept($task_log_id) {
+		sendAjax("{:U('accept')}",'task_log_id='+$task_log_id, function(data) {
+			if (data.status) {
+				ui_alert(data.info, function() {
+					location.reload(true);
+				});
+			}
+		});
+	}
+	
+	function let_me_do($task_id) {
+		sendAjax("{:U('let_me_do')}",'task_id='+$task_id,function(data) {
+			if (data.status) {
+				ui_alert(data.info, function() {
+					location.reload(true);
+				});
+			}
+		});
+	}	
+	
+
+	function reject() {
+		winopen("{:U('reject','task_id='.$vo['id'])}", 730, 540);
+	}
+
+	function save_log() {
+		$status_name = $(".task_todo .tab-pane.active").attr('id');
+		if ($status_name == "forword") {
+			if ($(".address_list span").length == 0) {
+				ui_error('请选择要转交的人');
+				return false;
+			} else {
+				$("#forword_executor").val("");
+				$("#actor_wrap span.address_list span").each(function() {
+					$("#forword_executor").val($("#forword_executor").val() + $(this).find("b").text() + '|' + $(this).attr("data") + ";");
+				});
+			}
+		}
+		$form_name = "form_data_" + $status_name;
+		var vars = $("#" + $form_name).serialize();
+		if (check_form($form_name)) {
+			if ($status_name == "working") {
+				sendAjax("{:U('save_log')}", vars, function(data) {
+					if (data.status) {
+						ui_alert(data.info, function() {
+							location.reload(true);
+						});
+					} else {
+						ui_error(data.info);
+					}
+				});
+			}
+
+			if ($status_name == "finish") {
+				ui_confirm('选择完成以后不能修改了,是否继续修改了?', function() {
+					sendAjax("{:U('save_log')}", vars, function(data) {
+						if (data.status) {
+							ui_alert(data.info, function() {
+								location.reload(true);
+							});
+						} else {
+							ui_error(data.info);
+						}
+					});
+				});
+			}
+
+			if ($status_name == "forword") {
+				ui_confirm('选择转发以后不能修改了,是否继续修改了?', function() {
+					sendAjax("{:U('save_log')}", vars, function(data) {
+						if (data.status) {
+							ui_alert(data.info, function() {
+								location.reload(true);
+							});
+						} else {
+							ui_error(data.info);
+						}
+					});
+				});
+			}
+		}
+	}
+
+
+	$(document).ready(function() {
+		$(document).on("click", ".inputbox .address_list a.del", function() {
+			$(this).parent().parent().remove();
+		});
+
+		set_val('status', '{$task_working.finish_rate}');
+		$("#slider-range-priority").slider({
+			range : "min",
+			min : 0,
+			max : 100,
+			value : '{$task_working.finish_rate}',
+			slide : function(event, ui) {
+				$("#finish_rate").val(ui.value);
+				$("#slider_val").text(ui.value + "%");
+			}
+		});
+	}); 
+</script>

@@ -1,0 +1,168 @@
+<layout name='Layout/ace_home' />
+<link href="__PUBLIC__/css/index.css" rel="stylesheet" type="text/css">
+<script src="__PUBLIC__/js/jquery-1.7.2.min.js"></script>
+<div class="main">
+	<div class="main_top">
+    	<div style="background-image:url(__PUBLIC__/img/xiat.png); width: 23%; height: 300px; position: relative;">
+        	<iframe style="position:absolute; left:50%; margin-left:-82px; top:50%; margin-top:-78px;" allowtransparency="true" frameborder="0" width="140" height="150" scrolling="no" src="http://tianqi.2345.com/plugin/widget/index.htm?s=2&z=1&t=1&v=1&d=1&bd=0&k=&f=ffffff&q=0&e=1&a=1&c=54511&w=140&h=150&align=center">
+            <p>Your browser does not support iframes.</p>
+            </iframe>
+        </div>
+        <div class="top_1">
+        	<a href="{:U('notice/index')}" class="top_1_a1">公告</a>
+            <span style=" display:block; width:84%; height:1px; background:#80b7c7; margin:auto; margin-top:10px; margin-bottom:20px;"></span>
+            <span class="top_1_span1">
+            	<ul class="a1_ul">
+					<volist name="new_notice_list" id="vo">
+						<li class="a1_li_1">
+							<a href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}({$vo.create_time|date='Y-m-d',###})</a>
+						</li>
+					</volist>
+				</ul>
+            </span>
+        </div>
+        <div class="top_2">
+        	<a href="{:U('task/folder','fid=all')}" class="top_2_a1">所有任务</a>
+            <a href="{:U('task/folder','fid=all')}" class="top_2_a2">{$task_all_count}</a>
+            <span style=" display:block; width:60%; height:1px; background:#367e93; margin:auto; margin-top:20px; margin-bottom:20px;"></span>
+            <a href="{:U('task/folder','fid=all')}" class="top_2_a3"><img src="__PUBLIC__/img/gzb.png"></a>
+        </div>
+        <div class="top_3">
+        	<a href="{:U('task/folder','fid=todo')}" class="top_2_a1">等我接受的任务</a>
+            <a href="{:U('task/folder','fid=todo')}" class="top_2_a2">{$task_todo_count}</a>
+            <span style=" display:block; width:60%; height:1px; background:#2f7a8f; margin:auto; margin-top:20px; margin-bottom:20px;"></span>
+            <a href="{:U('task/folder','fid=todo')}" class="top_2_a3"><img src="__PUBLIC__/img/gzb.png"></a>
+        </div>
+        <div class="top_4">
+        	<a href="{:U('task/folder','fid=no_finish')}" class="top_2_a1">未完成的任务</a>
+            <a href="{:U('task/folder','fid=no_finish')}" class="top_2_a2">{$task_no_finish_count}</a>
+            <span style=" display:block; width:60%; height:1px; background:#29748a; margin:auto; margin-top:20px; margin-bottom:20px;"></span>
+            <a href="{:U('task/folder','fid=no_finish')}" class="top_2_a3"><img src="__PUBLIC__/img/gzb.png"></a>
+        </div>
+        <div class="top_5">
+        	<a href="{:U('task/folder','fid=finished')}" class="top_2_a1">已完成的任务</a>
+            <a href="{:U('task/folder','fid=finished')}" class="top_2_a2">{$task_finished_count}</a>
+            <span style=" display:block; width:60%; height:1px; background:#38869c; margin:auto; margin-top:20px; margin-bottom:20px;"></span>
+            <a href="{:U('task/folder','fid=finished')}" class="top_2_a3"><img src="__PUBLIC__/img/gzb.png"></a>
+        </div>
+    </div>
+    <div class="main_zj">
+    	<div class="zj_1">
+        	<a class="zj_a1">本月寿星</a>
+            <span style=" display:block; width:84%; height:1px; background:#d995b5; margin:auto; margin-top:10px; margin-bottom:20px;"></span>
+            <span class="zj_ul1">
+                <ul class="zj_ul2">
+                <foreach name="shouxing_list" item="vo">
+                	<if condition="$key neq count($shouxing_list)-1">
+                		<li id="li{$vo.id}" name="{$vo.id}" class="shouxing">
+                       		<a href="" class="zj_a2" id="ul2_a{$vo.id}"><img style="width:60px;" src="__ROOT__/Data/Files/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'"></a>
+                        	<a href="" class="zj_a3">{$vo.name}</a>
+                    	</li>
+                	<else />
+                		<li id="li{$vo.id}" name="{$vo.id}" class="shouxing" style=" margin-right:0;">
+                       		<a class="zj_a2" id="ul2_a{$vo.id}"><img style="width:60px;" src="__ROOT__/Data/Files/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'"></a>
+                        	<a class="zj_a3">{$vo.name}</a>
+
+                    	</li>	
+                    </if>
+                </foreach>   
+                </ul>
+            </span>
+        </div>
+        <div class="zj_2">
+        	<a class="zj_a1_1">入职纪念日</a>
+            <span style=" display:block; width:84%; height:1px; background:#c67199; margin:auto; margin-top:10px; margin-bottom:20px;"></span>
+            <span class="zj_ul1">
+                <ul class="zj_ul2">
+                	<foreach name="jinianri_list" item="vo">
+                	<if condition="$key neq count($jinianri_list)-1">
+                		<li name="{$vo.id}" class="shouxing">
+
+                       		<a href="" class="zj_a2"><img style="width:60px;" src="__ROOT__/Data/Files/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'"></a>
+                        	<a href="" class="zj_a3">{$vo.name}</a>
+                    	</li>
+                	<else />
+                		<li name="{$vo.id}" class="shouxing" style=" margin-right:0;">
+                       		<a class="zj_a2"><img style="width:60px;" src="__ROOT__/Data/Files/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'"></a>
+                        	<a class="zj_a3">{$vo.name}</a>
+
+                    	</li>	
+                    </if>
+                	</foreach>
+                </ul>
+            </span>
+        </div>
+        <div class="zj_3">
+        	<a class="zj_a1">新进员工</a>
+            <span style=" display:block; width:84%; height:1px; background:#cf7ea4; margin:auto; margin-top:10px; margin-bottom:20px;"></span>
+            <span class="zj_ul1">
+                <ul class="zj_ul23">
+                	<foreach name="xinjin_list" item="vo">
+                	<if condition="$key neq count($xinjin_list)-1">
+                		<li name="{$vo.id}" class="shouxing">
+
+                       		<a href="" class="zj_a2"><img style="width:60px;" src="__ROOT__/Data/Files/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'"></a>
+                        	<a href="" class="zj_a3">{$vo.name}</a>
+                    	</li>
+                		<li name="{$vo.id}" class="shouxing" style=" margin-right:0;">
+                       		<a class="zj_a2"><img style="width:60px;" src="__ROOT__/Data/Files/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'"></a>
+                        	<a class="zj_a3">{$vo.name}</a>
+
+                    	</li>	
+                    </if>
+                	</foreach>
+                </ul>
+            </span>
+        </div>
+        <span class="span1" id="span1">
+        	<span class="span2">
+            	<img class="f_pic" src="" style="width:60px;" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'">
+                <span class="span3">
+                	<a>
+                    	<span class="f_p"></span>
+                        <span class="f_sex"></span>
+                    </a>
+                    <a>
+                    	<span class="f_birthday"></span>
+                    </a>
+                    <a class="f_duty"></a>
+                </span>
+            </span>
+            <span class="span4">
+            	<span>公司：{$title}</span>
+                <span class="f_create_time"></span>
+                <span>
+                	<a class="f_dept"></a>
+                    <a class="f_position"></a>
+                </span>
+                <span>
+                	<a class="f_mobile_tel"></a>
+                    <a class="f_office_tel"></a>
+                </span>
+                <span class="f_email"></span>
+     
+            </span>
+            <a class="sp_a1"></a>
+            <a href="" class="sp_a2">发短消息</a>
+        </span>
+    </div>
+    <div class="main_bottom">
+        <div class="bt_1">
+        	<iframe frameborder="0" scrolling="auto"  width="100%" height="315" src="__TMPL__Home/arili.html" style="background:#eee; border-radius:5px;">
+            	<p>Your browser does not support iframes.</p>
+            </iframe>
+        </div>
+        <div class="bt_2">
+        	<a class="bt_a1">CEO激励语</a>
+            <span style=" display:block; width:84%; height:1px; background:#525354; margin:auto; margin-top:10px; margin-bottom:20px;"></span>
+            <a class="bt_a2"><span style=" background:transparent;color:#fff; font-size:18px; width:100%; line-height:24px; height:140px; border:none; outline:none;">{$ceo_incentive}</span></a>
+            <a class="bt_a3">谢树济</a>
+        </div>
+        <div class="bt_3">
+        	<a class="bt_3_a1">便签</a>
+            <span style=" display:block; width:84%; height:1px; background:#525354; margin:auto; margin-top:10px; margin-bottom:20px;"></span>
+            <textarea cols="50" rows="20" class="bt_text" style="resize:none;"></textarea>
+        </div> 
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/js.js"></script>

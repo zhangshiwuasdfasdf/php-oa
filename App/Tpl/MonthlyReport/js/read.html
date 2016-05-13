@@ -1,0 +1,26 @@
+<script>
+	function save_comment() {
+		window.onbeforeunload = null;
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save_comment')}", "__SELF__");
+		}
+	}
+
+	function edit_comment(comment_id){
+		window.open(fix_url("{:U('edit_comment')}?comment_id=" + comment_id),"_self");
+	}
+
+	function reply_comment(comment_id){
+		window.open(fix_url("{:U('reply_comment')}?comment_id=" + comment_id),"_self");
+	}
+
+	function del_comment(comment_id){
+		window.open(fix_url("{:U('del_comment')}?comment_id=" + comment_id+"&id="+ $("#id").val()), "_self");
+	}
+	
+	$(document).ready(function() {
+		show_content();
+		set_return_url(document.location, 1);
+	}); 
+	
+</script>

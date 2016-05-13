@@ -1,0 +1,38 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body,input{ margin:0; padding:0;}
+li,ul{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+/*nav*/
+nav{ width:100%; height:40px; background:#d9d9d9;}
+nav span{ font-size:18px; font:"微软雅黑"; color:#000; line-height:40px; margin-left:22px; font-weight:bold; text-align:center; display:block;}
+/*main*/
+body{ background:#eee;}
+.ma1{ background:#797979; margin-left:1%; margin-top:10px; margin-bottom:12px;}
+.ma1 span{ font-size:12px; color:#333333;}
+.ma1 div{ padding-left:30px;}
+.ma1 div .in2{ width:80%; height:25px; outline:none; border:none;}
+.ma1 div .in1{ width:177px; height:25px; outline:none; }
+.m1 span{ margin-right:20px; margin-left:2px; line-height:31px;}
+.m2 span{ margin-right:12px; margin-left:3px; line-height:31px;}
+.m3{ width:100%; height:31px; overflow:hidden;}
+.m3 li{ float:left; width:33%; height:31px; border-right: solid 1px #797979;}
+.m3 li span{ line-height:31px;}
+.m3 input{ width:50%; height:31px; outline:none; border:none;}
+.m4{ width:100%; height:31px; overflow:hidden;}
+.m4 li{ float:left; width:49%; height:31px;}
+.m4 li span{ line-height:31px;}
+.m4 li input{ width:65%; height:31px; border:none; outline:none;}
+.m5{ width:100%; height:135px; overflow:hidden;}
+.m5 li{ float:left; display:block; padding-top:18px;}
+.m6{ width:80%; height:100px; outline:none; border:none;}
+.li1{ width:90px;}
+.li2{ width:80%;}
+.m7{ width:95%; height:100px; outline:none; border:none; }
+.m8 span{ line-height:31px; margin-right:22px;}
+.m8 input{ margin-right:3px;}
+.ma2{ display:block; overflow:hidden; width:208px; margin:auto;}
+.ma2 li{ float:left; width:98px; height:28px;}
+.in3{ background:#99cc66; width:98px; height:28px; border-radius:5px; color:#fff; font-size:12px; font-weight:bold;}
+.in4{ background:#cccccc; width:98px; height:28px; border-radius:5px; color:#fff; font-size:12px; font-weight:bold;}

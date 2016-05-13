@@ -1,0 +1,172 @@
+<layout name='Layout/ace_layout' />
+<input type="hidden" name="ajax" id="ajax" value="1">
+<select name="dept_list" id="dept_list" class="display-none">
+	{:fill_option($dept_list)}
+</select>
+{:W('PageHeader',array('name'=>'用户管理','search'=>'S'))}
+<form method="post" id="form_adv_search" name="form_adv_search" method="post">
+<input type="hidden" name="ajax" id="ajax" value="1">
+	<div class="operate panel panel-default">
+		<div class="panel-body">
+			<div class="pull-left">
+				<label  for="eq_is_del"><b>状态:</b></label>
+				<select id="eq_is_del" name="eq_is_del" class="col-10" onchange="submit_adv_search();">
+					<option value="0">启用</option>
+					<option value="1">禁用</option>
+					<option value="2">其他</option>
+				</select>
+			</div>
+			<div class="pull-right">
+				<a onclick="reset_pwd()" class="btn btn-sm btn-primary">设置密码</a>
+				<a href="{:U('add')}"  class="btn btn-sm btn-primary">新增</a>
+				<a onclick="save()"  class="btn btn-sm btn-primary">保存</a>
+			|
+			<a onclick="del()"  class="btn btn-sm btn-danger">删除</a>
+			</div>
+		</div>
+	</div>
+</form>
+<div class="row">
+	<div class="col-sm-4 sub_left_menu ">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>用户名</th>
+					<th>姓名</th>
+					<th>状态</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="data">
+					<tr id="{$data.id}">
+						<td>{$data.id}</td>
+						<td>{$data.emp_no}</td>
+						<td>{$data.name}</td>
+						<td>{$data.is_del|status}</td>
+					</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-sm-8">
+		<form class="well form-horizontal" method='post' id="form_data" name="form_data" enctype="multipart/form-data">
+			<input type="hidden" id="save_name" name="save_name">
+			<input type="hidden" name="id" id="id">
+			<input type="hidden" name="pic" id="pic" >
+			<input type="hidden" id="add_file" name="add_file">
+			<input type="hidden" name="opmode" id="opmode" value="edit">
+			<table class="table table-bordered" >
+				<tr>
+					<th>
+					<nobr>
+						用户名*
+					</nobr></th>
+					<td colspan="2">
+					<input class="form-control" type="text" id="emp_no" name="emp_no"  check="require" msg="请输入员工编号">
+					</td>
+					<td rowspan="3"><img class="img-thumbnail col-12" id="emp_pic" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'"></td>
+				</tr>
+				<tr>
+					<th>姓名*</th>
+					<td colspan="2">
+					<input  class="form-control" type="text" id="name" name="name" class="input-sm" check="require" msg="请输入姓名">
+					</td>
+				</tr>
+				<tr>
+					<th>性别</th>
+					<td colspan="2">
+					<select name="sex" id="sex" class="form-control col-10">
+						<option  value="male">男</option>
+						<option value="female">女</option>
+					</select></td>
+				</tr>
+				<tr>
+					<th>生日</th>
+					<td colspan="2">
+					<input data-date-format="yyyy-mm-dd" type="text" id="birthday" name="birthday" readonly="readonly" class="input-date form-control">
+					</td>
+					<td colspan="2"><a onclick="select_avatar();" class="btn btn-sm btn-primary">上传头像</a></td>
+				</tr>
+				<tr>
+					<th>部门*</th>
+					<td colspan="2">
+					<div class="input-group ">
+						<input class="form-control" name="dept_name"  id="dept_name" type="text" msg="请选择部门" check="require" readonly="readonly" />
+						<input name="dept_id" id="dept_id" type="hidden" msg="请选择部门" check="require" />
+						<div class="input-group-btn">
+							<a class="btn btn-sm btn-primary" onclick="select_dept();" > <i class="fa fa-search" ></i> </a>
+						</div>
+					</div></td>
+					<td colspan="2">
+						<div style="display:none;" class="upload">
+							{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'resume'))}
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>位置*</th>
+					<td colspan="2">
+					<div class="input-group ">
+						<input class="form-control" name="pos_name"  id="pos_name" type="text" msg="请选择位置" check="require" readonly="readonly" />
+						<input name="pos_id" id="pos_id" type="hidden" msg="请选择位置" check="require" />
+						<div class="input-group-btn">
+							<a class="btn btn-sm btn-primary" onclick="select_dept3();" > <i class="fa fa-search" ></i> </a>
+						</div>
+					</div></td>
+					<td>
+						<a style="display:none;" class="btn btn-sm btn-primary upload" href="javascript:void(0);" onclick="goResume()">查看简历</a>
+					</td>
+				</tr>
+				<tr>
+					<th>职级*</th>
+					<td>
+					<select name="position_id" id="position_id" class="form-control" msg="请选择职位" check="require">
+						<option value="">选择职级</option>
+						{:fill_option($position_list)}
+					</select></td>
+					<th>
+					<nobr>
+						职位
+					</nobr></th>
+					<td colspan="3">
+					<input type="text" id="duty" name="duty" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<th>
+					<nobr>
+						办公室电话
+					</nobr></th>
+					<td>
+					<input type="text" id="office_tel" name="office_tel" class="form-control">
+					</td>
+					<th>
+					<nobr>
+						移动电话
+					</nobr></th>
+					<td>
+					<input type="text" id="mobile_tel" name="mobile_tel" class="form-control">
+					</td>
+				</tr>
+				<tr>
+				<tr>
+					<th>电子邮箱</th>
+					<td>
+					<input type="text" id="email" name="email" class="form-control">
+					</td>
+					<th>状态</th>
+					<td colspan="3">
+					<select class="form-control col-10"  name="is_del" id="is_del">
+						<option  value="0">启用</option>
+						<option value="1">禁用</option>
+					</select></td>
+				</tr>
+			</table>
+		</form>
+
+	</div>
+	<div class="pagination">
+		{$page}
+	</div>
+</div>

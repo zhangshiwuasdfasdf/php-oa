@@ -1,0 +1,17 @@
+<script type="text/javascript">
+	function approve() {
+		sendForm("form_confirm", "{:U('approve')}", "{:U('read','id='.$vo['id'])}");
+	}
+
+	function reject() {
+		sendForm("form_confirm", "{:U('reject')}", "{:U('read','id='.$vo['id'])}");
+	}
+
+	function opreate() {
+		sendForm("form_opreate", "{:U('opreate')}", "{:U('read','id='.$vo['id'])}");
+	}
+
+	function edit() {
+		window.location = "{:U('edit','id='.$vo['id'])}";
+	}
+</script>

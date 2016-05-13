@@ -1,0 +1,142 @@
+<style>
+*{ font-family:"微软雅黑"; font-size:14px;}
+body{ margin:0; padding:0;}
+.ma1 span{ margin-left:5%;}
+.in1{ border-left:0; border-right:0; border-top:0; border-bottom:solid 1px #000; outline:none;}
+.te1{ width:98%; border:none; outline:none;}
+.in2{ outline:none; border:none;}
+.ma2{ display:block; margin:auto; text-align:center;}
+table div{ padding-left:2%;}
+.in3{ outline:none; border:none; width:98%;}
+</style>
+
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<input type="hidden" id="dept_id" name="dept_id" value="{$vo.dept_id}">
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="17%" height="33" align="center">姓名</td>
+    <td width="14%" height="33" align="center"><input id="user_name" name="user_name" value="{$vo.user_name}" type="text" class="in3" disabled></td>
+    <td width="14%" height="33" align="center">部门</td>
+    <td width="21%" height="33" align="center"><input id="dept_name" name="dept_name" value="{$vo.dept_name}" type="text" class="in3" disabled></td>
+    <td width="18%" height="33" align="center">入职时间</td>
+    <td width="16%" height="33" align="center"><input id="entry_date" name="entry_date" value="{$vo.entry_date}" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date in3" ></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">目前状态</td>
+    <td height="33" colspan="5" align="left" class="ma1" style="background:#fff;"><span>
+    <input name="status" type="radio" value="实习期" <if condition="($vo.status eq '实习期')">checked="checked"</if> >实习期</span><span>
+    <input name="status" type="radio" value="试用期" <if condition="($vo.status eq '试用期')">checked="checked"</if> >试用期</span><span>
+    <input name="status" type="radio" value="正式员工" <if condition="($vo.status eq '正式员工')">checked="checked"</if> >正式员工</span><span>
+    <input name="status" type="radio" value="项目成员" <if condition="($vo.status eq '项目成员')">checked="checked"</if> >项目成员</span></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">申请事项</td>
+    <td height="33" colspan="5" class="ma1" style="background:#fff;"><span>
+    <input name="apply_event" type="radio" value="晋升" <if condition="($vo.apply_event eq '晋升')">checked="checked"</if> >晋升</span><span>
+    <input name="apply_event" type="radio" value="降级" <if condition="($vo.apply_event eq '降级')">checked="checked"</if> >降级</span><span>
+    <input name="apply_event" type="radio" value="调薪" <if condition="($vo.apply_event eq '调薪')">checked="checked"</if> >调薪</span><span>
+    <input name="apply_event" type="radio" value="岗位变动" <if condition="($vo.apply_event eq '岗位变动')">checked="checked"</if> >岗位变动</span><span>
+    <input name="apply_event" type="radio" value="其他" <if condition="($vo.apply_event eq '其他')">checked="checked"</if> >其他
+    <input id="apply_event_other" name="apply_event_other" vlaue="{$vo.apply_event_other}" type="text" class="in1" >
+    </span></td>
+  </tr>
+  <tr>
+    <td rowspan="3" align="center">变动前</td>
+    <td height="33" align="center">部门</td>
+    <td height="33" align="center"><input value="{$vo.dept_name}" type="text" class="in3" disabled></td>
+    <td rowspan="3" align="center">变动后</td>
+    <td align="center">部门</td>
+    <td height="33" align="center">
+    	<div class="input-group ">
+						<input class="form-control" name="dept_name_to"  id="dept_name_to" value="{$vo.dept_name_to}" type="text" msg="请选择部门" check="require" readonly="readonly" />
+						<input name="dept_id_to" id="dept_id_to" type="hidden" msg="请选择部门" check="require" />
+						<div class="input-group-btn">
+							<a class="btn btn-sm btn-primary" onclick="select_dept('to');" > <i class="fa fa-search" ></i> </a>
+						</div>
+		</div>
+    </td>
+  </tr>
+  <tr>
+    <td height="33" align="center">岗位</td>
+    <td height="33" align="center"><input id="duty" name="duty" value="{$vo.duty}" type="text" class="in3" ></td>
+    <td align="center">岗位</td>
+    <td height="33" align="center"><input id="to_position" name="to_position" value="{$vo.to_position}" type="text" class="in3" ></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">职级</td>
+    <td height="33" align="center"><input id="from_rank" name="from_rank" value="{$vo.from_rank}" type="text" class="in3" ></td>
+    <td align="center">职级</td>
+    <td height="33" align="center"><input id="to_rank" name="to_rank" value="{$vo.to_rank}" type="text" class="in3" ></td>
+  </tr>
+  <tr>
+    <td height="33" align="center"><p >变动前薪资</p></td>
+    <td height="33" colspan="2" align="center"><input id="from_salary" name="from_salary" value="{$vo.from_salary}" type="text" class="in3" ></td>
+    <td height="33" align="center"><p >备注</p></td>
+    <td height="33" colspan="2" align="center"><input id="from_mark" name="from_mark" value="{$vo.from_mark}" type="text" class="in3" ></td>
+  </tr>
+  <tr>
+    <td height="33" align="center"><p >变动后薪资</p></td>
+    <td height="33" colspan="2" align="center"><input id="to_salary" name="to_salary" value="{$vo.to_salary}" type="text" class="in3" ></td>
+    <td height="33" align="center">备注</td>
+    <td height="33" colspan="2" align="center"><input id="to_mark" name="to_mark" value="{$vo.to_mark}" type="text" class="in3" ></td>
+  </tr>
+  <tr>
+    <td height="100" align="center"><p >申请变动理由</p></td>
+    <td height="100" colspan="5" align="center">
+    	<div><textarea id="reason" name="reason" rows="4" class="te1" >{$vo.reason}</textarea></div>
+    	<div><span>申请人签名/日期：</span><span> {$vo.user_name}/{$vo.create_time|toDate='Y-m-d'}</span></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="33" colspan="6" align="center">部门领导意见</td>
+  </tr>
+  <tr>
+    <td height="100" rowspan="2" align="center">变动前</td>
+    <td height="100" colspan="2">
+    	<div>直接领导意见：</div>
+        <div><textarea id="from_leader_review" name="from_leader_review" onchange="setFromLeaderReview($('#from_leader_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.1 neq 1)">disabled</if> rows="2" class="te1">{$vo.from_leader_review}</textarea></div>
+        <div>建议执行日期：<input id="from_leader_date" name="from_leader_date" onchange="setFromLeaderDate($('#from_leader_date').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.1 neq 1)">disabled</if> value="{$vo.from_leader_date}" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date in2" ></div>
+        <div><span class="ma2">签名/日期：</span><span><if condition="($flow_log_all[0])">{$flow_log_all[0].user_name}/{$flow_log_all[0].create_time|toDate='Y-m-d'}</if></span></div>
+    </td>
+    <td height="100" rowspan="2" align="center">变动后</td>
+    <td height="100" colspan="2">
+    	<div>直接领导意见：</div>
+        <div><textarea id="to_leader_review" name="to_leader_review" onchange="setToLeaderReview($('#to_leader_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.3 neq 3)">disabled</if> rows="2" class="te1" >{$vo.to_leader_review}</textarea></div>
+        <div>建议执行日期：<input id="to_leader_date" name="to_leader_date" onchange="setToLeaderDate($('#to_leader_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.3 neq 3)">disabled</if> value="{$vo.to_leader_date}" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date in2" ></div>
+        <div><span class="ma2">签名/日期：</span><span><if condition="($flow_log_all[2])">{$flow_log_all[2].user_name}/{$flow_log_all[2].create_time|toDate='Y-m-d'}</if></span></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="100" colspan="2">
+    	<div>部门总监意见</div>
+        <div><textarea rows="2" class="te1" id="from_director_review" name="from_director_review" onchange="setFromDirectorReview($('#from_director_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.2 neq 2)">disabled</if>>{$vo.from_director_review}</textarea></div>
+        <div><span class="ma2">签名/日期：</span><span><if condition="($flow_log_all[1])">{$flow_log_all[1].user_name}/{$flow_log_all[1].create_time|toDate='Y-m-d'}</if></span></div>
+    </td>
+    <td height="100" colspan="2">
+    	<div>部门总监意见</div>
+        <div><textarea rows="2" class="te1" id="to_director_review" name="to_director_review" onchange="setToDirectorReview($('#to_director_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.4 neq 4)">disabled</if> >{$vo.to_director_review}</textarea></div>
+        <div><span class="ma2">签名/日期：</span><span><if condition="($flow_log_all[3])">{$flow_log_all[3].user_name}/{$flow_log_all[3].create_time|toDate='Y-m-d'}</if></span></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="100" colspan="6">
+    	<div>人事行政部审核/审批：</div>
+        <div><textarea rows="2" class="te1" disabled><if condition="($flow_log_all[4])">{$flow_log_all[4].result|show_result}</if></textarea></div>
+        <div><span class="ma2">签名/日期：</span><span><if condition="($flow_log_all[4])">{$flow_log_all[4].user_name}/{$flow_log_all[4].create_time|toDate='Y-m-d'}</if></span></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="100" colspan="6">
+    	<div>总经理审核/审批：</div>
+        <div><textarea rows="2" class="te1" disabled><if condition="($flow_log_all[5])">{$flow_log_all[5].result|show_result}</if></textarea></div>
+        <div><span class="ma2">签名/日期：</span><span><if condition="($flow_log_all[5])">{$flow_log_all[5].user_name}/{$flow_log_all[5].create_time|toDate='Y-m-d'}</if></span></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="100" colspan="6">
+    	<div>人事变动后员工确认意见：</div>
+        <div><textarea rows="2" class="te1" disabled></textarea></div>
+        <div><span class="ma2">签名/日期：</span><span></span></div>
+    </td>
+  </tr>
+</table>

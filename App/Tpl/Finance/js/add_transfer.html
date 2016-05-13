@@ -1,0 +1,29 @@
+<script>
+	function save() {
+		window.onbeforeunload = null;
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save_transfer')}");
+		}
+	}
+
+	$(document).ready(function() {
+		$("#account_id_payment").change(function() {			
+			$.getJSON("{:U('Finance/read_account')}", {
+				account_id : $(this).val()
+			}, function(data) {
+				if(data.status==1){
+					$("#balance_payment").val(data.data.balance);
+				}				
+			});
+		});
+		$("#account_id_income").change(function() {			
+			$.getJSON("{:U('Finance/read_account')}", {
+				account_id : $(this).val()
+			}, function(data) {
+				if(data.status==1){
+					$("#balance_income").val(data.data.balance);
+				}				
+			});
+		});		
+	}); 	
+</script>

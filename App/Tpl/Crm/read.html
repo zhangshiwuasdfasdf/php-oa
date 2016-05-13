@@ -1,0 +1,176 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>array('客户信息：',$vo['name']),'search'=>'N'))}
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-left">
+			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+		</div>
+		<div class="pull-right">
+			<notempty name="show_edit">
+				<a onclick="edit();"  class="btn btn-sm btn-primary">修改</a>
+			</notempty>
+		</div>
+	</div>
+</div>
+<form method='post' id="form_data" class="form-horizontal well clearfix">
+	<input type="hidden" name="ajax" id="ajax" value="1">
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >姓名：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.name}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >性别：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.sex}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >年龄：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.age}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >职业：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.work}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >手机号：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.mobile_tel}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >小区：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.district}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-12">
+		<label class="col-sm-2 control-label" >所需产品：</label>
+		<div class="col-sm-10">
+			<p class="form-control-static">
+				{$vo.need}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >客户来源：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.source}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >兴趣爱好：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.interest}
+			</p>
+		</div>
+	</div>
+	<div class="form-horizontal">
+		<div class="form-group col-xs-12">
+			<label class="col-sm-2 control-label" for="remark" >其他：</label>
+			<div class="col-sm-10" >
+				<textarea class="form-control" name="remark" rows="5" class="col-xs-12" ></textarea>
+			</div>
+		</div>
+	</div>
+</form>
+
+<a id="flow_status"></a>
+{:W('PageHeader',array('name'=>'跟单情况','search'=>'N'))}
+<div class="ul_table border-bottom">
+	<ul>
+		<li class="thead">
+			<span class="col-9 text-center">操作人</span>
+			<span class="col-13 text-center">日期</span>
+			<span class="auto">操作内容</span>
+		</li>
+		<volist name="crm_log" id="item">
+		<li class="tbody">
+			<span class="col-9 text-center">{$item.user_name}</span>
+			<span  class="col-13 text-center">{$item.create_time|toDate='Y-m-d h:m'}</span>
+			<span class="auto">
+				<div style="overflow:hidden">
+					{$item.comment}
+				</div></span>
+		</li></volist>
+	</ul>
+</div>
+
+<notempty name="show_confirm">
+	<a id="confirm"></a>
+	{:W('PageHeader',array('name'=>'审核意见','search'=>'N'))}
+	<form method="post" action="" name="form_confirm" id="form_confirm">
+		<input type="hidden" name="crm_id" value="{$vo.id}">
+		<div class="operate panel panel-default">
+			<div class="panel-heading clearfix">
+				<div class="pull-left">
+					<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+				</div>
+				<div class="pull-right">
+					<a onclick="reject();" class="btn btn-sm btn-danger">决绝</a>
+					|
+					<a onclick="approve();" class="btn btn-sm btn-primary">通过</a>
+				</div>
+			</div>
+			<div class="form-group panel-body">
+				<label class="col-sm-2 control-label" >审核意见：</label>
+				<div class="col-sm-10">
+					<textarea name="comment" class="col-xs-12" style="height:120px"></textarea>
+				</div>
+			</div>
+		</div>
+	</form>
+</notempty>
+
+<notempty name="show_opreate">
+	<a id="confirm"></a>
+	{:W('PageHeader',array('name'=>'跟单情况录入','search'=>'N'))}
+	<form method="post" action="" name="form_opreate" id="form_opreate">
+		<input type="hidden" name="crm_id" value="{$vo.id}">
+		<div class="operate panel panel-default">
+			<div class="panel-heading clearfix">
+				<div class="pull-left">
+					<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+				</div>
+				<div class="pull-right">
+					<a onclick="opreate();" class="btn btn-sm btn-primary">提交</a>
+				</div>
+			</div>
+			<div class="form-group panel-body">
+				<label class="col-sm-2 control-label" >审核意见：</label>
+				<div class="col-sm-10">
+					<textarea name="comment" class="col-xs-12" style="height:120px"></textarea>
+				</div>
+			</div>
+		</div>
+	</form>
+</notempty>

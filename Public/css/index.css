@@ -1,0 +1,56 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body{ margin:0; padding:0; background:#eeeeee;}
+li{ list-style:none; margin:0; padding:0;}
+ul{ margin:0; padding:0;}
+a{ text-decoration:none;}
+/*main*/
+.main{ margin-left:20px; margin-top:20px;}
+.main_top,.main_zj{ margin-bottom:10px; overflow:hidden;}
+.main_bottom{ overflow:hidden;}
+.main_top div,.main_bottom div,.main_zj div{ float:left; border-radius:5px;}
+.top_1{ height:300px; width:23%; background:#c5edeb; margin-left:10px; margin-right:10px;}
+.top_2{ height:300px; width:11%; background:#afd9d9; margin-right:10px;}
+.top_3{ height:300px; width:11%; background:#83d5d3; margin-right:10px;}
+.top_4{ height:300px; width:11%; background:#5ad7d5; margin-right:10px;}
+.top_5{ height:300px; width:11%; background:#20d3cf;}
+.zj_1{ width: 23%; height: 179px; background:#f7dfd5; margin-right:10px; position:relative;}
+.zj_2{ height:179px; width:23%; margin-right:10px; background:#ebbdaf;position:relative;}
+.zj_3{ height:179px; width:46%; margin-right:10px; background:#e1af8f;position:relative;}
+.bt_1{ min-height:300px; width:42%; max-width:730px; margin-right:10px;}
+.bt_2{ min-height:300px; width:20%; margin-right:10px; background:#2d2e30;}
+.bt_3{ min-height:300px; width:30%; background:#2d2e30;}
+.top_1_a1{ font:"微软雅黑"; font-size:24px; color:#fff; display:block; width:56px; margin:auto; font-weight:bold; margin-top:15px;}
+.a1_li_1 a{ display:block; font:"微软雅黑"; font-size:14px; color:#333; width:232px; margin:auto; line-height:18px;}
+.top_1 li{ display:block; margin-bottom:15px; line-height:51px;}
+.top_1_span1{ display:block;overflow:hidden; height:204px;}
+.top_2_a1{ display:block; width:80px; height:52px; color:#fff; font:"微软雅黑"; font-size:20px; font-weight:bold; margin:auto; margin-top:40px; margin-bottom:30px;}
+.top_2_a2{ display:block; margin:auto; color:#fff; font-size:36px; width:61px; height:30px;}
+.top_2_a3{ display:block; margin:auto; width:58px; height:64px;}
+.zj_a1{ display:block; margin:auto; color:#fff; font:"微软雅黑"; font-size:24px; font-weight:bold; width:100px; height:24px; line-height:24px; margin-top:20px; margin-bottom:10px;}
+.zj_ul1{ overflow:hidden; margin:auto; width:84%; height:82px; display:block;}
+.zj_ul2{ margin:auto; display:block; overflow:hidden; width:296px;}
+.zj_ul23{ margin:auto; display:block; overflow:hidden; width:533px;}
+.zj_ul1 li{ float:left; margin-right:20px;}
+.zj_a2{ width:59px; height:59px; border-radius:5px; display:block; margin-bottom:5px; cursor:pointer;}
+.zj_a3{ display:block; color:#000; font:"微软雅黑"; font-size:14px; width:42px; overflow:hidden; margin:auto; cursor:pointer;}
+.zj_a1_1{display:block; margin:auto; color:#fff; font:"微软雅黑"; font-size:24px; font-weight:bold; width:126px; height:24px; line-height:24px; margin-top:20px; margin-bottom:10px;}
+.bt_a1{ display:block; margin:auto; color:#fff; font:"微软雅黑"; font-size:24px; font-weight:bold; width:124px; height:24px; line-height:24px; margin-top:20px; margin-bottom:10px;}
+.bt_a2{ display:block; color:#fff; font:"微软雅黑"; font-size:18px; width:84%; margin:auto; line-height:24px;}
+.bt_a3{ display:block; margin-top:20px; margin-bottom:20px; float:right; color:#fff; font:"微软雅黑"; font-size:18px; margin-right:20px;}
+.bt_text{ background:#2d2e30; display:block; margin:auto; border:none; width:90%; height:200px; color:#fff; font-size:14px; outline:none;}
+.bt_3_a1{display:block; margin:auto; color:#fff; font:"微软雅黑"; font-size:24px; font-weight:bold; width:52px; height:24px; line-height:24px; margin-top:20px; margin-bottom:10px;}
+.gengduo{ display:block; position:absolute; top:10px; right:10px; font:"微软雅黑"; font-size:10px; color:#000; font-weight:bold;}
+.span1{ width:359px; height:261px;  position:fixed; top:490px; background:#fff; padding-top:15px; padding-left:15px; z-index:10; border-radius:5px;display:block;}
+.span2{ display:block; width:374px; overflow:hidden; margin-bottom:5px;}
+.span2 img{ display:block; float:left; margin-right:10px;}
+.span3{ display:block; float:left;}
+.span3 a{ display:block; width:256px; height:14px; font-size:14px; color:#000; margin-bottom:10px; font-weight:bold;}
+.span3 a span{ display:block; float:left; font-size:14px; color:#000; font-weight:bold;}
+.f_p{ margin-right:40px;}
+.span4{ display:block;}
+.span4 span{ display:block; margin-bottom:10px; overflow:hidden; font-size:14px; color:#898989;}
+.span4 span a{ display:block; float:left; margin-right:35px;}
+.sp_a1{ display:block; width:14px; height:14px; background:url(../image/guanbi.png); position:absolute; top:10px; right:10px; cursor:pointer;}
+.sp_a2{ display:block; padding:6px 20px; background:#71c1c6; font-size:12px; color:#fff; position:absolute; bottom:20px; right:20px; border-radius:5px;}

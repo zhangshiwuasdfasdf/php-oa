@@ -1,0 +1,387 @@
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#confirm span").on("dblclick", function() {
+			$("#confirm span").last().find("b").remove();
+		});
+		$("#consult span").on("dblclick", function() {
+			$("#consult span").last().find("b").remove();
+		});
+		
+		
+	}); 
+	function cal(start_time,end_time,type){
+		if(start_time && end_time){
+			if(end_time>start_time){
+				if(type=='over_time'){
+					var url = "{:U('flow/ajaxgettime',array('type'=>'over_time'))}";
+				}else if(type=='metting'){
+					var url = "{:U('flow/ajaxgettime',array('type'=>'metting'))}";
+				}else if(type=='outside'){
+					var url = "{:U('flow/ajaxgettime',array('type'=>'outside'))}";
+				}else{
+					var url = "{:U('flow/ajaxgettime')}";
+				}
+				$.ajax({
+					type: "post",
+					url: url,    
+					data:{start_time:start_time,end_time:end_time},
+					dataType: "json",
+					async:false, //关闭异步
+					success: function(result){
+						if(result.data){
+							$("#day_num").val(result.data.day);
+							$("#hour_num").val(result.data.hour);
+						}else if(type!='metting'){
+							ui_alert('最少2小时',function(){
+								location.reload();
+							});
+						}
+					},
+					error:function(){
+						ui_alert('系统发生错误',function(){
+							location.reload();
+						});
+					}
+				})
+			}else{
+				ui_alert('结束时间必须大于开始时间！',function(){
+				});
+			}
+			
+		}
+		
+	}
+	function showflow_attendance(){
+		var uid = "{$user_info.user_id}";
+		var start_time = $("#start_time").val();
+		var end_time = $("#end_time").val();
+		var day_num = $("#day_num").val();
+		var hour_num = $("#hour_num").val();
+		if(!start_time || !end_time || (day_num==0 && hour_num==0)){
+			ui_alert('请填写完整日期',function(){
+			});
+			return false;
+		}
+		
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/ajaxgetflow',array('type'=>'attendance'))}",    
+			data:{uid:uid},
+			dataType: "json",
+			success: function(result){
+				if(result){
+					if(result.data){
+						$("#confirm_wrap").val(result.data.confirm_name_display);
+					}else{
+						ui_alert("暂时无法获取审批流程，请联系管理员",function(){
+						});
+					}
+				}else{
+					ui_alert("暂时无法获取审批流程，请联系管理员",function(){
+					});
+				}
+				
+			},
+			error:function(e){
+				ui_alert("系统发生错误",function(){
+				});
+			}
+		});
+	}
+	function showflow_leave(){
+		var uid = "{$user_info.user_id}";
+		var start_time = $("#start_time").val();
+		var end_time = $("#end_time").val();
+		var day_num = $("#day_num").val();
+		var hour_num = $("#hour_num").val();
+		if(!start_time || !end_time || (day_num==0 && hour_num==0)){
+			ui_alert('请填写完整日期',function(){
+			});
+			return false;
+		}
+		
+		$.ajax({
+			type: "post",
+			url: "{:U('flow/ajaxgetflow',array('type'=>'leave'))}",    
+			data:{uid:uid,day:day_num},
+			dataType: "json",
+			success: function(result){
+				if(result){
+					if(result.data){
+						$("#confirm_wrap").val(result.data.confirm_name_display);
+					}else{
+						ui_alert("暂时无法获取审批流程，请联系管理员",function(){
+						});
+					}
+				}else{
+					ui_alert("暂时无法获取审批流程，请联系管理员",function(){
+					});
+				}
+				
+			},
+			error:function(e){
+				ui_alert("系统发生错误",function(){
+				});
+			}
+		});
+	}
+	function save(step){
+		window.onbeforeunload=null;
+		/*
+		$("#confirm").val("");
+		$("#confirm_wrap  span").each(function() {
+			$("#confirm").val($("#confirm").val() + $(this).attr("data") + '|');
+		});
+
+		$("#confirm_name").val($("#confirm_wrap").html());
+		*/
+		/*
+		var attitude_me = '';
+		$(" input[name='attitude_me[]']").each(function() {
+			attitude_me +=$(this).val()+'|';
+		});
+		$("#attitude_me").val(attitude_me);
+		*/
+		var uid = "{$user_info.user_id}";
+		var day_num = $("#day_num").val();
+		var hour_num = $("#hour_num").val();
+		var dept_id = $("#dept_id").val();
+		var dept_id_from = $("#dept_id_from").val();
+		var dept_id_to = $("#dept_id_to").val();
+		if($("#name").val()=='出勤证明流程'){
+			if(day_num==0 && hour_num==0){
+				ui_error('请填写共计时间');
+				return;
+			}
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'attendance'))}";
+		}else if($("#name").val()=='外勤/出差单' || $("#name").val()=='请假/调休单'){
+			if(day_num==0 && hour_num==0){
+				ui_error('请填写共计时间');
+				return;
+			}
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'leave'))}";
+		}else if($("#name").val()=='加班调休申请'){
+			if(day_num==0 && hour_num==0){
+				ui_error('请填写共计时间');
+				return;
+			}
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'over_time'))}";
+		}else if($("#name").val()=='用人申请流程'){
+			if($("#apply_reason_2").is(':checked')){
+				var url = "{:U('flow/ajaxgetflow',array('type'=>'employment','add'=>'1'))}";
+			}else{
+				var url = "{:U('flow/ajaxgetflow',array('type'=>'employment'))}";
+			}
+		}else if($("#name").val()=='内部联络单'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'internal'))}";
+		}else if($("#name").val()=='会务证明流程'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'metting_communicate'))}";
+		}else if($("#name").val()=='名片使用'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'card_application'))}";
+		}else if($("#name").val()=='文件审批流程'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'notice_file'))}";
+		}else if($("#name").val()=='人事任免、业务提成通知'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'notice_personnel'))}";
+		}else if($("#name").val()=='合同审阅流程'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'contract'))}";
+		}else if($("#name").val()=='离职申请流程'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'resignation_application'))}";
+		}else if($("#name").val()=='试用期评估表'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'probation_evaluate'))}";
+		}else if($("#name").val()=='转正申请'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'regular_work_application'))}";
+		}else if($("#name").val()=='员工调岗、调职申请'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'personnel_changes'))}";
+		}else if($("#name").val()=='员工调薪申请'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'salary_changes'))}";
+		}else if($("#name").val()=='离职交接流程'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'resignation_list'))}";
+		}else if($("#name").val()=='办公用品采购'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'office_supplies_application'))}";
+		}else if($("#name").val()=='办公用品领用'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'office_use_application'))}";
+		}else if($("#name").val()=='物品采购调拨申请单'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'goods_procurement_allocation'))}";
+		}else if($("#name").val()=='公交卡使用申请'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'bus_card_use'))}";
+		}else if($("#name").val()=='用印申请'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'chops_use'))}";
+		}else if($("#name").val()=='私车公用申请流程'){
+			var url = "{:U('flow/ajaxgetflow',array('type'=>'car_use'))}";
+		}
+		$.ajax({
+			type: "post",
+			url: url,    
+			data:{uid:uid,day:day_num,dept_id:dept_id,dept_id_from:dept_id_from,dept_id_to:dept_id_to},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+				if(result){
+					if(result.data){
+						$("#confirm").val(result.data.confirm);
+						$("#confirm_name").val(result.data.confirm_name);
+					}else{
+						ui_alert("暂时无法获取审批流程，请联系管理员",function(){
+						});
+					}
+				}else{
+					ui_alert("暂时无法获取审批流程，请联系管理员",function(){
+					});
+				}
+				
+			},
+			error:function(e){
+				ui_alert("系统发生错误",function(){
+				});
+			}
+		});
+		/*
+		$("#consult").val("");
+		$("#consult_wrap  span").each(function() {
+			$("#consult").val($("#consult").val() + $(this).attr("data") + '|');
+		});
+		$("#consult_name").val($("#consult_wrap").html());
+
+		$("#refer").val("");
+		$("#refer_wrap  span").each(function() {
+			$("#refer").val($("#refer").val() + $(this).attr("data") + '|');
+		});
+		$("#refer_name").val($("#refer_wrap").html());
+
+		if ($("#confirm").val().length < 2) {
+			ui_error('请选择审批流程');
+			return false;
+		}
+		*/
+		$("#step").val(step);
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+	function sum1(){
+		var sum = 0;
+		$(" input[name='attitude_me[]']").each(function() {
+			if($(this).val()!=''){
+				if($(this).val()<1){
+					$(this).val(1);
+				}else if($(this).val()>5){
+					$(this).val(5);
+				}
+				sum +=Number($(this).val());
+			}
+		});
+		$(" input[name='ability_me[]']").each(function() {
+			if($(this).val()!=''){
+				if($(this).val()<1){
+					$(this).val(1);
+				}else if($(this).val()>5){
+					$(this).val(5);
+				}
+				sum +=Number($(this).val());
+			}
+		});
+		$(" input[name='responsibility_me[]']").each(function() {
+			if($(this).val()!=''){
+				if($(this).val()<1){
+					$(this).val(1);
+				}else if($(this).val()>5){
+					$(this).val(5);
+				}
+				sum +=Number($(this).val());
+			}
+		});
+		$(" input[name='coordinate_me[]']").each(function() {
+			if($(this).val()!=''){
+				if($(this).val()<1){
+					$(this).val(1);
+				}else if($(this).val()>5){
+					$(this).val(5);
+				}
+				sum +=Number($(this).val());
+			}
+		});
+		$(" input[name='develop_me[]']").each(function() {
+			if($(this).val()!=''){
+				if($(this).val()<1){
+					$(this).val(1);
+				}else if($(this).val()>5){
+					$(this).val(5);
+				}
+				sum +=Number($(this).val());
+			}
+		});
+		$("#sum_me").val(sum);
+	}
+	function sum3(i){
+		var num = Number($("#num_"+i).val());
+		var prices = parseFloat($("#prices_"+i).val());
+		if(isNaN(prices) && $("#prices_"+i).val()!=''){
+			   ui_alert("请输入正确数字",function(){});
+		}
+		if(num*prices || num*prices==0){
+			$("#amounts_"+i).val(num*prices);
+		}
+		var sum = parseFloat(0);
+		$("input[name='amounts[]']").each(function() {
+			if($(this).val()){
+				sum +=parseFloat($(this).val());
+			}
+			
+		});
+		$("#sum").val(sum);
+	}
+	function add_item(i){
+		$html = $("#item").html();
+		var row_num = $("#row_num").val();
+		$("#row_num").val(Number(row_num)+1);
+		row_num = $("#row_num").val();
+		$("#buttom1").before('<tr id="item_'+row_num+'">'+$html+'</tr>');
+		init_seq(i);
+	}
+	function del_item(){
+		var row_num = $("#row_num").val();
+		if(row_num<2){
+			return false;
+		}
+		$("#item_"+row_num).remove();
+		$("#row_num").val(Number(row_num)-1);
+	}
+	function init_seq(i) {
+		$key=1;
+		$("input[name='ids[]']").each(function(){
+			$(this).val($key);
+			$key++;
+		});
+		if(i==1){
+			$key=0;
+			$("input[name='nums[]']").each(function(){
+				$(this).attr('id','num_'+$key);
+				$(this).attr('onchange','sum3('+$key+')');
+				$key++;
+			});
+			$key=0;
+			$("input[name='prices[]']").each(function(){
+				$(this).attr('id','prices_'+$key);
+				$(this).attr('onchange','sum3('+$key+')');
+				$key++;
+			});
+			$key=0;
+			$("input[name='amounts[]']").each(function(){
+				$(this).attr('id','amounts_'+$key);
+				$key++;
+			});
+		}
+		
+	}
+	function select_dept(type) {
+		var url = "{:U('dept/winpop4',array('type'=>'"+type+"'))}";
+		//var url = "{:U('dept/winpop4?type="+type+"')}";
+		winopen(url, 730, 500);
+		//winopen("{:U('dept/winpop4?type="+type+"')}", 730, 500);
+	}
+	function popup_confirm() {
+		winopen("{:U('popup/confirm')}", 730, 574);
+	}
+
+
+</script>

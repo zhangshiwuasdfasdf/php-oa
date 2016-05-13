@@ -1,0 +1,24 @@
+<script type="text/javascript">
+		function select_dept() {
+			winopen("{:U('dept/winpop2')}", 750, 540);
+		}
+		function select_dept3() {
+			winopen("{:U('dept/winpop3')}", 750, 540);
+		}
+
+		function save() {
+			if (check_form("form_data")) {
+				var vars = $("#form_data").serialize();
+				sendAjax("{:U('addUser')}", vars, function(data) {
+					if (data.status) {
+						ui_alert(data.info, function() {
+							parent.location.reload(true);
+							myclose();
+						});
+					} else {
+						ui_error(data.info);
+					}
+				});
+			}
+		}
+</script>

@@ -1,0 +1,196 @@
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<input type="hidden" id="dept_id" name="dept_id" value="{$user_info.dept_id}">
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr align="center">
+    <td width="14%" height="36" align="center">姓名</td>
+    <td width="17%" height="36" align="left"><input id="user_name" name="user_name" value="{$vo.user_name}" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" /></td>
+    <td width="14%" height="36" align="center">部门</td>
+    <td width="24%" height="36" align="left"><input id="dept_name" name="dept_name" value="{$vo.dept_name}" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" disabled/></td>
+    <td width="14%" height="36" align="center">岗位</td>
+    <td width="17%" height="36" align="left"><input id="duty" name="duty" value="{$vo.duty}" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" /></td>
+  </tr>
+  <tr>
+    <td width="15%" height="36" align="center">入职时间</td>
+    <td height="36"><input id="entry_time" name="entry_time" value="{$vo.entry_time}" data-date-format="yyyy-mm-dd" class="form-control input-date" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" /></td>
+    <td height="36" align="center">离职时间</td>
+    <td height="36"><input id="resignation_time" name="resignation_time" value="{$vo.resignation_time}" data-date-format="yyyy-mm-dd" class="form-control input-date" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" /></td>
+    <td height="36" align="center">交接时间</td>
+    <td height="36"><input id="hand_over_time" name="hand_over_time" value="{$vo.hand_over_time}" data-date-format="yyyy-mm-dd" class="form-control input-date" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" /></td>
+  </tr>
+  <tr>
+    <td width="15%" height="36" align="center">交接类别</td>
+    <td width="13%" height="36" align="center">部门</td>
+    <td height="36" colspan="2" align="center">交接内容</td>
+    <td height="36" colspan="2" align="center">负责人（签字/日期）</td>
+  </tr>
+  <tr>
+    <td width="15%" height="70" align="center">工作交接</td>
+    <td height="70" rowspan="2" align="center">所在部门</td>
+    <td colspan="2"><p style="padding-left:5px;">（可另附表）</p><p style="margin-left:45%;">接收人签字/日期：<input id="receiver_sign_date" name="receiver_sign_date" value="{$vo.receiver_sign_date}" style="outline:none; border:none; width:30%; height:50px;" type="text"/></p></td>
+    
+    <td colspan="2"><input id="dept_1_head" name="dept_1_head" value="{$vo.dept_1_head}" style="outline:none; border:none; width:97%; height:50px; text-align:center;" type="text" /></td>
+  </tr>
+  <tr>
+    <td width="15%" rowspan="12" align="center">物品交接</td>
+    <td height="40" colspan="2" style="padding-left:5px;">
+    <div>
+        <span>经手的公司管理文件或部门文件资料。</span>
+        <span>
+        	<input type="radio" name="is_deliver_1" <if condition="($vo.is_deliver_1 eq '已交')">checked="checked"</if> value="已交" />已交
+        	<input type="radio" name="is_deliver_1" <if condition="($vo.is_deliver_1 eq '未交')">checked="checked"</if> value="未交" />未交
+        </span>
+    </div>
+    <div>
+        <span >个人/部门未回款统计。</span>
+        <span >
+        	<input type="radio" name="is_deliver_2" <if condition="($vo.is_deliver_2 eq '已交')">checked="checked"</if> value="已交" />已交
+        	<input type="radio" name="is_deliver_2" <if condition="($vo.is_deliver_2 eq '未交')">checked="checked"</if> value="未交" />未交
+        </span>
+    </div>
+    <div>
+        <span>在任职期间经手的财务单据和凭证。</span>
+        <span >
+        	<input type="radio" name="is_deliver_3" <if condition="($vo.is_deliver_3 eq '已交')">checked="checked"</if> value="已交" />已交
+        	<input type="radio" name="is_deliver_3" <if condition="($vo.is_deliver_3 eq '未交')">checked="checked"</if> value="未交" />未交
+        </span>
+    </div>
+    </td>
+    <td colspan="2"><input id="dept_2_head" name="dept_2_head" value="{$vo.dept_2_head}" style="outline:none; border:none; width:97%; height:50px; text-align:center;" type="text" /></td>
+  </tr>
+  <tr>
+    <td height="60" align="center">数据部</td>
+    <td style="padding-left:5px;" height="60" colspan="2">
+    E店宝:<input id="eshop_name" name="eshop_name" value="{$vo.eshop_name}" style="outline:none; border:none; width:25%; padding-left:5px;border-bottom:1px #000 solid; text-align:center;" type="text" /> 
+    密码:<input id="eshop_password" name="eshop_password" value="{$vo.eshop_password}" style="outline:none; border:none; width:30%; padding-left:5px; border-bottom:1px #000 solid; text-align:center;" type="text" /></td>
+    <td height="60" colspan="2"><input id="data_head" name="data_head" value="{$vo.data_head}" style="outline:none; border:none; width:97%; height:50px; text-align:center;" type="text" /></td>
+  </tr>
+  <tr>
+    <td rowspan="3" align="center">行政</td>
+    <td style="padding-left:5px;" colspan="2">
+    <p>电脑等办公设备是否完好？</p>
+    <p>QQ:<input id="qq" name="qq" value="{$vo.qq}" style="outline:none; border:none; width:28%; padding-left:5px; border-bottom:1px #000 solid; text-align:center;" type="text" />
+    密码:<input id="qq_password" name="qq_password" value="{$vo.qq_password}" style="outline:none; border:none; width:30%; padding-left:5px; border-bottom:1px #000 solid; text-align:center;" type="text" /></p>
+    <p>邮箱:<input id="email" name="email" value="{$vo.email}" style="outline:none; border:none; width:27%; padding-left:5px; border-bottom:1px #000 solid; text-align:center;" type="text" />
+    密码:<input id="email_password" name="email_password" value="{$vo.email_password}" style="outline:none; border:none; width:30%; padding-left:5px; border-bottom:1px #000 solid; text-align:center;" type="text" /></p></td>
+    <td colspan="2"><input id="admin_1_head" name="admin_1_head" value="{$vo.admin_1_head}" style="outline:none; border:none; width:97%; height:50px; text-align:center;" type="text" /></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+    <p>办公桌、柜子及钥匙是否完好收回？
+    <input type="radio" name="admin_is_back_1" <if condition="($vo.admin_is_back_1 eq '是')">checked="checked"</if> value="是" />是
+    <input type="radio" name="admin_is_back_1" <if condition="($vo.admin_is_back_1 eq '否')">checked="checked"</if> value="否" />否</p>
+    <p>工作证、考勤卡是否收回？
+    <input type="radio" name="admin_is_back_2" <if condition="($vo.admin_is_back_2 eq '是')">checked="checked"</if> value="是" />是
+    <input type="radio" name="admin_is_back_2" <if condition="($vo.admin_is_back_2 eq '否')">checked="checked"</if> value="否" />否
+    </p>
+    <p>名片是否交回？
+    <input type="radio" name="admin_is_back_3" <if condition="($vo.admin_is_back_3 eq '是')">checked="checked"</if> value="是" />是
+    <input type="radio" name="admin_is_back_3" <if condition="($vo.admin_is_back_3 eq '否')">checked="checked"</if> value="否" />否
+    <input type="radio" name="admin_is_back_3" <if condition="($vo.admin_is_back_3 eq '未做')">checked="checked"</if> value="未做" />未做
+    </p>
+    <p>所借图书室书籍是否归还？
+    <input type="radio" name="admin_is_back_4" <if condition="($vo.admin_is_back_4 eq '是')">checked="checked"</if> value="是" />是
+    <input type="radio" name="admin_is_back_4" <if condition="($vo.admin_is_back_4 eq '否')">checked="checked"</if> value="否" />否
+    <input type="radio" name="admin_is_back_4" <if condition="($vo.admin_is_back_4 eq '未借')">checked="checked"</if> value="未借" />未借
+    </p>
+    <p>如上述物件已丢失或损坏应赔偿<input id="compensate" name="compensate" value="{$vo.compensate}" style="outline:none; border:none; width:10%; text-align:center; padding-left:5px; border-bottom:1px #000 solid;" type="text" />元</p></td>
+    <td colspan="2"><input id="admin_2_head" name="admin_2_head" value="{$vo.admin_2_head}" style="outline:none; border:none; width:97%; height:50px; text-align:center;" type="text" /></td>
+  </tr>
+  <tr>
+    <td align="center">考勤</td>
+    <td>从
+    <input id="attendance_start" name="attendance_start" value="{$vo.attendance_start}" data-date-format="yyyy-mm-dd" class="form-control input-date" style="border:none; outline:none;" type="text" />至
+    <input id="attendance_end" name="attendance_end" value="{$vo.attendance_end}" data-date-format="yyyy-mm-dd" class="form-control input-date" style="border:none; outline:none;" type="text" />
+    迟到<input id="late" name="late" value="{$vo.late}" style="outline:none; border:none; width:15%; text-align:center;  border-bottom:1px #000 solid;" type="text" />次，<br>
+    早退<input id="leave_early" name="leave_early" value="{$vo.leave_early}" style="outline:none; border:none; width:15%; text-align:center;  border-bottom:1px #000 solid;" type="text" /> 次，
+    请假<input id="leave" name="leave" value="{$vo.leave}" style="outline:none; border:none; width:15%; text-align:center; border-bottom:1px #000 solid;" type="text" />次，<br>
+    旷工<input id="absenteeism" name="absenteeism" value="{$vo.absenteeism}" style="outline:none; border:none; width:15%; text-align:center; padding-left:5px; border-bottom:1px #000 solid;" type="text" />次，
+    实际出勤<input id="attendance" name="attendance" value="{$vo.attendance}" style="outline:none; border:none; width:15%; text-align:center; border-bottom:1px #000 solid;" type="text" />天（以实际考勤为准）</td>
+    <td colspan="2"><input id="admin_3_head" name="admin_3_head" value="{$vo.admin_3_head}" style="outline:none; border:none; width:97%; height:50px; text-align:center;" type="text" /></td>
+  </tr>
+  <tr>
+    <td rowspan="3" align="center">人事</td>
+    <td height="36" align="center">社保情况</td>
+    <td height="36">从
+    	<input id="social_security_start" name="social_security_start" value="{$vo.social_security_start}" data-date-format="yyyy-mm-dd" class="form-control input-date" style="border:none; outline:none;" type="text" />开始参保，
+    	<input id="social_security_end" name="social_security_end" value="{$vo.social_security_end}" data-date-format="yyyy-mm-dd" class="form-control input-date" style="border:none; outline:none;" type="text" />起停保
+    </td>
+    <td colspan="2" rowspan="3"><input id="hr_head" name="hr_head" value="{$vo.hr_head}" style="outline:none; border:none; width:97%; height:50px; text-align:center;" type="text" /></td>
+  </tr>
+  <tr>
+    <td height="36" align="center">违约金、赔偿金</td>
+    <td height="36">
+    	<input type="radio" name="damages" <if condition="($vo.damages eq '无')">checked="checked"</if> value="无" />无
+    	<input type="radio" name="damages" <if condition="($vo.damages eq '其他')">checked="checked"</if> value="其他" />其他
+    </td>
+  </tr>
+  <tr>
+    <td height="36" align="center">人事档案</td>
+    <td height="36">
+    	<input type="radio" name="archives" <if condition="($vo.archives eq '无')">checked="checked"</if> value="无" />无
+    	<input type="radio" name="archives" <if condition="($vo.archives eq '其他')">checked="checked"</if> value="其他" />其他
+    </td>
+  </tr>
+  <tr>
+    <td rowspan="4" align="center">财务部</td>
+    <td height="36" align="center">借款情况</td>
+    <td height="36">
+    	<input type="radio" name="loan" <if condition="($vo.loan eq '已归还')">checked="checked"</if> value="已归还" />已归还
+    	<input type="radio" name="loan" <if condition="($vo.loan eq '未归还')">checked="checked"</if> value="未归还" />未归还
+    	<input type="radio" name="loan" <if condition="($vo.loan eq '无借款')">checked="checked"</if> value="无借款" />无借款
+    </td>
+    <td colspan="2"><input id="financial_1_head" name="financial_1_head" value="{$vo.financial_1_head}" style="outline:none; border:none; width:97%; height:50px; text-align:center;" type="text" /></td>
+  </tr>
+  <tr>
+    <td height="36" align="center">报账情况</td>
+    <td height="36">
+    	<input type="radio" name="account" <if condition="($vo.account eq '已报帐')">checked="checked"</if> value="已报帐" />已报帐
+    	<input type="radio" name="account" <if condition="($vo.account eq '未报帐')">checked="checked"</if> value="未报帐" />未报帐
+    	<input type="radio" name="account" <if condition="($vo.account eq '无报账')">checked="checked"</if> value="无报账" />无报账
+    </td>
+    <td colspan="2" rowspan="3"><input id="financial_2_head" name="financial_2_head" value="{$vo.financial_2_head}" style="outline:none; border:none; width:97%; height:50px; text-align:center;" type="text" /></td>
+  </tr>
+  <tr>
+    <td height="36" align="center">门禁卡等押金</td>
+    <td height="36">
+    	<input type="radio" name="card" <if condition="($vo.card eq '已退')">checked="checked"</if> value="已退" />已退
+    	<input type="radio" name="card" <if condition="($vo.card eq '未退')">checked="checked"</if> value="未退" />未退
+    	<input type="radio" name="card" <if condition="($vo.card eq '其他')">checked="checked"</if> value="其他" />其他
+    	<input id="card_num" name="card_num" style="outline:none; border:none; width:30%; padding-left:5px; border-bottom:1px #000 solid;" type="text" /></td>
+  </tr>
+  <tr>
+    <td height="36" align="center">工资结算</td>
+    <td height="36"><input id="salary" name="salary" value="{$vo.salary}" style="outline:none; border:none; width:97%; height:50px; text-align:center;" type="text" /></td>
+  </tr>
+</table>
+
+<neq name="is_edit" value="2">
+		<div class="form-group">
+			<div class="col-xs-12">
+				<eq name = "is_edit" value="0">
+					<div class="content_wrap">
+						<iframe class="content_iframe"></iframe>
+						<textarea class="content display-none"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
+					</div>
+				</eq>				
+				<eq name="is_edit" value="1">
+					<textarea class="editor content display-none"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
+					<eq>
+			</div>
+		</div>
+</neq>
+	
+<notempty name="vo.add_file">
+		<div class="form-group">
+			<label class="col-sm-2 control-label" >附件：</label>
+			<div class="col-sm-10">
+				<eq name="is_edit" value="1">
+					{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'show'))}
+				</eq>
+				<eq name="is_edit" value="1">
+					{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'edit'))}
+				</eq>
+			</div>
+		</div>
+</notempty>
+<div class="clearfix"></div>

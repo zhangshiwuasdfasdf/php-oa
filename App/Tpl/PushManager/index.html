@@ -1,0 +1,13 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'推送设置','search'=>'N'))}
+<form method='post' id="form_data" class="well form-horizontal">
+	<label class="col-sm-2 control-label" >邮件后台接受</label>	
+		<a onclick="stop_receve_mail()"  class="display-none stop_receve_mail btn btn-sm btn-primary">停止</a>
+		<a onclick="start_receve_mail()"  class="start_receve_mail btn btn-sm btn-primary">启动</a>
+</form>
+
+<form method='post' id="form_data" class="well form-horizontal">
+	<label class="col-sm-2 control-label" >微信推送：</label>
+		<a onclick="stop_send_wechat()"  class="display-none stop_send_wechat btn btn-sm btn-primary">停止</a>
+		<a onclick="start_send_wechat()"  class="start_send_wechat btn btn-sm btn-primary">启动</a>
+</form>

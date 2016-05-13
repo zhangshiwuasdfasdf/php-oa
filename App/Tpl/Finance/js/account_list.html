@@ -1,0 +1,16 @@
+<script type="text/javascript">
+	$(document).ready(function() {
+		set_return_url();
+	});
+
+	function add() {
+		window.open("{:U('add_account')}", "_self");
+	}
+
+	function del(id) {
+		ui_confirm('确定要删除吗?',function(){
+			window.open(fix_url("{:U('del_account')}?account_id=" + id), "_self");
+		});
+	};
+
+</script>

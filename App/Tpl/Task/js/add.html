@@ -1,0 +1,35 @@
+<script type="text/javascript">
+	function save() {
+		window.onbeforeunload=null;
+		$("#executor").val("");
+		$("#actor_wrap span.address_list span").each(function() {
+			$("#executor").val($("#executor").val() + $(this).find("b").text() + '|' + $(this).attr("data") + ";");
+		});
+		
+		$html=$("#executor").val();
+		var re = new RegExp("dept_","g");
+		var arr = $html.match(re);
+		if(arr!=null){
+			$dept_count=arr.length;
+			$total_count=$html.split(';').length-1;
+			if($dept_count!=$total_count){
+				ui_error('部门和人员不能同时选择');
+				return false;
+			}
+		}		
+		if (check_form("form_data")) {
+			 sendForm("form_data", "{:U('save')}");
+		}
+	}
+
+	function popup_actor() {
+		winopen("{:U('popup/task')}", 730, 574);
+	}
+
+	$(document).ready(function() {
+		$(document).on("click", ".inputbox .address_list a.del", function() {
+			$(this).parent().parent().remove();
+		});
+	}); 
+	
+</script>

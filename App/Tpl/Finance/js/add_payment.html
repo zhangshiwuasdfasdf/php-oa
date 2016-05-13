@@ -1,0 +1,22 @@
+<script>
+	function save() {
+		window.onbeforeunload = null;
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+
+
+	$(document).ready(function() {
+		$("#account_id").change(function() {
+			
+			$.getJSON("{:U('Finance/read_account')}", {
+				account_id : $(this).val()
+			}, function(data) {
+				if(data.status==1){
+					$("#balance").val(data.data.balance);
+				}				
+			});
+		});
+	}); 
+</script>

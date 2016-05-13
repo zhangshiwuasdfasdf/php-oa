@@ -1,0 +1,20 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body,input{ margin:0; padding:0;}
+select{ margin:0; padding:0;}
+li,ul{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+/*nav*/
+nav{ width:100%; height:38px; background:url(../image/shenpinav.png); margin-bottom:16px; border-bottom:solid 1px #ccc; }
+nav span{ font-size:18px; font:"微软雅黑"; color:#000; line-height:40px; margin-left:22px; font-weight:bold;}
+/*main*/
+.main1{ width:98%; margin-left:1%; height:26px; overflow:hidden; margin-bottom:16px;}
+.main1 li{ float:left; margin-right:10px;}
+.main1 span{ font-size:14px; font-weight:bold; line-height:26px;}
+.main1 select{ width:127px; height:24px; outline:none;}
+.main1 input{ height:22px; outline:none; width:67px; border-radius:5px; font-size:12px; color:#666;}
+.main1 .ma1{ float:right; margin-right:2%;}
+.main2{ background:#797979; margin-left:1%;}
+.main2 span{ font-size:12px; color:#333;}
+.in1{ width:40px; height:22px; outline:none; border-color:#fff; font-size:12px; color:#333;}

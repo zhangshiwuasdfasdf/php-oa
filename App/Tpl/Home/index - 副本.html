@@ -1,0 +1,201 @@
+<layout name='Layout/ace_home' />
+<div class="row">
+	<div class="col-xs-12">
+		<!-- PAGE CONTENT BEGINS -->
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 widget-container-span" id="t1">
+				 <div class="widget-box display-none" ></div>
+				<!-- 邮件开始 -->
+				<div class="widget-box" sort="11">
+					<div class="widget-header">
+						<h5 class="smaller">邮件</h5>
+						<div class="widget-toolbar no-border">
+							<ul class="nav nav-tabs" id="myTab">
+								<li class="active">
+									<a data-toggle="tab" href="#mail-new">最新</a>
+								</li>
+								<li>
+									<a data-toggle="tab" href="#mail-unread">未读</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main">
+							<div class="tab-content">
+								<div id="mail-new" class="tab-pane in active ul_table">
+									<ul>
+										<volist name="new_mail_list" id="vo">
+											<li>
+												<span class="pull-right hidden-phone">{$vo.create_time|toDate='m-d'}</span>
+												<span  class="auto autocut">
+													<a url="{:U('mail/read','id='.$vo['id'])}" node="85" return_url="{:U('mail/folder/','fid=inbox')}" onclick="click_home_list(this)">{$vo.name}</a>
+												</span>
+											</li>
+										</volist>
+									</ul>
+								</div>
+								<div id="mail-unread" class="tab-pane ul_table">
+									<ul>
+										<volist name="unread_mail_list" id="vo">
+											<li>
+												<span class="pull-right hidden-phone">{$vo.create_time|toDate='m-d '}</span>
+												<span  class="auto autocut"> <a href="{:U('mail/read','id='.$vo['id'])}" node="85" return_url="{:U('mail/folder/','fid=inbox')}" onclick="click_home_list(this)">{$vo.name}</a> </span>
+											</li>
+										</volist>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 日程开始 -->
+				<div class="widget-box" sort="12">
+					<div class="widget-header">
+						<h5 class="smaller">日程</h5>
+						<div class="widget-toolbar no-border">
+							<ul class="nav nav-tabs" id="myTab">
+								<li class="active">
+									<a data-toggle="tab" href="#calendar-schedule">日程</a>
+								</li>
+								<li>
+									<a data-toggle="tab" href="#calendar-todo">待办</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main">
+							<div class="tab-content">
+								<div id="calendar-schedule" class=" ul_table tab-pane in active">
+									<ul>
+										<volist name="schedule_list" id="vo">
+											<li>
+												<span class="pull-right hidden-phone">{$vo.start_date}</span>
+												<span  class="auto autocut"> <a url="{:U('schedule/read2','id='.$vo['id'])}" node="91" return_url="{:U('schedule/index')}" onclick="click_home_list(this)">{$vo.name}</a></span>
+											</li>
+										</volist>
+									</ul>
+								</div>
+								<div id="calendar-todo" class=" ul_table tab-pane">
+									<ul>
+										<volist name="todo_list" id="vo">
+											<li>
+												<span class="pull-right hidden-phone">{$vo.start_date}</span>
+												<span  class="auto autocut"> <a url="{:U('todo/edit','id='.$vo['id'])}" node="152" return_url="{:U('todo/index')}" onclick="click_home_list(this)">{$vo.name}</a> </span>
+											</li>
+										</volist>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 公告开始 -->
+				<div class="widget-box" sort="13">
+					<div class="widget-header">
+						<h5 class="smaller">公告</h5>
+					</div>
+					<div class="widget-body">
+						<div class="ul_table widget-main">
+							<ul>
+								<volist name="new_notice_list" id="vo">
+									<li>
+										<span class="pull-right hidden-phone">{$vo.start_date}</span>
+										<span  class="auto autocut"><a url="{:U('notice/read','id='.$vo['id'])}" node="83" return_url="{:U('notice/index')}" onclick="click_home_list(this)">{$vo.name}</a> </span>
+									</li>
+								</volist>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6 widget-container-span" id="t2">
+				<div class="widget-box display-none" ></div>
+				<!-- 审批开始 -->
+				<div class="widget-box" sort="21">
+					<div class="widget-header">
+						<h5 class="smaller">审批</h5>
+						<div class="widget-toolbar no-border">
+							<ul class="nav nav-tabs" id="myTab">
+								<li class="active">
+									<a data-toggle="tab" href="#flow-todo">待办</a>
+								</li>
+								<li>
+									<a data-toggle="tab" href="#flow-submit">已提交</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="widget-body">
+						<div class="widget-main">
+							<div class="tab-content">
+								<div id="flow-todo" class="tab-pane in active ul_table">
+									<ul>
+										<volist name="todo_flow_list" id="vo">
+											<li>
+												<span class="pull-right hidden-phone">{$vo.create_time|toDate='m-d'}</span>
+												<span  class="auto autocut"> <a url="{:U('flow/read','id='.$vo['id'])}" node="87" return_url="{:U('flow/folder','fid=confirm')}" onclick="click_home_list(this)">{$vo.name}</a> </span>
+											</li>
+										</volist>
+									</ul>
+								</div>
+								<div id="flow-submit" class="tab-pane ul_table">
+									<ul>
+										<volist name="submit_flow_list" id="vo">
+											<li>
+												<span class="pull-right hidden-phone">{$vo.create_time|toDate='m-d'}</span>
+												<span  class="auto autocut"> <a href="{:U('flow/read','id='.$vo['id'])}" node="87" return_url="{:U('flow/folder','fid=submit')}" onclick="click_home_list(this)">{$vo.name}</a> </span>
+											</li>
+										</volist>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 文档开始 -->
+				<div class="widget-box" sort="22">
+					<div class="widget-header">
+						<h5 class="smaller">文档</h5>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main ul_table">
+							<ul>
+								<volist name="doc_list" id="vo">
+									<li>
+										<span class="pull-right hidden-phone">{$vo.start_date}</span>
+										<span  class="auto autocut"><a url="{:U('doc/read','id='.$vo['id'])}" node="88" return_url="{:U('doc/index')}" onclick="click_home_list(this)">{$vo.name}</a> </span>
+									</li>
+								</volist>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- 论坛开始 -->
+				<div class="widget-box" sort="23">
+					<div class="widget-header">
+						<h5 class="smaller">论坛</h5>
+					</div>
+					<div class="widget-body">
+						<div class="widget-main ul_table">
+							<ul>
+								<volist name="new_forum_list" id="vo">
+									<li>
+										<span class="pull-right hidden-phone">{$vo.create_time|toDate='m-d'}</span>
+										<span  class="auto autocut"><a url="{:U('forum/read','id='.$vo['id'])}"  node="137" return_url="{:U('forum/index')}" onclick="click_home_list(this)">{$vo.name}</a> </span>
+									</li>
+								</volist>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- 论坛结束 -->
+			</div>
+		</div>
+	</div>
+</div>

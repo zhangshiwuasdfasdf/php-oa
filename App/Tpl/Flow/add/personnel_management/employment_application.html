@@ -1,0 +1,98 @@
+<style>
+	input{ border:none; outline:none; width:90%; padding-left:5px;}
+	textarea{ resize:none; border:none; outline:none; width:99%; padding-left:5px;}
+</style>
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<input type="hidden" id="dept_id" name="dept_id" value="{$user_info.dept_id}">
+<table width="100%" border="1" cellspacing="0" cellpadding="0" style="font-size: 14px; font-family: '微软雅黑';">
+  <tr>
+    <td width="13%" height="36" align="center">申请部门</td>
+    <td width="13%" height="36">
+    <input id="dept_name" name="dept_name" type="text" value="{$user_info.dept_name}" readonly/></td>
+	</td>
+    <td width="13%" height="36" align="center">申请人</td>
+    <td width="13%" height="36"><input id="user_name" name="user_name" type="text" value="{$user_info.name}" check="require" msg="请输入申请人"/></td>
+    <td width="13%" height="36" align="center">申请时间</td>
+    <td width="13%" height="36"><input data-date-format="yyyy-mm-dd" id="write_time" name="write_time" type="text" class="form-control input-date"  value="{$time|toDate='Y-m-d'}" check="require" msg="请输入申请时间"/></td>
+    <td width="13%" height="36" align="center">到岗时间</td>
+    <td width="13%" height="36"><input data-date-format="yyyy-mm-dd" id="arrive_time" name="arrive_time" type="text" class="form-control input-date"/></td>
+  </tr>
+  <tr>
+    <td width="13%" height="36" align="center">申请人数</td>
+    <td width="13%" height="36"><input id="apply_num" name="apply_num" type="text" check="require" msg="请输入申请人数"/></td>
+    <td width="13%" height="36" align="center">薪资范围</td>
+    <td width="13%" height="36"><input id="salary_range" name="salary_range" type="text"/></td>
+    <td width="13%" height="36" align="center">申请岗位</td>
+    <td height="36" colspan="3"><input id="apply_position" name="apply_position" type="text" check="require" msg="请输入申请岗位"/></td>
+  </tr>
+  <tr>
+    <td width="13%" height="36" align="center">申请原因</td>
+    <td height="36" colspan="7">
+    	<div>
+        	<input style="width:2%;" name="apply_reason_1" type="checkbox" value="岗位缺员"/>岗位缺员
+            <input style="width:2%;" name="apply_reason_2" id="apply_reason_2" type="checkbox" value="辞职补充"/>辞职补充
+            <input style="width:2%;" name="apply_reason_3" type="checkbox" value="短期需要"/>短期需要 
+            <input style="width:2%;" name="apply_reason_4" type="checkbox" value="储备人力"/>储备人力
+            <input style="width:2%;" name="apply_reason_5" type="checkbox" value="业务扩大增加编制"/>业务扩大增加编制
+        </div>
+    </td>
+  </tr>
+  <tr>
+    <td width="13%" height="36" rowspan="4" align="center">任职资格</td>
+    <td height="36" colspan="2" style="padding-left:10px;">性别要求：<input id="sex_require" name="sex_require" style="width:50%;" type="text"/></td>
+    <td height="36" colspan="2" style="padding-left:10px;">年龄要求：<input id="age_require" name="age_require" style="width:50%;" type="text"/></td>
+    <td height="36" colspan="3" style="padding-left:10px;">学历要求：<input id="degree_require" name="degree_require" style="width:50%;" type="text"/></td>
+  </tr>
+  <tr>
+    <td height="36" colspan="4" style="padding-left:10px;">专业要求：<input id="major_require" name="major_require" style="width:50%;" type="text"/></td>
+    <td height="36" colspan="3" style="padding-left:10px;">外语要求：<input id="lang_require" name="lang_require" style="width:50%;" type="text"/></td>
+  </tr>
+  <tr>
+    <td height="36" colspan="4" style="padding-left:10px;">职称/证书要求：<input id="title_require" name="title_require" style="width:50%;" type="text"/></td>
+    <td height="36" colspan="3"style="padding-left:10px;">其他要求：<input id="other_require" name="other_require" style="width:50%;" type="text"/></td>
+  </tr>
+  <tr>
+    <td colspan="7"><textarea id="qualification" name="qualification" rows="5"></textarea></td>
+  </tr>
+  <tr>
+    <td width="13%" align="center">岗位职责</td>
+    <td colspan="7"><textarea rows="5" id="position_duty" name="position_duty" check="require" msg="请输入岗位职责"></textarea></td>
+  </tr>
+  <tr>
+    <td width="13%" align="center">职权</td>
+    <td colspan="7"><textarea rows="3" id="authority" name="authority"></textarea></td>
+  </tr>
+  <tr>
+    <td width="13%" colspan="4"><p style="padding-left:10px;" align="left">部门总监意见：
+    <textarea style="width:98%" rows="3" disabled></textarea>
+    <p style="margin-left:60%;">签名/日期: 
+    	<input style="width:50%;" type="text" disabled/></p>
+    </p>
+    </td>
+    <td colspan="4"><p style="padding-left:10px;" align="left">人事行政部审核/审批意见：
+    	<textarea style="width:98%" rows="3" disabled></textarea>
+    <p style="margin-left:60%;">签名/日期:
+    	<input style="width:50%;" type="text" disabled/></p>
+    </p>
+    </td>
+  </tr>
+  <tr>
+    <td width="13%" align="center"><p align="center">总经理</p>
+    <p align="center">审核/审批</p></td>
+    <td colspan="7"><textarea rows="3" disabled></textarea>
+    	<div>是否需要参加复试：
+        	<input value="是" style="width:2%;" type="radio" name="is_retrial" disabled/>是
+            <input value="否" style="width:2%;" type="radio" name="is_retrial" disabled/>否
+        </div>
+    </td>
+  </tr>
+  <tr>
+    <td width="13%" height="36" rowspan="2" align="center">招聘主管</td>
+    <td width="13%" height="36" align="center">实际到岗日期：</td>
+    <td height="36" colspan="6"><input data-date-format="yyyy-mm-dd" class="form-control input-date" id="real_arrive_date" name="real_arrive_date" type="text" disabled/></td>
+  </tr>
+  <tr>
+    <td width="13%" align="center">招聘难点及原因</td>
+    <td colspan="6"><textarea id="recruit_difficult" name="recruit_difficult" rows="5"></textarea></td>
+  </tr>
+</table>

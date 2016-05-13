@@ -1,0 +1,28 @@
+<script type="text/javascript">
+	function save() {
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save_resume')}", "__URL__");
+		}
+	}
+	
+	function add_subject($obj,$i) {
+		$html = $("#sample_item"+$i).html();
+		$($obj).parents("tr").next().after('<tr>'+$html+'</tr>');
+	}
+	function add_subject2($obj,$i) {
+		$(".sample_item"+$i).each(function(){
+			$(".gongzuo_jl:last").after('<tr>'+$(this).html()+'</tr>');
+		});
+	}
+	function quit(){
+		ui_confirm('确定要取消吗?',function(){
+			location.href = "{:U('Profile/Index')}";
+		});
+	}
+	function select_avatar() {
+		winopen("{:U('popup/avatar')}?id=" + $("#id").val(), 730, 500);
+	}
+	$(document).ready(function() {
+		
+	}); 
+</script>

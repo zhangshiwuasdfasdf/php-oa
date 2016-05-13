@@ -1,0 +1,22 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body,input{ margin:0; padding:0;}
+select{ margin:0; padding:0;}
+li,ul{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+/*nav*/
+nav{ width:100%; height:40px; background:#d9d9d9;}
+nav span{ font-size:18px; font:"微软雅黑"; color:#000; line-height:40px; margin-left:22px; font-weight:bold;}
+/*main*/
+.main{ width:500px; margin:auto; padding-top:60px;}
+.main ul{ display:block; padding-bottom:50px;}
+.zzsp1{ font-size:12px; font-weight:bold; display:block; width:56px; margin-right:15px;}
+.main ul li{ float:left; margin-right:14px; height:25px; line-height:25px;}
+.zzsp2{ font-size:12px;}
+.zzin1{ width:190px; height:23px; font-size:12px;}
+.zzin2{ width:58px; height:25px; font-size:12px;}
+.zzin3{ width:108px; height:25px; font-size:12px;}
+.zzb1{ width:60px; height:25px; margin-top:15px; margin-left:110px; font-size:12px;}
+.zzb2{ width:60px; height:25px; margin-top:15px; font-size:12px;}
+.zzma2{ width:510px; height:400px; position:fixed; left:50%; margin-left:-255px; top:50%; margin-top:-200px; background:#fff;}

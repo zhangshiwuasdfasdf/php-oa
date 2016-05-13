@@ -1,0 +1,83 @@
+<style>
+body{ margin:0; padding:0; font-family:"微软雅黑"; font-size:14px;}
+.d1{  height:20px; line-height:20px;}
+.d2{width:100%; height:60px;}
+.te1{ width:99%; outline:none; border:none; resize:none;}
+.d3{ height:20px; padding-left:70%;}
+.in1{ outline:none; border:none; width:97%; padding-left:5px;}
+</style>
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="33" align="center">姓名</td>
+    <td height="33" align="center"><input id="user_name" name="user_name" value="{$vo.user_name}" type="text" class="in1"></td>
+    <td height="33" align="center">部门</td>
+    <td height="33" align="center"><input id="dept_name" name="dept_name" value="{$vo.dept_name}" type="text" class="in1" disabled></td>
+    <td height="33" align="center">岗位</td>
+    <td height="33" align="center"><input id="duty" name="duty" value="{$vo.duty}" type="text" class="in1"></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">入职时间</td>
+    <td height="33" align="center"><input data-date-format="yyyy-mm-dd" id="entry_time" name="entry_time" type="text" class="form-control input-date in1" value="{$vo.entry_time}"></td>
+    <td height="33" align="center">合同期限</td>
+    <td height="33" align="center"><input id="contract_period" name="contract_period" type="text" class="in1" value="{$vo.contract_period}"></td>
+    <td height="33" align="center">离职日期</td>
+    <td height="33" align="center"><input data-date-format="yyyy-mm-dd" id="resignation_time" name="resignation_time" type="text" class="form-control input-date in1" value="{$vo.resignation_time}"></td>
+  </tr>
+  <tr>
+    <td height="60" align="center" >解除（终止）类型</td>
+    <td height="60" colspan="5" >
+    <input style=" margin-left:5%;" name="end_type" type="radio" value="员工解除" <if condition="$vo.end_type eq '员工解除'">checked="checked"</if>/>员工解除
+    <input style=" margin-left:5%;" name="end_type" type="radio" value="公司解除" <if condition="$vo.end_type eq '公司解除'">checked="checked"</if>/>公司解除
+    <input style=" margin-left:5%;" name="end_type" type="radio" value="自动解除" <if condition="$vo.end_type eq '自动解除'">checked="checked"</if>/>自动解除
+    <input style=" margin-left:5%;" name="end_type" type="radio" value="合同解除" <if condition="$vo.end_type eq '合同解除'">checked="checked"</if>/>合同解除
+    </td>
+  </tr>
+  <tr>
+    <td height="100" align="center">情况说明</td>
+    <td height="100" colspan="5">
+    	<div class="d1" style="margin-left:2%; margin-top:5px;">(附书面离职报告书)</div>
+        <div class="d2"><textarea id="situation" name="situation" rows="3" class="te1">{$vo.situation}</textarea></div>
+        <div class="d3"><span>签名/日期:</span><input id="sign_date_me" name="sign_date_me" class="in1" style="width:70%;" value="{$vo.sign_date_me}"/></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="100" align="center">直接领导意见</td>
+    <td height="100" colspan="5">
+    	<div class="d2"><textarea rows="3" class="te1" disabled></textarea></div>
+        <div class="d1" style="margin-left:2%;">离职交接日期：<input id="hand_over_time" name="hand_over_time" data-date-format="yyyy-mm-dd" style="width:20%;" type="text" class="form-control input-date in1" disabled></div>
+        <div class="d3"><span>签名/日期:</span><span></span></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="100" align="center">部门总监意见</td>
+    <td height="100" colspan="5">
+    	<div class="d2"><textarea rows="4" class="te1" disabled></textarea></div>
+        <div class="d3" style="margin-top:20px;"><span>签名/日期:</span><span></span></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="100" align="center">人事行政部</td>
+    <td height="100" colspan="5" >
+    	<div class="d2"><textarea rows="4" class="te1" disabled></textarea></div>
+        <div class="d3" style="margin-top:20px;"><span>签名/日期:</span><span></span></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="100" align="center">总经理审批</td>
+    <td height="100" colspan="5">
+    	<div class="d2"><textarea rows="4" class="te1" disabled></textarea></div>
+        <div>
+        	<div style=" display:block;margin-top:2px; width:50%;">竞业补偿款：
+        		<input type="radio" name="non_competition_compensation" disabled>支付
+        		<input type="radio" name="non_competition_compensation" disabled>不支付
+        	</div>
+        	<span class="d3">签名/日期:</span>
+       		<span></span>
+        </div>
+    </td>
+  </tr>
+</table>
+<p style="font-size:12px; padding-left:2%;">备注：1. 公司与员工协商劝退、最后以员工提出离职形式办理的，纳入被动离职，并在报表中填写真实劝退原因。<br>
+2. 辞职者报告提交人为其本人，自动离职、解除劳动合同关系和劳动合同终止报告提交人为其上直接领导。
+</p>

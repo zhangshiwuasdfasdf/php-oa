@@ -1,0 +1,370 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'个人简历','search'=>'N'))}
+<h1 style="margin:auto; text-align:center; line-height:40px;">员工入职登记表</h1>
+<table style="background: #000; font-family: '微软雅黑';" width="100%" border="1" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>一、基本情况</strong></td>
+  </tr>
+  <tr>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">姓名</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_1'][0]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">性别</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_1'][1]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">年龄</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_1'][2]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">民族</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_1'][3]}</td>
+    <td width="12%" height="36" rowspan="4" align="center" bgcolor="#FFFFFF"><img class="img-thumbnail col-14" id="emp_pic" src="{$list['pic'][0]}"></td>
+  </tr>
+  <tr>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">婚姻状况</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_2'][0]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">政治面貌</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_2'][1]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">籍贯</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_2'][2]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">户口性质</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">{$list['basic_info_2'][3]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">身份证号</td>
+    <td height="36" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_3'][0]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">户口所在地</td>
+    <td height="36" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_3'][1]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">最高学历</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_4'][0]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">专业</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_4'][1]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">学位</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_4'][2]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">专业资格证书</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_4'][3]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">外语水平</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">{$list['basic_info_5'][0]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">语种</td>
+    <td height="36" align="center" bgcolor="#FFFFFF">&nbsp;&nbsp;{$list['basic_info_5'][1]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">级别</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_5'][2]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">口语水平</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_5'][3]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">计算机水平</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_6'][0]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">获得证书</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_6'][1]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">参加工作时间</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_6'][2]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">手机</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_7'][0]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">邮箱</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_7'][1]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">现通讯地址</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_7'][2]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">入职日期</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$data['information'][1]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">转正日期</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$data['information'][3]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">现职务</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$data['information'][2]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">最高职务</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$data['information'][4]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;工  龄:{$data['information'][0]}</td>
+  </tr>
+  <tr>
+    <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>二、自我评价（不少于100字）</strong></td>
+  </tr>
+  <tr>
+    <td height="90" colspan="9" bgcolor="#FFFFFF">　　{$list['appraisal_main'][0]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">专业技能</td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$list['skill_honor_hobby_expect'][0]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">个人荣誉</td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$list['skill_honor_hobby_expect'][1]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">兴趣特长</td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$list['skill_honor_hobby_expect'][2]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">个人期望</td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$list['skill_honor_hobby_expect'][3]}</td>
+  </tr>
+  <tr>
+    <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>三、主要教育经历</strong></td>
+  </tr>
+  <tr>
+    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">教育时间</td>
+    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF">院校名称</td>
+    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">学历</td>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">专业</td>
+    <td width="12%" height="33" align="center" bgcolor="#FFFFFF">证书</td>
+  </tr>
+  <foreach name="educa" item="ed">
+  	<notempty name="ed[0]">
+	  	<tr>
+		    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$ed[0]}</td>
+		    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$ed[1]}</td>
+		    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$ed[2]}</td>
+		    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$ed[3]}</td>
+		    <td width="12%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$ed[4]}</td>
+		</tr>
+	</notempty>
+  </foreach>
+  <tr>
+    <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>四、主要培训经历</strong></td>
+  </tr>
+  <tr>
+    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">培训时间</td>
+    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF">培训内容</td>
+    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF">培训组织机构</td>
+    <td width="12%" height="33" bgcolor="#FFFFFF">&nbsp;</td>
+  </tr>
+  <foreach name="train" item="tr">
+  	<notempty name="tr[0]">
+	  	<tr>
+		    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$tr[0]}</td>
+		    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$tr[1]}</td>
+		    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$tr[2]}</td>
+		    <td width="12%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$tr[3]}</td>
+		</tr>
+	</notempty>
+  </foreach>
+  <tr>
+    <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>五、家庭主要成员</strong></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" bgcolor="#FFFFFF">与本人关系</td>
+    <td colspan="2" align="center" bgcolor="#FFFFFF">姓名</td>
+    <td colspan="4" align="center" bgcolor="#FFFFFF">工作单位及职务</td>
+    <td width="12%" bgcolor="#FFFFFF">&nbsp;</td>
+  </tr>
+  <foreach name="family" item="fa">
+  	<notempty name="fa[0]">
+	  	<tr>
+		    <td height="33" align="center" colspan="2" bgcolor="#FFFFFF">&nbsp;{$fa[0]}</td>
+		    <td height="33" align="center" colspan="2" bgcolor="#FFFFFF">&nbsp;{$fa[1]}</td>
+		    <td height="33" align="center" colspan="4" bgcolor="#FFFFFF">&nbsp;{$fa[2]}</td>
+		    <td width="12%" align="center" height="33" bgcolor="#FFFFFF">&nbsp;{$fa[3]}</td>
+		</tr>
+	</notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="9" bgcolor="#FFFFFF">遇紧急情况通知</td>
+  </tr>
+  <tr>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">姓名</td>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$list['family_urgency'][0]}</td>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">关系</td>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$list['family_urgency'][1]}</td>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">地址及邮编</td>
+    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['family_urgency'][2]}</td>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">电话</td>
+    <td width="12%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$list['family_urgency'][3]}</td>
+  </tr>
+  <tr>
+    <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>六、工作经历</strong></td>
+  </tr>
+  <foreach name="work" item="wo">
+  	<notempty name="wo[4]">
+  <tr>
+    <td width="11%" height="40" align="center" bgcolor="#FFFFFF">工作时间</td>
+    <td height="40" colspan="4" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[0]}</td>
+    <td width="11%" height="40" align="center" bgcolor="#FFFFFF">离职原因</td>
+    <td height="40" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[1]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="40" align="center" bgcolor="#FFFFFF">企业简介</td>
+    <td height="40" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[2]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="40" align="center" bgcolor="#FFFFFF">担任职位</td>
+    <td height="40" colspan="4" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[3]}</td>
+    <td width="11%" height="40" align="center" bgcolor="#FFFFFF">薪酬待遇</td>
+    <td height="40" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[4]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="40" align="center" bgcolor="#FFFFFF">汇报对象</td>
+    <td height="40" colspan="4" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[5]}</td>
+    <td width="11%" height="40" align="center" bgcolor="#FFFFFF">下属人数</td>
+    <td height="40" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[6]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="90" align="center" bgcolor="#FFFFFF">工作描述</td>
+    <td height="90" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[7]}</td>
+  </tr>
+  <tr>
+    <td width="11%" height="66" align="center" bgcolor="#FFFFFF">主要业绩或相关项目</td>
+    <td height="66" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[8]}</td>
+  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td width="11%" height="66" align="center" bgcolor="#FFFFFF">直接上级评价</td>
+    <td height="66" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$list['superior_estimate'][0]}</td>
+  </tr>
+  <tr>
+    <td colspan="9" bgcolor="#FFFFFF">本人承诺：在本表内所填资料属实，如任何一项情况失实，贵公司有权与本人解除劳动合同或采取其他处理方式。并承诺到贵公司报到前，已与原工作单位解除劳动合同等关系，并不将原工作单位的任何商业秘密带到贵公司。如与原工作单位因原劳动合同或商业秘密问题出现法律纠纷，本人愿意自己承担一切责任。
+    <p style="margin-left:70%;">签名/日期　{$list['signature_time'][0]}</p></td>
+  </tr>
+</table>
+<!-- 员工在职履历档案表 -->
+
+<h1 style="margin:auto; text-align:center; line-height:40px;">员工在职履历档案表</h1>
+<table width="100%" border="1" cellspacing="0" cellpadding="0" style="font-family:'微软雅黑'; font-size:14px;">
+  <tr>
+    <td height="33" colspan="12" ><strong>一、在职期间工作态度、纪律（考勤、加班、休假）</strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">年&nbsp;&nbsp;度</td>
+    <td height="33" align="center">迟到次数</td>
+    <td height="33" align="center">早退次数 </td>
+    <td height="33" colspan="2" align="center">加&nbsp;&nbsp;班</td>
+    <td height="33" colspan="4" align="center">调&nbsp;&nbsp;休</td>
+    <td height="33" align="center">年休假</td>
+    <td height="33" colspan="2" align="center">制度配合执行</td>
+  </tr>
+  <foreach name="disc" item="di">
+  <notempty name="di[0]">
+	  <tr>
+	    <td height="33" align="center">{$di[0]}</td>
+	    <td height="33" align="center">{$di[1]}</td>
+	    <td height="33" align="center">{$di[2]}</td>
+	    <td height="33" colspan="2" align="center">{$di[3]}</td>
+	    <td height="33" colspan="4" align="center">{$di[4]}</td>
+	    <td height="33" align="center">{$di[5]}</td>
+	    <td height="33" colspan="2" align="center">{$di[6]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>二、在职期间调岗（任免）/晋升/调薪记录 </strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">类别</td>
+    <td height="33" align="center">调整日期</td>
+    <td height="33" align="center">原部门</td>
+    <td height="33" colspan="2" align="center">职务</td>
+    <td height="33" colspan="4" align="center">工资</td>
+    <td height="33" align="center">新部门</td>
+    <td height="33" align="center">职务</td>
+    <td align="center">新工资</td>
+  </tr>
+   <foreach name="prom" item="pr">
+   <notempty name="pr[0]">
+	  <tr>
+	    <td height="33" align="center">{$pr[0]}</td>
+	    <td height="33" align="center">{$pr[1]}</td>
+	    <td height="33" align="center">{$pr[2]}</td>
+	    <td height="33" colspan="2" align="center">{$pr[3]}</td>
+	    <td height="33" colspan="4" align="center">{$pr[4]}</td>
+	    <td height="33" align="center">{$pr[5]}</td>
+	    <td height="33" align="center">{$pr[6]}</td>
+	    <td height="33" align="center">{$pr[7]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>三、在职期间工作绩效/主要业绩/管理创新</strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">年份/日期</td>
+    <td height="33" colspan="2" align="center">相关事项</td>
+    <td height="33" colspan="6" align="center">主要成效/分数</td>
+    <td height="33" align="center">职务</td>
+    <td height="33" colspan="2" align="center">备注</td>
+  </tr>
+   <foreach name="perf" item="pe">
+   <notempty name="pe[0]">
+	  <tr>
+	    <td height="33" align="center">{$pe[0]}</td>
+	    <td height="33" colspan="2" align="center">{$pe[1]}</td>
+	    <td height="33" colspan="6" align="center">{$pe[2]}</td>
+	    <td height="33" align="center">{$pe[3]}</td>
+	    <td height="33" colspan="2" align="center">{$pe[4]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>四、在职期间奖励与处罚记录</strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">日期</td>
+    <td height="33" colspan="2" align="center">奖励/处罚事因</td>
+    <td height="33" colspan="6" align="center">奖励/处罚金额</td>
+    <td height="33" align="center">奖励/处罚</td>
+    <td height="33" colspan="2" align="center">执行部门</td>
+  </tr>
+  <foreach name="award" item="aw">
+   <notempty name="aw[0]">
+	  <tr>
+	    <td height="33" align="center">{$aw[0]}</td>
+	    <td height="33" colspan="2" align="center">{$aw[1]}</td>
+	    <td height="33" colspan="6" align="center">{$aw[2]}</td>
+	    <td height="33" align="center">{$aw[3]}</td>
+	    <td height="33" colspan="2" align="center">{$aw[4]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>五、在职期间公司资助、学习机会（培训记录）</strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">培训时间</td>
+    <td height="33" align="center">培训内容</td>
+    <td height="33" align="center">培训机构</td>
+    <td height="33" colspan="2" align="center">取得证书</td>
+    <td height="33" colspan="4" align="center">所在部门/岗位</td>
+    <td height="33" align="center">费用</td>
+    <td height="33" colspan="2" align="center">协议</td>
+  </tr>
+  <foreach name="study" item="st">
+   <notempty name="st[0]">
+	  <tr>
+	    <td height="33" align="center">{$st[0]}</td>
+	    <td height="33" align="center">{$st[1]}</td>
+	    <td height="33" align="center">{$st[2]}</td>
+	    <td height="33" colspan="2" align="center">{$st[3]}</td>
+	    <td height="33" colspan="4" align="center">{$st[4]}</td>
+	    <td height="33" align="center">{$st[5]}</td>
+	    <td height="33" colspan="2" align="center">{$st[6]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>六、在职期间兼职记录</strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">日期</td>
+    <td height="33" colspan="3" align="center">职务</td>
+    <td height="33" colspan="4" align="center">日期</td>
+    <td height="33" colspan="4" align="center">职务</td>
+  </tr>
+  <foreach name="part" item="pa">
+   <notempty name="pa[0]">
+	  <tr>
+	    <td height="33" align="center">{$pa[0]}</td>
+	    <td height="33" colspan="3" align="center">{$pa[1]}</td>
+	    <td height="33" colspan="4" align="center">{$pa[2]}</td>
+	    <td height="33" colspan="4" align="center">{$pa[3]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>七、公司评语（主要业绩、员工荣誉、社会表彰或奖惩等）</strong></td>
+  </tr>
+  <tr>
+    <td height="100" colspan="12" align="center">{$data['comment'][0]}</td>
+  </tr>
+</table>

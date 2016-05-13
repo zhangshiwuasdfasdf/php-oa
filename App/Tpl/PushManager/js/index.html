@@ -1,0 +1,52 @@
+		<script type="text/javascript">
+			var receve_mail_flag = false;
+			var send_wechat_flag= false;
+
+			function push_start() {
+				sendPush("{:U('push/server')}", '', function(data) {
+					if (receve_mail_flag) {
+						push_start();
+					}
+				});
+			}
+
+			function push_stop() {
+				flag = false;
+			}
+
+			function start_receve_mail(){
+				receve_mail_flag=true;
+				$(".start_receve_mail").addClass("display-none");
+				$(".stop_receve_mail").removeClass("display-none");
+
+				sendAjax("{:U('receve_mail')}",'',function(data){
+					if (receve_mail_flag) {
+						start_receve_mail();
+					}
+				});
+			}
+
+			function stop_receve_mail(){
+				$(".start_receve_mail").removeClass("display-none");
+				$(".stop_receve_mail").addClass("display-none");
+				receve_mail_flag=false;
+			}
+
+			function start_send_wechat(){
+				send_wechat_flag=true;
+				$(".start_send_wechat").addClass("display-none");
+				$(".stop_send_wechat").removeClass("display-none");
+				sendAjax("{:U('send_wechat')}",'',function(data){
+					if (send_wechat_flag) {
+						start_send_wechat();
+					}
+				});
+			}
+
+			function stop_send_wechat(){
+				$(".start_send_wechat").removeClass("display-none");
+				$(".stop_send_wechat").addClass("display-none");
+				send_wechat_flag= false;
+			}
+
+</script>

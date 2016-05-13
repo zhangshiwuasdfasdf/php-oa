@@ -1,0 +1,36 @@
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<input type="hidden" id="dept_id" name="dept_id" value="{$user_info.dept_id}">
+<style>
+	input{ border:none; outline:none;}
+	textarea{ border:none; outline:none; resize:none;}
+</style>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="9%" height="36" align="center">姓名</td>
+    <td width="16%" height="36"><input id="user_name" name="user_name" value="{$user_info.name}" style="width:97%; height:36px; text-align:center;" type="text" check="require" msg="请输入姓名"/></td>
+    <td width="10%" height="36" align="center">部门</td>
+    <td width="16%" height="36"><input id="dept_name" name="dept_name" value="{$user_info.dept_name}" style="width:97%; height:36px;text-align:center;" type="text" check="require" msg="请输入部门" disabled/></td>
+    <td width="10%" height="36" align="center">职务</td>
+    <td width="15%" height="36"><input id="duty" name="duty" value="{$user_info.duty}" style="width:97%; height:36px;text-align:center;" type="text" check="require" msg="请输入职务"/></td>
+    <td width="9%" height="36" align="center">申请日期</td>
+    <td width="15%" height="36"><input id="apply_date" name="apply_date" value="{$time|toDate='Y-m-d'}"  data-date-format="yyyy-mm-dd" style="text-align:center" type="text" class="form-control input-date in2" check="require" msg="请输入申请日期"></td>
+  </tr>
+  <tr>
+    <td height="36" align="center">邮箱</td>
+    <td height="36"><input id="email" name="email" value="{$user_info.email}" style="width:97%; height:36px;text-align:center;" type="text"/></td>
+    <td height="36" align="center">QQ</td>
+    <td height="36"><input id="QQ" name="QQ" style="width:97%; height:36px;text-align:center;" type="text"/></td>
+    <td height="36" align="center">电话</td>
+    <td height="36"><input id="office_tel" name="office_tel" value="{$user_info.office_tel}" style="width:97%; height:36px;text-align:center;" type="text"/></td>
+    <td height="36" align="center">手机号码</td>
+    <td height="36"><input id="mobile_tel" name="mobile_tel" value="{$user_info.mobile_tel}" style="width:97%; height:36px;text-align:center;" type="text" check="require" msg="请输入手机号码"/></td>
+  </tr>
+  <tr>
+    <td height="50" align="center">部门领导审批</td>
+    <td height="50" colspan="7"><input style="width:97%; height:50px; padding-left:20px;" type="text" disabled/></td>
+  </tr>
+  <tr>
+    <td height="50" align="center">备注</td>
+    <td height="50" colspan="7"><input id="mark" name="mark" style="width:97%; height:50px; padding-left:20px;" type="text"/></td>
+  </tr>
+</table>

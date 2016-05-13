@@ -1,0 +1,33 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body,input{ margin:0; padding:0;}
+ul,li{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+/*nav*/
+nav{ width:100%; height:40px; background:#d9d9d9;}
+nav span{ display:block; line-height:40px; text-align:center; font-weight:bold;}
+/*main*/
+body{ background:#eee;}
+.tb1{ background:#a0a0a0; margin-top:13px; margin-left:1%; margin-bottom:21px;}
+.tb1 span{ line-height:31px; font:"微软雅黑"; font-size:14px; color:#333333;}
+.tb1 a{ font:"微软雅黑"; font-size:12px; color:#0000ff; line-height:31px;}
+.tb1 .sp1{ line-height:109px;}
+.tb1 div{ padding-left:16px;}
+.i1{ width:161px; height:21px; border:solid 1px #dcdcdc; outline:none; margin-top:4px;}
+.i2{ height:78px; width:96%; border:solid 1px #dcdcdc; outline:none;}
+.ul1{ width:345px; height:34px; overflow:hidden; margin:auto;}
+.ul1 li{ float:left;}
+.ul1 li input{ width:105px; height:34px; border-radius:5px; outline:none; font:"微软雅黑"; font-size:14px; color:#fff; font-weight:bold;}
+.in5{ background:#427fed;}
+.in6{ background:#8fc31f; margin:0 15px;}
+.in7{ background:#a0a0a0;}
+.tb1 p{ font:"微软雅黑"; font-size:12px; color:#333333; font-weight:normal; line-height:20px; display:inline;}
+.sp3{line-height:31px; font:"微软雅黑"; font-size:14px; color:#333333;}
+
+
+
+
+
+
+

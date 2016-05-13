@@ -1,0 +1,64 @@
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<input type="hidden" id="dept_id" name="dept_id" value="{$user_info.dept_id}">
+<table width="100%" border="1" cellspacing="0" cellpadding="0" >
+  <tr>
+    <td colspan="13">
+    <strong style="padding-left:2%;">申请部门：</strong><input id="dept_name" name="dept_name" value="{$vo.dept_name}" style="outline:none; border:none; width:22%; height:36px; padding-left:5px;" type="text" disabled/>
+    <strong>申请人：</strong><input id="user_name" name="user_name" value="{$vo.user_name}" style="outline:none; border:none; width:22%; height:36px; padding-left:5px;" type="text" disabled/>
+    <strong>申请时间：</strong><input id="apply_time" name="apply_time" value="{$vo.apply_time}" data-date-format="yyyy-mm-dd" style="outline:none; border:none; width:22%; height:36px; padding-left:5px;" type="text" class="form-control input-date-time" disabled/></td>
+  </tr>
+  <tr style="text-align:center;">
+    <td width="9%" height="36">物品名称</td>
+    <td width="7%" height="36">型号/规格</td>
+    <td width="9%" height="36">用途</td>
+    <td width="9%" height="36">使用岗位</td>
+    <td width="7%" height="36">本部门已买数量</td>
+    <td width="7%" height="36">新增数量</td>
+    <td width="7%" height="36">回收数量</td>
+    <td width="7%" height="36">询问行政能否调拨</td>
+    <td width="7%" height="36">单价</td>
+    <td width="7%" height="36">金额</td>
+    <td width="9%" height="36">新增数量计算过程</td>
+    <td width="8%" height="36">支付方式</td>
+    <td width="7%" height="36">物品到位时间</td>
+  </tr>
+  <?php for ($i=0;$i<count($vo[goods_name])-1;$i++){ ?>
+  	<tr>
+    	<td width="9%" height="36"><input name="goods_name[]" value="{$vo.goods_name.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="7%" height="36"><input name="types[]" value="{$vo.types.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="9%" height="36"><input name="usage[]" value="{$vo.usage.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="9%" height="36"><input name="use_dept[]" value="{$vo.use_dept.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="7%" height="36"><input name="buy_num[]" value="{$vo.buy_num.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="7%" height="36"><input name="add_num[]" value="{$vo.add_num.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="7%" height="36"><input name="recovery_num[]" value="{$vo.recovery_num.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="7%" height="36"><input name="is_allocation[]" value="{$vo.is_allocation.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="7%" height="36"><input name="price[]" value="{$vo.price.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="7%" height="36"><input name="amount[]" value="{$vo.amount.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="9%" height="36"><input name="add_num_calculation[]" value="{$vo.add_num_calculation.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="8%" height="36"><input name="pay_type[]" value="{$vo.pay_type.$i}" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" disabled/></td>
+    	<td width="7%" height="36"><input name="in_place_time[]" value="{$vo.in_place_time.$i}" data-date-format="yyyy-mm-dd" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" class="form-control input-date" disabled/></td>
+  	</tr>
+  <?php } ?>
+  
+  <tr>
+    <td height="36" colspan="1">合计总金额：</td>
+    <td height="36" colspan="1">
+    	<input id="sum" name="sum" value="{$vo.sum}" disabled/>
+    </td>
+    
+  </tr>
+  <tr>
+    <td height="36" colspan="13">申请部门领导签字：<if condition="($flow_log_all[0])">{$flow_log_all[0].user_name}</if></td>
+  </tr>
+  <tr>
+    <td height="36" colspan="13">人事行政部签字：<if condition="($flow_log_all[1])">{$flow_log_all[1].user_name}</if></td>
+  </tr>
+  <tr>
+    <td height="36" colspan="13">财务部门审核签字：<if condition="($flow_log_all[2])">{$flow_log_all[2].user_name}</if></td>
+  </tr>
+  <tr>
+    <td height="36" colspan="13">公司领导签字：<if condition="($flow_log_all[3])">{$flow_log_all[3].user_name}</if></td>
+  </tr>
+</table>
+<p style=" font-size:12px;">注：1、必须审批流程走完后，才能购买调拨；2、行政统一购买调拨；3、超出5000元货比三家；4、所有设备购买调拨以此单为准，不在当月预算表体现。</p>
+

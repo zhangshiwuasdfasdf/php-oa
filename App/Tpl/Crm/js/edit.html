@@ -1,0 +1,17 @@
+<script type="text/javascript">
+	function save() {
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+
+	function add_sales($vip_id) {
+		window.open(fix_url("{:U('add_sales')}?vip_id="+$vip_id), "_self");
+		return false;
+	}
+
+	$(document).ready(function() {
+		set_val('need',"{$vo.need}");
+		set_val('sex',"{$vo.sex}");
+	});
+</script>

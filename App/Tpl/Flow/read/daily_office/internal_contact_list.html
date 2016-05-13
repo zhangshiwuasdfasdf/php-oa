@@ -1,0 +1,46 @@
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="17%" height="36" align="center"><strong>提交部门</strong></td>
+    <td width="17%" height="36">
+    <input name="dept_name_from" id="dept_name_from" value="{$vo.dept_name_from}" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" disabled/>
+    </td>
+    <td width="17%" height="36" align="center"><strong>接收部门</strong></td>
+    <td width="17%" height="36">
+    <input name="dept_name_to" id="dept_name_to" value="{$vo.dept_name_to}" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" disabled/>
+	</td>
+    <td width="16%" height="36" align="center"><strong>申请日期</strong></td>
+    <td width="16%" height="36"><input id="write_time" name="write_time" value="{$vo.write_time}" data-date-format="yyyy-mm-dd" class="form-control input-date" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" disabled/></td>
+  </tr>
+  <tr align="center">
+    <td height="36" colspan="6"><strong>信息内容</strong></td>
+  </tr>
+  <tr>
+    <td width="17%" height="36" align="center"><strong>需求说明</strong></td>
+    <td height="36" colspan="5"><textarea id="content" name="content" style=" resize:none; outline:none; border:none;width:99%; padding-left:5px;" rows="3" disabled>{$vo.content}</textarea></td>
+  </tr>
+  <tr>
+    <td width="17%" align="center"><strong>详细描述</strong></td>
+    <td colspan="5"><textarea id="describe" name="describe" style=" resize:none; outline:none; border:none;width:99%; padding-left:5px;" rows="8" disabled>{$vo.describe}</textarea></td>
+  </tr>
+  <tr>
+    <td width="17%" height="36" align="center"><strong>部门领导审核</strong></td>
+    <td height="36" colspan="2"><input style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" <if condition="($flow_log[0])">value="{$flow_log[0].result|show_result}"</if> disabled/></td>
+    <td width="17%" height="36" align="center"><strong>申请人</strong></td>
+    <td height="36" colspan="2"><input id="user_name" name="user_name" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" value="{$vo.user_name}" disabled/></td>
+  </tr>
+  <tr>
+    <td width="17%" height="36" align="center"><strong>接收部门确认</strong></td>
+    <td height="36" colspan="2"><input style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" <if condition="($flow_log[1])">value="{$flow_log[1].result|show_result}"</if> disabled/></td>
+    <td width="17%" height="36" align="center"><strong>确认日期</strong></td>
+    <td height="36" colspan="2"><input data-date-format="yyyy-mm-dd" class="form-control input-date" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" <if condition="($flow_log[1])"> value="{$flow_log[1].user_name}/{$flow_log[1].create_time|toDate='Y-m-d'}" </if> disabled/></td>
+  </tr>
+  <tr>
+    <td width="17%" height="36" align="center"><strong>审核部门确认</strong></td>
+    <td height="36" colspan="5"><input style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" <if condition="($flow_log[2])">value="{$flow_log[2].result|show_result}"</if> disabled/></td>
+  </tr>
+  <tr>
+    <td width="17%" height="36" align="center"><strong>总经理审批</strong></td>
+    <td height="36" colspan="5"><input style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" <if condition="($flow_log[3])">value="{$flow_log[3].result|show_result}"</if> disabled/></td>
+  </tr>
+</table>

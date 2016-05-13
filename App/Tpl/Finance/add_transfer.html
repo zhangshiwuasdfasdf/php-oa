@@ -1,0 +1,74 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'新建支出','search'=>'N'))}
+<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
+	<input type="hidden" id="ajax" name="ajax" value="0">
+	<input type="hidden" id="add_file" name="add_file">
+	<input type="hidden" id="doc_type" name="doc_type" value="3">
+	<input type="hidden" id="type" name="type" value="转账">
+	<input type="hidden" id="opmode" name="opmode" value="add">
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" for="doc_no">单据编号：</label>
+		<div class="col-sm-8">
+			<input type="text" id="start_date" name="doc_no" check="require" msg="请输入单据编号">
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" for="end_date" >日期：</label>
+		<div class="col-sm-8">
+			<input data-date-format="yyyy-mm-dd" class="form-control input-date" type="text" id="input_date" name="input_date"    check="require" msg="请输入日期">
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" for="account_id_payment">转出帐号：</label>
+		<div class="col-sm-8">
+			<select id="account_id_payment" name="account_id_payment" class="form-control" check="require" msg="请选择收款帐号">
+				<option value="" >请选择转出帐号</option>
+				{:fill_option($account_list)}
+			</select>
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >账户余额：</label>
+		<div class="col-sm-8">
+			<input id="balance_payment" type="text" readonly="readonly" >
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" for="account_id_income">转入帐号：</label>
+		<div class="col-sm-8">
+			<select id="account_id_income" name="account_id_income" class="form-control" check="require" msg="请选择转入帐号">
+				<option value="" >请选择转入帐号</option>
+				{:fill_option($account_list)}
+			</select>
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >账户余额：</label>
+		<div class="col-sm-8">
+			<input id="balance_income" type="text" readonly="readonly" >
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" for="money">金额：</label>
+		<div class="col-sm-8">
+			<input type="text" name="money" check="require" msg="请输入金额">
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" for="actor_user_name">经办人：</label>
+		<div class="col-sm-8">
+			<input type="text" name="actor_user_name" check="require" msg="请输入经办人">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="name">附件：</label>
+		<div class="col-sm-10">
+			{:W('File',array('mode'=>'add'))}
+		</div>
+	</div>
+	<div class="action">
+		<input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save();">
+		<input class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
+	</div>	
+</form>

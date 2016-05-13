@@ -1,0 +1,22 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body,input{ margin:0; padding:0;}
+a{ text-decoration:none;}
+ul,li{ margin:0; padding:0; list-style:none;}
+/*nav*/
+nav{ width:100%; height:40px; background:#d9d9d9;}
+nav span{ display:block; font:"微软雅黑"; font-size:18px; color:#000; line-height:40px; margin-left:30px; font-weight:bold;}
+/*main*/
+/*.main{ width:98%; height:100%; margin-left:1%; padding-top:1%; overflow:hidden;}*/ 
+.ul1{ float:left; height:235px; width:48%; margin-left:1%; margin-right:1%; display:block; margin-top:1%;}
+ul li{ width:100%; height:38px; border:solid 1px #a0a0a0; border-top:none;  display:block; background:#FFF;}
+ul span{ display:block; line-height:38px; font:"微软雅黑"; font-size:14px; color:#000; margin-left:15px; font-weight:bold;}
+ul .li1{ background:#e7e7e7; border-top:solid 1px #a0a0a0;}
+ul a{ display:block; line-height:38px; font:"微软雅黑"; font-size:14px; color:#000; font-weight:bold; margin-left:16px;}
+ul a:hover{ background:url(../image/shenpinav.png);}
+.ul2{ float:left; height:235px; width:49%; display:block; margin-top:1%;}
+.m1{ margin-top:1%; float:left; margin-right:1%; width:48%; margin-left:1%;}
+.ul3{ margin-bottom:2%;}
+.ul4{float:left; width:49%; display:block; margin-top:1%;}
+
