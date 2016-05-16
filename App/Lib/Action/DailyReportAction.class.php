@@ -146,7 +146,14 @@ class DailyReportAction extends CommonAction {
 
 		$model = D("DailyReport");
 		if (!empty($model)) {
-			$this -> _list($model, $map);
+			$daily_report_common = $this -> _list($model, $map);
+			$daily_report_extension = array();
+			$model_comment = D("DailyReportComment");
+			foreach ($daily_report_common as $k=>$v){
+				$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
+				$daily_report_extension[$k]['comment_last'] = $comment_last['content'];
+			}
+			$this -> assign('daily_report_extension', $daily_report_extension);
 			$res = $model->where($map)->order('work_date desc')->limit(28)->select();//手机端app提供数据
 			if(is_mobile_request()){
 				$daily_report = array();
@@ -243,7 +250,19 @@ class DailyReportAction extends CommonAction {
 		$where_comment['is_del'] = array('eq', 0);
 		$comment = M("DailyReportComment") -> where($where_comment) -> select();
 		$this -> assign('comment', $comment);
-
+		
+		$model_report_look = M('ReportLook');
+		$report_look = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$id),'look_id'=>get_user_id()))->find();
+		if($last_report['user_id']!=get_user_id()){
+			if($report_look){
+				$result = $model_report_look->where(array('id' => $report_look['id']))->save(array('create_time'=>time()));
+			}else{
+				$result = $model_report_look->add(array('type'=>'daily','pid'=>$id,'look_id'=>get_user_id(),'look_name'=>get_user_name(),'create_time'=>time()));
+			}
+		}
+		$report_look = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$id)))->order('create_time desc')->select();
+		$this -> assign('report_look', $report_look);
+		
 		$this -> display();
 	}
 

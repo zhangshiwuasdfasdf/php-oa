@@ -146,9 +146,6 @@ class NoticeAction extends CommonAction {
 	}
 
 	public function read() {
-		
-
-
 		$id = is_mobile_request()==true?$_REQUEST['notice_id']:$_REQUEST['id'];
 		$this -> _readed($id);
 		$user_id = get_user_id();

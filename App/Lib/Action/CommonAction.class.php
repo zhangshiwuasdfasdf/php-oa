@@ -183,7 +183,7 @@ class CommonAction extends Action {
 					die ;
 				}
 			}
-		if(is_mobile_request()){
+// 		if(is_mobile_request()){
 			$add_file = $vo['add_file'];
 			if(!empty($add_file)){
 				$model_file = M('File');
@@ -193,28 +193,32 @@ class CommonAction extends Action {
 				$model = M("File");
 				$file_list = $model -> where($where) -> select();
 				$vo['file_list']=$file_list;
-// 				foreach ($file_list as $v){
-// 					$open=fopen("C:\log.txt","a" );
-// 					fwrite($open,$v['savename']."\r\n");
-// 					fclose($open);
-// 					$savename = $v['savename'];
-// 					$savename_a = explode('.',$savename);
-// 					if($v['extension']=='doc' && !file_exists('http://192.168.1.59'.'/Data/Files/'.$savename_a[0].'.swf')){
-// 						$doc = 'http://192.168.1.59'.'/Data/Files/'.$v['savename'];
-// 						$pdf = 'http://192.168.1.59'.'/Data/Files/'.$savename_a[0].'.pdf';
-// 						$swf = 'http://192.168.1.59'.'/Data/Files/'.$savename_a[0].'.swf';
-// 						$command = 'D: && cd D:\Program Files (x86)\Java\jdk1.8.0_73 && java -jar jodconverter-2.2.2/lib/jodconverter-cli-2.2.2.jar '.$doc.' '.$pdf;
-// 						exec($command);
-// 						$pdf = 'D:/test.pdf';
-// 						$swf = 'D:/test.swf';
-// 						$command = 'C: && cd C:\Program Files (x86)\SWFTools && pdf2swf '.$pdf.' '.$swf;
-// 						exec($command);
-// 					}
-// 				}
+				foreach ($file_list as $k=>$v){
+					$savename = $v['savename'];
+					$savename_a = explode('.',$savename);
+					if(($v['extension']=='doc' || $v['extension']=='docx') && !file_exists($_SERVER['DOCUMENT_ROOT'].__ROOT__.'/Data/Files/'.$savename_a[0].'.swf')){
+					
+						$doc = $_SERVER['DOCUMENT_ROOT'].__ROOT__.'/Data/Files/'.$v['savename'];
+						$pdf = $_SERVER['DOCUMENT_ROOT'].__ROOT__.'/Data/Files/'.$savename_a[0].'.pdf';
+						$swf = $_SERVER['DOCUMENT_ROOT'].__ROOT__.'/Data/Files/'.$savename_a[0].'.swf';
+						
+						$command = 'D: && cd D:\Program Files (x86)\Java\jdk1.8.0_73 && java -jar jodconverter-2.2.2/lib/jodconverter-cli-2.2.2.jar '.$doc.' '.$pdf;
+						$a = exec($command);
+						
+						$command = 'C: && cd C:\Program Files (x86)\SWFTools && pdf2swf '.$pdf.' '.$swf;
+						$b = exec($command);
+						
+						if(file_exists($_SERVER['DOCUMENT_ROOT'].__ROOT__.'/Data/Files/'.$savename_a[0].'.swf')){
+							$vo['file_list'][$k]['swf'] = 'http://192.168.1.59'.__ROOT__.'/Data/Files/'.$savename_a[0].'.swf';
+						}
+					}elseif(file_exists($_SERVER['DOCUMENT_ROOT'].__ROOT__.'/Data/Files/'.$savename_a[0].'.swf')){
+						$vo['file_list'][$k]['swf'] = 'http://192.168.1.59'.__ROOT__.'/Data/Files/'.$savename_a[0].'.swf';
+					}
+				}
 				
 			}
 
-		}
+// 		}
 		$this -> assign('vo', $vo);
 		$this -> display();
 	}
