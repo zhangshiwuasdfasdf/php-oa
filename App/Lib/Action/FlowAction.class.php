@@ -226,7 +226,24 @@ class FlowAction extends CommonAction {
 			}else{
 				$flow_list[$k]['auth'] = 0;
 			}
+			$confirm = explode('|',$v['confirm']);
+			$flowLog = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is null'))->find();
+			if(!empty($flowLog)){
+				$i = array_search($flowLog['emp_no'],$confirm);
+			}
+			$confirm_name = explode('<>',$v['confirm_name']);
+			$s = '';
+			foreach ($confirm_name as $k=>$v){
+				if($i===$k){
+					$s.=$v.'（审批中）'.'->';
+				}else{
+					$s.=$v.'->';
+				}
+			}
+			$s = substr($s,0,strlen($s)-4);
+			$flow_list[$k]['flow_name'] = $s;
 		}
+		
 		$this -> assign("list", $flow_list);
 		$this -> display();
 	}
@@ -408,9 +425,9 @@ class FlowAction extends CommonAction {
 		}
 		$dept_idd = getDeptManagerId($uid,$dept_id);
 		if($add=='1'){//辞职补充
-			$flow = array($dept_idd,getHRDeputyGeneralManagerId($uid));
+			$flow = array($dept_idd,getHRDeputyGeneralManagerId($uid),getZhaopinDirector($uid));
 		}else{
-			$flow = array($dept_idd,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
+			$flow = array($dept_idd,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid),getZhaopinDirector($uid));
 		}
 		
 		if(!empty($flow)){

@@ -2015,11 +2015,27 @@ function getFlowEmpNo($uid,$day){
 	}
 }
 function isZhaopinDirector($uid){
-	$model_dept = M('Dept');
-	$dept_id = $model_dept->where(array('dept_no'=>array('eq','ZP')))->getField('id');
-	$model_user = M('User');
-	$id = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->getField('id');
-	return $uid==$id;
+	return $uid==getZhaopinDirector($uid);
+}
+function getZhaopinDirector($uid){
+	$flag = isHeadquarters($uid);
+	if($flag>0){
+		$model_dept = M('Dept');
+		$dept_id = $model_dept->where(array('pid'=>array('eq',$flag),'dept_no'=>array('eq','XZDDB')))->getField('id');
+		$model_user = M('User');
+		$id = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->getField('id');
+		return $id;
+	}elseif ($flag!=-3){
+		$model_dept = M('Dept');
+		$dept_id = $model_dept->where(array('dept_no'=>array('eq','ZP')))->getField('id');
+		$model_user = M('User');
+		$id = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->getField('id');
+		return $id;
+	}else{
+		return null;
+	}
+	
+	
 }
 function is_holiday($unix_timestamp){
 	$date = date('Ymd',$unix_timestamp);

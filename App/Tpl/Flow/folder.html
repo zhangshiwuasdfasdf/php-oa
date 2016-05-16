@@ -60,6 +60,7 @@
 				<span  class="col-9  ">登录时间</span>
 				<span  class="col-6  "> 登录人</span>
 				<span class="col-6  ">状态</span>
+				<span class="col-30  ">流程</span>
 			</div>
 			<div class="autocut auto">
 				标题
@@ -85,6 +86,7 @@
 							<span class="col-9   "> {$vo.create_time|toDate='Y-m-d'} </span>
 							<span class="col-6   ">{$vo.user_name}</span>
 							<span class="col-6   ">{$vo.step|show_step}</span>
+							<span class="col-30   ">{$vo.flow_name}</span>
 						</div>
 						<div class="autocut auto">
 							<in name="folder" value="darft">
