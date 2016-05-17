@@ -83,10 +83,10 @@
 							<span class="col-16  "> {$vo.type_name}</span>
 						</div>
 						<div class="pull-right">
-							<span class="col-9   "> {$vo.create_time|toDate='Y-m-d'} </span>
-							<span class="col-6   ">{$vo.user_name}</span>
-							<span class="col-6   ">{$vo.step|show_step}</span>
-							<span class="col-30   ">{$vo.flow_name}</span>
+							<span class="col-9" style="height:20px;">{$vo.create_time|toDate='Y-m-d'}</span>
+							<span class="col-6" style="height:20px;">{$vo.user_name}</span>
+							<span class="col-6" style="height:20px;">{$vo.step|show_step}</span>
+							<span class="col-30" style="height:20px;">{$vo.flow_name}</span>
 						</div>
 						<div class="autocut auto">
 							<in name="folder" value="darft">
@@ -105,5 +105,11 @@
 		<div class="pagination">
 			{$page}
 		</div>
+		<select name="date" id="date" onchange="date_num(this.value)">   
+				<option value ="0" >请选择月份</option>
+			<volist name="date_num" id="vo">
+				<option value ="{$vo.date}">{$vo.date}</option>
+			</volist>
+      	</select>  
 	</empty>
 </div>

@@ -66,7 +66,7 @@
 				<span class="col-10">登录人</span>
 				<span class="col-10">职责</span>
 				<span class="col-10">日期</span>
-				<span class="col-10">最近评论</span>
+				<span class="col-25">最近评论</span>
 			</div>
 			<div class="pull-right">
 				<span class="col-10">状态</span>
@@ -86,7 +86,7 @@
 							<span class="col-10">{$vo.user_name}</span>
 							<span class="col-10">{$vo.user_id|get_position_name}</span>
 							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}">{$vo.work_date}</a></span>
-							<span class="col-10">{$daily_report_extension.$key.comment_last}</span>
+							<span class="col-25">{$daily_report_extension.$key.comment_last}</span>
 						</div>
 						<div class="pull-right">
 							<span class="col-10">{$vo.is_submit|is_submit}</span>

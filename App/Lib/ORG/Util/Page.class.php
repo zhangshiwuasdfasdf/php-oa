@@ -108,6 +108,7 @@ class Page {
 			$input="<input type=\"hidden\" name=\"$p\" >";
 			$input.="<input type=\"hidden\" name=\"list_rows\" value=\"\">";
 			$input.="<input type=\"hidden\" name=\"mode\" value=\"\">";
+			$input.="<input type=\"hidden\" name=\"date\" id=\"date\" value=\"\">";
 			if(!empty($request)){
 				foreach($parameter as $key=>$val){
 					if(is_string($val)){

@@ -215,10 +215,149 @@ class FlowAction extends CommonAction {
 		$model = D("FlowView");
 
 		if ($_REQUEST['mode'] == 'export') {
-			$this -> _folder_export($model, $map);
+			if(empty($_REQUEST['date'])){
+				$this -> error("请选择导出的日期！");
+			}
+			$map['_query'] = 'FROM_UNIXTIME(create_time,"%Y-%m")='.$_REQUEST['date'];
+			$flow_id = M('Flow')->field('id')->where($map)->select();
+			$flow_id_array = array();
+			foreach ($flow_id as $v){
+				$flow_id_array[] = $v['id'];
+			}
+			$data = M('Flow'.convertUnderline1($_REQUEST['name']))->where(array('flow_id'=>array('in',$flow_id_array)))->select();
+			
+			if(in_array($_REQUEST['name'],array('goods_procurement_allocation','office_supplies_application','office_use_application'))){
+				$a = array();
+				foreach ($data as $k=>$v){
+					if($_REQUEST['name']=='office_use_application'){
+						$ids = $v['ids'];
+						$names = $v['names'];
+						$types = $v['types'];
+						$nums = $v['nums'];
+						$marks = $v['marks'];
+						
+						if(!empty($ids)){$ids_a = explode('|',$ids);}
+						if(!empty($names)){$names_a = explode('|',$names);}
+						if(!empty($types)){$types_a = explode('|',$types);}
+						if(!empty($nums)){$nums_a = explode('|',$nums);}
+						if(!empty($marks)){$marks_a = explode('|',$marks);}
+						
+						foreach ($types_a as $kk=>$vv){
+							if($vv!=''){
+								$b = array();
+								$b['id'] = $v['id'];
+								$b['flow_id'] = $v['flow_id'];
+								$b['ids'] = $ids_a[$kk];
+								$b['names'] = $names_a[$kk];
+								$b['types'] = $types_a[$kk];
+								$b['nums'] = $nums_a[$kk];
+								$b['marks'] = $marks_a[$kk];
+								$flow = M('Flow')->find($v['flow_id']);
+								$b['user_name'] = $flow['user_name'];
+								$a[] = $b;
+							}
+						}
+					}else if($_REQUEST['name']=='goods_procurement_allocation'){
+						$goods_name = $v['goods_name'];
+						$types = $v['types'];
+						$usage = $v['usage'];
+						$use_dept = $v['use_dept'];
+						$buy_num = $v['buy_num'];
+						$add_num = $v['add_num'];
+						$recovery_num = $v['recovery_num'];
+						$is_allocation = $v['is_allocation'];
+						$price = $v['price'];
+						$amount = $v['amount'];
+						$add_num_calculation = $v['add_num_calculation'];
+						$pay_type = $v['pay_type'];
+						$in_place_time = $v['in_place_time'];
+						
+						if(!empty($goods_name)){$goods_name_a = explode('|',$goods_name);}
+						if(!empty($types)){$types_a = explode('|',$types);}
+						if(!empty($usage)){$usage_a = explode('|',$usage);}
+						if(!empty($use_dept)){$use_dept_a = explode('|',$use_dept);}
+						if(!empty($buy_num)){$buy_num_a = explode('|',$buy_num);}
+						if(!empty($add_num)){$add_num_a = explode('|',$add_num);}
+						if(!empty($recovery_num)){$recovery_num_a = explode('|',$recovery_num);}
+						if(!empty($is_allocation)){$is_allocation_a = explode('|',$is_allocation);}
+						if(!empty($price)){$price_a = explode('|',$price);}
+						if(!empty($amount)){$amount_a = explode('|',$amount);}
+						if(!empty($add_num_calculation)){$add_num_calculation_a = explode('|',$add_num_calculation);}
+						if(!empty($pay_type)){$pay_type_a = explode('|',$pay_type);}
+						if(!empty($in_place_time)){$in_place_time_a = explode('|',$in_place_time);}
+						
+						foreach ($types_a as $kk=>$vv){
+							if($vv!=''){
+								$b = array();
+								$b['id'] = $v['id'];
+								$b['flow_id'] = $v['flow_id'];
+								$b['apply_time'] = $v['apply_time'];
+								$b['goods_name'] = $goods_name_a[$kk];
+								$b['types'] = $types_a[$kk];
+								$b['usage'] = $usage_a[$kk];
+								$b['use_dept'] = $use_dept_a[$kk];
+								$b['buy_num'] = $buy_num_a[$kk];
+								$b['add_num'] = $add_num_a[$kk];
+								$b['recovery_num'] = $recovery_num_a[$kk];
+								$b['is_allocation'] = $is_allocation_a[$kk];
+								$b['price'] = $price_a[$kk];
+								$b['amount'] = $amount_a[$kk];
+								$b['add_num_calculation'] = $add_num_calculation_a[$kk];
+								$b['pay_type'] = $pay_type_a[$kk];
+								$b['in_place_time'] = $in_place_time_a[$kk];
+								$flow = M('Flow')->find($v['flow_id']);
+								$b['user_name'] = $flow['user_name'];
+								$a[] = $b;
+							}
+						}
+					}else if($_REQUEST['name']=='office_supplies_application'){
+						$ids = $v['ids'];
+						$names = $v['names'];
+						$types = $v['types'];
+						$nums = $v['nums'];
+						$prices = $v['prices'];
+						$amounts = $v['amounts'];
+						$marks = $v['marks'];
+						
+						if(!empty($ids)){$ids_a = explode('|',$ids);}
+						if(!empty($names)){$names_a = explode('|',$names);}
+						if(!empty($types)){$types_a = explode('|',$types);}
+						if(!empty($nums)){$nums_a = explode('|',$nums);}
+						if(!empty($prices)){$prices_a = explode('|',$prices);}
+						if(!empty($amounts)){$amounts_a = explode('|',$amounts);}
+						if(!empty($marks)){$marks_a = explode('|',$marks);}
+						
+						foreach ($types_a as $kk=>$vv){
+							if($vv!=''){
+								$b = array();
+								$b['id'] = $v['id'];
+								$b['flow_id'] = $v['flow_id'];
+								$b['ids'] = $ids_a[$kk];
+								$b['names'] = $names_a[$kk];
+								$b['types'] = $types_a[$kk];
+								$b['nums'] = $nums_a[$kk];
+								$b['prices'] = $prices_a[$kk];
+								$b['amounts'] = $amounts_a[$kk];
+								$b['marks'] = $marks_a[$kk];
+								$flow = M('Flow')->find($v['flow_id']);
+								$b['user_name'] = $flow['user_name'];
+								$a[] = $b;
+							}
+						}
+					}
+					
+				}
+				$data = $a;
+			}
+			$this -> _folder_export_detail($data,'smeoa_flow_'.$_REQUEST['name']);
+			
+// 			$this -> _folder_export($model, $map);
 		} else {
 			$flow_list = $this -> _list($model, $map);
 		}
+		$date_num = M('Flow')->where($map)->field("count(FROM_UNIXTIME(create_time,'%Y-%m')) as count,FROM_UNIXTIME(create_time,'%Y-%m') as date")->group("FROM_UNIXTIME(create_time,'%Y-%m')")->select();
+		
+		$this -> assign("date_num", $date_num);
 		foreach ($flow_list as $k=>$v){
 			$auth = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is not null'))->select();
 			if($auth){
@@ -226,22 +365,27 @@ class FlowAction extends CommonAction {
 			}else{
 				$flow_list[$k]['auth'] = 0;
 			}
-			$confirm = explode('|',$v['confirm']);
-			$flowLog = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is null'))->find();
-			if(!empty($flowLog)){
-				$i = array_search($flowLog['emp_no'],$confirm);
-			}
-			$confirm_name = explode('<>',$v['confirm_name']);
-			$s = '';
-			foreach ($confirm_name as $k=>$v){
-				if($i===$k){
-					$s.=$v.'（审批中）'.'->';
-				}else{
-					$s.=$v.'->';
+			if(!empty($v['confirm']) && is_array($v['confirm'])){
+				$confirm = explode('|',$v['confirm']);
+				$flowLog = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is null'))->find();
+				if(!empty($flowLog)){
+					$i = array_search($flowLog['emp_no'],$confirm);
 				}
+				$confirm_name = explode('<>',$v['confirm_name']);
+			
+				$s = '';
+				foreach ($confirm_name as $kk=>$vv){
+					if($i===$kk){
+						$s.=$vv.'（审批中）'.'->';
+					}else{
+						$s.=$vv.'->';
+					}
+				}
+				$s = substr($s,0,strlen($s)-4);
+				$flow_list[$k]['flow_name'] = $s;
+				dump($confirm_name);
 			}
-			$s = substr($s,0,strlen($s)-4);
-			$flow_list[$k]['flow_name'] = $s;
+			
 		}
 		
 		$this -> assign("list", $flow_list);
@@ -324,7 +468,102 @@ class FlowAction extends CommonAction {
 		$objWriter -> save('php://output');
 		exit ;
 	}
-
+	function _folder_export_detail($data,$table_name){
+		$sql = 'SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "'.$table_name.'" AND TABLE_SCHEMA = "smeoa"';
+		$Model = new Model();
+		$comment = $Model->query($sql);
+// 		dump($comment);
+		
+		$list = $data;
+		
+		//导入thinkphp第三方类库
+		Vendor('Excel.PHPExcel');
+		
+		//$inputFileName = "Public/templete/contact.xlsx";
+		//$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+		$objPHPExcel = new PHPExcel();
+		
+		$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+		// Add some data
+		$i = 1;
+		//dump($list);
+		
+		//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
+		$q = $objPHPExcel -> setActiveSheetIndex(0);
+		$start = ord('A');
+		foreach($comment as $k=>$v){
+			$q = $q -> setCellValue(chr($start+$k)."$i", $v['COLUMN_COMMENT']);
+			$q ->getColumnDimension(chr($start+$k))->setAutoSize(true);
+		}
+// 		$objPHPExcel -> setActiveSheetIndex(0) -> setCellValue("A$i", "编号") -> setCellValue("B$i", "类型") -> setCellValue("C$i", "标题") -> setCellValue("D$i", "登录时间") -> setCellValue("E$i", "部门") -> setCellValue("F$i", "登录人") -> setCellValue("G$i", "状态") -> setCellValue("H$i", "审批") -> setCellValue("I$i", "协商") -> setCellValue("J$i", "抄送") -> setCellValue("J$i", "审批情况");
+		foreach ($list as $val) {
+			$i++;
+			//dump($val);
+			$id = $val['id'];
+// 			$doc_no = $val["doc_no"];
+// 			//编号
+// 			$name = $val["name"];
+// 			//标题
+// 			$confirm_name = strip_tags($val["confirm_name"]);
+// 			//审批
+// 			$consult_name = strip_tags($val["consult_name"]);
+// 			//协商
+// 			$refer_name = strip_tags($val["refer_name"]);
+// 			//协商
+// 			$type_name = $val["type_name"];
+// 			//流程类型
+// 			$user_name = $val["user_name"];
+// 			//登记人
+// 			$dept_name = $val["dept_name"];
+// 			//不美分
+// 			$create_time = $val["create_time"];
+// 			$create_time = toDate($val["create_time"], 'Y-m-d H:i:s');
+// 			//创建时间
+// 			$step = show_step_type($val["step"]);
+			//
+			$w = $objPHPExcel -> setActiveSheetIndex(0);
+			$start2 = ord('A');
+			$ii = 0;
+			foreach($val as $kk=>$vv){
+				$w = $w -> setCellValue(chr($start2+$ii)."$i", $vv);
+				$w ->getColumnDimension(chr($start2+$ii))->setAutoSize(true);
+				$ii++;
+			}
+			
+			//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
+// 			$objPHPExcel -> setActiveSheetIndex(0) -> setCellValue("A$i", $doc_no) -> setCellValue("B$i", $type_name) -> setCellValue("C$i", $name) -> setCellValue("D$i", $create_time) -> setCellValue("E$i", $dept_name) -> setCellValue("F$i", $user_name) -> setCellValue("G$i", $step) -> setCellValue("H$i", $confirm_name) -> setCellValue("I$i", $consult_name);
+		
+			$model_flow_field = D("FlowField");
+			$field_list = $model_flow_field -> get_data_list($id);
+			//	dump($field_list);
+			$k = 0;
+			if (!empty($field_list)) {
+				foreach ($field_list as $field) {
+					$k++;
+					$field_data = $field['name'] . ":" . $field['val'];
+					$location = get_cell_location("J", $i, $k);
+					$objPHPExcel -> setActiveSheetIndex(0) -> setCellValue($location, $field_data);
+				}
+			}
+		}
+		
+		// Rename worksheet
+		$objPHPExcel -> getActiveSheet() -> setTitle('流程统计');
+		
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel -> setActiveSheetIndex(0);
+		$file_name = "流程统计.xlsx";
+		// Redirect output to a client’s web browser (Excel2007)
+		header("Content-Type: application/force-download");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header("Content-Disposition:attachment;filename =" . str_ireplace('+', '%20', URLEncode($file_name)));
+		header('Cache-Control: max-age=0');
+		
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		//readfile($filename);
+		$objWriter -> save('php://output');
+		exit ;
+	}
 	function add() {
 		$widget['date'] = true;
 		$widget['uploader'] = true;
