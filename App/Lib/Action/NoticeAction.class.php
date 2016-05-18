@@ -13,7 +13,7 @@
 
 class NoticeAction extends CommonAction {
 
-	protected $config = array('app_type' => 'folder', 'action_auth' => array('folder' => 'read','sign'=>'read','mark' => 'admin', 'upload' => 'write'));
+	protected $config = array('app_type' => 'folder', 'action_auth' => array('folder' => 'read','sign'=>'read','mark' => 'read', 'upload' => 'write'));
 
 	//过滤查询字段
 	function _search_filter(&$map) {
@@ -94,7 +94,13 @@ class NoticeAction extends CommonAction {
 					$this -> ajaxReturn('', "操作成功", 1);
 				}
 				break;
-
+			case 'readed' :
+				$s = '';
+				foreach ($id as $idd){
+					$s.=$idd.',';
+				}
+				$this -> _readed($s);
+				break;
 			//增加签收
 			default :
 				break;
@@ -238,6 +244,7 @@ class NoticeAction extends CommonAction {
 		$map['create_time']=array("egt",time() - 3600 * 24 * 30);
 						
 		$arr_read = array_filter(explode(",", get_user_config("readed_notice").",".$id));
+		
 		$map['id']=array('in',$arr_read);
 				
 		$readed_notice=M("Notice")->where($map)->getField("id,name");

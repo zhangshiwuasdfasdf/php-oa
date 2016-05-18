@@ -109,9 +109,9 @@ class ScheduleAction extends CommonAction {
 		$where['id'] = $id;
 		$vo = $model -> where($where) -> find();
 
-		$vo['start_time'] = fix_time($vo['start_time']);
-		$vo['end_time'] = fix_time($vo['end_time']);
-
+		$vo['start_time'] = date('Y-m-d H:i',strtotime($vo['start_time']));
+		$vo['end_time'] = date('Y-m-d H:i',strtotime($vo['end_time']));
+		
 		$this -> assign('vo', $vo);
 		$this -> display();
 	}

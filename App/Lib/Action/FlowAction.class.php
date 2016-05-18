@@ -348,8 +348,9 @@ class FlowAction extends CommonAction {
 					
 				}
 				$data = $a;
+// 				$this -> _folder_export_detail($data,'smeoa_flow_'.$_REQUEST['name'],$_REQUEST['name']);
 			}
-			$this -> _folder_export_detail($data,'smeoa_flow_'.$_REQUEST['name']);
+			$this -> _folder_export_detail($data,'smeoa_flow_'.$_REQUEST['name'],$_REQUEST['name'],$_REQUEST['date']);
 			
 // 			$this -> _folder_export($model, $map);
 		} else {
@@ -365,7 +366,7 @@ class FlowAction extends CommonAction {
 			}else{
 				$flow_list[$k]['auth'] = 0;
 			}
-			if(!empty($v['confirm']) && is_array($v['confirm'])){
+			if(!empty($v['confirm'])){
 				$confirm = explode('|',$v['confirm']);
 				$flowLog = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is null'))->find();
 				if(!empty($flowLog)){
@@ -383,11 +384,8 @@ class FlowAction extends CommonAction {
 				}
 				$s = substr($s,0,strlen($s)-4);
 				$flow_list[$k]['flow_name'] = $s;
-				dump($confirm_name);
 			}
-			
 		}
-		
 		$this -> assign("list", $flow_list);
 		$this -> display();
 	}
@@ -468,7 +466,7 @@ class FlowAction extends CommonAction {
 		$objWriter -> save('php://output');
 		exit ;
 	}
-	function _folder_export_detail($data,$table_name){
+	function _folder_export_detail($data,$table_name,$type,$date){
 		$sql = 'SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "'.$table_name.'" AND TABLE_SCHEMA = "smeoa"';
 		$Model = new Model();
 		$comment = $Model->query($sql);
@@ -491,9 +489,21 @@ class FlowAction extends CommonAction {
 		//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
 		$q = $objPHPExcel -> setActiveSheetIndex(0);
 		$start = ord('A');
+		$l=0;
 		foreach($comment as $k=>$v){
 			$q = $q -> setCellValue(chr($start+$k)."$i", $v['COLUMN_COMMENT']);
 			$q ->getColumnDimension(chr($start+$k))->setAutoSize(true);
+			$l = $k;
+		}
+		if($type=='office_use_application'){//办公用品领用
+			$q = $q -> setCellValue(chr($start+$l)."$i", '用户');
+			$q ->getColumnDimension(chr($start+$l))->setAutoSize(true);
+		}elseif ($type=='goods_procurement_allocation'){//物品采购调拨申请单
+			$q = $q -> setCellValue(chr($start+$l)."$i", '用户');
+			$q ->getColumnDimension(chr($start+$l))->setAutoSize(true);
+		}elseif ($type=='office_supplies_application'){//办公用品采购
+			$q = $q -> setCellValue(chr($start+$l)."$i", '用户');
+			$q ->getColumnDimension(chr($start+$l))->setAutoSize(true);
 		}
 // 		$objPHPExcel -> setActiveSheetIndex(0) -> setCellValue("A$i", "编号") -> setCellValue("B$i", "类型") -> setCellValue("C$i", "标题") -> setCellValue("D$i", "登录时间") -> setCellValue("E$i", "部门") -> setCellValue("F$i", "登录人") -> setCellValue("G$i", "状态") -> setCellValue("H$i", "审批") -> setCellValue("I$i", "协商") -> setCellValue("J$i", "抄送") -> setCellValue("J$i", "审批情况");
 		foreach ($list as $val) {
@@ -548,11 +558,17 @@ class FlowAction extends CommonAction {
 		}
 		
 		// Rename worksheet
-		$objPHPExcel -> getActiveSheet() -> setTitle('流程统计');
+		$node = M('Node')->where(array('url'=>array('like','%name='.$type)))->find();
+		if($node){
+			$title = $node['name'].$date;
+		}else{
+			$title = $date;
+		}
+		$objPHPExcel -> getActiveSheet() -> setTitle($title);
 		
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel -> setActiveSheetIndex(0);
-		$file_name = "流程统计.xlsx";
+		$file_name = $title.".xlsx";
 		// Redirect output to a client’s web browser (Excel2007)
 		header("Content-Type: application/force-download");
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

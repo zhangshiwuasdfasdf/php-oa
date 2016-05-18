@@ -16,17 +16,15 @@
 	<div class="form-group col-sm-6">
 		<label class="col-sm-4 control-label" for="name">开始时间*：</label>
 		<div class="col-sm-8">
-			<input data-date-format="yyyy-mm-dd" value="{$vo.start_date}" type="text" id="start_date" name="start_date" readonly="readonly" class="form-control input-date"   check="require" msg="请输入开始日期">
-			<select id="start_time" name="start_time" class="form-control"></select>
+			<input data-date-format="yyyy-mm-dd" value="{$vo.start_time}" type="text" id="start_time" name="start_time" readonly="readonly" class="form-control input-date-time"   check="require" msg="请输入开始日期">
 		</div>
 	</div>
 
 	<div class="form-group col-sm-6">
 		<label class="col-sm-4 control-label" for="name">结束时间*：</label>
 		<div class="col-sm-8">
-			<input data-date-format="yyyy-mm-dd" value="{$vo.end_date}" type="text" id="end_date" name="end_date" readonly="readonly"
-			class="form-control input-date" check="eqt|start_date" msg="请输入结束日期">
-			<select id="end_time" name="end_time" class="form-control"></select>
+			<input data-date-format="yyyy-mm-dd" value="{$vo.end_time}" type="text" id="end_time" name="end_time" readonly="readonly"
+			class="form-control input-date-time" msg="请输入结束日期">
 		</div>
 	</div>
 

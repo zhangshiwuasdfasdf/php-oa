@@ -51,9 +51,27 @@
 		</div>
 	</div>
 </form>
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-left">
+			<div class="btn-group">
+				<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 标记为 <span class="fa fa-caret-down"></span> </a>
+				<ul class="dropdown-menu">
+					<li onclick="mark('readed');">
+						<a>已读</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="ul_table message-container">
 	<ul>
 		<li class="thead">
+			<label class="inline pull-left col-3">
+				<input class="ace" type="checkbox" name="id-toggle-all" id="id-toggle-all" />
+				<span class="lbl"></span>
+			</label>
 			<div class="pull-left">
 				<span class="col-10 ">编号</span>
 				<span class="col-10 ">文件夹</span>				
@@ -75,6 +93,10 @@
 			<form method="post" action="" name="form_data" id="form_data">
 				<foreach name="list" item="vo">
 					<li class="tbody <php> if((!in_array($vo['id'],$readed_id))&&($vo['create_time']>time()-3600*8*24)) echo("bold")</php>"">
+						<label class="inline pull-left col-3">
+							<input class="ace" type="checkbox" name="id[]" value="{$vo.id}" />
+							<span class="lbl"></span>
+						</label>
 						<div class="pull-left">
 							<span class="col-10 ">{$vo.notice_no}</span>
 							<span class="col-10  autocut">{$vo.folder_name}</span>
