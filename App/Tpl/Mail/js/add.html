@@ -40,7 +40,8 @@
 					if ($(this).parents(".inputbox").find(".search ul").html() != "") {
 						name = $(".search li.active").text().replace(/<.*>/, '');
 						email = $(".search li.active a").attr("title");
-						html = conv_inputbox_item(email, name, email, email);
+						id = $(".search li.active a").attr("data");
+						html = conv_inputbox_item(id, name, email, email);
 						$(this).parents(".inputbox").find("span.address_list").append(html);
 						$(this).parents(".inputbox").find(".search ul").html("");
 						$(this).val("");
@@ -68,7 +69,7 @@
 								if (json.length > 0) {
 									search.html("");
 									$.each(json, function(i) {
-										search.append('<li><a title="' + json[i].email + '">' + json[i].name + '&lt;' + json[i].email + '&gt;</a></li>');
+										search.append('<li><a data="' + json[i].id + '" title="' + json[i].email + '">' + json[i].name + '&lt;' + json[i].email + '&gt;</a></li>');
 									});
 									search.children("li:first").addClass("active");
 									search.show();

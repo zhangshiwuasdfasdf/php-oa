@@ -15,12 +15,23 @@ class MailaccountAction extends CommonAction {
 	protected $config = array('app_type' => 'personal');
 	public function index(){
 		$mail_user = M("MailAccount") -> find(get_user_id());
-		$this -> assign('mail_user', $mail_user);
 		if (count($mail_user)) {
 			$this -> assign('opmode', 'edit');
 		} else {
 			$this -> assign('opmode', 'add');
 		}
+		if(empty($mail_user)){
+			$user_id = get_user_id();
+			$user = M('user') -> find($user_id);
+			$mail_user['id'] = $user_id;
+			$mail_user['email'] = $user['email'];
+			$mail_user['mail_name'] = '神洲酷奇-' .$user['name'];
+			$mail_user['pop3svr'] = 'imap.exmail.qq.com';
+			$mail_user['smtpsvr'] = 'smtp.exmail.qq.com';
+			$mail_user['mail_id'] = $user['email'];
+			$mail_user['mail_pwd'] = '';
+		}
+		$this -> assign('mail_user', $mail_user);
 		$this -> display();
 	}
 
