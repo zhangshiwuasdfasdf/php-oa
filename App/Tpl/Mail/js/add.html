@@ -9,7 +9,8 @@
 		$(document).on("click", ".inputbox .search li",function() {
 			name = $(this).text().replace(/<.*>/, '');
 			email = $(this).find("a").attr("title");
-			html = conv_inputbox_item(email, name, email, email);
+			id = $(this).find("a").attr("data");
+			html = conv_inputbox_item(id, name, email, email);
 
 			inputbox = $(this).parents(".inputbox");
 			inputbox.find("span.address_list").append(html);
