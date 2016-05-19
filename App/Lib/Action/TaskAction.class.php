@@ -114,10 +114,19 @@ class TaskAction extends CommonAction {
 			default :
 				break;
 		}
-
+		
 		$model = D('Task');
 		if (!empty($model)) {
-			$this -> _list($model, $where);
+			$res = $this -> _list($model, $where);
+			$model_task_log = D('TaskLog');
+			$task_extension = array();
+			foreach ($res as $k=>$v){
+				$r = $model_task_log->where(array('task_id'=>array('eq',$v['id'])))->find();
+				if(!empty($r)){
+					$task_extension[$k]['status'] = $r['status'];
+				}
+			}
+			$this -> assign('task_extension', $task_extension);
 		}
 		$this -> display();
 	}
@@ -192,6 +201,13 @@ class TaskAction extends CommonAction {
 			$where_dept_accept['type'] = 2;
 			$where_dept_accept['executor'] = array('eq', get_dept_id());
 			$task_dept_accept = M("TaskLog") -> where($where_dept_accept) -> find();
+// 			if(empty($task_dept_accept)){
+// 				$where_dept_accept['status'] = 0;
+// 				$where_dept_accept['task_id'] = $id;
+// 				$where_dept_accept['type'] = 1;
+// 				$where_dept_accept['executor'] = array('eq', get_user_id());
+// 				$task_dept_accept = M("TaskLog") -> where($where_dept_accept) -> find();
+// 			}
 			if ($task_dept_accept) {
 				$this -> assign('is_accept', 1);
 				$this -> assign('task_log_id', $task_dept_accept['id']);
@@ -280,15 +296,14 @@ class TaskAction extends CommonAction {
 
 		$task_id = I('task_id');
 		$where_log1['type'] = 2;
-		$where_log1['executor'] = get_user_id();
+		$where_log1['executor'] = get_dept_id();
 		$where_log1['task_id'] = $task_id;
 		$task_log1 = M("TaskLog") -> where($where_log1) -> find();
-
 		if ($task_list1) {
 			$this -> assign('task_log', $task_log1);
 		} else {
 			$where_log2['type'] = 1;
-			$where_log2['executor'] = get_dept_id();
+			$where_log2['executor'] = get_user_id();
 			$where_log2['task_id'] = $task_id;
 			$task_log2 = M("TaskLog") -> where($where_log2) -> find();
 

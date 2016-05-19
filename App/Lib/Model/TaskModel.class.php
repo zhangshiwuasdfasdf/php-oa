@@ -53,6 +53,34 @@ class TaskModel extends CommonModel {
 			}
 		}
 	}
+	function _after_update($data, $options) {
+		$executor_list = $data['executor'];
+		//$executor_list="管理部|dept_6;副总1003/副总|1003;经理3001/经理|3001;";
+		$executor_list = array_filter(explode(';', $executor_list));
+		M("TaskLog") ->where(array('task_id'=>$data['id']))-> delete();
+		if (!empty($executor_list)) {
+			foreach ($executor_list as $key => $val) {
+				$tmp = explode('|', $val);
+				$executor_name = $tmp[0];
+				$executor = $tmp[1];
+	
+				if (strpos($executor, "dept_") !== false) {
+					$type = 2;
+					$executor = str_replace('dept_', '', $executor);
+				} else {
+					$type = 1;
+					$this -> _send_mail($data['id'],$executor);
+				}
+	
+				$log_data['executor'] = $executor;
+				$log_data['executor_name'] = $executor_name;
+				$log_data['type'] = $type;
+				$log_data['assigner'] = $data['user_id'];
+				$log_data['task_id'] = $data['id'];
+				M("TaskLog") -> add($log_data);
+			}
+		}
+	}
 
 	function forword($task_id, $executor_list) {
 		$executor_list = array_filter(explode(';', $executor_list));

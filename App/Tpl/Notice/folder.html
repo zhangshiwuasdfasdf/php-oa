@@ -53,7 +53,7 @@
 		</div>
 	</div>
 </form>
-<if condition="$auth['write']">
+
 	<div class="operate panel panel-default">
 		<div class="panel-body">
 			<div class="pull-left">
@@ -66,13 +66,23 @@
 						</ul>
 					</div>
 				</if>
+				<div class="btn-group">
+					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 标记为 <span class="fa fa-caret-down"></span> </a>
+					<ul class="dropdown-menu">
+						<li onclick="mark('readed');">
+							<a>已读</a>
+						</li>
+					</ul>
+				</div>
 			</div>
+			<if condition="$auth['write']">
 			<div class="pull-right">
 				<a class="btn btn-sm btn-primary" onclick="add()">新建</a>
 			</div>
+			</if>
 		</div>
 	</div>
-</if>
+
 <div class="ul_table">
 	<ul>
 		<li class="thead">

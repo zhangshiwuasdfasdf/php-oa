@@ -15,6 +15,18 @@
 					});
 				});
 				break;
+			case "readed":
+				sendAjax("{:U('mark','action=readed')}", vars, function(data) {
+					if (data.status){
+						$("input[name='id[]']:checked").each(function() {
+							$(this).parents("li").removeClass("bold");
+							$(this).parents("li").addClass("normal");
+						});
+						$("input[name='id[]']:checked").prop('checked', false);
+						$("#id-toggle-all").prop('checked', false);
+					}
+				});
+				break;
 			default:
 		}
 	}

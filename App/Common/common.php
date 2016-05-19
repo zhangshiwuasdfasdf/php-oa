@@ -111,6 +111,7 @@ function get_new_count() {
 	//获取日程事项
 	$where = array();
 	$where['user_id'] = $user_id;
+	$where['is_del'] = 0;
 	$where['start_time'] = array("elt", date("Y-m-d H:i:s"));
 	$where['end_time'] = array("egt", date("Y-m-d H:i:s"));
 	$new_schedule_count = M("Schedule") -> where($where) -> count();

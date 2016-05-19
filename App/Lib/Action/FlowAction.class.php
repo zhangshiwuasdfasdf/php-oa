@@ -564,6 +564,7 @@ class FlowAction extends CommonAction {
 		}else{
 			$title = $date;
 		}
+		$title = str_replace('/','_',$title);
 		$objPHPExcel -> getActiveSheet() -> setTitle($title);
 		
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet

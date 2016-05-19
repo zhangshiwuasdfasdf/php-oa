@@ -113,7 +113,7 @@
 					<div class="pull-right">
 						<span class="col-20 autocut">&nbsp;{$vo.executor|show_contact}</span>
 						<span class="col-15">&nbsp;{$vo.expected_time}</span>
-						<span class="col-10">&nbsp;{$vo.status|task_status}</span>
+						<span class="col-10">&nbsp;{$task_extension[$key].status|task_status}</span>
 						<span class="col-6 text-center">
 							<if condition="($vo.status lt 3) and ($vo.user_id eq $user_id)">
 								<a href="{:U('edit','id='.$vo['id'])}">修改</a>&nbsp;<a href="{:U('del','id='.$vo['id'])}">删除</a>

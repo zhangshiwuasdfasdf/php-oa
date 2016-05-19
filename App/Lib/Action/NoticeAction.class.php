@@ -99,7 +99,12 @@ class NoticeAction extends CommonAction {
 				foreach ($id as $idd){
 					$s.=$idd.',';
 				}
-				$this -> _readed($s);
+				$res = $this -> _readed($s);
+				if(!empty($res)){
+					$this -> ajaxReturn('', "操作成功", 1);
+				}else{
+					$this -> ajaxReturn('', "操作失败", 1);
+				}
 				break;
 			//增加签收
 			default :
@@ -250,6 +255,6 @@ class NoticeAction extends CommonAction {
 		$readed_notice=M("Notice")->where($map)->getField("id,name");
 		$readed_notice=implode(",",array_keys($readed_notice));
 		$where['id']=array('eq',get_user_id());
-		M("UserConfig") -> where($where) -> setField('readed_notice', $readed_notice);
+		return M("UserConfig") -> where($where) -> setField('readed_notice', $readed_notice);
 	}
 }
