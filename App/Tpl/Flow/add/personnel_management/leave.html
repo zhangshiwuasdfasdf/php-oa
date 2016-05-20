@@ -28,15 +28,16 @@
     <td height="90" align="center" bgcolor="#fff">类别</td>
     <td height="90" colspan="8" align="left" bgcolor="#fff">
     	<ul class="ma7">
-        	<li><input type="radio" name="style" value="年假">年假</li>
-            <li><input type="radio" name="style" value="事假" checked="checked">事假</li>
-            <li><input type="radio" name="style" value="病假">病假</li>
-            <li><input type="radio" name="style" value="婚假">婚假</li>
-            <li><input type="radio" name="style" value="产假">产假</li>
-            <li><input type="radio" name="style" value="丧假">丧假</li>
-            <li><input type="radio" name="style" value="工伤假">工伤假</li>
-            <li><input type="radio" name="style" value="调休">调休</li>
-            <li><input type="radio" name="style" value="其他">其他</li>
+        	<li><input type="radio" name="style" value="年假" onclick="$('#available_hour').attr('style','display:none')">年假</li>
+            <li><input type="radio" name="style" value="事假" checked="checked" onclick="$('#available_hour').attr('style','display:none')">事假</li>
+            <li><input type="radio" name="style" value="病假" onclick="$('#available_hour').attr('style','display:none')">病假</li>
+            <li><input type="radio" name="style" value="婚假" onclick="$('#available_hour').attr('style','display:none')">婚假</li>
+            <li><input type="radio" name="style" value="产假" onclick="$('#available_hour').attr('style','display:none')">产假</li>
+            <li><input type="radio" name="style" value="丧假" onclick="$('#available_hour').attr('style','display:none')">丧假</li>
+            <li><input type="radio" name="style" value="工伤假" onclick="$('#available_hour').attr('style','display:none')">工伤假</li>
+            <li><input type="radio" name="style" value="调休" id="tiaoxiu" onclick="$('#available_hour').attr('style','display:inline');$('#start_time').val('');$('#end_time').val('');">调休</li>
+            <li><input type="radio" name="style" value="其他" onclick="$('#available_hour').attr('style','display:none')">其他</li>
+            <li id="available_hour" style="display:none">（您的可用调休时间为{$user_info.available_hour}小时）</li>
         </ul>
         
   	</td>

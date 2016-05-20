@@ -600,7 +600,7 @@ class FlowAction extends CommonAction {
 		$uid = get_user_id();
 		if($uid){
 			$info = array();
-			$user_info = get_user_info($uid,'name,dept_name,dept_id,office_tel,mobile_tel,duty,email');
+			$user_info = get_user_info($uid,'name,dept_name,dept_id,office_tel,mobile_tel,duty,email,available_hour');
 			foreach ($user_info as $v){
 				$info = $v;
 			}
@@ -1386,6 +1386,30 @@ class FlowAction extends CommonAction {
 				if ($list !== false) {//保存成功
 					D("Flow") -> save();
 					D("Flow") -> next_step($flow_id, $step);
+					
+					if(D("Flow") -> is_last_confirm($flow_id)){
+						if(getModelName($flow_id)=='FlowOverTime'){//加班单
+							$flow = M('FlowOverTime')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+							if($flow['use_type']=='调休'){
+								$add_hour = $flow['day_num']*24+$flow['hour_num'];
+								$flow = M('Flow')->find($flow_id);
+								$user = M('User')->find($flow['user_id']);
+								$data['id'] = $flow['user_id'];
+								$data['available_hour'] = $user['available_hour']+$add_hour;
+								M('User')->save($data);
+							}
+						}elseif(getModelName($flow_id)=='FlowLeave'){//请假/调休单
+							$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+							if($flow['style']=='调休'){
+								$del_hour = $flow['day_num']*8+$flow['hour_num'];
+								$flow = M('Flow')->find($flow_id);
+								$user = M('User')->find($flow['user_id']);
+								$data['id'] = $flow['user_id'];
+								$data['available_hour'] = $user['available_hour']-$del_hour;
+								M('User')->save($data);
+							}
+						}
+					}
 					$this -> assign('jumpUrl', U('flow/folder?fid=confirm'));
 					$this -> success('操作成功!');
 				} else {

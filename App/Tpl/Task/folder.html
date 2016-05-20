@@ -51,7 +51,9 @@
 				<li <eq name="fid" value="all">class="active"</eq>>
 					<a href="{:U('folder','fid=all')}">所有任务</a>
 				</li>
-
+				<li <eq name="fid" value="about_me">class="active"</eq>>
+					<a href="{:U('folder','fid=about_me')}">与我有关的任务<notempty name="task_count.task_about_me_count">&nbsp;({$task_count.task_about_me_count})</notempty></a>
+				</li>
 				<li <eq name="fid" value="todo">class="active"</eq>>
 					<a href="{:U('folder','fid=todo')}">等我接受的任务<notempty name="task_count.task_todo_count">&nbsp;({$task_count.task_todo_count})</notempty></a>
 				</li>

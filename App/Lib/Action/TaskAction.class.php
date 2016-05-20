@@ -45,6 +45,26 @@ class TaskAction extends CommonAction {
 			case 'all' :
 				$this -> assign("folder_name", '所有任务');
 				break;
+			case 'about_me' :
+				$this -> assign("folder_name", '与我有关的任务');
+			
+				$where_log['assigner'] = get_user_id();
+				$where_log['transactor'] = get_user_id();
+				$where_log['_logic'] = 'or';
+				$task_list1 = M("TaskLog") -> where($where_log) -> getField('task_id id,task_id');
+			
+				$where['user_id'] = get_user_id();
+				$where['executor'] = array('like',array('%'.get_user_name().'|'.get_user_id().';'.'%','%'.get_dept_name().'|'.'dept_'.get_dept_id().';'.'%'),'or');
+				$where['_logic'] = 'or';
+				$task_list = M("Task")->field('id') -> where($where) -> select();
+				$task_list2 = array();
+				foreach ($task_list as $v){
+					$task_list2[] = $v['id'];
+				}
+				$task_list = array_unique(array_merge($task_list1,$task_list2));
+			
+				$where['id'] = array('in', $task_list);
+				break;
 			case 'todo' :
 				$this -> assign("folder_name", '等待我接受的任务');
 

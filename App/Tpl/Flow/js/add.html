@@ -31,6 +31,15 @@
 						if(result.data){
 							$("#day_num").val(result.data.day);
 							$("#hour_num").val(result.data.hour);
+							if($("#name").val()=='请假/调休单'){
+								if($("input[name='style']:checked").val()=='调休'){
+									if(result.data.day*8+result.data.hour>{$user_info.available_hour}){
+										ui_alert('您的可用调休时间不足',function(){
+											location.reload();
+										});
+									}
+								}
+							}
 						}else if(type!='metting'){
 							ui_alert('最少2小时',function(){
 								location.reload();
@@ -382,6 +391,13 @@
 	function popup_confirm() {
 		winopen("{:U('popup/confirm')}", 730, 574);
 	}
-
+	/*
+	function available_hour_show(){
+		$(#available_hour).attr('style','display:inline');
+	}
+	function available_hour_hidden(){
+		$(#available_hour).attr('style','display:inline');
+	}
+	*/
 
 </script>
