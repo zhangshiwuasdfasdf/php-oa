@@ -10,37 +10,6 @@ class MessageAction extends CommonAction {
 		}
 	}
 	
-	function tree_menu($tree, $level = 0) {
-		$level++;
-		$html = "";
-		if (is_array($tree)) {
-			$html = "<ul class=\"tree_menu\">\r\n";
-			foreach ($tree as $val) {
-				if (isset($val["name"])) {
-					$title = $val["name"];
-					$id = $val["id"];
-					if (empty($val["id"])) {
-						$id = $val["name"];
-					}
-					if (!empty($val["is_del"])) {
-						$del_class = "is_del";
-					} else {
-						$del_class = "";
-					}
-					if (isset($val['_child'])) {
-						$html = $html . "<li>\r\n<span class=\"$del_class group_node\" node=\"$id\" ><i class=\"fa fa-angle-right level$level\"></i><span>$title</span></span>\r\n";
-						$html = $html . $this->tree_menu($val['_child'], $level);
-						$html = $html . "</li>\r\n";
-					} else {
-						$html = $html . "<li>\r\n<a class=\"$del_class\" node=\"$id\" ><i class=\"fa fa-angle-right level$level\"></i><span>$title</span></a>\r\n</li>\r\n";
-					}
-				}
-			}
-			$html = $html . "</ul>\r\n";
-		}
-		return $html;
-	}
-	
 	function add() {
 		$widget['editor'] = true;
 		$widget['uploader'] = true;
@@ -59,7 +28,7 @@ class MessageAction extends CommonAction {
 		if(is_mobile_request()){
 			$this -> assign('menu', popup_tree_menu($tree,0,4));
 		}else{
-			$this -> assign('menu', $this->tree_menu($tree));
+			$this -> assign('menu', popup_tree_menu($tree,0,5));
 		}
 		$this -> assign("contact", $list);		
 		$this -> assign("widget", $widget);	

@@ -36,7 +36,7 @@
 			name = $(this).text().replace(/<.*>/, '');
 			email = $(this).find("a").attr("title");
 			id = $(this).find("a").attr("data");
-			html = conv_inputbox_item(email, name, email, id);
+			html = conv_inputbox_item(id, name, id, id);
 
 			inputbox = $(this).parents(".inputbox");
 			inputbox.find("span.address_list").append(html);
@@ -68,7 +68,7 @@
 						name = $(".search li.active").text().replace(/<.*>/, '');
 						email = $(".search li.active a").attr("title");
 						id = $(".search li.active a").attr("data");
-						html = conv_inputbox_item(id, name, email, email);
+						html = conv_inputbox_item(id, name, id, id);
 						$(this).parents(".inputbox").find("span.address_list").append(html);
 						$(this).parents(".inputbox").find(".search ul").html("");
 

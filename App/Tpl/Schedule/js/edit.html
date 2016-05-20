@@ -7,7 +7,7 @@
 		window.onbeforeunload=null;
 		$("#actor").val("");
 		$("#actor_wrap span.address_list span").each(function() {
-			$("#actor").val($("#actor").val() + $(this).text().replace(';', '') + '|' + $(this).attr("title") + ";");
+			$("#actor").val($("#actor").val() + $(this).text().replace(';', '') + '|' + $(this).attr("data") + ";");
 		});
 		if (check_form("form_data")) {
 			sendForm("form_data", "{:U('save')}");
@@ -19,12 +19,12 @@
 			$(this).parent().parent().remove();
 		});
 		
-		/* 查找联系人input 功能*/
+		/* 鏌ユ壘鑱旂郴浜篿nput 鍔熻兘*/
 		$(document).on("click", ".inputbox .search li", function() {
 			name = $(this).text().replace(/<.*>/, '');
 			email = $(this).find("a").attr("title");
 			id = $(this).find("a").attr("data");
-			html = conv_inputbox_item(email, name, email, id);
+			html = conv_inputbox_item(id, name, email, email);
 
 			inputbox = $(this).parents(".inputbox");
 			inputbox.find("span.address_list").append(html);
@@ -34,7 +34,7 @@
 			inputbox.find(".search").hide();
 		});
 		
-		/* 查找联系人input 功能*/
+		/* 鏌ユ壘鑱旂郴浜篿nput 鍔熻兘*/
 		$(".inputbox .letter").keyup(function(e) {
 			switch(e.keyCode) {
 				case 40:
@@ -70,7 +70,7 @@
 							$(this).parents(".inputbox").find("span.address_list").append(html);
 							$(this).val("");
 						} else {
-							ui_error("邮件格式错误");
+							ui_error("閭欢鏍煎紡閿欒");
 							return false;
 						}
 					}

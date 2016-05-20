@@ -35,7 +35,7 @@ class StaffAction extends CommonAction {
 			$menu = array();
 			$menu = $node -> field('id,pid,name') ->where("is_del=0")-> order('sort asc') -> select();
 			$tree = list_to_tree($menu);
-			$this -> assign('menu', popup_tree_menu($tree));
+			$this -> assign('menu', popup_tree_menu($tree,0,100,true));
 			$this -> display();
 		}else{//手机端通讯录
 			$prefix = C('DB_PREFIX');

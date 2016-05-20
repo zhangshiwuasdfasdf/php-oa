@@ -102,7 +102,7 @@ class PopupAction extends CommonAction {
 		$list = array();
 		$list = $model->where('is_del=0') -> field('id,pid,name') -> order('sort asc') -> select();
 		$list = list_to_tree($list);
-		$this -> assign('list_company', popup_tree_menu($list));
+		$this -> assign('list_company', popup_tree_menu($list,0,4));
 
 		$model = M("Rank");
 		$list = array();
@@ -122,7 +122,7 @@ class PopupAction extends CommonAction {
 		$tag_list['#'] = "未分组";
 		$this -> assign("list_personal", $tag_list);
 
-		$this -> assign('type', 'rank');
+		$this -> assign('type', 'company');
 		$this -> display();
 		return;
 	}
@@ -135,7 +135,7 @@ class PopupAction extends CommonAction {
 		$list = array();
 		$list = $model->where('is_del=0') -> field('id,pid,name') -> order('sort asc') -> select();
 		$list = list_to_tree($list);
-		$this -> assign('list_company', popup_tree_menu($list));
+		$this -> assign('list_company', popup_tree_menu($list,0,4));
 
 		$model = M("Rank");
 		$list = array();
@@ -149,7 +149,7 @@ class PopupAction extends CommonAction {
 		$list = list_to_tree($list);
 		$this -> assign('list_position', popup_tree_menu($list));
 
-		$this -> assign('type', 'rank');
+		$this -> assign('type', 'company');
 		$this -> display();
 		return;
 	}
@@ -190,7 +190,7 @@ class PopupAction extends CommonAction {
 		$list = array();
 		$list = $model->where('is_del=0') -> field('id,pid,name') -> order('sort asc') -> select();
 		$list = list_to_tree($list);
-		$this -> assign('list_company', popup_tree_menu($list));
+		$this -> assign('list_company', popup_tree_menu($list,0,4));
 
 		$model = M("Rank");
 		$list = array();
@@ -204,7 +204,7 @@ class PopupAction extends CommonAction {
 		$list = list_to_tree($list);
 		$this -> assign('list_position', popup_tree_menu($list));
 
-		$this -> assign('type', 'rank');
+		$this -> assign('type', 'company');
 		$this -> display();
 		return;
 	}
@@ -399,7 +399,7 @@ class PopupAction extends CommonAction {
 		$list = array();
 		$list = $model->where('is_del=0') -> field('id,pid,name') -> order('sort asc') -> select();
 		$list = list_to_tree($list);
-		$this -> assign('list_company', popup_tree_menu($list));
+		$this -> assign('list_company', popup_tree_menu($list,0,4));
 
 		$model = M("Rank");
 		$list = array();
@@ -413,7 +413,7 @@ class PopupAction extends CommonAction {
 		$list = list_to_tree($list);
 		$this -> assign('list_position', popup_tree_menu($list));		
 
-		$this -> assign('type', 'rank');
+		$this -> assign('type', 'company');
 		$this -> display();
 		return;
 	}
