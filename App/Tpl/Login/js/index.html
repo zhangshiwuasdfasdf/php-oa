@@ -1,6 +1,7 @@
 <script type="text/javascript">
 	function login() {
 		if (check_form("form_login")) {
+			//alert($("#remember").val());
 			sendForm("form_login", "{:U('login/check_login')}");
 		}
 	}

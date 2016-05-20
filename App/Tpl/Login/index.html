@@ -13,15 +13,16 @@
 	<div class="main">
 	<ul class="ma1">
     	<li><img src="__PUBLIC__/img/dllogo.png"></li>
-        <li class="ma2">
-        	<form method="post" id="form_login"  class="main2">
+    	<form method="post" id="form_login"  class="main2">
+        	<li class="ma2">
                 <span class="ma3">用户名</span>
-                <input class="ma4" type="text" id="emp_no" name="emp_no" required>
-                <input class="ma6" type="password" id="password" name="password" required>
+                <input class="ma4" type="text" id="emp_no" name="emp_no" value="{$Think.session.remember_emp_no}" required>
+                <input class="ma6" type="password" id="password" name="password" value="{$Think.session.remember_password}" required>
                 <span class="ma5">密码</span>
-            </form>
-        </li>
-        <li class="ma7"><input type="checkbox" id="d" name="remember" value="1"><label for="d">记住密码</label></li>
+            
+        	</li>
+        	<li class="ma7"><input type="checkbox" id="remember" name="remember" <if condition="($Think.session.is_remember_password eq true)"> checked="checked"</if> value="1"><label for="d">记住密码</label></li>
+        </form>
         <li class="ma8"><button class="dl" type="button" onclick="login();">登&nbsp;录</button></li>
     </ul>
 	</div>

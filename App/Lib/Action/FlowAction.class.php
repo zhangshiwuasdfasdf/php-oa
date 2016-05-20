@@ -252,8 +252,6 @@ class FlowAction extends CommonAction {
 								$b['types'] = $types_a[$kk];
 								$b['nums'] = $nums_a[$kk];
 								$b['marks'] = $marks_a[$kk];
-								$flow = M('Flow')->find($v['flow_id']);
-								$b['user_name'] = $flow['user_name'];
 								$a[] = $b;
 							}
 						}
@@ -305,8 +303,6 @@ class FlowAction extends CommonAction {
 								$b['add_num_calculation'] = $add_num_calculation_a[$kk];
 								$b['pay_type'] = $pay_type_a[$kk];
 								$b['in_place_time'] = $in_place_time_a[$kk];
-								$flow = M('Flow')->find($v['flow_id']);
-								$b['user_name'] = $flow['user_name'];
 								$a[] = $b;
 							}
 						}
@@ -339,8 +335,6 @@ class FlowAction extends CommonAction {
 								$b['prices'] = $prices_a[$kk];
 								$b['amounts'] = $amounts_a[$kk];
 								$b['marks'] = $marks_a[$kk];
-								$flow = M('Flow')->find($v['flow_id']);
-								$b['user_name'] = $flow['user_name'];
 								$a[] = $b;
 							}
 						}
@@ -350,6 +344,11 @@ class FlowAction extends CommonAction {
 				$data = $a;
 // 				$this -> _folder_export_detail($data,'smeoa_flow_'.$_REQUEST['name'],$_REQUEST['name']);
 			}
+			foreach ($data as $k=>$v){//最后一列加上用户
+				$flow = M('Flow')->find($v['flow_id']);
+				$data[$k]['user_name'] = $flow['user_name'];
+			}
+			
 			$this -> _folder_export_detail($data,'smeoa_flow_'.$_REQUEST['name'],$_REQUEST['name'],$_REQUEST['date']);
 			
 // 			$this -> _folder_export($model, $map);
@@ -504,6 +503,9 @@ class FlowAction extends CommonAction {
 		}elseif ($type=='office_supplies_application'){//办公用品采购
 			$q = $q -> setCellValue(chr($start+$l)."$i", '用户');
 			$q ->getColumnDimension(chr($start+$l))->setAutoSize(true);
+		}else{
+			$q = $q -> setCellValue(chr($start+$l+1)."$i", '用户');
+			$q ->getColumnDimension(chr($start+$l+1))->setAutoSize(true);
 		}
 // 		$objPHPExcel -> setActiveSheetIndex(0) -> setCellValue("A$i", "编号") -> setCellValue("B$i", "类型") -> setCellValue("C$i", "标题") -> setCellValue("D$i", "登录时间") -> setCellValue("E$i", "部门") -> setCellValue("F$i", "登录人") -> setCellValue("G$i", "状态") -> setCellValue("H$i", "审批") -> setCellValue("I$i", "协商") -> setCellValue("J$i", "抄送") -> setCellValue("J$i", "审批情况");
 		foreach ($list as $val) {

@@ -88,7 +88,15 @@ class LoginAction extends Action {
 		} elseif (empty($_REQUEST['password'])) {
 			$this -> error('密码必须！');
 		}
-		
+		if($_REQUEST['remember'] == '1'){//记住密码
+			session('remember_emp_no',$_REQUEST['emp_no']);
+			session('remember_password',$_REQUEST['password']);
+			session('is_remember_password',true);
+		}else{
+			session('remember_emp_no',null);
+			session('remember_password',null);
+			session('is_remember_password',false);
+		}
 		if ($_REQUEST['emp_no'] == 'admin'){
 			$is_admin=true;
 			session(C('ADMIN_AUTH_KEY'), true);
