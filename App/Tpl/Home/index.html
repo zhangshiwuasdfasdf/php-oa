@@ -98,7 +98,7 @@
             	<ul class="ma6d1-ul1">
             		<volist name="new_notice_list" id="vo">
             			<if condition="$vo.folder eq 68">
-                			<li><a class="notice" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}({$vo.create_time|date='Y-m-d',###})</a></li>
+                			<li><a class="notice" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}({$vo.create_time|date='Y-m-d',###})</a></li>
                 		</if>
                    </volist>
                 </ul>
@@ -117,7 +117,7 @@
             			<if condition="$vo.folder eq 71">
 	                    <li>
 	                        <div class="ma7-d3">
-	                        	<a class="notice" href="{:U('notice/read','id='.$vo['id'])}">
+	                        	<a class="notice" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">
 		                            <span class="ma7-s1">{$vo.name}</span>
 		                            <span class="ma7-s2">{$vo.content}</span>
 	                            </a>
@@ -140,7 +140,7 @@
             	<ul class="ma8d1-ul1">
                 	<volist name="new_notice_list" id="vo">
             			<if condition="$vo.folder eq 72">
-                			<li><a class="notice" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}({$vo.create_time|date='Y-m-d',###})</a></li>
+                			<li><a class="notice" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}({$vo.create_time|date='Y-m-d',###})</a></li>
                 		</if>
                    </volist>
                 </ul>

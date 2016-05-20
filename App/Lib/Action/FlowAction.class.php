@@ -225,7 +225,13 @@ class FlowAction extends CommonAction {
 				$flow_id_array[] = $v['id'];
 			}
 			$data = M('Flow'.convertUnderline1($_REQUEST['name']))->where(array('flow_id'=>array('in',$flow_id_array)))->select();
-			
+			foreach ($data as $k=>$v){//
+				unset($data[$k]['id']);
+				unset($data[$k]['flow_id']);
+				$flow = M('Flow')->find($v['flow_id']);
+				array_unshift($data[$k],$flow['user_name']);
+// 				$data[$k]['user_name'] = $flow['user_name'];
+			}
 			if(in_array($_REQUEST['name'],array('goods_procurement_allocation','office_supplies_application','office_use_application'))){
 				$a = array();
 				foreach ($data as $k=>$v){
@@ -245,8 +251,9 @@ class FlowAction extends CommonAction {
 						foreach ($types_a as $kk=>$vv){
 							if($vv!=''){
 								$b = array();
-								$b['id'] = $v['id'];
-								$b['flow_id'] = $v['flow_id'];
+// 								$b['id'] = $v['id'];
+// 								$b['flow_id'] = $v['flow_id'];
+								$b['user_name'] = $flow['user_name'];
 								$b['ids'] = $ids_a[$kk];
 								$b['names'] = $names_a[$kk];
 								$b['types'] = $types_a[$kk];
@@ -287,8 +294,9 @@ class FlowAction extends CommonAction {
 						foreach ($types_a as $kk=>$vv){
 							if($vv!=''){
 								$b = array();
-								$b['id'] = $v['id'];
-								$b['flow_id'] = $v['flow_id'];
+// 								$b['id'] = $v['id'];
+// 								$b['flow_id'] = $v['flow_id'];
+								$b['user_name'] = $flow['user_name'];
 								$b['apply_time'] = $v['apply_time'];
 								$b['goods_name'] = $goods_name_a[$kk];
 								$b['types'] = $types_a[$kk];
@@ -326,8 +334,9 @@ class FlowAction extends CommonAction {
 						foreach ($types_a as $kk=>$vv){
 							if($vv!=''){
 								$b = array();
-								$b['id'] = $v['id'];
-								$b['flow_id'] = $v['flow_id'];
+// 								$b['id'] = $v['id'];
+// 								$b['flow_id'] = $v['flow_id'];
+								$b['user_name'] = $flow['user_name'];
 								$b['ids'] = $ids_a[$kk];
 								$b['names'] = $names_a[$kk];
 								$b['types'] = $types_a[$kk];
@@ -344,10 +353,10 @@ class FlowAction extends CommonAction {
 				$data = $a;
 // 				$this -> _folder_export_detail($data,'smeoa_flow_'.$_REQUEST['name'],$_REQUEST['name']);
 			}
-			foreach ($data as $k=>$v){//最后一列加上用户
-				$flow = M('Flow')->find($v['flow_id']);
-				$data[$k]['user_name'] = $flow['user_name'];
-			}
+// 			foreach ($data as $k=>$v){//最后一列加上用户
+// 				$flow = M('Flow')->find($v['flow_id']);
+// 				$data[$k]['user_name'] = $flow['user_name'];
+// 			}
 			
 			$this -> _folder_export_detail($data,'smeoa_flow_'.$_REQUEST['name'],$_REQUEST['name'],$_REQUEST['date']);
 			
@@ -469,6 +478,9 @@ class FlowAction extends CommonAction {
 		$sql = 'SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "'.$table_name.'" AND TABLE_SCHEMA = "smeoa"';
 		$Model = new Model();
 		$comment = $Model->query($sql);
+		//第一行移除id，flow_id
+		array_shift($comment);
+		array_shift($comment);
 // 		dump($comment);
 		
 		$list = $data;
@@ -487,26 +499,29 @@ class FlowAction extends CommonAction {
 		
 		//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
 		$q = $objPHPExcel -> setActiveSheetIndex(0);
-		$start = ord('A');
-		$l=0;
+		//第一列为用户
+		if($type=='office_use_application'){//办公用品领用
+			$q = $q -> setCellValue("A$i", '用户');
+// 			$q ->getColumnDimension('A')->setAutoSize(true);
+		}elseif ($type=='goods_procurement_allocation'){//物品采购调拨申请单
+			$q = $q -> setCellValue("A$i", '用户');
+// 			$q ->getColumnDimension('A')->setAutoSize(true);
+		}elseif ($type=='office_supplies_application'){//办公用品采购
+			$q = $q -> setCellValue("A$i", '用户');
+// 			$q ->getColumnDimension('A')->setAutoSize(true);
+		}else{
+			$q = $q -> setCellValue("A$i", '用户');
+// 			$q ->getColumnDimension('A')->setAutoSize(true);
+		}
+		
+		$start = ord('B');
+// 		$l=0;
 		foreach($comment as $k=>$v){
 			$q = $q -> setCellValue(chr($start+$k)."$i", $v['COLUMN_COMMENT']);
-			$q ->getColumnDimension(chr($start+$k))->setAutoSize(true);
-			$l = $k;
+// 			$q ->getColumnDimension(chr($start+$k))->setAutoSize(true);
+// 			$l = $k;
 		}
-		if($type=='office_use_application'){//办公用品领用
-			$q = $q -> setCellValue(chr($start+$l)."$i", '用户');
-			$q ->getColumnDimension(chr($start+$l))->setAutoSize(true);
-		}elseif ($type=='goods_procurement_allocation'){//物品采购调拨申请单
-			$q = $q -> setCellValue(chr($start+$l)."$i", '用户');
-			$q ->getColumnDimension(chr($start+$l))->setAutoSize(true);
-		}elseif ($type=='office_supplies_application'){//办公用品采购
-			$q = $q -> setCellValue(chr($start+$l)."$i", '用户');
-			$q ->getColumnDimension(chr($start+$l))->setAutoSize(true);
-		}else{
-			$q = $q -> setCellValue(chr($start+$l+1)."$i", '用户');
-			$q ->getColumnDimension(chr($start+$l+1))->setAutoSize(true);
-		}
+		
 // 		$objPHPExcel -> setActiveSheetIndex(0) -> setCellValue("A$i", "编号") -> setCellValue("B$i", "类型") -> setCellValue("C$i", "标题") -> setCellValue("D$i", "登录时间") -> setCellValue("E$i", "部门") -> setCellValue("F$i", "登录人") -> setCellValue("G$i", "状态") -> setCellValue("H$i", "审批") -> setCellValue("I$i", "协商") -> setCellValue("J$i", "抄送") -> setCellValue("J$i", "审批情况");
 		foreach ($list as $val) {
 			$i++;
@@ -538,7 +553,7 @@ class FlowAction extends CommonAction {
 			$ii = 0;
 			foreach($val as $kk=>$vv){
 				$w = $w -> setCellValue(chr($start2+$ii)."$i", $vv);
-				$w ->getColumnDimension(chr($start2+$ii))->setAutoSize(true);
+// 				$w ->getColumnDimension(chr($start2+$ii))->setAutoSize(true);
 				$ii++;
 			}
 			
@@ -558,7 +573,10 @@ class FlowAction extends CommonAction {
 				}
 			}
 		}
-		
+		$start = ord('B');
+		foreach($comment as $k=>$v){
+			$q ->getColumnDimension(chr($start+$k))->setWidth(20);
+		}
 		// Rename worksheet
 		$node = M('Node')->where(array('url'=>array('like','%name='.$type)))->find();
 		if($node){
