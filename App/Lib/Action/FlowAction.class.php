@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class FlowAction extends CommonAction {
-	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin'));
+	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin','export_goods_procurement_allocation'=>'admin','import_goods_procurement_allocation'=>'admin'));
 
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -623,10 +623,6 @@ class FlowAction extends CommonAction {
 		$q = $q -> setCellValue("F$i", '金额');
 		$q = $q -> setCellValue("G$i", '备注');
 		
-		$start = ord('A');
-		foreach($comment as $k=>$v){
-			$q ->getColumnDimension(chr($start+$k))->setWidth(20);
-		}
 		// Rename worksheet
 		$title = '办公用品采购';
 		$objPHPExcel -> getActiveSheet() -> setTitle('办公用品采购');
@@ -666,6 +662,14 @@ class FlowAction extends CommonAction {
 				$inputFileName = $save_path . $uploadList[0]["savename"];
 				$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 				$sheetData = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);
+				
+				$start = ord('A');
+				$column_name = array('序号','品名','规格','数量','单价','金额','备注');
+				for($ii=$start;$ii<$start+7;$ii++){
+					if($sheetData[1][chr($ii)]!=$column_name[$ii-$start]){
+						$this -> error('导入的excel模板不对:'.$sheetData[1][chr($ii)]);
+					}
+				}
 				$model_flow = D("Flow");
 				$flow_data = array();
 				$flow_data['user_id'] = get_user_id();
@@ -688,7 +692,7 @@ class FlowAction extends CommonAction {
 				
 				$model = M("FlowOfficeSuppliesApplication");
 				
-				$start = ord('A');
+				
 				$sum = 0;
 				$data = array();
 				$column = array('ids','names','types','nums','prices','amounts','marks');
@@ -704,6 +708,140 @@ class FlowAction extends CommonAction {
 				$data['sum'] = $sum;
 				$model -> add($data);
 				//dump($sheetData);
+				if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName)) {
+					unlink($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName);
+				}
+				$this -> assign('jumpUrl', get_return_url());
+				$this -> success('导入成功！');
+			}
+		} else {
+			$this -> display();
+		}
+	}
+	
+	function export_goods_procurement_allocation(){
+		//导入thinkphp第三方类库
+		Vendor('Excel.PHPExcel');
+	
+		$objPHPExcel = new PHPExcel();
+	
+		$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+		// Add some data
+		$i = 1;
+		//dump($list);
+	
+		//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
+		$q = $objPHPExcel -> setActiveSheetIndex(0);
+		//第一列为用户
+		$q = $q -> setCellValue("A$i", '物品名称');
+		$q = $q -> setCellValue("B$i", '型号/规格');
+		$q = $q -> setCellValue("C$i", '用途');
+		$q = $q -> setCellValue("D$i", '使用岗位');
+		$q = $q -> setCellValue("E$i", '本部门已买数量');
+		$q = $q -> setCellValue("F$i", '新增数量');
+		$q = $q -> setCellValue("G$i", '回收数量');
+		$q = $q -> setCellValue("H$i", '询问行政能否调拨');
+		$q = $q -> setCellValue("I$i", '单价');
+		$q = $q -> setCellValue("J$i", '金额');
+		$q = $q -> setCellValue("K$i", '新增数量计算过程');
+		$q = $q -> setCellValue("L$i", '支付方式');
+		$q = $q -> setCellValue("M$i", '物品到位时间(年月日)');
+	
+		$start = ord('A');
+		foreach($comment as $k=>$v){
+			$q ->getColumnDimension(chr($start+$k))->setWidth(20);
+		}
+		// Rename worksheet
+		$title = '物品采购调拨申请单';
+		$objPHPExcel -> getActiveSheet() -> setTitle('物品采购调拨申请单');
+	
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel -> setActiveSheetIndex(0);
+		$file_name = $title.".xlsx";
+		// Redirect output to a client’s web browser (Excel2007)
+		header("Content-Type: application/force-download");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header("Content-Disposition:attachment;filename =" . str_ireplace('+', '%20', URLEncode($file_name)));
+		header('Cache-Control: max-age=0');
+	
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		//readfile($filename);
+		$objWriter -> save('php://output');
+		exit ;
+	}
+	function import_goods_procurement_allocation(){
+		$save_path = get_save_path();
+		$opmode = $_POST["opmode"];
+		if ($opmode == "import") {
+			import("@.ORG.Util.UploadFile");
+			$upload = new UploadFile();
+			$upload -> savePath = $save_path;
+			$upload -> allowExts = array('xlsx');
+			$upload -> saveRule = uniqid;
+			$upload -> autoSub = false;
+			if (!$upload -> upload()) {
+				$this -> error($upload -> getErrorMsg());
+			} else {
+				//取得成功上传的文件信息
+				$uploadList = $upload -> getUploadFileInfo();
+				Vendor('Excel.PHPExcel');
+				//导入thinkphp第三方类库
+	
+				$inputFileName = $save_path . $uploadList[0]["savename"];
+				$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+				$sheetData = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);
+				
+				$start = ord('A');
+				$column_name = array('物品名称','型号/规格','用途','使用岗位','本部门已买数量','新增数量','回收数量','询问行政能否调拨','单价','金额','新增数量计算过程','支付方式','物品到位时间(年月日)');
+				for($ii=$start;$ii<$start+13;$ii++){
+					if($sheetData[1][chr($ii)]!=$column_name[$ii-$start]){
+						$this -> error('导入的excel模板不对:'.$sheetData[1][chr($ii)]);
+					}
+				}
+				
+				$model_flow = D("Flow");
+				
+				$flow_data = array();
+				$flow_data['user_id'] = get_user_id();
+				$flow_data['user_name'] = get_user_name();
+				$flow_data['doc_no'] = 1;
+				$flow_data['name'] = '物品采购调拨申请单';
+				$type = M('FlowType')->where(array('name'=>array('eq','物品采购调拨申请单')))->find();
+				$flow_data['type'] = $type['id'];
+	
+				$uid = get_user_id();
+				$dept_id = get_dept_id();
+				$dept_uid = getDeptManagerId($uid,$dept_id);
+				$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getFinancialManagerId(),getGeneralManagerId($uid));
+				$FlowData = getFlowData(array_unique($flow));
+				$flow_data['confirm'] = $FlowData['confirm'];
+				$flow_data['confirm_name'] = $FlowData['confirm_name'];
+				$flow_data['step'] = 20;
+				$flow_data['create_time'] = time();
+				
+				$flow_id = $model_flow -> add($flow_data);
+	
+				$model = M("FlowGoodsProcurementAllocation");
+	
+				
+				$sum = 0;
+				$data = array();
+				$column = array('goods_name','types','usage','use_dept','buy_num','add_num','recovery_num','is_allocation','price','amount','add_num_calculation','pay_type','in_place_time');
+				for($i=$start;$i<$start+13;$i++){
+					for ($j = 2; $j <= count($sheetData); $j++) {
+						if($i==$start+12){
+							$t = explode('-',$sheetData[$j][chr($i)]);
+							$time = '20'.$t[2].'-'.$t[0].'-'.$t[1];
+							$data[$column[$i-$start]] .= $time.'|';
+						}else{
+							$data[$column[$i-$start]] .= $sheetData[$j][chr($i)].'|';
+						}
+					}
+				}
+				$data['apply_time'] = date('Y-m-d H:i',time());
+				$data['flow_id'] = $flow_id;
+// 				$data['sum'] = $sum;
+				$model -> add($data);
 				if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName)) {
 					unlink($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName);
 				}
