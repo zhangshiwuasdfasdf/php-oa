@@ -74,17 +74,20 @@ class ProfileAction extends CommonAction {
 	/**
 	 * 读取个人简历和履历
 	 */
-	function resume($id=null){
+	function resume(){
 		$widget['uploader'] = true;
 		$widget['editor'] = true;
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
-		if(empty($id)){$id = get_user_id();}
+		$id = $_REQUEST['id'];
+		if(empty($id)){
+			$id = get_user_id();
+		}
 		//简历
 		$resume = M('user_resume');
 		$list = $resume -> where(array('user_id' => $id)) -> find();//获取文件(简历)
 		if(is_null($list)){
-			$this -> addResume();
+			$this -> addResume($id);
 		}else{
 			if($list['pic']){$list['pic'] = get_save_url() . $list['pic'];}
 			foreach ($list as $k => $v){
@@ -151,12 +154,12 @@ class ProfileAction extends CommonAction {
 	/**
 	 * 添加简历页面
 	 */
-	function addResume(){
+	function addResume($id){
 		$widget['uploader'] = true;
 		$widget['editor'] = true;
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
-		$this -> assign('id', 'jl_'.get_user_id());
+		$this -> assign('id', 'jl_'.$id);
 		$this -> display('add_resume');
 	}
 	/**
@@ -167,24 +170,30 @@ class ProfileAction extends CommonAction {
 		$widget['editor'] = true;
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
-		
+		$id = str_replace('jl_','',$_POST['id']); 
 		$model_flow = D('Flow');
 		if (false === $model_flow -> create()) {
 			$this -> error($model_flow -> getError());
 		}
-		
+		$user_info = M('user')->find($id);
 		$data_flow = array();
-		$data_flow['name'] = get_user_name().'的简历';
-		$FlowData = getFlowData(getParentid(get_user_id()));
+		$data_flow['name'] = $_POST['name'].'的简历';
+		$FlowData = getFlowData(getParentid($id));
 		$data_flow['confirm'] = $FlowData['confirm'];
 		$data_flow['confirm_name'] = $FlowData['confirm_name'];
-		$data_flow['user_id'] = get_user_id();
-		$data_flow['user_name'] = get_user_name();
+		$data_flow['user_id'] = $id;
+		$data_flow['user_name'] = $_POST['name'];
 		$FlowType = M('FlowType')->where(array('name'=>array('eq','简历')))->find();
 		
 		$data_flow['type'] = $FlowType['id'];
 		$data_flow['opmode'] = 'add';
 		$data_flow['step'] = 20;
+		$data_flow['emp_no'] = $user_info['emp_no'];
+		$data_flow['dept_id'] = $user_info['dept_id'];
+		$dept =  M("Dept") -> find($user_info['dept_id']);
+		$data_flow['dept_name'] = $dept['name'];
+		$data_flow['type'] = 66;
+		$data_flow['create_time'] = time();
 		$flow_id = $model_flow->add($data_flow);
 		
 		$model = M("user_resume");
@@ -234,7 +243,7 @@ class ProfileAction extends CommonAction {
 			//头像
 			$data['pic'] = $_POST['pic'];
 			$data['add_file'] = $_POST['add_file'];
-			$data['user_id'] = get_user_id();
+			$data['user_id'] = $id;
 			if ($model -> add($data)) {
 				//成功提示
 				$this -> assign('jumpUrl', get_return_url());

@@ -4,7 +4,7 @@
 <form id="form_data" name="form_data" method="post" class="form-horizontal">
 <input type="hidden" id="add_file" name="add_file">
 <input type="hidden" name="opmode" id="opmode" value="add">
-<input type="hidden" name="pic" id="pic" check="require" msg="请上传证件照片">
+<input type="hidden" name="pic" id="pic">
 <input type="hidden" name="id" id="id"  value="{$id}">
 <table style="background: #000; font-family: '微软雅黑';" width="100%" border="1" cellpadding="0" cellspacing="0">
   <tr>
@@ -78,23 +78,23 @@
     <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>二、自我评价（不少于100字）</strong></td>
   </tr>
   <tr>
-    <td height="90" colspan="9" bgcolor="#FFFFFF"><textarea type="text" name="ziwopingjia" class="form-control" check="require" msg="请输入自我评价"></textarea></td>
+    <td height="90" colspan="9" bgcolor="#FFFFFF"><textarea type="text" name="ziwopingjia" class="form-control"></textarea></td>
   </tr>
   <tr>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">专业技能</td>
-    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="jineng" class="form-control" check="require" msg="请输入专业技能"></td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="jineng" class="form-control"></td>
   </tr>
   <tr>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">个人荣誉</td>
-    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="rongyu" class="form-control" check="require" msg="请输入个人荣誉"></td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="rongyu" class="form-control"></td>
   </tr>
   <tr>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">兴趣特长</td>
-    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="techang" class="form-control" check="require" msg="请输入兴趣特长"></td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="techang" class="form-control"></td>
   </tr>
   <tr>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">个人期望</td>
-    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="qiwang" class="form-control" check="require" msg="请输入个人期望"></td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="qiwang" class="form-control"></td>
   </tr>
   <tr>
     <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>三、主要教育经历</strong></td>
@@ -107,11 +107,11 @@
     <td width="12%" height="33" align="center" bgcolor="#FFFFFF">证书　<a onclick="add_subject(this,3);">+</a></td>
   </tr>
   	<tr>
-	    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="jiaoyu[]" class="form-control" check="require" msg="请输入教育时间"></td>
-	    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF"><input type="text" name="yuanxiao[]" class="form-control" check="require" msg="请输入院校名称"></td>
-	    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="xueli_jl[]" class="form-control" check="require" msg="请输入学历"></td>
-	    <td width="11%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="zhuanye_jl[]" class="form-control" check="require" msg="请输专业"></td>
-	    <td width="12%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="zhengshu_jl[]" class="form-control" check="require" msg="请输入证书"></td>
+	    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="jiaoyu[]" class="form-control"></td>
+	    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF"><input type="text" name="yuanxiao[]" class="form-control"></td>
+	    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="xueli_jl[]" class="form-control"></td>
+	    <td width="11%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="zhuanye_jl[]" class="form-control"></td>
+	    <td width="12%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="zhengshu_jl[]" class="form-control"></td>
 	</tr>
   <tr>
     <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>四、主要培训经历</strong></td>
@@ -138,9 +138,9 @@
     <td width="12%" bgcolor="#FFFFFF">　　　　　　　　　<a onclick="add_subject(this,5);">+</a></td>
   </tr>
   	<tr>
-	    <td height="33" align="center" colspan="2" bgcolor="#FFFFFF"><input type="text" name="benren_gx[]" class="form-control" check="require" msg="请输入本人关系"></td>
-	    <td height="33" align="center" colspan="2" bgcolor="#FFFFFF"><input type="text" name="xingming[]" class="form-control" check="require" msg="请输入姓名"></td>
-	    <td height="33" align="center" colspan="4" bgcolor="#FFFFFF"><input type="text" name="danwei[]" class="form-control" check="require" msg="请输入工作单位及职务"></td>
+	    <td height="33" align="center" colspan="2" bgcolor="#FFFFFF"><input type="text" name="benren_gx[]" class="form-control"></td>
+	    <td height="33" align="center" colspan="2" bgcolor="#FFFFFF"><input type="text" name="xingming[]" class="form-control"></td>
+	    <td height="33" align="center" colspan="4" bgcolor="#FFFFFF"><input type="text" name="danwei[]" class="form-control"></td>
 	    <td width="12%" align="center" height="33" bgcolor="#FFFFFF"></td>
 	</tr>
   <tr>
@@ -148,13 +148,13 @@
   </tr>
   <tr>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">姓名</td>
-    <td width="11%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_xingm" class="form-control" check="require" msg="请输入紧急联系人姓名"></td>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_xingm" class="form-control"></td>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">关系</td>
-    <td width="11%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_guanx" class="form-control" check="require" msg="请输入紧急联系人关系"></td>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_guanx" class="form-control"></td>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">地址及邮编</td>
-    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_dizhi" class="form-control" check="require" msg="请输入紧急联系人地址"></td>
+    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_dizhi" class="form-control"></td>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">电话</td>
-    <td width="12%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_phone" class="form-control" check="require" msg="请输入紧急联系人电话"></td>
+    <td width="12%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_phone" class="form-control"></td>
   </tr>
   <tr>
     <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>六、工作经历</strong></td>

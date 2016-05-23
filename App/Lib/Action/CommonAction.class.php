@@ -220,7 +220,6 @@ class CommonAction extends Action {
 
 // 		}
 		$this -> assign('vo', $vo);
-// 		dump($vo);
 		$this -> display();
 	}
 
