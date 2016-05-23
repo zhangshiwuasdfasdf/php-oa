@@ -1,3 +1,20 @@
+	<div class="operate panel panel-default">
+		<div class="panel-body">
+			<div class="pull-left">
+				<div class="btn-group">
+					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 管理 <b class="fa fa-caret-down"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a onclick="import_office_supplies_application();">导入</a>
+						</li>
+						<li>
+							<a onclick="export_office_supplies_application();">导出模板</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 <input type="hidden" id="name" name="name" value="{$flow_type.name}">
 <input type="hidden" id="dept_id" name="dept_id" value="{$user_info.dept_id}">
 <input type="hidden" id="row_num" value="1">

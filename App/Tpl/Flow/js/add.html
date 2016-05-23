@@ -391,13 +391,14 @@
 	function popup_confirm() {
 		winopen("{:U('popup/confirm')}", 730, 574);
 	}
-	/*
-	function available_hour_show(){
-		$(#available_hour).attr('style','display:inline');
+	function export_office_supplies_application() {
+		window.open("{:U('export_office_supplies_application')}", "_blank");
+		return false;
 	}
-	function available_hour_hidden(){
-		$(#available_hour).attr('style','display:inline');
+
+	function import_office_supplies_application() {
+		window.open("{:U('import_office_supplies_application')}", "_self");
+		return false;
 	}
-	*/
 
 </script>
