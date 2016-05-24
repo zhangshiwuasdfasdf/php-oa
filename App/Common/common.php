@@ -510,6 +510,27 @@ function get_child_dept($pid){
 	}
 	return $child;
 }
+function get_child_depts($pid){
+	$a = array();
+	$child = D('DeptView')->where(array('pid'=>$pid))->select();
+	foreach ($child as $v){
+		$a[] = $v['id'];
+	}
+	return $a;
+}
+function get_child_dept_all($pid){
+	$child = get_child_depts($pid);
+	$a = $child;
+	if($child){
+		foreach ($child as $k=>$v){
+			$b = get_child_dept_all($v);
+			if(!empty($b)){
+				$a = array_unique(array_merge($a,$b));
+			}
+		}
+	}
+	return array_merge($a,array($pid));
+}
 
 function get_emp_no() {
 	$emp_no = session("emp_no");
@@ -1672,6 +1693,23 @@ function getParentid($uid,$pos_id=''){
 		}
 	}
 }
+function getParentDept($uid,$dept_id){
+	if(empty($dept_id)){
+		$dept_id = get_user_info($uid, 'pos_id');
+	}
+	if($dept_id!=0){
+		$res = M('Dept')->find($dept_id);
+		if($res){
+			return $res['pid'];
+		}else{
+			return false;
+		}
+	}else{
+		return false;
+	}
+	
+	
+}
 /*
  * 获取部门总监的id
  * 入参：员工id，员工部门id
@@ -1723,13 +1761,50 @@ function isHeadquarters($uid){
 		return -3;
 	}
 	$dept_id = $user['pos_id'];
+	
+	$dept_list = array();
+	$Parentdept = getParentDept(null,$dept_id);
+	while($Parentdept){//获取上级数组
+		$dept_list[] = $Parentdept;
+		$Parentdept = getParentDept(null,$Parentdept);
+	}
+	if(count($dept_list) == 1){
+		$dept = M('Dept')->find($dept_id);
+		if($dept['name']=='园区'){//总部副总
+			return -1;
+		}else{
+			return 0;
+		}
+	}else if(count($dept_list) >= 2){
+		$dept_idd = $dept_list[count($dept_list)-2];
+		$dept = M('Dept')->find($dept_idd);
+		if($dept['name']=='园区'){
+			if(count($dept_list) == 2){
+				return $dept_id;
+			}else{
+				return $dept_list[count($dept_list)-3];
+			}
+		}else{
+			return 0;
+		}
+	}else{//园区总经理
+		return -2;
+	}
+}
+//已经不用
+function isHeadquarters_by_uid($uid){
+	$user = M('User')->find($uid);
+	if(empty($user)){
+		return -3;
+	}
+	$dept_id = $user['pos_id'];
 	$parent_list = array();
 	$Parentid = getParentid($uid);
 	while($Parentid){//获取上级数组
 		$parent_list[] = $Parentid;
 		$Parentid = getParentid($Parentid);
 	}
-	//获取部门总监
+
 	if(count($parent_list) == 1){
 		$dept = M('Dept')->find($dept_id);
 		if($dept['name']=='园区'){//总部副总

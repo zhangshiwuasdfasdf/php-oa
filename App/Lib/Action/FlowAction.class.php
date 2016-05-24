@@ -212,6 +212,17 @@ class FlowAction extends CommonAction {
 		}
 
 		$this -> _flow_auth_filter($folder, $map);
+		//$map加上自己园区的
+		if(isHeadquarters(get_user_id())==0){//总部
+			$map['dept_id'] = array('in',get_child_dept_all(1));
+		}elseif (isHeadquarters(get_user_id())>0){//园区
+			$map['dept_id'] = array('in',get_child_dept_all(isHeadquarters(get_user_id())));
+		}elseif (isHeadquarters(get_user_id())==-1){//副总
+			$map['dept_id'] = array('in',get_child_dept_all(86));
+		}elseif (isHeadquarters(get_user_id())==-2){//总经理
+			$map['dept_id'] = array('in',get_child_dept_all(27));
+		}
+// 		dump(get_child_dept_all(1));
 		$model = D("FlowView");
 
 		if ($_REQUEST['mode'] == 'export') {
