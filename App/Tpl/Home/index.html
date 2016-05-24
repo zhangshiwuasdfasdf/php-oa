@@ -1,207 +1,192 @@
 <layout name='Layout/ace_home' />
-<link href="__PUBLIC__/css/new_index.css" rel="stylesheet" type="text/css">
-<script src="__PUBLIC__/js/jquery-1.7.2.min.js"></script>
-<div style="background:#eeedec;" class="main0"><div class="main">
-	<ul class="main-ul1">
-    	<li class="main1">
-        	<div class="ma1">
-            	<ul>
-                    <li class="ma1-d1">
-                        <div class="ma1d1-i1"><img src="./Data/Files/{$Think.session.user_pic}"/></div>
-                    </li>
-                    <!--<li class="mad1-i2"><a onclick="select_avatar();" class="touxiang">更换头像</a></li>
-                    --><li class="mad1-i3">{$Think.session.user_name}&nbsp;{$Think.session.dept_id|getDeptName}</li>
-                    <li class="mad1-i4">欢迎登陆</li>
-                </ul>
+<link href="__PUBLIC__/css/now_index.css" rel="stylesheet" type="text/css">
+<!--main-->
+<div class="main">
+	<div class="maleft">
+   	  <div class="gerenxinxi">
+       	<span class="grs1">个人信息</span>
+        <div class="grd1">
+            <div>
+                <img id="emp_pic" src="./Data/Files/{$info.pic}">
             </div>
-            <div class="ma2">
-                <iframe allowtransparency="true" frameborder="0" width="202" height="28" scrolling="no" src="http://tianqi.2345.com/plugin/widget/index.htm?s=3&z=1&t=0&v=0&d=1&bd=0&k=000000&f=&q=1&e=0&a=1&c=54511&w=202&h=28&align=left"></iframe>
+        </div>
+        <input type="hidden" name="id" id="id" value="{$Think.session.user_id}">
+		<input type="hidden" name="pic" id="pic" >
+        <span class="grs2" onclick="select_avatar();">更换头像</span>
+        <span class="grs3">{$Think.session.user_name}</span>
+        <span class="grs4">{$info.dept}&nbsp;{$info.duty}</span>
+        <input type="text" placeholder="说点什么吧" class="grin" id="bianqian" onchange="setbianqian({$Think.session.user_id},$('#bianqian').val())">
+        </div>
+        <div class="leftrw">
+        	<a class="rwa1"  onclick="set_cookie('top_menu', 198);" href="{:U('contact/folder','fid=inbox')}">
+                	<img src="__PUBLIC__/img/img/daiban.png">
+                	<php>
+							$module_count=0;
+							$bc_class= 'bc-flow';
+							$count1=array_sum($new_count[$bc_class]);
+							$count2=array_sum($new_count['bc-task']);
+							$module_count = $count1 + $count2;
+							if($module_count>99){
+								$module_count="99+";
+							}
+							if($module_count==0){
+								$module_count=null;
+							}
+						</php>
+                	<notempty name="module_count">
+							<p>{$module_count}</p>
+					</notempty>
+                <span>待办事项</span>
+            </a>
+            <a class="rwa2" onclick="set_cookie('top_menu', 85);" href="{:U('mail/folder','fid=inbox')}">
+                	<img src="__PUBLIC__/img/img/weiduyoujian.png">
+                	<php>
+							$module_count=0;
+							$bc_class= 'bc-mail';
+							$module_count=array_sum($new_count[$bc_class]);
+							if($module_count>99){
+								$module_count="99+";
+							}
+							if($module_count==0){
+								$module_count=null;
+							}
+						</php>
+                	<notempty name="module_count">
+							<p>{$module_count}</p>
+					</notempty>
+                <span>未读邮件</span>
+            </a>
+            <a class="rwa3" onclick="set_cookie('top_menu', 217);" href="{:U('message/index','fid=about_me')}">
+                	<img src="__PUBLIC__/img/img/zhanneixin.png">
+                	<php>
+							$module_count=0;
+							$bc_class= 'bc-message';
+							$module_count=array_sum($new_count[$bc_class]);
+							if($module_count>99){
+								$module_count="99+";
+							}
+							if($module_count==0){
+								$module_count=null;
+							}
+						</php>
+                	<notempty name="module_count">
+							<p>{$module_count}</p>
+					</notempty>
+                <span>站内信</span>
+            </a>
+        </div>
+        <div class="meirishuo">
+        	<div class="mrsd1">
+            	<img src="__PUBLIC__/img/img/meirishuoshuo.png">
+                <span>每日说说</span>
             </div>
-        </li><!--头像-->
-        <li class="main2">
-        	<ul class="ma2-l1">
-            	<li class="ma2l1-li1"><img src="__PUBLIC__/img/images/worklogo.png"></li>
-                <li class="ma2l1-li2">
-                	<span>工作任务</span>
-                </li>
+            <div class="mrsd2">
+            	<div class="shuoshuo">
+            		<volist name="bianq" id="vo">
+            			<if condition="$vo.len lt 36">
+            				<span class="bq1">{$vo.name}&nbsp;说:{$vo.bianqian}</span>
+            			<else/>
+            				<span class="bq2">{$vo.name}&nbsp;说:{$vo.bianqian}</span>
+            			</if>
+            			
+            		</volist>
+            	</div>
+                <a onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=75')}">更多&gt;&gt;</a>
+            </div>
+        </div>
+        <div class="tianqi">
+        	<div class="tqd1">
+            	<span class="tqd1s1">天气</span>
+                <span class="tqd1s2"></span>
+            </div>
+			<div class="tqd2">
+            	<IFRAME id="tianqi8_wetherinfo" name="tianqi8_wetherinfo" src="http://tq.ss256.com/code/freeweather7.htm?id=&fcolor=&imgurl=tb/tbb/tb7&bimg=&bcolor=&fsize=" frameBorder=0 width=140 height=60 ALIGN=CENTER MARGINWIDTH=0 MARGINHEIGHT=0 HSPACE=0 VSPACE=0 SCROLLING=NO allowtransparency=true></IFRAME>
+            </div>            
+        </div>
+    </div>
+    <div class="macenter">
+    	<div class="ysk">
+            <a class="cena1" onclick="set_cookie('top_menu', 216);" href="{:U('task/folder','fid=about_me')}">
+                <img src="__PUBLIC__/img/img/renwu.png">
+                <span>我的任务</span>
+            </a>
+            <a class="cena2" onclick="set_cookie('top_menu', 87);" href="{:U('flow/folder','fid=submit')}">
+                <img src="__PUBLIC__/img/img/liucheng.png">
+                <span>我的流程</span>
+            </a>
+            <a class="cena3" onclick="set_cookie('top_menu', 216);" href="{:U('weekly_report/index','fid=me')}">
+                <img src="__PUBLIC__/img/img/zhoubao.png">
+                <span>我的周报</span>
+            </a>
+            <a class="cena4" onclick="set_cookie('top_menu', 198);" href="{:U('schedule/index')}">
+                <img src="__PUBLIC__/img/img/richenganpai.png">
+                <span>日程安排</span>
+            </a>
+            <a class="cena5" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=71')}">
+                <img src="__PUBLIC__/img/img/qiyezhidu.png">
+                <span>企业制度</span>
+            </a>
+        </div>
+        <div class="qygg">
+        	<div><span>企业公告</span></div>
+            <ul class="ggul">
+            	<volist id="vo" name="new_notice_list">
+            		<if condition="$vo.folder eq 72">
+		            	<li>
+		                	<a class="gglis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
+		                    <span class="gglis2">{$vo.create_time|date='Y-m-d',###}</span>
+		                </li>
+		             </if>
+                </volist>
             </ul>
-            <div class="ma2-d1">
-            	<ul class="ma2d1-ul1">
-                	<volist name="task_todo_count" id="vo">
-                		<li><a class="task_all" href="{:U('task/read','id='.$vo['id'])}">【未接受】{$vo.name}({$vo.create_time|date='Y-m-d',###})</a></li>
-                    </volist>
-                    <volist name="task_no_finish_count" id="vo">
-                		<li><a class="task_all" href="{:U('task/read','id='.$vo['id'])}">【未完成】{$vo.name}({$vo.create_time|date='Y-m-d',###})</a></li>
-                    </volist>
-                </ul>
-            </div>
-        </li><!--任务-->
-        <li class="main3">
-        	<ul class="ma3-l1">
-            	<li class="ma3l1-li1"><img src="__PUBLIC__/img/images/baobiao.png"></li>
-                <li class="ma3l1-li2">
-                	<span>工作报表</span>
-                </li>
+            <a class="ggs1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=72')}">更多&gt;&gt;</a>
+        </div>
+        <div class="qygk">
+        	<div><span>企业概况</span></div>
+            <ul class="gkul">
+            <volist id="vo" name="new_notice_list">
+              <if condition="$vo.folder eq 68">
+	            	<li class="gkl1">
+	                	<a class="gklis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
+	                    <span class="gklis2">{$vo.create_time|date='Y-m-d',###}</span>
+	                </li>
+	             </if>
+	          </volist>
             </ul>
-            <div class="ma3-d1">
-            	<ul class="ma3d1-ul1">
-            		<volist name="dailyList" id="vo">
-                		<li><a class="task_all" href="{:U('daily_report/read','id='.$vo['id'])}">【日报】{$vo.work_date}～{$vo.user_name}({$vo.create_time|date='Y-m-d',###})</a></li>
-                    </volist>
-                    <volist name="weeklyList" id="vo">
-                		<li><a class="task_all" href="{:U('weekly_report/read','id='.$vo['id'])}">【周报】{$vo.work_date}～{$vo.user_name}({$vo.create_time|date='Y-m-d',###})</a></li>
-                    </volist>
-                    <volist name="monthlyList" id="vo">
-                		<li><a class="task_all" href="{:U('monthly_report/read','id='.$vo['id'])}">【月报】{$vo.work_date}～{$vo.user_name}({$vo.create_time|date='Y-m-d',###})</a></li>
-                    </volist>
-                </ul>
-            </div>
-        </li><!--报表-->
-        <li class="main4">
-        	<ul class="ma4-l1">
-            	<li class="ma4l1-li1"><img src="__PUBLIC__/img/images/bianqian.png"></li>
-                <li class="ma4l1-li2">
-                	<span>便签</span>
-                </li>
+            <a class="gks1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=68')}">更多&gt;&gt;</a>
+        </div>
+    </div>
+    <div class="maright">
+    	<div class="gzbb">
+        	<div><span>工作报表</span></div>
+            <ul class="gzul">
+            	<volist id="vo" name="dailyList">
+		            	<li><a class="gzlis1" onclick="set_cookie('top_menu', 216);" href="{:U('daily_report/read','id='.$vo['id'])}">【日报】{$vo.user_name}</a></li>
+            	</volist>
+            	<volist id="vo" name="weeklyList">
+		            	<li><a class="gzlis1" onclick="set_cookie('top_menu', 216);" href="{:U('daily_report/read','id='.$vo['id'])}">【周报】{$vo.user_name}</a></li>
+            	</volist>
+            	<volist id="vo" name="monthlyList">
+		            	<li><a class="gzlis1" onclick="set_cookie('top_menu', 216);" href="{:U('daily_report/read','id='.$vo['id'])}">【月报】{$vo.user_name}</a></li>
+            	</volist>
             </ul>
-            <div class="ma4-d1">
-            	<textarea rows="10" class="ma4d1-t1" id="bianqian" onchange="setbianqian({$Think.session.user_id},$('#bianqian').val())">{$bianqian}</textarea>
+            <a class="gzs1" onclick="set_cookie('top_menu', 216);" href="{:U('daily_report/index')}">更多&gt;&gt;</a>
+        </div>
+        <div class="yqmh">
+        	<div class="yqd1"><span>园区门户</span></div>
+            <div class="yqd2">
+            	<a class="hzyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=78')}"><img src="__PUBLIC__/img/img/hangzhouyuanqu.png"></a>
+                <a class="jxyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=80')}"><img src="__PUBLIC__/img/img/jiaxingyuanqu.png"></a>
+                <a class="jhyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=79')}"><img src="__PUBLIC__/img/img/jinhuayuanqu.png"></a>
+                <a class="nbyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=81')}"><img src="__PUBLIC__/img/img/ningboyuanqu.png"></a>
             </div>
-            
-        	<img src="__PUBLIC__/img/images/bqdt.png" class="ma4-img">
-        </li><!--便签-->
-    </ul>
-    <ul>
-    	<li class="main5">
-        	<ul class="ma5-l1">
-            	<li class="ma5l1-li1"><img src="__PUBLIC__/img/images/youjian.png"></li>
-                <li class="ma5l1-li2">
-                	<span>工作邮箱</span>
-                </li>
-            </ul>
-            <div class="ma5-d1">
-            	<ul class="ma5d1-ul1">
-            		<volist name="unread_mail_list" id="vo">
-                		<li><a class="mail_list" href="{:U('mail/read','id='.$vo['id'])}">{$vo.name}({$vo.create_time|date='Y-m-d',###})</a></li>
-                    </volist>
-                </ul>
+        </div>
+        <div class="rl">
+        	<div class="rld1"><span>日历</span></div>
+            <div class="rld2">
+            	<iframe class="rlif" src="__PUBLIC__/img/rl/index.html" frameBorder=0 width="294" height="222" ALIGN=CENTER MARGINWIDTH=0 MARGINHEIGHT=0 HSPACE=0 VSPACE=0 SCROLLING=NO allowtransparency=true></iframe>
             </div>
-        </li><!--工作邮箱-->
-        <li class="main6">
-        	<ul class="ma6-l1">
-            	<li class="ma6l1-li1"><img src="__PUBLIC__/img/images/qiyegaikuo.png"></li>
-                <li class="ma6l1-li2">
-                	<span>企业概况</span>
-                </li>
-            </ul>
-            <div class="ma6-d1">
-            	<ul class="ma6d1-ul1">
-            		<volist name="new_notice_list" id="vo">
-            			<if condition="$vo.folder eq 68">
-                			<li><a class="notice" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}({$vo.create_time|date='Y-m-d',###})</a></li>
-                		</if>
-                   </volist>
-                </ul>
-            </div>
-        </li><!--企业概况-->
-        <li class="main7">
-        	<ul class="ma7-l1">
-            	<li class="ma7l1-li1"><img src="__PUBLIC__/img/images/news.png"></li>
-                <li class="ma7l1-li2">
-                	<span>企业制度</span>
-                </li>
-            </ul>
-            <div class="ma7-d1">
-                <ul class="ma7d1-ul1">
-                	<volist name="new_notice_list" id="vo">
-            			<if condition="$vo.folder eq 71">
-	                    <li>
-	                        <div class="ma7-d3">
-	                        	<a class="notice" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">
-		                            <span class="ma7-s1">{$vo.name}</span>
-		                            <span class="ma7-s2">{$vo.content}</span>
-	                            </a>
-	                        </div>
-	                    </li>
-                    </if>
-                   </volist>
-                    
-                </ul>
-            </div>
-        </li><!--企业新闻-->
-        <li class="main8">
-        	<ul class="ma8-l1">
-            	<li class="ma8l1-li1"><img src="__PUBLIC__/img/images/gonggao.png"></li>
-                <li class="ma8l1-li2">
-                	<span>企业公告</span>
-                </li>
-            </ul>
-            <div class="ma8-d1">
-            	<ul class="ma8d1-ul1">
-                	<volist name="new_notice_list" id="vo">
-            			<if condition="$vo.folder eq 72">
-                			<li><a class="notice" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}({$vo.create_time|date='Y-m-d',###})</a></li>
-                		</if>
-                   </volist>
-                </ul>
-            </div>
-        </li><!--企业公告-->
-        <li class="main9">
-        	<div class="ma9-d1">总裁致辞</div>
-            <p>{$ceo_incentive}</p>
-            <div class="ma9-d2"><img src="__PUBLIC__/img/images/zhichi.png"></div>
-        </li><!--总裁致辞-->
-        <li class="main10">
-        	<div class="ma10-d1">温暖关怀</div>
-            <div class="ma10-d2">
-                <ul class="ma10-ul1">
-                	<volist name="shouxing_list" id="vo">
-	                    <li>
-	                    	<div><img src="./Data/Files/{$vo.pic}"></div>
-	                        <span>{$vo.name}</span>
-	                    </li>
-                    </volist>
-                </ul>
-            </div>
-            <div class="ma10-li1"></div>
-        </li><!--温暖关怀-->
-        <li class="main11">
-        	<div class="ma11-d1">学习天地</div>
-            <div class="ma11-d2">
-                <ul class="ma11-ul1">
-                	<volist name="new_notice_list" id="vo">
-            			<if condition="$vo.folder eq 74">
-                			<li>
-                				<a href="{:U('notice/read','id='.$vo['id'])}" class="notice">
-		                    	<div><img src="./Data/Files/{$vo.file_list}"></div>
-		                        <span>{$vo.name}</span>
-	                        	</a>
-                   		 </li>
-                		</if>
-                   </volist>
-                </ul>
-            </div>
-            <div class="ma11-li1"></div>
-        </li><!--学习天地-->
-        <li class="main12">
-        	<div class="ma12-d1">生活指南</div>
-            <div class="ma12-d2">
-                <ul class="ma12-ul1">
-                    <volist name="new_notice_list" id="vo">
-            			<if condition="$vo.folder eq 75">
-                			<li>
-                				<a href="{:U('notice/read','id='.$vo['id'])}" class="notice">
-	                    		<div><img src="./Data/Files/{$vo.file_list}"></div>
-	                        	<span>{$vo.name}</span>
-	                        </a>
-                   		 </li>
-                		</if>
-                   </volist>
-                </ul>
-            </div>
-            <div class="ma12-li1"></div>
-        </li><!--生活指南-->
-    </ul>
+        </div>
+    </div>
 </div>
-</div>
-<script src="__PUBLIC__/js/new_index.js"></script>
+<script type="text/javascript" src="js/index.js"></script>

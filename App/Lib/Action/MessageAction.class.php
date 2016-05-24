@@ -64,6 +64,7 @@ class MessageAction extends CommonAction {
 				$this -> _list($model, $map);
 			}
 		}
+		$this->assign('user_id',get_user_id());
 		$this->assign('owner_id',get_user_id());
 		$this->assign('auth',$this->config['auth']);
 		$this -> display();

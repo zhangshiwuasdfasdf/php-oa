@@ -138,7 +138,6 @@ class LoginAction extends Action {
 			session('user_id',$auth_info['id']);
 			session('emp_no', $auth_info['emp_no']);
 			session('user_name', $auth_info['name']);
-			session('user_pic', $auth_info['pic']);
 			session('dept_id', $auth_info['dept_id']);
 			
 			//保存登录信息

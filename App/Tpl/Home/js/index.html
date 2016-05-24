@@ -155,16 +155,20 @@
 		})
 	function setbianqian(id,val){
 			var url = "{:U('Home/ajax_set_bianqian')}";
+			var shuo = $(".shuoshuo");
+			var html = '';
 			$.ajax({ 
 				type:'get',
 				url: url, 
 				data:{user_id:id,val:val},
 				success: function(data){
-					
+					html = "<span class='bq2'>"+data+"&nbsp;说:"+val+"</span>";
+					shuo.hide().prepend(html).slideDown();
 				},
-				error:function(e){
-					
-				}
+				error:function(e){}
 				})
 		}
+	function select_avatar() {
+		winopen("{:U('popup/avatar')}?id=" + $("#id").val(), 730, 500);
+	}
 </script>

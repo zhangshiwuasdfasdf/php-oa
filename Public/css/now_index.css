@@ -1,0 +1,123 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body{ margin:0; padding:0; min-width:1280px; background:#f1eff0;}
+ul,li{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+img{ margin:0; padding:0;}
+*{ font-family:"微软雅黑";}
+/*top*/
+.top{ height:81px; padding-top:20px; width:100%; background:#474747; border-bottom:solid 1px #807c7d; margin-bottom:20px;}
+.top ul{ width:72%; margin-left:14%; height:66px; overflow:hidden;}
+.top_1{ float:left; overflow:hidden;}
+.top_1 img{ float:left; margin-right:12px;}
+.top_1 span{ float:left; color:#fff; font-size:24px; line-height:66px;}
+.top_1 a{ cursor:pointer;}
+.top_2{ float:right; overflow:hidden;}
+.top_2 a{ display:block; float:left; width:58px; height:66px; border-radius:10px; cursor:pointer; margin-right:8px;}
+.top_2 a:hover{ background:#333333;}
+.top_2 a span{ font-size:12px; color:#fff; text-align:center; display:block;}
+.top2a1 img{ margin-bottom:4px; margin-left:11px; margin-top:10px;}
+.top2a2 img{ margin-bottom:1px; margin-left:14px; margin-top:6px;}
+.top2a3 img{ margin-bottom:0px; margin-left:10px; margin-top:6px;}
+.top2a4 img{ margin-bottom:0px; margin-left:16px; margin-top:6px;}
+.top2a5 img{ margin-bottom:0px; margin-left:9px; margin-top:6px;}
+.top2a6 img{ margin-bottom:4px; margin-left:8px; margin-top:6px;}
+.top2a7 img{ margin-bottom:0px; margin-left:11px; margin-top:10px;}
+.top2span{ display:block; float:left; width:46px; height:46px; background:#f7ab00; padding:3px; margin-top:7px; margin-left:3px; cursor:pointer;text-align:center; line-height:46px;  color:#fff;}
+.top2span:hover{ background:#e19c02;}
+/*main*/
+.main{ width:70%; margin-left:15%; overflow:hidden; margin-bottom:20px;}
+.maleft{ width:20%; float:left; margin-right:1%;}
+.gerenxinxi{ width:100%; border:solid 1px #d8d6d7; height:315px; background:#fff; position:relative;}
+.grs1{ font-size:20px; color:#4a4947; display:block; height:20px; line-height:20px; text-align:center; margin-top:15px;}
+.grd1{ width:136px; height:136px; border-radius:138px; border:solid 1px #c3c3c3; position:absolute; left:50%; margin-left:-69px; margin-top:12px;}
+.grd1 div{ width:120px; height:120px; margin-top:8px; margin-left:8px; overflow:hidden; border-radius:120px;}
+.grd1 div img{ width:120px; height:auto;}
+.grs2{ display:block; height:12px; font-size:12px; color:#8e8eb1; text-align:center; margin-top:155px; cursor:pointer;}
+.grs3{ display:block; height:20px; font-size:20px; color:#011b5b; line-height:20px; text-align:center; margin-top:7px;}
+.grs4{ display:block; height:16px; font-size:16px; color:#6074a4; line-height:16px; text-align:center; margin-top:9px;}
+.grin{ height:30px; border:solid 1px #efefef; outline:none; width:80%; margin-left:10%; margin-top:18px; color:#999;}
+.leftrw{ width:100%; border:solid 1px #d8d6d7; margin-top:-1px; height:98px; background:#e4ebf5; margin-bottom:10px; overflow:hidden;}
+.leftrw a{ display:block; float:left; height:74px; margin-top:14px; cursor:pointer; margin-left:8%; position:relative;}
+.rwa1{ width:23%; }
+.rwa2{ width:23%; }
+.rwa3{ width:22%; }
+.leftrw p{ margin:0; padding:0;}
+.rwa1 img{ margin-top:5px; margin-bottom:4px;  height:auto; width:100%;}
+.rwa1 span{ font-size:12px; color:#4573b0; display:block; text-overflow:ellipsis; overflow:hidden; height:14px; line-height:14px; width:100%; text-align:center;}
+.rwa2 img{ margin-top:6px; margin-bottom:5px; height:auto; width:100%;}
+.rwa2 span{ font-size:12px; color:#4573b0; display:block; text-overflow:ellipsis; overflow:hidden; height:14px; line-height:14px; width:100%; text-align:center;}
+.rwa3 img{ height:auto; width:100%;}
+.rwa3 span{ font-size:12px; color:#4573b0; display:block; text-overflow:ellipsis; overflow:hidden; height:14px; line-height:14px; width:100%; margin-top:-5px; text-align:center;}
+.rwa1 p{ display:block; position:absolute; right:0px; top:0px; width:16px; height:16px; border-radius:16px; font-size:12px; color:#fff; text-align:center; line-height:16px; background:#e63e0a;}
+.rwa2 p{ display:block; position:absolute; right:-2px; top:0px; width:16px; height:16px; border-radius:16px; font-size:12px; color:#fff; text-align:center; line-height:16px; background:#e63e0a;}
+.rwa3 p{ display:block; position:absolute; right:3px; top:0px; width:16px; height:16px; border-radius:16px; font-size:12px; color:#fff; text-align:center; line-height:16px; background:#e63e0a;}
+.meirishuo{ width:100%; height:202px; border:solid 1px #d8d6d7; margin-bottom:10px; background:#e5ecf6;}
+.mrsd1{ width:100%; height:34px; background:#c0cbdd; box-shadow:#bec6d9 1px 1px 1px; overflow:hidden;}
+.mrsd1 img{ margin-left:20px; margin-right:10px; margin-top:3px; float:left;}
+.mrsd1 span{ font-size:20px; line-height:34px; color:#464a54; display:block; float:left;}
+.mrsd2{ position:relative; width:100%; height:168px; overflow:hidden;}
+.mrsd2 .shuoshuo{ width:90%; height:120px; margin-left:5%; display:block; margin-top:2px; padding-top:5px; color:#666; font-size:14px;overflow: hidden;}
+.mrsd2 .shuoshuo .bq1{ height: 30px;line-height: 30px;width: 100%;overflow: hidden;display: block;}
+.mrsd2 .shuoshuo .bq2{ height: 30px;line-height: 15px;width: 100%;overflow: hidden;display: block;}
+.mrsd2 a{ display:block; width:60px; height:24px; text-align:center; line-height:24px; cursor:pointer; background:#4a4948; position:absolute; right:14px; bottom:10px; font-size:12px; color:#fff;}
+.tianqi{ width:100%; height:112px;border:solid 1px #d8d6d7; background:#fff;}
+.tqd1{ height:16px; width:100%; margin-top:10px; overflow:hidden; margin-bottom:20px;}
+.tqd1s1{ display:block; float:left; margin-left:6%; font-size:16px; color:#002263; line-height:16px;}
+.tqd1s2{ display:block; float:right; margin-right:4%; color:#566694; font-size:12px; line-height:16px;}
+.tqd2{ width:60%; height:66px;overflow:hidden; margin-left:20%;}
+
+
+
+.macenter{ width:55%; float:left; margin-right:1%;}
+.ysk{ width:100%; height:204px;border:solid 1px #d8d6d7; background:#fff; overflow:hidden; margin-bottom:10px;}
+.cena1,.cena2,.cena3,.cena4,.cena5{ width:14%; height:140px; overflow:hidden; float:left; margin-left:5%; margin-top:34px; cursor:pointer;}
+.cena1 img{ width:100%; height:auto; margin-bottom:5px;}
+.cena1 span{ display:block; text-align:center; font-size:20px; color:#716f6b; height:20px; line-height:20px; overflow:hidden; text-overflow:ellipsis;}
+.cena2 img{ width:100%; height:auto; margin-bottom:5px;}
+.cena2 span{ display:block; text-align:center; font-size:20px; color:#716f6b; height:20px; line-height:20px; overflow:hidden; text-overflow:ellipsis;}
+.cena3 img{ width:100%; height:auto; margin-bottom:5px;}
+.cena3 span{ display:block; text-align:center; font-size:20px; color:#716f6b; height:20px; line-height:20px; overflow:hidden; text-overflow:ellipsis;}
+.cena4 img{ width:100%; height:auto; margin-bottom:5px;}
+.cena4 span{ display:block; text-align:center; font-size:20px; color:#716f6b; height:20px; line-height:20px; overflow:hidden; text-overflow:ellipsis;}
+.cena5 img{ width:100%; height:auto; margin-bottom:5px;}
+.cena5 span{ display:block; text-align:center; font-size:20px; color:#716f6b; height:20px; line-height:20px; overflow:hidden; text-overflow:ellipsis;}
+.qygg{ width:100%; height:262px; background:#fff; position:relative;border:solid 1px #d8d6d7; margin-bottom:10px;}
+.ggs1{ position:absolute; display:block; cursor:pointer; width:60px; height:24px; background:#464646; color:#fff; font-size:12px; text-align:center; line-height:24px; right:14px; bottom:10px;}
+.qygg div{ height:34px; width:100%; background:#9fa1a0; box-shadow:#acacac 1px 1px 1px; line-height:34px;}
+.qygg div span{ display:block; margin-left:20px; font-size:20px; color:#454344;}
+.ggul{ width:100%; height:168px; overflow:hidden; margin-top:12px;}
+.ggul li{ width:100%; height:24px; line-height:24px; overflow:hidden;}
+.gglis1{ display:block; float:left; margin-left:2%; font-size:14px; color:#696967; width:75%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer;}
+.gglis2{ display:block; float:right; color:#51514e; font-size:14px; width:20%; cursor:pointer;}
+.qygk{ width:100%; height:262px; background:#fff; position:relative;border:solid 1px #d8d6d7;}
+.gks1{ position:absolute; cursor:pointer; display:block; width:60px; height:24px; background:#464646; color:#fff; font-size:12px; text-align:center; line-height:24px; right:14px; bottom:10px;}
+.qygk div{ height:34px; width:100%; background:#9fa1a0; box-shadow:#acacac 1px 1px 1px; line-height:34px;}
+.qygk div span{ display:block; margin-left:20px; font-size:20px; color:#454344;}
+.gkul{ width:100%; height:168px; overflow:hidden; margin-top:12px;}
+.gkul li{ width:100%; height:24px; line-height:24px; overflow:hidden;}
+.gkl1{ background:#fff;}
+.gkl2{ background:#efedee;}
+.gklis1{ display:block; float:left; margin-left:2%; font-size:14px; color:#696967; width:75%;overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer;}
+.gklis2{ display:block; float:right; color:#51514e; font-size:14px; width:20%; cursor:pointer;}
+.maright{ width:22%; float:left;}
+.gzbb{ width:100%; height:245px; border:solid 1px #d8d6d7; background:#fff; position:relative; margin-bottom:10px;}
+.gzs1{ position:absolute; display:block; width:60px; height:24px; background:#464646; cursor:pointer; color:#fff; font-size:12px; text-align:center; line-height:24px; right:14px; bottom:10px;}
+.gzbb div{ height:34px; width:100%; background:#9fa1a0; box-shadow:#acacac 1px 1px 1px; line-height:34px;}
+.gzbb div span{ display:block; margin-left:20px; font-size:20px; color:#454344;}
+.gzul{ width:100%; height:168px; overflow:hidden; margin-top:6px;}
+.gzul li{ width:100%; height:24px; line-height:24px; overflow:hidden;}
+.gzlis1{ display:block; float:left; margin-left:2%; font-size:14px; color:#696967; width:75%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer;}
+.yqmh{ width:100%; height:227px; background:#fff; border:solid 1px #d8d6d7; margin-bottom:10px;}
+.yqd1{ height:34px; width:100%; background:#9fa1a0; box-shadow:#acacac 1px 1px 1px; line-height:34px; margin-bottom:6%;}
+.yqd1 span{ display:block; margin-left:20px; font-size:20px; color:#454344;}
+.yqd2{ width:60%; margin-left:25%; overflow:hidden;}
+.yqd2 a{ width:40%; height:auto; float:left; margin-bottom:5px; cursor:pointer;}
+.yqd2 a img{ width:100%; height:auto;}
+.hzyq,.jhyq{ margin-right:5%;}
+.rl{width:100%; height:256px; background:#fff; border:solid 1px #d8d6d7; overflow:hidden;}
+.rld1{ height:34px; width:100%; background:#9fa1a0; box-shadow:#acacac 1px 1px 1px; line-height:34px;}
+.rld1 span{display:block; margin-left:20px; font-size:20px; color:#454344;}
+.rld2{ width:100%; height:auto;}
+.rlif{ width:100%; height:222px;}
