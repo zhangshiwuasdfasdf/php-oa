@@ -155,6 +155,10 @@ class PopupAction extends CommonAction {
 	}
 
 	function upload(){
+				$open=fopen("C:\log.txt","a" );
+				fwrite($open,json_encode($_REQUEST)."\r\n");
+				fwrite($open,json_encode($_FILES)."\r\n");
+				fclose($open);
 		$this -> _upload();
 	}
 

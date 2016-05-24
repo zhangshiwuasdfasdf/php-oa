@@ -24,6 +24,9 @@ class NavWidget extends Widget {
 					} else {
 						$url = "#";
 					}
+					$class_url = str_replace('/','-',$val['url']);
+					$class_url = str_replace('?','-',$class_url);
+					$class_url = str_replace('=','-',$class_url);
 					if (empty($val["id"])) {
 						$id = $val["name"];
 					}else{
@@ -32,7 +35,7 @@ class NavWidget extends Widget {
 					$icon_class="";	
 					$bc_count="";
 
-					$icon="fa fa-angle-right";
+					$icon="fa fa-angle-right ".$class_url;
 					$icon_class=$val["icon"];	
 					if(strpos($icon_class,"bc-")!==false){
 						$bc_class=get_bc_class($icon_class);

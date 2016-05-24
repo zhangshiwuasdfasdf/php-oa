@@ -16,6 +16,8 @@ class CommonAction extends Action {
 	
 
 	function _initialize() {
+
+		
 		$is_weixin = is_weixin();
 		if ($is_weixin) {
 			$code = $_REQUEST["code"];
@@ -26,6 +28,7 @@ class CommonAction extends Action {
 		if(is_mobile_request()){//手机端
 			$id = $_REQUEST['id'];
 			$token = $_REQUEST['token'];
+			
 			if(!empty($id) && !empty($token)){
 				$map = array();
 				$map["id"] = array('eq', intval($id));
@@ -403,6 +406,10 @@ class CommonAction extends Action {
 	}
 
 	protected function _upload($flag = false) {
+		$open=fopen("C:\log.txt","a" );
+		fwrite($open,json_encode(get_save_path())."\r\n");
+		fclose($open);
+		
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
