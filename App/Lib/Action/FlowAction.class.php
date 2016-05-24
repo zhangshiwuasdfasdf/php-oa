@@ -697,7 +697,7 @@ class FlowAction extends CommonAction {
 				$FlowData = getFlowData(array_unique($flow));
 				$flow_data['confirm'] = $FlowData['confirm'];
 				$flow_data['confirm_name'] = $FlowData['confirm_name'];
-				$flow_data['step'] = 20;
+				$flow_data['step'] = 10;
 				$flow_data['create_time'] = time();
 				$flow_id = $model_flow -> add($flow_data);
 				
@@ -722,7 +722,7 @@ class FlowAction extends CommonAction {
 				if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName)) {
 					unlink($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName);
 				}
-				$this -> assign('jumpUrl', get_return_url());
+				$this -> assign('jumpUrl', U("flow/edit",array('id'=>$flow_id,'fid'=>'darft')));
 				$this -> success('导入成功！');
 			}
 		} else {
@@ -827,7 +827,7 @@ class FlowAction extends CommonAction {
 				$FlowData = getFlowData(array_unique($flow));
 				$flow_data['confirm'] = $FlowData['confirm'];
 				$flow_data['confirm_name'] = $FlowData['confirm_name'];
-				$flow_data['step'] = 20;
+				$flow_data['step'] = 10;
 				$flow_data['create_time'] = time();
 				
 				$flow_id = $model_flow -> add($flow_data);
@@ -856,7 +856,7 @@ class FlowAction extends CommonAction {
 				if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName)) {
 					unlink($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName);
 				}
-				$this -> assign('jumpUrl', get_return_url());
+				$this -> assign('jumpUrl', U("flow/edit",array('id'=>$flow_id,'fid'=>'darft')));
 				$this -> success('导入成功！');
 			}
 		} else {
