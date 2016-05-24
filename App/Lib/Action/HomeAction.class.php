@@ -31,6 +31,7 @@ class HomeAction extends CommonAction {
 		$config = D("UserConfig") -> get_config();
 		$this -> assign("home_sort", $config['home_sort']);
 		$this -> assign("ceo_incentive", get_system_config("CEO_INCENTIVE"));
+		$this -> get_user_info();
  		$this -> _mail_list();
 // 		$this -> _flow_list();
 // 		$this -> _schedule_list();
@@ -44,11 +45,38 @@ class HomeAction extends CommonAction {
 		$this -> _jinianri_list();
 		$this -> _xinjin_list();
 		$this -> _daily_list();
-		$user = M('User')->find(get_user_id());
-		$this -> assign("bianqian", $user['bianqian']);
+		$this -> ＿shuoshuo();
 		$this -> display();
 	}
-
+	public function ＿shuoshuo(){
+		$map['bianqian'] = array('neq','');
+		$user = M('User')->where($map)->getField('id,name,bianqian');
+		foreach($user as $k=>$v){
+			$temp = explode('|',$v['bianqian']);
+			$user[$k]['bianqian'] = $temp[0];
+			$user[$k]['time'] = $temp[1];
+			$user[$k]['len'] = mb_strlen($temp[0]);
+		}
+		$users = $this -> my_sort($user, 'time');
+		$this -> assign("bianq", $users);
+	}
+	
+	private function my_sort($arrays,$sort_key,$sort_order=SORT_DESC,$sort_type=SORT_REGULAR ){ 
+		if(is_array($arrays)){ 
+			foreach ($arrays as $array){ 
+				if(is_array($array)){ 
+					$key_arrays[] = $array[$sort_key]; 
+				}else{ 
+					return false; 
+				} 
+			} 
+		}else{ 
+			return false; 
+		}
+		array_multisort($key_arrays,$sort_order,$sort_type,$arrays); 
+		return $arrays; 
+	}
+			
 	public function set_sort() {
 		$val = $_REQUEST["val"];
 		$data['home_sort'] = $val;
@@ -262,8 +290,8 @@ class HomeAction extends CommonAction {
 		$xinjin_list = $model ->where('is_del = 0') -> order("create_time desc") ->limit(7) -> field('id,name,dept_id,position_id,sex,birthday,pic,email,duty,office_tel,mobile_tel,create_time') ->select();
 		$this -> assign("xinjin_list", $xinjin_list);
 	}
-	public function ajax_get_user_info(){
-		$user_id = $_GET['user_id'];
+	public function get_user_info(){
+		$user_id = get_user_id();
 		$model = D('User');
 		$where = array();
 		$where = array('id'=>$user_id);
@@ -279,7 +307,7 @@ class HomeAction extends CommonAction {
 		$where = array('id'=>$info['position_id']);
 		$position_info = $model->where($where)-> field('name')->find();
 		$info['position'] = $position_info['name']?$position_info['name']:'';
-		$this->ajaxReturn($info,'JSONP');
+		$this->assign('info',$info);
 	}
 	public function ajax_set_bianqian(){
 		$user_id = $_GET['user_id'];
@@ -287,10 +315,10 @@ class HomeAction extends CommonAction {
 			$data['id'] = $user_id;
 		}
 		$val = $_GET['val'];
-		$data['bianqian'] = $val;
+		$data['bianqian'] = $val .'|' .time();
 		$res = M('User')->save($data);
 		if($res){
-			$this->ajaxReturn(1,1);
+			$this->ajaxReturn(get_user_name());
 		}else{
 			$this->ajaxReturn(null,null);
 		}

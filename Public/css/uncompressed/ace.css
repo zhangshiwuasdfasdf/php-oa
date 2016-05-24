@@ -1125,7 +1125,7 @@ blockquote.pull-right {
   padding-right: 0;
   min-height: 45px;
   position: relative;
-  background: #ad9280;
+  background: #393939;
 }
 .navbar > .container {
   padding-left: 0;
@@ -1147,7 +1147,7 @@ blockquote.pull-right {
   color: #ffffff;
 }
 .navbar .navbar-header {
-  margin: 0 !important;
+  margin-left: 15%;
 }
 .navbar .navbar-nav > li > a,
 .navbar .navbar-nav > li > a:hover,
@@ -3706,20 +3706,20 @@ fieldset[disabled] .btn-light.active {
 .btn-app.btn-danger,
 .btn-app.btn-danger.no-hover:hover,
 .btn-app.btn-danger.disabled:hover {
-  background: #d3413b !important;
-  background-image: -webkit-gradient(linear, left 0%, left 100%, from(#d55b52), to(#d12723)) !important;
-  background-image: -webkit-linear-gradient(top, #d55b52, 0%, #d12723, 100%) !important;
-  background-image: -moz-linear-gradient(top, #d55b52 0%, #d12723 100%) !important;
-  background-image: linear-gradient(to bottom, #d55b52 0%, #d12723 100%) !important;
+  background: #f7ab00 !important;
+  background-image: -webkit-gradient(linear, left 0%, left 100%, from(#f7ab00), to(#f7ab00)) !important;
+  background-image: -webkit-linear-gradient(top, #f7ab00, 0%, #f7ab00, 100%) !important;
+  background-image: -moz-linear-gradient(top, #f7ab00 0%, #f7ab00 100%) !important;
+  background-image: linear-gradient(to bottom, #f7ab00 0%, #f7ab00 100%) !important;
   background-repeat: repeat-x !important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 .btn-app.btn-danger:hover {
-  background: #b52c26 !important;
-  background-image: -webkit-gradient(linear, left 0%, left 100%, from(#c43a30), to(#a51f1c)) !important;
-  background-image: -webkit-linear-gradient(top, #c43a30, 0%, #a51f1c, 100%) !important;
-  background-image: -moz-linear-gradient(top, #c43a30 0%, #a51f1c 100%) !important;
-  background-image: linear-gradient(to bottom, #c43a30 0%, #a51f1c 100%) !important;
+  background: #fab928 !important;
+  background-image: -webkit-gradient(linear, left 0%, left 100%, from(#fab928), to(#fab928)) !important;
+  background-image: -webkit-linear-gradient(top, #fab928, 0%, #fab928, 100%) !important;
+  background-image: -moz-linear-gradient(top, #fab928 0%, #fab928 100%) !important;
+  background-image: linear-gradient(to bottom, #fab928 0%, #fab928 100%) !important;
   background-repeat: repeat-x !important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
@@ -3909,7 +3909,7 @@ fieldset[disabled] .btn-light.active {
   display: block;
   font-size: 24px;
   line-height: 24px;
-  margin: 0;
+  margin-left: 13px;
 }
 .btn.btn-app.no-radius {
   border-radius: 0;
@@ -14344,4 +14344,46 @@ th[aria-selected=true] .ui-jqgrid-sortable {
   body.breadcrumbs-fixed .ace-settings-container {
     top: 65px;
   }
+}
+.head-mail-icon {
+	background: url("../../img/img/email.png") no-repeat;
+	display: inline-block;
+	width: 35px;
+	height: 33px;
+}
+.head-flow-icon {
+	background: url("../../img/img/shenpi.png") no-repeat;
+	display: inline-block;
+	width: 30px;
+	height: 33px;
+}
+.head-notice-icon {
+	background: url("../../img/img/gonggao.png") no-repeat;
+	display: inline-block;
+	width: 38px;
+	height: 33px;
+}
+.head-doc-icon {
+	background: url("../../img/img/wendang.png") no-repeat;
+	display: inline-block;
+	width: 38px;
+	height: 33px;
+}
+.head-task-icon {
+	background: url("../../img/img/works.png") no-repeat;
+	display: inline-block;
+	width: 40px;
+	height: 35px;
+}
+.head-staff-icon {
+	background: url("../../img/img/tongxunlu.png") no-repeat;
+	display: inline-block;
+	width: 41px;
+	height: 35px;
+}
+.head-contact-icon {
+	background: url("../../img/img/geren.png") no-repeat;
+	display: inline-block;
+	width: 38px;
+	height: 35px;
 }

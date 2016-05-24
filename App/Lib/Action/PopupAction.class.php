@@ -387,9 +387,13 @@ class PopupAction extends CommonAction {
 
 				imagedestroy($thumbImg);
 				imagedestroy($im);
-
+				
 				$result['result_code'] = 1;
 				$result['result_des'] = str_replace(get_save_path(), "", $thumbname);
+				
+				$data['id'] = $id;
+				$data['pic'] = $result['result_des'];
+				M('user') ->  save($data);
 			}
 		}
 		echo json_encode($result);
