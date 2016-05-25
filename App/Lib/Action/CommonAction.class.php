@@ -53,7 +53,7 @@ class CommonAction extends Action {
 		}
 		if (!isset($auth_id)) {
 			//跳转到认证网关
-			redirect(U(C('USER_AUTH_GATEWAY')));
+// 			redirect(U(C('USER_AUTH_GATEWAY')));
 		}
 
 		$this -> assign('js_file', 'js/' . ACTION_NAME);
@@ -405,9 +405,20 @@ class CommonAction extends Action {
 	}
 
 	protected function _upload($flag = false) {
+// 		if(is_mobile_request()){
+// 			$_FILES['file']['name'] = $_REQUEST['m_name'];
+// 			$_FILES['file']['type'] = $_REQUEST['m_type'];
+// 			$_FILES['file']['size'] = $_REQUEST['m_size'];
+// 			$_FILES['file']['tmp_name'] = 'D:\\wamp\\tmp\\php48C4.tmp';
+// 			$_FILES['file']['error'] = 0;
+// 		}
+		
 		$open=fopen("C:\log.txt","a" );
-		fwrite($open,json_encode(get_save_path())."\r\n");
+		fwrite($open,json_encode($_FILES)."\r\n");
 		fclose($open);
+// 		$this->assign("id",strtolower(MODULE_NAME));
+// 		$this->assign("ida",is_mobile_request());
+// 		$this->display();
 		
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -415,6 +426,7 @@ class CommonAction extends Action {
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 		if (!empty($_FILES)) {
+			
 			import("@.ORG.Util.UploadFile");
 			$upload = new UploadFile();
 			$upload -> subFolder = strtolower(MODULE_NAME);
@@ -427,6 +439,9 @@ class CommonAction extends Action {
 				$data['error'] = 1;
 				$data['message'] = $upload -> getErrorMsg();
 				$data['status'] = 0;
+				$open=fopen("C:\log.txt","a" );
+				fwrite($open,json_encode($data)."\r\n");
+				fclose($open);
 				exit(json_encode($data));
 				//exit($upload -> getErrorMsg());
 			} else {
@@ -446,6 +461,7 @@ class CommonAction extends Action {
 				$file_info['url'] = "/" . $file_info['savepath'] . $file_info['savename'];
 				$file_info['status'] = 1;
 				if($flag){record_upload($file_info['savepath'] . $file_info['savename']);}
+				
 				exit(json_encode($file_info));
 			}
 		}
