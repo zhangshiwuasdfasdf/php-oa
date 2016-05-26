@@ -25,7 +25,11 @@ function get_task_log($task_id) {
 	$list = M("TaskLog") -> where("task_id=$task_id") -> select();
 	return $list;
 }
-
+function userExp($i,$bq){
+	if(empty($bq)){return nulll;}
+	$temp =  explode('|',$bq);
+	return $temp[$i];
+}
 function is_weixin() {
 	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
 		return true;

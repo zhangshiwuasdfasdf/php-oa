@@ -211,7 +211,7 @@ class NoticeAction extends CommonAction {
 
 		$this -> display();
 	}
-
+	
 	public function upload() {
 		$this -> _upload();
 	}

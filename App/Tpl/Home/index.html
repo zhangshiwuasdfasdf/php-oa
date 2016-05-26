@@ -14,11 +14,11 @@
 		<input type="hidden" name="pic" id="pic" >
         <span class="grs2" onclick="select_avatar();">更换头像</span>
         <span class="grs3">{$Think.session.user_name}</span>
-        <span class="grs4">{$info.dept}&nbsp;{$info.duty}</span>
+        <span class="grs4">{$info.dept}</span>
         <input type="text" placeholder="说点什么吧" class="grin" id="bianqian" onchange="setbianqian({$Think.session.user_id},$('#bianqian').val())">
         </div>
         <div class="leftrw">
-        	<a class="rwa1"  onclick="set_cookie('top_menu', 198);" href="{:U('contact/folder','fid=inbox')}">
+        	<a class="rwa1"  onclick="set_cookie('top_menu', 198);" href="{:U('ftodo/index','fid=about_me')}">
                 	<img src="__PUBLIC__/img/img/daiban.png">
                 	<php>
 							$module_count=0;
@@ -91,7 +91,7 @@
             			
             		</volist>
             	</div>
-                <a onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=75')}">更多&gt;&gt;</a>
+                <a onclick="set_cookie('top_menu', 83);" href="{:U('shuo/index','fid=75')}">更多&gt;&gt;</a>
             </div>
         </div>
         <div class="tianqi">
@@ -100,31 +100,26 @@
                 <span class="tqd1s2"></span>
             </div>
 			<div class="tqd2">
-            	<IFRAME id="tianqi8_wetherinfo" name="tianqi8_wetherinfo" src="http://tq.ss256.com/code/freeweather7.htm?id=&fcolor=&imgurl=tb/tbb/tb7&bimg=&bcolor=&fsize=" frameBorder=0 width=140 height=60 ALIGN=CENTER MARGINWIDTH=0 MARGINHEIGHT=0 HSPACE=0 VSPACE=0 SCROLLING=NO allowtransparency=true></IFRAME>
+            	<IFRAME id="tianqi8_wetherinfo" name="tianqi8_wetherinfo" src="http://tq.ss256.com/code/freeweather7.htm?id=101210101&fcolor=&imgurl=tb/tbb/tb1&bimg=&bcolor=&fsize=" frameBorder=0 width=140 height=60 ALIGN=CENTER MARGINWIDTH=0 MARGINHEIGHT=0 HSPACE=0 VSPACE=0 SCROLLING=NO allowtransparency=true></IFRAME>
             </div>            
         </div>
     </div>
     <div class="macenter">
     	<div class="ysk">
             <a class="cena1" onclick="set_cookie('top_menu', 216);" href="{:U('task/folder','fid=about_me')}">
-                <img src="__PUBLIC__/img/img/renwu.png">
-                <span>我的任务</span>
+                <img src="__PUBLIC__/img/img/task.png">
             </a>
             <a class="cena2" onclick="set_cookie('top_menu', 87);" href="{:U('flow/folder','fid=submit')}">
-                <img src="__PUBLIC__/img/img/liucheng.png">
-                <span>我的流程</span>
+                <img src="__PUBLIC__/img/img/flow.png">
             </a>
             <a class="cena3" onclick="set_cookie('top_menu', 216);" href="{:U('weekly_report/index','fid=me')}">
-                <img src="__PUBLIC__/img/img/zhoubao.png">
-                <span>我的周报</span>
+                <img src="__PUBLIC__/img/img/week.png">
             </a>
             <a class="cena4" onclick="set_cookie('top_menu', 198);" href="{:U('schedule/index')}">
-                <img src="__PUBLIC__/img/img/richenganpai.png">
-                <span>日程安排</span>
+                <img src="__PUBLIC__/img/img/work.png">
             </a>
             <a class="cena5" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=71')}">
-                <img src="__PUBLIC__/img/img/qiyezhidu.png">
-                <span>企业制度</span>
+                <img src="__PUBLIC__/img/img/zhidu.png">
             </a>
         </div>
         <div class="qygg">
@@ -144,13 +139,19 @@
         <div class="qygk">
         	<div><span>企业概况</span></div>
             <ul class="gkul">
-            <volist id="vo" name="new_notice_list">
-              <if condition="$vo.folder eq 68">
-	            	<li class="gkl1">
-	                	<a class="gklis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
-	                    <span class="gklis2">{$vo.create_time|date='Y-m-d',###}</span>
-	                </li>
-	             </if>
+            <volist id="vo" name="new_notice_list1" mod="2">
+	             <eq name="mod" value="1">
+		            	<li class="gkl2">
+		                	<a class="gklis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
+		                    <span class="gklis2">{$vo.create_time|date='Y-m-d',###}</span>
+		                </li>
+		           </eq>
+		           <eq name="mod" value="0">
+		            	<li class="gkl1">
+		                	<a class="gklis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
+		                    <span class="gklis2">{$vo.create_time|date='Y-m-d',###}</span>
+		                </li>
+		           </eq>
 	          </volist>
             </ul>
             <a class="gks1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=68')}">更多&gt;&gt;</a>
@@ -175,10 +176,10 @@
         <div class="yqmh">
         	<div class="yqd1"><span>园区门户</span></div>
             <div class="yqd2">
-            	<a class="hzyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=78')}"><img src="__PUBLIC__/img/img/hangzhouyuanqu.png"></a>
+            	<a class="hzyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=79')}"><img src="__PUBLIC__/img/img/hangzhouyuanqu.png"></a>
                 <a class="jxyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=80')}"><img src="__PUBLIC__/img/img/jiaxingyuanqu.png"></a>
-                <a class="jhyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=79')}"><img src="__PUBLIC__/img/img/jinhuayuanqu.png"></a>
-                <a class="nbyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=81')}"><img src="__PUBLIC__/img/img/ningboyuanqu.png"></a>
+                <a class="jhyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=81')}"><img src="__PUBLIC__/img/img/jinhuayuanqu.png"></a>
+                <a class="nbyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=82')}"><img src="__PUBLIC__/img/img/ningboyuanqu.png"></a>
             </div>
         </div>
         <div class="rl">
@@ -189,4 +190,4 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/index.js"></script>

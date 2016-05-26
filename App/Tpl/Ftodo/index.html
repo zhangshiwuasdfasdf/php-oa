@@ -1,0 +1,105 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'与我有关的任务','search'=>'N'))}
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-10 ">编号</span>
+				<span class="col-10 ">发起人</span>
+			</div>
+			<div class="pull-right">
+				<span class="col-20 autocut">分配给</span>
+				<span class="col-15">期望完成时间</span>
+				<span class="col-10 ">状态</span>
+			</div>
+			<div class="auto autocut">
+				标题
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<foreach name="list" item="vo">
+				<li class="tbody">
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.task_no}</span>
+						<span class="col-10 ">{$vo.user_name}</span>
+					</div>
+
+					<div class="pull-right">
+						<span class="col-20 autocut">&nbsp;{$vo.executor|show_contact}</span>
+						<span class="col-15">&nbsp;{$vo.expected_time}</span>
+						<span class="col-10">&nbsp;{$task_extension[$key].status|task_status}</span>
+					</div>
+					<div class="auto autocut">
+						<a href="{:U('Task/read','id='.$vo['id'])}">{$vo.name}</a>
+					</div>
+				</li>
+			</foreach>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>
+{:W('PageHeader',array('name'=>'审批代办','search'=>'N'))}
+<div class="ul_table">
+	<ul>
+		<li class="thead" style="padding-left:10px">
+			<div class="pull-left">
+				<span class="col-16 ">编号</span>
+				<span class="col-16 ">类型</span>				
+			</div>
+			<div class="pull-right">
+				<span  class="col-9  ">登录时间</span>
+				<span  class="col-6  "> 登录人</span>
+				<span class="col-6  ">状态</span>
+				<span class="col-30  ">流程</span>
+			</div>
+			<div class="autocut auto">
+				标题
+			</div>
+		</li>
+	</ul>
+	<empty name="list2">
+		<ul>
+			<li class="no-data">
+				没找到数据
+			</li>
+		</ul>
+		<else/>
+		<form method="post" action="" name="form_data" id="form_data">
+			<ul>
+				<foreach name="list2" item="vo">
+					<li class="tbody">
+						<div class="pull-left">
+							<span class="col-16 ">{$vo.doc_no}</span>
+							<span class="col-16  "> {$vo.type_name}</span>
+						</div>
+						<div class="pull-right">
+							<span class="col-9" style="height:20px;">{$vo.create_time|toDate='Y-m-d'}</span>
+							<span class="col-6" style="height:20px;">{$vo.user_name}</span>
+							<span class="col-6" style="height:20px;">{$vo.step|show_step}</span>
+							<span class="col-30" style="height:20px;">{$vo.flow_name}</span>
+						</div>
+						<div class="autocut auto">
+							<in name="folder" value="darft">
+								<a href="{:U('edit','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
+								<else/>
+								<a href="{:U('read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
+							</in>
+							<eq name="vo.name|strlen" value="0">
+								无标题
+							</eq></a> 
+						</div>
+					</li>
+				</foreach>
+			</ul>
+		</form>
+		<div class="pagination">
+			{$page}
+		</div>
+	</empty>
+</div>
