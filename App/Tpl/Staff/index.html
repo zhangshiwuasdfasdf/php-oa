@@ -1,5 +1,5 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'职员查询','search'=>'N'))}
+{:W('PageHeader',array('name'=>'职员查询','search'=>'S'))}
 <div class="row">
 	<div class="col-sm-4 sub_left_menu">
 		
@@ -23,6 +23,21 @@
 					</div>
 					
 				</li>
+				<volist name="list" id="data">
+					<li class="tbody" email="{$data.email}" duty="{$data.duty}" name="{$data.name}" office_tel="{$data.office_tel}" mobile_tel="{$data.mobile_tel}" >
+					<div class="col-sm-7">
+						<span style="width:25%;" class="text-center emp_no">{$data.emp_no}</span>
+						<span style="width:25%;" class="text-center name">{$data.name}</span>
+						<span style="width: 25%" class="text-center position">{$data.position_name}</span>
+						<span style="width: 25%" class="text-center rank">{$data.duty}</span>
+					</div>
+					<div class="col-sm-5">
+						<span style="width:50%;" class="email">{$data.email}</span>
+						<span style="width:50%;text-align: center;" class="mobile_tel">{$data.mobile_tel}</span>
+					</div>
+				</li>
+				</volist>
+				
 			</ul>
 		</div>
 		<!-- 
@@ -72,3 +87,4 @@
 		</div>
 	</li>
 </div>
+
