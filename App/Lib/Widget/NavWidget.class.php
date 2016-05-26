@@ -35,7 +35,7 @@ class NavWidget extends Widget {
 					$icon_class="";	
 					$bc_count="";
 
-					$icon="fa fa-angle-right ".$class_url;
+					$icon="fa ".$class_url;
 					$icon_class=$val["icon"];	
 					if(strpos($icon_class,"bc-")!==false){
 						$bc_class=get_bc_class($icon_class);

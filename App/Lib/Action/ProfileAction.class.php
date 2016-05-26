@@ -148,15 +148,15 @@ class ProfileAction extends CommonAction {
 			$this->assign('award',$award_punish);
 			$this->assign('study',$study);
 			$this->assign('part',$part_time);
-			
-			$flow = M('flow')->where(array('user_id'=>$id))->find();
+			//TODO
+			/*$flow = M('flow')->where(array('user_id'=>$id))->find();
 			$log = M('flow_log') -> where(array('flow_id'=>$flow['id']))->find();
 			if(null === $log['result']){//还没有开始审批
 				$this -> display('edit_resume');
 			}else{
-				$this->display();	
-			}
-			
+					
+			}*/
+			$this->display();
 		}	
 	}
 	/**
