@@ -13,7 +13,8 @@
 			$("#sample .position").text(result.data[s].position_name);
 			$("#sample .rank").text(result.data[s].duty);
 			$("#sample .email").text(result.data[s].email);
-
+			$("#sample .mobile_tel").text(result.data[s].mobile_tel);
+			
 			$("#sample li").attr("email", result.data[s].email);
 			$("#sample li").attr("duty", result.data[s].duty);
 			$("#sample li").attr("name", result.data[s].name);
@@ -35,15 +36,15 @@
 	}
 
 	$(document).ready(function() {
-		$(".sub_left_menu .tree_menu a").click(function() {
-			$(".sub_left_menu .tree_menu a").each(function() {
-				$(this).attr("class", "");
+		$(".sub_left_menu .submenu a").click(function() {
+			$(".sub_left_menu .submenu a").each(function() {
+				//$(this).attr("class", "");
 			});
-			$(this).attr("class", "active");
+			//$(this).attr("class", "active");
 			sendAjax("{:U('read')}", "id=" + $(this).attr("node"), function(data) {
 				showdata(data);
 			});
-			return false;
+			//return false;
 		});
 		
 		$(document).on("click", ".user_list .tbody", function() {

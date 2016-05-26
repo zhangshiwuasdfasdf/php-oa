@@ -2,9 +2,87 @@
 {:W('PageHeader',array('name'=>'职员查询','search'=>'N'))}
 <div class="row">
 	<div class="col-sm-4 sub_left_menu">
+		
 		<div class="well">
 			<?php echo $menu ?>
 		</div>
+		<!-- 
+		<ul class='nav-list'>
+			<li>
+				<a class="dropdown-toggle" node="182" href="/php-oa/index.php?m=daily_report&a=index"><i class="fa fa-angle-right daily_report-index"></i><span class="menu-text">日/周/月报</span><b class="arrow fa fa-angle-down"></b></a>
+				<ul class='submenu'>
+					<li class="">
+					<a class="dropdown-toggle"  node="213" href="/php-oa/index.php?m=daily_report&a=index">
+					<i class="fa fa-angle-right daily_report-index"></i><span class="menu-text">日报</span></a>
+					<ul class='submenu'>
+						<li class="">
+						<a class="dropdown-toggle"  node="213" href="/php-oa/index.php?m=daily_report&a=index">
+						<i class="fa fa-angle-right daily_report-index"></i><span class="menu-text">日报</span></a>
+							<ul class='submenu'>
+								<li class="">
+								<a class="dropdown-toggle" node="213" href="/php-oa/index.php?m=daily_report&a=index">
+								<i class="fa fa-angle-right daily_report-index"></i><span class="menu-text">日报</span></a>
+									<ul class='submenu'>
+										<li class="">
+										<a class="dropdown-toggle" node="213" href="/php-oa/index.php?m=daily_report&a=index">
+										<i class="fa fa-angle-right daily_report-index"></i><span class="menu-text">日报</span></a>
+											<ul class='submenu'>
+												<li class="">
+												<a  node="213" href="/php-oa/index.php?m=daily_report&a=index">
+												<i class="fa fa-angle-right daily_report-index"></i><span class="menu-text">日报</span></a>
+												</li>
+												<li>
+												<a  node="211" href="/php-oa/index.php?m=weekly_report&a=index">
+												<i class="fa fa-angle-right weekly_report-index"></i><span class="menu-text">周报</span></a>
+												</li>
+												<li>
+												<a  node="212" href="/php-oa/index.php?m=monthly_report&a=index">
+												<i class="fa fa-angle-right monthly_report-index"></i><span class="menu-text">月报</span></a>
+												</li>
+											</ul>
+										</li>
+										<li>
+										<a  node="211" href="/php-oa/index.php?m=weekly_report&a=index">
+										<i class="fa fa-angle-right weekly_report-index"></i><span class="menu-text">周报</span></a>
+										</li>
+										<li>
+										<a  node="212" href="/php-oa/index.php?m=monthly_report&a=index">
+										<i class="fa fa-angle-right monthly_report-index"></i><span class="menu-text">月报</span></a>
+										</li>
+									</ul>
+								</li>
+								<li>
+								<a  node="211" href="/php-oa/index.php?m=weekly_report&a=index">
+								<i class="fa fa-angle-right weekly_report-index"></i><span class="menu-text">周报</span></a>
+								</li>
+								<li>
+								<a  node="212" href="/php-oa/index.php?m=monthly_report&a=index">
+								<i class="fa fa-angle-right monthly_report-index"></i><span class="menu-text">月报</span></a>
+								</li>
+							</ul>
+						</li>
+						<li>
+						<a  node="211" href="/php-oa/index.php?m=weekly_report&a=index">
+						<i class="fa fa-angle-right weekly_report-index"></i><span class="menu-text">周报</span></a>
+						</li>
+						<li>
+						<a  node="212" href="/php-oa/index.php?m=monthly_report&a=index">
+						<i class="fa fa-angle-right monthly_report-index"></i><span class="menu-text">月报</span></a>
+						</li>
+					</ul>
+					</li>
+					<li>
+					<a  node="211" href="/php-oa/index.php?m=weekly_report&a=index">
+					<i class="fa fa-angle-right weekly_report-index"></i><span class="menu-text">周报</span></a>
+					</li>
+					<li>
+					<a  node="212" href="/php-oa/index.php?m=monthly_report&a=index">
+					<i class="fa fa-angle-right monthly_report-index"></i><span class="menu-text">月报</span></a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		 -->
 	</div>
 	<div class="col-sm-8" >
 		<div class="ul_table border-bottom user_list"  >
@@ -17,11 +95,14 @@
 						<span class="text-center" style="width:25%">职位</span>
 					</div>
 					<div class="col-sm-5">
-						<span style="width:100%;">邮件</span>
+						<span style="width:50%;">邮件</span>
+						<span style="width:50%;text-align: center;">手机</span>
 					</div>
+					
 				</li>
 			</ul>
 		</div>
+		<!-- 
 		<div>
 			<div class="col-sm-4 text-center">
 				<img id="emp_pic" class="img-thumbnail" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'"/>
@@ -51,6 +132,7 @@
 				</table>
 			</div>
 		</div>
+		 -->
 	</div>
 </div>
 <div id="sample" class="display-none">
@@ -62,7 +144,8 @@
 			<span style="width: 25%" class="text-center rank"></span>
 		</div>
 		<div class="col-sm-5">
-			<span style="width:100%;" class="email"></span>
+			<span style="width:50%;" class="email"></span>
+			<span style="width:50%;text-align: center;" class="mobile_tel"></span>
 		</div>
 	</li>
 </div>

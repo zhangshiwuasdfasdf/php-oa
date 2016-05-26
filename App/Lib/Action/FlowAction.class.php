@@ -937,7 +937,7 @@ class FlowAction extends CommonAction {
 		if(empty($uid)){
 			return false;
 		}
-		$flow = getParentid($uid);
+		$flow = array(getDeptManagerId($uid),getHRDeputyGeneralManagerId($uid));
 		if(!empty($flow)){
 			$this->ajaxReturn(getFlowData($flow),null,1);
 		}else{

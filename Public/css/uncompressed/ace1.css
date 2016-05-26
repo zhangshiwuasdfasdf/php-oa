@@ -2057,15 +2057,6 @@ li [class*=" fa-"],
   /* optional icon before each item */
 
 }
-/*
-.nav-list > li >ul>li .submenu > li {
-	
-  margin-left: 0;
-  position: relative;
-  // optional icon before each item 
-  
-}
-*/
 .nav-list > li .submenu > li > a {
   display: block;
   position: relative;
@@ -2084,7 +2075,7 @@ li [class*=" fa-"],
 .nav-list > li .submenu > li.active > a {
   color: #2b7dbc;
 }
-.nav-list > li .submenu  a > [class*="fa-"]:first-child {
+.nav-list > li .submenu > li a > [class*="fa-"]:first-child {
   display: none;
   font-size: 12px;
   font-weight: normal;
@@ -2098,38 +2089,6 @@ li [class*=" fa-"],
   z-index: 1;
   background-color: #FFF;
 }
-
-.nav-list > li .submenu > li > ul > li> a > [class*="fa-"]:first-child {
-  display: none;
-  font-size: 12px;
-  font-weight: normal;
-  width: 18px;
-  height: auto;
-  line-height: 12px;
-  text-align: center;
-  position: absolute;
-  left: 10px;
-  top: 11px;
-  z-index: 1;
-  background-color: #FFF;
-}
-/*
-.nav-list > li >.submenu  li >  .submenu > li>   .submenu > li> a > [class*="fa-"]:first-child {
-  display: none;
-  font-size: 12px;
-  font-weight: normal;
-  width: 18px;
-  height: auto;
-  line-height: 12px;
-  text-align: center;
-  position: absolute;
-  left: 10px;
-  top: 11px;
-  z-index: 1;
-  background-color: #FFF;
-}
-*/
-
 .nav-list > li .submenu > li.active > a > [class*="fa-"]:first-child,
 .nav-list > li .submenu > li:hover > a > [class*="fa-"]:first-child {
   display: inline-block;
@@ -2148,128 +2107,15 @@ li [class*=" fa-"],
   top: 17px;
   border-top: 1px dotted #9dbdd6;
 }
-.nav-list > li  > .submenu > li>ul >li:before {
-  /* the horizontal line */
-
-  content: "";
-  display: inline-block;
-  position: absolute;
-  width: 7px;
-  left: 50px;
-  top: 17px;
-  border-top: 1px dotted #9dbdd6;
-}
-.nav-list > li  > .submenu > li>ul >li>ul >li:before {
-  /* the horizontal line */
-
-  content: "";
-  display: inline-block;
-  position: absolute;
-  width: 7px;
-  left: 80px;
-  top: 17px;
-  border-top: 1px dotted #9dbdd6;
-}
-.nav-list > li  > .submenu > li>ul >li>ul >li>ul >li:before {
-  /* the horizontal line */
-
-  content: "";
-  display: inline-block;
-  position: absolute;
-  width: 7px;
-  left: 110px;
-  top: 17px;
-  border-top: 1px dotted #9dbdd6;
-}
-.nav-list > li  > .submenu > li>ul >li>ul >li>ul >li>ul >li:before {
-  /* the horizontal line */
-
-  content: "";
-  display: inline-block;
-  position: absolute;
-  width: 7px;
-  left: 140px;
-  top: 17px;
-  border-top: 1px dotted #9dbdd6;
-}
-.nav-list > li  > .submenu > li>ul >li>ul >li>ul >li>ul >li>ul >li:before {
-  /* the horizontal line */
-
-  content: "";
-  display: inline-block;
-  position: absolute;
-  width: 7px;
-  left: 170px;
-  top: 17px;
-  border-top: 1px dotted #9dbdd6;
-}
 .nav-list > li > .submenu > li:first-child > a {
   border-top: 1px solid #FAFAFA;
 }
-/*
-竖的
-*/
 .nav-list > li > .submenu:before {
   content: "";
   display: block;
   position: absolute;
   z-index: 1;
   left: 18px;
-  top: 0;
-  bottom: 0;
-  border: 1px dotted #9dbdd6;
-  border-width: 0 0 0 1px;
-}
-.nav-list > li > ul > li > .submenu:before {
-  content: "";
-  display: block;
-  position: absolute;
-  z-index: 1;
-  left: 48px;
-  top: 0;
-  bottom: 0;
-  border: 1px dotted #9dbdd6;
-  border-width: 0 0 0 1px;
-}
-.nav-list > li > ul > li> ul > li > .submenu:before {
-  content: "";
-  display: block;
-  position: absolute;
-  z-index: 1;
-  left: 78px;
-  top: 0;
-  bottom: 0;
-  border: 1px dotted #9dbdd6;
-  border-width: 0 0 0 1px;
-}
-.nav-list > li > ul > li> ul > li> ul > li > .submenu:before {
-  content: "";
-  display: block;
-  position: absolute;
-  z-index: 1;
-  left: 108px;
-  top: 0;
-  bottom: 0;
-  border: 1px dotted #9dbdd6;
-  border-width: 0 0 0 1px;
-}
-.nav-list > li > ul > li> ul > li> ul > li> ul > li > .submenu:before {
-  content: "";
-  display: block;
-  position: absolute;
-  z-index: 1;
-  left: 138px;
-  top: 0;
-  bottom: 0;
-  border: 1px dotted #9dbdd6;
-  border-width: 0 0 0 1px;
-}
-.nav-list > li > ul > li> ul > li> ul > li> ul > li> ul > li > .submenu:before {
-  content: "";
-  display: block;
-  position: absolute;
-  z-index: 1;
-  left: 168px;
   top: 0;
   bottom: 0;
   border: 1px dotted #9dbdd6;
@@ -2454,39 +2300,20 @@ li [class*=" fa-"],
   line-height: 16px;
 }
 .nav-list > li > .submenu li > .submenu > li:before {
- // display: none;
+  display: none;
 }
 .nav-list > li > .submenu li > .submenu > li > a {
   /*3rd level*/
 
-  margin-left: 30px;
-  padding-left: 32px;
+  margin-left: 20px;
+  padding-left: 22px;
 }
 .nav-list > li > .submenu li > .submenu > li > .submenu > li > a {
   /*4th level*/
 
-  margin-left: 60px;
-  padding-left: 32px;
+  margin-left: 20px;
+  padding-left: 38px;
 }
-.nav-list > li > .submenu li > .submenu > li > .submenu > li > .submenu > li > a {
-  /*5th level*/
-
-  margin-left: 90px;
-  padding-left: 32px;
-}
-.nav-list > li > .submenu li > .submenu > li > .submenu > li > .submenu > li > .submenu > li > a {
-  /*6th level*/
-
-  margin-left: 120px;
-  padding-left: 32px;
-}
-.nav-list > li > .submenu li > .submenu > li > .submenu > li > .submenu > li > .submenu > li> .submenu > li > a {
-  /*7th level*/
-
-  margin-left: 150px;
-  padding-left: 32px;
-}
-/*
 .nav-list > li > .submenu li > .submenu > li a > [class*="fa-"]:first-child {
   display: inline-block;
   color: inherit;
@@ -2495,7 +2322,6 @@ li [class*=" fa-"],
   background-color: transparent;
   margin-right: 1px;
 }
-*/
 .nav-list > li > .submenu li > .submenu > li a {
   font-size: 13px;
   color: #777;

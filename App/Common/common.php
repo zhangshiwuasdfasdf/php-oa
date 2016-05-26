@@ -2001,9 +2001,9 @@ function getFlow($uid,$day,$unique=true){
 	}elseif ($day>=3 && $day<=7){
 		if(getRank($uid) == 3){//主管，助理，员工
 			if($unique){
-				return checkFlow(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid))));
+				return checkFlow(array_unique(array(getDeptManagerId($uid),getHRDeputyGeneralManagerId($uid))));
 			}else{
-				return checkFlow(array(getParentid($uid),getHRDeputyGeneralManagerId($uid)));
+				return checkFlow(array(getDeptManagerId($uid),getHRDeputyGeneralManagerId($uid)));
 			}
 		}elseif (getRank($uid) == 2){//经理
 			return getHRDeputyGeneralManagerId($uid);
@@ -2015,9 +2015,9 @@ function getFlow($uid,$day,$unique=true){
 	}elseif($day>7){
 		if(getRank($uid) == 3){//主管，助理，员工
 			if($unique){
-				return checkFlow(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
+				return checkFlow(array_unique(array(getDeptManagerId($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
 			}else{
-				return checkFlow(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
+				return checkFlow(array(getDeptManagerId($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
 			}
 		}elseif (getRank($uid) == 2){//经理，总监
 			if($unique){

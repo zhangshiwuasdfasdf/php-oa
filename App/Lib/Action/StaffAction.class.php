@@ -35,7 +35,19 @@ class StaffAction extends CommonAction {
 			$menu = array();
 			$menu = $node -> field('id,pid,name') ->where("is_del=0")-> order('sort asc') -> select();
 			$tree = list_to_tree($menu);
-			$this -> assign('menu', popup_tree_menu($tree,0,100,true));
+			$a = popup_tree_menu($tree,0,100,true);
+// 			$str = 'abcabc';
+// 			$str=preg_replace('/abc/','123',$str,1);
+// 			echo $str;
+			
+
+			$a = str_replace('tree_menu','submenu',$a);
+			$a = str_replace('<a class=""','<a class="dropdown-toggle"',$a);
+			$a = preg_replace('/submenu/','nav-list',$a,1);
+// 			$open=fopen("C:\log.txt","a" );
+// 			fwrite($open,$a."\r\n");
+// 			fclose($open);
+			$this -> assign('menu', $a);
 			$this -> display();
 		}else{//手机端通讯录
 			$prefix = C('DB_PREFIX');

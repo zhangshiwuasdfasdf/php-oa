@@ -11,13 +11,13 @@
  Support: https://git.oschina.net/smeoa/smeoa
  -------------------------------------------------------------------------*/
 
-
+header("Access-Control-Allow-Origin:*");
+/*星号表示所有的域都可以接受，*/
+header("Access-Control-Allow-Methods:GET,POST");
 class CommonAction extends Action {
 	
 
 	function _initialize() {
-
-		
 		$is_weixin = is_weixin();
 		if ($is_weixin) {
 			$code = $_REQUEST["code"];
@@ -50,15 +50,17 @@ class CommonAction extends Action {
 			}
 		}else{
 			$auth_id = session(C('USER_AUTH_KEY'));
+		
 		}
 		if (!isset($auth_id)) {
 			//跳转到认证网关
+			//与手机端上传照片有冲突，所以注释了
 // 			redirect(U(C('USER_AUTH_GATEWAY')));
 		}
-
 		$this -> assign('js_file', 'js/' . ACTION_NAME);
 		$this -> _assign_menu();
 		$this -> _assign_new_count();
+
 	}
 
 	protected function _welogin($code){
@@ -405,28 +407,12 @@ class CommonAction extends Action {
 	}
 
 	protected function _upload($flag = false) {
-// 		if(is_mobile_request()){
-// 			$_FILES['file']['name'] = $_REQUEST['m_name'];
-// 			$_FILES['file']['type'] = $_REQUEST['m_type'];
-// 			$_FILES['file']['size'] = $_REQUEST['m_size'];
-// 			$_FILES['file']['tmp_name'] = 'D:\\wamp\\tmp\\php48C4.tmp';
-// 			$_FILES['file']['error'] = 0;
-// 		}
-		
-		$open=fopen("C:\log.txt","a" );
-		fwrite($open,json_encode($_FILES)."\r\n");
-		fclose($open);
-// 		$this->assign("id",strtolower(MODULE_NAME));
-// 		$this->assign("ida",is_mobile_request());
-// 		$this->display();
-		
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 		if (!empty($_FILES)) {
-			
 			import("@.ORG.Util.UploadFile");
 			$upload = new UploadFile();
 			$upload -> subFolder = strtolower(MODULE_NAME);
@@ -439,9 +425,6 @@ class CommonAction extends Action {
 				$data['error'] = 1;
 				$data['message'] = $upload -> getErrorMsg();
 				$data['status'] = 0;
-				$open=fopen("C:\log.txt","a" );
-				fwrite($open,json_encode($data)."\r\n");
-				fclose($open);
 				exit(json_encode($data));
 				//exit($upload -> getErrorMsg());
 			} else {

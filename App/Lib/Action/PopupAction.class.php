@@ -10,7 +10,9 @@
 
   Support: https://git.oschina.net/smeoa/smeoa               
  -------------------------------------------------------------------------*/
-
+header("Access-Control-Allow-Origin:*");
+/*星号表示所有的域都可以接受，*/
+header("Access-Control-Allow-Methods:GET,POST");
 class PopupAction extends CommonAction {
 	protected $config = array('app_type' => 'asst');
 	//过滤查询字段
@@ -157,38 +159,45 @@ class PopupAction extends CommonAction {
 	function upload(){
 		$this -> _upload();
 	}
-	function upload2(){
+	function mobile_pic_upload(){
+		
 			$picname = $_FILES['mypic']['name'];
 			$picsize = $_FILES['mypic']['size'];
-			$open=fopen("C:\log.txt","a" );
-			fwrite($open,'55'."\r\n");
-			fwrite($open,json_encode($_FILES)."\r\n");
-			fwrite($open,$_GET['mypic']['name']."\r\n");
-			fwrite($open,json_encode($_POST)."\r\n");
-			fclose($open);
+			
 			if ($picname != "") {
 				if ($picsize > 512000) { //限制上传大小
 					echo '图片大小不能超过500k';
 					exit;
 				}
 				$type = strstr($picname, '.'); //限制上传格式
-				if ($type != ".gif" && $type != ".jpg") {
+				if ($type != ".gif" && $type != ".jpg" && $type != ".jpeg" && $type != ".png") {
 					echo '图片格式不对！';
 					exit;
 				}
 				$rand = rand(100, 999);
-				$pics = date("YmdHis") . $rand . $type; //命名图片名称
+				$pics = $_REQUEST['id'] . $type; //命名图片名称
 				//上传路径
-				$pic_path = "/Data/Files/emp_pic/". $pics;
-				move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);
+				$pic_path = "./Data/Files/emp_pic/". $pics;
+				
+				$res = move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);
+				if($res){
+					$data['id'] = intval($_REQUEST['id']);
+					$data['pic'] = 'emp_pic/'.$pics;
+					M('User')->save($data);
+					$size = round($picsize/1024,2); //转换成kb
+					$arr = array(
+							'status'=>'1',
+							'name'=>$picname,
+							'pic'=>$pics,
+							'size'=>$size,
+							'path'=>$pic_path
+					);
+					echo json_encode($arr); //输出json数据
+				}
+				
 			}
-			$size = round($picsize/1024,2); //转换成kb
-			$arr = array(
-					'name'=>$picname,
-					'pic'=>$pics,
-					'size'=>$size
-			);
-			echo json_encode($arr); //输出json数据
+			
+
 	}
 
 	function emp() {
