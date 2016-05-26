@@ -19,28 +19,32 @@ class StaffAction extends CommonAction {
 	private $dept;
 
 	function _search_filter(&$map) {
-		$map['name'] = array('like', "%" . $_POST['name'] . "%");
-		$map['letter'] = array('like', "%" . $_POST['letter'] . "%");
-		$map['is_del'] = array('eq', '0');
-		if (!empty($_POST['tag'])) {
-			$map['group'] = $_POST['tag'];
+		if (!empty($_POST['keyword'])) {
+			$map['name|emp_no'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
-		$map['user_id'] = array('eq', get_user_id());
 	}
 
 	function index() {
 		if(!is_mobile_request()){
+			$map = $this -> _search();
+			if (method_exists($this, '_search_filter')) {
+				$this -> _search_filter($map);
+			}
+			if(!empty($map)){
+				$res = $this -> _list(D('User'), $map,"emp_no",true);
+				foreach ($res as $k=>$v){
+					$position = M('Position')->find($v['position_id']);
+					$res[$k]['position_name'] = $position['name'];
+				}
+			}
 			$this->assign("title",'职员查询');
 			$node = D("Dept");
 			$menu = array();
-			$menu = $node -> field('id,pid,name') ->where("is_del=0")-> order('sort asc') -> select();
+			$where['is_del'] = array('eq',0);
+			$menu = $node -> field('id,pid,name') ->where($where)-> order('sort asc') -> select();
 			$tree = list_to_tree($menu);
 			$a = popup_tree_menu($tree,0,100,true);
-// 			$str = 'abcabc';
-// 			$str=preg_replace('/abc/','123',$str,1);
-// 			echo $str;
 			
-
 			$a = str_replace('tree_menu','submenu',$a);
 			$a = str_replace('<a class=""','<a class="dropdown-toggle"',$a);
 			$a = preg_replace('/submenu/','nav-list',$a,1);

@@ -58,7 +58,6 @@ class UserAction extends CommonAction {
 		$map['is_del']=array('eq',$eq_is_del);	
 		$name = $this -> getActionName();
 		$model = D($name);
-
 		if (!empty($model)) {
 			$this -> _list($model, $map,"emp_no",true);
 		}

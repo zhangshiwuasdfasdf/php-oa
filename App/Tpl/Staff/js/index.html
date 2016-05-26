@@ -36,6 +36,19 @@
 	}
 
 	$(document).ready(function() {
+		$(".sub_left_menu .dropdown-toggle").each(function() {
+			//默认展开三级
+			if($(this).attr('node')==27){
+				console.log($(this).next().attr('style','display:block'));
+			}
+			if($(this).attr('node')==1){
+				console.log($(this).next().attr('style','display:block'));
+			}
+			if($(this).attr('node')==86){
+				console.log($(this).next().attr('style','display:block'));
+			}
+		});
+		
 		$(".sub_left_menu .submenu a").click(function() {
 			$(".sub_left_menu .submenu a").each(function() {
 				//$(this).attr("class", "");
