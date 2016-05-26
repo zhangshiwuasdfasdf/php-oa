@@ -198,7 +198,10 @@ class HomeAction extends CommonAction {
 		$where['is_del'] = array('eq', '0');
 		$folder_list = D("SystemFolder") -> get_authed_folder(get_user_id(), "NoticeFolder");
 		$where['folder'] = array("in", $folder_list);
+		$where1['is_del'] = array('eq', '0');
+		$where1['folder'] = '68';
 		$new_notice_list = $model -> where($where) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
+		$new_notice_list1 = $model -> where($where1) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
 		foreach ($new_notice_list as $k=>$v){
 			if(!empty($v['add_file'])){			
 				$files = array_filter(explode(';', $v['add_file']));
@@ -212,6 +215,7 @@ class HomeAction extends CommonAction {
 			}
 		}
 		$this -> assign("new_notice_list", $new_notice_list);
+		$this -> assign("new_notice_list1", $new_notice_list1);
 	}
 
 	protected function _forum_list() {

@@ -2,7 +2,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li, ol, dt, dl, input, textarea {
 	font-family: Microsoft YaHei,simsun,Arial, sans-serif ;
 }
 body{
-	background-color:#fff;
+	background-color:#f1efef;
 }
 #dialog{
 	-webkit-overflow-scrolling:touch;
@@ -50,10 +50,10 @@ select{
 	border-width: 4px;
 }
 #nav_head{
-	cursor:pointer;padding-top:7px;font-size:18px;height:41px;border-bottom:1px solid	#e5e5e5;
+	cursor:pointer;padding-top:7px;font-size:18px;height:41px;border-bottom:1px solid #d8d7d6;background-color: #e5ebf5;
 }
 #user_info{
-	padding-top:7px;font-size:16px;height:41px;border-bottom:1px solid #e5e5e5;
+	padding-top:7px;font-size:16px;height:41px;border-bottom:1px solid #d8d7d6;
 }
 #left_menu_icon{
 	padding-top:3px;padding-right:12px;
@@ -74,21 +74,21 @@ select{
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 .btn-app.app-nav:hover {
-  background: #333333 !important;
-  background-image: -webkit-gradient(linear, left 0%, left 100%, from(#333333), to(#333333)) !important;
-  background-image: -webkit-linear-gradient(top, #333333, 0%, #333333, 100%) !important;
-  background-image: -moz-linear-gradient(top, #333333 0%, #333333 100%) !important;
-  background-image: linear-gradient(to bottom, #333333 0%, #333333 100%) !important;
+  background: #171717 !important;
+  background-image: -webkit-gradient(linear, left 0%, left 100%, from(#171717), to(#171717)) !important;
+  background-image: -webkit-linear-gradient(top, #171717, 0%, #171717, 100%) !important;
+  background-image: -moz-linear-gradient(top, #171717 0%, #171717 100%) !important;
+  background-image: linear-gradient(to bottom, #171717 0%, #171717 100%) !important;
   background-repeat: repeat-x !important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
 .btn-app.app-nav.active {
-  background: #333333 !important;
-  background-image: -webkit-gradient(linear, left 0%, left 100%, from(#333333), to(#333333)) !important;
-  background-image: -webkit-linear-gradient(top, #333333, 0%, #333333, 100%) !important;
-  background-image: -moz-linear-gradient(top, #333333 0%, #333333 100%) !important;
-  background-image: linear-gradient(to bottom, #333333 0%, #333333 100%) !important;
+  background: #171717 !important;
+  background-image: -webkit-gradient(linear, left 0%, left 100%, from(#171717), to(#171717)) !important;
+  background-image: -webkit-linear-gradient(top, #171717, 0%, #171717, 100%) !important;
+  background-image: -moz-linear-gradient(top, #171717 0%, #171717 100%) !important;
+  background-image: linear-gradient(to bottom, #171717 0%, #171717 100%) !important;
   background-repeat: repeat-x !important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
@@ -645,7 +645,8 @@ ul.tree_menu i {
 	border-bottom-width: 0;
 	padding: 10px 12px;
 	line-height: 18px;
-	background-color: #FFF position :relative;
+	background-color: #FFF;
+	position :relative;
 }
 .ul_table ul li.tbody:first-child {
 	border-top-width: 0

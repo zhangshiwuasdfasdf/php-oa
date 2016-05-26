@@ -82,8 +82,7 @@ var uploader = new plupload.Uploader({
 	init: {
 		PostInit: function(){
 		},
-		FilesAdded: function(up, files) {	
-			alert();
+		FilesAdded: function(up, files) {		
 			up.start();
 		},
 		FileUploaded: function(up,file,data) {						

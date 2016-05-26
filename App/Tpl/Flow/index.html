@@ -20,7 +20,7 @@
 				<input type="hidden" value="abc" >
 				<input  class="form-control" type="text"  name="keyword" id="keyword" onkeydown="key_local_search();"/>
 				<div class="input-group-btn">
-					<a class="btn btn-sm btn-info" onclick="btn_local_search();"><i class="fa fa-search" ></i> </a>
+					<a class="btn btn-sm btn-info flow_search" onclick="btn_local_search();"><i class="fa fa-search" ></i> </a>
 				</div>
 			</div>
 		</div>
@@ -31,6 +31,7 @@
 			<assign name="var" value="$key" />
 			<div class="widget-box" gid="{$key}">
 				<div class="widget-header widget-header-flat">
+					<i class="flow_title_ico"></i>
 					<h4 class="smaller">
 						{$tag}
 					</h4>
@@ -45,8 +46,8 @@
 					<div class="space-8"></div>
 						<foreach name="list" item="vo">
 							<eq name="var" value="$vo.tag">
-								<div class="col-sm-3 col-xs-6 text-center">
-									<a class="btn btn-info btn-block" href="{:U('add','type='.$vo['id'])}">{$vo.name}</a>
+								<div class="col-sm-3 col-xs-6 text-center " style="width:20%;">
+									<a class="btn btn-info btn-block flow_color" href="{:U('add','type='.$vo['id'])}"><i class="flow_ele"></i>{$vo.name}</a>
 									<div class="space-8"></div>
 								</div>
 							</eq>

@@ -12,3 +12,24 @@ function dqsj(){
 	$(".tqd1s2").text(time)
 }
 setInterval(dqsj,500)
+
+$(".ggs1").hide();
+$(".gks1").hide();
+$(".gzs1").hide();
+if($(".ggul li").length>7){
+	$(".ggs1").show()
+}else{
+	$(".ggs1").hide()
+	}
+	
+if($(".gkul li").length>7){
+	$(".gks1").show()
+}else{
+	$(".gks1").hide()
+	}
+
+if($(".gzul li").length>7){
+	$(".gzs1").show()
+}else{
+	$(".gzs1").hide()
+	}

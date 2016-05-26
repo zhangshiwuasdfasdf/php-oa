@@ -444,7 +444,6 @@ class CommonAction extends Action {
 				$file_info['url'] = "/" . $file_info['savepath'] . $file_info['savename'];
 				$file_info['status'] = 1;
 				if($flag){record_upload($file_info['savepath'] . $file_info['savename']);}
-				
 				exit(json_encode($file_info));
 			}
 		}
@@ -519,7 +518,7 @@ class CommonAction extends Action {
 		return $map;
 	}
 
-	protected function _list($model, $map, $sortBy = '', $asc = false) {
+	protected function _list($model, $map, $sortBy = '', $asc = false,$temp='list') {
 		//排序字段 默认为主键名
 		if (isset($_REQUEST['_order'])) {
 			$order = $_REQUEST['_order'];
@@ -583,7 +582,7 @@ class CommonAction extends Action {
 
 			//模板赋值显示
 			$name = $this -> getActionName();
-			$this -> assign('list', $voList);
+			$this -> assign($temp, $voList);
 			$this -> assign('sort', $sort);
 			$this -> assign('order', $order);
 			$this -> assign('sortImg', $sortImg);

@@ -1,0 +1,39 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'每日说说','search'=>'N'))}
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-10 ">发起人</span>
+			</div>
+			<div class="pull-right">
+				<span class="col-15 ">时间</span>
+			</div>
+			<div class="auto autocut">
+				内容
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<foreach name="list" item="vo">
+				<li class="tbody">
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.name}</span>
+					</div>
+					<div class="pull-right">
+						<span class="col-15 ">{$vo.bianqian|userExp=1,###|date="Y-m-d",###}</span>
+					</div>
+					<div class="auto autocut">
+						<span>{$vo.bianqian|userExp=0,###}</span>
+					</div>
+				</li>
+			</foreach>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>
