@@ -1,0 +1,150 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'个人履历添加','search'=>'N'))}
+
+<h1 style="margin:auto; text-align:center; line-height:40px;">员工在职履历档案表</h1>
+<table width="100%" border="1" cellspacing="0" cellpadding="0" style="font-family:'微软雅黑'; font-size:14px;">
+  <tr>
+    <td height="33" colspan="12" ><strong>一、在职期间工作态度、纪律（考勤、加班、休假）</strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">年&nbsp;&nbsp;度</td>
+    <td height="33" align="center">迟到次数</td>
+    <td height="33" align="center">早退次数 </td>
+    <td height="33" colspan="2" align="center">加&nbsp;&nbsp;班</td>
+    <td height="33" colspan="4" align="center">调&nbsp;&nbsp;休</td>
+    <td height="33" align="center">年休假</td>
+    <td height="33" colspan="2" align="center">制度配合执行</td>
+  </tr>
+  <foreach name="disc" item="di">
+  <notempty name="di[0]">
+	  <tr>
+	    <td height="33" align="center">{$di[0]}</td>
+	    <td height="33" align="center">{$di[1]}</td>
+	    <td height="33" align="center">{$di[2]}</td>
+	    <td height="33" colspan="2" align="center">{$di[3]}</td>
+	    <td height="33" colspan="4" align="center">{$di[4]}</td>
+	    <td height="33" align="center">{$di[5]}</td>
+	    <td height="33" colspan="2" align="center">{$di[6]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>二、在职期间调岗（任免）/晋升/调薪记录 </strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">类别</td>
+    <td height="33" align="center">调整日期</td>
+    <td height="33" align="center">原部门</td>
+    <td height="33" colspan="2" align="center">职务</td>
+    <td height="33" colspan="4" align="center">工资</td>
+    <td height="33" align="center">新部门</td>
+    <td height="33" align="center">职务</td>
+    <td align="center">新工资</td>
+  </tr>
+   <foreach name="prom" item="pr">
+   <notempty name="pr[0]">
+	  <tr>
+	    <td height="33" align="center">{$pr[0]}</td>
+	    <td height="33" align="center">{$pr[1]}</td>
+	    <td height="33" align="center">{$pr[2]}</td>
+	    <td height="33" colspan="2" align="center">{$pr[3]}</td>
+	    <td height="33" colspan="4" align="center">{$pr[4]}</td>
+	    <td height="33" align="center">{$pr[5]}</td>
+	    <td height="33" align="center">{$pr[6]}</td>
+	    <td height="33" align="center">{$pr[7]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>三、在职期间工作绩效/主要业绩/管理创新</strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">年份/日期</td>
+    <td height="33" colspan="2" align="center">相关事项</td>
+    <td height="33" colspan="6" align="center">主要成效/分数</td>
+    <td height="33" align="center">职务</td>
+    <td height="33" colspan="2" align="center">备注</td>
+  </tr>
+   <foreach name="perf" item="pe">
+   <notempty name="pe[0]">
+	  <tr>
+	    <td height="33" align="center">{$pe[0]}</td>
+	    <td height="33" colspan="2" align="center">{$pe[1]}</td>
+	    <td height="33" colspan="6" align="center">{$pe[2]}</td>
+	    <td height="33" align="center">{$pe[3]}</td>
+	    <td height="33" colspan="2" align="center">{$pe[4]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>四、在职期间奖励与处罚记录</strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">日期</td>
+    <td height="33" colspan="2" align="center">奖励/处罚事因</td>
+    <td height="33" colspan="6" align="center">奖励/处罚金额</td>
+    <td height="33" align="center">奖励/处罚</td>
+    <td height="33" colspan="2" align="center">执行部门</td>
+  </tr>
+  <foreach name="award" item="aw">
+   <notempty name="aw[0]">
+	  <tr>
+	    <td height="33" align="center">{$aw[0]}</td>
+	    <td height="33" colspan="2" align="center">{$aw[1]}</td>
+	    <td height="33" colspan="6" align="center">{$aw[2]}</td>
+	    <td height="33" align="center">{$aw[3]}</td>
+	    <td height="33" colspan="2" align="center">{$aw[4]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>五、在职期间公司资助、学习机会（培训记录）</strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">培训时间</td>
+    <td height="33" align="center">培训内容</td>
+    <td height="33" align="center">培训机构</td>
+    <td height="33" colspan="2" align="center">取得证书</td>
+    <td height="33" colspan="4" align="center">所在部门/岗位</td>
+    <td height="33" align="center">费用</td>
+    <td height="33" colspan="2" align="center">协议</td>
+  </tr>
+  <foreach name="study" item="st">
+   <notempty name="st[0]">
+	  <tr>
+	    <td height="33" align="center">{$st[0]}</td>
+	    <td height="33" align="center">{$st[1]}</td>
+	    <td height="33" align="center">{$st[2]}</td>
+	    <td height="33" colspan="2" align="center">{$st[3]}</td>
+	    <td height="33" colspan="4" align="center">{$st[4]}</td>
+	    <td height="33" align="center">{$st[5]}</td>
+	    <td height="33" colspan="2" align="center">{$st[6]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>六、在职期间兼职记录</strong></td>
+  </tr>
+  <tr>
+    <td height="33" align="center">日期</td>
+    <td height="33" colspan="3" align="center">职务</td>
+    <td height="33" colspan="4" align="center">日期</td>
+    <td height="33" colspan="4" align="center">职务</td>
+  </tr>
+  <foreach name="part" item="pa">
+   <notempty name="pa[0]">
+	  <tr>
+	    <td height="33" align="center">{$pa[0]}</td>
+	    <td height="33" colspan="3" align="center">{$pa[1]}</td>
+	    <td height="33" colspan="4" align="center">{$pa[2]}</td>
+	    <td height="33" colspan="4" align="center">{$pa[3]}</td>
+	  </tr>
+  </notempty>
+  </foreach>
+  <tr>
+    <td height="33" colspan="12" ><strong>七、公司评语（主要业绩、员工荣誉、社会表彰或奖惩等）</strong></td>
+  </tr>
+  <tr>
+    <td height="100" colspan="12" align="center">{$data['comment'][0]}</td>
+  </tr>
+</table>

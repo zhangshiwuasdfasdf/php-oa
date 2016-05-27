@@ -73,7 +73,11 @@
 		var id = $("#id").val();
 		location.href = "{:U('Profile/resume',array('id'=>'"+ id +"'))}"
 	}
-
+	function goRecord(){
+		var id = $("#id").val();
+		location.href = "{:U('Profile/add_record',array('id'=>'"+ id +"'))}"
+	}
+	
 	function showdata(result) {
 		$("#form_data select ").each(function() {
 			$(this).find('option:first').attr('selected', 'selected');
