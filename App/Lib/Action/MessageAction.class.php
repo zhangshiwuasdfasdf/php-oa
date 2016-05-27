@@ -55,13 +55,23 @@ class MessageAction extends CommonAction {
 		$model = D("Message");
 		if (empty($_POST['keyword'])){
 			$list = $model -> get_list();
+// 			手机端提供照片
+			foreach ($list as $k=>$v){
+				if($v['owner_id'] == $v['sender_id']){
+					$user = M('User')->find($v['receiver_id']);
+					$list[$k]['pic'] = $user['pic'];
+				}elseif($v['owner_id'] == $v['receiver_id']){
+					$user = M('User')->find($v['sender_id']);
+					$list[$k]['pic'] = $user['pic'];
+				}
+			}
 			$this -> assign('list', $list);
 		} else {
 			if (method_exists($this, '_filter')) {
 				$this -> _filter($map);
 			}
 			if (!empty($model)) {
-				$this -> _list($model, $map);
+				$res = $this -> _list($model, $map);
 			}
 		}
 		$this->assign('user_id',get_user_id());
@@ -153,8 +163,17 @@ class MessageAction extends CommonAction {
 		$where['_string'] = "(sender_id='$sender_id' and receiver_id='$receiver_id') or (receiver_id='$sender_id' and sender_id='$receiver_id')";
 		$model -> where($where) -> setField('is_read', '1');
 		$list = $model -> where($where) -> order('create_time desc') -> select();
-		$this -> assign('list', $list);
+// 		手机端提供照片
+		if(is_mobile_request()){
+			foreach ($list as $k=>$v){
+				$user = M('User')->find($v['sender_id']);
+				$list[$k]['pic'] = $user['pic'];
+				$list[$k]['mobile_file'] = mobile_show_file($v['add_file']);
+			}
+		}
 		
+// 		dump($list);
+		$this -> assign('list', $list);
 		if(is_array($list)){
 			$vo=$list[0];
 			if($vo['sender_id']==get_user_id()){

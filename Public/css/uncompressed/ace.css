@@ -2085,7 +2085,7 @@ li [class*=" fa-"],
   line-height: 12px;
   text-align: center;
   position: absolute;
-  left: 10px;
+  left: 0px;
   top: 11px;
   z-index: 1;
   background-color: #FFF;
@@ -2100,7 +2100,7 @@ li [class*=" fa-"],
   line-height: 12px;
   text-align: center;
   position: absolute;
-  left: 10px;
+  left: 0px;
   top: 11px;
   z-index: 1;
   background-color: #FFF;

@@ -1197,6 +1197,27 @@ function show_file($add_file) {
 		}
 	}
 }
+function mobile_show_file($add_file){
+	$files = array_filter(explode(';', $add_file));
+	$a = '';
+	foreach ($files as $file) {
+		if (strlen($file) > 1) {
+			$model = M("File");
+			$where['sid'] = array('eq', $file);
+			$File = $model -> where($where) -> field("id,name,size,extension,savename,user_id") -> find();
+			$__PUBLIC__ = __PUBLIC__;
+			$__URL__ = __URL__;
+			if($File['user_id']==get_user_id()){
+				$class='file_me';
+			}else{
+				$class='file_others';
+			}
+			$a.= '<a target="_blank" class="'.$class.'" href="'.'http://192.168.1.59/php-oa/Data/Files/'.$File['savename'].'">'.$File['name'].'</a>';
+// 			return '<div class="attach_file" style="background-image:url('.$__PUBLIC__.'/ico/ico_' . strtolower($File['extension']) . '.jpg); background-repeat:no-repeat;"><a target="_blank" href="'.$__URL__.'/down/attach_id/' . f_encode($File['id']) . '">' . $File['name'] . ' (' . reunit($File['size']) . ')' . '</a>'.'</div>';
+		}
+	}
+	return $a;
+}
 
 function reunit($size) {
 	$unit = " B";

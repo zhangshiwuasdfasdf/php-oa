@@ -27,7 +27,7 @@
 		if({$key}>2){
 			add_subject();
 		}
-		 $("input[name=subject]:eq({$key})").val("{$vo.subject}");
+		 $("input[name=subject]:eq({$key})").attr('placeholder',"{$vo.subject}");
 
 		$arr_item = "{$vo.item}".split("|||");
 		$arr_start_time = "{$vo.start_time}".split("|||");
@@ -41,10 +41,10 @@
 				$html = $("#sample_item").html();
 				$(".work_content:eq({$key})").find("div.col-sm-8").append($html);
 			}
-			$(".work_content:eq({$key})").find("input[name=item]:eq(" + $k + ")").val($arr_item[i]);
-			$(".work_content:eq({$key})").find("input[name=start_time]:eq(" + $k + ")").val($arr_start_time[i]);
-			$(".work_content:eq({$key})").find("input[name=end_time]:eq(" + $k + ")").val($arr_end_time[i]);
-			$(".work_content:eq({$key})").find("input[name=status]:eq(" + $k + ")").val($arr_status[i]);
+			$(".work_content:eq({$key})").find("input[name=item]:eq(" + $k + ")").attr('placeholder',$arr_item[i]);
+			$(".work_content:eq({$key})").find("input[name=start_time]:eq(" + $k + ")").attr('placeholder',$arr_start_time[i]);
+			$(".work_content:eq({$key})").find("input[name=end_time]:eq(" + $k + ")").attr('placeholder',$arr_end_time[i]);
+			$(".work_content:eq({$key})").find("input[name=status]:eq(" + $k + ")").attr('placeholder',$arr_status[i]);
 			$k++;
 		}
 		</volist>

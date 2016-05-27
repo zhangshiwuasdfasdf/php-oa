@@ -103,5 +103,14 @@
 			sendForm("form_data", "{:U('save')}");
 		}
 	}
+	
+	function export_daily_report() {
+		window.open("{:U('export_daily_report')}", "_blank");
+		return false;
+	}
 
+	function import_daily_report() {
+		window.open("{:U('import_daily_report')}", "_self");
+		return false;
+	}
 </script>

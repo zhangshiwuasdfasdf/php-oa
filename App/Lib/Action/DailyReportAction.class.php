@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class DailyReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_daily_report' => 'read','import_daily_report' => 'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -456,5 +456,206 @@ class DailyReportAction extends CommonAction {
 		$comment_id = $_REQUEST['comment_id'];
 		$this -> _del($comment_id, "DailyReportComment");
 	}
-
+	function export_daily_report(){
+		//导入thinkphp第三方类库
+		Vendor('Excel.PHPExcel');
+		
+		$objPHPExcel = new PHPExcel();
+		
+		$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+		// Add some data
+// 		$i = 1;
+		//dump($list);
+		
+		//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
+		$q = $objPHPExcel -> setActiveSheetIndex(0);
+		//第一列为用户
+		$q = $q -> setCellValue("A1", '序号');
+		
+		$q = $q -> setCellValue("B1", '主要工作事项');
+		$q = $q -> mergeCells('B1:C1');
+		$q = $q -> setCellValue("D1", '工作内容');
+		$q = $q -> mergeCells('D1:E1');
+		$q = $q -> setCellValue("F1", '工作时间（起）hh:mm半小时为单位');
+		$q = $q -> setCellValue("G1", '工作时间（止）hh:mm半小时为单位');
+		$q = $q -> setCellValue("H1", '工作进度（进行中/已完成）');
+		
+		$q = $q -> setCellValue("A2", '1');
+		$q = $q -> mergeCells('A2:A3');
+		$q = $q -> mergeCells('B2:C3');
+		$q = $q -> setCellValue("A4", '2');
+		$q = $q -> mergeCells('A4:A5');
+		$q = $q -> mergeCells('B4:C5');
+		$q = $q -> setCellValue("A6", '3');
+		$q = $q -> mergeCells('A6:A7');
+		$q = $q -> mergeCells('B6:C7');
+		$q = $q -> setCellValue("A8", '今日工作小结');
+		$q = $q -> mergeCells('A8:A9');
+		$q = $q -> mergeCells('B8:H9');
+		
+		$q = $q -> setCellValue("A10", '今日自我评价：');
+		$q = $q -> setCellValue("B10", '认真');
+		$q = $q -> setCellValue("C10", '效率');
+		$q = $q -> setCellValue("D10", '坚守承诺');
+		$q = $q -> setCellValue("E10", '保证完成任务');
+		$q = $q -> setCellValue("F10", '乐观');
+		$q = $q -> setCellValue("G10", '自信');
+		$q = $q -> setCellValue("H10", '爱与奉献');
+		$q = $q -> setCellValue("I10", '绝不找借口');
+		$q = $q -> setCellValue("J10", '合计');
+		
+		$q = $q -> setCellValue("A11", '每项1-10分');
+		
+		$q = $q -> setCellValue("A14", '明日工作计划（A类最重要 B类重要 C类次重要）');
+		$q = $q -> mergeCells('A14:I14');
+		
+		$q->getStyle('A14')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+		$q = $q -> setCellValue("A15", '序号');
+		$q = $q -> setCellValue("B15", '主要工作事项');
+		$q = $q -> mergeCells('B15:C15');
+		$q = $q -> setCellValue("D15", '计划推荐目标');
+		$q = $q -> mergeCells('D15:E15');
+		$q = $q -> setCellValue("F15", '时间安排（起）hh:mm半小时为单位');
+		$q = $q -> setCellValue("G15", '时间安排（止）hh:mm半小时为单位');
+		$q = $q -> setCellValue("H15", '重要性（A/B/C）');
+		$q = $q -> setCellValue("I15", '协助需求（不需要协助/需要协助）');
+		
+		$q = $q -> setCellValue("A16", '1');
+		$q = $q -> mergeCells('B16:C16');
+		$q = $q -> mergeCells('D16:E16');
+		
+		$q = $q -> setCellValue("A17", '2');
+		$q = $q -> mergeCells('B17:C17');
+		$q = $q -> mergeCells('D17:E17');
+		
+		$q = $q -> setCellValue("A18", '3');
+		$q = $q -> mergeCells('B18:C18');
+		$q = $q -> mergeCells('D18:E18');
+		
+		$q = $q -> setCellValue("A19", '4');
+		$q = $q -> mergeCells('B19:C19');
+		$q = $q -> mergeCells('D19:E19');
+		
+		$q = $q -> setCellValue("A20", '5');
+		$q = $q -> mergeCells('B20:C20');
+		$q = $q -> mergeCells('D20:E20');
+		
+		$q = $q -> setCellValue("A21", '6');
+		$q = $q -> mergeCells('B21:C21');
+		$q = $q -> mergeCells('D21:E21');
+		
+		$q = $q -> setCellValue("A22", '7');
+		$q = $q -> mergeCells('B22:C22');
+		$q = $q -> mergeCells('D22:E22');
+		
+		$q = $q -> setCellValue("A23", '明日目标');
+		$q = $q -> mergeCells('A23:A24');
+		$q = $q -> mergeCells('B23:I24');
+		
+		$q ->getColumnDimension('A')->setWidth(20);
+		$q ->getColumnDimension('B')->setWidth(20);
+		$q ->getColumnDimension('C')->setWidth(20);
+		$q ->getColumnDimension('D')->setWidth(20);
+		$q ->getColumnDimension('E')->setWidth(20);
+		$q ->getColumnDimension('F')->setWidth(20);
+		$q ->getColumnDimension('G')->setWidth(20);
+		$q ->getColumnDimension('H')->setWidth(30);
+		$q ->getColumnDimension('I')->setWidth(40);
+		$q ->getColumnDimension('J')->setWidth(20);
+		// Rename worksheet
+		$title = '日报';
+		$objPHPExcel -> getActiveSheet() -> setTitle('日报');
+		
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel -> setActiveSheetIndex(0);
+		$file_name = $title.".xlsx";
+		// Redirect output to a client’s web browser (Excel2007)
+		header("Content-Type: application/force-download");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header("Content-Disposition:attachment;filename =" . str_ireplace('+', '%20', URLEncode($file_name)));
+		header('Cache-Control: max-age=0');
+		
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		//readfile($filename);
+		$objWriter -> save('php://output');
+		exit ;
+	}
+	function import_daily_report(){
+		$save_path = get_save_path();
+		$opmode = $_POST["opmode"];
+		if ($opmode == "import") {
+			import("@.ORG.Util.UploadFile");
+			$upload = new UploadFile();
+			$upload -> savePath = $save_path;
+			$upload -> allowExts = array('xlsx');
+			$upload -> saveRule = uniqid;
+			$upload -> autoSub = false;
+			if (!$upload -> upload()) {
+				$this -> error($upload -> getErrorMsg());
+			} else {
+				//取得成功上传的文件信息
+				$uploadList = $upload -> getUploadFileInfo();
+				Vendor('Excel.PHPExcel');
+				//导入thinkphp第三方类库
+	
+				$inputFileName = $save_path . $uploadList[0]["savename"];
+				$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+				$sheetData = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);
+	
+				$start = ord('A');
+				$column_name = array('序号','主要工作事项','工作内容','工作时间（起）hh:mm半小时为单位','工作时间（止）hh:mm半小时为单位','工作进度（进行中/已完成）');
+				for($ii=$start;$ii<$start+5;$ii++){
+					if($sheetData[1][chr($ii)]!=$column_name[$ii-$start]){
+						$this -> error('导入的excel模板不对:'.$sheetData[1][chr($ii)]);
+					}
+				}
+				$model_flow = D("Flow");
+				$flow_data = array();
+				$flow_data['user_id'] = get_user_id();
+				$flow_data['user_name'] = get_user_name();
+				$flow_data['doc_no'] = 1;
+				$flow_data['name'] = '办公用品采购';
+				$type = M('FlowType')->where(array('name'=>array('eq','办公用品采购')))->find();
+				$flow_data['type'] = $type['id'];
+	
+				$uid = get_user_id();
+				$dept_id = get_dept_id();
+				$dept_uid = getDeptManagerId($uid,$dept_id);
+				$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getFinancialManagerId(),getGeneralManagerId($uid));
+				$FlowData = getFlowData(array_unique($flow));
+				$flow_data['confirm'] = $FlowData['confirm'];
+				$flow_data['confirm_name'] = $FlowData['confirm_name'];
+				$flow_data['step'] = 10;
+				$flow_data['create_time'] = time();
+				$flow_id = $model_flow -> add($flow_data);
+	
+				$model = M("FlowOfficeSuppliesApplication");
+	
+	
+				$sum = 0;
+				$data = array();
+				$column = array('ids','names','types','nums','prices','amounts','marks');
+				for($i=$start;$i<$start+7;$i++){
+					for ($j = 2; $j <= count($sheetData); $j++) {
+						$data[$column[$i-$start]] .= $sheetData[$j][chr($i)].'|';
+						if($i==$start+5){
+							$sum += $sheetData[$j][chr($i)];
+						}
+					}
+				}
+				$data['flow_id'] = $flow_id;
+				$data['sum'] = $sum;
+				$model -> add($data);
+				//dump($sheetData);
+				if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName)) {
+					unlink($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName);
+				}
+				$this -> assign('jumpUrl', U("flow/edit",array('id'=>$flow_id,'fid'=>'darft')));
+				$this -> success('导入成功！');
+			}
+		} else {
+			$this -> display();
+		}
+	}
 }
