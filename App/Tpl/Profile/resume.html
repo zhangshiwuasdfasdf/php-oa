@@ -1,72 +1,78 @@
 <layout name='Layout/ace_layout' />
 {:W('PageHeader',array('name'=>'个人简历','search'=>'N'))}
 <h1 style="margin:auto; text-align:center; line-height:40px;">员工入职登记表</h1>
+<form id="form_data" name="form_data" method="post" class="form-horizontal">
+<input type="hidden" id="add_file" name="add_file">
+<input type="hidden" name="opmode" id="opmode" value="edit">
+<input type="hidden" name="pic" id="pic">
+<input type="hidden" name="id" id="id"  value="{$id}">
 <table style="background: #000; font-family: '微软雅黑';" width="100%" border="1" cellpadding="0" cellspacing="0">
   <tr>
     <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>一、基本情况</strong></td>
   </tr>
-  <tr>
+   <tr>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">姓名</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_1'][0]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="name" value="{$list['basic_info_1'][0]}" class="form-control" check="require" msg="请输入姓名"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">性别</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_1'][1]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="sex" value="{$list['basic_info_1'][1]}" class="form-control" check="require" msg="请输入性别"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">年龄</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_1'][2]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="age" value="{$list['basic_info_1'][2]}" class="form-control" check="require" msg="请输入年龄"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">民族</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_1'][3]}</td>
-    <td width="12%" height="36" rowspan="4" align="center" bgcolor="#FFFFFF"><img class="img-thumbnail col-14" id="emp_pic" src="{$list['pic'][0]}"></td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="nation" value="{$list['basic_info_1'][3]}" class="form-control" check="require" msg="请输入名族"></td>
+    <td width="12%" height="36" rowspan="4" align="center" bgcolor="#FFFFFF"><img class="img-thumbnail col-14" id="emp_pic" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'" src="{$list['pic'][0]}"></td>
   </tr>
   <tr>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">婚姻状况</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_2'][0]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="hunyin" value="{$list['basic_info_2'][0]}" class="form-control" check="require" msg="请输入婚姻状况"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">政治面貌</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_2'][1]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="zhengzhi" value="{$list['basic_info_2'][1]}" class="form-control" check="require" msg="请输入政治面貌"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">籍贯</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_2'][2]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="jiguan" value="{$list['basic_info_2'][2]}" class="form-control" check="require" msg="请输入籍贯"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">户口性质</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">{$list['basic_info_2'][3]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="hujkou"  value="{$list['basic_info_2'][3]}" class="form-control" check="require" msg="请输入户口性质"></td>
   </tr>
   <tr>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">身份证号</td>
-    <td height="36" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_3'][0]}</td>
+    <td height="36" colspan="3" align="center" bgcolor="#FFFFFF"><input type="text" name="id_number" value="{$list['basic_info_3'][0]}" class="form-control" check="require" msg="请输入身份证号"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">户口所在地</td>
-    <td height="36" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_3'][1]}</td>
+    <td height="36" colspan="3" align="center" bgcolor="#FFFFFF"><input type="text" name="hukou_add" value="{$list['basic_info_3'][1]}" class="form-control" check="require" msg="请输入户口所在地"></td>
   </tr>
   <tr>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">最高学历</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_4'][0]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="xueli" value="{$list['basic_info_4'][0]}" class="form-control" check="require" msg="请输入最高学历"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">专业</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_4'][1]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="zhuanye" value="{$list['basic_info_4'][1]}" class="form-control" check="require" msg="请输入专业"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">学位</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_4'][2]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="xuewei" value="{$list['basic_info_4'][2]}" class="form-control" check="require" msg="请输入学位"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">专业资格证书</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_4'][3]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="zige" value="{$list['basic_info_4'][3]}" class="form-control" check="require" msg="请输入专业资格证书"></td>
   </tr>
   <tr>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">外语水平</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">{$list['basic_info_5'][0]}</td>
+    <td height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="waiyu" value="{$list['basic_info_5'][0]}" class="form-control" check="require" msg="请输入外语水平"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">语种</td>
-    <td height="36" align="center" bgcolor="#FFFFFF">&nbsp;&nbsp;{$list['basic_info_5'][1]}</td>
+    <td height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="yuzhong" value="{$list['basic_info_5'][1]}" class="form-control" check="require" msg="请输入语种"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">级别</td>
-    <td width="11%" height="36" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_5'][2]}</td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><input type="text" value="{$list['basic_info_5'][2]}" name="jibie" class="form-control" check="require" msg="请输入级别"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">口语水平</td>
-    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_5'][3]}</td>
+    <td height="36" align="center" bgcolor="#FFFFFF"><input type="text" name="kouyu" value="{$list['basic_info_5'][3]}" class="form-control" check="require" msg="请输入口语水平"></td>
+    <td width="11%" height="36" align="center" bgcolor="#FFFFFF"><a onclick="select_avatar();" class="btn btn-sm btn-primary">上传证件照</a></td>
   </tr>
   <tr>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">计算机水平</td>
-    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_6'][0]}</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="jishuji" value="{$list['basic_info_6'][0]}" class="form-control" check="require" msg="请输入计算机水平"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">获得证书</td>
-    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_6'][1]}</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="zhengshu" value="{$list['basic_info_6'][1]}" class="form-control" check="require" msg="请输入获得证书"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">参加工作时间</td>
-    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_6'][2]}</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="cj_gongzuo" value="{$list['basic_info_6'][2]}" class="form-control" check="require" msg="请输入参加工作时间"></td>
   </tr>
   <tr>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">手机</td>
-    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_7'][0]}</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="phone" value="{$list['basic_info_7'][0]}" class="form-control" check="require" msg="请输入手机"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">邮箱</td>
-    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_7'][1]}</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="email" value="{$list['basic_info_7'][1]}" class="form-control" check="require" msg="请输入邮箱"></td>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">现通讯地址</td>
-    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['basic_info_7'][2]}</td>
+    <td height="36" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="address" value="{$list['basic_info_7'][2]}" class="form-control" check="require" msg="请输入现通讯地址"></td>
   </tr>
   <tr>
     <td width="11%" height="36" align="center" bgcolor="#FFFFFF">入职日期</td>
@@ -83,23 +89,23 @@
     <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>二、自我评价（不少于100字）</strong></td>
   </tr>
   <tr>
-    <td height="90" colspan="9" bgcolor="#FFFFFF">　　{$list['appraisal_main'][0]}</td>
+    <td height="90" colspan="9" bgcolor="#FFFFFF"><textarea type="text" name="ziwopingjia" class="form-control">{$list['appraisal_main'][0]}</textarea></td>
   </tr>
   <tr>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">专业技能</td>
-    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$list['skill_honor_hobby_expect'][0]}</td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="jineng" value="{$list['skill_honor_hobby_expect'][0]}" class="form-control"></td>
   </tr>
   <tr>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">个人荣誉</td>
-    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$list['skill_honor_hobby_expect'][1]}</td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="rongyu" value="{$list['skill_honor_hobby_expect'][1]}" class="form-control"></td>
   </tr>
   <tr>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">兴趣特长</td>
-    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$list['skill_honor_hobby_expect'][2]}</td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="techang" value="{$list['skill_honor_hobby_expect'][2]}" class="form-control"></td>
   </tr>
   <tr>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">个人期望</td>
-    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$list['skill_honor_hobby_expect'][3]}</td>
+    <td height="33" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="qiwang" value="{$list['skill_honor_hobby_expect'][3]}" class="form-control"></td>
   </tr>
   <tr>
     <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>三、主要教育经历</strong></td>
@@ -114,12 +120,12 @@
   <foreach name="educa" item="ed">
   	<notempty name="ed[0]">
 	  	<tr>
-		    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$ed[0]}</td>
-		    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$ed[1]}</td>
-		    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$ed[2]}</td>
-		    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$ed[3]}</td>
-		    <td width="12%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$ed[4]}</td>
-		</tr>
+		    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="jiaoyu[]" value="{$ed[0]}" class="form-control"></td>
+		    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF"><input type="text" name="yuanxiao[]" value="{$ed[1]}" class="form-control"></td>
+		    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="xueli_jl[]" value="{$ed[2]}" class="form-control"></td>
+		    <td width="11%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="zhuanye_jl[]" value="{$ed[3]}" class="form-control"></td>
+		    <td width="12%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="zhengshu_jl[]" value="{$ed[4]}" class="form-control"></td>
+	  </tr>
 	</notempty>
   </foreach>
   <tr>
@@ -134,11 +140,11 @@
   <foreach name="train" item="tr">
   	<notempty name="tr[0]">
 	  	<tr>
-		    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$tr[0]}</td>
-		    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$tr[1]}</td>
-		    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$tr[2]}</td>
-		    <td width="12%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$tr[3]}</td>
-		</tr>
+		    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="px_shijian[]" value="{$tr[0]}" class="form-control"></td>
+		    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF"><input type="text" name="px_neirong[]" value="{$tr[1]}" class="form-control"></td>
+		    <td height="33" colspan="3" align="center" bgcolor="#FFFFFF"><input type="text" name="px_jigou[]" value="{$tr[2]}" class="form-control"></td>
+		    <td width="12%" height="33" align="center" bgcolor="#FFFFFF"></td>
+	  </tr>
 	</notempty>
   </foreach>
   <tr>
@@ -153,11 +159,11 @@
   <foreach name="family" item="fa">
   	<notempty name="fa[0]">
 	  	<tr>
-		    <td height="33" align="center" colspan="2" bgcolor="#FFFFFF">&nbsp;{$fa[0]}</td>
-		    <td height="33" align="center" colspan="2" bgcolor="#FFFFFF">&nbsp;{$fa[1]}</td>
-		    <td height="33" align="center" colspan="4" bgcolor="#FFFFFF">&nbsp;{$fa[2]}</td>
-		    <td width="12%" align="center" height="33" bgcolor="#FFFFFF">&nbsp;{$fa[3]}</td>
-		</tr>
+	    <td height="33" align="center" colspan="2" bgcolor="#FFFFFF"><input type="text" name="benren_gx[]" value="{$fa[0]}" class="form-control"></td>
+	    <td height="33" align="center" colspan="2" bgcolor="#FFFFFF"><input type="text" name="xingming[]" value="{$fa[1]}" class="form-control"></td>
+	    <td height="33" align="center" colspan="4" bgcolor="#FFFFFF"><input type="text" name="danwei[]" value="{$fa[2]}" class="form-control"></td>
+	    <td width="12%" align="center" height="33" bgcolor="#FFFFFF"></td>
+	</tr>
 	</notempty>
   </foreach>
   <tr>
@@ -165,48 +171,48 @@
   </tr>
   <tr>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">姓名</td>
-    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$list['family_urgency'][0]}</td>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_xingm" value="{$list['family_urgency'][0]}" class="form-control"></td>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">关系</td>
-    <td width="11%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$list['family_urgency'][1]}</td>
+    <td width="11%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_guanx" value="{$list['family_urgency'][1]}" class="form-control"></td>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">地址及邮编</td>
-    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF">&nbsp;{$list['family_urgency'][2]}</td>
+    <td height="33" colspan="2" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_dizhi" value="{$list['family_urgency'][2]}" class="form-control"></td>
     <td width="11%" height="33" align="center" bgcolor="#FFFFFF">电话</td>
-    <td width="12%" height="33" align="center" bgcolor="#FFFFFF">&nbsp;{$list['family_urgency'][3]}</td>
+    <td width="12%" height="33" align="center" bgcolor="#FFFFFF"><input type="text" name="jj_phone" value="{$list['family_urgency'][3]}" class="form-control"></td>
   </tr>
   <tr>
     <td height="28" colspan="9" bgcolor="#FFFFFF"><strong>六、工作经历</strong></td>
   </tr>
   <foreach name="work" item="wo">
   	<notempty name="wo[4]">
-  <tr>
+  	<tr>
     <td width="11%" height="40" align="center" bgcolor="#FFFFFF">工作时间</td>
-    <td height="40" colspan="4" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[0]}</td>
+    <td height="40" colspan="4" align="center" bgcolor="#FFFFFF"><input type="text" name="gzjl_sj[]" value="{$wo[0]}" class="form-control"></td>
     <td width="11%" height="40" align="center" bgcolor="#FFFFFF">离职原因</td>
-    <td height="40" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[1]}</td>
+    <td height="40" colspan="3" align="center" bgcolor="#FFFFFF"><input type="text" name="gzjl_yy[]" value="{$wo[1]}" class="form-control"></td>
   </tr>
   <tr>
     <td width="11%" height="40" align="center" bgcolor="#FFFFFF">企业简介</td>
-    <td height="40" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[2]}</td>
+    <td height="40" colspan="8" align="center" bgcolor="#FFFFFF"><input type="text" name="gzjl_jj[]" value="{$wo[2]}" class="form-control"></td>
   </tr>
   <tr>
     <td width="11%" height="40" align="center" bgcolor="#FFFFFF">担任职位</td>
-    <td height="40" colspan="4" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[3]}</td>
+    <td height="40" colspan="4" align="center" bgcolor="#FFFFFF"><input type="text" name="gzjl_zw[]" value="{$wo[3]}" class="form-control"></td>
     <td width="11%" height="40" align="center" bgcolor="#FFFFFF">薪酬待遇</td>
-    <td height="40" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[4]}</td>
+    <td height="40" colspan="3" align="center" bgcolor="#FFFFFF"><input type="text" name="gzjl_dy[]" value="{$wo[4]}" class="form-control"></td>
   </tr>
   <tr>
     <td width="11%" height="40" align="center" bgcolor="#FFFFFF">汇报对象</td>
-    <td height="40" colspan="4" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[5]}</td>
+    <td height="40" colspan="4" align="center" bgcolor="#FFFFFF"><input type="text" name="gzjl_dx[]" value="{$wo[5]}" class="form-control"></td>
     <td width="11%" height="40" align="center" bgcolor="#FFFFFF">下属人数</td>
-    <td height="40" colspan="3" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[6]}</td>
+    <td height="40" colspan="3" align="center" bgcolor="#FFFFFF"><input type="text" name="gzjl_rs[]" value="{$wo[6]}" class="form-control"></td>
   </tr>
   <tr>
     <td width="11%" height="90" align="center" bgcolor="#FFFFFF">工作描述</td>
-    <td height="90" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[7]}</td>
+    <td height="90" colspan="8" align="center" bgcolor="#FFFFFF"><textarea type="text" name="gzjl_ms[]" class="form-control">{$wo[7]}</textarea></td>
   </tr>
-  <tr>
+  <tr class="gongzuo_jl">
     <td width="11%" height="66" align="center" bgcolor="#FFFFFF">主要业绩或相关项目</td>
-    <td height="66" colspan="8" align="center" bgcolor="#FFFFFF">&nbsp;{$wo[8]}</td>
+    <td height="66" colspan="8" align="center" bgcolor="#FFFFFF"><textarea type="text" name="gzjl_yj[]" class="form-control">{$wo[8]}</textarea></td>
   </tr>
   </notempty>
   </foreach>
@@ -216,7 +222,10 @@
   </tr>
   <tr>
     <td colspan="9" bgcolor="#FFFFFF">本人承诺：在本表内所填资料属实，如任何一项情况失实，贵公司有权与本人解除劳动合同或采取其他处理方式。并承诺到贵公司报到前，已与原工作单位解除劳动合同等关系，并不将原工作单位的任何商业秘密带到贵公司。如与原工作单位因原劳动合同或商业秘密问题出现法律纠纷，本人愿意自己承担一切责任。
-    <p style="margin-left:70%;">签名/日期　{$list['signature_time'][0]}</p></td>
+    <p style="margin-left:70%;">签名/日期　<input type="text" name="qianming" value="{$list['signature_time'][0]}" class="" check="require" msg="请输入签名/日期"></p></td>
+  </tr>
+  <tr>
+    <td colspan="9" bgcolor="#FFFFFF" align="center"><a onclick="save()"  class="btn btn-sm btn-primary" style="margin: 5px;">保存</a><a onclick="quit()"  class="btn btn-sm btn-danger" style="margin: 5px;">取消</a></td>
   </tr>
 </table>
 <!-- 员工在职履历档案表 -->
@@ -368,3 +377,4 @@
     <td height="100" colspan="12" align="center">{$data['comment'][0]}</td>
   </tr>
 </table>
+</form>

@@ -1922,6 +1922,7 @@ li [class*=" fa-"],
   border-top: 1px solid #FCFCFC;
   border-bottom: 1px solid #E5E5E5;
   position: relative;
+  border-top-color: #d8d7d6;
 }
 .nav-list > li:first-child {
   border-top: none;
@@ -3057,8 +3058,8 @@ fieldset[disabled] .btn-primary.active {
 }
 .btn-info,
 .btn-info:focus {
-  background-color: #ffffff !important;
-  border-color: #ffffff;
+  background-color: #958d8a !important;
+  border-color: #958d8a;
 }
 .btn-info:hover,
 .open .btn-info.dropdown-toggle {
@@ -14570,6 +14571,8 @@ th[aria-selected=true] .ui-jqgrid-sortable {
 }
 .flow_color {
 	color: #464646 !important;
+	background-color: #fff !important;
+	border-color: #fff;
 }
 .flow-index {
 	display: inline-block;
@@ -14634,4 +14637,7 @@ th[aria-selected=true] .ui-jqgrid-sortable {
 	width: 23px;
 	vertical-align: middle;
 	margin: 0 10px;
+}
+.text-title {
+	background: #e5ebf5;
 }

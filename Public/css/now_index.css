@@ -30,11 +30,11 @@ img{ margin:0; padding:0;}
 .main{ width:70%; margin-left:15%; overflow:hidden; margin-bottom:20px;}
 .maleft{ width:20%; float:left; margin-right:1%;}
 .gerenxinxi{ width:100%; border:solid 1px #d8d6d7; height:315px; background:#fff; position:relative;}
-.grs1{ font-size:20px; color:#4a4947; display:block; height:20px; line-height:20px; text-align:center; margin-top:15px;}
-.grd1{ width:136px; height:136px; border-radius:138px; border:solid 1px #c3c3c3; position:absolute; left:50%; margin-left:-69px; margin-top:12px;}
-.grd1 div{ width:120px; height:120px; margin-top:8px; margin-left:8px; overflow:hidden; border-radius:120px;}
-.grd1 div img{ width:120px; height:auto;}
-.grs2{ display:block; height:12px; font-size:12px; color:#8e8eb1; text-align:center; margin-top:155px; cursor:pointer;}
+.grs1{ font-size:20px; color:#4a4947; display:block; height:20px; line-height:20px; text-align:center; margin-top:15px; margin-bottom:10px;}
+.grd1{ width:136px; height:136px; border-radius:138px; border:solid 1px #c3c3c3; position:relative; margin:auto;}
+.grd1 div{ width:120px; height:120px; overflow:hidden; border-radius:120px; position:absolute; top:50%; margin-top:-60px; left:50%; margin-left:-60px;}
+.grd1 div img{ width:120px; height:auto; min-height:120px; border-radius:120px;}
+.grs2{ display:block; height:12px; font-size:12px; color:#8e8eb1; text-align:center; margin-top:10px; cursor:pointer;}
 .grs3{ display:block; height:20px; font-size:20px; color:#011b5b; line-height:20px; text-align:center; margin-top:7px;}
 .grs4{ display:block; height:16px; font-size:16px; color:#6074a4; line-height:16px; text-align:center; margin-top:9px;}
 .grin{ height:30px; border:solid 1px #efefef; outline:none; width:80%; margin-left:10%; margin-top:18px; color:#999;}
@@ -110,10 +110,10 @@ img{ margin:0; padding:0;}
 .gzul li{ width:100%; height:24px; line-height:24px; overflow:hidden;}
 .gzlis1{ display:block; float:left; margin-left:2%; font-size:14px; color:#696967; width:75%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer;}
 .yqmh{ width:100%; height:227px; background:#fff; border:solid 1px #d8d6d7; margin-bottom:10px;}
-.yqd1{ height:34px; width:100%; background:#9fa1a0; box-shadow:#acacac 1px 1px 1px; line-height:34px; margin-bottom:6%;}
+.yqd1{ height:34px; width:100%; background:#9fa1a0; box-shadow:#acacac 1px 1px 1px; line-height:34px;}
 .yqd1 span{ display:block; margin-left:20px; font-size:20px; color:#454344;}
-.yqd2{ width:60%; margin-left:25%; overflow:hidden;}
-.yqd2 a{ width:40%; height:auto; float:left; margin-bottom:5px; cursor:pointer;}
+.yqd2{ width:94%; margin-left:5%; overflow:hidden;margin-top: 3%;}
+.yqd2 a{ width:45%; height:auto; float:left; margin-bottom:5px; cursor:pointer;}
 .yqd2 a img{ width:100%; height:auto;}
 .hzyq,.jhyq{ margin-right:5%;}
 .rl{width:100%; height:256px; background:#fff; border:solid 1px #d8d6d7; overflow:hidden;}

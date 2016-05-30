@@ -111,6 +111,7 @@ class ProfileAction extends CommonAction {
 			$this->assign('train',$train);
 			$this->assign('family',$family);
 			$this->assign('work',$work);
+			$this->assign('id', 'jl_'.$id);
 			//履历
 			$record = M('user_record');
 			$user = M('user');
@@ -148,14 +149,6 @@ class ProfileAction extends CommonAction {
 			$this->assign('award',$award_punish);
 			$this->assign('study',$study);
 			$this->assign('part',$part_time);
-			//TODO
-			/*$flow = M('flow')->where(array('user_id'=>$id))->find();
-			$log = M('flow_log') -> where(array('flow_id'=>$flow['id']))->find();
-			if(null === $log['result']){//还没有开始审批
-				$this -> display('edit_resume');
-			}else{
-					
-			}*/
 			$this->display();
 		}	
 	}
@@ -179,31 +172,6 @@ class ProfileAction extends CommonAction {
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
 		$id = str_replace('jl_','',$_POST['id']); 
-		$model_flow = D('Flow');
-		if (false === $model_flow -> create()) {
-			$this -> error($model_flow -> getError());
-		}
-		$user_info = M('user')->find($id);
-		$data_flow = array();
-		$data_flow['name'] = $_POST['name'].'的简历';
-		$FlowData = getFlowData(getParentid($id));
-		$data_flow['confirm'] = $FlowData['confirm'];
-		$data_flow['confirm_name'] = $FlowData['confirm_name'];
-		$data_flow['user_id'] = $id;
-		$data_flow['user_name'] = $_POST['name'];
-		$FlowType = M('FlowType')->where(array('name'=>array('eq','简历')))->find();
-		
-		$data_flow['type'] = $FlowType['id'];
-		$data_flow['opmode'] = 'add';
-		$data_flow['step'] = 20;
-		$data_flow['emp_no'] = $user_info['emp_no'];
-		$data_flow['dept_id'] = $user_info['dept_id'];
-		$dept =  M("Dept") -> find($user_info['dept_id']);
-		$data_flow['dept_name'] = $dept['name'];
-		$data_flow['type'] = 66;
-		$data_flow['create_time'] = time();
-		$flow_id = $model_flow->add($data_flow);
-		
 		$model = M("user_resume");
 		if(!empty($_POST)){
 			foreach ($_POST as $k => $v){
@@ -252,14 +220,54 @@ class ProfileAction extends CommonAction {
 			$data['pic'] = $_POST['pic'];
 			$data['add_file'] = $_POST['add_file'];
 			$data['user_id'] = $id;
-			if ($model -> add($data)) {
-				//成功提示
-				$this -> assign('jumpUrl', get_return_url());
-				$this -> success('编辑成功!');
-			} else {
-				//错误提示
-				$this -> error('编辑失败!');
+			//如果是第一次添加 就走一边流程
+			if($_POST['opmode'] === 'add'){
+				$model_flow = D('Flow');
+				if (false === $model_flow -> create()) {
+					$this -> error($model_flow -> getError());
+				}
+				$user_info = M('user')->find($id);
+				$data_flow = array();
+				$data_flow['name'] = $_POST['name'].'的简历';
+				$FlowData = getFlowData(getParentid($id));
+				$data_flow['confirm'] = $FlowData['confirm'];
+				$data_flow['confirm_name'] = $FlowData['confirm_name'];
+				$data_flow['user_id'] = $id;
+				$data_flow['user_name'] = $_POST['name'];
+				$FlowType = M('FlowType')->where(array('name'=>array('eq','简历')))->find();
+				
+				$data_flow['type'] = $FlowType['id'];
+				$data_flow['opmode'] = 'add';
+				$data_flow['step'] = 20;
+				$data_flow['emp_no'] = $user_info['emp_no'];
+				$data_flow['dept_id'] = $user_info['dept_id'];
+				$dept =  M("Dept") -> find($user_info['dept_id']);
+				$data_flow['dept_name'] = $dept['name'];
+				$data_flow['type'] = 66;
+				$data_flow['create_time'] = time();
+				$flow_id = $model_flow->add($data_flow);
+				
+				if ($model -> add($data)) {
+					//成功提示
+					$this -> assign('jumpUrl', get_return_url());
+					$this -> success('编辑成功!');
+				} else {
+					//错误提示
+					$this -> error('编辑失败!');
+				}
+			}else{
+				$rid = $model -> getByUser_id($id,'id');
+				$data['id'] = $rid['id'];
+				if ($model -> save($data)) {
+					//成功提示
+					$this -> assign('jumpUrl', get_return_url());
+					$this -> success('编辑成功!');
+				} else {
+					//错误提示
+					$this -> error('编辑失败!');
+				}
 			}
+			
 		}
 	}
 }
