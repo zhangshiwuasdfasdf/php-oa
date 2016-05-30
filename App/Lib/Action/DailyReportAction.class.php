@@ -483,12 +483,18 @@ class DailyReportAction extends CommonAction {
 		$q = $q -> setCellValue("A2", '1');
 		$q = $q -> mergeCells('A2:A3');
 		$q = $q -> mergeCells('B2:C3');
+		$q = $q -> mergeCells('D2:E2');
+		$q = $q -> mergeCells('D3:E3');
 		$q = $q -> setCellValue("A4", '2');
 		$q = $q -> mergeCells('A4:A5');
 		$q = $q -> mergeCells('B4:C5');
+		$q = $q -> mergeCells('D4:E4');
+		$q = $q -> mergeCells('D5:E5');
 		$q = $q -> setCellValue("A6", '3');
 		$q = $q -> mergeCells('A6:A7');
 		$q = $q -> mergeCells('B6:C7');
+		$q = $q -> mergeCells('D6:E6');
+		$q = $q -> mergeCells('D7:E7');
 		$q = $q -> setCellValue("A8", '今日工作小结');
 		$q = $q -> mergeCells('A8:A9');
 		$q = $q -> mergeCells('B8:H9');
@@ -604,54 +610,101 @@ class DailyReportAction extends CommonAction {
 				$sheetData = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);
 	
 				$start = ord('A');
-				$column_name = array('序号','主要工作事项','工作内容','工作时间（起）hh:mm半小时为单位','工作时间（止）hh:mm半小时为单位','工作进度（进行中/已完成）');
-				for($ii=$start;$ii<$start+5;$ii++){
-					if($sheetData[1][chr($ii)]!=$column_name[$ii-$start]){
-						$this -> error('导入的excel模板不对:'.$sheetData[1][chr($ii)]);
-					}
+				
+				if($sheetData[1]['A']!='序号'){
+					$this -> error('导入的excel模板不对:序号');
 				}
-				$model_flow = D("Flow");
-				$flow_data = array();
-				$flow_data['user_id'] = get_user_id();
-				$flow_data['user_name'] = get_user_name();
-				$flow_data['doc_no'] = 1;
-				$flow_data['name'] = '办公用品采购';
-				$type = M('FlowType')->where(array('name'=>array('eq','办公用品采购')))->find();
-				$flow_data['type'] = $type['id'];
-	
-				$uid = get_user_id();
-				$dept_id = get_dept_id();
-				$dept_uid = getDeptManagerId($uid,$dept_id);
-				$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getFinancialManagerId(),getGeneralManagerId($uid));
-				$FlowData = getFlowData(array_unique($flow));
-				$flow_data['confirm'] = $FlowData['confirm'];
-				$flow_data['confirm_name'] = $FlowData['confirm_name'];
-				$flow_data['step'] = 10;
-				$flow_data['create_time'] = time();
-				$flow_id = $model_flow -> add($flow_data);
-	
-				$model = M("FlowOfficeSuppliesApplication");
-	
-	
-				$sum = 0;
-				$data = array();
-				$column = array('ids','names','types','nums','prices','amounts','marks');
-				for($i=$start;$i<$start+7;$i++){
-					for ($j = 2; $j <= count($sheetData); $j++) {
-						$data[$column[$i-$start]] .= $sheetData[$j][chr($i)].'|';
-						if($i==$start+5){
-							$sum += $sheetData[$j][chr($i)];
-						}
-					}
+				if($sheetData[1]['B']!='主要工作事项'){
+					$this -> error('导入的excel模板不对:主要工作事项');
 				}
-				$data['flow_id'] = $flow_id;
-				$data['sum'] = $sum;
-				$model -> add($data);
-				//dump($sheetData);
+				if($sheetData[1]['D']!='工作内容'){
+					$this -> error('导入的excel模板不对:工作内容');
+				}
+				if($sheetData[1]['F']!='工作时间（起）hh:mm半小时为单位'){
+					$this -> error('导入的excel模板不对:工作时间（起）hh:mm半小时为单位');
+				}
+				if($sheetData[1]['G']!='工作时间（止）hh:mm半小时为单位'){
+					$this -> error('导入的excel模板不对:工作时间（止）hh:mm半小时为单位');
+				}
+				if($sheetData[1]['H']!='工作进度（进行中/已完成）'){
+					$this -> error('导入的excel模板不对:工作进度（进行中/已完成）');
+				}
+				
+				$model_daliy_report = M("DailyReport");
+				$daliy_report = array();
+				
+				$ii=1;
+				while ($sheetData[$ii*2]['A']==$ii){
+					$ii++;
+				}
+				//$ii为今日序号+1
+				$kk=1;
+				while ($sheetData[$kk+$ii*2+7]['A']==$kk){
+					$kk++;
+				}
+				$daliy_report['user_id'] = get_user_id();
+				$daliy_report['user_name'] = get_user_name();
+				$daliy_report['dept_id'] = get_dept_id();
+				$daliy_report['dept_name'] = get_dept_name();
+				$daliy_report['create_time'] = time();
+				$daliy_report['content'] = $sheetData[$ii*2]['B'];
+				$daliy_report['plan'] = $sheetData[$ii*2+$kk+7]['B'];
+				$daliy_report['is_del'] = 0;
+				$daliy_report['is_submit'] = 0;
+				$daliy_report['score_1'] = $sheetData[$ii*2+3]['B'];
+				$daliy_report['score_2'] = $sheetData[$ii*2+3]['C'];
+				$daliy_report['score_3'] = $sheetData[$ii*2+3]['D'];
+				$daliy_report['score_4'] = $sheetData[$ii*2+3]['E'];
+				$daliy_report['score_5'] = $sheetData[$ii*2+3]['F'];
+				$daliy_report['score_6'] = $sheetData[$ii*2+3]['G'];
+				$daliy_report['score_7'] = $sheetData[$ii*2+3]['H'];
+				$daliy_report['score_8'] = $sheetData[$ii*2+3]['I'];
+				$daliy_report['score_total'] = $sheetData[$ii*2+3]['J'];
+				$daliy_report['work_date'] = date('Y-m-d',time());;
+				
+				$pid = $model_daliy_report -> add($daliy_report);
+				
+				$model_daliy_report_detail = M("DailyReportDetail");
+	
+				$jj=$ii;
+				for ($jj=1;$jj<$ii;$jj++){
+					$data_detail = array();
+					$data_detail['pid'] = $pid;
+					$data_detail['type'] = 1;
+					$data_detail['subject'] = $sheetData[$jj*2]['B'];
+					$data_detail['item'] = $sheetData[$jj*2]['D'].'|||'.$sheetData[$jj*2+1]['D'];
+					$start_time_1 = strlen($sheetData[$jj*2]['F'])==4?'0'.$sheetData[$jj*2]['F']:$sheetData[$jj*2]['F'];
+					$start_time_2 = strlen($sheetData[$jj*2+1]['F'])==4?'0'.$sheetData[$jj*2+1]['F']:$sheetData[$jj*2+1]['F'];
+					$data_detail['start_time'] = $start_time_1.'|||'.$start_time_2;
+					$end_time_1 = strlen($sheetData[$jj*2]['G'])==4?'0'.$sheetData[$jj*2]['G']:$sheetData[$jj*2]['G'];
+					$end_time_2 = strlen($sheetData[$jj*2+1]['G'])==4?'0'.$sheetData[$jj*2+1]['G']:$sheetData[$jj*2+1]['G'];
+					$data_detail['end_time'] = $end_time_1.'|||'.$end_time_2;
+					$status_1 = $sheetData[$jj*2]['H']=='进行中'?1:2;
+					$status_2 = $sheetData[$jj*2+1]['H']=='进行中'?1:2;
+					$data_detail['status'] = $status_1.'|||'.$status_2;
+					$model_daliy_report_detail -> add($data_detail);
+				}
+				
+				$mm=$kk;
+				for ($ll=1;$ll<$mm;$ll++){
+					$data_detail = array();
+					$data_detail['pid'] = $pid;
+					$data_detail['type'] = 2;
+					$data_detail['subject'] = $sheetData[$ll+$ii*2+7]['B'];
+					$data_detail['item'] = $sheetData[$ll+$ii*2+7]['D'];
+					$data_detail['start_time'] = strlen($sheetData[$ll+$ii*2+7]['F'])==4?'0'.$sheetData[$ll+$ii*2+7]['F']:$sheetData[$ll+$ii*2+7]['F'];
+					$data_detail['end_time'] = strlen($sheetData[$ll+$ii*2+7]['G'])==4?'0'.$sheetData[$ll+$ii*2+7]['G']:$sheetData[$ll+$ii*2+7]['G'];
+					$data_detail['priority'] = $sheetData[$ll+$ii*2+7]['H'];
+					
+					$data_detail['is_need_help'] = $sheetData[$ll+$ii*2+7]['I']=='不需要协助'?0:1;
+					$model_daliy_report_detail -> add($data_detail);
+				}
+				
+				
 				if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName)) {
 					unlink($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName);
 				}
-				$this -> assign('jumpUrl', U("flow/edit",array('id'=>$flow_id,'fid'=>'darft')));
+				$this -> assign('jumpUrl', U("daily_report/edit",array('id'=>$pid)));
 				$this -> success('导入成功！');
 			}
 		} else {

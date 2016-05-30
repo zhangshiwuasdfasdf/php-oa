@@ -1,5 +1,22 @@
 <layout name='Layout/ace_layout' />
 {:W('PageHeader',array('name'=>'新建工作周报','search'=>'N'))}
+<div class="operate panel panel-default">
+		<div class="panel-body">
+			<div class="pull-left">
+				<div class="btn-group">
+					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 管理 <b class="fa fa-caret-down"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a onclick="import_weekly_report();">导入</a>
+						</li>
+						<li>
+							<a onclick="export_weekly_report();">导出模板</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
 	<input type="hidden" id="id" name="id" value="{$id}">

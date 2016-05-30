@@ -50,13 +50,13 @@ class CommonAction extends Action {
 			}
 		}else{
 			$auth_id = session(C('USER_AUTH_KEY'));
+			if (!isset($auth_id)) {
+				//跳转到认证网关
+				//与手机端上传照片有冲突，所以注释了
+				redirect(U(C('USER_AUTH_GATEWAY')));
+			}
+		}
 		
-		}
-		if (!isset($auth_id)) {
-			//跳转到认证网关
-			//与手机端上传照片有冲突，所以注释了
-// 			redirect(U(C('USER_AUTH_GATEWAY')));
-		}
 		$this -> assign('js_file', 'js/' . ACTION_NAME);
 		$this -> _assign_menu();
 		$this -> _assign_new_count();

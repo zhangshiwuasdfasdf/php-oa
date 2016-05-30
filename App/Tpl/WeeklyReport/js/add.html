@@ -127,5 +127,13 @@
 			sendForm("form_data", "{:U('save')}");
 		}
 	}
+	function export_weekly_report() {
+		window.open("{:U('export_weekly_report')}", "_blank");
+		return false;
+	}
 
+	function import_weekly_report() {
+		window.open("{:U('import_weekly_report')}", "_self");
+		return false;
+	}
 </script>

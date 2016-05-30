@@ -127,5 +127,13 @@
 			sendForm("form_data", "{:U('save')}");
 		}
 	}
+	function export_monthly_report() {
+		window.open("{:U('export_monthly_report')}", "_blank");
+		return false;
+	}
 
+	function import_monthly_report() {
+		window.open("{:U('import_monthly_report')}", "_self");
+		return false;
+	}
 </script>
