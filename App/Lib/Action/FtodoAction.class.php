@@ -2,6 +2,7 @@
 class FtodoAction extends CommonAction {
 	function index(){
 		//任务
+		$this -> assign("folder", 'confirm');
 		$where_log['executor'] = get_user_id();
 		$where_log['transactor'] = get_user_id();
 		$where_log['_logic'] = 'or';

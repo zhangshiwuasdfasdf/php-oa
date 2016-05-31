@@ -82,14 +82,15 @@
             </div>
             <div class="mrsd2">
             	<div class="shuoshuo">
-            		<volist name="bianq" id="vo">
-            			<if condition="$vo.len lt 36">
-            				<span class="bq1">{$vo.name}&nbsp;说:{$vo.bianqian}</span>
-            			<else/>
-            				<span class="bq2">{$vo.name}&nbsp;说:{$vo.bianqian}</span>
-            			</if>
-            			
-            		</volist>
+            		<marquee direction="up" behavior="scroll" scrollamount="1" scrolldelay="0" loop="-1" height="120">
+	            		<volist name="bianq" id="vo">
+	            			<if condition="$vo.len lt 36">
+	            				<span class="bq1">{$vo.name}&nbsp;说:{$vo.bianqian}</span>
+	            			<else/>
+	            				<span class="bq2">{$vo.name}&nbsp;说:{$vo.bianqian}</span>
+	            			</if>
+	            		</volist>
+            		</marquee>
             	</div>
                 <a onclick="set_cookie('top_menu', 83);" href="{:U('shuo/index','fid=75')}">更多&gt;&gt;</a>
             </div>

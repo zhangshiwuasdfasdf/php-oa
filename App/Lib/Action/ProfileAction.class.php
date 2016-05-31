@@ -270,5 +270,17 @@ class ProfileAction extends CommonAction {
 			
 		}
 	}
+	//添加履历页面
+	function add_record(){
+		$id = $_REQUEST['id'];
+		$this -> assign('id',$id);
+		$this -> display();
+	}
+	/**
+	 * 添加履历
+	 */
+	function save_record(){
+		dump($_POST);die;
+	}
 }
 ?>
