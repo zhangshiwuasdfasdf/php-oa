@@ -160,7 +160,6 @@ class PopupAction extends CommonAction {
 		$this -> _upload();
 	}
 	function mobile_pic_upload(){
-		
 			$picname = $_FILES['mypic']['name'];
 			$picsize = $_FILES['mypic']['size'];
 			
