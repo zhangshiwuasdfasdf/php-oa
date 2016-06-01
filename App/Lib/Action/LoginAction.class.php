@@ -238,10 +238,35 @@ class LoginAction extends Action {
 		$message = $model_message->where($where)->select();
 		
 		$model_task = D('task');
-		$where = array('executor'=>array('like','%|'.$id.';%'));
-		$task = $model_task->where($where)->field('id,name,content,executor,add_file')->select();
 		
-		$data = array('data'=>array('message'=>array('data'=>$message,'count'=>count($message)),'task'=>array('data'=>$task,'count'=>count($task))),'status'=>1);
+		$where_log['type'] = 1;
+		$where_log['status'] = 0;
+		$where_log['executor'] = $id;
+		$task_list = M("TaskLog") -> where($where_log) -> getField('task_id id,task_id');
+		$where = array();
+		$where['id'] = array('in', $task_list);
+		
+// 		$where = array('executor'=>array('like','%|'.$id.';%'));
+		$task = $model_task->where($where)->field('id,name,content,executor,add_file')->select();
+		if(empty($task)){
+			$task = null;
+		}
+		//获取待裁决
+		$where = array();
+		$FlowLog = M("FlowLog");
+		
+		$where['emp_no'] = get_emp_no();
+		$where['_string'] = "result is null";
+		$log_list = $FlowLog -> where($where) -> field('flow_id') -> select();
+		
+		$log_list = rotate($log_list);
+		$new_confirm_count = 0;
+		if (!empty($log_list)) {
+			$map['id'] = array('in', $log_list['flow_id']);
+			$new_confirm_count = M("Flow") -> where($map) -> count();
+		}
+		
+		$data = array('data'=>array('message'=>array('data'=>$message,'count'=>count($message)),'task'=>array('data'=>$task,'count'=>count($task)),'flow'=>array('count'=>$new_confirm_count)),'status'=>1);
 		$this->ajaxReturn($data,'JSON');
 	}
 }

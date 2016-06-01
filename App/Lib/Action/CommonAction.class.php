@@ -559,10 +559,19 @@ class CommonAction extends Action {
 			}
 			$p = new Page($count, $listRows);
 			//分页查询数据
+			
 			if ($sort) {
-				$voList = $model -> where($map) -> order("`" . $order . "` " . $sort) -> limit($p -> firstRow . ',' . $p -> listRows) -> select();
+				if(is_mobile_request()){
+					$voList = $model -> where($map) -> order("`" . $order . "` " . $sort) -> select();
+				}else{
+					$voList = $model -> where($map) -> order("`" . $order . "` " . $sort) -> limit($p -> firstRow . ',' . $p -> listRows) -> select();
+				}
 			} else {
-				$voList = $model -> where($map) -> order($order) -> limit($p -> firstRow . ',' . $p -> listRows) -> select();
+				if(is_mobile_request()){
+					$voList = $model -> where($map) -> order($order) -> select();
+				}else{
+					$voList = $model -> where($map) -> order($order) -> limit($p -> firstRow . ',' . $p -> listRows) -> select();
+				}
 			}
 			//echo $model->getlastSql();
 			$p -> parameter = $this -> _search();

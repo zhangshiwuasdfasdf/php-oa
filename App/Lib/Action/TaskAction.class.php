@@ -187,8 +187,11 @@ class TaskAction extends CommonAction {
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
 		$this -> assign('auth', $this -> config['auth']);
-
-		$id = $_REQUEST['id'];
+		if(is_mobile_request()){
+			$id = $_REQUEST['idd'];
+		}else{
+			$id = $_REQUEST['id'];
+		}
 		$this -> assign('task_id', $id);
 		$model = M("Task");
 		$vo = $model -> find($id);
