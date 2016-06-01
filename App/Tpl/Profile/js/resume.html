@@ -5,14 +5,13 @@
 		}
 	}
 	
-	function add_subject($obj,$i) {
-		$html = $("#sample_item"+$i).html();
-		$($obj).parents("tr").next().after('<tr>'+$html+'</tr>');
+	function add_subject($i) {
+		$html = $(".sample_"+$i+":last").html();
+		$(".sample_"+$i+":last").after("<tr class=sample_"+ $i+">"+$html+"</tr>");
 	}
-	function add_subject2($obj,$i) {
-		$(".sample_item"+$i).each(function(){
-			$(".gongzuo_jl:last").after('<tr>'+$(this).html()+'</tr>');
-		});
+	function add_subject2($i) {
+		$html = $(".sample_"+$i+":last").html();
+		$(".sample_"+$i+":last").after("<tbody class=sample_"+ $i+">"+$html+"</tbody>");
 	}
 	function quit(){
 		ui_confirm('确定要取消吗?',function(){

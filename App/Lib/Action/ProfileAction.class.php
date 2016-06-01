@@ -114,13 +114,7 @@ class ProfileAction extends CommonAction {
 			$this->assign('id', 'jl_'.$id);
 			//履历
 			$record = M('user_record');
-			$user = M('user');
-			$file = M('file');
-			$list = $user -> where(array('id'=>$id)) -> getField('add_file');
-			$files = explode(';',rtrim($list,';'));
-			$token = end($files);
-			$sname = $file -> where(array('sid'=>$token)) -> getField('savename');
-			$data_file = $record -> where(array('path'=>'Data/Files/'.$sname))->find();
+			$data_file = $record -> where(array('user_id' => $id))->find();
 			foreach ($data_file as $k => $v){
 				$data[$k] = explode('|',$v);
 			}
@@ -274,13 +268,93 @@ class ProfileAction extends CommonAction {
 	function add_record(){
 		$id = $_REQUEST['id'];
 		$this -> assign('id',$id);
-		$this -> display();
+		//履历
+		$record = M('user_record');
+		$data_file = $record -> where(array('user_id'=>$id))->find();
+		foreach ($data_file as $k => $v){
+			$data[$k] = explode('|',$v);
+		}
+		foreach ($data['discipline'] as $v){
+			$discipline[] = explode(',',$v);
+		}
+		foreach ($data['promotion'] as $v){
+			$promotion[] = explode(',',$v);
+		}
+		foreach ($data['performance'] as $v){
+			$performance[] = explode(',',$v);
+		}
+		foreach ($data['award_punish'] as $v){
+		$award_punish[] = explode(',',$v);
+	}
+	foreach ($data['study'] as $v){
+		$study[] = explode(',',$v);
+	}
+	foreach ($data['part_time'] as $v){
+		$part_time[] = explode(',',$v);
+	}
+	$this->assign('data',$data);
+	$this->assign('disc',$discipline);
+	$this->assign('prom',$promotion);
+	$this->assign('perf',$performance);
+	$this->assign('award',$award_punish);
+	$this->assign('study',$study);
+	$this->assign('part',$part_time);
+	$this -> display();
 	}
 	/**
 	 * 添加履历
 	 */
 	function save_record(){
-		dump($_POST);die;
+		if(!empty($_POST)){
+			foreach ($_POST as $k => $v){
+				if(is_array($v)){
+					$_POST[$k] = array_filter($_POST[$k]);
+				}
+			}
+		}
+		$data['user_id'] = $_POST['id'];
+		$data['information'] = $_POST['entry'] . '|' . $_POST['become'] . '|' . $_POST['position'] . '|' . $_POST['tallest'];
+		for ($i = 0,$count=count($_POST['year']); $i < $count; $i++) {
+				$data['discipline'] .= $_POST['year'][$i] . ',' . $_POST['late'][$i] . ',' . $_POST['early'][$i] . ',' . $_POST['overtime'][$i] . ',' . $_POST['tiaoxiu'][$i] . ',' . $_POST['sabbatical'][$i] . ',' . $_POST['regime'][$i] . '|';
+		}
+		for ($i = 0,$count=count($_POST['category']); $i < $count; $i++) {
+				$data['promotion'] .= $_POST['category'][$i] . ',' . $_POST['adjust'][$i] . ',' . $_POST['original'][$i] . ',' . $_POST['former_duty'][$i] . ',' . $_POST['salary'][$i] . ',' . $_POST['new_dept'][$i] . ',' . $_POST['new_duty'][$i] . ',' . $_POST['new_salary'][$i] . '|';
+		}
+		for ($i = 0,$count=count($_POST['data_san']); $i < $count; $i++) {
+				$data['performance'] .= $_POST['data_san'][$i] . ',' . $_POST['dependent'][$i] . ',' . $_POST['achievements'][$i] . ',' . $_POST['on_duty'][$i] . ',' . $_POST['remark'][$i] . '|';
+		}
+		for ($i = 0,$count=count($_POST['data_si']); $i < $count; $i++) {
+				$data['award_punish'] .= $_POST['data_si'][$i] . ',' . $_POST['cause'][$i] . ',' . $_POST['sum'][$i] . ',' . $_POST['award'][$i] . ',' . $_POST['execute'][$i] . '|';
+		}
+		for ($i = 0,$count=count($_POST['data_wu']); $i < $count; $i++) {
+				$data['study'] .= $_POST['data_wu'][$i] . ',' . $_POST['details'][$i] . ',' . $_POST['organization'][$i] . ',' . $_POST['certificate'][$i] . ',' . $_POST['section'][$i] . ',' . $_POST['cost'][$i] . ',' . $_POST['agreement'][$i] . '|';
+		}
+		for ($i = 0,$count=count($_POST['data_liu1']); $i < $count; $i++) {
+				$data['part_time'] .= $_POST['data_liu1'][$i] . ',' . $_POST['job1'][$i] . ',' . $_POST['data_liu2'][$i] . ',' . $_POST['job2'][$i] . '|';
+		}
+		$data['comment'] = $_POST['comment'];
+		$model = M('user_record');
+		$record = $model -> where(array('user_id'=>$data['user_id']))->find();
+		if(empty($record)){
+			if (M('user_record') -> add($data)) {
+				//成功提示
+				$this -> assign('jumpUrl', get_return_url());
+				$this -> success('编辑成功!');
+			} else {
+				//错误提示
+				$this -> error('编辑失败!');
+			}
+		}else{
+			$data['id'] = $record['id'];
+			if (M('user_record') -> save($data)) {
+				//成功提示
+				$this -> assign('jumpUrl', get_return_url());
+				$this -> success('编辑成功!');
+			} else {
+				//错误提示
+				$this -> error('编辑失败!');
+			}
+		}
 	}
 }
 ?>

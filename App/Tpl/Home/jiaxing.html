@@ -1,0 +1,47 @@
+<layout name='Layout/ace_home' />
+<link href="__PUBLIC__/css/jinhua.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.1.0.min.js"></script>
+<!--main-->
+<div class="jhmain">
+	<div class="jhbanner">
+	<img src="__PUBLIC__/img/grader/banner.jpg">
+	<div class="title"><div class="bgc"></div><div class="con">嘉兴园区</div></div>
+	</div>
+    <div class="jhmian">
+     	<div class="jhma1"><img src="__PUBLIC__/img/grader/jhm1.jpg"></div>
+        <div class="jhma2">
+        	<div class="jhm1">
+            	<div>
+            		<volist name="new_notice_list" id="vo">
+		                    <a onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">
+		                        <span class="jhl">{$vo.name}</span>
+		                        <span class="jhr">{$vo.create_time|date='Y-m-d',###}</span>
+		                    </a>
+                    </volist>
+                </div>
+                <a class="jhgd" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=80')}">更多&gt;&gt;</a>
+            </div>
+            <div class="jhm2">
+            	<div>
+            	<volist name="new_notice_list1" id="vo" mod="2">
+            			<eq name="mod" value="0">
+		                    <a class="jhs" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">
+		                        <span class="jhl">{$vo.name}</span>
+		                        <span class="jhr">{$vo.create_time|date='Y-m-d',###}</span>
+		                    </a>
+		                    </eq>
+		                    <eq name="mod" value="1">
+		                    <a class="jhx" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">
+		                        <span class="jhl">{$vo.name}</span>
+		                        <span class="jhr">{$vo.create_time|date='Y-m-d',###}</span>
+		                    </a>
+		                    </eq>
+                      </if>
+                    </volist>
+                </div>
+                <a class="jhgd" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=84')}">更多&gt;&gt;</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/grader.js"></script>
