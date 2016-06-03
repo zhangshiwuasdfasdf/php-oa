@@ -327,12 +327,36 @@ class HomeAction extends CommonAction {
 			$this->ajaxReturn(null,null);
 		}
 	}
-	public function test(){
-		$this->ajaxReturn('aa','JSONP');
+	//杭州园区
+ 	public function hangzhou() {
+ 		$this -> _grader_notice('79','83');
+ 		$this -> display();
+ 	}
+ 	//嘉兴园区
+ 	public function jiaxing() {
+ 		$this -> _grader_notice('80','84');
+ 		$this -> display();
+ 	}
+ 	//金华园区
+ 	public function jinhua() {
+ 		$this -> _grader_notice('81','85');
+ 		$this -> display();
+ 	}
+ 	//宁波园区
+ 	public function ningbo() {
+ 		$this -> _grader_notice('82','86');
+ 		$this -> display();
+ 	}
+ 	protected function _grader_notice($gg,$gk){
+		$model = D('Notice');
+		//获取最新通知
+		$where['is_del'] = array('eq', '0');
+		$where['folder'] = array("eq", $gg);
+		$new_notice_list = $model -> where($where) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
+		$where['folder'] = array('eq',$gk);
+		$new_notice_list1 = $model -> where($where) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
+		$this -> assign("new_notice_list", $new_notice_list);
+		$this -> assign("new_notice_list1", $new_notice_list1);
 	}
-	
-// 	public function arili() {
-// 		$this -> display();
-// 	}
 }
 ?>

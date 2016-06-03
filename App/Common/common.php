@@ -2335,57 +2335,36 @@ function exp_info($info){
 	}
 	return '';
 }
-/**
- * 上次个人履历
- */
-function record_upload($path){
-	if(!file_exists($path)){
-		exit('record is not null!');
+function seniority($date2){
+	$date1 = date("Y-m-d");
+	if(!empty($date2)){
+		if(strtotime($date1)>strtotime($date2)){  
+        $tmp=$date2;  
+        $date2=$date1;  
+        $date1=$tmp;  
+	    }  
+	    list($Y1,$m1,$d1)=explode('.',$date1);  
+	    list($Y2,$m2,$d2)=explode('-',$date2);  
+	    $Y=$Y2-$Y1;  
+	    $m=$m2-$m1;  
+	    $d=$d2-$d1;  
+	    if($d<0){  
+	        $d+=(int)date('t',strtotime("-1 month $date2"));  
+	        $m--;  
+	    }  
+	    if($m<0){  
+	        $m+=12;  
+	        $y--;  
+	    }
+	    if($y == 0){
+	    	return $m.'月';
+	    }elseif($m == 0){
+			return $d.'日';
+	    }else{
+		    return $Y.'年'.$m.'月';  
+	    }
+	    
 	}
-	Vendor('Excel.PHPExcel');
-	$PHPExcel = PHPExcel_IOFactory::load($path);
-	$sheet = $PHPExcel->getSheet(0); // 读取第一個工作表
-	$highestRow = $sheet->getHighestRow(); // 取得总行数
-	$highestColumm = $sheet->getHighestColumn(); // 取得总列数
-	//一、员工个人信息
-	$data['information'] = $sheet -> getCell('B3') . '|' . $sheet -> getCell('G3').'|'. $sheet->getCell('M3') .'|' . $sheet->getCell('G4') .'|' . $sheet->getCell('M4');
-	//二、在职期间工作态度、纪律（考勤、加班、休假）
-	$data['discipline'] = $sheet -> getCell('A7') . ',' . $sheet -> getCell('C7').','. $sheet->getCell('E7') .',' . $sheet->getCell('H7') .',' . $sheet->getCell('J7') .',' . $sheet->getCell('M7') .',' . $sheet->getCell('P7').'|';
-	$data['discipline'] .= $sheet -> getCell('A8') . ',' . $sheet -> getCell('C8').','. $sheet->getCell('E8') .',' . $sheet->getCell('H8') .',' . $sheet->getCell('J8') .',' . $sheet->getCell('M8') .',' . $sheet->getCell('P8').'|';
-	$data['discipline'] .= $sheet -> getCell('A9') . ',' . $sheet -> getCell('C9').','. $sheet->getCell('E9') .',' . $sheet->getCell('H9') .',' . $sheet->getCell('J9') .',' . $sheet->getCell('M9') .',' . $sheet->getCell('P9').'|';
-	$data['discipline'] .= $sheet -> getCell('A10') . ',' . $sheet -> getCell('C10').','. $sheet->getCell('E10') .',' . $sheet->getCell('H10') .',' . $sheet->getCell('J10') .',' . $sheet->getCell('M10') .',' . $sheet->getCell('P10').'|';
-	$data['discipline'] .= $sheet -> getCell('A11') . ',' . $sheet -> getCell('C11').','. $sheet->getCell('E11') .',' . $sheet->getCell('H11') .',' . $sheet->getCell('J11') .',' . $sheet->getCell('M11') .',' . $sheet->getCell('P11');
-	//三、在职期间调岗（任免）/晋升/调薪记录 
-	$data['promotion'] = $sheet -> getCell('A14') . ',' . $sheet -> getCell('B14').','. $sheet->getCell('D14') .',' . $sheet->getCell('F14') .',' . $sheet->getCell('H14') .',' . $sheet->getCell('J14') .',' . $sheet->getCell('N14') .',' . $sheet->getCell('R14').'|';
-	$data['promotion'] .= $sheet -> getCell('A15') . ',' . $sheet -> getCell('B15').','. $sheet->getCell('D15') .',' . $sheet->getCell('F15') .',' . $sheet->getCell('H15') .',' . $sheet->getCell('J15') .',' . $sheet->getCell('N15') .',' . $sheet->getCell('R15').'|';
-	$data['promotion'] .= $sheet -> getCell('A16') . ',' . $sheet -> getCell('B16').','. $sheet->getCell('D16') .',' . $sheet->getCell('F16') .',' . $sheet->getCell('H16') .',' . $sheet->getCell('J16') .',' . $sheet->getCell('N16') .',' . $sheet->getCell('R16').'|';
-	$data['promotion'] .= $sheet -> getCell('A17') . ',' . $sheet -> getCell('B17').','. $sheet->getCell('D17') .',' . $sheet->getCell('F17') .',' . $sheet->getCell('H17') .',' . $sheet->getCell('J17') .',' . $sheet->getCell('N17') .',' . $sheet->getCell('R17').'|';
-	$data['promotion'] .= $sheet -> getCell('A18') . ',' . $sheet -> getCell('B18').','. $sheet->getCell('D18') .',' . $sheet->getCell('F18') .',' . $sheet->getCell('H18') .',' . $sheet->getCell('J18') .',' . $sheet->getCell('N18') .',' . $sheet->getCell('R18');
-	//四、在职期间工作绩效/主要业绩/管理创新
-	$data['performance'] = $sheet -> getCell('A21') . ',' . $sheet -> getCell('B21').','. $sheet->getCell('J21') .',' . $sheet->getCell('O21') .',' . $sheet->getCell('R21') .'|';
-	$data['performance'] .= $sheet -> getCell('A22') . ',' . $sheet -> getCell('B22').','. $sheet->getCell('J22') .',' . $sheet->getCell('O22') .',' . $sheet->getCell('R22') .'|';
-	$data['performance'] .= $sheet -> getCell('A23') . ',' . $sheet -> getCell('B23').','. $sheet->getCell('J23') .',' . $sheet->getCell('O23') .',' . $sheet->getCell('R23') .'|';
-	$data['performance'] .= $sheet -> getCell('A24') . ',' . $sheet -> getCell('B24').','. $sheet->getCell('J24') .',' . $sheet->getCell('O24') .',' . $sheet->getCell('R24') .'|';
-	$data['performance'] .= $sheet -> getCell('A25') . ',' . $sheet -> getCell('B25').','. $sheet->getCell('J25') .',' . $sheet->getCell('O25') .',' . $sheet->getCell('R25');
-	//五、在职期间奖励与处罚记录
-	$data['award_punish'] = $sheet -> getCell('A28') . ',' . $sheet -> getCell('B28').','. $sheet->getCell('J28') .',' . $sheet->getCell('O28') .',' . $sheet->getCell('R28') .'|';
-	$data['award_punish'] .= $sheet -> getCell('A29') . ',' . $sheet -> getCell('B29').','. $sheet->getCell('J29') .',' . $sheet->getCell('O29') .',' . $sheet->getCell('R29') .'|';
-	$data['award_punish'] .= $sheet -> getCell('A30') . ',' . $sheet -> getCell('B30').','. $sheet->getCell('J30') .',' . $sheet->getCell('O30') .',' . $sheet->getCell('R30') .'|';
-	$data['award_punish'] .= $sheet -> getCell('A31') . ',' . $sheet -> getCell('B31').','. $sheet->getCell('J31') .',' . $sheet->getCell('O31') .',' . $sheet->getCell('R31') .'|';
-	$data['award_punish'] .= $sheet -> getCell('A32') . ',' . $sheet -> getCell('B32').','. $sheet->getCell('J32') .',' . $sheet->getCell('O32') .',' . $sheet->getCell('R32');
-	//六、在职期间公司资助、学习机会（培训记录）
-	$data['study'] = $sheet -> getCell('A35') . ',' . $sheet -> getCell('B35').','. $sheet->getCell('F35') .',' . $sheet->getCell('I35') .',' . $sheet->getCell('L35') .',' . $sheet->getCell('P35') .',' . $sheet->getCell('S35') .'|';
-	$data['study'] .= $sheet -> getCell('A36') . ',' . $sheet -> getCell('B36').','. $sheet->getCell('F36') .',' . $sheet->getCell('I36') .',' . $sheet->getCell('L36') .',' . $sheet->getCell('P36') .',' . $sheet->getCell('S36') .'|';
-	$data['study'] .= $sheet -> getCell('A37') . ',' . $sheet -> getCell('B37').','. $sheet->getCell('F37') .',' . $sheet->getCell('I37') .',' . $sheet->getCell('L3') .',' . $sheet->getCell('P37') .',' . $sheet->getCell('S37') .'|';
-	$data['study'] .= $sheet -> getCell('A38') . ',' . $sheet -> getCell('B38').','. $sheet->getCell('F38') .',' . $sheet->getCell('I38') .',' . $sheet->getCell('L38') .',' . $sheet->getCell('P38') .',' . $sheet->getCell('S38') .'|';
-	$data['study'] .= $sheet -> getCell('A39') . ',' . $sheet -> getCell('B39').','. $sheet->getCell('F39') .',' . $sheet->getCell('I39') .',' . $sheet->getCell('L39') .',' . $sheet->getCell('P39') .',' . $sheet->getCell('S39');
-	//七、在职期间兼职记录
-	$data['part_time'] = $sheet -> getCell('A42') . ',' . $sheet -> getCell('C42').','. $sheet->getCell('I42') .',' . $sheet->getCell('L42') .'|';
-	$data['part_time'] .= $sheet -> getCell('A43') . ',' . $sheet -> getCell('C43').','. $sheet->getCell('I43') .',' . $sheet->getCell('L43') .'|';
-	$data['part_time'] .= $sheet -> getCell('A44') . ',' . $sheet -> getCell('C44').','. $sheet->getCell('I44') .',' . $sheet->getCell('L44');
-	//八、公司评语（主要业绩、员工荣誉、社会表彰或奖惩等）
-	$data['comment'] = $sheet -> getCell('A45') -> getValue();
-	$data['path'] = $path;
-	M('user_record')->add($data);
+	return '';
 }
 ?>

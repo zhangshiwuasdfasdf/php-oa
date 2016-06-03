@@ -19,7 +19,7 @@
         </div>
         <div class="leftrw">
         	<a class="rwa1"  onclick="set_cookie('top_menu', 198);" href="{:U('ftodo/index','fid=about_me')}">
-                	<img src="__PUBLIC__/img/img/daiban.png">
+        		<img src="__PUBLIC__/img/img/daib.png">
                 	<php>
 							$module_count=0;
 							$bc_class= 'bc-flow';
@@ -36,10 +36,9 @@
                 	<notempty name="module_count">
 							<p>{$module_count}</p>
 					</notempty>
-                <span>待办事项</span>
             </a>
             <a class="rwa2" onclick="set_cookie('top_menu', 85);" href="{:U('mail/folder','fid=inbox')}">
-                	<img src="__PUBLIC__/img/img/weiduyoujian.png">
+            	<img src="__PUBLIC__/img/img/youj.png">
                 	<php>
 							$module_count=0;
 							$bc_class= 'bc-mail';
@@ -54,10 +53,9 @@
                 	<notempty name="module_count">
 							<p>{$module_count}</p>
 					</notempty>
-                <span>未读邮件</span>
             </a>
             <a class="rwa3" onclick="set_cookie('top_menu', 217);" href="{:U('message/index','fid=about_me')}">
-                	<img src="__PUBLIC__/img/img/zhanneixin.png">
+            	<img src="__PUBLIC__/img/img/zhannx.png">
                 	<php>
 							$module_count=0;
 							$bc_class= 'bc-message';
@@ -72,7 +70,6 @@
                 	<notempty name="module_count">
 							<p>{$module_count}</p>
 					</notempty>
-                <span>站内信</span>
             </a>
         </div>
         <div class="meirishuo">
@@ -177,10 +174,10 @@
         <div class="yqmh">
         	<div class="yqd1"><span>园区门户</span></div>
             <div class="yqd2">
-            	<a class="hzyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=79')}"><img src="__PUBLIC__/img/img/hangzhou.png"></a>
-                <a class="jxyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=80')}"><img src="__PUBLIC__/img/img/jiaxing.png"></a>
-                <a class="jhyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=81')}"><img src="__PUBLIC__/img/img/jinhua.png"></a>
-                <a class="nbyq" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=82')}"><img src="__PUBLIC__/img/img/ningbo.png"></a>
+            	<a class="hzyq"  href="{:U('hangzhou','fid=79')}"><img src="__PUBLIC__/img/img/hangzhou.png"></a>
+                <a class="jxyq"  href="{:U('jiaxing','fid=80')}"><img src="__PUBLIC__/img/img/jiaxing.png"></a>
+                <a class="jhyq"  href="{:U('jinhua','fid=81')}"><img src="__PUBLIC__/img/img/jinhua.png"></a>
+                <a class="nbyq"  href="{:U('ningbo','fid=82')}"><img src="__PUBLIC__/img/img/ningbo.png"></a>
             </div>
         </div>
         <div class="rl">

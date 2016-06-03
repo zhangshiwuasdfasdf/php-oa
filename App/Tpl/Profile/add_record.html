@@ -2,9 +2,27 @@
 {:W('PageHeader',array('name'=>'个人履历添加','search'=>'N'))}
 
 <h1 style="margin:auto; text-align:center; line-height:40px;">员工在职履历档案表</h1>
+<form id="form_data" name="form_data" method="post" class="form-horizontal">
+<input type="hidden" name="opmode" id="opmode" value="add">
+<input type="hidden" name="id" id="id"  value="{$id}">
 <table width="100%" border="1" cellspacing="0" cellpadding="0" style="font-family:'微软雅黑'; font-size:14px;">
   <tr>
-    <td height="33" colspan="12" ><strong>一、在职期间工作态度、纪律（考勤、加班、休假）</strong></td>
+    <td height="33" colspan="12" ><strong>一、员工个人信息</strong></td>
+  </tr>
+  <tr>
+    <td height="33" colspan="3" align="center">入职日期</td>
+    <td height="33" colspan="3" align="center">转正日期</td>
+    <td height="33" colspan="3" align="center">现职务</td>
+    <td height="33" colspan="3" align="center">最高职务</td>
+  </tr>
+   <tr>
+    <td height="33" colspan="3" align="center"><input type="text" name="entry" value="{$data['information'][0]}" class="form-control"></td>
+    <td height="33" colspan="3" align="center"><input type="text" name="become" value="{$data['information'][1]}" class="form-control"></td>
+    <td height="33" colspan="3" align="center"><input type="text" name="position" value="{$data['information'][2]}" class="form-control"></td>
+    <td height="33" colspan="3" align="center"><input type="text" name="tallest" value="{$data['information'][3]}" class="form-control"></td>
+  </tr>
+  <tr>
+    <td height="33" colspan="12" ><strong>二、在职期间工作态度、纪律（考勤、加班、休假）</strong></td>
   </tr>
   <tr>
     <td height="33" align="center">年&nbsp;&nbsp;度</td>
@@ -13,23 +31,32 @@
     <td height="33" colspan="2" align="center">加&nbsp;&nbsp;班</td>
     <td height="33" colspan="4" align="center">调&nbsp;&nbsp;休</td>
     <td height="33" align="center">年休假</td>
-    <td height="33" colspan="2" align="center">制度配合执行</td>
+    <td height="33" colspan="2" align="center">制度配合执行　　<a onclick="add_subject(1);">+</a></td>
   </tr>
-  <foreach name="disc" item="di">
-  <notempty name="di[0]">
-	  <tr>
-	    <td height="33" align="center">{$di[0]}</td>
-	    <td height="33" align="center">{$di[1]}</td>
-	    <td height="33" align="center">{$di[2]}</td>
-	    <td height="33" colspan="2" align="center">{$di[3]}</td>
-	    <td height="33" colspan="4" align="center">{$di[4]}</td>
-	    <td height="33" align="center">{$di[5]}</td>
-	    <td height="33" colspan="2" align="center">{$di[6]}</td>
+  	 <foreach name="disc" item="di">
+	  <notempty name="di[0]">
+		   <tr>
+		    <td height="33" align="center"><input type="text" name="year[]" value="{$di[0]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="late[]" value="{$di[1]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="early[]" value="{$di[2]}" class="form-control"></td>
+		    <td height="33" colspan="2" align="center"><input type="text" name="overtime[]" value="{$di[3]}" class="form-control"></td>
+		    <td height="33" colspan="4" align="center"><input type="text" name="tiaoxiu[]" value="{$di[4]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="sabbatical[]" value="{$di[5]}" class="form-control"></td>
+		    <td height="33" colspan="2" align="center"><input type="text" name="regime[]" value="{$di[6]}" class="form-control"></td>
+		  </tr>
+	  </notempty>
+	  </foreach>
+	  <tr class="sample_item1">
+	    <td height="33" align="center"><input type="text" name="year[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="late[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="early[]" class="form-control"></td>
+	    <td height="33" colspan="2" align="center"><input type="text" name="overtime[]" class="form-control"></td>
+	    <td height="33" colspan="4" align="center"><input type="text" name="tiaoxiu[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="sabbatical[]" class="form-control"></td>
+	    <td height="33" colspan="2" align="center"><input type="text" name="regime[]" class="form-control"></td>
 	  </tr>
-  </notempty>
-  </foreach>
   <tr>
-    <td height="33" colspan="12" ><strong>二、在职期间调岗（任免）/晋升/调薪记录 </strong></td>
+    <td height="33" colspan="12" ><strong>三、在职期间调岗（任免）/晋升/调薪记录 </strong></td>
   </tr>
   <tr>
     <td height="33" align="center">类别</td>
@@ -39,66 +66,90 @@
     <td height="33" colspan="4" align="center">工资</td>
     <td height="33" align="center">新部门</td>
     <td height="33" align="center">职务</td>
-    <td align="center">新工资</td>
+    <td align="center">新工资　　<a onclick="add_subject(2);">+</a></td>
   </tr>
-   <foreach name="prom" item="pr">
-   <notempty name="pr[0]">
-	  <tr>
-	    <td height="33" align="center">{$pr[0]}</td>
-	    <td height="33" align="center">{$pr[1]}</td>
-	    <td height="33" align="center">{$pr[2]}</td>
-	    <td height="33" colspan="2" align="center">{$pr[3]}</td>
-	    <td height="33" colspan="4" align="center">{$pr[4]}</td>
-	    <td height="33" align="center">{$pr[5]}</td>
-	    <td height="33" align="center">{$pr[6]}</td>
-	    <td height="33" align="center">{$pr[7]}</td>
+  	 <foreach name="prom" item="pr">
+	   <notempty name="pr[0]">
+		  <tr>
+		    <td height="33" align="center"><input type="text" name="category[]" value="{$pr[0]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="adjust[]" value="{$pr[1]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="original[]" value="{$pr[2]}" class="form-control"></td>
+		    <td height="33" colspan="2" align="center"><input type="text" name="former_duty[]" value="{$pr[3]}" class="form-control"></td>
+		    <td height="33" colspan="4" align="center"><input type="text" name="salary[]" value="{$pr[4]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="new_dept[]" value="{$pr[5]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="new_duty[]" value="{$pr[6]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="new_salary[]" value="{$pr[7]}" class="form-control"></td>
+		  </tr>
+	  </notempty>
+	  </foreach>
+	  <tr class="sample_item2">
+	    <td height="33" align="center"><input type="text" name="category[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="adjust[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="original[]" class="form-control"></td>
+	    <td height="33" colspan="2" align="center"><input type="text" name="former_duty[]" class="form-control"></td>
+	    <td height="33" colspan="4" align="center"><input type="text" name="salary[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="new_dept[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="new_duty[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="new_salary[]" class="form-control"></td>
 	  </tr>
-  </notempty>
-  </foreach>
   <tr>
-    <td height="33" colspan="12" ><strong>三、在职期间工作绩效/主要业绩/管理创新</strong></td>
+    <td height="33" colspan="12" ><strong>四、在职期间工作绩效/主要业绩/管理创新</strong></td>
   </tr>
   <tr>
     <td height="33" align="center">年份/日期</td>
     <td height="33" colspan="2" align="center">相关事项</td>
     <td height="33" colspan="6" align="center">主要成效/分数</td>
     <td height="33" align="center">职务</td>
-    <td height="33" colspan="2" align="center">备注</td>
+    <td height="33" colspan="2" align="center">备注　　<a onclick="add_subject(3);">+</a></td>
   </tr>
-   <foreach name="perf" item="pe">
-   <notempty name="pe[0]">
-	  <tr>
-	    <td height="33" align="center">{$pe[0]}</td>
-	    <td height="33" colspan="2" align="center">{$pe[1]}</td>
-	    <td height="33" colspan="6" align="center">{$pe[2]}</td>
-	    <td height="33" align="center">{$pe[3]}</td>
-	    <td height="33" colspan="2" align="center">{$pe[4]}</td>
+  	<foreach name="perf" item="pe">
+	   <notempty name="pe[0]">
+		  <tr>
+		    <td height="33" align="center"><input type="text" name="data_san[]" value="{$pe[0]}" class="form-control"></td>
+		    <td height="33" colspan="2" align="center"><input type="text" name="dependent[]" value="{$pe[1]}" class="form-control"></td>
+		    <td height="33" colspan="6" align="center"><input type="text" name="achievements[]" value="{$pe[2]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="on_duty[]" value="{$pe[3]}" class="form-control"></td>
+		    <td height="33" colspan="2" align="center"><input type="text" name="remark[]" value="{$pe[4]}" class="form-control"></td>
+		  </tr>
+	  </notempty>
+	  </foreach>
+	  <tr class="sample_item3">
+	    <td height="33" align="center"><input type="text" name="data_san[]" class="form-control"></td>
+	    <td height="33" colspan="2" align="center"><input type="text" name="dependent[]" class="form-control"></td>
+	    <td height="33" colspan="6" align="center"><input type="text" name="achievements[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="on_duty[]" class="form-control"></td>
+	    <td height="33" colspan="2" align="center"><input type="text" name="remark[]" class="form-control"></td>
 	  </tr>
-  </notempty>
-  </foreach>
   <tr>
-    <td height="33" colspan="12" ><strong>四、在职期间奖励与处罚记录</strong></td>
+    <td height="33" colspan="12" ><strong>五、在职期间奖励与处罚记录</strong></td>
   </tr>
   <tr>
     <td height="33" align="center">日期</td>
     <td height="33" colspan="2" align="center">奖励/处罚事因</td>
     <td height="33" colspan="6" align="center">奖励/处罚金额</td>
     <td height="33" align="center">奖励/处罚</td>
-    <td height="33" colspan="2" align="center">执行部门</td>
+    <td height="33" colspan="2" align="center">执行部门　　<a onclick="add_subject(4);">+</a></td>
   </tr>
-  <foreach name="award" item="aw">
-   <notempty name="aw[0]">
-	  <tr>
-	    <td height="33" align="center">{$aw[0]}</td>
-	    <td height="33" colspan="2" align="center">{$aw[1]}</td>
-	    <td height="33" colspan="6" align="center">{$aw[2]}</td>
-	    <td height="33" align="center">{$aw[3]}</td>
-	    <td height="33" colspan="2" align="center">{$aw[4]}</td>
+  	<foreach name="award" item="aw">
+	   <notempty name="aw[0]">
+		  <tr>
+		    <td height="33" align="center"><input type="text" name="data_si[]" value="{$aw[0]}" class="form-control"></td>
+		    <td height="33" colspan="2" align="center"><input type="text" name="cause[]" value="{$aw[1]}" class="form-control"></td>
+		    <td height="33" colspan="6" align="center"><input type="text" name="sum[]" value="{$aw[2]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="award[]" value="{$aw[3]}" class="form-control"></td>
+		    <td height="33" colspan="2" align="center"><input type="text" name="execute[]" value="{$aw[4]}" class="form-control"></td>
+		  </tr>
+	  </notempty>
+	  </foreach>
+	  <tr class="sample_item4">
+	    <td height="33" align="center"><input type="text" name="data_si[]" class="form-control"></td>
+	    <td height="33" colspan="2" align="center"><input type="text" name="cause[]" class="form-control"></td>
+	    <td height="33" colspan="6" align="center"><input type="text" name="sum[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="award[]" class="form-control"></td>
+	    <td height="33" colspan="2" align="center"><input type="text" name="execute[]" class="form-control"></td>
 	  </tr>
-  </notempty>
-  </foreach>
   <tr>
-    <td height="33" colspan="12" ><strong>五、在职期间公司资助、学习机会（培训记录）</strong></td>
+    <td height="33" colspan="12" ><strong>六、在职期间公司资助、学习机会（培训记录）</strong></td>
   </tr>
   <tr>
     <td height="33" align="center">培训时间</td>
@@ -107,44 +158,63 @@
     <td height="33" colspan="2" align="center">取得证书</td>
     <td height="33" colspan="4" align="center">所在部门/岗位</td>
     <td height="33" align="center">费用</td>
-    <td height="33" colspan="2" align="center">协议</td>
+    <td height="33" colspan="2" align="center">协议　　<a onclick="add_subject(5);">+</a></td>
   </tr>
-  <foreach name="study" item="st">
-   <notempty name="st[0]">
-	  <tr>
-	    <td height="33" align="center">{$st[0]}</td>
-	    <td height="33" align="center">{$st[1]}</td>
-	    <td height="33" align="center">{$st[2]}</td>
-	    <td height="33" colspan="2" align="center">{$st[3]}</td>
-	    <td height="33" colspan="4" align="center">{$st[4]}</td>
-	    <td height="33" align="center">{$st[5]}</td>
-	    <td height="33" colspan="2" align="center">{$st[6]}</td>
+  	<foreach name="study" item="st">
+	   <notempty name="st[0]">
+		  <tr>
+		    <td height="33" align="center"><input type="text" name="data_wu[]" value="{$st[0]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="details[]" value="{$st[1]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="organization[]" value="{$st[2]}" class="form-control"></td>
+		    <td height="33" colspan="2" align="center"><input type="text" name="certificate[]" value="{$st[3]}" class="form-control"></td>
+		    <td height="33" colspan="4" align="center"><input type="text" name="section[]" value="{$st[4]}" class="form-control"></td>
+		    <td height="33" align="center"><input type="text" name="cost[]" value="{$st[5]}" class="form-control"></td>
+		    <td height="33" colspan="2" align="center"><input type="text" name="agreement[]" value="{$st[6]}" class="form-control"></td>
+		  </tr>
+	  </notempty>
+	  </foreach>
+	  <tr class="sample_item5">
+	    <td height="33" align="center"><input type="text" name="data_wu[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="details[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="organization[]" class="form-control"></td>
+	    <td height="33" colspan="2" align="center"><input type="text" name="certificate[]" class="form-control"></td>
+	    <td height="33" colspan="4" align="center"><input type="text" name="section[]" class="form-control"></td>
+	    <td height="33" align="center"><input type="text" name="cost[]" class="form-control"></td>
+	    <td height="33" colspan="2" align="center"><input type="text" name="agreement[]" class="form-control"></td>
 	  </tr>
-  </notempty>
-  </foreach>
   <tr>
-    <td height="33" colspan="12" ><strong>六、在职期间兼职记录</strong></td>
+    <td height="33" colspan="12" ><strong>七、在职期间兼职记录</strong></td>
   </tr>
   <tr>
     <td height="33" align="center">日期</td>
     <td height="33" colspan="3" align="center">职务</td>
     <td height="33" colspan="4" align="center">日期</td>
-    <td height="33" colspan="4" align="center">职务</td>
+    <td height="33" colspan="4" align="center">职务　　<a onclick="add_subject(6);">+</a></td>
   </tr>
-  <foreach name="part" item="pa">
-   <notempty name="pa[0]">
-	  <tr>
-	    <td height="33" align="center">{$pa[0]}</td>
-	    <td height="33" colspan="3" align="center">{$pa[1]}</td>
-	    <td height="33" colspan="4" align="center">{$pa[2]}</td>
-	    <td height="33" colspan="4" align="center">{$pa[3]}</td>
+  	<foreach name="part" item="pa">
+	   <notempty name="pa[0]">
+		  <tr>
+		    <td height="33" align="center"><input type="text" name="data_liu1[]" value="{$pa[0]}" class="form-control"></td>
+		    <td height="33" colspan="3" align="center"><input type="text" name="job1[]" value="{$pa[1]}" class="form-control"></td>
+		    <td height="33" colspan="4" align="center"><input type="text" name="data_liu2[]" value="{$pa[2]}" class="form-control"></td>
+		    <td height="33" colspan="4" align="center"><input type="text" name="job2[]" value="{$pa[3]}" class="form-control"></td>
+		  </tr>
+	  </notempty>
+	  </foreach>
+	  <tr class="sample_item6">
+	    <td height="33" align="center"><input type="text" name="data_liu1[]" class="form-control"></td>
+	    <td height="33" colspan="3" align="center"><input type="text" name="job1[]" class="form-control"></td>
+	    <td height="33" colspan="4" align="center"><input type="text" name="data_liu2[]" class="form-control"></td>
+	    <td height="33" colspan="4" align="center"><input type="text" name="job2[]" class="form-control"></td>
 	  </tr>
-  </notempty>
-  </foreach>
   <tr>
-    <td height="33" colspan="12" ><strong>七、公司评语（主要业绩、员工荣誉、社会表彰或奖惩等）</strong></td>
+    <td height="33" colspan="12" ><strong>八、公司评语（主要业绩、员工荣誉、社会表彰或奖惩等）</strong></td>
   </tr>
   <tr>
-    <td height="100" colspan="12" align="center">{$data['comment'][0]}</td>
+    <td height="100" colspan="12" align="center"><textarea type="text" name="comment" class="form-control">{$data['comment'][0]}</textarea></td>
+  </tr>
+  <tr>
+    <td colspan="12" bgcolor="#FFFFFF" align="center"><a onclick="save()"  class="btn btn-sm btn-primary" style="margin: 5px;">保存</a><a onclick="quit()"  class="btn btn-sm btn-danger" style="margin: 5px;">取消</a></td>
   </tr>
 </table>
+</form>
