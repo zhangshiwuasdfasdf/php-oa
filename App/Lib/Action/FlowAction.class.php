@@ -1128,7 +1128,7 @@ class FlowAction extends CommonAction {
 		$start_time = $_POST['start_time'];
 		$end_time = $_POST['end_time'];
 		$type = $_GET['type'];
-		if(strtotime($end_time)-strtotime($start_time)<7200){
+		if(strtotime($end_time)-strtotime($start_time)<3600){
 			$this->ajaxReturn(null,null,1);
 		}
 		if ($type=='over_time' || $type=='metting' || $type=='outside') {
@@ -1148,9 +1148,18 @@ class FlowAction extends CommonAction {
 	/** 插入新新数据  **/
 	protected function _insert() {
 		$model = D("Flow");
-		if (false === $model -> create()) {
-			$this -> error($model -> getError());
+		if(is_mobile_request()){
+			unset($_GET['id']);
+			unset($_GET['token']);
+			if (false === $model -> create($_GET)) {
+				$this -> error($model -> getError());
+			}
+		}else{
+			if (false === $model -> create()) {
+				$this -> error($model -> getError());
+			}
 		}
+		
 		if (in_array('user_id', $model -> getDbFields())) {
 			$model -> user_id = get_user_id();
 		};
@@ -1170,9 +1179,18 @@ class FlowAction extends CommonAction {
 
 		if ($list !== false) {//保存成功
 			$model = M(getModelName($list));
-			if (false === $model -> create()) {
-				$this -> error($model -> getError());
+			if(is_mobile_request()){
+				unset($_GET['id']);
+				unset($_GET['token']);
+				if (false === $model -> create($_GET)) {
+					$this -> error($model -> getError());
+				}
+			}else{
+				if (false === $model -> create()) {
+					$this -> error($model -> getError());
+				}
 			}
+			
 			//字段中存放数组
 			$array_field = array(attitude_me,attitude_leader,ability_me,ability_leader,responsibility_me,responsibility_leader,coordinate_me,coordinate_leader,develop_me,develop_leader,ids,names,types,nums,prices,amounts,marks,goods_name,usage,use_dept,buy_num,add_num,recovery_num,is_allocation,price,amount,add_num_calculation,pay_type,in_place_time);
 			foreach ($array_field as $v){

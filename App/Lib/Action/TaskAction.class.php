@@ -195,6 +195,10 @@ class TaskAction extends CommonAction {
 		$this -> assign('task_id', $id);
 		$model = M("Task");
 		$vo = $model -> find($id);
+		
+		if(is_mobile_request()){
+			$vo['mobile_file'] = mobile_show_file($vo['add_file'],'task');
+		}
 		$this -> assign('vo', $vo);
 
 		$where_log['task_id'] = array('eq', $id);

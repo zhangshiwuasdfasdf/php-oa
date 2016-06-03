@@ -29,6 +29,7 @@
 		'SAVE_PATH'=>"Data/Files/",
         'ADMIN_MAIL_ACCOUNT'=>array('smtpsvr'=>'smtp.163.com','email'=>'zhang6970153@163.com','mail_id'=>'zhang6970153@163.com','mail_pwd'=>'zx6624000
         ','mail_name'=>'神洲酷奇')
+    		
     );
     return $array;
 ?>

@@ -573,7 +573,21 @@ function del_folder($dir) {
 }
 
 function get_user_name() {
-	$user_name = session('user_name');
+	if(is_mobile_request()){
+		$id = $_REQUEST['id'];
+		$token = $_REQUEST['token'];
+		if(!empty($id) && !empty($token)){
+			$map = array();
+			$map["id"] = array('eq', intval($id));
+			$model = M("User");
+			$auth_info = $model -> where($map) -> find();
+			if(md5($auth_info['password'].md5($auth_info['last_mobile_login_time'])) == $token && time()-$auth_info['last_mobile_login_time']<C('MOBILE_TOKEN_LIFETIME')){
+				$user_name = $auth_info['name'];
+			}
+		}
+	}else{
+		$user_name = session('user_name');
+	}
 	return isset($user_name) ? $user_name : 0;
 }
 
@@ -1197,7 +1211,7 @@ function show_file($add_file) {
 		}
 	}
 }
-function mobile_show_file($add_file){
+function mobile_show_file($add_file,$action='message'){
 	$files = array_filter(explode(';', $add_file));
 	$a = '';
 	foreach ($files as $file) {
@@ -1207,11 +1221,16 @@ function mobile_show_file($add_file){
 			$File = $model -> where($where) -> field("id,name,size,extension,savename,user_id") -> find();
 			$__PUBLIC__ = __PUBLIC__;
 			$__URL__ = __URL__;
-			if($File['user_id']==get_user_id()){
-				$class='file_me';
-			}else{
-				$class='file_others';
+			if($action=='message'){
+				if($File['user_id']==get_user_id()){
+					$class='file_me';
+				}else{
+					$class='file_others';
+				}
+			}elseif($action=='task'){
+				$class = 'task';
 			}
+			
 			$a.= '<a target="_blank" class="'.$class.'" href="'.'http://192.168.1.59/php-oa/Data/Files/'.$File['savename'].'">'.$File['name'].'</a>';
 // 			return '<div class="attach_file" style="background-image:url('.$__PUBLIC__.'/ico/ico_' . strtolower($File['extension']) . '.jpg); background-repeat:no-repeat;"><a target="_blank" href="'.$__URL__.'/down/attach_id/' . f_encode($File['id']) . '">' . $File['name'] . ' (' . reunit($File['size']) . ')' . '</a>'.'</div>';
 		}

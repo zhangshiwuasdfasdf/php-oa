@@ -250,9 +250,18 @@ class CommonAction extends Action {
 			$name = $this -> getActionName();
 		}
 		$model = D($name);
-		if (false === $model -> create()) {
-			$this -> error($model -> getError());
+		if(is_mobile_request()){
+			unset($_GET['id']);
+			unset($_GET['token']);
+			if (false === $model -> create($_GET)) {
+				$this -> error($model -> getError());
+			}
+		}else{
+			if (false === $model -> create()) {
+				$this -> error($model -> getError());
+			}
 		}
+		
 		/*保存当前数据对象 */
 		$list = $model -> add();
 		if ($list !== false) {//保存成功
