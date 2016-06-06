@@ -22,6 +22,36 @@ class HomeAction extends CommonAction {
 	}
 
 	public function index() {
+// 		$m = new MongoClient();
+// 		$m = new Mongo( "mongodb://127.0.0.1:27017" );
+// 		$db = $m->test;
+// 		$collection = $db->createCollection("runoob");
+// 		$collection->remove(array("title"=>"MongoDB 教程"), array('justOne'=>true));
+// 		$document = array(
+// 				"title" => "MongoDB",
+// 				"description" => "database",
+// 				"likes" => 100,
+// 				"url" => "http://www.runoob.com/mongodb/",
+// 				"by", "菜鸟教程"
+// 		);
+// 		$collection->insert($document);
+		
+// 		$cur = $collection->find();
+// 		foreach ($cur as $document){
+// 			dump($document);
+// 		}
+		
+		
+// 		$mem = new Memcache;
+// 		$mem -> connect('localhost', 11211);
+// 		$mem ->set('kk','vv');
+// 		echo $mem ->get('kk');
+
+// 		$redis = new Redis();
+// 		$redis->connect('127.0.0.1',6379);
+// 		$redis->set('test','hello redis');
+// 		echo $redis->get('test');
+		
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
 

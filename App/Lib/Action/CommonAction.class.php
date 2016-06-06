@@ -218,8 +218,12 @@ class CommonAction extends Action {
 					}elseif(file_exists($_SERVER['DOCUMENT_ROOT'].__ROOT__.'/Data/Files/'.$savename_a[0].'.swf')){
 						$vo['file_list'][$k]['swf'] = 'http://192.168.1.59'.__ROOT__.'/Data/Files/'.$savename_a[0].'.swf';
 					}
+					$vo['file_list'][$k]['src'] = 'http://oa.xyb2c.com/Data/Files/'.$v['savename'];
 				}
-				
+// 				$vo['src'] = Widget('File',array('add_file'=>$vo['add_file'],'mode'=>'image'));
+// 				$a = File(array('add_file'=>$add_file,'mode'=>'image'));
+// 				$content = $a->render(array('add_file'=>$add_file,'mode'=>'image'));
+// 				$vo['src'] = $a;
 			}
 
 // 		}
