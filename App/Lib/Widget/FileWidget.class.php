@@ -7,6 +7,9 @@ class FileWidget extends Widget {
 			$where['sid'] = array('in', $files);
 			$model = M("File");
 			$file_list = $model -> where($where) -> select();
+			foreach ($file_list as $k=>$v){
+				$file_list[$k]['extension'] = strtolower($v['extension']);
+			}
 			$data['file_list']=$file_list;
 		}
 		$mode=$data['mode'];

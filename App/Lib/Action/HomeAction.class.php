@@ -22,36 +22,6 @@ class HomeAction extends CommonAction {
 	}
 
 	public function index() {
-// 		$m = new MongoClient();
-// 		$m = new Mongo( "mongodb://127.0.0.1:27017" );
-// 		$db = $m->test;
-// 		$collection = $db->createCollection("runoob");
-// 		$collection->remove(array("title"=>"MongoDB 教程"), array('justOne'=>true));
-// 		$document = array(
-// 				"title" => "MongoDB",
-// 				"description" => "database",
-// 				"likes" => 100,
-// 				"url" => "http://www.runoob.com/mongodb/",
-// 				"by", "菜鸟教程"
-// 		);
-// 		$collection->insert($document);
-		
-// 		$cur = $collection->find();
-// 		foreach ($cur as $document){
-// 			dump($document);
-// 		}
-		
-		
-// 		$mem = new Memcache;
-// 		$mem -> connect('localhost', 11211);
-// 		$mem ->set('kk','vv');
-// 		echo $mem ->get('kk');
-
-// 		$redis = new Redis();
-// 		$redis->connect('127.0.0.1',6379);
-// 		$redis->set('test','hello redis');
-// 		echo $redis->get('test');
-		
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
 
@@ -381,6 +351,7 @@ class HomeAction extends CommonAction {
 		$model = D('Notice');
 		//获取最新通知
 		$where['is_del'] = array('eq', '0');
+		$where['is_submit'] = array('eq', '1');
 		$where['folder'] = array("eq", $gg);
 		$new_notice_list = $model -> where($where) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
 		$where['folder'] = array('eq',$gk);
