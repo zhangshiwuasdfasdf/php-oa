@@ -11,6 +11,9 @@
   Support: https://git.oschina.net/smeoa/smeoa        
   
  -------------------------------------------------------------------------*/
+header("Access-Control-Allow-Origin:*");
+/*星号表示所有的域都可以接受，*/
+header("Access-Control-Allow-Methods:GET,POST");
 class LoginAction extends Action {
 	protected $config=array('app_type'=>'public');
 

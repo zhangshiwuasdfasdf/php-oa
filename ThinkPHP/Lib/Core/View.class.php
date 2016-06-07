@@ -113,8 +113,9 @@ class View {
     		unset($this->tVar['folder']);
     		unset($this->tVar['folder_name']);
     		header('Content-Type:application/json; charset=utf-8');
-            $handler  =   isset($_GET[C('VAR_JSONP_HANDLER')]) ? $_GET[C('VAR_JSONP_HANDLER')] : C('DEFAULT_JSONP_HANDLER');
-            exit($handler.'('.json_encode($this->tVar).');');
+//             $handler  =   isset($_GET[C('VAR_JSONP_HANDLER')]) ? $_GET[C('VAR_JSONP_HANDLER')] : C('DEFAULT_JSONP_HANDLER');
+//             exit($handler.'('.json_encode($this->tVar).');');
+			exit(json_encode($this->tVar));
     	}
         if(empty($content)) {
             // 模板文件解析标签
