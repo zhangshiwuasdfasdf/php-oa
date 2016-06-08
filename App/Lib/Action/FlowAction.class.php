@@ -1137,7 +1137,7 @@ class FlowAction extends CommonAction {
 		if ($type=='over_time' || $type=='metting' || $type=='outside') {
 			$hour_sum = (strtotime($end_time)-strtotime($start_time))/3600;
 			$day = floor($hour_sum/24);
-			$hour = ceil($hour_sum - $day*24);
+			$hour = floor($hour_sum - $day*24);
 			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour),null,1);
 		}else{
 			$hour_sum = get_leave_seconds(strtotime($start_time),strtotime($end_time))/3600;
