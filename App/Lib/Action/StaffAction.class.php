@@ -25,7 +25,7 @@ class StaffAction extends CommonAction {
 	}
 
 	function index() {
-		if(!is_mobile_request()){
+		if(!is_mobile_request() || $_REQUEST['mobile_login_type'] = 'pc'){
 			$map = $this -> _search();
 			if (method_exists($this, '_search_filter')) {
 				$this -> _search_filter($map);
