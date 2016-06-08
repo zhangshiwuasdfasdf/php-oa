@@ -1772,6 +1772,7 @@ function getDeptManagerId($uid,$dept_id){
 		$parent_list[] = $Parentid;
 		$Parentid = getParentid($Parentid);
 	}
+	
 	//获取部门总监
 	if(count($parent_list) == 1){
 		$dept = M('Dept')->find($dept_id);
@@ -1785,7 +1786,20 @@ function getDeptManagerId($uid,$dept_id){
 		$user = M('User')->find($uid);
 		$dept = M('Dept')->find($user['pos_id']);
 		if($dept['name']=='园区'){
-			return null;
+			if(count($parent_list) >= 3){
+				$uid = $parent_list[count($parent_list)-3];
+				$user = M('User')->find($uid);
+				$dept = M('Dept')->find($user['pos_id']);
+			}else{
+				return null;
+			}
+// 			if(count($parent_list) == 2){
+// 				return $dept_id;
+// 			}else{
+// 				$uid = $parent_list[count($parent_list)-3];
+// 				$user = M('User')->find($uid);
+// 				return $user['pos_id'];
+// 			}
 		}
 	}else{
 		$uid = null;
