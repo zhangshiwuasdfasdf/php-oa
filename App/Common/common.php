@@ -1231,7 +1231,7 @@ function mobile_show_file($add_file,$action='message'){
 				$class = 'task';
 			}
 			
-			$a.= '<a target="_blank" class="'.$class.'" href="'.'http://192.168.1.59/php-oa/Data/Files/'.$File['savename'].'">'.$File['name'].'</a>';
+			$a.= '<a target="_blank" class="'.$class.'" href="'.'http://oa.xyb2c.com/Data/Files/'.$File['savename'].'">'.$File['name'].'</a>';
 // 			return '<div class="attach_file" style="background-image:url('.$__PUBLIC__.'/ico/ico_' . strtolower($File['extension']) . '.jpg); background-repeat:no-repeat;"><a target="_blank" href="'.$__URL__.'/down/attach_id/' . f_encode($File['id']) . '">' . $File['name'] . ' (' . reunit($File['size']) . ')' . '</a>'.'</div>';
 		}
 	}

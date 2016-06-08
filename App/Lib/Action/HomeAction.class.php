@@ -58,7 +58,10 @@ class HomeAction extends CommonAction {
 			$user[$k]['len'] = mb_strlen($temp[0]);
 		}
 		$users = $this -> my_sort($user, 'time');
-		$this -> assign("bianq", $users);
+		if(!is_mobile_request()){
+			$this -> assign("bianq", $users);
+		}
+		
 	}
 	
 	private function my_sort($arrays,$sort_key,$sort_order=SORT_DESC,$sort_type=SORT_REGULAR ){ 
@@ -213,9 +216,14 @@ class HomeAction extends CommonAction {
 			if($v['folder'] == 71){
 				$new_notice_list[$k]['name'] = substr($v['name'],18);	
 			}
+			if(is_mobile_request() && $v['folder'] != 71 && $v['folder'] != 72){
+				unset($new_notice_list[$k]);
+			}
 		}
 		$this -> assign("new_notice_list", $new_notice_list);
-		$this -> assign("new_notice_list1", $new_notice_list1);
+		if(!is_mobile_request()){
+			$this -> assign("new_notice_list1", $new_notice_list1);
+		}
 	}
 
 	protected function _forum_list() {
@@ -280,19 +288,27 @@ class HomeAction extends CommonAction {
 	protected function _shouxing_list() {
 		$model = D('User');
 		$shouxing_list = $model ->where('month(birthday)>0 AND is_del = 0') -> order("abs(month(birthday)-month(now())) asc") ->limit(4) -> field('id,name,dept_id,position_id,sex,birthday,pic,email,duty,office_tel,mobile_tel,create_time') ->select();
-		$this -> assign("shouxing_list", $shouxing_list);
+		if(!is_mobile_request()){
+			$this -> assign("shouxing_list", $shouxing_list);
+		}
+		
 	}
 	//入职纪念日
 	protected function _jinianri_list() {
 		$model = D('User');
 		$jinianri_list = $model ->where('is_del = 0') -> order("mod(unix_timestamp(now())-create_time,365*24*60*60) asc") ->limit(3) -> field('id,name,dept_id,position_id,sex,birthday,pic,email,duty,office_tel,mobile_tel,create_time') ->select();
-		$this -> assign("jinianri_list", $jinianri_list);
+		if(!is_mobile_request()){
+			$this -> assign("jinianri_list", $jinianri_list);
+		}
 	}
 	//新进员工
 	protected function _xinjin_list() {
 		$model = D('User');
 		$xinjin_list = $model ->where('is_del = 0') -> order("create_time desc") ->limit(7) -> field('id,name,dept_id,position_id,sex,birthday,pic,email,duty,office_tel,mobile_tel,create_time') ->select();
-		$this -> assign("xinjin_list", $xinjin_list);
+		if(!is_mobile_request()){
+			$this -> assign("xinjin_list", $xinjin_list);
+		}
+		
 	}
 	public function get_user_info(){
 		$user_id = get_user_id();
