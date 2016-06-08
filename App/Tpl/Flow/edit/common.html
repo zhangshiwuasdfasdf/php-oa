@@ -14,3 +14,9 @@
     <td colspan="5"><textarea id="content" name="content" style=" resize:none; outline:none; border:none;width:99%; padding-left:5px;height:300px;" >{$vo.content}</textarea></td>
   </tr>
 </table>
+<div class="form-group">
+		<label class="col-sm-2 control-label" for="name">附件：</label>
+		<div class="col-sm-10">
+			{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'add'))}
+		</div>
+	</div>
