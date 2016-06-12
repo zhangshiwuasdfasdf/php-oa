@@ -210,6 +210,7 @@ class DailyReportAction extends CommonAction {
 		if(is_mobile_request()){
 			$id = $_REQUEST['pid'];
 		}
+		$this -> assign('uid',get_user_id());
 		$this -> assign('id', $id);
 		$this -> assign('auth', $this -> config['auth']);
 
@@ -227,7 +228,7 @@ class DailyReportAction extends CommonAction {
 		$where_last['id'] = array('eq', $id);
 		$last_report = M("DailyReport") -> where($where_last) -> order('id desc') -> find();
 		$this -> assign('last_report', $last_report);
-
+		
 		$where_detail['pid'] = $last_report['id'];
 		$where_detail['type'] = array('eq', 1);
 		$last_report_detail = M("DailyReportDetail") -> where($where_detail) -> select();

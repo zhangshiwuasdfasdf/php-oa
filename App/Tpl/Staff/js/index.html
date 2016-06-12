@@ -69,12 +69,6 @@
 			$("#emp_pic").prop("src", "{:get_save_url()}" + $(this).attr("pic"));
 		});
 		
-		//默认子公司节点收起
-		$(".well .tree_menu a").next().hide();
-		//子公司节点的展开和收起
-		$(".well .tree_menu a").click(function(){
-			$(this).next().slideToggle();
-		});
 	});
 
 </script>

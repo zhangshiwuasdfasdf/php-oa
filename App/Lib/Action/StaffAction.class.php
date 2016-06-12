@@ -43,14 +43,11 @@ class StaffAction extends CommonAction {
 			$where['is_del'] = array('eq',0);
 			$menu = $node -> field('id,pid,name') ->where($where)-> order('sort asc') -> select();
 			$tree = list_to_tree($menu);
-			$a = popup_tree_menu($tree,0,100,true);
+			$a = popup_tree_menu($tree,0,4,true);
 			
 			$a = str_replace('tree_menu','submenu',$a);
 			$a = str_replace('<a class=""','<a class="dropdown-toggle"',$a);
 			$a = preg_replace('/submenu/','nav-list',$a,1);
-// 			$open=fopen("C:\log.txt","a" );
-// 			fwrite($open,$a."\r\n");
-// 			fclose($open);
 			$this -> assign('menu', $a);
 			$this -> display();
 		}else{//手机端通讯录
@@ -72,7 +69,7 @@ class StaffAction extends CommonAction {
 		$model = D("UserView");
 		$where['is_del'] = array('eq', '0');
 		$where['pos_id'] = array('in', $dept);
-		$data = $model -> where($where) -> select();
+		$data = $model -> where($where)->order('duty asc') -> select();
 		
 		$this -> ajaxReturn($data, "", 1);
 	}
