@@ -216,9 +216,9 @@ class HomeAction extends CommonAction {
 			if($v['folder'] == 71){
 				$new_notice_list[$k]['name'] = substr($v['name'],18);	
 			}
-			if(is_mobile_request() && $v['folder'] != 71 && $v['folder'] != 72){
-				unset($new_notice_list[$k]);
-			}
+// 			if(is_mobile_request() && $v['folder'] != 71 && $v['folder'] != 72){
+// 				unset($new_notice_list[$k]);
+// 			}
 		}
 		$this -> assign("new_notice_list", $new_notice_list);
 		if(!is_mobile_request()){

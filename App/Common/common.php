@@ -1699,7 +1699,7 @@ function is_mobile_request()//是否为手机端app登录
 }
 //获取上级的id，若有pos_id则优先根据pos_id，若没有则根据uid
 //若上级没有，则获取上级的上级（递归）
-function getParentid($uid,$pos_id=''){
+function getParentid($uid,$pos_id='',$ignore_del=false){
 	$model_user = M('User');
 	if(empty($pos_id)){
 		$user = $model_user->where(array('id'=>array('eq',$uid)))->find();
@@ -1716,9 +1716,13 @@ function getParentid($uid,$pos_id=''){
 			return 0;
 		}else{
 			$view_user = D('UserView');
-			$user_parent = $view_user->where(array('pos_id'=>array('eq',$dept['pid'])))->order('position_sort')->find();
+			if($ignore_del){
+				$user_parent = $view_user->where(array('pos_id'=>array('eq',$dept['pid'])))->order('position_sort')->find();
+			}else{
+				$user_parent = $view_user->where(array('pos_id'=>array('eq',$dept['pid']),'is_del'=>array('eq',0)))->order('position_sort')->find();
+			}
 			if(empty($user_parent)){
-				return getParentid(null,$dept['pid']);
+				return getParentid(null,$dept['pid'],$ignore_del);
 			}else{
 				return $user_parent['id'];
 			}
@@ -1726,9 +1730,14 @@ function getParentid($uid,$pos_id=''){
 	}else{
 		if(substr($pos_id,0,1) == '_' && is_numeric(substr($pos_id,1))){
 			$pos_id_p = substr($pos_id,1);
-			$user_parent = $model_user->where(array('pos_id'=>array('eq',$pos_id_p)))->find();
+			if($ignore_del){
+				$user_parent = $model_user->where(array('pos_id'=>array('eq',$pos_id_p)))->find();
+			}else{
+				$user_parent = $model_user->where(array('pos_id'=>array('eq',$pos_id_p),'is_del'=>array('eq',0)))->find();
+			}
+			
 			if(empty($user_parent)){
-				return getParentid(null,$pos_id_p);
+				return getParentid(null,$pos_id_p,$ignore_del);
 			}else{
 				return $user_parent['id'];
 			}
@@ -1766,30 +1775,37 @@ function getDeptManagerId($uid,$dept_id){
 		$user = M('User')->find($uid);
 		$dept_id = $user['pos_id'];
 	}
+	
 	$parent_list = array();
-	$Parentid = getParentid($uid,$dept_id);
+	$Parentid = getParentid($uid,$dept_id,true);
 	while($Parentid){//获取上级数组
 		$parent_list[] = $Parentid;
-		$Parentid = getParentid($Parentid);
+		$Parentid = getParentid($Parentid,null,true);
 	}
-	
 	//获取部门总监
 	if(count($parent_list) == 1){
 		$dept = M('Dept')->find($dept_id);
 		if($dept['name']=='园区'){
 			return null;
 		}
-		$userview = D('UserView')->where(array('pos_id'=>array('eq',$dept_id)))->order('position_sort')->find();
+		$userview = D('UserView')->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->order('position_sort')->find();
 		$uid = $userview['id'];
 	}else if(count($parent_list) >= 2){
 		$uid = $parent_list[count($parent_list)-2];
-		$user = M('User')->find($uid);
-		$dept = M('Dept')->find($user['pos_id']);
+		$user = M('User')->where(array('id'=>array('eq',$uid),'is_del'=>array('eq',0)))->find();
+		if($user){
+			$dept = M('Dept')->find($user['pos_id']);
+		}else{
+			return null;
+		}
 		if($dept['name']=='园区'){
 			if(count($parent_list) >= 3){
 				$uid = $parent_list[count($parent_list)-3];
-				$user = M('User')->find($uid);
-				$dept = M('Dept')->find($user['pos_id']);
+				$user = M('User')->where(array('id'=>array('eq',$uid),'is_del'=>array('eq',0)))->find();
+				if(empty($user)){
+					return null;
+// 					$dept = M('Dept')->find($user['pos_id']);
+				}
 			}else{
 				return null;
 			}
@@ -1897,7 +1913,7 @@ function getHRManagerIdByDept_id($dept_id){
 	if(!empty($dept)){
 		$dept_id = $dept['id'];
 		$model_user = D('UserView');
-		$user = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->order('position_sort')->find();
+		$user = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->order('position_sort')->find();
 	
 		if(empty($user['id']) && $dept_id){
 			$user['id'] = getParentid(null,$dept_id);
@@ -1912,7 +1928,7 @@ function getHRManagerIdByDept_id($dept_id){
 */
 function getGeneralManagerIdByDept_id($dept_id){
 	$model_user = D('UserView');
-	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->order('position_sort')->find();
+	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->order('position_sort')->find();
 	if(!empty($user)){
 		return $user['id'];
 	}
@@ -1936,7 +1952,7 @@ function getHeadquartersHRDeputyGeneralManagerId(){
 	$dept_id = $dept['id'];
 	
 	$model_user = D('UserView');
-	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->order('position_sort')->find();
+	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->order('position_sort')->find();
 	return $user['id'];
 }
 function getFinancialManagerId(){
@@ -1945,7 +1961,7 @@ function getFinancialManagerId(){
 	$dept_id = $dept['id'];
 	
 	$model_user = D('UserView');
-	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->order('position_sort')->find();
+	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->order('position_sort')->find();
 	return $user['id'];
 }
 function getOfficeManagerId(){//总经办主任id
@@ -1954,7 +1970,7 @@ function getOfficeManagerId(){//总经办主任id
 	$dept_id = $dept['id'];
 	
 	$model_user = D('UserView');
-	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->order('position_sort')->find();
+	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->order('position_sort')->find();
 	return $user['id'];
 }
 function getLegalManagerId(){//法务部id
@@ -1963,7 +1979,7 @@ function getLegalManagerId(){//法务部id
 	$dept_id = $dept['id'];
 
 	$model_user = D('UserView');
-	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->order('position_sort')->find();
+	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->order('position_sort')->find();
 	return $user['id'];
 }
 function getRSManagerId(){//人事老大id
@@ -1972,7 +1988,7 @@ function getRSManagerId(){//人事老大id
 	$dept_id = $dept['id'];
 
 	$model_user = D('UserView');
-	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->order('position_sort')->find();
+	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->order('position_sort')->find();
 	return $user['id'];
 }
 function getGeneralManagerId($uid){//获取总部的老总id，或园区的老总id
@@ -1996,7 +2012,7 @@ function getHeadquartersGeneralManagerId(){//获取总部总经理id
 	}
 	$position_id = $position['id'];
 	$model_user = M('User');
-	$user = $model_user->where(array('position_id'=>array('eq',$position_id)))->find();
+	$user = $model_user->where(array('position_id'=>array('eq',$position_id),'is_del'=>array('eq',0)))->find();
 	return $user['id'];
 }
 function getFrontDesk(){
@@ -2005,7 +2021,7 @@ function getFrontDesk(){
 	$dept_id = $dept['id'];
 	
 	$model_user = D('UserView');
-	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->order('position_sort')->find();
+	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->order('position_sort')->find();
 	return $user['id'];
 }
 function getRank($uid){
@@ -2157,13 +2173,13 @@ function getZhaopinDirector($uid){
 		$model_dept = M('Dept');
 		$dept_id = $model_dept->where(array('pid'=>array('eq',$flag),'dept_no'=>array('eq','XZDDB')))->getField('id');
 		$model_user = M('User');
-		$id = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->getField('id');
+		$id = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->getField('id');
 		return $id;
 	}elseif ($flag!=-3){
 		$model_dept = M('Dept');
 		$dept_id = $model_dept->where(array('dept_no'=>array('eq','ZP')))->getField('id');
 		$model_user = M('User');
-		$id = $model_user->where(array('pos_id'=>array('eq',$dept_id)))->getField('id');
+		$id = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->getField('id');
 		return $id;
 	}else{
 		return null;

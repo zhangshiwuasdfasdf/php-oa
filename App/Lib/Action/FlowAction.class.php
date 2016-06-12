@@ -152,6 +152,8 @@ class FlowAction extends CommonAction {
 				}
 				elseif(!empty($type)){
 					$allow = false;
+					//通过审核的
+					$map['step'] = 40;
 					//$map加上自己园区的
 					if(isHeadquarters(get_user_id())==0){//总部
 						$map['dept_id'] = array('in',get_child_dept_all(27));
