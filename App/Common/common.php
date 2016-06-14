@@ -1229,6 +1229,8 @@ function mobile_show_file($add_file,$action='message'){
 				}
 			}elseif($action=='task'){
 				$class = 'task';
+			}elseif($action=='flow'){
+				$class = 'fjflow';
 			}
 			
 			$a.= '<a target="_blank" class="'.$class.'" href="'.'http://oa.xyb2c.com/Data/Files/'.$File['savename'].'">'.$File['name'].'</a>';
@@ -2396,5 +2398,15 @@ function seniority($date2){
 	    
 	}
 	return '';
+}
+function ToNumberSystem26($n){
+	$s = '';
+	while ($n > 0){
+		$m = $n % 26;
+		if ($m == 0) $m = 26;
+		$s = chr($m + 64) . $s;
+		$n = ($n - $m) / 26;
+	}
+	return $s;
 }
 ?>

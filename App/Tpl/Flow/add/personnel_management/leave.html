@@ -28,7 +28,7 @@
     <td height="90" align="center" bgcolor="#fff">类别</td>
     <td height="90" colspan="8" align="left" bgcolor="#fff">
     	<ul class="ma7">
-        	<li><input type="radio" name="style" value="年假" onclick="$('#available_hour').attr('style','display:none')">年假</li>
+        	<li><input type="radio" name="style" value="年假" onclick="$('#available_hour').attr('style','display:none')" <if condition="($year lt 1)">disabled</if>>年假</li>
             <li><input type="radio" name="style" value="事假" checked="checked" onclick="$('#available_hour').attr('style','display:none')">事假</li>
             <li><input type="radio" name="style" value="病假" onclick="$('#available_hour').attr('style','display:none')">病假</li>
             <li><input type="radio" name="style" value="婚假" onclick="$('#available_hour').attr('style','display:none')">婚假</li>

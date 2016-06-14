@@ -394,6 +394,7 @@ class FlowAction extends CommonAction {
 			if(!empty($v['confirm'])){
 				$confirm = explode('|',$v['confirm']);
 				$flowLog = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is null'))->find();
+				$i = false;
 				if(!empty($flowLog)){
 					$i = array_search($flowLog['emp_no'],$confirm);
 				}
@@ -894,6 +895,17 @@ class FlowAction extends CommonAction {
 		}
 		$this -> assign("user_info", $info);
 		$this -> assign("time", time());
+		$UserRecord = M('UserRecord')->where(array('user_id'=>array('eq',$uid)))->find();
+		if(!empty($UserRecord) && !empty($UserRecord['information'])){
+			$information = explode('|',$UserRecord['information']);
+			if(!empty($information[0])){
+				$in_date = $information[0];
+				$in_date1 = explode('.',$in_date);
+				$in_date2 = $in_date1[0].'-'.$in_date1[1].'-'.$in_date1[2];
+				$year = (time()-strtotime($in_date2))/(365*24*60*60);
+			}
+		}
+		$this -> assign("year", $year);
 		$this -> display();
 	}
 	public function ajaxgetflow(){
@@ -1237,7 +1249,11 @@ class FlowAction extends CommonAction {
 		$this -> _flow_auth_filter($folder, $map);
 
 		$model = D("Flow");
-		$id = $_REQUEST['id'];
+		if(is_mobile_request()){
+			$id = $_REQUEST['idd'];
+		}else{
+			$id = $_REQUEST['id'];
+		}
 		$where['id'] = array('eq', $id);
 		$where['_logic'] = 'and';
 		$map['_complex'] = $where;
@@ -1261,6 +1277,9 @@ class FlowAction extends CommonAction {
 		if($vo['training']){$vo['training'] = exp_info($vo['training']);}
 		if($vo['family']){$vo['family'] = exp_info($vo['family']);}
 		if($vo['work_experience']){$vo['work_experience'] = exp_info($vo['work_experience']);}
+		if(is_mobile_request()){
+			$vo['mobile_add_file'] = mobile_show_file($vo['add_file'],'flow');
+		}
 		$this -> assign('vo', $vo);
 		$this -> assign("emp_no", $vo['emp_no']);
 		$this -> assign("user_name", $vo['user_name']);
@@ -1674,10 +1693,21 @@ class FlowAction extends CommonAction {
 		switch ($action) {
 			case 'approve' :
 				$model = D("FlowLog");
-				if (false === $model -> create()) {
-					$this -> error($model -> getError());
+				if(is_mobile_request()){
+					if (false === $model -> create($_GET)) {
+						$this -> error($model -> getError());
+					}
+					
+					$model -> id = $_GET['idd'];
+					if($_GET['confirm_user_id']!=$_GET['id']){
+						$this -> error('操作失败!');
+					}
+				}else{
+					if (false === $model -> create()) {
+						$this -> error($model -> getError());
+					}
 				}
-
+				
 				$model -> result = 1;
 
 				$flow_id = $model -> flow_id;
@@ -1751,9 +1781,22 @@ class FlowAction extends CommonAction {
 				break;
 			case 'reject' :
 				$model = D("FlowLog");
-				if (false === $model -> create()) {
-					$this -> error($model -> getError());
+				if(is_mobile_request()){
+					if (false === $model -> create($_GET)) {
+						$this -> error($model -> getError());
+					}
+						
+					$model -> id = $_GET['idd'];
+					if($_GET['confirm_user_id']!=$_GET['id']){
+						$this -> error('操作失败!');
+					}
+						
+				}else{
+					if (false === $model -> create()) {
+						$this -> error($model -> getError());
+					}
 				}
+				
 				$model -> result = 0;
 				if (in_array('user_id', $model -> getDbFields())) {
 					$model -> user_id = get_user_id();
