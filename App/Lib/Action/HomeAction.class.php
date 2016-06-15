@@ -217,6 +217,7 @@ class HomeAction extends CommonAction {
 		$where1['folder'] = '68';
 		$new_notice_list = $model -> where($where) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
 		$new_notice_list1 = $model -> where($where1) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
+		$mobile_new_notice_list = array();
 		foreach ($new_notice_list as $k=>$v){
 			if(!empty($v['add_file'])){			
 				$files = array_filter(explode(';', $v['add_file']));
@@ -228,11 +229,16 @@ class HomeAction extends CommonAction {
 			if($v['folder'] == 71){
 				$new_notice_list[$k]['name'] = substr($v['name'],18);	
 			}
-			if(is_mobile_request() && $v['folder'] != '71' && $v['folder'] != '72'){
-				unset($new_notice_list[$k]);
+			if(is_mobile_request() && ($v['folder'] == '71' || $v['folder'] == '72')){
+				$mobile_new_notice_list[] = $v;
 			}
 		}
-		$this -> assign("new_notice_list", $new_notice_list);
+		if(is_mobile_request()){
+			$this -> assign("new_notice_list", $mobile_new_notice_list);
+		}else{
+			$this -> assign("new_notice_list", $new_notice_list);
+		}
+		
 		if(!is_mobile_request()){
 			$this -> assign("new_notice_list1", $new_notice_list1);
 		}
