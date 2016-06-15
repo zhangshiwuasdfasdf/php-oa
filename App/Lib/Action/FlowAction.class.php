@@ -38,7 +38,7 @@ class FlowAction extends CommonAction {
 		$where['request_duty'] = array('in', $duty_list);
 
 		if(is_mobile_request()){
-			$where['id'] = array('in',array(39,63,57,53,59,60,46,47));//手机端提供有限几个流程
+			$where['id'] = array('in',array(39,63,57,60,46,47));//手机端提供有限几个流程
 		}
 		$list = $model -> where($where) -> order('sort') -> select();
 		$this -> assign("list", $list);
