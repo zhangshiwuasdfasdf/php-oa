@@ -92,19 +92,28 @@ class HomeAction extends CommonAction {
 		$map['user_id'] = array('in',$child_ids);
 		$model = D("DailyReport");
 		$dailyList = $model -> where($map) -> field("id,user_name,work_date,create_time") -> order("create_time desc") -> limit(6) -> select();
-		$this->assign('dailyList',$dailyList);
+		if(!is_mobile_request()){
+			$this->assign('dailyList',$dailyList);
+		}
+		
 		//周报
 		$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
 		$map['user_id'] = array('in',$child_ids);
 		$model = D("WeeklyReport");
 		$weeklyList = $model -> where($map) -> field("id,user_name,work_date,create_time") -> order("create_time desc") -> limit(6) -> select();
-		$this -> assign('weeklyList',$weeklyList);
+		if(!is_mobile_request()){
+			$this -> assign('weeklyList',$weeklyList);
+		}
+		
 		//月报
 		$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
 		$map['user_id'] = array('in',$child_ids);
 		$model = D("MonthlyReport");
 		$monthlyList = $model -> where($map) -> field("id,user_name,work_date,create_time") -> order("create_time desc") -> limit(6) -> select();
-		$this-> assign('monthlyList',$monthlyList);
+		if(!is_mobile_request()){
+			$this-> assign('monthlyList',$monthlyList);
+		}
+		
 	}
 
 	protected function _mail_list() {
@@ -117,12 +126,15 @@ class HomeAction extends CommonAction {
 		$where['folder'] = array( array('eq', 1), array('gt', 6), 'or');
 
 		$new_mail_list = $model -> where($where) -> field("id,name,create_time") -> order("create_time desc") -> limit(6) -> select();
-		$this -> assign('new_mail_list', $new_mail_list);
-
+		if(!is_mobile_request()){
+			$this -> assign('new_mail_list', $new_mail_list);
+		}
 		//获取未读邮件
 		$where['read'] = array('eq', '0');
 		$unread_mail_list = $model -> where($where) -> field("id,name,create_time") -> order("create_time desc") -> limit(6) -> select();
-		$this -> assign('unread_mail_list', $unread_mail_list);
+		if(!is_mobile_request()){
+			$this -> assign('unread_mail_list', $unread_mail_list);
+		}
 	}
 
 	protected function _flow_list() {
@@ -216,9 +228,9 @@ class HomeAction extends CommonAction {
 			if($v['folder'] == 71){
 				$new_notice_list[$k]['name'] = substr($v['name'],18);	
 			}
-// 			if(is_mobile_request() && $v['folder'] != 71 && $v['folder'] != 72){
-// 				unset($new_notice_list[$k]);
-// 			}
+			if(is_mobile_request() && $v['folder'] != '71' && $v['folder'] != '72'){
+				unset($new_notice_list[$k]);
+			}
 		}
 		$this -> assign("new_notice_list", $new_notice_list);
 		if(!is_mobile_request()){
@@ -240,7 +252,9 @@ class HomeAction extends CommonAction {
 		$model = M("Task");
 		$where = array();
 		$task_all_count = $model -> where($where) -> field('id,name,executor,create_time') -> order('create_time desc') ->limit(6) -> select();
-		$this -> assign("task_all_count", $task_all_count);
+		if(!is_mobile_request()){
+			$this -> assign("task_all_count", $task_all_count);
+		}
 		
 		//等我接受的任务
 		
@@ -252,7 +266,9 @@ class HomeAction extends CommonAction {
 		$where['id'] = array('in', $task_todo_list);
 
 		$task_todo_count = $model -> where($where) -> select();
-		$this -> assign("task_todo_count", $task_todo_count);
+		if(!is_mobile_request()){
+			$this -> assign("task_todo_count", $task_todo_count);
+		}
 		
 		//未完成的任务
 		$where_log = array();
@@ -261,14 +277,18 @@ class HomeAction extends CommonAction {
 		$task_no_finish_list = M("TaskLog") -> where($where_log) -> getField('task_id id,task_id');
 		$where['id'] = array('in', $task_no_finish_list);
 		$task_no_finish_count = $model -> where($where) -> select();
-		$this -> assign("task_no_finish_count", $task_no_finish_count);
+		if(!is_mobile_request()){
+			$this -> assign("task_no_finish_count", $task_no_finish_count);
+		}
 		
 		//已完成的任务
 		$where = array();
 		$where['status'] = array('eq', 3);
 		$task_finished_count = $model -> where($where) -> count();
-		$this -> assign("task_finished_count", $task_finished_count);
-
+		if(!is_mobile_request()){
+			$this -> assign("task_finished_count", $task_finished_count);
+		}
+	
 		//我部门任务
  		$where = array();
  		$auth = D("Role") -> get_auth("Task");
@@ -282,7 +302,9 @@ class HomeAction extends CommonAction {
  		}
 
  		$task_dept_list = $model -> where($where) -> order("create_time desc") -> limit(6) -> select();
- 		$this -> assign("task_dept_list", $task_dept_list);
+ 		if(!is_mobile_request()){
+ 			$this -> assign("task_dept_list", $task_dept_list);
+ 		}
 	}
 	//本月寿星
 	protected function _shouxing_list() {
@@ -327,7 +349,9 @@ class HomeAction extends CommonAction {
 		$where = array('id'=>$info['position_id']);
 		$position_info = $model->where($where)-> field('name')->find();
 		$info['position'] = $position_info['name']?$position_info['name']:'';
-		$this->assign('info',$info);
+		if(!is_mobile_request()){
+			$this->assign('info',$info);
+		}
 	}
 	public function ajax_set_bianqian(){
 		$user_id = $_GET['user_id'];
