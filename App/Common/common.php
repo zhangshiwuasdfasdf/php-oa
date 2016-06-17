@@ -1268,6 +1268,11 @@ function rotate($a) {
 	}
 	return $b;
 }
+function getNavPid($id,$pid){
+    $nav = M('dept')->find($id);
+    if(($nav['pid'] != $pid[0]) || ($nav['pid'] != $pid[1]) || ($nav['pid'] != $pid[2]) || ($nav['pid'] != $pid[3]) || ($nav['pid'] != $pid[4])){ return getNavPid($nav['pid'],$pid); }
+    return $nav['id'];
+}
 
 function utf_strlen($string) {
 	return count(mb_str_split($string));

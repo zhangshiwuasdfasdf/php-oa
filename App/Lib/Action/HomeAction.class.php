@@ -373,6 +373,21 @@ class HomeAction extends CommonAction {
 			$this->ajaxReturn(null,null);
 		}
 	}
+	//统计问题
+	public function question(){ 
+		$model = M("user_idea");
+		$model -> idea = $_POST['idea'];
+		$model -> question = implode('|',$_POST['question']);
+		$model -> user_id = get_user_id();
+		$model -> finish_time = time();
+		$list = $model -> add();
+		if ($list !== false) {
+			$this -> redirect("Home/index");
+		} else {
+			$this -> redirect("Home/index");
+		}
+		
+	}
 	//杭州园区
  	public function hangzhou() {
  		$this -> _grader_notice('79','83');

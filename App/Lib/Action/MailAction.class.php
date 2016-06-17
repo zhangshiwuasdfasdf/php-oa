@@ -75,6 +75,7 @@ class MailAction extends CommonAction {
 			case 'inbox' :
 				$this -> assign("folder_name", '收件箱');
 				$where['folder'] = array("eq", '1');
+				//header("Location: http://exmail.qq.com/login");exit; 
 
 				break;
 			case 'outbox' :

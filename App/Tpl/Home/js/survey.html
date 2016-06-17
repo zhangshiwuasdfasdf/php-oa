@@ -1,0 +1,9 @@
+<script type="text/javascript">
+function login() {
+	if ($("#idea").val() != '') {
+		sendForm("form_login", "{:U('home/question')}");
+	}else{
+		alert("建议不能为空");return false;
+	}
+}
+</script>

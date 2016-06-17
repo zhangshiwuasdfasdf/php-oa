@@ -16,8 +16,13 @@ class IndexAction extends CommonAction {
 	// 框架首页
 
 	public function index() {
-		//$this->display();
-		$this -> redirect("Home/index");
+		$list = M('user_idea')->where(array('user_id'=>get_user_id()))->find();
+		if($list){
+			$this -> redirect("Home/index");
+		}else{
+			$this->assign("js_file","js/index");
+			$this -> redirect("Home/survey");
+		}
 	}
 }
 ?>

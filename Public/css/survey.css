@@ -1,0 +1,19 @@
+@charset "utf-8";
+/* CSS Document */
+/*重置*/
+body,ul,li{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+input{ margin:0; padding:0;}
+/*wenjuan*/
+*{ font-family:"微软雅黑";}
+.wjmain{ position:fixed; width:50%; left:24%; top:10%; border:solid 1px #e5e5e5; box-shadow:#666 1px 1px 2px; padding:0 20px 20px 20px;}
+.wjtitle{ display:block; text-align:center; font-size:25px;}
+.wjh2{ font-size:20px;}
+.wjl1{ margin-bottom:10px; font-size:16px;}
+.wjl2{ margin-bottom:10px; overflow:hidden; height:20px; line-height:20px;}
+.wjl2 div{ float:left; margin-right:15px; position:relative;}
+.wjl2 div label{ font-size:16px; margin-right:10px; margin-left:20px;}
+.wjl2 div input{ width:16px; height:16px; position:absolute; margin-left:-3px; margin-top:3px; margin-right:5px;}
+.wjl3{ width:100%; height:auto; overflow:hidden;}
+.wjl3 textarea{ width:90%; margin-left:5%; font-size:14px;}
+.wj_tj{ width:60px; height:30px; float:right; margin-top:20px;}

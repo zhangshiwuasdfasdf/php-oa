@@ -66,5 +66,33 @@ class SystemConfigAction extends CommonAction {
 			$this->ajaxReturn(null,null,0);
 		}
 	}
+	
+	function noneDR(){
+		$dail = M('DailyReport');
+		$where['work_date'] = date('Y-m-d', strtotime('-1 day'));
+		$where['is_del'] = '0';
+		$where['is_submit'] = '1';
+		$list = $dail -> where($where)->field('id,user_id,work_date')->select();
+		$list = rotate($list);
+		
+		
+		$id = $_REQUEST['id'];
+		$model = M("Dept");
+		$dept = tree_to_list(list_to_tree(M("Dept") ->where('is_del=0')-> select(), $id));
+		$dept = rotate($dept);
+		$dept = implode(",", $dept['id']);
+		$model = D("UserView");
+		$map['is_del'] = array('eq', '0');
+		$map['pos_id'] = array('in', $dept);
+		$map['id'] = array('not in',$list['user_id']);
+		$data = $model -> where($map)->order('duty asc') -> select();
+		
+		
+		if($data){
+			$this->ajaxReturn($data,1,1);
+		}else{
+			$this->ajaxReturn(null,1,0);
+		}
+	}
 }
 ?>
