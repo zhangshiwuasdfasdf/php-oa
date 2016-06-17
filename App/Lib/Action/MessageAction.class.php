@@ -161,14 +161,23 @@ class MessageAction extends CommonAction {
 		$model = M("Message");
 		$where['owner_id'] = get_user_id();
 		$where['_string'] = "(sender_id='$sender_id' and receiver_id='$receiver_id') or (receiver_id='$sender_id' and sender_id='$receiver_id')";
-		$model -> where($where) -> setField('is_read', '1');
 		$list = $model -> where($where) -> order('create_time desc') -> select();
+		$model -> where($where) -> setField('is_read', '1');
 // 		手机端提供照片
 		if(is_mobile_request()){
+			$only_no_read = $_GET['only_no_read']?$_GET['only_no_read']:0;
 			foreach ($list as $k=>$v){
-				$user = M('User')->find($v['sender_id']);
-				$list[$k]['pic'] = $user['pic'];
-				$list[$k]['mobile_file'] = mobile_show_file($v['add_file']);
+				if($k<40){//手机端取出前40条
+					if($only_no_read && $v['is_read']=='1'){
+						unset($list[$k]);
+					}else{
+						$user = M('User')->find($v['sender_id']);
+						$list[$k]['pic'] = $user['pic'];
+						$list[$k]['mobile_file'] = mobile_show_file($v['add_file']);
+					}
+				}else{
+					unset($list[$k]);
+				}
 			}
 		}
 		

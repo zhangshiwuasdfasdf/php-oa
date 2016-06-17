@@ -998,8 +998,8 @@ class FlowAction extends CommonAction {
 		$dept_id_from = $_POST['dept_id_from'];
 		$dept_id_to = $_POST['dept_id_to'];
 		$model = D('UserView');
-		$user_from = $model->where(array('pos_id'=>array('eq',$dept_id_from)))->order('position_sort')->find();
-		$user_to = $model->where(array('pos_id'=>array('eq',$dept_id_to)))->order('position_sort')->find();
+		$user_from = $model->where(array('pos_id'=>array('eq',$dept_id_from),'is_del'=>array('eq',0)))->order('position_sort')->find();
+		$user_to = $model->where(array('pos_id'=>array('eq',$dept_id_to),'is_del'=>array('eq',0)))->order('position_sort')->find();
 		if(!empty($user_from) && !empty($user_to)){
 			$flow = array($user_from['id'],$user_to['id'],getHRDeputyGeneralManagerId($user_from['id']),getGeneralManagerId($uid));
 			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
