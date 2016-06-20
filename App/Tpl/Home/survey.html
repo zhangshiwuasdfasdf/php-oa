@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>神洲酷奇OA系统</title>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/survey.css">
+</head>
+<body>
+	<div class="wjmain">
+	<h1 class="wjtitle">调查问卷</h1>
+    <p>非常抱歉，浪费您几分钟时间完成如下的调查以便我们更好的完善OA系统。感谢您的配合【在您完成调查后，即可进入OA系统正常使用，尽请谅解】</p>
+    <div>
+    	<h2 class="wjh2">问题</h2>
+        <ul>
+        	<li class="wjl1">1.您对OA还不满意的地方</li>
+            <form method="post" id="form_login" >
+            <li class="wjl2">
+            	<div><label for="sheji">①设计</label><input id="sheji" name="question[]" value="1" type="checkbox"></div>
+                <div><label for="gongneng">②功能</label><input id="gongneng" name="question[]" value="2" type="checkbox"></div>
+                <div><label for="yonghu">③用户体验</label><input id="yonghu" name="question[]" value="3" type="checkbox"></div>
+                <div><label for="jiemian">④界面布局</label><input id="jiemian" name="question[]" value="4" type="checkbox"></div>
+                <div><label for="jishu">⑤技术支持相对较慢</label><input id="jishu" name="question[]" value="5" type="checkbox"></div>
+            </li>
+            <li class="wjl1">2.请您提供出宝贵的建议(以上5点)</li>
+            <li class="wjl3">
+            	<textarea rows="5" name="idea" id="idea"></textarea>
+            </li>
+            </form>
+            <li>
+            	<input type="button" value="提交" class="wj_tj" onclick="login();">
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+<script src="__PUBLIC__/js/ace-extra.min.js"></script>
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+<!--[if lt IE 9]>
+<script src="__PUBLIC__/js/html5shiv.js"></script>
+<script src="__PUBLIC__/js/respond.min.js"></script>
+<![endif]-->
+<include file="Public:script" />
+<!-- basic scripts -->
+
+<!--[if !IE]>
+-->
+<script type="text/javascript">
+	window.jQuery || document.write("<script src='__PUBLIC__/js/jquery-2.1.0.min.js'>" + "<" + "/script>");
+</script>
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+window.jQuery || document.write("<script src='__PUBLIC__/js/jquery-1.11.0.min.js'>"+"<"+"/script>");</script>
+<![endif]-->
+
+<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/js/typeahead-bs2.min.js"></script>
+
+<script src="__PUBLIC__/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="__PUBLIC__/js/jquery.ui.touch-punch.min.js"></script>
+<script src="__PUBLIC__/js/jquery.slimscroll.min.js"></script>
+
+<include file="Widget:plugin"/>
+
+<!-- ace scripts -->
+<script src="__PUBLIC__/js/ace-elements.min.js"></script>
+<script src="__PUBLIC__/js/ace.min.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/js/newdenglu.js"></script>
+<include file="$js_file" />
+</html>
+
+
