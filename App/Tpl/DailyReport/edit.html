@@ -63,28 +63,6 @@
 								</select> </span>
 							<span class="col-2 pull-right text-center">
 								<p class="form-control-static">
-									<a onclick="add_item(this)"></a>
-								</p></span>
-							<span class="auto autocut">
-								<textarea name="item" class="form-control" />
-								</textarea> </span>
-							<div class="space-6"></div>
-						</div>
-						<div class="">
-							<span class="col-7 pull-right">
-								<select name="status" class="col-8 form-control inline">
-									<option value="1">进行中</option>
-									<option value="2">已完成</option>
-								</select> </span>
-							<span class="col-18 pull-right text-center">
-								<select name="start_time" class="col-8 form-control inline">
-									{:fill_option($time)}
-								</select> -
-								<select name="end_time" class="col-8 form-control inline">
-									{:fill_option($time)}
-								</select> </span>
-							<span class="col-2 pull-right text-center">
-								<p class="form-control-static">
 									<a onclick="add_item(this)">+</a>
 								</p></span>
 							<span class="auto autocut">
@@ -108,28 +86,6 @@
 						</div>
 					</div>
 					<div class="col-sm-8">
-						<div class="">
-							<span class="col-7 pull-right">
-								<select name="status" class="col-8 form-control inline">
-									<option value="1">进行中</option>
-									<option value="2">已完成</option>
-								</select> </span>
-							<span class="col-18 pull-right text-center">
-								<select name="start_time" class="col-8 form-control inline">
-									{:fill_option($time)}
-								</select> -
-								<select name="end_time" class="col-8 form-control inline">
-									{:fill_option($time)}
-								</select> </span>
-							<span class="col-2 pull-right text-center">
-								<p class="form-control-static">
-									<a onclick="add_item(this)"></a>
-								</p></span>
-							<span class="auto autocut">
-								<textarea name="item" class="form-control" />
-								</textarea> </span>
-							<div class="space-6"></div>
-						</div>
 						<div class="">
 							<span class="col-7 pull-right">
 								<select name="status" class="col-8 form-control inline">
@@ -183,28 +139,6 @@
 								</select> </span>
 							<span class="col-2 pull-right text-center">
 								<p class="form-control-static">
-									<a onclick="add_item(this)"></a>
-								</p></span>
-							<span class="auto autocut">
-								<textarea name="item" class="form-control" />
-								</textarea> </span>
-							<div class="space-6"></div>
-						</div>
-						<div class="">
-							<span class="col-7 pull-right">
-								<select name="status" class="col-8 form-control inline">
-									<option value="1">进行中</option>
-									<option value="2">已完成</option>
-								</select> </span>
-							<span class="col-18 pull-right text-center">
-								<select name="start_time" class="col-8 form-control inline">
-									{:fill_option($time)}
-								</select> -
-								<select name="end_time" class="col-8 form-control inline">
-									{:fill_option($time)}
-								</select> </span>
-							<span class="col-2 pull-right text-center">
-								<p class="form-control-static">
 									<a onclick="add_item(this)">+</a>
 								</p></span>
 							<span class="auto autocut">
@@ -218,13 +152,13 @@
 			<li class="tbody">
 				<span class="col-sm-2">
 					<p class="form-control-static text-center">
-						今日工作小结：<a onclick="share()" class="btn btn-sm btn-primary">共享</a>
-					</p></span>
+						今日工作小结：<!--<a onclick="share()" class="btn btn-sm btn-primary">共享</a>
+					--></p></span>
 				<div class="col-sm-10">
 					<textarea name="content" id="content" class="form-control" style="height:120px;">{$last_report.content}</textarea>
 				</div>
 			</li>
-			<li class="tbody">
+			<!--<li class="tbody">
 				<span class="col-sm-2">
 					<p class="form-control-static text-center">
 						今日自我评价：</br>每项1-10分
@@ -274,7 +208,7 @@
 					</table>
 				</div>
 			</li>
-		</ul>
+		--></ul>
 	</div>
 	<div class="ul_table border-bottom">
 		<ul>
@@ -285,10 +219,10 @@
 						明日工作计划（A类最重要 B类重要 C类次重要）
 					</div>
 				</div>
-				<div class="col-sm-3 text-right">
+				<!--<div class="col-sm-3 text-right">
 					<a href="{:U('plan')}" class="btn btn-sm btn-primary" target="_blank">查看领导计划</a>
 				</div>
-			</li>
+			--></li>
 			<li class="tbody" id="plan">
 				<div class="tbody">
 					<div class="pull-left col-sm-4">
@@ -389,167 +323,12 @@
 						</span>
 						<span class="col-2 pull-right text-center display-none">
 							<p class="form-control-static">
-								<a onclick="add_plan();"></a>
-							</p></span>
-						<div class="auto autocut">
-							<input name="plan_subject[]"  class="form-control"/>
-						</div>
-
-					</div>
-					<div class="col-sm-8">
-						<span class="col-9 pull-right">
-							<select name="is_need_help[]">
-								<option value="0">不需要协助</option>
-								<option value="1">需要协助</option>
-							</select> </span>
-						<span class="col-7 pull-right">
-							<select name="plan_priority[]"  class="form-control col-6 text-center">
-								<option value="A">A</option>
-								<option value="B">B</option>
-								<option value="C">C</option>
-							</select> </span>
-						<span class="col-18 pull-right text-center">
-							<select name="plan_start_time[]" class="col-8 form-control inline">
-								{:fill_option($time)}
-							</select> -
-							<select name="plan_end_time[]" class="col-8 form-control inline">
-								{:fill_option($time)}
-							</select> </span>
-						<span class="auto autocut">
-							<input name="plan_item[]"  class="form-control"/>
-						</span>
-						<div class="space-6"></div>
-					</div>
-				</div>
-				<div class="work_plan">
-					<div class="pull-left col-sm-4">
-						<span class="col-8">
-							<input name="plan_seq[]"  class="form-control col-5 text-center"/>
-						</span>
-						<span class="col-2 pull-right text-center display-none">
-							<p class="form-control-static">
-								<a onclick="add_plan();"></a>
-							</p></span>
-						<div class="auto autocut">
-							<input name="plan_subject[]"  class="form-control"/>
-						</div>
-
-					</div>
-					<div class="col-sm-8">
-						<span class="col-9 pull-right">
-							<select name="is_need_help[]">
-								<option value="0">不需要协助</option>
-								<option value="1">需要协助</option>
-							</select> </span>
-						<span class="col-7 pull-right">
-							<select name="plan_priority[]"  class="form-control col-6 text-center">
-								<option value="A">A</option>
-								<option value="B">B</option>
-								<option value="C">C</option>
-							</select> </span>
-						<span class="col-18 pull-right text-center">
-							<select name="plan_start_time[]" class="col-8 form-control inline">
-								{:fill_option($time)}
-							</select> -
-							<select name="plan_end_time[]" class="col-8 form-control inline">
-								{:fill_option($time)}
-							</select> </span>
-						<span class="auto autocut">
-							<input name="plan_item[]"  class="form-control"/>
-						</span>
-						<div class="space-6"></div>
-					</div>
-				</div>
-				<div class="work_plan">
-					<div class="pull-left col-sm-4">
-						<span class="col-8">
-							<input name="plan_seq[]"  class="form-control col-5 text-center"/>
-						</span>
-						<span class="col-2 pull-right text-center display-none">
-							<p class="form-control-static">
-								<a onclick="add_plan();"></a>
-							</p></span>
-						<div class="auto autocut">
-							<input name="plan_subject[]"  class="form-control"/>
-						</div>
-
-					</div>
-					<div class="col-sm-8">
-						<span class="col-9 pull-right">
-							<select name="is_need_help[]">
-								<option value="0">不需要协助</option>
-								<option value="1">需要协助</option>
-							</select> </span>
-						<span class="col-7 pull-right">
-							<select name="plan_priority[]"  class="form-control col-6 text-center">
-								<option value="A">A</option>
-								<option value="B">B</option>
-								<option value="C">C</option>
-							</select> </span>
-						<span class="col-18 pull-right text-center">
-							<select name="plan_start_time[]" class="col-8 form-control inline">
-								{:fill_option($time)}
-							</select> -
-							<select name="plan_end_time[]" class="col-8 form-control inline">
-								{:fill_option($time)}
-							</select> </span>
-						<span class="auto autocut">
-							<input name="plan_item[]"  class="form-control"/>
-						</span>
-						<div class="space-6"></div>
-					</div>
-				</div>
-				<div class="work_plan">
-					<div class="pull-left col-sm-4">
-						<span class="col-8">
-							<input name="plan_seq[]"  class="form-control col-5 text-center"/>
-						</span>
-						<span class="col-2 pull-right text-center display-none">
-							<p class="form-control-static">
-								<a onclick="add_plan();"></a>
-							</p></span>
-						<div class="auto autocut">
-							<input name="plan_subject[]"  class="form-control"/>
-						</div>
-
-					</div>
-					<div class="col-sm-8">
-						<span class="col-9 pull-right">
-							<select name="is_need_help[]">
-								<option value="0">不需要协助</option>
-								<option value="1">需要协助</option>
-							</select> </span>
-						<span class="col-7 pull-right">
-							<select name="plan_priority[]"  class="form-control col-6 text-center">
-								<option value="A">A</option>
-								<option value="B">B</option>
-								<option value="C">C</option>
-							</select> </span>
-						<span class="col-18 pull-right text-center">
-							<select name="plan_start_time[]" class="col-8 form-control inline">
-								{:fill_option($time)}
-							</select> -
-							<select name="plan_end_time[]" class="col-8 form-control inline">
-								{:fill_option($time)}
-							</select> </span>
-						<span class="auto autocut">
-							<input name="plan_item[]"  class="form-control"/>
-						</span>
-						<div class="space-6"></div>
-					</div>
-				</div>
-				<div class="work_plan">
-					<div class="pull-left col-sm-4">
-						<span class="col-8">
-							<input name="plan_seq[]"  class="form-control col-5 text-center"/>
-						</span>
-						<span class="col-2 pull-right text-center display-none">
-							<p class="form-control-static">
 								<a onclick="add_plan();">+</a>
 							</p></span>
 						<div class="auto autocut">
 							<input name="plan_subject[]"  class="form-control"/>
 						</div>
+
 					</div>
 					<div class="col-sm-8">
 						<span class="col-9 pull-right">
@@ -618,28 +397,6 @@
 			</div>
 		</div>
 		<div class="col-sm-8">
-			<div class="">
-				<span class="col-7 pull-right">
-					<select name="status" class="col-8 form-control inline">
-						<option value="1">进行中</option>
-						<option value="2">已完成</option>
-					</select> </span>
-				<span class="col-18 pull-right text-center">
-					<select name="start_time" class="col-8 form-control inline">
-						{:fill_option($time)}
-					</select> -
-					<select name="end_time" class="col-8 form-control inline">
-						{:fill_option($time)}
-					</select> </span>
-				<span class="col-2 pull-right text-center">
-					<p class="form-control-static">
-						<a onclick="add_item(this)"></a>
-					</p></span>
-				<span class="auto autocut">
-					<textarea name="item" class="form-control" />
-					</textarea> </span>
-				<div class="space-6"></div>
-			</div>
 			<div class="">
 				<span class="col-7 pull-right">
 					<select name="status" class="col-8 form-control inline">

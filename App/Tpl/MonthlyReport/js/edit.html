@@ -36,7 +36,7 @@
 				$html = $("#sample_item").html();
 				$(".work_content:eq({$key})").find("div.col-sm-8").append($html);
 			}
-			$(".work_content:eq({$key})").find("input[name=item]:eq(" + $k + ")").val($arr_item[i]);
+			$(".work_content:eq({$key})").find("textarea[name=item]:eq(" + $k + ")").val($arr_item[i]);
 			$(".work_content:eq({$key})").find("select[name=start_time]:eq(" + $k + ") option[value='"+$arr_start_time[i]+"']").prop("selected",true);
 			$(".work_content:eq({$key})").find("select[name=end_time]:eq(" + $k + ") option[value='"+$arr_end_time[i]+"']").prop("selected",true);
 			$(".work_content:eq({$key})").find("select[name=status]:eq(" + $k + ") option[value='"+$arr_status[i]+"']").prop("selected",true);
@@ -93,7 +93,7 @@
 		$("#work_content div.work_content").each(function() {
 			$("input[name=subject]", this).attr('name', "subject[]");
 
-			$("input[name=item]", this).each(function() {
+			$("textarea[name=item]", this).each(function() {
 				$(this).attr('name', "item_" + $row_count + "[]");
 			});
 

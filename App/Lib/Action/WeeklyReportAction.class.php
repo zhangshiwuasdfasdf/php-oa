@@ -178,6 +178,7 @@ class WeeklyReportAction extends CommonAction {
 		if(is_mobile_request()){
 			$id = $_REQUEST['pid'];
 		}
+		$this -> assign('uid',get_user_id());
 		$this -> assign('id', $id);
 		$this -> assign('auth', $this -> config['auth']);
 

@@ -138,7 +138,7 @@
 	<div class="space-12"></div>
 	</foreach>
 <hr></hr>
-<if condition="$auth['admin']">
+<if condition="$last_report['user_id'] neq $uid">
 	{:W('PageHeader',array('name'=>'工作指导','search'=>'N'))}
 	<a id="reply"></a>
 	<form method="post" action="" id="form_data" name="form_data"   class="well form-horizontal">
