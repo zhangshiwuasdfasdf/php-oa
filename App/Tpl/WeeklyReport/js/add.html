@@ -41,7 +41,7 @@
 				$html = $("#sample_item").html();
 				$(".work_content:eq({$key})").find("div.col-sm-8").append($html);
 			}
-			$(".work_content:eq({$key})").find("input[name=item]:eq(" + $k + ")").attr('placeholder',$arr_item[i]);
+			$(".work_content:eq({$key})").find("textarea[name=item]:eq(" + $k + ")").attr('placeholder',$arr_item[i]);
 			$(".work_content:eq({$key})").find("input[name=start_time]:eq(" + $k + ")").attr('placeholder',$arr_start_time[i]);
 			$(".work_content:eq({$key})").find("input[name=end_time]:eq(" + $k + ")").attr('placeholder',$arr_end_time[i]);
 			$(".work_content:eq({$key})").find("input[name=status]:eq(" + $k + ")").attr('placeholder',$arr_status[i]);
@@ -51,7 +51,17 @@
 	}
 
 	function init_seq() {
-
+		$key=1;
+		$("#work_content input[name='work_seq[]']").each(function(){
+			$(this).val($key);
+			$key++;
+		});
+		
+		$key=1;
+		$(".work_plan input[name='plan_seq[]']").each(function(){
+			$(this).val($key);
+			$key++;
+		});		
 	}
 
 	function init_add_link() {
@@ -80,7 +90,7 @@
 		$("div.work_content").each(function() {
 			$("input[name=subject]", this).attr('name', "subject[]");
 
-			$("input[name=item]", this).each(function() {
+			$("textarea[name=item]", this).each(function() {
 				$(this).attr('name', "item_" + $row_count + "[]");
 			});
 
@@ -102,6 +112,7 @@
 	function add_subject() {
 		$html = $("#sample_subject").html();
 		$("#work_content").append($html);
+		init_seq();
 	}
 
 	function add_item($obj) {
