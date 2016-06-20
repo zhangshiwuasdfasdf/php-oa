@@ -131,7 +131,12 @@
     <td width="13%" height="33"><input name="develop_leader[]"style="outline:none; border:none; width:100%; height:33px; text-align:center;" type="number" disabled/></td>
   </tr>
   <tr>
-    <td height="36" colspan="6" align="center">考核评分</td>
+  	<td height="36" colspan="1" align="center"></td>
+  	<td height="36" colspan="4">
+  		<button onclick="showflow();return false;">查看审批流程</button>
+		<input id="confirm_wrap" style="width:250px;" disabled>
+  	</td>
+    <td height="36" colspan="1" align="center">考核评分</td>
     <td width="12%" height="36"><input id="sum_me" name="sum_me" style="outline:none; border:none; width:100%; height:33px; text-align:center;" type="number" check="require" msg="请输入考核评分" readonly/></td>
     <td width="13%" height="36"><input id="sum_leader" name="sum_leader" style="outline:none; border:none; width:100%; height:33px; text-align:center;" type="number" disabled/></td>
   </tr>

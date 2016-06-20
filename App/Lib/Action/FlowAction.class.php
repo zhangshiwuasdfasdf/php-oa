@@ -1148,10 +1148,15 @@ class FlowAction extends CommonAction {
 		if(strtotime($end_time)-strtotime($start_time)<3600){
 			$this->ajaxReturn(null,null,1);
 		}
-		if ($type=='over_time' || $type=='metting' || $type=='outside') {
+		if ($type=='metting' || $type=='outside') {
 			$hour_sum = (strtotime($end_time)-strtotime($start_time))/3600;
 			$day = floor($hour_sum/24);
 			$hour = floor(($hour_sum - $day*24)*2)/2;
+			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour),null,1);
+		}elseif($type=='over_time'){
+			$hour_sum = (strtotime($end_time)-strtotime($start_time))/3600;
+			$day = floor($hour_sum/8);
+			$hour = floor(($hour_sum - $day*8)*2)/2;
 			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour),null,1);
 		}else{
 			$hour_sum = get_leave_seconds(strtotime($start_time),strtotime($end_time))/3600;

@@ -19,11 +19,15 @@
   </tr>
   <tr>
     <td width="88" height="50" align="center">加班时间</td>
-    <td height="50" colspan="5">自
+    <td height="50" colspan="3">自
     	<input id="start_time" name="start_time" onchange="cal($('#start_time').val(),$('#end_time').val(),'over_time')" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date-time-h"/>至
     	<input id="end_time" name="end_time" onchange="cal($('#start_time').val(),$('#end_time').val(),'over_time')" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date-time-h"/>止，共计
-    	<input id="day_num" name="day_num" style=" width:5%;text-align:center; border-bottom:1px #000 solid" type="text" />天
+    	<input id="day_num" name="day_num" style=" width:5%;text-align:center; border-bottom:1px #000 solid" type="text" />天（工作日）
     	<input id="hour_num" name="hour_num" style=" width:5%;text-align:center; border-bottom:1px #000 solid" type="text" />时
+    </td>
+    <td height="50" colspan="2">
+    	<button onclick="showflow();return false;">查看审批流程</button>
+		<input id="confirm_wrap" style="width:250px;" disabled>
     </td>
   </tr>
   <tr>

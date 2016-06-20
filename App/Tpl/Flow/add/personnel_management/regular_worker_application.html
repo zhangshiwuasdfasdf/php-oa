@@ -39,7 +39,11 @@
     <td width="12%" height="36" align="center">申请人签字</td>
     <td height="36" colspan="2"><input value="{$user_info.name}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" check="require" msg="请输入签字"/></td>
     <td width="13%" height="36" align="center">申请日期</td>
-    <td height="36" colspan="4"><input id="apply_date" name="apply_date" data-date-format="yyyy-mm-dd" style="border:none; outline:none; padding-left:20px;" type="text" class="form-control input-date" check="require" msg="请输入申请日期"/></td>
+    <td height="36" colspan="1"><input id="apply_date" name="apply_date" data-date-format="yyyy-mm-dd" style="border:none; outline:none; padding-left:10px;" type="text" class="form-control input-date" check="require" msg="请输入申请日期"/></td>
+  	<td height="36" colspan="3">
+  		<button onclick="showflow();return false;">查看审批流程</button>
+		<input id="confirm_wrap" style="width:250px;" disabled>
+	</td>
   </tr>
   <tr>
     <td width="12%" height="140" align="center">部门领导意见</td>

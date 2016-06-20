@@ -24,7 +24,11 @@
   </tr>
  
   <tr id="buttom1">
-    <td height="36" colspan="5">申请人：<input id="user_name" name="user_name" value="{$user_info.name}" style="outline:none; border:none; width:80%; height:36px; padding-left:5px;" type="text"/></td>
+    <td height="36" colspan="2">申请人：<input id="user_name" name="user_name" value="{$user_info.name}" style="outline:none; border:none; width:80%; height:36px; padding-left:5px;" type="text"/></td>
+  	<td height="36" colspan="3">
+	  	<button onclick="showflow();return false;">查看审批流程</button>
+		<input id="confirm_wrap" style="width:250px;" disabled>
+	</td>
   </tr>
   <tr>
     <td height="36" colspan="5">部门：<input id="dept_name" name="dept_name" value="{$user_info.dept_name}" style="outline:none; border:none; width:80%; height:36px; padding-left:5px;" type="text" readonly="readonly" /></td>

@@ -60,6 +60,7 @@
 		}
 		
 	}
+	/*
 	function showflow_attendance(){
 		var uid = "{$user_info.user_id}";
 		var start_time = $("#start_time").val();
@@ -134,6 +135,45 @@
 			}
 		});
 	}
+	*/
+	function showflow(){
+		var uid = "{$user_info.user_id}";
+		var day_num = $("#day_num").val();
+		var hour_num = $("#hour_num").val();
+		var dept_id = $("#dept_id").val();
+		var dept_id_from = $("#dept_id_from").val();
+		var dept_id_to = $("#dept_id_to").val();
+		
+		var start_time = $("#start_time").val();
+		var end_time = $("#end_time").val();
+		
+		var url = getUrlByName();
+		
+		$.ajax({
+			type: "post",
+			url: url,    
+			data:{uid:uid,dept_id:dept_id,day:day_num,dept_id_from:dept_id_from,dept_id_to:dept_id_to},
+			dataType: "json",
+			success: function(result){
+				if(result){
+					if(result.data){
+						$("#confirm_wrap").val(result.data.confirm_name_display);
+					}else{
+						ui_alert("暂时无法获取审批流程，请联系管理员",function(){
+						});
+					}
+				}else{
+					ui_alert("暂时无法获取审批流程，请联系管理员",function(){
+					});
+				}
+				
+			},
+			error:function(e){
+				ui_alert("系统发生错误",function(){
+				});
+			}
+		});
+	}
 	function save(step){
 		window.onbeforeunload=null;
 		/*
@@ -151,6 +191,64 @@
 		});
 		$("#attitude_me").val(attitude_me);
 		*/
+		var uid = "{$user_info.user_id}";
+		var day_num = $("#day_num").val();
+		var hour_num = $("#hour_num").val();
+		var dept_id = $("#dept_id").val();
+		var dept_id_from = $("#dept_id_from").val();
+		var dept_id_to = $("#dept_id_to").val();
+		
+		var url = getUrlByName();
+		$.ajax({
+			type: "post",
+			url: url,    
+			data:{uid:uid,day:day_num,dept_id:dept_id,dept_id_from:dept_id_from,dept_id_to:dept_id_to},
+			dataType: "json",
+			async:false, //关闭异步
+			success: function(result){
+				if(result){
+					if(result.data){
+						$("#confirm").val(result.data.confirm);
+						$("#confirm_name").val(result.data.confirm_name);
+					}else{
+						ui_alert("暂时无法获取审批流程，请联系管理员",function(){
+						});
+					}
+				}else{
+					ui_alert("暂时无法获取审批流程，请联系管理员",function(){
+					});
+				}
+				
+			},
+			error:function(e){
+				ui_alert("系统发生错误",function(){
+				});
+			}
+		});
+		/*
+		$("#consult").val("");
+		$("#consult_wrap  span").each(function() {
+			$("#consult").val($("#consult").val() + $(this).attr("data") + '|');
+		});
+		$("#consult_name").val($("#consult_wrap").html());
+
+		$("#refer").val("");
+		$("#refer_wrap  span").each(function() {
+			$("#refer").val($("#refer").val() + $(this).attr("data") + '|');
+		});
+		$("#refer_name").val($("#refer_wrap").html());
+
+		if ($("#confirm").val().length < 2) {
+			ui_error('请选择审批流程');
+			return false;
+		}
+		*/
+		$("#step").val(step);
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+	function getUrlByName(){
 		var uid = "{$user_info.user_id}";
 		var day_num = $("#day_num").val();
 		var hour_num = $("#hour_num").val();
@@ -218,54 +316,7 @@
 		}else if($("#name").val()=='私车公用申请流程'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'car_use'))}";
 		}
-		$.ajax({
-			type: "post",
-			url: url,    
-			data:{uid:uid,day:day_num,dept_id:dept_id,dept_id_from:dept_id_from,dept_id_to:dept_id_to},
-			dataType: "json",
-			async:false, //关闭异步
-			success: function(result){
-				if(result){
-					if(result.data){
-						$("#confirm").val(result.data.confirm);
-						$("#confirm_name").val(result.data.confirm_name);
-					}else{
-						ui_alert("暂时无法获取审批流程，请联系管理员",function(){
-						});
-					}
-				}else{
-					ui_alert("暂时无法获取审批流程，请联系管理员",function(){
-					});
-				}
-				
-			},
-			error:function(e){
-				ui_alert("系统发生错误",function(){
-				});
-			}
-		});
-		/*
-		$("#consult").val("");
-		$("#consult_wrap  span").each(function() {
-			$("#consult").val($("#consult").val() + $(this).attr("data") + '|');
-		});
-		$("#consult_name").val($("#consult_wrap").html());
-
-		$("#refer").val("");
-		$("#refer_wrap  span").each(function() {
-			$("#refer").val($("#refer").val() + $(this).attr("data") + '|');
-		});
-		$("#refer_name").val($("#refer_wrap").html());
-
-		if ($("#confirm").val().length < 2) {
-			ui_error('请选择审批流程');
-			return false;
-		}
-		*/
-		$("#step").val(step);
-		if (check_form("form_data")) {
-			sendForm("form_data", "{:U('save')}");
-		}
+		return url;
 	}
 	function sum1(){
 		var sum = 0;

@@ -26,11 +26,15 @@ body{ margin:0; padding:0; font-family:"微软雅黑"; font-size:14px;}
   </tr>
   <tr>
     <td height="60" align="center" >解除（终止）类型</td>
-    <td height="60" colspan="5" >
-    <input style=" margin-left:5%;" name="end_type" type="radio" value="员工解除" checked="checked"/>员工解除
-    <input style=" margin-left:5%;" name="end_type" type="radio" value="公司解除"/>公司解除
-    <input style=" margin-left:5%;" name="end_type" type="radio" value="自动解除"/>自动解除
-    <input style=" margin-left:5%;" name="end_type" type="radio" value="合同解除"/>合同解除
+    <td height="60" colspan="3" >
+	    <input style=" margin-left:5%;" name="end_type" type="radio" value="员工解除" checked="checked"/>员工解除
+	    <input style=" margin-left:5%;" name="end_type" type="radio" value="公司解除"/>公司解除
+	    <input style=" margin-left:5%;" name="end_type" type="radio" value="自动解除"/>自动解除
+	    <input style=" margin-left:5%;" name="end_type" type="radio" value="合同解除"/>合同解除
+    </td>
+    <td height="60" colspan="2" >
+	    <button onclick="showflow();return false;">查看审批流程</button>
+		<input id="confirm_wrap" style="width:250px;" disabled>
     </td>
   </tr>
   <tr>
