@@ -10,11 +10,11 @@ body{ margin:0; padding:0; font-family:"微软雅黑"; font-size:14px;}
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
   <tr>
     <td height="33" align="center">姓名</td>
-    <td height="33" align="center"><input id="user_name" name="user_name" value="{$user_info.name}" type="text" class="in1" check="require" msg="请输入姓名"></td>
+    <td height="33" align="center"><input id="user_name" name="user_name" value="{$user_info.name}" type="text" class="in1" check="require" msg="请输入姓名" readonly></td>
     <td height="33" align="center">部门</td>
     <td height="33" align="center"><input id="dept_name" name="dept_name" value="{$user_info.dept_name}" type="text" class="in1" check="require" msg="请输入部门" readonly="readonly" ></td>
     <td height="33" align="center">岗位</td>
-    <td height="33" align="center"><input id="duty" name="duty" value="{$user_info.duty}" type="text" class="in1" check="require" msg="请输入岗位"></td>
+    <td height="33" align="center"><input id="duty" name="duty" value="{$user_info.duty}" type="text" class="in1" readonly></td>
   </tr>
   <tr>
     <td height="33" align="center">入职时间</td>
