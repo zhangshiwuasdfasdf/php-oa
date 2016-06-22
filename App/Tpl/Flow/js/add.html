@@ -33,7 +33,8 @@
 							$("#hour_num").val(result.data.hour);
 							if($("#name").val()=='请假/调休单'){
 								if($("input[name='style']:checked").val()=='调休'){
-									if(result.data.day*8+result.data.hour>{$user_info.available_hour}){
+									$("#available_hour").html('（您的可用调休时间为'+result.data.available_hour+'小时）');
+									if(result.data.day*8+result.data.hour>result.data.available_hour){
 										ui_alert('您的可用调休时间不足',function(){
 											location.reload();
 										});

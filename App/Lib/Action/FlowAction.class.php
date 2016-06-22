@@ -887,12 +887,14 @@ class FlowAction extends CommonAction {
 		$uid = get_user_id();
 		if($uid){
 			$info = array();
-			$user_info = get_user_info($uid,'name,dept_name,dept_id,office_tel,mobile_tel,duty,email,available_hour');
+			$user_info = get_user_info($uid,'name,dept_name,dept_id,office_tel,mobile_tel,duty,email');
 			foreach ($user_info as $v){
 				$info = $v;
 			}
 			$info['user_id'] = $uid;
 		}
+		
+		$info['available_hour'] = getAvailableHour();
 		$this -> assign("user_info", $info);
 		$this -> assign("time", time());
 		$UserRecord = M('UserRecord')->where(array('user_id'=>array('eq',$uid)))->find();
@@ -1148,21 +1150,22 @@ class FlowAction extends CommonAction {
 		if(strtotime($end_time)-strtotime($start_time)<3600){
 			$this->ajaxReturn(null,null,1);
 		}
-		if ($type=='metting' || $type=='outside') {
+		if ($type=='metting' || $type=='outside') {//会议、外勤，向下取整，24小时为一天
 			$hour_sum = (strtotime($end_time)-strtotime($start_time))/3600;
 			$day = floor($hour_sum/24);
-			$hour = floor(($hour_sum - $day*24)*2)/2;
+			$hour = floor($hour_sum - $day*24);
 			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour),null,1);
-		}elseif($type=='over_time'){
+		}elseif($type=='over_time'){//加班向下取整，8小时为一天
 			$hour_sum = (strtotime($end_time)-strtotime($start_time))/3600;
 			$day = floor($hour_sum/8);
-			$hour = floor(($hour_sum - $day*8)*2)/2;
+			$hour = floor($hour_sum - $day*8);
 			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour),null,1);
-		}else{
+		}else{//请假、出勤证明，向上取整，8小时为一天
 			$hour_sum = get_leave_seconds(strtotime($start_time),strtotime($end_time))/3600;
 			$day = floor($hour_sum/8);
 			$hour = ceil($hour_sum - $day*8);
-			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour),null,1);
+			$available_hour = getAvailableHour(strtotime($start_time));
+			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour,'available_hour'=>$available_hour),null,1);
 		}
 		
 	}
@@ -1729,23 +1732,27 @@ class FlowAction extends CommonAction {
 					if(D("Flow") -> is_last_confirm($flow_id)){
 						if(getModelName($flow_id)=='FlowOverTime'){//加班单
 							$flow = M('FlowOverTime')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+							$create_time = strtotime($flow['start_time']);
 							if($flow['use_type']=='调休'){
-								$add_hour = $flow['day_num']*24+$flow['hour_num'];
+								$add_hour = $flow['day_num']*8+$flow['hour_num'];
 								$flow = M('Flow')->find($flow_id);
-								$user = M('User')->find($flow['user_id']);
-								$data['id'] = $flow['user_id'];
-								$data['available_hour'] = $user['available_hour']+$add_hour;
-								M('User')->save($data);
+								$data['hour'] = $add_hour;
+								$data['create_time'] = $create_time;
+								$data['user_id'] = $flow['user_id'];
+								
+								M('FlowHour')->add($data);
 							}
 						}elseif(getModelName($flow_id)=='FlowLeave'){//请假/调休单
 							$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+							$create_time = strtotime($flow['start_time']);
 							if($flow['style']=='调休'){
 								$del_hour = $flow['day_num']*8+$flow['hour_num'];
 								$flow = M('Flow')->find($flow_id);
-								$user = M('User')->find($flow['user_id']);
-								$data['id'] = $flow['user_id'];
-								$data['available_hour'] = $user['available_hour']-$del_hour;
-								M('User')->save($data);
+								$data['hour'] = $del_hour*(-1);
+								$data['create_time'] = $create_time;
+								$data['user_id'] = $flow['user_id'];
+								
+								M('FlowHour')->add($data);
 							}
 						}
 					}

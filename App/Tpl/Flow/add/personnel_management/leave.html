@@ -37,7 +37,7 @@
             <li><input type="radio" name="style" value="工伤假" onclick="$('#available_hour').attr('style','display:none')">工伤假</li>
             <li><input type="radio" name="style" value="调休" id="tiaoxiu" onclick="$('#available_hour').attr('style','display:inline');$('#start_time').val('');$('#end_time').val('');">调休</li>
             <li><input type="radio" name="style" value="其他" onclick="$('#available_hour').attr('style','display:none')">其他</li>
-            <li id="available_hour" style="display:none">（您的可用调休时间为{$user_info.available_hour}小时）</li>
+            <li id="available_hour" style="display:none">（截止当前，您的可用调休时间为{$user_info.available_hour}小时）</li>
         </ul>
         
   	</td>

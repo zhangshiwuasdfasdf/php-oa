@@ -31,7 +31,11 @@ class ScheduleAction extends CommonAction {
 		$this -> assign("widget", $widget);
 				
 		$model = M('Schedule');
-		$id = $_REQUEST['id'];
+		if(is_mobile_request()){
+			$id = $_REQUEST['idd'];
+		}else{
+			$id = $_REQUEST['id'];
+		}
 		$list = $_REQUEST['list'];
 		$this -> assign("list", $list);
 		$list = array_filter(explode("|", $list));

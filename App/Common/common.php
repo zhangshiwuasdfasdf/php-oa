@@ -2414,4 +2414,25 @@ function ToNumberSystem26($n){
 	}
 	return $s;
 }
+function getAvailableHour($now,$uid){
+	if(empty($now)){
+		$now = time();
+	}
+	if(empty($uid)){
+		$uid = get_user_id();
+	}
+	//如果调休过期计算方式为按月，则把now改为月初
+	if(get_system_config("LEAVE_CALCULATE_TYPE")=='按月'){
+		$d = date('Y-m',$now);
+		$now = strtotime($d.'-1');
+	}
+	
+	$three_month_ago = strtotime("-3 months",$now);
+	$res = M('FlowHour')->where(array('user_id'=>array('eq',$uid),'create_time'=>array('egt',$three_month_ago)))->sum('hour');
+	if(!empty($res)){
+		return $res;
+	}else{
+		return 0;
+	}
+}
 ?>
