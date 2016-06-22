@@ -23,7 +23,7 @@ class TaskAction extends CommonAction {
 	}
 
 	public function index() {
-		U('folder', array('fid' => 'all'), true, true);
+		U('folder', array('fid' => 'about_me'), true, true);
 	}
 
 	public function folder() {

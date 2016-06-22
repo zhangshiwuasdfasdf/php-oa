@@ -90,7 +90,7 @@ class MessageAction extends CommonAction {
 		$data['create_time']=time();
 		
 		$model = D('Message');
-		$arr_recever = array_filter(explode(";",is_mobile_request()==true?$_GET['to']:$_POST['to']));
+		$arr_recever = array_filter(explode(";",is_mobile_request()?$_GET['to']:$_POST['to']));
 		foreach ($arr_recever as $val) {
 			if(!empty($val)){
 				$tmp=explode("|",$val);

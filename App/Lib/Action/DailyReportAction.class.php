@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class DailyReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_daily_report' => 'read','import_daily_report' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write','del' => 'write', 'del_comment' => 'write','export_daily_report' => 'read','import_daily_report' => 'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -149,9 +149,13 @@ class DailyReportAction extends CommonAction {
 			$daily_report_common = $this -> _list($model, $map);
 			$daily_report_extension = array();
 			$model_comment = D("DailyReportComment");
+			$daily_ids = array();
+			$model_report_look = M('ReportLook');
 			foreach ($daily_report_common as $k=>$v){
 				$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
 				$daily_report_extension[$k]['comment_last'] = $comment_last['content'];
+				$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id'])))->find();
+				$daily_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
 			}
 			$this -> assign('daily_report_extension', $daily_report_extension);
 			$res = $model->where($map)->order('work_date desc')->limit(28)->select();//手机端app提供数据
@@ -170,7 +174,10 @@ class DailyReportAction extends CommonAction {
 				}
 				$this -> assign('daily_report', $daily_report);
 			}
-		}		
+		}
+		$this -> assign('now_time',time());
+		$this -> assign('end_time',$daily_ids);
+		$this -> assign('report',$report_look);	
 		$this -> display();
 	}
 
@@ -398,6 +405,25 @@ class DailyReportAction extends CommonAction {
 		/*保存当前数据对象 */
 		$list = $model -> save();
 		if ($list !== false) {//保存成功
+			$model_report_look = M('ReportLook');
+			$report_look = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$_POST['id'])))->order('create_time desc')->select();
+			if(!empty($report_look)){
+				$data['content']= '我刚刚修改了今天的日报,快去看看吧！(系统自动发送,请勿回复.)';
+				$data['sender_id']=get_user_id();
+				$data['sender_name']=get_user_name();
+				$data['create_time']=time();
+				
+				$model = D('Message');
+				foreach ($report_look as $tmp) {
+					$data['receiver_id']=$tmp['look_id'];
+					$data['receiver_name']=$tmp['look_name'];			
+					$data['owner_id']=get_user_id();
+					$list = $model -> add($data);
+					$data['owner_id']=$tmp['look_id'];
+					$list = $model -> add($data);
+					$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$tmp['look_id']);	
+				}			
+			}
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('保存成功!'.$list);
 		} else {
