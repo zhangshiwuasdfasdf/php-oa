@@ -90,18 +90,20 @@ class MessageAction extends CommonAction {
 		$data['create_time']=time();
 		
 		$model = D('Message');
-		$arr_recever = array_filter(explode(";",is_mobile_request()?$_GET['to']:$_POST['to']));
+		$arr_recever = array_filter(explode(";",is_mobile_request()==true?$_GET['to']:$_POST['to']));
 		foreach ($arr_recever as $val) {
-			$tmp=explode("|",$val);
-			$data['receiver_id']=$tmp[1];
-			$data['receiver_name']=$tmp[0];			
-			$data['owner_id']=get_user_id();
-		
-			$list = $model -> add($data);
-
-			$data['owner_id']=$tmp[1];
-			$list = $model -> add($data);
-			$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$tmp[1]);	
+			if(!empty($val)){
+				$tmp=explode("|",$val);
+				$data['receiver_id']=$tmp[1];
+				$data['receiver_name']=$tmp[0];
+				$data['owner_id']=get_user_id();
+				
+				$list = $model -> add($data);
+				
+				$data['owner_id']=$tmp[1];
+				$list = $model -> add($data);
+				$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$tmp[1]);
+			}
 		}
 		
 		//保存联系人信息 方便查询最近联系人
@@ -201,21 +203,21 @@ class MessageAction extends CommonAction {
 
 	function reply(){
 
-		$data['content']=$_POST['content'];
-		$data['add_file']=$_POST['add_file'];
+		$data['content']=is_mobile_request()==true?$_GET['content']:$_POST['content'];
+		$data['add_file']=is_mobile_request()==true?$_GET['add_file']:$_POST['add_file'];
 		$data['sender_id']=get_user_id();
 		$data['sender_name']=get_user_name();
 		$data['create_time']=time();
-		$data['receiver_id']=$_POST['receiver_id'];
-		$data['receiver_name']=$_POST['receiver_name'];
+		$data['receiver_id']=is_mobile_request()==true?$_GET['receiver_id']:$_POST['receiver_id'];
+		$data['receiver_name']=is_mobile_request()==true?$_GET['receiver_name']:$_POST['receiver_name'];
 		$data['owner_id']=get_user_id();
 
 		$model = D('Message');		
 		$list = $model -> add($data);
 
-		$data['owner_id']=$_POST['receiver_id'];
+		$data['owner_id']=is_mobile_request()==true?$_GET['receiver_id']:$_POST['receiver_id'];
 		$list = $model -> add($data);
-		$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$_POST['receiver_id']);	
+		$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,is_mobile_request()==true?$_GET['receiver_id']:$_POST['receiver_id']);	
 
 		//保存当前数据对象
 		if ($list !== false) {//保存成功
