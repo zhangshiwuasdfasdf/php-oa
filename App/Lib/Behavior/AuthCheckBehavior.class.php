@@ -109,7 +109,6 @@ class AuthCheckBehavior extends Behavior {
 				$auth = $this -> get_auth();
 				break;
 		}
-
 		//die;
 		if ($auth[$action_auth[ACTION_NAME]]) {
 			$this -> config['auth'] = $auth;

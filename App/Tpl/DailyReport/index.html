@@ -90,7 +90,7 @@
 						</div>
 						<div class="pull-right">
 							<span class="col-10">{$vo.is_submit|is_submit}</span>
-							<if condition="$vo.user_id eq $user_id">
+							<if condition="($vo.user_id eq $user_id) && ($now_time elt $end_time[$key])">
 								<span class="col-4"><a href="{:U('edit','id='.$vo['id'])}">修改</a></span>
 								<span class="col-4"><a href="{:U('del','id='.$vo['id'])}">删除</a></span>
 							<else/>

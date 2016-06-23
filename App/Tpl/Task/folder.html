@@ -48,35 +48,35 @@
 	<div class="panel-body">
 		<div class="pull-left">
 			<ul class="nav nav-pills">
-				<li <eq name="fid" value="all">class="active"</eq>>
-					<a href="{:U('folder','fid=all')}">所有任务</a>
-				</li>
 				<li <eq name="fid" value="about_me">class="active"</eq>>
 					<a href="{:U('folder','fid=about_me')}">与我有关的任务<notempty name="task_count.task_about_me_count">&nbsp;({$task_count.task_about_me_count})</notempty></a>
 				</li>
-				<li <eq name="fid" value="todo">class="active"</eq>>
+				<!--<li <eq name="fid" value="todo">class="active"</eq>>
 					<a href="{:U('folder','fid=todo')}">等我接受的任务<notempty name="task_count.task_todo_count">&nbsp;({$task_count.task_todo_count})</notempty></a>
 				</li>
 
-				<li <eq name="fid" value="dept">class="active"</eq>>
+				--><!--<li <eq name="fid" value="dept">class="active"</eq>>
 					<a href="{:U('folder','fid=dept')}">我部门的任务<notempty name="task_count.task_dept_count">&nbsp;({$task_count.task_dept_count})</notempty></a>
 				</li>
 				<li <eq name="fid" value="no_assign">class="active"</eq>>
 					<a href="{:U('folder','fid=no_assign')}">不知让谁处理的任务</a>
 				</li>
-				<li <eq name="fid" value="no_finish">class="active"</eq>>
+				--><li <eq name="fid" value="no_finish">class="active"</eq>>
 					<a href="{:U('folder','fid=no_finish')}">未完成的任务</a>
 				</li>
 				<li <eq name="fid" value="finished">class="active"</eq>>
 					<a href="{:U('folder','fid=finished')}">已完成的任务</a>
 				</li>
-				<li <eq name="fid" value="my_task">class="active"</eq>>
+				<!--<li <eq name="fid" value="my_task">class="active"</eq>>
 					<a href="{:U('folder','fid=my_task')}">我发布的任务</a>
 				</li>
 				<li <eq name="fid" value="my_assign">class="active"</eq>>
 					<a href="{:U('folder','fid=my_assign')}">我指派的任务</a>
+				</li>-->
+				<li <eq name="fid" value="all">class="active"</eq>>
+					<a href="{:U('folder','fid=all')}">所有任务</a>
 				</li>
-			</ul>
+				</ul>
 		</div>
 		<div class="pull-right">
 			<a class="btn btn-sm btn-primary" onclick="add()">发布任务</a>
