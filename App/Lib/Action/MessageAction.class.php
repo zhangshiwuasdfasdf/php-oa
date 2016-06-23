@@ -36,7 +36,15 @@ class MessageAction extends CommonAction {
 	}
 	public function getUserByDept_id(){
 		$dept_id = $_REQUEST['dept_id'];
-		$user = M('User')->where(array('dept_id'=>array('eq',$dept_id)))->select();
+		
+		$dept = tree_to_list(list_to_tree(M("Dept") ->where('is_del=0')-> select(), $dept_id));
+		$dept = rotate($dept);
+		$dept = implode(",", $dept['id']) . ",$dept_id";
+		$model = D("UserView");
+		$where['is_del'] = array('eq', '0');
+		$where['pos_id'] = array('in', $dept);
+		$user = $model -> where($where)->order('duty asc') -> select();
+		
 		$this -> assign("user", $user);
 		$this -> display();
 	}
@@ -83,27 +91,26 @@ class MessageAction extends CommonAction {
 	function _insert(){
 		$user = new Model();
 		$user -> startTrans();
-		$data['content']=is_mobile_request()==true?$_GET['content']:$_POST['content'];
-		$data['add_file']=is_mobile_request()==true?$_GET['add_file']:$_POST['add_file'];
+		$data['content']=$_POST['content'];
+		$data['add_file']=$_POST['add_file'];
 		$data['sender_id']=get_user_id();
 		$data['sender_name']=get_user_name();
 		$data['create_time']=time();
 		
 		$model = D('Message');
-		$arr_recever = array_filter(explode(";",is_mobile_request()==true?$_GET['to']:$_POST['to']));
+		
+		$arr_recever = array_filter(explode(";",$_POST['to']));
 		foreach ($arr_recever as $val) {
-			if(!empty($val)){
-				$tmp=explode("|",$val);
-				$data['receiver_id']=$tmp[1];
-				$data['receiver_name']=$tmp[0];
-				$data['owner_id']=get_user_id();
-				
-				$list = $model -> add($data);
-				
-				$data['owner_id']=$tmp[1];
-				$list = $model -> add($data);
-				$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$tmp[1]);
-			}
+			$tmp=explode("|",$val);
+			$data['receiver_id']=$tmp[1];
+			$data['receiver_name']=$tmp[0];			
+			$data['owner_id']=get_user_id();
+		
+			$list = $model -> add($data);
+
+			$data['owner_id']=$tmp[1];
+			$list = $model -> add($data);
+			$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$tmp[1]);
 		}
 		
 		//保存联系人信息 方便查询最近联系人
@@ -203,21 +210,21 @@ class MessageAction extends CommonAction {
 
 	function reply(){
 
-		$data['content']=is_mobile_request()==true?$_GET['content']:$_POST['content'];
-		$data['add_file']=is_mobile_request()==true?$_GET['add_file']:$_POST['add_file'];
+		$data['content']=$_POST['content'];
+		$data['add_file']=$_POST['add_file'];
 		$data['sender_id']=get_user_id();
 		$data['sender_name']=get_user_name();
 		$data['create_time']=time();
-		$data['receiver_id']=is_mobile_request()==true?$_GET['receiver_id']:$_POST['receiver_id'];
-		$data['receiver_name']=is_mobile_request()==true?$_GET['receiver_name']:$_POST['receiver_name'];
+		$data['receiver_id']=$_POST['receiver_id'];
+		$data['receiver_name']=$_POST['receiver_name'];
 		$data['owner_id']=get_user_id();
 
 		$model = D('Message');		
 		$list = $model -> add($data);
 
-		$data['owner_id']=is_mobile_request()==true?$_GET['receiver_id']:$_POST['receiver_id'];
+		$data['owner_id']=$_POST['receiver_id'];
 		$list = $model -> add($data);
-		$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,is_mobile_request()==true?$_GET['receiver_id']:$_POST['receiver_id']);	
+		$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$_POST['receiver_id']);	
 
 		//保存当前数据对象
 		if ($list !== false) {//保存成功
