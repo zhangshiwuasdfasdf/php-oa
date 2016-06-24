@@ -57,10 +57,23 @@
 				<span class="col-16 ">类型</span>				
 			</div>
 			<div class="pull-right">
+				<if condition="($hui neq '1')">
 				<span  class="col-9  ">登录时间</span>
+				</if>
 				<span  class="col-6  "> 登录人</span>
+				<if condition="($hui neq '1')">
 				<span class="col-6  ">状态</span>
+				</if>
+				<if condition="($hui neq '1')">
 				<span class="col-30  ">流程</span>
+				</if>
+				<if condition="($hui eq '1')">
+				<span class="col-30  ">共计小时数</span>
+				</if>
+				<if condition="($fid eq 'group')">
+				<span class="col-6  ">天数</span>
+				<span class="col-6  ">小时数</span>
+				</if>
 			</div>
 			<div class="autocut auto">
 				标题
@@ -80,20 +93,41 @@
 					<li class="tbody">
 						<div class="pull-left">
 							<span class="col-16 ">{$key+1}</span>
+							<if condition="($hui neq '1')">
 							<span class="col-16  "> {$vo.type_name}</span>
+							<else/>
+							<span class="col-16  "> {$vo.name}</span>
+							</if>
 						</div>
 						<div class="pull-right">
+							<if condition="($hui neq '1')">
 							<span class="col-9" style="height:20px;">{$vo.create_time|toDate='Y-m-d'}</span>
+							</if>
 							<span class="col-6" style="height:20px;">{$vo.user_name}</span>
+							<if condition="($hui neq '1')">
 							<span class="col-6" style="height:20px;">{$vo.step|show_step}</span>
+							</if>
+							<if condition="($hui neq '1')">
 							<span class="col-30" style="height:20px;">{$vo.flow_name}</span>
+							</if>
+							<if condition="($hui eq '1')">
+							<span class="col-30" style="height:20px;">{$vo.hour_sum}</span>
+							</if>
+							<if condition="($fid eq 'group')">
+							<span class="col-6" style="height:20px;">{$vo.day_num}</span>
+							<span class="col-6" style="height:20px;">{$vo.hour_num}</span>
+							</if>
 						</div>
 						<div class="autocut auto">
-							<in name="folder" value="darft">
-								<a href="{:U('edit','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
-								<else/>
-								<a href="{:U('read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
-							</in>
+							<if condition="($hui neq '1')">
+								<in name="folder" value="darft">
+									<a href="{:U('edit','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
+									<else/>
+									<a href="{:U('read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
+								</in>
+							<else/>
+								<a href="{:U('folder','fid=group'.'&user_id='.$vo['user_id'].'&type='.$vo['type'])}">{$vo.name}
+							</if>
 							<eq name="vo.name|strlen" value="0">
 								无标题
 							</eq></a> 
@@ -111,5 +145,8 @@
 				<option value ="{$vo.date}">{$vo.date}</option>
 			</volist>
       	</select>  
+      	<if condition="($folder eq 'hr' and ($name eq 'leave' or $name eq 'over_time' or $name eq 'attendance' or $name eq 'outside'))">
+      	<a href="{:U('folder','&fid='.$folder.'&type='.$type.'&name='.$name.'&hui=1')}"><button>汇总</button></a>
+		</if>
 	</empty>
 </div>

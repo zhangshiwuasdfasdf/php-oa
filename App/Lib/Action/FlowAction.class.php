@@ -77,7 +77,13 @@ class FlowAction extends CommonAction {
 				$map['step'] = array( array('gt', 10), array('eq', 0), 'or');
 
 				break;
-
+			case 'group' :
+				$this -> assign("folder_name", '详情');
+				$map['user_id'] = array('eq', $_REQUEST['user_id']);
+				$map['step'] = array( array('eq', 40));
+				$map['type'] = array( array('eq', $_REQUEST['type']));
+				break;
+			
 			case 'finish' :
 				$this -> assign("folder_name", '办理');
 				$FlowLog = M("FlowLog");
@@ -158,7 +164,28 @@ class FlowAction extends CommonAction {
 					if(isHeadquarters(get_user_id())==0){//总部
 						$map['dept_id'] = array('in',get_child_dept_all(27));
 					}elseif (isHeadquarters(get_user_id())>0){//园区
-						$map['dept_id'] = array('in',get_child_dept_all(isHeadquarters(get_user_id())));
+						//园区加上总部下面的分公司财务
+						
+						$dept_o_a = array();
+						$dept = D('Dept')->find(isHeadquarters(get_user_id()));
+						if($dept['name'] == '杭州园区'){
+							$dept_o = D('Dept')->field('id')->where(array('name'=>'杭州园区财务'))->find();
+							if($dept_o){
+								$dept_o_a = get_child_dept_all($dept_o['id']);
+							}
+						}elseif($dept['name'] == '金华园区'){
+							$dept_o = D('Dept')->field('id')->where(array('name'=>'金华园区财务'))->find();
+							if($dept_o){
+								$dept_o_a = get_child_dept_all($dept_o['id']);
+							}
+						}elseif($dept['name'] == '宁波园区'){
+							$dept_o = D('Dept')->field('id')->where(array('name'=>'宁波园区财务'))->find();
+							if($dept_o){
+								$dept_o_a = get_child_dept_all($dept_o['id']);
+							}
+						}
+						$map['dept_id'] = array('in',array_merge(get_child_dept_all(isHeadquarters(get_user_id())),$dept_o_a));
+						
 					}elseif (isHeadquarters(get_user_id())==-1){//副总
 						$map['dept_id'] = array('in',get_child_dept_all(86));
 					}elseif (isHeadquarters(get_user_id())==-2){//总经理
@@ -221,34 +248,51 @@ class FlowAction extends CommonAction {
 		$folder = $_REQUEST['fid'];
 
 		$this -> assign("folder", $folder);
-
+		$this -> assign("fid", $_REQUEST['fid']);
+		$this -> assign("type", $_REQUEST['type']);
+		$this -> assign("name", $_REQUEST['name']);
+		$this -> assign("hui", $_REQUEST['hui']);
+		
 		if (empty($folder)) {
 			$this -> error("系统错误");
 		}
 
 		$this -> _flow_auth_filter($folder, $map);
 		
-// 		dump(get_child_dept_all(1));
 		$model = D("FlowView");
 
 		if ($_REQUEST['mode'] == 'export') {
-			if(empty($_REQUEST['date'])){
-				$this -> error("请选择导出的日期！");
+			if($_REQUEST['hui'] == '1'){
+				if($_REQUEST['name'] == 'outside'){//外勤算24小时一天，请假、出勤、加班算8小时一天
+					$rate = 24;
+				}else{
+					$rate = 8;
+				}
+				foreach ($map as $k=>$v){
+					$map_['smeoa_flow.'.$k] = $v;
+				}
+				
+				$data = M('Flow')->join('smeoa_flow_'.$_REQUEST['name'].' on smeoa_flow.id = smeoa_flow_'.$_REQUEST['name'].'.flow_id')->field('smeoa_flow.name,smeoa_flow.type,smeoa_flow.user_id,smeoa_flow.emp_no,smeoa_flow.user_name,smeoa_flow.dept_id,smeoa_flow.dept_name,sum(smeoa_flow_'.$_REQUEST['name'].'.day_num*'.$rate.'+smeoa_flow_'.$_REQUEST['name'].'.hour_num) as hour_sum')->where($map_)->group('smeoa_flow.user_id')->select();
+			}else{
+				if(empty($_REQUEST['date'])){
+					$this -> error("请选择导出的日期！");
+				}
+				$map['_query'] = 'FROM_UNIXTIME(create_time,"%Y-%m")='.$_REQUEST['date'];
+				$flow_id = M('Flow')->field('id')->where($map)->select();
+				$flow_id_array = array();
+				foreach ($flow_id as $v){
+					$flow_id_array[] = $v['id'];
+				}
+				$data = M('Flow'.convertUnderline1($_REQUEST['name']))->where(array('flow_id'=>array('in',$flow_id_array)))->select();
+				foreach ($data as $k=>$v){//
+					unset($data[$k]['id']);
+					unset($data[$k]['flow_id']);
+					$flow = M('Flow')->find($v['flow_id']);
+					array_unshift($data[$k],$flow['user_name']);
+					// 				$data[$k]['user_name'] = $flow['user_name'];
+				}
 			}
-			$map['_query'] = 'FROM_UNIXTIME(create_time,"%Y-%m")='.$_REQUEST['date'];
-			$flow_id = M('Flow')->field('id')->where($map)->select();
-			$flow_id_array = array();
-			foreach ($flow_id as $v){
-				$flow_id_array[] = $v['id'];
-			}
-			$data = M('Flow'.convertUnderline1($_REQUEST['name']))->where(array('flow_id'=>array('in',$flow_id_array)))->select();
-			foreach ($data as $k=>$v){//
-				unset($data[$k]['id']);
-				unset($data[$k]['flow_id']);
-				$flow = M('Flow')->find($v['flow_id']);
-				array_unshift($data[$k],$flow['user_name']);
-// 				$data[$k]['user_name'] = $flow['user_name'];
-			}
+			
 			if(in_array($_REQUEST['name'],array('goods_procurement_allocation','office_supplies_application','office_use_application'))){
 				$a = array();
 				foreach ($data as $k=>$v){
@@ -375,43 +419,110 @@ class FlowAction extends CommonAction {
 // 				$data[$k]['user_name'] = $flow['user_name'];
 // 			}
 			
-			$this -> _folder_export_detail($data,'smeoa_flow_'.$_REQUEST['name'],$_REQUEST['name'],$_REQUEST['date']);
+			$this -> _folder_export_detail($data,'smeoa_flow_'.$_REQUEST['name'],$_REQUEST['name'],$_REQUEST['date'],$_REQUEST['hui']);
 			
 // 			$this -> _folder_export($model, $map);
 		} else {
-			$flow_list = $this -> _list($model, $map);
+			if($_REQUEST['hui'] == '1' && ($_REQUEST['name'] == 'leave' || $_REQUEST['name'] =='over_time' || $_REQUEST['name'] =='outside' || $_REQUEST['name'] =='attendance')){
+					
+				$order = $model -> getPk();
+				$sort = 'desc';
+				
+				//取得满足条件的记录数
+				
+				foreach ($map as $k=>$v){
+					$map_['smeoa_flow.'.$k] = $v;
+				}
+				
+				if($_REQUEST['name'] == 'outside'){//外勤算24小时一天，请假、出勤、加班算8小时一天
+					$rate = 24;
+				}else{
+					$rate = 8;
+				}
+				$count = M('Flow')->join('smeoa_flow_'.$_REQUEST['name'].' on smeoa_flow.id = smeoa_flow_'.$_REQUEST['name'].'.flow_id')->field('smeoa_flow.name,smeoa_flow.type,smeoa_flow.user_id,smeoa_flow.emp_no,smeoa_flow.user_name,smeoa_flow.dept_id,smeoa_flow.dept_name,sum(smeoa_flow_'.$_REQUEST['name'].'.day_num*'.$rate.'+smeoa_flow_'.$_REQUEST['name'].'.hour_num) as hour_sum')->where($map_)->group('smeoa_flow.user_id')->count();
+
+				if ($count > 0) {
+					import("@.ORG.Util.Page");
+					//创建分页对象
+					if (!empty($_REQUEST['list_rows'])) {
+						$listRows = $_REQUEST['list_rows'];
+					} else {
+						$listRows = get_user_config('list_rows');
+					}
+					$p = new Page($count, $listRows);
+					//分页查询数据
+						
+					$flow_list = M('Flow')->join('smeoa_flow_'.$_REQUEST['name'].' on smeoa_flow.id = smeoa_flow_'.$_REQUEST['name'].'.flow_id')->field('smeoa_flow.name,smeoa_flow.type,smeoa_flow.user_id,smeoa_flow.emp_no,smeoa_flow.user_name,smeoa_flow.dept_id,smeoa_flow.dept_name,sum(smeoa_flow_'.$_REQUEST['name'].'.day_num*'.$rate.'+smeoa_flow_'.$_REQUEST['name'].'.hour_num) as hour_sum')->where($map_)->group('smeoa_flow.user_id') -> limit($p -> firstRow . ',' . $p -> listRows) -> select();
+					
+					//echo $model->getlastSql();
+					$p -> parameter = $this -> _search();
+					//分页显示
+					$page = $p -> show();
+				
+					//列表排序显示
+					$sortImg = $sort;
+				
+					//排序图标
+					$sortAlt = $sort == 'desc' ? '升序排列' : '倒序排列';
+				
+					//排序提示
+					$sort = $sort == 'desc' ? 1 : 0;
+				
+					//排序方式
+				
+					//模板赋值显示
+					$name = $this -> getActionName();
+					$this -> assign('sort', $sort);
+					$this -> assign('order', $order);
+					$this -> assign('sortImg', $sortImg);
+					$this -> assign('sortType', $sortAlt);
+					$this -> assign("page", $page);
+				}
+			}else{
+				$flow_list = $this -> _list($model, $map);
+// 				dump()
+				foreach ($flow_list as $k=>$v){
+					$auth = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is not null'))->select();
+					if($auth){
+						$flow_list[$k]['auth'] = 1;
+					}else{
+						$flow_list[$k]['auth'] = 0;
+					}
+					if(!empty($v['confirm'])){
+						$confirm = explode('|',$v['confirm']);
+						$flowLog = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is null'))->find();
+						$i = false;
+						if(!empty($flowLog)){
+							$i = array_search($flowLog['emp_no'],$confirm);
+						}
+						$confirm_name = explode('<>',$v['confirm_name']);
+			
+						$s = '';
+						foreach ($confirm_name as $kk=>$vv){
+							if($i===$kk){
+								$s.=$vv.'（审批中）'.'->';
+							}else{
+								$s.=$vv.'->';
+							}
+						}
+						$s = substr($s,0,strlen($s)-4);
+						$flow_list[$k]['flow_name'] = $s;
+					}
+					$flow_detail = M(getModelName($v['id']))->where(array('flow_id'=>array('eq',$v['id'])))->find();
+					if($flow_detail['hour_num']!==false){
+						$flow_list[$k]['hour_num'] = $flow_detail['hour_num'];
+					}
+					if($flow_detail['day_num']!==false){
+						$flow_list[$k]['day_num'] = $flow_detail['day_num'];
+					}
+				}
+			}	
+			
 		}
 		$date_num = M('Flow')->where($map)->field("count(FROM_UNIXTIME(create_time,'%Y-%m')) as count,FROM_UNIXTIME(create_time,'%Y-%m') as date")->group("FROM_UNIXTIME(create_time,'%Y-%m')")->select();
 		
 		$this -> assign("date_num", $date_num);
-		foreach ($flow_list as $k=>$v){
-			$auth = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is not null'))->select();
-			if($auth){
-				$flow_list[$k]['auth'] = 1;
-			}else{
-				$flow_list[$k]['auth'] = 0;
-			}
-			if(!empty($v['confirm'])){
-				$confirm = explode('|',$v['confirm']);
-				$flowLog = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is null'))->find();
-				$i = false;
-				if(!empty($flowLog)){
-					$i = array_search($flowLog['emp_no'],$confirm);
-				}
-				$confirm_name = explode('<>',$v['confirm_name']);
-			
-				$s = '';
-				foreach ($confirm_name as $kk=>$vv){
-					if($i===$kk){
-						$s.=$vv.'（审批中）'.'->';
-					}else{
-						$s.=$vv.'->';
-					}
-				}
-				$s = substr($s,0,strlen($s)-4);
-				$flow_list[$k]['flow_name'] = $s;
-			}
-		}
+		
 		$this -> assign("list", $flow_list);
 		$this -> display();
 	}
@@ -492,14 +603,17 @@ class FlowAction extends CommonAction {
 		$objWriter -> save('php://output');
 		exit ;
 	}
-	function _folder_export_detail($data,$table_name,$type,$date){
-		$sql = 'SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "'.$table_name.'" AND TABLE_SCHEMA = "smeoa"';
-		$Model = new Model();
-		$comment = $Model->query($sql);
-		//第一行移除id，flow_id
-		array_shift($comment);
-		array_shift($comment);
-// 		dump($comment);
+	function _folder_export_detail($data,$table_name,$type,$date,$hui){
+		if($hui == '1'){
+			$comment = array(array('COLUMN_COMMENT'=>'类型'),array('COLUMN_COMMENT'=>'类型id'),array('COLUMN_COMMENT'=>'用户id'),array('COLUMN_COMMENT'=>'登录名'),array('COLUMN_COMMENT'=>'用户名'),array('COLUMN_COMMENT'=>'部门id'),array('COLUMN_COMMENT'=>'部门'),array('COLUMN_COMMENT'=>'小时数'));
+		}else{
+			$sql = 'SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "'.$table_name.'" AND TABLE_SCHEMA = "smeoa"';
+			$Model = new Model();
+			$comment = $Model->query($sql);
+			//第一行移除id，flow_id
+			array_shift($comment);
+			array_shift($comment);
+		}
 		
 		$list = $data;
 		
@@ -518,21 +632,24 @@ class FlowAction extends CommonAction {
 		//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
 		$q = $objPHPExcel -> setActiveSheetIndex(0);
 		//第一列为用户
-		if($type=='office_use_application'){//办公用品领用
-			$q = $q -> setCellValue("A$i", '用户');
-// 			$q ->getColumnDimension('A')->setAutoSize(true);
-		}elseif ($type=='goods_procurement_allocation'){//物品采购调拨申请单
-			$q = $q -> setCellValue("A$i", '用户');
-// 			$q ->getColumnDimension('A')->setAutoSize(true);
-		}elseif ($type=='office_supplies_application'){//办公用品采购
-			$q = $q -> setCellValue("A$i", '用户');
-// 			$q ->getColumnDimension('A')->setAutoSize(true);
-		}else{
-			$q = $q -> setCellValue("A$i", '用户');
-// 			$q ->getColumnDimension('A')->setAutoSize(true);
+		if($hui != '1'){
+			if($type=='office_use_application'){//办公用品领用
+				$q = $q -> setCellValue("A$i", '用户');
+			}elseif ($type=='goods_procurement_allocation'){//物品采购调拨申请单
+				$q = $q -> setCellValue("A$i", '用户');
+			}elseif ($type=='office_supplies_application'){//办公用品采购
+				$q = $q -> setCellValue("A$i", '用户');
+			}else{
+				$q = $q -> setCellValue("A$i", '用户');
+			}
 		}
 		
-		$start = ord('B');
+		if($hui != '1'){
+			$start = ord('B');
+		}else{
+			$start = ord('A');
+		}
+		
 // 		$l=0;
 		foreach($comment as $k=>$v){
 			$q = $q -> setCellValue(chr($start+$k)."$i", $v['COLUMN_COMMENT']);
@@ -591,7 +708,11 @@ class FlowAction extends CommonAction {
 				}
 			}
 		}
-		$start = ord('B');
+		if($hui != '1'){
+			$start = ord('B');
+		}else{
+			$start = ord('A');
+		}
 		foreach($comment as $k=>$v){
 			$q ->getColumnDimension(chr($start+$k))->setWidth(20);
 		}
@@ -1249,7 +1370,7 @@ class FlowAction extends CommonAction {
 		$widget['uploader'] = true;
 		$widget['editor'] = true;
 		$this -> assign("widget", $widget);
-		$folder = $_REQUEST['fid'];
+		$folder = $_REQUEST['fid']=='group'?'hr':$_REQUEST['fid'];
 		$this -> assign("folder", $folder);
 		if (empty($folder)) {
 			$this -> error("系统错误");

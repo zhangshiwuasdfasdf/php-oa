@@ -168,6 +168,7 @@ class DailyReportAction extends CommonAction {
 					foreach ($daily_detail as $kk=>$vv){
 						$daily_detail[$kk]['item'] = str_replace('|||','<br>',$vv['item']);
 						$daily_detail[$kk]['work_date'] = $v['work_date'];
+						$daily_detail[$kk]['author'] = $v['user_name'];
 						$daily_report[$k][] = $daily_detail[$kk];
 					}
 					
