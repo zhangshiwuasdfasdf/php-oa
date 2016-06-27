@@ -77,7 +77,7 @@
 							</span>
 							<span class="col-2 pull-right text-center">
 								<p class="form-control-static">
-									<a onclick="add_item(this)">+</a>
+									<a onclick="add_item(this)"  style="font-size:32px;">+</a>
 								</p></span>
 							<span class="auto autocut">
 								<textarea name="item" class="form-control" /></textarea>
@@ -117,7 +117,7 @@
 							</span>
 							<span class="col-2 pull-right text-center">
 								<p class="form-control-static">
-									<a onclick="add_item(this)">+</a>
+									<a onclick="add_item(this)" style="font-size:32px;">+</a>
 								</p></span>
 							<span class="auto autocut">
 								<textarea name="item" class="form-control" /></textarea>
@@ -133,7 +133,7 @@
 						</span>
 						<span class="col-2 pull-right text-center">
 							<p class="form-control-static">
-								<a onclick="add_subject();">+</a>
+								<a onclick="add_subject();" style="font-size:32px;">+</a>
 							</p></span>
 						<div class="auto autocut">
 							<input name="subject" class="form-control"/>
@@ -157,7 +157,7 @@
 							</span>
 							<span class="col-2 pull-right text-center">
 								<p class="form-control-static">
-									<a onclick="add_item(this)">+</a>
+									<a onclick="add_item(this)" style="font-size:32px;">+</a>
 								</p></span>
 							<span class="auto autocut">
 								<textarea name="item" class="form-control" /></textarea>
@@ -174,6 +174,17 @@
 					</p></span>
 				<div class="col-sm-10">
 					<textarea name="content" class="form-control" style="height:120px;"></textarea>
+				</div>
+			</li>
+			<li class="tbody">
+				<span class="auto autocut">
+					<p class="form-control-static text-center">
+						一键导入(将excel内容复制->粘贴到此框中↓)
+					</p></span>
+				<div class="form-group">
+					<div class="col-xs-12" id="div_content">
+						<textarea  class="editor" id="content" name="excel_html" style="width:100%;height:300px;" msg="请输入内容"></textarea>
+					</div>
 				</div>
 			</li>
 		</ul>
@@ -292,7 +303,7 @@
 						</span>
 						<span class="col-2 pull-right text-center display-none">
 							<p class="form-control-static">
-								<a onclick="add_plan();">+</a>
+								<a onclick="add_plan();" style="font-size:32px;">+</a>
 							</p></span>
 						<div class="auto autocut">
 							<input name="plan_subject[]"  class="form-control"/>
@@ -384,7 +395,7 @@
 			</span>
 				<span class="col-2 pull-right text-center">
 					<p class="form-control-static">
-						<a onclick="add_item(this)">+</a>
+						<a onclick="add_item(this)" style="font-size:32px;">+</a>
 					</p></span>
 				<span class="auto autocut">
 					<textarea name="item" class="form-control" /></textarea>

@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class WeeklyReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_weekly_report' => 'read','import_weekly_report' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'del' => 'write', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_weekly_report' => 'read','import_weekly_report' => 'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -110,10 +110,14 @@ class WeeklyReportAction extends CommonAction {
 		if (!empty($model)) {
 			$weekly_report_common = $this -> _list($model, $map);
 			$weekly_report_extension = array();
+			$weekly_ids = array();
 			$model_comment = D("WeeklyReportComment");
+			$model_report_look = M('ReportLook');
 			foreach ($weekly_report_common as $k=>$v){
 				$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
 				$weekly_report_extension[$k]['comment_last'] = $comment_last['content'];
+				$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id'])))->find();
+				$weekly_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
 			}
 			$this -> assign('weekly_report_extension', $weekly_report_extension);
 			$res = $model->where($map)->order('work_date desc')->limit(28)->select();//手机端app提供数据
@@ -133,6 +137,8 @@ class WeeklyReportAction extends CommonAction {
 				$this -> assign('weekly_report', $weekly_report);
 			}
 		}
+		$this -> assign('now_time',time());
+		$this -> assign('end_time',$weekly_ids);
 		$this -> display();
 	}
 
@@ -196,6 +202,12 @@ class WeeklyReportAction extends CommonAction {
 		$where_last['id'] = array('eq', $id);
 		$last_report = M("WeeklyReport") -> where($where_last) -> order('id desc') -> find();
 		$this -> assign('last_report', $last_report);
+		
+		$path = get_save_path()."excel_weekly/".$id .".txt";
+		$str = file_get_contents($path);
+		if($str){
+			$this -> assign("excelCon",file_get_contents($path)); 
+		}
 
 		$where_detail['pid'] = $last_report['id'];
 		$where_detail['type'] = array('eq', 1);
@@ -253,6 +265,12 @@ class WeeklyReportAction extends CommonAction {
 		$where_last['id'] = array('eq', $id);
 		$last_report = M("WeeklyReport") -> where($where_last) -> order('id desc') -> find();
 		$this -> assign('last_report', $last_report);
+		
+		$path = get_save_path()."excel_weekly/".$id .".txt";
+		$str = file_get_contents($path);
+		if($str){
+			$this -> assign("excelCon",$str); 
+		}
 		
 		$where_detail['pid'] = $last_report['id'];
 		$where_detail['type'] = array('eq', 1);
@@ -333,9 +351,22 @@ class WeeklyReportAction extends CommonAction {
 			$model -> dept_name = is_mobile_request()?$user['dept_name']:get_dept_name();
 		};
 		$model -> create_time = time();
+		$str = str_replace(array("\r\n", "\r", "\n"), "", $_POST['excel_html']);
+		$str = preg_replace("/[\s]{2,}/","",$str);
+		
+		
 		/*保存当前数据对象 */
+		
 		$list = $model -> add();
 		if ($list !== false) {//保存成功
+			if(!empty($str)){
+				$path = get_save_path()."excel_weekly/";
+				if (!is_dir($path)){
+				    mkdir($path,0777);
+				}
+				$path .= $list .".txt";
+				file_put_contents($path,$str);
+			}
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('新增成功!');
 		} else {
@@ -363,9 +394,21 @@ class WeeklyReportAction extends CommonAction {
 			$model -> dept_name = get_dept_name();
 		};
 		$model -> create_time = time();
+		
+		$str = str_replace(array("\r\n", "\r", "\n"), "", $_POST['excel_html']);
+		$str = preg_replace("/[\s]{2,}/","",$str);
+		$id = $_POST['id'];
 		/*保存当前数据对象 */
 		$list = $model -> save();
 		if ($list !== false) {//保存成功
+			if(!empty($str)){
+				$path = get_save_path()."excel_weekly/";
+				if (!is_dir($path)){
+				    mkdir($path,0777);
+				}
+				$path .= $id .".txt";
+				file_put_contents($path,$str);
+			}
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('保存成功!');
 		} else {
@@ -376,6 +419,10 @@ class WeeklyReportAction extends CommonAction {
 
 	function add_comment() {
 		$this -> display();
+	}
+	
+	function del($id) {
+		$this -> _del($id);
 	}
 
 	function edit_comment() {

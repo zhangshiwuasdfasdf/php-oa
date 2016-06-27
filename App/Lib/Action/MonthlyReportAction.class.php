@@ -110,10 +110,12 @@ class MonthlyReportAction extends CommonAction {
 		if (!empty($model)) {
 			$monthly_report_common = $this -> _list($model, $map);
 			$monthly_report_extension = array();
+			$weekly_ids = array();
 			$model_comment = D("MonthlyReportComment");
 			foreach ($monthly_report_common as $k=>$v){
 				$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
 				$monthly_report_extension[$k]['comment_last'] = $comment_last['content'];
+				$weekly_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
 			}
 			$this -> assign('monthly_report_extension', $monthly_report_extension);
 			$res = $model->where($map)->order('work_date desc')->limit(28)->select();//手机端app提供数据
@@ -133,6 +135,8 @@ class MonthlyReportAction extends CommonAction {
 				$this -> assign('monthly_report', $monthly_report);
 			}
 		}
+		$this -> assign('now_time',time());
+		$this -> assign('end_time',$weekly_ids);
 		$this -> display();
 	}
 
@@ -197,6 +201,12 @@ class MonthlyReportAction extends CommonAction {
 		$where_last['id'] = array('eq', $id);
 		$last_report = M("MonthlyReport") -> where($where_last) -> order('id desc') -> find();
 		$this -> assign('last_report', $last_report);
+		
+		$path = get_save_path()."excel_monthly/".$id .".txt";
+		$str = file_get_contents($path);
+		if($str){
+			$this -> assign("excelCon",$str); 
+		}
 
 		$where_detail['pid'] = $last_report['id'];
 		$where_detail['type'] = array('eq', 1);
@@ -255,6 +265,12 @@ class MonthlyReportAction extends CommonAction {
 		$where_last['id'] = array('eq', $id);
 		$last_report = M("MonthlyReport") -> where($where_last) -> order('id desc') -> find();
 		$this -> assign('last_report', $last_report);
+		
+		$path = get_save_path()."excel_monthly/".$id .".txt";
+		$str = file_get_contents($path);
+		if($str){
+			$this -> assign("excelCon",$str); 
+		}
 
 		$where_detail['pid'] = $last_report['id'];
 		$where_detail['type'] = array('eq', 1);
@@ -340,9 +356,20 @@ class MonthlyReportAction extends CommonAction {
 			$model -> dept_name = is_mobile_request()?$user['dept_name']:get_dept_name();
 		};
 		$model -> create_time = time();
+		
+		$str = str_replace(array("\r\n", "\r", "\n"), "", $_POST['excel_html']);
+		$str = preg_replace("/[\s]{2,}/","",$str);
 		/*保存当前数据对象 */
 		$list = $model -> add();
 		if ($list !== false) {//保存成功
+			if(!empty($str)){
+				$path = get_save_path()."excel_monthly/";
+				if (!is_dir($path)){
+				    mkdir($path,0777);
+				}
+				$path .= $list .".txt";
+				file_put_contents($path,$str);
+			}
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('新增成功!');
 		} else {
@@ -370,9 +397,21 @@ class MonthlyReportAction extends CommonAction {
 			$model -> dept_name = get_dept_name();
 		};
 		$model -> create_time = time();
+		
+		$str = str_replace(array("\r\n", "\r", "\n"), "", $_POST['excel_html']);
+		$str = preg_replace("/[\s]{2,}/","",$str);
+		$id = $_POST['id'];
 		/*保存当前数据对象 */
 		$list = $model -> save();
 		if ($list !== false) {//保存成功
+			if(!empty($str)){
+				$path = get_save_path()."excel_monthly/";
+				if (!is_dir($path)){
+				    mkdir($path,0777);
+				}
+				$path .= $id .".txt";
+				file_put_contents($path,$str);
+			}
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('保存成功!');
 		} else {

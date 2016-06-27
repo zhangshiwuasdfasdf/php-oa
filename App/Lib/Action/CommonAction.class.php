@@ -309,7 +309,6 @@ class CommonAction extends Action {
 			$name = $this -> getActionName();
 		}
 		$model = M($name);
-
 		if (!empty($model)) {
 			if (isset($id)) {
 				if (is_array($id)) {
