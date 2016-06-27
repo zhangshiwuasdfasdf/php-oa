@@ -39,7 +39,7 @@
 		<foreach name="list" item="vo">
 			<div class="itemdiv dialogdiv">
 				<div class="user">
-					<img alt="Alexa's Avatar" src="{:get_save_url()}emp_pic/{$vo.sender_id}.jpeg" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'"/>
+					<img alt="Alexa's Avatar" src="{:get_save_url()}/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'"/>
 				</div>
 				<div class="body">
 					<div class="time">

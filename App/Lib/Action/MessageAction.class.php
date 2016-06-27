@@ -188,6 +188,16 @@ class MessageAction extends CommonAction {
 					unset($list[$k]);
 				}
 			}
+		}else{
+			foreach ($list as $k=>$v){
+				if($v['owner_id'] == $v['sender_id']){
+					$user = M('User')->find($v['receiver_id']);
+					$list[$k]['pic'] = $user['pic'];
+				}elseif($v['owner_id'] == $v['receiver_id']){
+					$user = M('User')->find($v['sender_id']);
+					$list[$k]['pic'] = $user['pic'];
+				}
+			}
 		}
 		
 // 		dump($list);

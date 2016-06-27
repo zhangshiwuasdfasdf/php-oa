@@ -69,10 +69,10 @@
 					<div class="itemdiv dialogdiv">
 						<div class="user">
 						<eq name="vo.sender_id" value="$owner_id">
-							<img  src="{:get_save_url()}emp_pic/{$vo.receiver_id}.jpeg" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'" />
+							<img  src="{:get_save_url()}/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'" />
 						</eq>
 						<eq name="vo.receiver_id" value="$owner_id">
-							<img  src="{:get_save_url()}emp_pic/{$vo.sender_id}.jpeg" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'" />
+							<img  src="{:get_save_url()}/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'" />
 						</eq>
 						</div>
 						<div class="body">
