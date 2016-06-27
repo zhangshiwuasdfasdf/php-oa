@@ -202,21 +202,26 @@
 		
 		var url = getUrlByName();
 		var available_hour = $("#available_hour_save").val();
-		if((Number(day_num)!=parseInt(Number(day_num))) || (Number(hour_num)!=parseInt(Number(hour_num)))){
-			ui_alert("请输入整数时间！",function(){
-			});
-			return ;
+		var style = $("input[name='style']:checked").val();
+		
+		if(day_num != undefined && hour_num != undefined){
+			if((Number(day_num)!=parseInt(Number(day_num))) || (Number(hour_num)!=parseInt(Number(hour_num)))){
+				ui_alert("请输入整数时间！",function(){
+				});
+				return ;
+			}
+			if(0>=Number(day_num*8)+Number(hour_num)){
+				ui_alert("调休时间需大于0小时！",function(){
+				});
+				return ;
+			}
+			if(available_hour<Number(day_num*8)+Number(hour_num) && style == '调休'){
+				ui_alert("可用调休时间不足！",function(){
+				});
+				return ;
+			}
 		}
-		if(available_hour<Number(day_num*8)+Number(hour_num)){
-			ui_alert("可用调休时间不足！",function(){
-			});
-			return ;
-		}
-		if(0>=Number(day_num*8)+Number(hour_num)){
-			ui_alert("调休时间需大于0小时！",function(){
-			});
-			return ;
-		}
+		
 		$.ajax({
 			type: "post",
 			url: url,    
