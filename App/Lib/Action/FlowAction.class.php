@@ -1365,7 +1365,23 @@ class FlowAction extends CommonAction {
 			}
 			
 			$model -> flow_id = $list;
+			$flow_id = $list;
+			$style = $model -> style;
 			$list = $model -> add();
+			
+			if(getModelName($flow_id)=='FlowLeave'){
+				if($style=='调休'){
+					$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+					$create_time = strtotime($flow['start_time']);
+					$del_hour = $flow['day_num']*8+$flow['hour_num'];
+					$data['hour'] = $del_hour*(-1);
+					$data['create_time'] = $create_time;
+					$data['user_id'] = get_user_id();
+					$data['flow_id'] = $flow_id;
+					$data['status'] = 0;
+					M('FlowHour')->add($data);
+				}
+			}
 			if ($list !== false) {//保存成功
 				$this -> assign('jumpUrl', get_return_url());
 				$this -> success('新增成功!');
@@ -1875,20 +1891,26 @@ class FlowAction extends CommonAction {
 								$data['hour'] = $add_hour;
 								$data['create_time'] = $create_time;
 								$data['user_id'] = $flow['user_id'];
-								
+								$data['status'] = 1;
 								M('FlowHour')->add($data);
 							}
 						}elseif(getModelName($flow_id)=='FlowLeave'){//请假/调休单
 							$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 							$create_time = strtotime($flow['start_time']);
 							if($flow['style']=='调休'){
-								$del_hour = $flow['day_num']*8+$flow['hour_num'];
-								$flow = M('Flow')->find($flow_id);
-								$data['hour'] = $del_hour*(-1);
-								$data['create_time'] = $create_time;
-								$data['user_id'] = $flow['user_id'];
-								
-								M('FlowHour')->add($data);
+								$flow_hour = M('FlowHour')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+								if(!$flow_hour){
+									$del_hour = $flow['day_num']*8+$flow['hour_num'];
+									$flow = M('Flow')->find($flow_id);
+									$data['hour'] = $del_hour*(-1);
+									$data['create_time'] = $create_time;
+									$data['user_id'] = $flow['user_id'];
+									$data['status'] = 1;
+									M('FlowHour')->add($data);
+								}else{
+									$data['status'] = 1;
+									M('FlowHour')->where('flow_id='.$flow_id)->save($data);
+								}
 							}
 						}
 					}

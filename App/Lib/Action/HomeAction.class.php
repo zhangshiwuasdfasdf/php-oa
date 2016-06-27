@@ -420,5 +420,17 @@ class HomeAction extends CommonAction {
 		$this -> assign("new_notice_list", $new_notice_list);
 		$this -> assign("new_notice_list1", $new_notice_list1);
 	}
+	public function getHour(){
+		$users = M('User')->field('id,emp_no,name')->select();
+		$ext = array();
+		foreach ($users as $k=>$user){
+			$hour = getAvailableHour(null,$user['id']);
+			$users[$k]['hour'] = $hour;
+			if($hour<0){
+				$ext[] = $users[$k];
+			}
+		}
+		$this->ajaxReturn('1',array('users'=>$users,'ext'=>$ext),1);
+	}
 }
 ?>
