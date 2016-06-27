@@ -34,6 +34,7 @@
 							if($("#name").val()=='请假/调休单'){
 								if($("input[name='style']:checked").val()=='调休'){
 									$("#available_hour").html('（您的可用调休时间为'+result.data.available_hour+'小时）');
+									$("#available_hour_save").val(result.data.available_hour);
 									if(result.data.day*8+result.data.hour>result.data.available_hour){
 										ui_alert('您的可用调休时间不足',function(){
 											location.reload();
@@ -200,6 +201,11 @@
 		var dept_id_to = $("#dept_id_to").val();
 		
 		var url = getUrlByName();
+		var available_hour = $("#available_hour_save").val();
+		if(available_hour<Number(day_num*8)+Number(hour_num)){
+			ui_alert("可用调休时间不足！",function(){
+			});
+		}
 		$.ajax({
 			type: "post",
 			url: url,    

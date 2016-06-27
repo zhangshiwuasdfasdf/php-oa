@@ -38,6 +38,8 @@
             <li><input type="radio" name="style" value="调休" id="tiaoxiu" onclick="$('#available_hour').attr('style','display:inline');$('#start_time').val('');$('#end_time').val('');">调休</li>
             <li><input type="radio" name="style" value="其他" onclick="$('#available_hour').attr('style','display:none')">其他</li>
             <li id="available_hour" style="display:none">（截止当前，您的可用调休时间为{$user_info.available_hour}小时）</li>
+            <li><input id="available_hour_save" type="hidden" value="{$user_info.available_hour}"></li>
+            <li id="available_year" style="display:none">（截止当前，您的可用年假时间为{$user_info.available_year}小时）</li>
         </ul>
         
   	</td>
@@ -48,8 +50,8 @@
     	<div class="ma6">自
     		<input onchange="cal($('#start_time').val(),$('#end_time').val())" data-date-format="yyyy-mm-dd" type="text" id="start_time" name="start_time" class="form-control input-date-time-h" check="require" msg="请输入开始时间" >至
     		<input onchange="cal($('#start_time').val(),$('#end_time').val())" data-date-format="yyyy-mm-dd" type="text" id="end_time" name="end_time" class="form-control input-date-time-h" check="require" msg="请输入结束时间">止，共计
-    		<input id="day_num" name="day_num" type="number" min="0" class="in4" readonly>天（工作日）
-    		<input id="hour_num" name="hour_num" type="number" min="0" class="in4" readonly>时
+    		<input id="day_num" name="day_num" type="number" min="0" class="in4" >天（工作日）
+    		<input id="hour_num" name="hour_num" type="number" min="0" class="in4" >时
     		<button onclick="showflow();return false;">查看审批流程</button>
     		<input id="confirm_wrap" style="width:250px;" disabled>
     	</div>

@@ -1024,10 +1024,25 @@ class FlowAction extends CommonAction {
 			if(!empty($information[0])){
 				$in_date = $information[0];
 				$in_date1 = explode('.',$in_date);
-				$in_date2 = $in_date1[0].'-'.$in_date1[1].'-'.$in_date1[2];
+				if(!empty($in_date1[1])){
+					$in_date2 = $in_date1[0].'-'.$in_date1[1].'-'.$in_date1[2];
+				}else{
+					$in_date1 = explode('/',$in_date);
+					if(!empty($in_date1[1])){
+						$in_date2 = $in_date1[0].'-'.$in_date1[1].'-'.$in_date1[2];
+					}else{
+						$in_date1 = explode('-',$in_date);
+						if(!empty($in_date1[1])){
+							$in_date2 = $in_date1[0].'-'.$in_date1[1].'-'.$in_date1[2];
+						}
+					}
+				}
 				$year = (time()-strtotime($in_date2))/(365*24*60*60);
 			}
 		}
+// 		dump($in_date);
+// 		dump($in_date2);
+// 		dump($year);
 		$this -> assign("year", $year);
 		$this -> display();
 	}

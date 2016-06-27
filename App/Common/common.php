@@ -2435,4 +2435,39 @@ function getAvailableHour($now,$uid){
 		return 0;
 	}
 }
+function getAvailableYearHour($now,$uid){
+	if(empty($now)){
+		$now = time();
+	}
+	if(empty($uid)){
+		$uid = get_user_id();
+	}
+	$UserRecord = M('UserRecord')->where(array('user_id'=>array('eq',$uid)))->find();
+	if(!empty($UserRecord) && !empty($UserRecord['information'])){
+		$information = explode('|',$UserRecord['information']);
+		if(!empty($information[0])){
+			$in_date = $information[0];
+			$in_date1 = explode('.',$in_date);
+			if(!empty($in_date1[1])){
+				$in_date2 = $in_date1[0].'-'.$in_date1[1].'-'.$in_date1[2];
+			}else{
+				$in_date1 = explode('/',$in_date);
+				if(!empty($in_date1[1])){
+					$in_date2 = $in_date1[0].'-'.$in_date1[1].'-'.$in_date1[2];
+				}else{
+					$in_date1 = explode('-',$in_date);
+					if(!empty($in_date1[1])){
+						$in_date2 = $in_date1[0].'-'.$in_date1[1].'-'.$in_date1[2];
+					}
+				}
+			}
+			$year = (time()-strtotime($in_date2))/(365*24*60*60);
+		}
+	}
+	if($year>=1){
+		
+	}else{
+		return 0;
+	}
+}
 ?>
