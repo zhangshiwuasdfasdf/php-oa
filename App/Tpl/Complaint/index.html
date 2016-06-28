@@ -1,10 +1,47 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
-</html>
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'意见箱','search'=>'L'))}
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-left"></div>
+		<div class="pull-right">
+			<a  onclick="add();" class="btn btn-sm btn-primary" >新建</a>
+		</div>
+	</div>
+</div>
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-10 ">发起人</span>
+			</div>
+			<div class="pull-right">
+				<span class="col-15 ">时间</span>
+			</div>
+			<div class="auto autocut">
+				标题
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<foreach name="list" item="vo">
+				<li class="tbody">
+					<div class="pull-left">
+						<span class="col-10 ">{$res[$key].anony}</span>
+					</div>
+					<div class="pull-right">
+						<span class="col-15 ">{$vo.create_time|date='Y-m-d',###}</span>
+					</div>
+					<div class="auto autocut">
+						<a href="{:U('read','id='.$vo['id'])}">{$vo.title}</a>
+					</div>
+				</li>
+			</foreach>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>
