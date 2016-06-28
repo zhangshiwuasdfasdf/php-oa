@@ -2248,37 +2248,37 @@ function get_leave_day_seconds($start,$end){//获取一天之中start和end之�
 		if($start<=$start_morning){
 			if($end>=$end_afternoon){
 				return $end_morning-$start_morning+$end_afternoon-$start_afternoon;
-			}elseif ($end>=$start_afternoon && $end<$end_afternoon){
+			}elseif ($end>$start_afternoon && $end<$end_afternoon){
 				return $end_morning-$start_morning+$end-$start_afternoon;
-			}elseif ($end>=$end_morning && $end<$start_afternoon){
+			}elseif ($end>=$end_morning && $end<=$start_afternoon){
 				return $end_morning-$start_morning;
-			}elseif ($end>=$start_morning && $end<$end_morning){
+			}elseif ($end>$start_morning && $end<$end_morning){
 				return $end-$start_morning;
 			}elseif ($end<=$start_morning){
 				return 0;
 			}
-		}elseif($start>$start_morning && $start<=$end_morning){
+		}elseif($start>$start_morning && $start<$end_morning){
 			if($end>=$end_afternoon){
 				return $end_morning-$start+$end_afternoon-$start_afternoon;
-			}elseif ($end>=$start_afternoon && $end<$end_afternoon){
+			}elseif ($end>$start_afternoon && $end<$end_afternoon){
 				return $end_morning-$start+$end-$start_afternoon;
-			}elseif ($end>=$end_morning && $end<$start_afternoon){
+			}elseif ($end>=$end_morning && $end<=$start_afternoon){
 				return $end_morning-$start;
-			}elseif ($end>=$start_morning && $end<$end_morning){
+			}elseif ($end>$start_morning && $end<$end_morning){
 				return $end-$start;
 			}
-		}elseif($start>$end_morning && $start<=$start_afternoon){
+		}elseif($start>=$end_morning && $start<=$start_afternoon){
 			if($end>=$end_afternoon){
 				return $end_afternoon-$start_afternoon;
-			}elseif ($end>=$start_afternoon && $end<$end_afternoon){
+			}elseif ($end>$start_afternoon && $end<$end_afternoon){
 				return $end-$start_afternoon;
-			}elseif ($end>=$end_morning && $end<$start_afternoon){
+			}elseif ($end>=$end_morning && $end<=$start_afternoon){
 				return 0;
 			}
-		}elseif($start>$start_afternoon && $start<=$end_afternoon){
+		}elseif($start>$start_afternoon && $start<$end_afternoon){
 			if($end>=$end_afternoon){
 				return $end_afternoon-$start;
-			}elseif ($end>=$start_afternoon && $end<$end_afternoon){
+			}elseif ($end>$start_afternoon && $end<$end_afternoon){
 				return $end-$start;
 			}
 		}elseif($start>=$end_afternoon){
@@ -2286,6 +2286,81 @@ function get_leave_day_seconds($start,$end){//获取一天之中start和end之�
 		}
 	}else{
 		return $end_morning-$start_morning+$end_afternoon-$start_afternoon;
+	}
+}
+function slice_time($start,$end){
+	$start_date = date('Y-m-d',$start);
+	$start_date_1 = strtotime($start_date.' 00:00')+86400;
+	if($end<$start_date_1){
+		return slice_time_day($start,$end);
+	}else{
+		return array_merge(slice_time_day($start,$start_date_1),slice_time($start_date_1,$end));
+	}
+}
+function slice_time_day($start,$end){
+	if(is_holiday($start)=='1'){
+		return ;
+	}
+	$start_date = date('Y-m-d',$start);
+	$start_morning = strtotime($start_date.' '.get_system_config("MORNING_START"));
+	$end_morning = strtotime($start_date.' '.get_system_config("MORNING_END"));
+	$start_afternoon = strtotime($start_date.' '.get_system_config("AFTERNOON_START"));
+	$end_afternoon = strtotime($start_date.' '.get_system_config("AFTERNOON_END"));
+	if($end-$start<86400){
+		if($start<=$start_morning){
+			if($end>=$end_afternoon){
+				return array(date('H:i',$start_morning).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
+// 				return $end_morning-$start_morning+$end_afternoon-$start_afternoon;
+			}elseif ($end>$start_afternoon && $end<$end_afternoon){
+				return array(date('H:i',$start_morning).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end).'|2|'.date('d',$start));
+// 				return $end_morning-$start_morning+$end-$start_afternoon;
+			}elseif ($end>=$end_morning && $end<=$start_afternoon){
+				return array(date('H:i',$start_morning).'-'.date('H:i',$end_morning).'|1|'.date('d',$start));
+// 				return $end_morning-$start_morning;
+			}elseif ($end>$start_morning && $end<$end_morning){
+				return array(date('H:i',$start_morning).'-'.date('H:i',$end).'|1|'.date('d',$start));
+// 				return $end-$start_morning;
+			}elseif ($end<=$start_morning){
+				return array();
+			}
+		}elseif($start>$start_morning && $start<$end_morning){
+			if($end>=$end_afternoon){
+				return array(date('H:i',$start).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
+// 				return $end_morning-$start+$end_afternoon-$start_afternoon;
+			}elseif ($end>$start_afternoon && $end<$end_afternoon){
+				return array(date('H:i',$start).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end).'|2|'.date('d',$start));
+// 				return $end_morning-$start+$end-$start_afternoon;
+			}elseif ($end>=$end_morning && $end<=$start_afternoon){
+				return array(date('H:i',$start).'-'.date('H:i',$end_morning).'|1|'.date('d',$start));
+// 				return $end_morning-$start;
+			}elseif ($end>$start_morning && $end<$end_morning){
+				return array(date('H:i',$start).'-'.date('H:i',$end).'|1|'.date('d',$start));
+// 				return $end-$start;
+			}
+		}elseif($start>=$end_morning && $start<=$start_afternoon){
+			if($end>=$end_afternoon){
+				return array(date('H:i',$start_afternoon).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
+// 				return $end_afternoon-$start_afternoon;
+			}elseif ($end>$start_afternoon && $end<$end_afternoon){
+				return array(date('H:i',$start_afternoon).'-'.date('H:i',$end).'|2|'.date('d',$start));
+// 				return $end-$start_afternoon;
+			}elseif ($end>=$end_morning && $end<=$start_afternoon){
+				return array();
+			}
+		}elseif($start>$start_afternoon && $start<$end_afternoon){
+			if($end>=$end_afternoon){
+				return array(date('H:i',$start).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
+// 				return $end_afternoon-$start;
+			}elseif ($end>$start_afternoon && $end<$end_afternoon){
+				return array(date('H:i',$start).'-'.date('H:i',$end).'|2|'.date('d',$start));
+// 				return $end-$start;
+			}
+		}elseif($start>=$end_afternoon){
+			return array();
+		}
+	}else{
+		return array(date('H:i',$start_morning).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
+// 		return $end_morning-$start_morning+$end_afternoon-$start_afternoon;
 	}
 }
 /*
@@ -2465,9 +2540,18 @@ function getAvailableYearHour($now,$uid){
 		}
 	}
 	if($year>=1){
-		
+		$user = $model_user->where(array('id'=>array('eq',$uid)))->find();
+		$position_name = $user['position_name'];
+		if($position_name=='助理' || $position_name=='员工' || $position_name=='主管'){
+			
+		}elseif($position_name=='助理' || $position_name=='员工' || $position_name=='主管'){
+			
+		}
 	}else{
 		return 0;
 	}
+}
+function getOneAttendanceById($date,$uid){
+	return $date.' '.$uid;
 }
 ?>

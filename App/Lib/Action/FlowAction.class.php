@@ -604,6 +604,9 @@ class FlowAction extends CommonAction {
 		exit ;
 	}
 	function _folder_export_detail($data,$table_name,$type,$date,$hui){
+		if($type=='leave'){//请假调休单特殊处理
+			$this -> _folder_export_detail_leave($date);
+		}
 		if($hui == '1'){
 			$comment = array(array('COLUMN_COMMENT'=>'类型'),array('COLUMN_COMMENT'=>'类型id'),array('COLUMN_COMMENT'=>'用户id'),array('COLUMN_COMMENT'=>'登录名'),array('COLUMN_COMMENT'=>'用户名'),array('COLUMN_COMMENT'=>'部门id'),array('COLUMN_COMMENT'=>'部门'),array('COLUMN_COMMENT'=>'小时数'));
 		}else{
@@ -738,6 +741,202 @@ class FlowAction extends CommonAction {
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		//readfile($filename);
 		$objWriter -> save('php://output');
+		exit ;
+	}
+	function _folder_export_detail_leave($date){
+		if(isHeadquarters(get_user_id())==0){//总部
+			$dept = tree_to_list(list_to_tree(M("Dept") ->where('is_del=0')-> select(), 1));
+			$dept = rotate($dept);
+			$dept = implode(",", $dept['id']) . ",1";
+			$model = D("UserView");
+			$where['is_del'] = array('eq', '0');
+			$where['pos_id'] = array('in', $dept);
+			$where['id'] = array('neq', '1');
+			$users = M('User')->field('id,name,duty')->where($where)->select();
+			
+			$time = strtotime($date.'-01');
+			$month = date('m',$time);
+			$month_day =  date('t', $time);
+
+			$not_flow_id = M('FlowLog')->field('flow_id')->where('result is null')->select();
+			$not_flow_id = rotate($not_flow_id);
+			//请假单中取出数据并组织
+			$where_leave_time['start_time'] = array('like','%'.$date.'%');
+			$where_leave_time['end_time'] = array('like','%'.$date.'%');
+			$where_leave_time['_logic'] = 'or';
+			$where_leave['_complex'] = $where_leave_time;
+			$where_leave['flow_id'] = array('not in',$not_flow_id['flow_id']);
+			$flow_leave = M('FlowLeave')->where($where_leave)->select();
+			$content = array();
+			foreach ($users as $k => $v){
+				$content[$v['id']*2] = array('A'=>$v['duty'],'B'=>$v['name']);
+				$content[$v['id']*2+1] = array('A'=>$v['duty'],'B'=>$v['name']);
+			}
+			
+			foreach ($flow_leave as $k => $v){
+				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
+				$user_id = $user_id['user_id'];
+				$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+				foreach ($array_time as $kk => $vv){
+					$event = explode('|',$vv);
+					if($event[1]=='1'){//上午
+						$content[$user_id*2][$event[2]] .= $v['style'].':'.$event[0].' ';
+					}elseif($event[1]=='2'){//下午
+						$content[$user_id*2+1][$event[2]] .= $v['style'].':'.$event[0].' ';
+					}
+					
+				}
+			}
+			
+			//外勤出差单中取出数据并组织
+			$where_outside_time['start_time'] = array('like','%'.$date.'%');
+			$where_outside_time['end_time'] = array('like','%'.$date.'%');
+			$where_outside_time['_logic'] = 'or';
+			$where_outside['_complex'] = $where_outside_time;
+			$where_outside['flow_id'] = array('not in',$not_flow_id['flow_id']);
+			$flow_outside = M('FlowOutside')->where($where_outside)->select();
+		
+			foreach ($flow_outside as $k => $v){
+				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
+				$user_id = $user_id['user_id'];
+				$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+				foreach ($array_time as $kk => $vv){
+					$event = explode('|',$vv);
+					if($event[1]=='1'){//上午
+						$content[$user_id*2][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
+					}elseif($event[1]=='2'){//下午
+						$content[$user_id*2+1][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
+					}
+						
+				}
+			}
+			
+			//补勤单中取出数据并组织
+			$where_attendance_time['start_time'] = array('like','%'.$date.'%');
+			$where_attendance_time['end_time'] = array('like','%'.$date.'%');
+			$where_attendance_time['_logic'] = 'or';
+			$where_attendance['_complex'] = $where_attendance_time;
+			$where_attendance['flow_id'] = array('not in',$not_flow_id['flow_id']);
+			$flow_attendance = M('FlowAttendance')->where($where_attendance)->select();
+			
+			foreach ($flow_attendance as $k => $v){
+				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
+				$user_id = $user_id['user_id'];
+				$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+				foreach ($array_time as $kk => $vv){
+					$event = explode('|',$vv);
+					if($event[1]=='1'){//上午
+						$content[$user_id*2][$event[2]] .= '补勤'.':'.$event[0].' ';
+					}elseif($event[1]=='2'){//下午
+						$content[$user_id*2+1][$event[2]] .= '补勤'.':'.$event[0].' ';
+					}
+			
+				}
+			}
+// 			dump(array_values($content));
+			//导入thinkphp第三方类库
+			Vendor('Excel.PHPExcel');
+			
+			$objPHPExcel = new PHPExcel();
+			
+			$objPHPExcel -> getProperties() -> setCreator("神洲OA") -> setLastModifiedBy("神洲OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+			// Add some data
+			$i = 1;
+			
+			//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
+			$q = $objPHPExcel -> setActiveSheetIndex(0);
+// 			$month_day;
+			
+// 			ToNumberSystem26($month_day+3);
+			$q = $q -> mergeCells('A1:'.ToNumberSystem26($month_day+2).'1');
+// 			$q = $q -> setCellValue("A1", '神洲酷奇');
+			
+			//使用本地图片
+			$img=new PHPExcel_Worksheet_Drawing();
+			$img->setPath('Public/img/img/logo_for_excel.png');//写入图片路径
+			$img->setHeight(20);//写入图片高度
+			$img->setWidth(20);//写入图片宽度
+			$img->setOffsetX(1);//写入图片在指定格中的X坐标值
+			$img->setOffsetY(1);//写入图片在指定格中的Y坐标值
+			$img->setRotation(1);//设置旋转角度
+			$img->getShadow()->setVisible(true);//
+			$img->getShadow()->setDirection(50);//
+			$img->setCoordinates('A1');//设置图片所在表格位置
+			$img->setWorksheet($q);//把图片写到当前的表格中
+			
+			
+			$q = $q -> mergeCells('A2:'.ToNumberSystem26($month_day+2).'2');
+			$q = $q -> setCellValue("A2", $month.'月员工考勤登记表');
+			$q->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			
+			$q = $q -> mergeCells('A3:'.ToNumberSystem26($month_day+2).'3');
+			$q = $q -> setCellValue("A3", '月度合计     单位：'.$month_day.'天');
+			
+			$q = $q -> mergeCells('A4:A5');
+			$q = $q -> setCellValue("A4", '职务');
+			
+			$q = $q -> mergeCells('B4:B5');
+			$q = $q -> setCellValue("B4", '姓名');
+			
+			$q = $q -> setCellValue("C4", '日期');
+			$q = $q -> setCellValue("C5", '星期');
+			$week_day_name = array('日','一','二','三','四','五','六');
+			for($i=1;$i<$month_day+1;$i++){
+				$q = $q -> setCellValue(ToNumberSystem26($i+3)."4", $i);
+				$time = strtotime($date.'-'.$i);
+				$week_day = date('w',$time);
+				$q = $q -> setCellValue(ToNumberSystem26($i+3)."5", $week_day_name[$week_day]);
+				
+				if(is_holiday(strtotime($date.'-'.$i)) == '1'){//节假日背景设置灰色
+					$q->getStyle(ToNumberSystem26($i+3)."4")->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+					$q->getStyle(ToNumberSystem26($i+3)."4")->getFill()->getStartColor()->setARGB('FF808080');
+					
+					$q->getStyle(ToNumberSystem26($i+3)."5")->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+					$q->getStyle(ToNumberSystem26($i+3)."5")->getFill()->getStartColor()->setARGB('FF808080');
+				}
+			}
+			$content = array_values($content);
+			foreach ($content as $k => $v){
+				if($k%2==0){
+					$q = $q -> mergeCells('A'.($k+6).':A'.($k+7));
+					$q = $q -> setCellValue("A".($k+6), $v['A']);
+					
+					$q = $q -> mergeCells('B'.($k+6).':B'.($k+7));
+					$q = $q -> setCellValue("B".($k+6), $v['B']);
+					
+					$q = $q -> setCellValue("C".($k+6), '上午');
+				}else{
+					$q = $q -> setCellValue("C".($k+6), '下午');
+				}
+				foreach ($v as $kk => $vv){
+					if(is_numeric($kk)){
+						$q = $q -> setCellValue(ToNumberSystem26($kk+3).($k+6), $vv);
+					}
+				}
+				
+			}
+			
+			// Rename worksheet
+			$title = '考勤统计'.$date;
+			$objPHPExcel -> getActiveSheet() -> setTitle('考勤统计'.$date);
+			
+			// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+			$objPHPExcel -> setActiveSheetIndex(0);
+			$file_name = $title.".xlsx";
+			// Redirect output to a client’s web browser (Excel2007)
+			header("Content-Type: application/force-download");
+			header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+			header("Content-Disposition:attachment;filename =" . str_ireplace('+', '%20', URLEncode($file_name)));
+			header('Cache-Control: max-age=0');
+			
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+			//readfile($filename);
+			$objWriter -> save('php://output');
+			exit ;
+			
+		}else{
+			echo '暂时不支持园区考勤统计';
+		}
 		exit ;
 	}
 	function export_office_supplies_application(){
