@@ -776,15 +776,17 @@ class FlowAction extends CommonAction {
 			foreach ($flow_leave as $k => $v){
 				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
 				$user_id = $user_id['user_id'];
-				$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
-				foreach ($array_time as $kk => $vv){
-					$event = explode('|',$vv);
-					if($event[1]=='1'){//上午
-						$content[$user_id*2][$event[2]] .= $v['style'].':'.$event[0].' ';
-					}elseif($event[1]=='2'){//下午
-						$content[$user_id*2+1][$event[2]] .= $v['style'].':'.$event[0].' ';
+				if(isHeadquarters($user_id)==0){//总部
+					$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+					foreach ($array_time as $kk => $vv){
+						$event = explode('|',$vv);
+						if($event[1]=='1'){//上午
+							$content[$user_id*2][$event[2]] .= $v['style'].':'.$event[0].' ';
+						}elseif($event[1]=='2'){//下午
+							$content[$user_id*2+1][$event[2]] .= $v['style'].':'.$event[0].' ';
+						}
+							
 					}
-					
 				}
 			}
 			
@@ -799,15 +801,17 @@ class FlowAction extends CommonAction {
 			foreach ($flow_outside as $k => $v){
 				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
 				$user_id = $user_id['user_id'];
-				$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
-				foreach ($array_time as $kk => $vv){
-					$event = explode('|',$vv);
-					if($event[1]=='1'){//上午
-						$content[$user_id*2][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
-					}elseif($event[1]=='2'){//下午
-						$content[$user_id*2+1][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
+				if(isHeadquarters($user_id)==0){//总部
+					$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+					foreach ($array_time as $kk => $vv){
+						$event = explode('|',$vv);
+						if($event[1]=='1'){//上午
+							$content[$user_id*2][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
+						}elseif($event[1]=='2'){//下午
+							$content[$user_id*2+1][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
+						}
+					
 					}
-						
 				}
 			}
 			
@@ -822,18 +826,20 @@ class FlowAction extends CommonAction {
 			foreach ($flow_attendance as $k => $v){
 				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
 				$user_id = $user_id['user_id'];
-				$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
-				foreach ($array_time as $kk => $vv){
-					$event = explode('|',$vv);
-					if($event[1]=='1'){//上午
-						$content[$user_id*2][$event[2]] .= '补勤'.':'.$event[0].' ';
-					}elseif($event[1]=='2'){//下午
-						$content[$user_id*2+1][$event[2]] .= '补勤'.':'.$event[0].' ';
+				if(isHeadquarters($user_id)==0){//总部
+					$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+					foreach ($array_time as $kk => $vv){
+						$event = explode('|',$vv);
+						if($event[1]=='1'){//上午
+							$content[$user_id*2][$event[2]] .= '补勤'.':'.$event[0].' ';
+						}elseif($event[1]=='2'){//下午
+							$content[$user_id*2+1][$event[2]] .= '补勤'.':'.$event[0].' ';
+						}
+							
 					}
-			
 				}
 			}
-// 			dump(array_values($content));
+			
 			//导入thinkphp第三方类库
 			Vendor('Excel.PHPExcel');
 			
