@@ -748,9 +748,18 @@ class FlowAction extends CommonAction {
 			$dept = tree_to_list(list_to_tree(M("Dept") ->where('is_del=0')-> select(), 1));
 			$dept = rotate($dept);
 			$dept = implode(",", $dept['id']) . ",1";
+			
+			$dept_exc_0 = M("Dept") ->where(array('name'=>array('eq','各分公司财务')))-> find();
+			$dept_exc = tree_to_list(list_to_tree(M("Dept") ->where('is_del=0')-> select(), $dept_exc_0['id']));
+			$dept_exc = rotate($dept_exc);
+			$dept_exc = implode(",", $dept_exc['id']) . ",".$dept_exc_0['id'];
+		
 			$model = D("UserView");
 			$where['is_del'] = array('eq', '0');
 			$where['pos_id'] = array('in', $dept);
+			$where_pos_id['pos_id'] = array('not in', $dept_exc);
+			$where['_complex'] = $where_pos_id;
+			
 			$where['id'] = array('neq', '1');
 			$users = M('User')->field('id,name,duty')->where($where)->select();
 			
@@ -772,20 +781,27 @@ class FlowAction extends CommonAction {
 				$content[$v['id']*2] = array('A'=>$v['duty'],'B'=>$v['name']);
 				$content[$v['id']*2+1] = array('A'=>$v['duty'],'B'=>$v['name']);
 			}
-			
 			foreach ($flow_leave as $k => $v){
 				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
 				$user_id = $user_id['user_id'];
-				if(isHeadquarters($user_id)==0){//总部
-					$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
-					foreach ($array_time as $kk => $vv){
-						$event = explode('|',$vv);
-						if($event[1]=='1'){//上午
-							$content[$user_id*2][$event[2]] .= $v['style'].':'.$event[0].' ';
-						}elseif($event[1]=='2'){//下午
-							$content[$user_id*2+1][$event[2]] .= $v['style'].':'.$event[0].' ';
+				if(isHeadquarters($user_id) == 0 && $user_id != 1){//总部且不是管理员
+					$where['is_del'] = array('eq', '0');
+					$where['pos_id'] = array('in', $dept);
+					$where_pos_id['pos_id'] = array('not in', $dept_exc);
+					$where['_complex'] = $where_pos_id;
+					$where['id'] = array('eq', $user_id);
+					$check_user = M('User')->where($where)->select();
+					if($check_user){
+						$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+						foreach ($array_time as $kk => $vv){
+							$event = explode('|',$vv);
+							if($event[1]=='1'){//上午
+								$content[$user_id*2][$event[2]] .= $v['style'].':'.$event[0].' ';
+							}elseif($event[1]=='2'){//下午
+								$content[$user_id*2+1][$event[2]] .= $v['style'].':'.$event[0].' ';
+							}
+								
 						}
-							
 					}
 				}
 			}
@@ -801,16 +817,24 @@ class FlowAction extends CommonAction {
 			foreach ($flow_outside as $k => $v){
 				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
 				$user_id = $user_id['user_id'];
-				if(isHeadquarters($user_id)==0){//总部
-					$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
-					foreach ($array_time as $kk => $vv){
-						$event = explode('|',$vv);
-						if($event[1]=='1'){//上午
-							$content[$user_id*2][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
-						}elseif($event[1]=='2'){//下午
-							$content[$user_id*2+1][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
+				if(isHeadquarters($user_id) == 0 && $user_id != 1){//总部且不是管理员
+					$where['is_del'] = array('eq', '0');
+					$where['pos_id'] = array('in', $dept);
+					$where_pos_id['pos_id'] = array('not in', $dept_exc);
+					$where['_complex'] = $where_pos_id;
+					$where['id'] = array('eq', $user_id);
+					$check_user = M('User')->where($where)->select();
+					if($check_user){
+						$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+						foreach ($array_time as $kk => $vv){
+							$event = explode('|',$vv);
+							if($event[1]=='1'){//上午
+								$content[$user_id*2][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
+							}elseif($event[1]=='2'){//下午
+								$content[$user_id*2+1][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
+							}
+						
 						}
-					
 					}
 				}
 			}
@@ -826,16 +850,24 @@ class FlowAction extends CommonAction {
 			foreach ($flow_attendance as $k => $v){
 				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
 				$user_id = $user_id['user_id'];
-				if(isHeadquarters($user_id)==0){//总部
-					$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
-					foreach ($array_time as $kk => $vv){
-						$event = explode('|',$vv);
-						if($event[1]=='1'){//上午
-							$content[$user_id*2][$event[2]] .= '补勤'.':'.$event[0].' ';
-						}elseif($event[1]=='2'){//下午
-							$content[$user_id*2+1][$event[2]] .= '补勤'.':'.$event[0].' ';
+				if(isHeadquarters($user_id) == 0 && $user_id != 1){//总部且不是管理员
+					$where['is_del'] = array('eq', '0');
+					$where['pos_id'] = array('in', $dept);
+					$where_pos_id['pos_id'] = array('not in', $dept_exc);
+					$where['_complex'] = $where_pos_id;
+					$where['id'] = array('eq', $user_id);
+					$check_user = M('User')->where($where)->select();
+					if($check_user){
+						$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+						foreach ($array_time as $kk => $vv){
+							$event = explode('|',$vv);
+							if($event[1]=='1'){//上午
+								$content[$user_id*2][$event[2]] .= '补勤'.':'.$event[0].' ';
+							}elseif($event[1]=='2'){//下午
+								$content[$user_id*2+1][$event[2]] .= '补勤'.':'.$event[0].' ';
+							}
+								
 						}
-							
 					}
 				}
 			}
