@@ -1,5 +1,5 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'意见箱','search'=>'L'))}
+{:W('PageHeader',array('name'=>'意见箱','search'=>'N'))}
 <div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-left"></div>
@@ -27,7 +27,7 @@
 			</li>
 			<else/>
 			<foreach name="list" item="vo">
-				<li class="tbody">
+				<li class="tbody <php> if(($res[$key]['is_read'] == 0)&&($vo['create_time']>=time()-3600*30*24)) echo("bold")</php>">
 					<div class="pull-left">
 						<span class="col-10 ">{$res[$key].anony}</span>
 					</div>

@@ -19,7 +19,7 @@
         </div>
         <div class="leftrw">
         	<a class="rwa1"  onclick="set_cookie('top_menu', 198);" href="{:U('ftodo/index','fid=about_me')}">
-        		<img src="__PUBLIC__/img/img/daib.png">
+        		<img src="__PUBLIC__/img/img/daib2.png">
                 	<php>
 							$module_count=0;
 							$bc_class= 'bc-flow';
@@ -37,11 +37,11 @@
 							<p>{$module_count}</p>
 					</notempty>
             </a>
-            <a class="rwa2" onclick="set_cookie('top_menu', 198);" href="{:U('mail/folder','fid=inbox')}">
-            	<img src="__PUBLIC__/img/img/youj.png">
+            <a class="rwa2" onclick="set_cookie('top_menu', 198);" href="{:U('complaint/index','fid=inbox')}">
+            	<img src="__PUBLIC__/img/img/yijian.png">
                 	<php>
 							$module_count=0;
-							$bc_class= 'bc-mail';
+							$bc_class= 'bc-complaint';
 							$module_count=array_sum($new_count[$bc_class]);
 							if($module_count>99){
 								$module_count="99+";

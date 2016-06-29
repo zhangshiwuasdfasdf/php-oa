@@ -28,7 +28,6 @@ class NoticeAction extends CommonAction {
 		$this -> assign("widget", $widget);
 		
 		$arr_read = array_filter(explode(",", get_user_config("readed_notice").",".$id));
-		
 		$map['id']=array('in',$arr_read);
 			
 		$this -> assign("readed_id", $arr_read);

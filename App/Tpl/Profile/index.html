@@ -18,7 +18,7 @@
 				<tr>
 					<th>
 					<nobr>
-						员工编号
+						员工账号
 					</nobr></th>
 					<td colspan="2">
 					<p class="form-control-static">
@@ -48,7 +48,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>部门*</th>
+					<th>部门</th>
 					<td colspan="2">
 					<p class="form-control-static">
 						{$vo.dept_name}
@@ -63,10 +63,10 @@
 					</p></td>
 					<th>
 					<nobr>
-						负责业务
+						负责业务*
 					</nobr></th>
 					<td>
-					<input type="text" id="duty" name="duty" class="form-control" value="{$vo.duty}">
+					<input type="text" id="duty" name="duty" class="form-control" value="{$vo.duty}" check="require" msg="请输入负责业务">
 					</td>
 				</tr>
 				<tr>
@@ -79,16 +79,16 @@
 					</td>
 					<th>
 					<nobr>
-						移动电话
+						移动电话*
 					</nobr></th>
 					<td>
-					<input type="text" id="mobile_tel" name="mobile_tel" class="form-control" value="{$vo.mobile_tel}">
+					<input type="text" id="mobile_tel" name="mobile_tel" class="form-control" value="{$vo.mobile_tel}" check="require" msg="请输入移动电话">
 					</td>
 				</tr>
 				<tr>
-					<th>电子邮箱</th>
+					<th>电子邮箱*</th>
 					<td>
-						<input type="text" id="email" name="email" class="form-control" value="{$vo.email}">
+						<input type="text" id="email" name="email" class="form-control" value="{$vo.email}" check="require" msg="请输入电子邮箱">
 					</td>
 				</tr>
 			</table>

@@ -240,7 +240,7 @@ class ProfileAction extends CommonAction {
 				$data_flow['type'] = 66;
 				$data_flow['create_time'] = time();
 				$flow_id = $model_flow->add($data_flow);
-				
+				$data['flow_id'] = $flow_id;
 				if ($model -> add($data)) {
 					//成功提示
 					$this -> assign('jumpUrl', get_return_url());
