@@ -18,6 +18,9 @@
 					var url = "{:U('flow/ajaxgettime',array('type'=>'metting'))}";
 				}else if(type=='outside'){
 					var url = "{:U('flow/ajaxgettime',array('type'=>'outside'))}";
+				}else if(type=='leave'){
+					var style = $("input[name='style']:checked").val();
+					var url = "{:U('flow/ajaxgettime',array('type'=>'leave','style'=>'"+style+"'))}";
 				}else{
 					var url = "{:U('flow/ajaxgettime')}";
 				}
@@ -37,6 +40,17 @@
 									$("#available_hour_save").val(result.data.available_hour);
 									if(result.data.day*8+result.data.hour>result.data.available_hour){
 										ui_alert('您的可用调休时间不足',function(){
+											location.reload();
+										});
+									}
+								}else if($("input[name='style']:checked").val()=='年假'){
+									$("#available_year").html('（您的可用年假时间为'+result.data.available_year+'天）');
+									$("#available_year_save").val(result.data.available_year);
+									//时间规格化
+									$("#start_time").val(result.data.start_time);
+									$("#end_time").val(result.data.end_time);
+									if(result.data.day+result.data.hour/10>result.data.available_year){
+										ui_alert('您的可用年假时间不足',function(){
 											location.reload();
 										});
 									}

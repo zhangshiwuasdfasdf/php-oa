@@ -2310,57 +2310,44 @@ function slice_time_day($start,$end){
 		if($start<=$start_morning){
 			if($end>=$end_afternoon){
 				return array(date('H:i',$start_morning).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
-// 				return $end_morning-$start_morning+$end_afternoon-$start_afternoon;
 			}elseif ($end>$start_afternoon && $end<$end_afternoon){
 				return array(date('H:i',$start_morning).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end).'|2|'.date('d',$start));
-// 				return $end_morning-$start_morning+$end-$start_afternoon;
 			}elseif ($end>=$end_morning && $end<=$start_afternoon){
 				return array(date('H:i',$start_morning).'-'.date('H:i',$end_morning).'|1|'.date('d',$start));
-// 				return $end_morning-$start_morning;
 			}elseif ($end>$start_morning && $end<$end_morning){
 				return array(date('H:i',$start_morning).'-'.date('H:i',$end).'|1|'.date('d',$start));
-// 				return $end-$start_morning;
 			}elseif ($end<=$start_morning){
 				return array();
 			}
 		}elseif($start>$start_morning && $start<$end_morning){
 			if($end>=$end_afternoon){
 				return array(date('H:i',$start).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
-// 				return $end_morning-$start+$end_afternoon-$start_afternoon;
 			}elseif ($end>$start_afternoon && $end<$end_afternoon){
 				return array(date('H:i',$start).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end).'|2|'.date('d',$start));
-// 				return $end_morning-$start+$end-$start_afternoon;
 			}elseif ($end>=$end_morning && $end<=$start_afternoon){
 				return array(date('H:i',$start).'-'.date('H:i',$end_morning).'|1|'.date('d',$start));
-// 				return $end_morning-$start;
 			}elseif ($end>$start_morning && $end<$end_morning){
 				return array(date('H:i',$start).'-'.date('H:i',$end).'|1|'.date('d',$start));
-// 				return $end-$start;
 			}
 		}elseif($start>=$end_morning && $start<=$start_afternoon){
 			if($end>=$end_afternoon){
 				return array(date('H:i',$start_afternoon).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
-// 				return $end_afternoon-$start_afternoon;
 			}elseif ($end>$start_afternoon && $end<$end_afternoon){
 				return array(date('H:i',$start_afternoon).'-'.date('H:i',$end).'|2|'.date('d',$start));
-// 				return $end-$start_afternoon;
 			}elseif ($end>=$end_morning && $end<=$start_afternoon){
 				return array();
 			}
 		}elseif($start>$start_afternoon && $start<$end_afternoon){
 			if($end>=$end_afternoon){
 				return array(date('H:i',$start).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
-// 				return $end_afternoon-$start;
 			}elseif ($end>$start_afternoon && $end<$end_afternoon){
 				return array(date('H:i',$start).'-'.date('H:i',$end).'|2|'.date('d',$start));
-// 				return $end-$start;
 			}
 		}elseif($start>=$end_afternoon){
 			return array();
 		}
 	}else{
 		return array(date('H:i',$start_morning).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
-// 		return $end_morning-$start_morning+$end_afternoon-$start_afternoon;
 	}
 }
 /*
@@ -2503,17 +2490,23 @@ function getAvailableHour($now,$uid){
 	}
 	
 	$three_month_ago = strtotime("-3 months",$now);
-	$res = M('FlowHour')->where(array('user_id'=>array('eq',$uid),'create_time'=>array('egt',$three_month_ago)))->sum('hour');
-	if(!empty($res)){
-		return $res;
-	}else{
-		return 0;
+	$res1 = M('FlowHour')->where(array('user_id'=>array('eq',$uid),'create_time'=>array('egt',$three_month_ago),'status'=>array('in','0,1')))->sum('hour');
+// 	$res2 = M('FlowHour')->where(array('user_id'=>array('eq',$uid),'create_time'=>array('egt',$three_month_ago),'status'=>array('eq','2')))->sum('hour');
+	
+	if(empty($res1)){
+		$res1 = 0;
 	}
+	return $res1;
 }
+
 function getAvailableYearHour($now,$uid){
 	if(empty($now)){
 		$now = time();
 	}
+	$this_year = date('Y',$now);
+	$this_month = date('m',$now);
+	$this_day = date('d',$now);
+	
 	if(empty($uid)){
 		$uid = get_user_id();
 	}
@@ -2536,22 +2529,50 @@ function getAvailableYearHour($now,$uid){
 					}
 				}
 			}
-			$year = (time()-strtotime($in_date2))/(365*24*60*60);
+			//这样的year只是模糊数，但是避免了闰月影响
+			$year = $this_year-$in_date1[0]+($this_month-$in_date1[1])/30+($this_day-$in_date1[2])/360;
+// 			$year = ($now-strtotime($in_date2))/(365*24*60*60);
 		}
 	}
 	if($year>=1){
-		$user = $model_user->where(array('id'=>array('eq',$uid)))->find();
+		$user = D('UserView')->where(array('id'=>array('eq',$uid)))->find();
 		$position_name = $user['position_name'];
+		
+		$start = strtotime($this_year.'-'.$in_date1[1].'-'.$in_date1[2]);
+		$end = strtotime(($this_year+1).'-'.$in_date1[1].'-'.$in_date1[2]);
+		
+		if($now<$start){
+			$end = $start;
+			$start = strtotime(($this_year-1).'-'.$in_date1[1].'-'.$in_date1[2]);
+		}
+		$where['user_id'] = array('eq',$uid);
+		$where['create_time'] = array('between',array($start,$end));
+		$where['status'] = array('in','0,1');
+		$half_day = M('FlowYear')->where($where)->sum('half_day');
+		
 		if($position_name=='助理' || $position_name=='员工' || $position_name=='主管'){
+			if($year<3){
+				return 5*2+$half_day;
+			}elseif ($year<10){
+				return 7*2+$half_day;
+			}else{
+				return 10*2+$half_day;
+			}
 			
-		}elseif($position_name=='助理' || $position_name=='员工' || $position_name=='主管'){
+		}elseif($position_name=='经理'){
+			if($year<3){
+				return 7*2+$half_day;
+			}elseif ($year<10){
+				return 7*2+$half_day;
+			}else{
+				return 10*2+$half_day;
+			}
 			
+		}elseif($position_name=='总监' || $position_name=='副总' || $position_name=='总经理'){
+			return 10*2+$half_day;
 		}
 	}else{
 		return 0;
 	}
-}
-function getOneAttendanceById($date,$uid){
-	return $date.' '.$uid;
 }
 ?>

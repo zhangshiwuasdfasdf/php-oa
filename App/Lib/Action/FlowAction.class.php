@@ -1253,6 +1253,7 @@ class FlowAction extends CommonAction {
 		}
 		
 		$info['available_hour'] = getAvailableHour();
+		$info['available_year'] = getAvailableYearHour()/2;
 		$this -> assign("user_info", $info);
 		$this -> assign("time", time());
 		$UserRecord = M('UserRecord')->where(array('user_id'=>array('eq',$uid)))->find();
@@ -1274,7 +1275,13 @@ class FlowAction extends CommonAction {
 						}
 					}
 				}
-				$year = (time()-strtotime($in_date2))/(365*24*60*60);
+				$now = time();
+				$this_year = date('Y',$now);
+				$this_month = date('m',$now);
+				$this_day = date('d',$now);
+				//这样的year只是模糊数，但是避免了闰月影响
+				$year = $this_year-$in_date1[0]+($this_month-$in_date1[1])/30+($this_day-$in_date1[2])/360;
+// 				$year = (time()-strtotime($in_date2))/(365*24*60*60);
 			}
 		}
 // 		dump($in_date);
@@ -1534,11 +1541,33 @@ class FlowAction extends CommonAction {
 			$hour = floor($hour_sum - $day*8);
 			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour),null,1);
 		}else{//请假、出勤证明，向上取整，8小时为一天
+			if($_GET['style']=='年假'){
+				$start_date = date('Y-m-d',strtotime($start_time));
+				$start_date_m_s = strtotime($start_date.' '.get_system_config("MORNING_START"));
+				$start_date_a_s = strtotime($start_date.' '.get_system_config("AFTERNOON_START"));
+				if(strtotime($start_time)>=$start_date_a_s){
+					$start_time = $start_date.' '.get_system_config("AFTERNOON_START");
+				}else{
+					$start_time = $start_date.' '.get_system_config("MORNING_START");
+				}
+					
+				$end_date = date('Y-m-d',strtotime($end_time));
+				$end_date_m_s = strtotime($end_date.' '.get_system_config("MORNING_END"));
+				$end_date_a_s = strtotime($end_date.' '.get_system_config("AFTERNOON_END"));
+				if(strtotime($end_time)<=$end_date_m_s){
+					$end_time = $end_date.' '.get_system_config("MORNING_END");
+				}else{
+					$end_time = $end_date.' '.get_system_config("AFTERNOON_END");
+				}
+			}
+			
 			$hour_sum = get_leave_seconds(strtotime($start_time),strtotime($end_time))/3600;
 			$day = floor($hour_sum/8);
 			$hour = ceil($hour_sum - $day*8);
 			$available_hour = getAvailableHour(strtotime($start_time));
-			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour,'available_hour'=>$available_hour),null,1);
+			$available_year = getAvailableYearHour(strtotime($start_time))/2;
+			
+			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour,'available_hour'=>$available_hour,'available_year'=>$available_year,'start_time'=>$start_time,'end_time'=>$end_time),null,1);
 		}
 		
 	}
@@ -1617,6 +1646,17 @@ class FlowAction extends CommonAction {
 					$data['flow_id'] = $flow_id;
 					$data['status'] = 0;
 					M('FlowHour')->add($data);
+				}
+				if($style=='年假'){
+					$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+					$create_time = strtotime($flow['start_time']);
+					$del_half_day = $flow['day_num']*2+($flow['hour_num']>0?1:0);
+					$data['half_day'] = $del_half_day*(-1);
+					$data['create_time'] = $create_time;
+					$data['user_id'] = get_user_id();
+					$data['flow_id'] = $flow_id;
+					$data['status'] = 0;
+					M('FlowYear')->add($data);
 				}
 			}
 			if ($list !== false) {//保存成功
@@ -2148,6 +2188,20 @@ class FlowAction extends CommonAction {
 									$data['status'] = 1;
 									M('FlowHour')->where('flow_id='.$flow_id)->save($data);
 								}
+							}else if($flow['style']=='年假'){
+								$flow_year = M('FlowYear')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+								if(!$flow_year){
+									$del_half_day = $flow['day_num']*2+($flow['hour_num']>0?1:0);
+									$flow = M('Flow')->find($flow_id);
+									$data['half_day'] = $del_half_day*(-1);
+									$data['create_time'] = $create_time;
+									$data['user_id'] = $flow['user_id'];
+									$data['status'] = 1;
+									M('FlowYear')->add($data);
+								}else{
+									$data['status'] = 1;
+									M('FlowYear')->where('flow_id='.$flow_id)->save($data);
+								}
 							}
 						}
 					}
@@ -2225,6 +2279,40 @@ class FlowAction extends CommonAction {
 
 					$user_id = M("Flow") -> where("id=$flow_id") -> getField('user_id');
 					$this -> _pushReturn($new, "您有一个流程被否决", 1, $user_id);
+					
+					if(getModelName($flow_id)=='FlowLeave'){//请假/调休单
+						$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+						$create_time = strtotime($flow['start_time']);
+						if($flow['style']=='调休'){
+							$flow_hour = M('FlowHour')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+							if(!$flow_hour){
+								$del_hour = $flow['day_num']*8+$flow['hour_num'];
+								$flow = M('Flow')->find($flow_id);
+								$data['hour'] = $del_hour*(-1);
+								$data['create_time'] = $create_time;
+								$data['user_id'] = $flow['user_id'];
+								$data['status'] = 2;
+								M('FlowHour')->add($data);
+							}else{
+								$data['status'] = 2;
+								M('FlowHour')->where('flow_id='.$flow_id)->save($data);
+							}
+						}else if($flow['style']=='年假'){
+							$flow_year = M('FlowYear')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+							if(!$flow_year){
+								$del_half_year = $flow['day_num']*2+($flow['hour_num']>0?1:0);
+								$flow = M('Flow')->find($flow_id);
+								$data['hour'] = $del_half_year*(-1);
+								$data['create_time'] = $create_time;
+								$data['user_id'] = $flow['user_id'];
+								$data['status'] = 2;
+								M('FlowYear')->add($data);
+							}else{
+								$data['status'] = 2;
+								M('FlowYear')->where('flow_id='.$flow_id)->save($data);
+							}
+						}
+					}
 
 					$this -> assign('jumpUrl', U('flow/folder?fid=confirm'));
 					$this -> success('操作成功!');
