@@ -129,6 +129,23 @@ function get_new_count() {
 	$where['is_read'] = array('eq', '0');
 	$new_message_count = M("Message") -> where($where) -> count();
 	$data['bc-message']['bc-message-new'] = $new_message_count;
+	
+	//获取最意见箱
+	$model = M("complaint");
+	$id = get_user_id();
+	$where1['visible'] = array(array('eq',$id),array('eq','0'),'or');
+	$compla = $model -> where($where1) -> select();
+	$num = 0;
+	foreach ($compla as $k => $v){
+		if(!empty($v['is_read'])){
+			$tmp = explode(',',$v['is_read']);
+			if(in_array($id,$tmp)){
+				$num++;
+			}
+		}
+	}
+	$new_message_count = count($compla) - $num;
+	$data['bc-complaint']['bc-complaint-new'] = $new_message_count;
 
 	//等我接受的任务
 	$where = array();
@@ -402,7 +419,6 @@ function get_user_info($id, $field) {
 	$model = D("UserView");
 	$where['id'] = array('eq', $id);
 	$result = $model -> where($where) -> getfield($field);
-	//dump($field);
 	return $result;
 }
 
