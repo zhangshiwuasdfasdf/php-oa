@@ -40,43 +40,45 @@ class DailyReportAction extends CommonAction {
 			$dept_menu = $node -> field('id,pid,name') -> where("is_del=0") -> order('sort asc') -> select();
 			$dept_tree = list_to_tree($dept_menu, $dept_id);
 			$count = count($dept_tree);
-			if (empty($count)) {
-				/*获取部门列表*/
-				$html = '';
-				$html = $html . "<option value='{$dept_id}'>{$dept_name}</option>";
-				$this -> assign('dept_list', $html);
-
-				//*获取人员列表*/
-				$rank_id = get_user_info(get_user_id(), 'rank_id');
-				$where['rank_id'] = array('gt', $rank_id);
-
-				$where['dept_id'] = array('eq', $dept_id);
-				$emp_list = D("User") -> where($where) -> getField('id,name');
-				$this -> assign('emp_list', $emp_list);
-			} else {
-				/*获取部门列表*/
-				$this -> assign('dept_list', select_tree_menu($dept_tree));
-				$dept_list = tree_to_list($dept_tree);
-				$dept_list = rotate($dept_list);
-				$dept_list = $dept_list['id'];
-
-				/*获取人员列表*/
-				$rank_id = get_user_info(get_user_id(), 'rank_id');
-				$where['rank_id'] = array('gt', $rank_id);
-
-				$where['dept_id'] = array('in', $dept_list);
-				$where['is_submit'] = array('eq', 1);
-				$where['_logic'] = 'or';
-
-				$map['_complex'] = $where;
-				$map['user_id'] = get_user_id();
-
-				$emp_list = D("User") -> where($map) -> getField('id,name');
-				$this -> assign('emp_list', $emp_list);
+			if(!is_mobile_request()){
+				if (empty($count)) {
+					/*获取部门列表*/
+					$html = '';
+					$html = $html . "<option value='{$dept_id}'>{$dept_name}</option>";
+					$this -> assign('dept_list', $html);
+				
+					//*获取人员列表*/
+					$rank_id = get_user_info(get_user_id(), 'rank_id');
+					$where['rank_id'] = array('gt', $rank_id);
+				
+					$where['dept_id'] = array('eq', $dept_id);
+					$emp_list = D("User") -> where($where) -> getField('id,name');
+					$this -> assign('emp_list', $emp_list);
+				} else {
+					/*获取部门列表*/
+					$this -> assign('dept_list', select_tree_menu($dept_tree));
+					$dept_list = tree_to_list($dept_tree);
+					$dept_list = rotate($dept_list);
+					$dept_list = $dept_list['id'];
+				
+					/*获取人员列表*/
+					$rank_id = get_user_info(get_user_id(), 'rank_id');
+					$where['rank_id'] = array('gt', $rank_id);
+				
+					$where['dept_id'] = array('in', $dept_list);
+					$where['is_submit'] = array('eq', 1);
+					$where['_logic'] = 'or';
+				
+					$map['_complex'] = $where;
+					$map['user_id'] = get_user_id();
+				
+					$emp_list = D("User") -> where($map) -> getField('id,name');
+					$this -> assign('emp_list', $emp_list);
+				}
 			}
+			
 		}
 
-		$map = $this -> _search();
 		if ($auth['admin']) {
 			if (empty($map['dept_id'])) {
 				if (!empty($dept_list)) {
@@ -86,6 +88,7 @@ class DailyReportAction extends CommonAction {
 				}
 			}
 		} else {
+			$map = $this -> _search();
 			if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
 				$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
 				$map['user_id'] = array('in',$child_ids);
@@ -96,9 +99,10 @@ class DailyReportAction extends CommonAction {
 			else{//查看自己的日志
 				$map['user_id'] = array('eq',intval(get_user_id()));
 			}
-			
 		}
 
+		
+		
 		if ( D("Role") -> check_duty('SHOW_LOG')) {//查看所有日志
 			$node = D("Dept");
 			$dept_id = get_dept_id();
@@ -106,28 +110,30 @@ class DailyReportAction extends CommonAction {
 			$dept_menu = $node -> field('id,pid,name') -> where("is_del=0") -> order('sort asc') -> select();
 			$dept_tree = list_to_tree($dept_menu);
 			$count = count($dept_tree);
-			if (empty($count)) {
-				/*获取部门列表*/
-				$html = '';
-				$html = $html . "<option value='{$dept_id}'>{$dept_name}</option>";
-				$this -> assign('dept_list', $html);
-				/*获取人员列表*/
-				$where['dept_id'] = array('eq', $dept_id);
-				$emp_list = D("User") -> where($where) -> getField('id,name');
-				$this -> assign('emp_list', $emp_list);
-			} else {
-				/*获取部门列表*/
-				$this -> assign('dept_list', select_tree_menu($dept_tree));
-				$dept_list = tree_to_list($dept_tree);
-				$dept_list = rotate($dept_list);
-				$dept_list = $dept_list['id'];
-
-				/*获取人员列表*/
-				$where['dept_id'] = array('in', $dept_list);
-				$emp_list = D("User") -> where($where) -> getField('id,name');
-				$this -> assign('emp_list', $emp_list);
+			if(!is_mobile_request()){
+				if (empty($count)) {
+					/*获取部门列表*/
+					$html = '';
+					$html = $html . "<option value='{$dept_id}'>{$dept_name}</option>";
+					$this -> assign('dept_list', $html);
+					/*获取人员列表*/
+					$where['dept_id'] = array('eq', $dept_id);
+					$emp_list = D("User") -> where($where) -> getField('id,name');
+					$this -> assign('emp_list', $emp_list);
+				} else {
+					/*获取部门列表*/
+					$this -> assign('dept_list', select_tree_menu($dept_tree));
+					$dept_list = tree_to_list($dept_tree);
+					$dept_list = rotate($dept_list);
+					$dept_list = $dept_list['id'];
+				
+					/*获取人员列表*/
+					$where['dept_id'] = array('in', $dept_list);
+					$emp_list = D("User") -> where($where) -> getField('id,name');
+					$this -> assign('emp_list', $emp_list);
+				}
 			}
-
+			
 			$where = array();
 			$map=array();
 			$where['is_submit'] = array('eq', 1);
@@ -146,20 +152,24 @@ class DailyReportAction extends CommonAction {
 
 		$model = D("DailyReport");
 		if (!empty($model)) {
-			$daily_report_common = $this -> _list($model, $map);
-			$daily_report_extension = array();
-			$model_comment = D("DailyReportComment");
-			$daily_ids = array();
-			$model_report_look = M('ReportLook');
-			foreach ($daily_report_common as $k=>$v){
-				$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
-				$daily_report_extension[$k]['comment_last'] = $comment_last['content'];
-				$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id'])))->find();
-				$daily_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
-			}
-			$this -> assign('daily_report_extension', $daily_report_extension);
-			$res = $model->where($map)->order('work_date desc')->limit(28)->select();//手机端app提供数据
-			if(is_mobile_request()){
+			if(!is_mobile_request()){
+				$daily_report_common = $this -> _list($model, $map);
+				$daily_report_extension = array();
+				$model_comment = D("DailyReportComment");
+				$daily_ids = array();
+				$model_report_look = M('ReportLook');
+				foreach ($daily_report_common as $k=>$v){
+					$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
+					if($comment_last){
+						$daily_report_extension[$k]['comment_last'] = $comment_last['content'];
+						$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id'])))->find();
+						$daily_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
+					}
+				}
+				$this -> assign('daily_report_extension', $daily_report_extension);
+			}else{
+				//手机端app提供数据
+				$res = $model->where($map)->order('work_date desc')->limit(28)->select();
 				$daily_report = array();
 				$model_daily_detail = M('DailyReportDetail');
 				foreach ($res as $k=>$v){
@@ -171,14 +181,16 @@ class DailyReportAction extends CommonAction {
 						$daily_detail[$kk]['author'] = $v['user_name'];
 						$daily_report[$k][] = $daily_detail[$kk];
 					}
-					
+						
 				}
 				$this -> assign('daily_report', $daily_report);
 			}
 		}
-		$this -> assign('now_time',time());
-		$this -> assign('end_time',$daily_ids);
-		$this -> assign('report',$report_look);	
+		if(!is_mobile_request()){
+			$this -> assign('now_time',time());
+			$this -> assign('end_time',$daily_ids);
+			$this -> assign('report',$report_look);
+		}
 		$this -> display();
 	}
 
