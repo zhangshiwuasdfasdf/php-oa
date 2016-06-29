@@ -429,7 +429,7 @@ function get_child_ids($parent_id){//获取直接下级的id
 	$model_user = D("User");
 	$pos_id = $model_user->where(array('id'=>$parent_id))->field('pos_id')->find();
 	if(!is_numeric($pos_id['pos_id'])){//已经是最下级了
-		return false;
+		return array();
 	}
 	if(!empty($pos_id)){
 		$model_dept = D("Dept");
@@ -451,7 +451,7 @@ function get_child_ids($parent_id){//获取直接下级的id
 		}
 		return $child_user_id;
 	}
-	return false;
+	return array();
 }
 function get_child_ids_2($parent_id){//获取下级的下级的id
 	if($parent_id){
@@ -468,7 +468,7 @@ function get_child_ids_2($parent_id){//获取下级的下级的id
 		}
 		return $new;
 	}else{
-		return false;
+		return array();
 	}
 }
 function get_child_ids_all($parent_id){//获取所有（包括间接）下级的id
@@ -479,12 +479,12 @@ function get_child_ids_all($parent_id){//获取所有（包括间接）下级的
 				$child_user_id[$k] = get_child_ids_all($child_user_idd);
 			}
 		}else{
-			return false;
+			return array();
 		}
 		return $child_user_id;
 	}
 	else{
-		return false;
+		return array();
 	}
 	
 }
