@@ -891,7 +891,7 @@ class FlowAction extends CommonAction {
 					$where['id'] = array('eq', $user_id);
 					$check_user = M('User')->where($where)->select();
 					if($check_user){
-						$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+						$array_time = slice_time_over_time(strtotime($v['start_time']),strtotime($v['end_time']));
 						foreach ($array_time as $kk => $vv){
 							$event = explode('|',$vv);
 							if($event[1]=='1'){//上午

@@ -2313,6 +2313,15 @@ function slice_time($start,$end){
 		return array_merge(slice_time_day($start,$start_date_1),slice_time($start_date_1,$end));
 	}
 }
+function slice_time_over_time($start,$end){
+	$start_date = date('Y-m-d',$start);
+	$start_date_1 = strtotime($start_date.' 00:00')+86400;
+	if($end<$start_date_1){
+		return slice_time_day_over_time($start,$end);
+	}else{
+		return array_merge(slice_time_day_over_time($start,$start_date_1),slice_time_over_time($start_date_1,$end));
+	}
+}
 function slice_time_day($start,$end){
 	if(is_holiday($start)=='1'){
 		return ;
@@ -2364,6 +2373,21 @@ function slice_time_day($start,$end){
 		}
 	}else{
 		return array(date('H:i',$start_morning).'-'.date('H:i',$end_morning).'|1|'.date('d',$start),date('H:i',$start_afternoon).'-'.date('H:i',$end_afternoon).'|2|'.date('d',$start));
+	}
+}
+function slice_time_day_over_time($start,$end){
+	$start_date = date('Y-m-d',$start);
+	$noon = strtotime($start_date.' 12:00');
+	if($end-$start<86400){
+		if($start>=$noon){
+			return array(date('H:i',$start).'-'.date('H:i',$end).'|2|'.date('d',$start));
+		}elseif($end<=$noon){
+			return array(date('H:i',$start).'-'.date('H:i',$end).'|1|'.date('d',$start));
+		}else{
+			return array(date('H:i',$start).'-'.date('H:i',$noon).'|1|'.date('d',$start),date('H:i',$noon).'-'.date('H:i',$end).'|2|'.date('d',$start));
+		}
+	}else{
+		return array(date('H:i',$start).'-'.date('H:i',$noon).'|1|'.date('d',$start),date('H:i',$noon).'-'.date('H:i',$end).'|2|'.date('d',$start));
 	}
 }
 /*
