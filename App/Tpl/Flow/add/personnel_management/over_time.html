@@ -20,8 +20,8 @@
   <tr>
     <td width="88" height="50" align="center">加班时间</td>
     <td height="50" colspan="3">自
-    	<input id="start_time" name="start_time" onchange="cal($('#start_time').val(),$('#end_time').val(),'over_time')" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date-time-h"/>至
-    	<input id="end_time" name="end_time" onchange="cal($('#start_time').val(),$('#end_time').val(),'over_time')" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date-time-h"/>止，共计
+    	<input id="start_time" name="start_time" onchange="cal($('#start_time').val(),$('#end_time').val(),'over_time')" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date-time-h" check="require" msg="请输入开始时间" />至
+    	<input id="end_time" name="end_time" onchange="cal($('#start_time').val(),$('#end_time').val(),'over_time')" data-date-format="yyyy-mm-dd" type="text" class="form-control input-date-time-h" check="require" msg="请输入结束时间"/>止，共计
     	<input id="day_num" name="day_num" style=" width:5%;text-align:center; border-bottom:1px #000 solid" type="text" />天（工作日）
     	<input id="hour_num" name="hour_num" style=" width:5%;text-align:center; border-bottom:1px #000 solid" type="text" />时
     </td>
