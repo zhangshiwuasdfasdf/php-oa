@@ -1593,6 +1593,7 @@ class FlowAction extends CommonAction {
 		if (in_array('user_name', $model -> getDbFields())) {
 			$model -> user_name = get_user_name();
 		};
+		$step = $model -> step;
 // 		$str_confirm = D("Flow") -> _conv_auditor($model -> confirm);
 // 		$str_consult = D("Flow") -> _conv_auditor($model -> consult);
 // 		$str_auditor = $str_confirm . $str_consult;
@@ -1644,7 +1645,7 @@ class FlowAction extends CommonAction {
 					$data['create_time'] = $create_time;
 					$data['user_id'] = get_user_id();
 					$data['flow_id'] = $flow_id;
-					$data['status'] = 0;
+					$data['status'] = $step==10?3:0;
 					M('FlowHour')->add($data);
 				}
 				if($style=='年假'){
@@ -1655,7 +1656,7 @@ class FlowAction extends CommonAction {
 					$data['create_time'] = $create_time;
 					$data['user_id'] = get_user_id();
 					$data['flow_id'] = $flow_id;
-					$data['status'] = 0;
+					$data['status'] = $step==10?3:0;
 					M('FlowYear')->add($data);
 				}
 			}
@@ -2092,6 +2093,9 @@ class FlowAction extends CommonAction {
 		$flow_id = $_POST['flow_id'];//model中没有flow_id，所以不能用$model -> flow_id
 		$model -> id = $flow_id;
 		
+		$step = $_POST['step'];
+		$style = $_POST['style'];
+		
 		$list = $model -> save();
 		$model_flow_filed = D("FlowField") -> set_field($flow_id);
 		if (false !== $list) {
@@ -2114,6 +2118,18 @@ class FlowAction extends CommonAction {
 			$model -> id = $idd;
 			
 			$list = $model -> save();
+			
+			if(getModelName($flow_id)=='FlowLeave'){
+				if($style=='调休'){
+					$data['status'] = $step==10?3:0;
+					M('FlowHour')->where('flow_id='.$flow_id)->save($data);
+				}
+				if($style=='年假'){
+					$data['status'] = $step==10?3:0;
+					M('FlowYear')->where('flow_id='.$flow_id)->save($data);
+				}
+			}
+			
 			if (false !== $list) {
 				$this -> assign('jumpUrl', get_return_url());
 				$this -> success('编辑成功!');
