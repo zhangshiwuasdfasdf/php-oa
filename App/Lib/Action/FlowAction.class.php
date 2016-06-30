@@ -872,6 +872,39 @@ class FlowAction extends CommonAction {
 				}
 			}
 			
+			//加班单中取出数据并组织
+			$where_overtime_time['start_time'] = array('like','%'.$date.'%');
+			$where_overtime_time['end_time'] = array('like','%'.$date.'%');
+			$where_overtime_time['_logic'] = 'or';
+			$where_overtime['_complex'] = $where_overtime_time;
+			$where_overtime['flow_id'] = array('not in',$not_flow_id['flow_id']);
+			$flow_overtime = M('FlowOverTime')->where($where_overtime)->select();
+				
+			foreach ($flow_overtime as $k => $v){
+				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
+				$user_id = $user_id['user_id'];
+				if(isHeadquarters($user_id) == 0 && $user_id != 1){//总部且不是管理员
+					$where['is_del'] = array('eq', '0');
+					$where['pos_id'] = array('in', $dept);
+					$where_pos_id['pos_id'] = array('not in', $dept_exc);
+					$where['_complex'] = $where_pos_id;
+					$where['id'] = array('eq', $user_id);
+					$check_user = M('User')->where($where)->select();
+					if($check_user){
+						$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
+						foreach ($array_time as $kk => $vv){
+							$event = explode('|',$vv);
+							if($event[1]=='1'){//上午
+								$content[$user_id*2][$event[2]] .= '加班'.':'.$event[0].' ';
+							}elseif($event[1]=='2'){//下午
+								$content[$user_id*2+1][$event[2]] .= '加班'.':'.$event[0].' ';
+							}
+			
+						}
+					}
+				}
+			}
+			
 			//导入thinkphp第三方类库
 			Vendor('Excel.PHPExcel');
 			
