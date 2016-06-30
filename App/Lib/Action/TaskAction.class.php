@@ -313,14 +313,19 @@ class TaskAction extends CommonAction {
 			$model -> transactor = get_user_id();
 			$model -> transactor_name = get_user_name();
 			$model -> finish_time = toDate(time());
+			
+			if(is_mobile_request()){
+				$model -> id = $_POST['idd'];
+			}
 			$list = $model -> save();
+			
 			if ($list !== false) {
 				$this -> success('提交成功');
 			} else {
 				$this -> success('提交失败');
 			}
 		}
-
+		
 		$task_id = I('task_id');
 		$where_log1['type'] = 2;
 		$where_log1['executor'] = get_dept_id();
