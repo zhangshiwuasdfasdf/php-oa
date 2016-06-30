@@ -824,14 +824,15 @@ class FlowAction extends CommonAction {
 					$where['_complex'] = $where_pos_id;
 					$where['id'] = array('eq', $user_id);
 					$check_user = M('User')->where($where)->select();
+					$type = $v['outside_type']?$v['outside_type']:'外勤/出差';
 					if($check_user){
 						$array_time = slice_time(strtotime($v['start_time']),strtotime($v['end_time']));
 						foreach ($array_time as $kk => $vv){
 							$event = explode('|',$vv);
 							if($event[1]=='1'){//上午
-								$content[$user_id*2][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
+								$content[$user_id*2][$event[2]] .= $type.':'.$event[0].' ';
 							}elseif($event[1]=='2'){//下午
-								$content[$user_id*2+1][$event[2]] .= '外勤/出差'.':'.$event[0].' ';
+								$content[$user_id*2+1][$event[2]] .= $type.':'.$event[0].' ';
 							}
 						
 						}
