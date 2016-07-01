@@ -13,7 +13,7 @@
 
 class StaffAction extends CommonAction {
 	//过滤查询字段
-	protected $config=array('app_type'=>'common');
+	protected $config=array('app_type'=>'common', 'action_auth' => array('get_dept_and_user' => 'read'));
 	private $position;
 	private $rank;
 	private $dept;
@@ -42,6 +42,7 @@ class StaffAction extends CommonAction {
 			$menu = array();
 			$where['is_del'] = array('eq',0);
 			$menu = $node -> field('id,pid,name') ->where($where)-> order('sort asc') -> select();
+		
 			$tree = list_to_tree($menu);
 			$a = popup_tree_menu($tree,0,100,true);
 			
@@ -73,6 +74,26 @@ class StaffAction extends CommonAction {
 		
 		$this -> ajaxReturn($data, "", 1);
 	}
-	
+	public function get_dept_and_user(){
+		$node = D("Dept");
+		$menu = array();
+		$where['is_del'] = array('eq',0);
+		$menu = $node -> field('id,pid,name') ->where($where)-> order('sort asc') -> select();
+		foreach ($menu as $k=>$v){
+			$users = M('User')->field('id,name,pos_id as pid')->where(array('pos_id'=>$v['id']))->select();
+			foreach ($users as $kk=>$vv){
+				$users[$kk]['id'] = $users[$kk]['name'].'|'.$users[$kk]['id'].';';
+				$menu[] = $users[$kk];
+			}
+		}
+		$tree = list_to_tree($menu);
+		$a = popup_tree_menu($tree,0,100,true);
+			
+		$a = str_replace('tree_menu','submenu',$a);
+		$a = str_replace('<a class=""','<a class="dropdown-toggle"',$a);
+		$a = preg_replace('/submenu/','nav-list',$a,1);
+// 		echo $a;
+		$this -> ajaxReturn($a, "", 1);
+	}
 }
 ?>
