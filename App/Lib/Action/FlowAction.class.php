@@ -1371,7 +1371,7 @@ class FlowAction extends CommonAction {
 		if(empty($uid)){
 			return false;
 		}
-		$flow = array(getDeptManagerId($uid),getHRDeputyGeneralManagerId($uid));
+		$flow = array(getParentid($uid),getHRDeputyGeneralManagerId($uid));
 		if(!empty($flow)){
 			$this->ajaxReturn(getFlowData($flow),null,1);
 		}else{
@@ -1384,8 +1384,8 @@ class FlowAction extends CommonAction {
 		if(empty($uid)){
 			return false;
 		}
-		$dept_uid = getDeptManagerId($uid,$dept_id);
-		$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid));
+		$Parentid = getParentid($uid);
+		$flow = array($Parentid,getHRDeputyGeneralManagerId($uid));
 		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 	}
 	public function ajaxgetflow_employment(){//用工申请表
