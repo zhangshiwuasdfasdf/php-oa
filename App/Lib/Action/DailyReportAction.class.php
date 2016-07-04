@@ -181,9 +181,8 @@ class DailyReportAction extends CommonAction {
 						$daily_detail[$kk]['author'] = $v['user_name'];
 						$daily_report[$k][] = $daily_detail[$kk];
 					}
-						
 				}
-				$this -> assign('daily_report', $daily_report);
+				$this -> assign('daily_report', array_values(array_filter($daily_report)));
 			}
 		}
 		if(!is_mobile_request()){

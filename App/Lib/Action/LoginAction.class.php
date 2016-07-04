@@ -268,8 +268,25 @@ class LoginAction extends Action {
 			$map['id'] = array('in', $log_list['flow_id']);
 			$new_confirm_count = M("Flow") -> where($map) -> count();
 		}
+		//流程通过提示
+		$flow_id = M('Flow')->field('id')->where(array('user_id'=>$id))->select();
+		$flow_id = rotate($flow_id);
+		$flow_id = $flow_id['id'];
+		$time = time();
+		$where = array();
+		$where['flow_id'] = array('in',$flow_id);
+		$where['_string'] = "result is not null";
+		$where['update_time'] = array('between',array($time-30,$time));
+		$log_message_list = $FlowLog -> field('user_name,result') -> where($where) -> select();
+		$flow_pass_message = '';
+		if(!empty($log_message_list)){
+			foreach ($log_message_list as $v){
+				$result = $v['result']=='1'?'同意':'否决';
+				$flow_pass_message .=$v['user_name'].'已'.$result.'了您的流程 ';
+			}
+		}
 		
-		$data = array('data'=>array('message'=>array('data'=>$message,'count'=>count($message)),'task'=>array('data'=>$task,'count'=>count($task)),'flow'=>array('count'=>$new_confirm_count)),'status'=>1);
+		$data = array('data'=>array('message'=>array('data'=>$message,'count'=>count($message)),'task'=>array('data'=>$task,'count'=>count($task)),'flow'=>array('count'=>$new_confirm_count,'flow_pass_message'=>$flow_pass_message)),'status'=>1);
 		$this->ajaxReturn($data,'JSON');
 	}
 }
