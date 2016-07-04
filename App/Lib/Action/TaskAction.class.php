@@ -347,12 +347,6 @@ class TaskAction extends CommonAction {
 	}
 
 	public function save_log($id) {
-// 		$open=fopen("C:\log.txt","a" );
-// 		fwrite($open,json_encode($id)."\r\n");
-// 		fwrite($open,json_encode($_GET)."\r\n");
-// 		fwrite($open,json_encode($_POST)."\r\n");
-// 		fclose($open);
-		
 		$model = D("TaskLog");
 		if (false === $model -> create()) {
 			$this -> error($model -> getError());

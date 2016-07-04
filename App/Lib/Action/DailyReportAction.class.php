@@ -151,20 +151,18 @@ class DailyReportAction extends CommonAction {
 		}
 
 		$model = D("DailyReport");
+		$daily_ids = array();
 		if (!empty($model)) {
 			if(!is_mobile_request()){
 				$daily_report_common = $this -> _list($model, $map);
 				$daily_report_extension = array();
 				$model_comment = D("DailyReportComment");
-				$daily_ids = array();
 				$model_report_look = M('ReportLook');
 				foreach ($daily_report_common as $k=>$v){
 					$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
-					if($comment_last){
-						$daily_report_extension[$k]['comment_last'] = $comment_last['content'];
-						$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id'])))->find();
-						$daily_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
-					}
+					$daily_report_extension[$k]['comment_last'] = $comment_last['content'];
+					$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id'])))->find();
+					$daily_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
 				}
 				$this -> assign('daily_report_extension', $daily_report_extension);
 			}else{
