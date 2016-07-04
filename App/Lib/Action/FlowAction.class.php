@@ -769,12 +769,20 @@ class FlowAction extends CommonAction {
 
 			$not_flow_id = M('FlowLog')->field('flow_id')->where('result is null')->select();
 			$not_flow_id = rotate($not_flow_id);
+			$not_flow_id = $not_flow_id['flow_id'];
+			
+			$not_flow_id_2 = M('Flow')->where(array('step'=>array('neq',40),'is_del'=>array('eq',1),'_logic'=>'or'))->field('id')->select();
+			$not_flow_id_2 = rotate($not_flow_id_2);
+			$not_flow_id_2 = $not_flow_id_2['id'];
+			
+			$not_flow_id = array_merge($not_flow_id,$not_flow_id_2);
+			
 			//请假单中取出数据并组织
 			$where_leave_time['start_time'] = array('like','%'.$date.'%');
 			$where_leave_time['end_time'] = array('like','%'.$date.'%');
 			$where_leave_time['_logic'] = 'or';
 			$where_leave['_complex'] = $where_leave_time;
-			$where_leave['flow_id'] = array('not in',$not_flow_id['flow_id']);
+			$where_leave['flow_id'] = array('not in',$not_flow_id);
 			$flow_leave = M('FlowLeave')->where($where_leave)->select();
 			$content = array();
 			foreach ($users as $k => $v){
@@ -782,7 +790,7 @@ class FlowAction extends CommonAction {
 				$content[$v['id']*2+1] = array('A'=>$v['duty'],'B'=>$v['name']);
 			}
 			foreach ($flow_leave as $k => $v){
-				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
+				$user_id = M('Flow')->where(array('step'=>array('eq',40),'is_del'=>array('eq',0)))->field('user_id')->find($v['flow_id']);
 				$user_id = $user_id['user_id'];
 				if(isHeadquarters($user_id) == 0 && $user_id != 1){//总部且不是管理员
 					$where['is_del'] = array('eq', '0');
@@ -811,11 +819,11 @@ class FlowAction extends CommonAction {
 			$where_outside_time['end_time'] = array('like','%'.$date.'%');
 			$where_outside_time['_logic'] = 'or';
 			$where_outside['_complex'] = $where_outside_time;
-			$where_outside['flow_id'] = array('not in',$not_flow_id['flow_id']);
+			$where_outside['flow_id'] = array('not in',$not_flow_id);
 			$flow_outside = M('FlowOutside')->where($where_outside)->select();
 		
 			foreach ($flow_outside as $k => $v){
-				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
+				$user_id = M('Flow')->where(array('step'=>array('eq',40),'is_del'=>array('eq',0)))->field('user_id')->find($v['flow_id']);
 				$user_id = $user_id['user_id'];
 				if(isHeadquarters($user_id) == 0 && $user_id != 1){//总部且不是管理员
 					$where['is_del'] = array('eq', '0');
@@ -845,11 +853,11 @@ class FlowAction extends CommonAction {
 			$where_attendance_time['end_time'] = array('like','%'.$date.'%');
 			$where_attendance_time['_logic'] = 'or';
 			$where_attendance['_complex'] = $where_attendance_time;
-			$where_attendance['flow_id'] = array('not in',$not_flow_id['flow_id']);
+			$where_attendance['flow_id'] = array('not in',$not_flow_id);
 			$flow_attendance = M('FlowAttendance')->where($where_attendance)->select();
 			
 			foreach ($flow_attendance as $k => $v){
-				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
+				$user_id = M('Flow')->where(array('step'=>array('eq',40),'is_del'=>array('eq',0)))->field('user_id')->find($v['flow_id']);
 				$user_id = $user_id['user_id'];
 				if(isHeadquarters($user_id) == 0 && $user_id != 1){//总部且不是管理员
 					$where['is_del'] = array('eq', '0');
@@ -878,11 +886,11 @@ class FlowAction extends CommonAction {
 			$where_overtime_time['end_time'] = array('like','%'.$date.'%');
 			$where_overtime_time['_logic'] = 'or';
 			$where_overtime['_complex'] = $where_overtime_time;
-			$where_overtime['flow_id'] = array('not in',$not_flow_id['flow_id']);
+			$where_overtime['flow_id'] = array('not in',$not_flow_id);
 			$flow_overtime = M('FlowOverTime')->where($where_overtime)->select();
 				
 			foreach ($flow_overtime as $k => $v){
-				$user_id = M('Flow')->field('user_id')->find($v['flow_id']);
+				$user_id = M('Flow')->where(array('step'=>array('eq',40),'is_del'=>array('eq',0)))->field('user_id')->find($v['flow_id']);
 				$user_id = $user_id['user_id'];
 				if(isHeadquarters($user_id) == 0 && $user_id != 1){//总部且不是管理员
 					$where['is_del'] = array('eq', '0');
