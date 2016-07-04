@@ -5,6 +5,20 @@
 			$(this).parent().parent().remove();
 		});
 		/* 查找联系人input 功能*/
+		$(document).on("click", ".inputbox .search li", function() {
+			name = $(this).text().replace(/<.*>/, '');
+			email = $(this).find("a").attr("title");
+			id = $(this).find("a").attr("data");
+			html = conv_inputbox_item(id, name, email, email);
+
+			inputbox = $(this).parents(".inputbox");
+			inputbox.find("span.address_list").append(html);
+			inputbox.find("input.letter").val("");
+			inputbox.find(".search ul").html("");
+			inputbox.find(".search ul").hide();
+			inputbox.find(".search").hide();
+		});
+		/* 查找联系人input 功能*/
 		$(".inputbox .letter").keyup(function(e) {
 			switch(e.keyCode) {
 				case 40:

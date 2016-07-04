@@ -7,6 +7,12 @@
 			calc_score();
 		});
 		
+		$("select[name='work_date']").change(function(){
+			sendAjax("{:U('getSelectTime')}", "val=" + $(this).val(), function(data) {
+				showdata(data);
+			});
+		});
+		
 		$("select[name='is_need_help[]']").change(function(){
 			if($(this).val()==1){
 				$parent=$(this).parents("div.work_plan");
@@ -17,7 +23,22 @@
 		});
 
 	});
-
+	
+	function showdata(result) {
+		jQuery("select[name='start_time']").empty();
+		jQuery("select[name='end_time']").empty();
+		jQuery("select[name='plan_start_time[]']").empty();
+		jQuery("select[name='plan_end_time[]']").empty();
+		$html = "";
+		for(var s in result){
+			$html += "<option value='" +result[s]+ "'>"+result[s]+"</option>";
+		}
+		$("select[name='start_time']").append($html);
+		$("select[name='end_time']").append($html);
+		$("select[name='plan_start_time[]']").append($html);
+		$("select[name='plan_end_time[]']").append($html);
+	}
+	
 	function init_data() {
 		<volist name = "last_report_detail"	id = "vo" >		
 		if({$key}>2){

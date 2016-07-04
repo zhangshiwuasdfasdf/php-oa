@@ -2476,15 +2476,15 @@ function exp_info($info){
 	return '';
 }
 function seniority($date2){
-	$date1 = date("Y-m-d");
+	$date1 = date("Y/m/d");
 	if(!empty($date2)){
 		if(strtotime($date1)>strtotime($date2)){  
         $tmp=$date2;  
         $date2=$date1;  
         $date1=$tmp;  
 	    }  
-	    list($Y1,$m1,$d1)=explode('.',$date1);  
-	    list($Y2,$m2,$d2)=explode('-',$date2);  
+	    list($Y1,$m1,$d1)=explode('/',$date1);  
+	    list($Y2,$m2,$d2)=explode('/',$date2);  
 	    $Y=$Y2-$Y1;  
 	    $m=$m2-$m1;  
 	    $d=$d2-$d1;  

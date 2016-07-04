@@ -36,3 +36,17 @@
           </ul>
         </div><!-- /.navbar-collapse -->
       </nav>
+
+      
+<script src="__PUBLIC__/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {	
+	$('.nav-app').hover(function() {
+		$('ul', this).slideDown(200);
+		$(this).children('a:first').addClass("hov");
+	}, function() {
+		$('ul', this).slideUp(100);
+		$(this).children('a:first').removeClass("hov");		
+	});
+});
+</script>

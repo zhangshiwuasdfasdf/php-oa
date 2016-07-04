@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class MonthlyReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_monthly_report' => 'read','import_monthly_report' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('getselecttime'=>'read','share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_monthly_report' => 'read','import_monthly_report' => 'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -153,8 +153,7 @@ class MonthlyReportAction extends CommonAction {
 
 		$date_1 = date('Y-m', strtotime('0 month'));
 		$date_2 = date('Y-m', strtotime('-1 month'));
-		$date_3 = date('Y-m', strtotime('-2 month'));
-		$work_date_list = array($date_1 => $date_1, $date_2 => $date_2, $date_3 => $date_3);
+		$work_date_list = array($date_1 => $date_1, $date_2 => $date_2);
 		$this -> assign('work_date_list', $work_date_list);
 
 		$where_last['user_id'] = array('eq', get_user_id());
@@ -177,6 +176,22 @@ class MonthlyReportAction extends CommonAction {
 		$this -> assign('time', $time);
 
 		$this -> display();
+	}
+	
+	public function getSelectTime(){
+		$val = $_REQUEST['val'];
+		$time = array();
+		if(date("Y-m") == $val){
+			$begin=date('Y-m-01', strtotime(date("Y-m-d")));
+		}else{
+			$begin=date('Y-m-01', strtotime("-1 month"));
+		}
+	    $end = date('Y-m-d', strtotime("$begin +1 month +6 day"));
+	    $begin = strtotime($begin);$end = strtotime($end);
+	    for ($i = $begin ;$i <= $end ; $i+=24*3600){
+	    	$time[date("Y-m-d",$i)] = date("Y-m-d", $i);
+	    }
+	    $this -> ajaxReturn($time);
 	}
 
 	public function read($id) {
@@ -325,6 +340,9 @@ class MonthlyReportAction extends CommonAction {
 	}
 
 	function del($id){
+		$path = get_save_path()."excel_monthly/";
+		$path .= $id .".txt";
+		@unlink ($path);
 		$this->_del($id);
 	}
 		

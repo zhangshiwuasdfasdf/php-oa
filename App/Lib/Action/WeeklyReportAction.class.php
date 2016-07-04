@@ -171,6 +171,7 @@ class WeeklyReportAction extends CommonAction {
 		
 		$time = array();
 		$begin=date('Y-m-01', strtotime(date("Y-m-d")));
+		$begin=date('Y-m-d', strtotime("$begin -6 day"));
 	    $end = date('Y-m-d', strtotime("$begin +1 month +6 day"));
 	    $begin = strtotime($begin);$end = strtotime($end);
 	    for ($i = $begin ;$i <= $end ; $i+=24*3600){
@@ -422,6 +423,9 @@ class WeeklyReportAction extends CommonAction {
 	}
 	
 	function del($id) {
+		$path = get_save_path()."excel_weekly/";
+		$path .= $id .".txt";
+		@unlink ($path);
 		$this -> _del($id);
 	}
 
