@@ -1490,7 +1490,7 @@ class FlowAction extends CommonAction {
 		$dept_id = $_POST['dept_id'];
 		$parentid = getParentid($uid);
 		$dept_uid = getDeptManagerId($uid);
-		$flow = array($parentid,$dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
+		$flow = array(getHRDeputyGeneralManagerId($uid),$parentid,$dept_uid);
 		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 	}
 	function ajaxgetflow_personnel_changes(){
@@ -1831,7 +1831,7 @@ class FlowAction extends CommonAction {
 			$dept_id = $vo['dept_id'];
 			$parentid = getParentid($uid);
 			$dept_uid = getDeptManagerId($uid);
-			$flow = array($parentid,$dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
+			$flow = array(getHRDeputyGeneralManagerId($uid),$parentid,$dept_uid);
 		}elseif ($vo['name']=='员工调岗、调职申请'){
 			$uid = $vo['user_id'];
 			$dept_id_from = $vo['dept_id'];

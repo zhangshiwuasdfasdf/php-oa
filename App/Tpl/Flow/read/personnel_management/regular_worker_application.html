@@ -21,58 +21,59 @@
   </tr>
   <tr>
     <td width="12%" height="140" align="center">试用期的工作总结</td>
-    <td height="140" colspan="7"><p>（另附表，限800字以上）</p><textarea id="summarize" name="summarize" style="outline:none; border:none; resize:none; width:97%; padding-left:5px;" rows="5" disabled>{$vo.summarize}</textarea></td>
+    <td height="140" colspan="7"><p>（另附表，限800字以上）</p><div id="summarize" name="summarize" style="outline:none; border:none; resize:none; width:97%; padding-left:5px;" rows="5" disabled>{$vo.summarize}</div></td>
   </tr>
   <tr>
     <td width="12%" height="80" align="center">试用期的收获</td>
-    <td height="80" colspan="7"><textarea id="gain" name="gain" style="outline:none; border:none; resize:none; width:99%; padding-left:5px;" rows="3" disabled>{$vo.gain}</textarea></td>
+    <td height="80" colspan="7"><div id="gain" name="gain" style="outline:none; border:none; resize:none; width:99%; padding-left:5px;" rows="3" disabled>{$vo.gain}</div></td>
   </tr>
   <tr>
     <td width="12%" height="80" align="center">个人今后的工作设想</td>
-    <td height="80" colspan="7"><textarea id="imagine" name="imagine" style="outline:none; border:none; resize:none; width:99%; padding-left:5px;" rows="3" disabled>{$vo.imagine}</textarea></td>
+    <td height="80" colspan="7"><div id="imagine" name="imagine" style="outline:none; border:none; resize:none; width:99%; padding-left:5px;" rows="3" disabled>{$vo.imagine}</div></td>
   </tr>
   <tr>
     <td width="12%" height="80" align="center">对部门或公司的建议</td>
-    <td height="80" colspan="7"><textarea id="suggestion" name="suggestion" style="outline:none; border:none; resize:none; width:99%; padding-left:5px;" rows="3" disabled>{$vo.suggestion}</textarea></td>
+    <td height="80" colspan="7"><div id="suggestion" name="suggestion" style="outline:none; border:none; resize:none; width:99%; padding-left:5px;" rows="3" disabled>{$vo.suggestion}</div></td>
   </tr>
   <tr>
     <td width="12%" height="36" align="center">申请人签字</td>
     <td height="36" colspan="2"><input value="{$vo.user_name}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
     <td width="13%" height="36" align="center">申请日期</td>
-    <td height="36" colspan="4"><input id="apply_date" name="apply_date" value="{$vo.apply_date}" data-date-format="yyyy-mm-dd" style="border:none; outline:none; padding-left:20px;" type="text" class="form-control input-date" disabled/></td>
-  </tr>
-  <tr>
-    <td width="12%" height="140" align="center">部门领导意见</td>
-    <td style="padding-left:5px;" height="140" colspan="7">
-    <p>综合评述：</p><textarea id="dept_leader_review" name="dept_leader_review" onchange="setDeptLeaderReview($('#dept_leader_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.1 neq 1)">disabled</if> style="outline:none; border:none; resize:none; width:99%;" rows="3">{$vo.dept_leader_review}</textarea>
-    <p>建议自<input id="dept_leader_date" name="dept_leader_date" value="{$vo.dept_leader_date}" onchange="setDeptLeaderDate($('#dept_leader_date').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.1 neq 1)">disabled</if> data-date-format="yyyy-mm-dd" style="outline:none; border:none; padding-left:10px;" type="text" class="form-control input-date-time"/>起执行</p>
-    <p style="margin-left:70%;">签字/日期：<input <if condition="($flow_log_all[0])"> value="{$flow_log_all[0].user_name}/{$flow_log_all[0].create_time|toDate='Y-m-d'}"</if> style="outline:none; border:none; width:10%; text-align:center;" type="text" disabled/></p></td>
-  </tr>
-  <tr>
-    <td width="12%" height="140" align="center">部门总监意见</td>
-    <td style="padding-left:5px;" height="140" colspan="7">
-    <p>综合评述：</p><textarea id="dept_director_review" name="dept_director_review" onchange="setDeptDirectorReview($('#dept_director_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.2 neq 2)">disabled</if> style="outline:none; border:none; resize:none; width:99%;" rows="3">{$vo.dept_director_review}</textarea>
-    <p>建议自<input id="dept_director_date" name="dept_director_date" value="{$vo.dept_director_date}" onchange="setDeptDirectorDate($('#dept_director_date').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.2 neq 2)">disabled</if> data-date-format="yyyy-mm-dd" style="outline:none; border:none; padding-left:10px;" type="text" class="form-control input-date-time"/>起执行</p>
-    <p style="margin-left:70%;">签字/日期：<input <if condition="($flow_log_all[1])"> value="{$flow_log_all[1].user_name}/{$flow_log_all[1].create_time|toDate='Y-m-d'}"</if> style="outline:none; border:none; width:10%; text-align:center;" type="text" disabled/></p></td>
+    <td height="36" colspan="4"><input id="apply_date" name="apply_date" value="{$vo.apply_date}" data-date-format="yyyy-mm-dd" style="border:none; outline:none; padding-left:11px;" type="text" class="form-control input-date" disabled/></td>
   </tr>
   <tr>
     <td width="12%" height="100" align="center">人事行政部意见</td>
     <td style="padding-left:5px;" height="100" colspan="7">
     <p>
-        <input type="radio" name="hr_type" value="建议转正" onclick="setHrType('建议转正',{$vo.id},{$vo.flow_id})" <if condition="($vo.hr_type eq '建议转正')">checked="checked"</if> <if condition="($flow_index.3 neq 3)">disabled</if>/>建议转正
-        <input type="radio" name="hr_type" value="建议延长试用期" onclick="setHrType('建议延长试用期',{$vo.id},{$vo.flow_id})" <if condition="($vo.hr_type eq '建议延长试用期')">checked="checked"</if>  <if condition="($flow_index.3 neq 3)">disabled</if>/>建议延长试用期至
-        <input id="hr_add_date" name="hr_add_date" value="{$vo.hr_add_date}" onchange="setHrAddDate($('#hr_add_date').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.3 neq 3)">disabled</if>  data-date-format="yyyy-mm-dd" class="form-control input-date-time"  style="outline:none; border:none; margin-left:10px;" type="text"/>(三个月为限)
+        <input type="radio" name="hr_type" value="建议转正" onclick="setHrType('建议转正',{$vo.id},{$vo.flow_id})" <if condition="($vo.hr_type eq '建议转正')">checked="checked"</if> <if condition="($flow_index.1 neq 1)">disabled</if>/>建议转正
+        <input type="radio" name="hr_type" value="建议延长试用期" onclick="setHrType('建议延长试用期',{$vo.id},{$vo.flow_id})" <if condition="($vo.hr_type eq '建议延长试用期')">checked="checked"</if>  <if condition="($flow_index.1 neq 1)">disabled</if>/>建议延长试用期至
+        <input id="hr_add_date" name="hr_add_date" value="{$vo.hr_add_date}" onchange="setHrAddDate($('#hr_add_date').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.1 neq 1)">disabled</if>  data-date-format="yyyy-mm-dd" class="form-control input-date-time"  style="outline:none; border:none; margin-left:10px;" type="text"/>(三个月为限)
     </p>
-   <p>建议自<input id="hr_execute" name="hr_execute" value="{$vo.hr_execute}" onchange="setHrExecute($('#hr_execute').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.3 neq 3)">disabled</if> data-date-format="yyyy-mm-dd" class="form-control input-date-time"style="outline:none; border:none; padding-left:10px;" type="text" />起执行</p>
-   <p>建议自<input id="hr_dismiss" name="hr_dismiss" value="{$vo.hr_dismiss}" onchange="setHrDismiss($('#hr_dismiss').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.3 neq 3)">disabled</if>data-date-format="yyyy-mm-dd" class="form-control input-date-time" style="outline:none; border:none; padding-left:10px;" type="text" />起辞退</p></td>
+   <p>建议自<input id="hr_execute" name="hr_execute" value="{$vo.hr_execute}" onchange="setHrExecute($('#hr_execute').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.1 neq 1)">disabled</if> data-date-format="yyyy-mm-dd" class="form-control input-date-time"style="outline:none; border:none; padding-left:10px;" type="text" />起执行</p>
+   <p>建议自<input id="hr_dismiss" name="hr_dismiss" value="{$vo.hr_dismiss}" onchange="setHrDismiss($('#hr_dismiss').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.1 neq 1)">disabled</if>data-date-format="yyyy-mm-dd" class="form-control input-date-time" style="outline:none; border:none; padding-left:10px;" type="text" />起辞退</p></td>
     
    
   </tr>
   <tr>
+    <td width="12%" height="140" align="center">部门领导意见</td>
+    <td style="padding-left:5px;" height="140" colspan="7">
+    <p>综合评述：</p><textarea id="dept_leader_review" name="dept_leader_review" onchange="setDeptLeaderReview($('#dept_leader_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.2 neq 2)">disabled</if> style="outline:none; border:none; resize:none; width:99%;" rows="3">{$vo.dept_leader_review}</textarea>
+    <p>建议自<input id="dept_leader_date" name="dept_leader_date" value="{$vo.dept_leader_date}" onchange="setDeptLeaderDate($('#dept_leader_date').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.2 neq 2)">disabled</if> data-date-format="yyyy-mm-dd" style="outline:none; border:none; padding-left:10px;" type="text" class="form-control input-date-time"/>起执行</p>
+    <p style="margin-left:70%;">签字/日期：<input <if condition="($flow_log_all[1])"> value="{$flow_log_all[1].user_name}/{$flow_log_all[1].create_time|toDate='Y-m-d'}"</if> style="outline:none; border:none; width:66%; text-align:center;" type="text" disabled/></p></td>
+  </tr>
+  <tr>
+    <td width="12%" height="140" align="center">部门总监意见</td>
+    <td style="padding-left:5px;" height="140" colspan="7">
+    <p>综合评述：</p><textarea id="dept_director_review" name="dept_director_review" onchange="setDeptDirectorReview($('#dept_director_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.3 neq 3)">disabled</if> style="outline:none; border:none; resize:none; width:99%;" rows="3">{$vo.dept_director_review}</textarea>
+    <p>建议自<input id="dept_director_date" name="dept_director_date" value="{$vo.dept_director_date}" onchange="setDeptDirectorDate($('#dept_director_date').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.3 neq 3)">disabled</if> data-date-format="yyyy-mm-dd" style="outline:none; border:none; padding-left:10px;" type="text" class="form-control input-date-time"/>起执行</p>
+    <p style="margin-left:70%;">签字/日期：<input <if condition="($flow_log_all[1])"> value="{$flow_log_all[2].user_name}/{$flow_log_all[2].create_time|toDate='Y-m-d'}"</if> style="outline:none; border:none; width:66%; text-align:center;" type="text" disabled/></p></td>
+  </tr>
+ 
+  <!-- <tr>
     <td width="12%" height="80" align="center">总经理意见</td>
     <td height="80" colspan="7"><textarea style="outline:none; border:none; resize:none; width:99%;" rows="3" disabled><if condition="($flow_log_all[3])">{$flow_log_all[3].result|show_result}</if></textarea>
     <p style="margin-left:70%;">签字/日期：<input <if condition="($flow_log_all[3])"> value="{$flow_log_all[3].user_name}/{$flow_log_all[3].create_time|toDate='Y-m-d'}"</if> style="outline:none; border:none; width:10%; text-align:center;" type="text" disabled/></p></td>
-  </tr>
+  </tr> -->
 </table>
 
 <neq name="is_edit" value="2">

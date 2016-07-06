@@ -13,7 +13,7 @@
 
 // 后台用户模块
 class UserAction extends CommonAction {
-	protected $config=array('app_type'=>'master','action_auth'=>array('password'=>'admin','reset_pwd'=>'admin'));
+	protected $config=array('app_type'=>'master','action_auth'=>array('password'=>'admin','reset_pwd'=>'admin','createname'=>'read'));
 	
 	function _search_filter(&$map) {
 		if (!empty($_POST['keyword'])) {
@@ -271,6 +271,69 @@ class UserAction extends CommonAction {
 	function del(){
 		$id=$_POST['id'];
 		$this->_destory($id);		
+	}
+	public function createname(){
+// 		ini_set('max_execution_time', '0');
+// 		$num = $_GET['num']?$_GET['num']:2000;
+// 		for($i=0;$i<$num;$i++){
+// 			$xid = rand(0,10000);
+// 			$lastnameall = M('Lastname')->select();
+// 			$sum = 0;
+// 			foreach ($lastnameall as $k=>$v){
+// 				$rate = $v['rate']*100;
+// 				$sum +=$rate;
+// 				if($sum>$xid){
+// 					$lastname = $v['name'];
+// 					break;
+// 				}
+// 			}
+// 			$mid1 = rand(0,1000);
+// 			$is = rand(0,1000);
+// 			$firstname2 = '';
+// 			if($is/1000>0.4){
+// 				$mid2 = rand(0,1000);
+// 				$firstname2 = M('Firstname')->field('name')->find($mid2);
+// 			}
+// 			$firstname1 = M('Firstname')->field('name')->find($mid1);
+// 			$name = $lastname.$firstname1['name'].$firstname2['name'];
+// 			M('Name')->add(array('name'=>$name));
+// 		}
+// 		exit(json_encode('a'));
+
+		// 		$sum = 2000000;
+		// 		for($i=1;$i<101;$i++){
+		// 			$sum_1 = M('Lastname')->field('name,rate')->find($i);
+		// 			$sum_ = $sum_1['rate']/100*$sum;
+		// 			for($j=0;$j<$sum_;$j++){
+		// 				$mid1 = rand(0,1000);
+		// 				$is = rand(0,1000);
+		// 				if($is/1000>0.4){
+		// 					$mid2 = rand(0,1000);
+		// 					$firstname2 = M('Firstname')->field('name')->find($mid2);
+		// 				}
+		// 				$firstname1 = M('Firstname')->field('name')->find($mid1);
+			
+		// 				$name = $sum_1['name'].$firstname1['name'].$firstname2['name'];
+		// 				M('Name')->add(array('name'=>$name));
+		// 			}
+		// 		}
+		
+		
+		// 		for($i=0;$i<2000000;$i++){
+		// 			$xid = rand(0,560);
+		// 			$mid1 = rand(0,1000);
+		// 			$is = rand(0,1000);
+		// 			if($is/1000>0.4){
+		// 				$mid2 = rand(0,1000);
+		// 				$firstname2 = M('Firstname')->field('name')->find($mid2);
+		// 			}
+		// 			$lastname = M('Lastname')->field('name')->find($xid);
+		// 			$firstname1 = M('Firstname')->field('name')->find($mid1);
+			
+		// 			$name = $lastname['name'].$firstname1['name'].$firstname2['name'];
+		// 			M('Name')->add(array('name'=>$name));
+		// 		}
+		
 	}
 }
 ?>

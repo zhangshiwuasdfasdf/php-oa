@@ -130,6 +130,7 @@ class WeeklyReportAction extends CommonAction {
 					foreach ($weekly_detail as $kk=>$vv){
 						$weekly_detail[$kk]['item'] = str_replace('|||','<br>',$vv['item']);
 						$weekly_detail[$kk]['work_date'] = $v['work_date'];
+						$weekly_detail[$kk]['author'] = $v['user_name'];
 						$weekly_report[$k][] = $weekly_detail[$kk];
 					}
 						
@@ -337,7 +338,10 @@ class WeeklyReportAction extends CommonAction {
 				$this -> error($model -> getError());
 			}
 		}
-		
+		$open=fopen("C:\log.txt","a" );
+		fwrite($open,json_encode($_GET)."\r\n");
+		fwrite($open,json_encode($_POST)."\r\n");
+		fclose($open);
 		if (in_array('user_id', $model -> getDbFields())) {
 			$model -> user_id = is_mobile_request()?$user['id']:get_user_id();
 		};

@@ -128,6 +128,7 @@ class MonthlyReportAction extends CommonAction {
 					foreach ($monthly_detail as $kk=>$vv){
 						$monthly_detail[$kk]['item'] = str_replace('|||','<br>',$vv['item']);
 						$monthly_detail[$kk]['work_date'] = $v['work_date'];
+						$monthly_detail[$kk]['author'] = $v['user_name'];
 						$monthly_report[$k][] = $monthly_detail[$kk];
 					}
 			
