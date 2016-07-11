@@ -1,0 +1,102 @@
+<layout name='Layout/ace_layout' />
+<input type="hidden" id="id" name="id" value="{$vo.id}">
+{:W('PageHeader',array('name'=>$vo['name'],'search'=>'N'))}
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-left">
+			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+			<if condition="$auth['admin']">
+				<a onclick="del();" class="btn btn-sm btn-danger">删除</a>
+			</if>
+		</div>
+		<div class="pull-right">
+            <!--<if condition="$is_sign eq 0">
+			<a onclick="sign()" class="btn btn-sm btn-primary">请签收</a>
+            </if>
+			--><a onclick="winprint()" class="btn btn-sm btn-primary">打印</a>
+		</div>
+	</div>
+</div>
+<form method='post' id="frm_content" name="frm_content" enctype="multipart/form-data"  class="form-horizontal">
+	<input type="hidden" id="id" name="id" value="{$vo.id}">
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label">资产编号：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.goods_sn}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >资产标签：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.goods_label}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >名称：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.goods_name}
+			</p>
+		</div>
+	</div>
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >资产类别：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.cate_id|get_goods_category_name}
+			</p>
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >资产质量：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.goods_weight}
+			</p>
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >资产市场价：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.market_price}
+			</p>
+		</div>
+	</div>
+	
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >关键词：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.keywords}
+			</p>
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-4 control-label" >描述：</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				{$vo.describe}
+			</p>
+		</div>
+	</div>
+	<!-- <div class="clearfix"></div>
+	<div class="form-group">
+		<div class="col-sm-10" style="margin-left: 15%;">
+			{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'image'))}
+		</div>
+	</div> -->
+	
+	<!-- {$vo.describe}
+	<volist name="file_list" id="file">
+	{$file.name}
+	</volist> -->
+   
+</form>

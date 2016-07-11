@@ -1,0 +1,30 @@
+<script type="text/javascript">
+	function save() {
+		if ($("#name").val().length > 0) {
+			$("#cate_name", parent.document).val($("#name").val());
+			$("#cate_id", parent.document).val($("#val").val());
+		} else {
+			ui_error("请选择资产目录");
+			return false;
+		}
+		myclose();
+	}
+
+	$(document).ready(function() {
+		parent_node = $(".sub_left_menu ul.tree_menu a.active", parent.document).attr("node");
+		$("ul.tree_menu a[node='" + parent_node + "']").addClass("disabled");
+		$(".popup_tree_menu a:not('.disabled')").click(function() {
+			$("#val").val($(this).attr("node"));
+			$("#name").val($(this).children("span").text());
+			$(".tree_menu a.active").removeClass("active");
+			$(this).addClass("active");
+		});
+		
+		//默认子公司节点收起
+		$(".tree_menu a").next().hide();
+		//子公司节点的展开和收起
+		$(".tree_menu a").click(function(){
+			$(this).next().slideToggle();
+		});
+	}); 
+</script>

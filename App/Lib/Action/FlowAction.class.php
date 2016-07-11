@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class FlowAction extends CommonAction {
-	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin','export_goods_procurement_allocation'=>'admin','import_goods_procurement_allocation'=>'admin','del'=>'write'));
+	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin','export_goods_procurement_allocation'=>'admin','import_goods_procurement_allocation'=>'admin','del'=>'write','winpop_goods'=>'admin'));
 
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -1662,7 +1662,7 @@ class FlowAction extends CommonAction {
 			}
 			
 			//字段中存放数组
-			$array_field = array(attitude_me,attitude_leader,ability_me,ability_leader,responsibility_me,responsibility_leader,coordinate_me,coordinate_leader,develop_me,develop_leader,ids,names,types,nums,prices,amounts,marks,goods_name,usage,use_dept,buy_num,add_num,recovery_num,is_allocation,price,amount,add_num_calculation,pay_type,in_place_time);
+			$array_field = array(attitude_me,attitude_leader,ability_me,ability_leader,responsibility_me,responsibility_leader,coordinate_me,coordinate_leader,develop_me,develop_leader,ids,names,goods_name,goods_id,types,nums,prices,amounts,marks,goods_name,usage,use_dept,buy_num,add_num,recovery_num,is_allocation,price,amount,add_num_calculation,pay_type,in_place_time);
 			foreach ($array_field as $v){
 				if(!empty($model -> $v) && is_array($model -> $v)){
 					$$v = '';
@@ -1672,6 +1672,37 @@ class FlowAction extends CommonAction {
 					$model -> $v = $$v;
 				}
 			}
+			
+			//加减资产
+// 			if(getModelName($list)=='FlowOfficeSuppliesApplication' || getModelName($list)=='FlowOfficeUseApplication'){//办公用品采购或领用
+// 				$flag = 1; 
+// 				if(getModelName($list)=='FlowOfficeUseApplication'){
+// 					$flag = -1;
+// 				}
+// 				if(!empty($model -> goods_id) && $step>10){
+// 					$goods_id = explode('|',$model -> goods_id);
+// 					$goods_nums = explode('|',$model -> nums);
+// 					$goods_marks = explode('|',$model -> marks);
+// 					$user = new Model();
+// 					$user -> startTrans();
+// 					$goods_add_check = true;
+// 					foreach ($goods_id as $k=>$v){
+// 						if(!empty($v)){
+// 							$res = change_goods($v,$goods_nums[$k]*$flag,$goods_marks[$k],get_user_id(),time(),false);
+// 							if($res===false){
+// 								$goods_add_check = false;
+// 								break;
+// 							}
+// 						}
+// 					}
+// 					if($goods_add_check){
+// 						$user->commit();
+// 					}else{
+// 						$user->rollback();
+// 					}
+// 				}
+// 			}
+			
 			
 			$model -> flow_id = $list;
 			$flow_id = $list;
@@ -2088,13 +2119,12 @@ class FlowAction extends CommonAction {
 		$vo = array_merge($vo,$flow);
 		
 		//字段中存放数组
-		$array_field = array(attitude_me,attitude_leader,ability_me,ability_leader,responsibility_me,responsibility_leader,coordinate_me,coordinate_leader,develop_me,develop_leader,ids,names,types,nums,prices,amounts,marks,goods_name,usage,use_dept,buy_num,add_num,recovery_num,is_allocation,price,amount,add_num_calculation,pay_type,in_place_time);
+		$array_field = array(attitude_me,attitude_leader,ability_me,ability_leader,responsibility_me,responsibility_leader,coordinate_me,coordinate_leader,develop_me,develop_leader,ids,names,types,nums,prices,amounts,marks,goods_id,goods_name,usage,use_dept,buy_num,add_num,recovery_num,is_allocation,price,amount,add_num_calculation,pay_type,in_place_time);
 		foreach ($array_field as $v){
 			if(!empty($vo[$v])){
 				$vo[$v] = explode('|',$vo[$v]);
 			}
 		}
-		
 		$this -> assign('vo', $vo);
 		$model_flow_field = D("FlowField");
 		$field_list = $model_flow_field -> get_data_list($id);
@@ -2147,7 +2177,7 @@ class FlowAction extends CommonAction {
 				$this -> error($model -> getError());
 			}
 			//字段中存放数组
-			$array_field = array(attitude_me,attitude_leader,ability_me,ability_leader,responsibility_me,responsibility_leader,coordinate_me,coordinate_leader,develop_me,develop_leader,ids,names,types,nums,prices,amounts,marks,goods_name,usage,use_dept,buy_num,add_num,recovery_num,is_allocation,price,amount,add_num_calculation,pay_type,in_place_time);
+			$array_field = array(attitude_me,attitude_leader,ability_me,ability_leader,responsibility_me,responsibility_leader,coordinate_me,coordinate_leader,develop_me,develop_leader,ids,names,goods_name,goods_id,types,nums,prices,amounts,marks,goods_name,usage,use_dept,buy_num,add_num,recovery_num,is_allocation,price,amount,add_num_calculation,pay_type,in_place_time);
 			foreach ($array_field as $v){
 				if(!empty($model -> $v) && is_array($model -> $v)){
 					$$v = '';
@@ -2157,6 +2187,34 @@ class FlowAction extends CommonAction {
 					$model -> $v = $$v;
 				}
 			}
+// 			if(getModelName($flow_id)=='FlowOfficeSuppliesApplication' || getModelName($flow_id)=='FlowOfficeUseApplication'){//办公用品采购或领用
+// 				$flag = 1; 
+// 				if(getModelName($flow_id)=='FlowOfficeUseApplication'){
+// 					$flag = -1;
+// 				}
+// 				if(!empty($model -> goods_id) && $step>10){
+// 					$goods_id = explode('|',$model -> goods_id);
+// 					$goods_nums = explode('|',$model -> nums);
+// 					$goods_marks = explode('|',$model -> marks);
+// 					$user = new Model();
+// 					$user -> startTrans();
+// 					$goods_add_check = true;
+// 					foreach ($goods_id as $k=>$v){
+// 						if(!empty($v)){
+// 							$res = change_goods($v,$goods_nums[$k]*$flag,$goods_marks[$k],get_user_id(),time(),false);
+// 							if($res===false){
+// 								$goods_add_check = false;
+// 								break;
+// 							}
+// 						}
+// 					}
+// 					if($goods_add_check){
+// 						$user->commit();
+// 					}else{
+// 						$user->rollback();
+// 					}
+// 				}
+// 			}
 			$model -> id = $idd;
 			
 			$list = $model -> save();
@@ -2207,7 +2265,42 @@ class FlowAction extends CommonAction {
 
 				$flow_id = $model -> flow_id;
 				$step = $model -> step;
-				//保存当前数据对象
+				
+				if(getModelName($flow_id)=='FlowOfficeSuppliesApplication' || getModelName($flow_id)=='FlowOfficeUseApplication'){//办公用品采购或领用
+					if(getModelName($flow_id)=='FlowOfficeUseApplication'){
+						$flag = -1;
+						$flow = M('FlowOfficeUseApplication')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+					}else{
+						$flag = 1;
+						$flow = M('FlowOfficeSuppliesApplication')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+					}
+						
+					if(!empty($flow['goods_id'])){
+						$goods_id = explode('|',$flow['goods_id']);
+						$goods_nums = explode('|',$flow['nums']);
+						$goods_marks = explode('|',$flow['marks']);
+						$user = new Model();
+						$user -> startTrans();
+						$goods_add_check = true;
+						foreach ($goods_id as $k=>$v){
+							if(!empty($v)){
+								$res = change_goods($v,$goods_nums[$k]*$flag,$goods_marks[$k],get_user_id(),time(),true);
+								if($res===false){
+									$goods_add_check = false;
+									break;
+								}
+							}
+						}
+						if($goods_add_check){
+							$user->commit();
+						}else{
+							$user->rollback();
+							$this -> error('商品不足，无法领用!');
+						}
+					}
+				}
+				
+				
 				$list = $model -> save();
 				$model = D("FlowLog");
 				$model -> where("step=$step and flow_id=$flow_id and result is null") -> delete();
@@ -2263,6 +2356,7 @@ class FlowAction extends CommonAction {
 							}
 						}
 					}
+					
 					$this -> assign('jumpUrl', U('flow/folder?fid=confirm'));
 					$this -> success('操作成功!');
 				} else {
@@ -2461,6 +2555,21 @@ class FlowAction extends CommonAction {
 		$model = D("SystemTag");
 		$tag_list = $model -> get_tag_list('id,name', 'FlowType');
 		$this -> assign("tag_list", $tag_list);
+	}
+	public function winpop_goods() {
+		$node = M("GoodsCategory");
+		$menu = array();
+		$menu = $node -> where('is_del=0') -> field('id,pid,name') -> order('sort asc') -> select();
+	
+		$menu2 = array();
+		$menu2 = M("Goods") -> where('is_del=0') -> field('id as goods_id,cate_id as pid,goods_name as name,market_price,spec') -> order('sort asc') -> select();
+		
+		$tree = list_to_tree(array_merge($menu,$menu2));
+		
+		$this -> assign('menu', popup_tree_menu($tree,0,100,array('goods_id','market_price','spec')));
+		$this -> assign('sid', $_GET['id']);
+		$this -> assign('pid', $pid);
+		$this -> display();
 	}
 
 }

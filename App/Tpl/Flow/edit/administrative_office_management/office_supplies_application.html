@@ -13,8 +13,18 @@
   <?php for ($i=0;$i<count($vo[ids])-1;$i++){ ?>
   	<tr>
     	<td width="14%" height="36"><input name="ids[]" value="{$vo.ids.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
-    	<td width="15%" height="36"><input name="names[]" value="{$vo.names.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" /></td>
-   		<td width="14%" height="36"><input name="types[]" value="{$vo.types.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" /></td>
+    	<td width="15%" height="36">
+    		<!-- <input name="names[]" value="{$vo.goods_name.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" /> -->
+    		
+    		<input name="goods_name[]" class="form-control" id="goods_name_{$i}" value="{$vo.goods_name.$i}" type="text" readonly="readonly" msg="请选择物品名称" check="require"/>
+			<input name="goods_id[]" id="goods_id_{$i}" value="{$vo.goods_id.$i}" type="hidden" msg="请选择物品名称" check="require" />
+			<span class="input-group-btn">
+				<button class="btn btn-sm btn-primary" onclick="select_goods({$i})" type="button">
+					选择
+				</button>
+			</span>
+    	</td>
+   		<td width="14%" height="36"><input name="types[]" id="types_0" value="{$vo.types.$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" /></td>
     	<td width="14%" height="36"><input name="nums[]" value="{$vo.nums.$i}" id="num_{$i}" onchange="sum3(0)" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" /></td>
     	<td width="14%" height="36"><input name="prices[]" value="{$vo.prices.$i}" id="prices_{$i}" onchange="sum3(0)" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" /></td>
     	<td width="14%" height="36"><input name="amounts[]" value="{$vo.amounts.$i}" id="amounts_{$i}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" /></td>

@@ -1,0 +1,54 @@
+<script type="text/javascript">
+	function save(i) {
+		if ($("#goods_name").val().length > 0 && $("#goods_name").val()!='0') {
+			$("#goods_name_"+i, parent.document).val($("#goods_name").val());
+			$("#goods_id_"+i, parent.document).val($("#goods_id").val());
+			$("#prices_"+i, parent.document).val($("#market_price").val());
+			$("#types_"+i, parent.document).val($("#spec").val());
+			
+			//重新计算
+			var num = Number($("#num_"+i, parent.document).val());
+			var prices = parseFloat($("#prices_"+i, parent.document).val());
+			if(isNaN(prices) && $("#prices_"+i, parent.document).val()!=''){
+				   ui_alert("请输入正确数字",function(){});
+			}
+			if(num*prices || num*prices==0){
+				$("#amounts_"+i, parent.document).val(num*prices);
+			}
+			var sum = parseFloat(0);
+			$("input[name='amounts[]']", parent.document).each(function() {
+				if($(this).val()){
+					sum +=parseFloat($(this).val());
+				}
+				
+			});
+			$("#sum", parent.document).val(sum);
+			
+		} else {
+			ui_error("请选择资产目录");
+			return false;
+		}
+		myclose();
+	}
+
+	$(document).ready(function() {
+		parent_node = $(".sub_left_menu ul.tree_menu a.active", parent.document).attr("node");
+		$("ul.tree_menu a[goods_id='" + "" + "']").addClass("disabled");
+		$(".popup_tree_menu a:not('.disabled')").click(function() {
+			$("#goods_id").val($(this).attr("goods_id"));
+			$("#goods_name").val($(this).attr("node"));
+			$("#market_price").val($(this).attr("market_price"));
+			$("#spec").val($(this).attr("spec"));
+			
+			$(".tree_menu a.active").removeClass("active");
+			$(this).addClass("active");
+		});
+		
+		//默认子公司节点收起
+		$(".tree_menu a").next().hide();
+		//子公司节点的展开和收起
+		$(".tree_menu a").click(function(){
+			$(this).next().slideToggle();
+		});
+	}); 
+</script>

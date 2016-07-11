@@ -64,7 +64,7 @@ class ComplaintAction extends CommonAction {
 	}
 	
 	public function read(){
-		$id = $_REQUEST['id'];
+		$id = is_mobile_request()?$_REQUEST['idd']:$_REQUEST['id'];
 		$user_is = get_user_id();
 		$where['id'] = array('eq', $id);
 		$model = M('complaint');

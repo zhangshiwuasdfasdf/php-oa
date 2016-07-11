@@ -37,9 +37,18 @@
   </tr>
   <tr id="item" name="item">
    	<td width="14%" height="36"><input name="ids[]" value="1" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" readonly/></td>
-   	<td width="15%" height="36"><input name="names[]" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" check="require" msg="请输入物品名称"/></td>
-  	<td width="14%" height="36"><input name="types[]" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" check="require" msg="请输入规格"/></td>
-   	<td width="14%" height="36"><input name="nums[]" id="num_0" onchange="sum3(0)" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="number" check="require" msg="请输入数量"/></td>
+   	<td width="15%" height="36">
+   		<!-- <input name="names[]" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" check="require" msg="请输入物品名称"/> -->
+   			<input name="goods_name[]" class="form-control" id="goods_name_0" type="text" readonly="readonly" msg="请选择物品名称" check="require"/>
+			<input name="goods_id[]" id="goods_id_0" type="hidden" msg="请选择物品名称" check="require" />
+			<span class="input-group-btn">
+				<button class="btn btn-sm btn-primary" onclick="select_goods(0)" type="button">
+					选择
+				</button>
+			</span>
+   	</td>
+  	<td width="14%" height="36"><input name="types[]" id="types_0" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" check="require" msg="请输入规格"/></td>
+   	<td width="14%" height="36"><input name="nums[]" id="num_0" onchange="sum3(0)" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="number" min="1" check="require" msg="请输入数量"/></td>
    	<td width="14%" height="36"><input name="prices[]" id="prices_0" onchange="sum3(0)" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" check="require" msg="请输入单价"/></td>
    	<td width="14%" height="36"><input name="amounts[]" id="amounts_0" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" check="require" msg="请输入金额"/></td>
    	<td width="15%" height="36"><input name="marks[]" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text"/></td>

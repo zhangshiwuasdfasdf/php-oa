@@ -1,0 +1,10 @@
+<script type="text/javascript">
+	function save() {
+		window.onbeforeunload=null;
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+	//$("#cate_name", parent.document).val('{$vo.cate_name}');
+	//$("#cate_id", parent.document).val('{$vo.cate_id}');
+</script>

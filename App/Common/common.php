@@ -968,7 +968,7 @@ function select_tree_menu($tree) {
 	return $html;
 }
 
-function popup_tree_menu($tree, $level = 0,$deep=100) {
+function popup_tree_menu($tree, $level = 0,$deep=100,$other_nodes=array()) {
 	$level++;
 	$deep--;
 	$html = "";
@@ -986,12 +986,23 @@ function popup_tree_menu($tree, $level = 0,$deep=100) {
 				} else {
 					$del_class = "";
 				}
+				$ext = '';
+				if(!empty($other_nodes) && is_array($other_nodes)){
+					foreach ($other_nodes as $k=>$other_node){
+						if(!empty($val[$other_node])){
+							$ext .= ' '.$other_node.'='.$val[$other_node];
+						}else{
+							$ext .= ' '.$other_node.'=""';
+						}
+					}
+				}
+				
 				if (isset($val['_child'])) {
-					$html = $html . "<li>\r\n<a class=\"$del_class\" node=\"$id\" ><i class=\"fa fa-angle-right level$level\"></i><span>$title</span></a>\r\n";
-					$html = $html . popup_tree_menu($val['_child'], $level,$deep);
+					$html = $html . "<li>\r\n<a class=\"$del_class\" node=\"$id\" $ext ><i class=\"fa fa-angle-right level$level\"></i><span>$title</span></a>\r\n";
+					$html = $html . popup_tree_menu($val['_child'], $level,$deep,$other_nodes);
 					$html = $html . "</li>\r\n";
 				} else {
-					$html = $html . "<li>\r\n<a class=\"$del_class\" node=\"$id\" ><i class=\"fa fa-angle-right level$level\"></i><span>$title</span></a>\r\n</li>\r\n";
+					$html = $html . "<li>\r\n<a class=\"$del_class\" node=\"$id\" $ext ><i class=\"fa fa-angle-right level$level\"></i><span>$title</span></a>\r\n</li>\r\n";
 				}
 			}
 		}
@@ -1613,6 +1624,12 @@ function is_submit($val) {
 	}
 	if ($val == 1) {
 		return "已提交";
+	}
+}
+function get_goods_category_name($cate_id){
+	$cate = M('GoodsCategory')->field('name')->find($cate_id);
+	if($cate['name']){
+		return $cate['name'];
 	}
 }
 
@@ -2614,6 +2631,32 @@ function getAvailableYearHour($now,$uid){
 		}
 	}else{
 		return 0;
+	}
+}
+function change_goods($goods_id,$num,$mark,$user_id,$create_time,$sum_egt_0 = true){
+	if($goods_id){
+		$data = array();
+		$last = M('GoodsChange')->field('id,sum')->where(array('goods_id'=>$goods_id))->order('create_time desc,id desc')->find();
+		$last_sum = $last?$last['sum']:0;
+		$data['sum'] = $last_sum+$num;
+		if($data['sum']<0 && $num<0){
+// 			$goods_name = M('Goods')->field('goods_name')->find($goods_id);
+// 			$str = '商品id:'.$goods_id.' 商品名称:'.$goods_name['goods_name'].' 缺货:'.$data['sum'].' 请及时补货';
+// 			$open=fopen("C:\log.txt","a" );
+// 			fwrite($open,$str."\r\n");
+// 			fclose($open);
+			if($sum_egt_0){
+				return false;
+			}
+		}
+		$data['goods_id'] = $goods_id;
+		$data['num'] = $num;
+		$data['mark'] = $mark;
+		$data['user_id'] = $user_id;
+		$data['create_time'] = $create_time;
+		
+		$list = M('GoodsChange') -> add($data);
+		return $list;
 	}
 }
 ?>
