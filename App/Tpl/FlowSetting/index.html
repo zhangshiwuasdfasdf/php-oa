@@ -1,0 +1,62 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'流程设置','search'=>'S'))}
+<!--  功能操作区域  -->
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-left" >
+			<div class="btn-group">
+				<a class="btn btn-sm btn-primary  dropdown-toggle" data-toggle="dropdown" href="#"> 移动到 <span class="fa fa-caret-down"></span> </a>
+				<ul class="dropdown-menu">
+					<foreach name="tag_list" item="vo">
+						<li onclick="move_to('{$key}');">
+							<a>{$vo}</a>
+						</li>
+					</foreach>
+				</ul>
+			</div>
+			<a class="btn btn-sm btn-danger" onclick="mark('del');">删除</a>
+		</div >
+		<div class="pull-right">
+			<a  onclick="add();" class="btn btn-sm btn-primary">新建</a>
+		</div>
+	</div>
+</div>
+<!-- 功能操作区域结束 -->
+<div class="ul_table border-bottom">
+	<ul>
+		<li class="thead"  >
+			<label class="inline pull-left col-3">
+				<input class="ace" type="checkbox" name="id-toggle-all" id="id-toggle-all" />
+				<span class="lbl"></span></label>
+				<span class="col-14">流程名称 </span>
+			<div class="pull-right">		
+				<span  class="col-6">审核人</span>
+				<span class="col-6 text-center">天数</span>
+				<span class="col-12 text-center">职位</span>	
+			</div>
+			<span class="autocut auto">步骤</span>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<form method="post" action="" name="form_data" id="form_data">
+				<foreach name="list" item="vo">
+					<li class="tbody" >
+						<label class="inline pull-left col-3">
+							<input class="ace" type="checkbox" name="id[]" value="{$vo.id}" />
+							<span class="lbl"></span></label>
+						<span  class="col-14" ><a href="{:U('edit','id='.$vo['id'])}">{$vo.flow_type_name}&nbsp;</a></span>
+						<div class="pull-right">
+							<span class="col-6">{$vo.confirm|getConfirmByCode }&nbsp;</span>
+							<span class="col-6 text-center"  >{$vo.day}&nbsp;</span>						
+							<span class="col-12 text-center" >{$vo.position_name|getPositionNameByRank}&nbsp;</span>	
+						</div >
+						<span class="autocut auto">{$vo.step}&nbsp;</span>
+					</li>
+				</foreach>
+			</form>
+		</empty>
+	</ul>
+</div>

@@ -11,7 +11,7 @@
   Support: https://git.oschina.net/smeoa/smeoa               
  -------------------------------------------------------------------------*/
 
-class FlowTypeAction extends CommonAction {
+class FlowSettingAction extends CommonAction {
     protected $config=array('app_type'=>'master');
 
 	//过滤查询字段
@@ -28,18 +28,39 @@ class FlowTypeAction extends CommonAction {
 		
 		$this -> assign("user_id",get_user_id());
 		$this ->_assign_tag_list();
-		$this ->_assign_duty_list();				
+		$this ->_assign_duty_list();	
+		$flow_type = M('FlowType')->where(array('id'=>array('neq',66)))->field('id,name')->select();			
+		$this -> assign("flow_type",$flow_type);
+// 		dump($flow_type);
+		$confirm = array();
+		$confirm[] = array('name'=>'上一级','id'=>'getParentid');
+		$confirm[] = array('name'=>'部门总监','id'=>'getDeptManagerId');
+		$confirm[] = array('name'=>'人事行政','id'=>'getHRDeputyGeneralManagerId');
+// 		$confirm[] = array('name'=>'人事主管','id'=>'getHRDeputyGeneralManagerId');
+		$confirm[] = array('name'=>'招聘主管','id'=>'getZhaopinDirector');
+		$confirm[] = array('name'=>'总经理','id'=>'getGeneralManagerId');
+		$this -> assign("confirm",$confirm);
+		$day = array();
+		$day[] = array('name'=>'<3天','id'=>'<3天');
+		$day[] = array('name'=>'3-7天','id'=>'3-7天');
+		$day[] = array('name'=>'>7天','id'=>'>7天');
+		$this -> assign("day",$day);
+		$position_name = array();
+		$position_name[] = array('name'=>'助理，员工，主管','id'=>'3');
+		$position_name[] = array('name'=>'经理','id'=>'2');
+		$position_name[] = array('name'=>'副总，总监','id'=>'1');
+		$this -> assign("position_name",$position_name);
 		$this->display();
 	}
 	
 	function index(){
-		$model = D("FlowTypeView");
+		$model = D("FlowSettingView");
 		$map = $this -> _search();
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
-
-		$list = $model -> where($map) ->order('tag,sort')-> select();
+	
+		$list = $model -> where($map) ->order('flow_type,step,position_name')-> select();
 		$this -> assign('list', $list);
 		$this ->_assign_tag_list();
 		$this -> display();
@@ -101,12 +122,35 @@ class FlowTypeAction extends CommonAction {
 		$widget['editor']=true;
 		$this->assign("widget",$widget);			
 		$this -> assign("user_id",get_user_id());
-		$model = D("FlowTypeView");
+		$model = D("FlowSettingView");
 		$id = $_REQUEST['id'];
 		$vo = $model -> getById($id);
 		$this -> assign('vo', $vo);
+		dump($vo);
 		$this->_assign_tag_list();
 		$this->_assign_duty_list();
+		
+		$flow_type = M('FlowType')->where(array('id'=>array('neq',66)))->field('id,name')->select();
+		$this -> assign("flow_type",$flow_type);
+		$confirm = array();
+		$confirm[] = array('name'=>'上一级','id'=>'getParentid');
+		$confirm[] = array('name'=>'部门总监','id'=>'getDeptManagerId');
+		$confirm[] = array('name'=>'人事行政','id'=>'getHRDeputyGeneralManagerId');
+		// 		$confirm[] = array('name'=>'人事主管','id'=>'getHRDeputyGeneralManagerId');
+		$confirm[] = array('name'=>'招聘主管','id'=>'getZhaopinDirector');
+		$confirm[] = array('name'=>'总经理','id'=>'getGeneralManagerId');
+		$this -> assign("confirm",$confirm);
+		$day = array();
+		$day[] = array('name'=>'<3天','id'=>'<3天');
+		$day[] = array('name'=>'3-7天','id'=>'3-7天');
+		$day[] = array('name'=>'>7天','id'=>'>7天');
+		$this -> assign("day",$day);
+		$position_name = array();
+		$position_name[] = array('name'=>'助理，员工，主管','id'=>'3');
+		$position_name[] = array('name'=>'经理','id'=>'2');
+		$position_name[] = array('name'=>'副总，总监','id'=>'1');
+		$this -> assign("position_name",$position_name);
+		
 		$this -> display();
 	}
 	

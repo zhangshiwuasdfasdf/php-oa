@@ -1280,6 +1280,20 @@ class FlowAction extends CommonAction {
 		$model = M("FlowType");
 		$flow_type = $model -> find($type_id);
 		$this -> assign("flow_type", $flow_type);
+		
+		$flow_arr = array('uid'=>get_user_id(),'dept_id'=>get_dept_id());
+		//默认7天
+		$flow_arr['day'] = 7;
+		//其实不加$add也可以，把$flow_arr['add']设置为0，（总经理要审批，但总经理进不去，也就无所谓）
+		$flow_arr['add'] = '0';
+		if($vo['dept_id_from']){
+			$flow_arr['dept_id_from'] = $vo['dept_id_from'];
+		}
+		if($vo['dept_id_to']){
+			$flow_arr['dept_id_to'] = $vo['dept_id_to'];
+		}
+		$this->_getFlowMessageByTypeName($flow_type['name'],$flow_arr);
+		
 		$model_flow_field = D("FlowField");
 		$field_list = $model_flow_field -> get_field_list($type_id);
 		$this -> assign("field_list", $field_list);
@@ -1360,46 +1374,61 @@ class FlowAction extends CommonAction {
 			default :return false;
 		}
 	}
-	public function ajaxgetflow_leave(){//外勤/出差单,请假/调休单
-		$uid = $_POST['uid'];
-		$day = $_POST['day'];
+	public function ajaxgetflow_leave($array=array()){//外勤/出差单,请假/调休单
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$day = $_POST['day']?$_POST['day']:$array['day'];
 		if(empty($uid) || ($day<0)){
 			return false;
 		}
 		$flow = getFlow($uid,$day);
 		if(!empty($flow)){
-			$this->ajaxReturn(getFlowData($flow),null,1);
+			if($this->isAjax()){
+				$this->ajaxReturn(getFlowData($flow),null,1);
+			}
+			return $flow;
 		}else{
-			$this->ajaxReturn(null,null,0);
+			if($this->isAjax()){
+				$this->ajaxReturn(null,null,0);
+			}
+			return false;
 		}
 		
 	}
-	public function ajaxgetflow_attendance(){//补勤单
-		$uid = $_POST['uid'];
+	public function ajaxgetflow_attendance($array=array()){//补勤单
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
 		if(empty($uid)){
 			return false;
 		}
 		$flow = array(getParentid($uid),getHRDeputyGeneralManagerId($uid));
 		if(!empty($flow)){
-			$this->ajaxReturn(getFlowData($flow),null,1);
+			if($this->isAjax()){
+				$this->ajaxReturn(getFlowData($flow),null,1);
+			}
+			return $flow;
 		}else{
-			$this->ajaxReturn(null,null,0);
+			if($this->isAjax()){
+				$this->ajaxReturn(null,null,0);
+			}
+			return false;
 		}
 	}
-	public function ajaxgetflow_over_time(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	public function ajaxgetflow_over_time($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		if(empty($uid)){
 			return false;
 		}
 		$Parentid = getParentid($uid);
 		$flow = array($Parentid,getHRDeputyGeneralManagerId($uid));
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	public function ajaxgetflow_employment(){//用工申请表
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
-		$add = $_GET['add'];
+	public function ajaxgetflow_employment($array=array()){//用工申请表
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
+		$add = $_GET['add']?$_GET['add']:$array['add'];
 		if(empty($uid)){
 			return false;
 		}
@@ -1409,94 +1438,156 @@ class FlowAction extends CommonAction {
 		}else{
 			$flow = array($dept_idd,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid),getZhaopinDirector($uid));
 		}
-		
 		if(!empty($flow)){
-			$this->ajaxReturn(getFlowData($flow),null,1);
+			if($this->isAjax()){
+				$this->ajaxReturn(getFlowData($flow),null,1);
+			}
+			return $flow;
 		}else{
-			$this->ajaxReturn(null,null,0);
+			if($this->isAjax()){
+				$this->ajaxReturn(null,null,0);
+			}
+			return false;
 		}
 	
 	}
-	function ajaxgetflow_internal(){
-		$uid = $_POST['uid'];
-		$dept_id_from = $_POST['dept_id_from'];
-		$dept_id_to = $_POST['dept_id_to'];
+	function ajaxgetflow_internal($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id_from = $_POST['dept_id_from']?$_POST['dept_id_from']:$array['dept_id_from'];
+		$dept_id_to = $_POST['dept_id_to']?$_POST['dept_id_to']:$array['dept_id_to'];
 		$model = D('UserView');
 		$user_from = $model->where(array('pos_id'=>array('eq',$dept_id_from),'is_del'=>array('eq',0)))->order('position_sort')->find();
 		$user_to = $model->where(array('pos_id'=>array('eq',$dept_id_to),'is_del'=>array('eq',0)))->order('position_sort')->find();
 		if(!empty($user_from) && !empty($user_to)){
 			$flow = array($user_from['id'],$user_to['id'],getHRDeputyGeneralManagerId($user_from['id']),getGeneralManagerId($uid));
-			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+			if($this->isAjax()){
+				$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+			}
+			return $flow;
 		}else{
-			$this->ajaxReturn(null,null,1);
+			if($this->isAjax()){
+				$this->ajaxReturn(null,null,1);
+			}
+			return false;
 		}
 		
 	}
-	function ajaxgetflow_metting_communicate(){
-		$uid = $_POST['uid'];
+	function ajaxgetflow_metting_communicate($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
 		$flow = array(getHRDeputyGeneralManagerId($uid));
-		$this->ajaxReturn(getFlowData($flow),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData($flow),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_card_application(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_card_application($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		$flow = array($dept_uid);
-		$this->ajaxReturn(getFlowData($flow),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData($flow),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_notice_file(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_notice_file($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid));
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_notice_personnel(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_notice_personnel($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_contract(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_contract($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		$flow = array($dept_uid,getOfficeManagerId(),getLegalManagerId());
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_resignation(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_resignation($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$parentid = getParentid($uid);
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		if(getRank($uid)>1){//普通
 			$flow = array($parentid,$dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
-			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+			if($this->isAjax()){
+				$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+			}
+			return $flow;
 		}else{//行政副总，部门总监及以上
 			$flow = array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
-			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+			if($this->isAjax()){
+				$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+			}
+			return $flow;
 		}
 	}
-	function ajaxgetflow_probation(){
-		$uid = $_POST['uid'];
+	function ajaxgetflow_probation($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
 		$parentid = getParentid($uid);
 		$dept_uid = getDeptManagerId($uid);
 		$flow = array($parentid,$dept_uid,getHRDeputyGeneralManagerId($uid));
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_regular_work_application(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_regular_work_application($array=array(),$ext=array('flow','confirm_name')){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$parentid = getParentid($uid);
 		$dept_uid = getDeptManagerId($uid);
-		$flow = array(getHRDeputyGeneralManagerId($uid),$parentid,$dept_uid);
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+	
+		if(isHeadquarters($uid)==0){//总部
+			$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
+			$flow = checkFlowNotMe($flow,$uid);
+			$flow = array_slice($flow,0,2);
+			
+			$confirm_text_arr = getConfirmTextArrNotMe(array('getDeptManagerId','getHRDeputyGeneralManagerId','getGeneralManagerId'),$uid);
+			$confirm_text_arr = array_slice($confirm_text_arr,0,2);
+			$confirm_text = '';
+			foreach ($confirm_text_arr as $k=>$v){
+				$confirm_text.=$v;
+			}
+			
+		}else{
+			if(get_user_info($uid, 'position_name')=='副总'){
+				$flow = checkFlowNotMe(array($parentid,getParentid($parentid),getHRDeputyGeneralManagerId($uid)),$uid);
+				$confirm_text = getConfirmTextNotMe(array('getGeneralManagerIdY','getGeneralManagerIdF','getHRDeputyGeneralManagerId'),$uid);
+			}else{
+				$flow = checkFlowNotMe(array($dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)),$uid);
+				$confirm_text = getConfirmTextNotMe(array('getDeptManagerId','getHRDeputyGeneralManagerId','getGeneralManagerId'),$uid);
+				
+			}
+		}
+		
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		$this->_add_flow_index_log($flow);
+		return array('flow'=>$flow,'confirm_text'=>$this->fetch('',$confirm_text,''));
 	}
-	function ajaxgetflow_personnel_changes(){
-		$uid = $_POST['uid'];
-		$dept_id_from = $_POST['dept_id'];
-		$dept_id_to = $_POST['dept_id_to'];
+	function ajaxgetflow_personnel_changes($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id_from = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
+		$dept_id_to = $_POST['dept_id_to']?$_POST['dept_id_to']:$array['dept_id_to'];
 		
 		$parentid_1 = getParentid($uid);
 		$dept_uid_1 = getDeptManagerId($uid,$dept_id_from);
@@ -1505,65 +1596,92 @@ class FlowAction extends CommonAction {
 		$dept_uid_2 = getDeptManagerId(null,$dept_id_to);
 		
 		$flow = array($parentid_1,$dept_uid_1,$dept_uid_2,$dept_uid_2,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_salary_changes(){
-		$uid = $_POST['uid'];
-		$dept_id_from = $_POST['dept_id'];
+	function ajaxgetflow_salary_changes($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id_from = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		
 		$parentid_1 = getParentid($uid,$dept_id_from);
 		$dept_uid_1 = getDeptManagerId($uid,$dept_id_from);
 		
 		$flow = array($parentid_1,$dept_uid_1,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_resignation_list(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_resignation_list($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$flow = array(getRSManagerId());
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_office_supplies_application(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_office_supplies_application($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getFinancialManagerId(),getGeneralManagerId($uid));
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_office_use_application(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_office_use_application($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		$flow = array($dept_uid);
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_goods_procurement_allocation(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_goods_procurement_allocation($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getFinancialManagerId(),getGeneralManagerId($uid));
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_bus_card_use(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_bus_card_use($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		$flow = array($dept_uid,getFrontDesk());
-		$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_chops_use(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_chops_use($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		$flow = array($dept_uid);
-		$this->ajaxReturn(getFlowData($flow),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData($flow),null,1);
+		}
+		return $flow;
 	}
-	function ajaxgetflow_car_use(){
-		$uid = $_POST['uid'];
-		$dept_id = $_POST['dept_id'];
+	function ajaxgetflow_car_use($array=array()){
+		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
+		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		$flow = array($dept_uid);
-		$this->ajaxReturn(getFlowData($flow),null,1);
+		if($this->isAjax()){
+			$this->ajaxReturn(getFlowData($flow),null,1);
+		}
+		return $flow;
 	}
 	function ajaxgettime(){
 		$start_time = $_POST['start_time'];
@@ -1810,120 +1928,29 @@ class FlowAction extends CommonAction {
 		$where['_string'] = "result is not null";
 		$flow_log = $model -> where($where) -> order("id") -> select();
 		$this -> assign("flow_log", $flow_log);
-		//获取审核流程（加上重复的，加上空的）
-		if($vo['name']=='用人申请流程'){
-			$uid = $vo['user_id'];
-			$dept_id = $vo['dept_id'];
-			if(empty($uid)){
-				$this -> error("系统错误");
-			}
-			$parent_list = array();
-			$Parentid = getParentid(null,$dept_id);
-			while($Parentid){
-				$parent_list[] = $Parentid;
-				$Parentid = getParentid($Parentid);
-			}
-			if(count($parent_list) == 1){
-				$dept_idd = M('User')->where(array('pos_id'=>array('eq',$dept_id)))->getField('id');
-			}else if(count($parent_list) >= 2){
-				$dept_idd = $parent_list[count($parent_list)-2];
-			}
-			$flow = array($dept_idd,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
-		}else if($vo['name']=='请假/调休单' || $vo['name']=='外勤/出差单'){
-			$flow = getFlow($vo['user_id'],$vo['day_num'],false);
-			if(!is_array($flow) && !empty($flow)){
-				$flow = array($flow);
-			}
-		}else if($vo['name']=='出勤证明流程'){
-			$flow = array(getParentid($uid));
-		}else if($vo['name']=='加班调休申请'){
-			$uid = $vo['user_id'];
-			$dept_id = $vo['dept_id'];
-			$dept_uid = getDeptManagerId($uid,$dept_id);
-			$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid));
-		}else if($vo['name']=='离职申请流程'){
-			$uid = $vo['user_id'];
-			$dept_id = $vo['dept_id'];
-			$parentid = getParentid($uid);
-			$dept_uid = getDeptManagerId($uid,$dept_id);
-			if(getRank($uid)>1){//普通
-				$flow = array($parentid,$dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
-			}else{//行政副总，部门总监及以上
-				$flow = array(null,null,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
-			}
-		}else if($vo['name']=='试用期评估表'){
-			$uid = $vo['user_id'];
-			$dept_id = $vo['dept_id'];
-			$parentid = getParentid($uid);
-			$dept_uid = getDeptManagerId($uid,$dept_id);
-			$flow = array($parentid,$dept_uid,getHRDeputyGeneralManagerId($uid));
-		}else if($vo['name']=='转正申请'){
-			$uid = $vo['user_id'];
-			$dept_id = $vo['dept_id'];
-			$parentid = getParentid($uid);
-			$dept_uid = getDeptManagerId($uid);
-			$flow = array(getHRDeputyGeneralManagerId($uid),$parentid,$dept_uid);
-		}elseif ($vo['name']=='员工调岗、调职申请'){
-			$uid = $vo['user_id'];
-			$dept_id_from = $vo['dept_id'];
-			$dept_id_to = $vo['dept_id_to'];
-			
-			$parentid_1 = getParentid($uid);
-			$dept_uid_1 = getDeptManagerId($uid,$dept_id_from);
-			
-// 			$parentid_2 = getParentid(null,$dept_id_to);
-			$dept_uid_2 = getDeptManagerId(null,$dept_id_to);
-			
-			$flow = array($parentid_1,$dept_uid_1,$dept_uid_2,$dept_uid_2,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
-			
-		}elseif ($vo['name']=='员工调薪申请'){
-			$uid = $vo['user_id'];
-			$dept_id_from = $vo['dept_id'];
-			$parentid_1 = getParentid($uid,$dept_id_from);
-			$dept_uid_1 = getDeptManagerId($uid,$dept_id_from);
-			$flow = array($parentid_1,$dept_uid_1,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
-		}elseif ($vo['name']=='物品采购调拨申请单'){
-			$uid = $vo['user_id'];
-			$dept_id = $vo['dept_id'];
-			$dept_uid = getDeptManagerId($uid,$dept_id);
-			$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getFinancialManagerId(),getGeneralManagerId($uid));
 		
-		}elseif ($vo['type']==66){
-			$uid = $vo['user_id'];
-			$parentId = getParentId(1);
-			$flow = array($parentId);
-		}
+		//从$vo中获取数据放到$flow_arr中，再调用ajaxgetflow_*获取审核流程
+		$flow_arr = array('uid'=>$vo['user_id'],'dept_id'=>$vo['dept_id']);
 		
-		$search = array_keys($flow,get_user_id());
-		$flow_index = array();
-		if(!empty($search) && is_array($search)){
-			foreach ($search as $k=>$v){
-				$flow_index[$v+1] = $v+1;
-			}
+		if($vo['day_num']!==false){
+			$flow_arr['day'] = $vo['day_num'];
 		}
+		//其实不加$add也可以，把$flow_arr['add']设置为0，（总经理要审批，但总经理进不去，也就无所谓）
+		if($vo['apply_reason_2']=='辞职补充'){
+			$flow_arr['add'] = '1';
+		}else{
+			$flow_arr['add'] = '0';
+		}
+		if($vo['dept_id_from']){
+			$flow_arr['dept_id_from'] = $vo['dept_id_from'];
+		}
+		if($vo['dept_id_to']){
+			$flow_arr['dept_id_to'] = $vo['dept_id_to'];
+		}
+		$flow_message = $this->_getFlowMessageByTypeName($vo['name'],$flow_arr);
 		
-		$this -> assign("flow_index", $flow_index);
-// 		if($search !== false){//自己在哪个流程上(审核用，总经理的是否需要参加复试)
-// 			$this -> assign("flow_index", $search+1);
-// 			$this -> assign("flow_index_n", count($confirm_array)-$search-1);
-// 		}
+		$this -> assign("confirm_text", $flow_message['confirm_text']);
 		
-		$flow_log_all = array();
-		foreach ($flow as $k=>$v){//加上null
-			if($v == null){
-				$flow_log_all[$k] = $v;
-			}
-		}
-		foreach ($flow_log as $v){
-			foreach ($flow as $kk=>$vv){
-				if($v['user_id'] == $vv){
-					$flow_log_all[$kk] = $v;
-				}
-			}
-		}
-// 		var_dump($flow_index);
-// 		var_dump($flow_log_all);
-		$this -> assign("flow_log_all", $flow_log_all);
 		$this -> assign("isZhaopinDirector", isZhaopinDirector(get_user_id()));
 // 		var_dump(isZhaopinDirector(get_user_id()));
 // 		print_r($flow_log);
@@ -2571,5 +2598,70 @@ class FlowAction extends CommonAction {
 		$this -> assign('pid', $pid);
 		$this -> display();
 	}
-
+	public function _add_flow_index_log($flow){
+		$search = array_keys($flow,get_user_id());
+		$flow_index = array();
+		if(!empty($search) && is_array($search)){
+			foreach ($search as $k=>$v){
+				$flow_index[$v+1] = $v+1;
+			}
+		}
+		
+		$this -> assign("flow_index", $flow_index);
+		// 		if($search !== false){//自己在哪个流程上(审核用，总经理的是否需要参加复试)
+		// 			$this -> assign("flow_index", $search+1);
+		// 			$this -> assign("flow_index_n", count($confirm_array)-$search-1);
+		// 		}
+		
+		$flow_log_all = array();
+		foreach ($flow as $k=>$v){//加上null
+			if($v == null){
+				$flow_log_all[$k] = $v;
+			}
+		}
+		foreach ($flow_log as $v){
+			foreach ($flow as $kk=>$vv){
+				if($v['user_id'] == $vv){
+					$flow_log_all[$kk] = $v;
+				}
+			}
+		}
+		// 		var_dump($flow_log);
+		// 		var_dump($flow_index);
+		// 		var_dump($flow_log_all);
+		$this -> assign("flow_log_all", $flow_log_all);
+	}
+	public function _getFlowMessageByTypeName($flow_type_name,$flow_arr){
+		//获取审核流程（加上重复的，加上空的）
+		if($flow_type_name=='用人申请流程'){
+			$flow_message = $this->ajaxgetflow_employment($flow_arr);
+		}else if($flow_type_name=='请假/调休单' || $flow_type_name=='外勤/出差单'){
+			$flow_message = $this->ajaxgetflow_leave($flow_arr);
+			if(!is_array($flow_message['flow']) && !empty($flow_message['flow'])){
+				$flow_message['flow'] = array($flow_message['flow']);
+			}
+		}else if($flow_type_name=='出勤证明流程'){
+			$flow_message = $this->ajaxgetflow_attendance($flow_arr);
+		}else if($flow_type_name=='加班调休申请'){
+			$flow_message = $this->ajaxgetflow_over_time($flow_arr);
+		}else if($flow_type_name=='离职申请流程'){
+			$flow_message = $this->ajaxgetflow_resignation($flow_arr);
+		}else if($flow_type_name=='试用期评估表'){
+			$flow_message = $this->ajaxgetflow_probation($flow_arr);
+		}else if($flow_type_name=='转正申请'){
+			$flow_message = $this->ajaxgetflow_regular_work_application($flow_arr);
+		}elseif ($flow_type_name=='员工调岗、调职申请'){
+			$flow_message = $this->ajaxgetflow_personnel_changes($flow_arr);
+		}elseif ($flow_type_name=='员工调薪申请'){
+			$flow_message = $this->ajaxgetflow_salary_changes($flow_arr);
+		}elseif ($flow_type_name=='物品采购调拨申请单'){
+			$flow_message = $this->ajaxgetflow_goods_procurement_allocation($flow_arr);
+		}elseif ($vo['type']==66){
+			$uid = $vo['user_id'];
+			$parentId = getParentId(1);
+			$flow_message = array($parentId);
+			$this->_add_flow_index_log($flow);
+		}
+		return $flow_message;
+	}
 }

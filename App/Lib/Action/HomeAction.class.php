@@ -31,6 +31,7 @@ class HomeAction extends CommonAction {
 		$config = D("UserConfig") -> get_config();
 		$this -> assign("home_sort", $config['home_sort']);
 		$this -> assign("ceo_incentive", get_system_config("CEO_INCENTIVE"));
+	
 		$this -> get_user_info();
  		$this -> _mail_list();
 // 		$this -> _flow_list();

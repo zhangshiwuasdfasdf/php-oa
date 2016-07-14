@@ -2093,7 +2093,7 @@ function getlength($uid){//获取从根节点到uid的长度
 /*
  * 流程只能越走越高
  */
-function checkFlow($array){
+function checkFlowUp($array){
 	if(!empty($array) && is_array($array)){
 		$max = getlength($array[0]);
 		foreach ($array as $k=>$v){
@@ -2109,6 +2109,17 @@ function checkFlow($array){
 		return $array;
 	}
 }
+function checkFlowNotMe($array,$uid=null){
+	$uid=$uid?$uid:get_user_id();
+	if(!empty($array) && is_array($array)){
+		foreach ($array as $k=>$v){
+			if($v==$uid){
+				unset($array[$k]);
+			}	
+		}
+		return $array;
+	}
+}
 
 function getFlow($uid,$day,$unique=true){
 	if($day<3 && $day>=0){
@@ -2116,9 +2127,9 @@ function getFlow($uid,$day,$unique=true){
 	}elseif ($day>=3 && $day<=7){
 		if(getRank($uid) == 3){//主管，助理，员工
 			if($unique){
-				return checkFlow(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid))));
+				return checkFlowUp(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid))));
 			}else{
-				return checkFlow(array(getParentid($uid),getHRDeputyGeneralManagerId($uid)));
+				return checkFlowUp(array(getParentid($uid),getHRDeputyGeneralManagerId($uid)));
 			}
 		}elseif (getRank($uid) == 2){//经理
 			return getHRDeputyGeneralManagerId($uid);
@@ -2130,15 +2141,15 @@ function getFlow($uid,$day,$unique=true){
 	}elseif($day>7){
 		if(getRank($uid) == 3){//主管，助理，员工
 			if($unique){
-				return checkFlow(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
+				return checkFlowUp(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
 			}else{
-				return checkFlow(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
+				return checkFlowUp(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
 			}
 		}elseif (getRank($uid) == 2){//经理，总监
 			if($unique){
-				return checkFlow(array_unique(array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
+				return checkFlowUp(array_unique(array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
 			}else{
-				return checkFlow(array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
+				return checkFlowUp(array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
 			}
 		}elseif (getRank($uid) == 1){//副总
 			return getGeneralManagerId($uid);
@@ -2658,5 +2669,77 @@ function change_goods($goods_id,$num,$mark,$user_id,$create_time,$sum_egt_0 = tr
 		$list = M('GoodsChange') -> add($data);
 		return $list;
 	}
+}
+function getConfirmByCode($code){
+	switch ($code){
+		case 'getParentid':
+			return '上一级';
+		case 'getDeptManagerId':
+			return '部门总监';
+		case 'getHRDeputyGeneralManagerId':
+			return '人事行政';
+		case 'getZhaopinDirector':
+			return '招聘主管';
+		case 'getGeneralManagerId':
+			return '总经理';
+	}
+}
+function getPositionNameByRank($rank){
+	switch ($rank){
+		case '1':
+			return '副总，总监';
+		case '2':
+			return '经理';
+		case '3':
+			return '助理，员工，主管';
+	}
+}
+function getConfirmText($confirm_position_arr=array()){
+	$arr = getConfirmTextArr($confirm_position_arr);
+	$text = '';
+	foreach ($arr as $k=>$v){
+		$text.=$v;
+	}
+	return $text;
+}
+function getConfirmTextArr($confirm_position_arr=array()){
+	$text = array();
+	foreach ($confirm_position_arr as $k=>$v){
+		$text_part = M('FlowConfirmSetting')->field('text')->where(array('confirm_position_name'=>array('eq',$v)))->find();
+		$l = $k+1;
+		for($i=0;$i<8;$i++){
+			$j=$i+1;
+			$text_part = str_replace('$flow_index.'.$j.' neq '.$j,'$flow_index.'.$l.' neq '.$l,$text_part);
+			$text_part = str_replace('$flow_log_all['.$i.']','$flow_log_all['.$k.']',$text_part);
+		}
+		$text[] = $text_part['text'];
+	}
+	return $text;
+}
+function getConfirmTextArrNotMe($confirm_position_arr=array(),$uid=null){
+	$uid = $uid?$uid:get_user_id();
+	$text = array();
+	foreach ($confirm_position_arr as $k=>$v){
+		if($uid==$v($uid)){
+			continue;
+		}
+		$text_part = M('FlowConfirmSetting')->field('text')->where(array('confirm_position_name'=>array('eq',$v)))->find();
+		$l = $k+1;
+		for($i=0;$i<8;$i++){
+			$j=$i+1;
+			$text_part = str_replace('$flow_index.'.$j.' neq '.$j,'$flow_index.'.$l.' neq '.$l,$text_part);
+			$text_part = str_replace('$flow_log_all['.$i.']','$flow_log_all['.$k.']',$text_part);
+		}
+		$text[] = $text_part['text'];
+	}
+	return $text;
+}
+function getConfirmTextNotMe($confirm_position_arr=array(),$uid=null){
+	$arr = getConfirmTextArrNotMe($confirm_position_arr,$uid);
+	$text = '';
+	foreach ($arr as $k=>$v){
+		$text.=$v;
+	}
+	return $text;
 }
 ?>
