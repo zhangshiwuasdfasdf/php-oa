@@ -42,7 +42,7 @@
     <td height="36" colspan="4"><input id="apply_date" name="apply_date" value="{$vo.apply_date}" data-date-format="yyyy-mm-dd" style="border:none; outline:none; padding-left:11px;" type="text" class="form-control input-date" /></td>
   </tr>
   
-  <tr>
+  <!-- <tr>
     <td width="12%" height="140" align="center">部门领导意见</td>
     <td style="padding-left:5px;" height="140" colspan="7">
     <p>综合评述：</p><textarea id="dept_leader_review" name="dept_leader_review" onchange="setDeptLeaderReview($('#dept_leader_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.1 neq 1)">disabled</if> style="outline:none; border:none; resize:none; width:99%;" rows="3">{$vo.dept_leader_review}</textarea>
@@ -73,7 +73,8 @@
     <td width="12%" height="80" align="center">总经理意见</td>
     <td height="80" colspan="7"><textarea style="outline:none; border:none; resize:none; width:99%;" rows="3" disabled><if condition="($flow_log_all[3])">{$flow_log_all[3].result|show_result}</if></textarea>
     <p style="margin-left:70%;">签字/日期：<input <if condition="($flow_log_all[3])"> value="{$flow_log_all[3].user_name}/{$flow_log_all[3].create_time|toDate='Y-m-d'}"</if> style="outline:none; border:none; width:10%; text-align:center;" type="text" disabled/></p></td>
-  </tr>
+  </tr> -->
+  {$confirm_text}
 </table>
 
 <neq name="is_edit" value="2">

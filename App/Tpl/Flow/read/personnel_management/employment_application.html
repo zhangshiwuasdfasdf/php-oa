@@ -61,7 +61,7 @@
     <td width="13%" align="center">职权</td>
     <td colspan="7"><div rows="3" id="authority" name="authority" disabled>{$vo.authority}</div></td>
   </tr>
-  <tr>
+  <!-- <tr>
     <td width="13%" colspan="4"><p style="padding-left:10px;" align="left">部门总监意见：
     <textarea style="width:98%" rows="3" id="directors_opinion" name="directors_opinion" disabled><if condition="($flow_log_all[0])">{$flow_log_all[0].result|show_result}</if></textarea>
     <p style="margin-left:60%;">签名/日期: 
@@ -93,5 +93,6 @@
   <tr>
     <td width="13%" align="center">招聘难点及原因</td>
     <td colspan="6"><textarea id="recruit_difficult" name="recruit_difficult" rows="5" Onchange="setRecruit($('#recruit_difficult').val(),{$vo.id},{$vo.flow_id})" <if condition="(!$isZhaopinDirector)">disabled</if>>{$vo.recruit_difficult}</textarea></td>
-  </tr>
+  </tr> -->
+  {$confirm_text}
 </table>

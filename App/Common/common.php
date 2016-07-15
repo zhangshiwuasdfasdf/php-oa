@@ -2694,36 +2694,38 @@ function getPositionNameByRank($rank){
 			return '助理，员工，主管';
 	}
 }
-function getConfirmText($confirm_position_arr=array()){
-	$arr = getConfirmTextArr($confirm_position_arr);
-	$text = '';
+function getConfirmText($confirm_position_arr=array(),$flow_type_id=null){
+	$arr = getConfirmTextArr($confirm_position_arr,$flow_type_id);
+	$text = ' ';
 	foreach ($arr as $k=>$v){
 		$text.=$v;
 	}
 	return $text;
 }
-function getConfirmTextArr($confirm_position_arr=array()){
+function getConfirmTextArr($confirm_position_arr=array(),$flow_type_id=null){
 	$text = array();
 	foreach ($confirm_position_arr as $k=>$v){
-		$text_part = M('FlowConfirmSetting')->field('text')->where(array('confirm_position_name'=>array('eq',$v)))->find();
-		$l = $k+1;
-		for($i=0;$i<8;$i++){
-			$j=$i+1;
-			$text_part = str_replace('$flow_index.'.$j.' neq '.$j,'$flow_index.'.$l.' neq '.$l,$text_part);
-			$text_part = str_replace('$flow_log_all['.$i.']','$flow_log_all['.$k.']',$text_part);
+		$text_part = M('FlowConfirmSetting')->field('text')->where(array('flow_type'=>$flow_type_id,'confirm_position_name'=>array('eq',$v)))->find();
+		if($text_part){
+			$l = $k+1;
+			for($i=0;$i<8;$i++){
+				$j=$i+1;
+				$text_part = str_replace('$flow_index.'.$j.' neq '.$j,'$flow_index.'.$l.' neq '.$l,$text_part);
+				$text_part = str_replace('$flow_log_all['.$i.']','$flow_log_all['.$k.']',$text_part);
+			}
+			$text[] = $text_part['text'];
 		}
-		$text[] = $text_part['text'];
 	}
 	return $text;
 }
-function getConfirmTextArrNotMe($confirm_position_arr=array(),$uid=null){
+function getConfirmTextArrNotMe($confirm_position_arr=array(),$flow_type_id=null,$uid=null){
 	$uid = $uid?$uid:get_user_id();
 	$text = array();
 	foreach ($confirm_position_arr as $k=>$v){
 		if($uid==$v($uid)){
 			continue;
 		}
-		$text_part = M('FlowConfirmSetting')->field('text')->where(array('confirm_position_name'=>array('eq',$v)))->find();
+		$text_part = M('FlowConfirmSetting')->field('text')->where(array('flow_type'=>$flow_type_id,'confirm_position_name'=>array('eq',$v)))->find();
 		$l = $k+1;
 		for($i=0;$i<8;$i++){
 			$j=$i+1;
@@ -2734,9 +2736,9 @@ function getConfirmTextArrNotMe($confirm_position_arr=array(),$uid=null){
 	}
 	return $text;
 }
-function getConfirmTextNotMe($confirm_position_arr=array(),$uid=null){
-	$arr = getConfirmTextArrNotMe($confirm_position_arr,$uid);
-	$text = '';
+function getConfirmTextNotMe($confirm_position_arr=array(),$flow_type_id=null,$uid=null){
+	$arr = getConfirmTextArrNotMe($confirm_position_arr,$flow_type_id,$uid);
+	$text = ' ';
 	foreach ($arr as $k=>$v){
 		$text.=$v;
 	}

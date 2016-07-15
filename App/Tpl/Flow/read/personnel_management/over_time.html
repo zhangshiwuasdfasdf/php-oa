@@ -37,12 +37,13 @@
     	<input name="use_type" value="申请加班费" <if condition="($vo.use_type eq '申请加班费')">checked="checked"</if> style="margin-left:15px;" type="radio" disabled>申请加班费
     </td>
   </tr>
-  <tr>
+  <!-- <tr>
     <td width="88" height="50" align="center">部门领导审批</td>
     <td height="50" colspan="5"><input style="width:97%; height:50px; padding-left:20px;" type="text" <if condition="($flow_log_all[0])">value="{$flow_log_all[0].result|show_result}"</if> disabled/></td>
   </tr>
   <tr>
     <td width="88" height="50" align="center">行政部审核</td>
     <td height="50" colspan="5"><input style="width:97%; height:50px;padding-left:20px;" type="text" <if condition="($flow_log_all[1])">value="{$flow_log_all[1].result|show_result}"</if> disabled/></td>
-  </tr>
+  </tr> -->
+  {$confirm_text}
 </table>

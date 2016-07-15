@@ -65,7 +65,7 @@
 				<span class="col-6  ">状态</span>
 				</if>
 				<if condition="($hui neq '1')">
-				<span class="col-20  ">流程</span>
+				<span class="col-25  ">流程</span>
 				</if>
 				<if condition="($fid eq 'darft')">
 				<span class="col-10  ">操作</span>
@@ -111,7 +111,7 @@
 							<span class="col-6" style="height:20px;">{$vo.step|show_step}</span>
 							</if>
 							<if condition="($hui neq '1')">
-							<span class="col-20" style="height:20px;">{$vo.flow_name}</span>
+							<span class="col-25" style="height:20px;">{$vo.flow_name}</span>
 							</if>
 							<if condition="($fid eq 'darft')">
 							<span class="col-10" style="height:20px;"><a href="{:U('del','id='.$vo['id'])}">删除</span>

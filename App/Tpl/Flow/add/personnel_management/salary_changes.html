@@ -51,7 +51,7 @@ table div{ padding-left:2%;}
     	<div><span>申请人签名/日期：</span><span> {$user_info.name}/{$time|toDate='Y-m-d'}</span></div>
     </td>
   </tr>
-  <tr>
+  <!-- <tr>
     <td height="33" colspan="1" align="center">部门领导意见</td>
     <td height="33" colspan="5">
 	    <button onclick="showflow();return false;">查看审批流程</button>
@@ -97,5 +97,6 @@ table div{ padding-left:2%;}
         <div><textarea rows="2" class="te1" disabled></textarea></div>
         <div><span class="ma2">签名/日期：</span><span></span></div>
     </td>
-  </tr>
+  </tr> -->
+  {$confirm_text}
 </table>

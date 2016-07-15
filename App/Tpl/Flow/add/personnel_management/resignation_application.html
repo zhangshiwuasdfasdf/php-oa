@@ -45,7 +45,7 @@ body{ margin:0; padding:0; font-family:"微软雅黑"; font-size:14px;}
         <div class="d3"><span>签名/日期:</span><input id="sign_date_me" name="sign_date_me" class="in1" style="width:70%;" value="{$user_info.name}/{$time|toDate='Y-m-d'}" /></div>
     </td>
   </tr>
-  <tr>
+  <!-- <tr>
     <td height="100" align="center">直接领导意见</td>
     <td height="100" colspan="5">
     	<div class="d2"><textarea rows="3" class="te1" disabled></textarea></div>
@@ -80,7 +80,8 @@ body{ margin:0; padding:0; font-family:"微软雅黑"; font-size:14px;}
        		<span></span>
         </div>
     </td>
-  </tr>
+  </tr> -->
+  {$confirm_text}
 </table>
 <p style="font-size:12px; padding-left:2%;">备注：1. 公司与员工协商劝退、最后以员工提出离职形式办理的，纳入被动离职，并在报表中填写真实劝退原因。<br>
 2. 辞职者报告提交人为其本人，自动离职、解除劳动合同关系和劳动合同终止报告提交人为其上直接领导。
