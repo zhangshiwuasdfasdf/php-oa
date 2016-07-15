@@ -34,19 +34,48 @@
 				</a>&nbsp;&nbsp;
 				</foreach><a class="btn btn-app btn-xs btn-danger" style="margin-top:15px;margin-bottom:20px;margin-left:7px;margin-right:10px;" href="{:U('login/logout')}" ><i class="fa fa-sign-out bigger-100" style="margin-left: 0;"></i>退出</a>
           </ul>
-        </div><!-- /.navbar-collapse -->
+        </div>
+        <div style="text-align: center;" id="erNav"></div>
       </nav>
 
       
 <script src="__PUBLIC__/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {	
+<script type="text/javascript"><!--
+$(document).ready(function() {
 	$('.nav-app').hover(function() {
-		$('ul', this).slideDown(200);
-		$(this).children('a:first').addClass("hov");
+		var obj = $("#erNav");
+		$.post("{:U('Common/test')}", "id=" + $(this).attr("node"), function(data) {
+			var html = "<span class=\"er_menu\">";
+			for(var i in data){
+				html += "<a href='"+data[i].url+"'>"+ data[i].name +"</a>";
+			}
+			html += "</span>";
+			$(obj).append(html);
+		});
 	}, function() {
-		$('ul', this).slideUp(100);
-		$(this).children('a:first').removeClass("hov");		
+		$(".er_menu").html("");
 	});
 });
 </script>
+<style type="text/css">
+        .er_menu {
+        	list-style:none; 
+		    margin: 0px;
+		    padding: 0px;
+		    text-align: center;
+		    z-index: 99;
+		    height: 20px;
+		    width: auto;
+        }
+        .er_menu li {
+        	float: left;
+        	width: auto;
+        	padding: 0 5px;
+        }
+        .er_menu li a{
+        	color: #fff ;
+        }
+        .er_menu li a:hover{
+        	text-decoration: none;
+        }
+    </style>   

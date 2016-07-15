@@ -378,6 +378,7 @@ class MonthlyReportAction extends CommonAction {
 		
 		$str = str_replace(array("\r\n", "\r", "\n"), "", $_POST['excel_html']);
 		$str = preg_replace("/[\s]{2,}/","",$str);
+		$str = str_replace("0.5pt","1pt",$str);
 		/*保存当前数据对象 */
 		$list = $model -> add();
 		if ($list !== false) {//保存成功
@@ -419,6 +420,7 @@ class MonthlyReportAction extends CommonAction {
 		
 		$str = str_replace(array("\r\n", "\r", "\n"), "", $_POST['excel_html']);
 		$str = preg_replace("/[\s]{2,}/","",$str);
+		$str = str_replace("0.5pt","1pt",$str);
 		$id = $_POST['id'];
 		/*保存当前数据对象 */
 		$list = $model -> save();
@@ -478,7 +480,7 @@ class MonthlyReportAction extends CommonAction {
 		}
 
 		if ($list !== false) {//保存成功
-			$this -> assign('jumpUrl', get_return_url());
+			$this -> assign('jumpUrl', U("weekly_report/index"));
 			$this -> success('操作成功!');
 		} else {
 			$this -> error('新增失败!');

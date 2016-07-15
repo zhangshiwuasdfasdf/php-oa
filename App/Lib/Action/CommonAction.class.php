@@ -15,7 +15,7 @@ header("Access-Control-Allow-Origin:*");
 /*星号表示所有的域都可以接受，*/
 header("Access-Control-Allow-Methods:GET,POST");
 class CommonAction extends Action {
-	
+	protected $config = array('app_type' => 'asst');
 
 	function _initialize() {
 		$is_weixin = is_weixin();
@@ -60,7 +60,7 @@ class CommonAction extends Action {
 		$this -> assign('js_file', 'js/' . ACTION_NAME);
 		$this -> _assign_menu();
 		$this -> _assign_new_count();
-		
+
 	}
 
 	protected function _welogin($code){
@@ -685,6 +685,31 @@ class CommonAction extends Action {
 		}
 		$model -> add();
 	}
-
+	
+	public function test(){
+		$model = D("Node");
+		$top_menu = $_POST['id'];
+		//读取数据库模块列表生成菜单项
+		$menu = D("Node") -> access_list();
+		$system_folder_menu = D("SystemFolder") -> get_folder_menu();
+		$user_folder_menu = D("UserFolder") -> get_folder_menu();
+		$menu = array_merge($menu, $system_folder_menu, $user_folder_menu);
+		
+		//缓存菜单访问
+		$tree = list_to_tree($menu);
+		$top_menu_name = $model -> where("id=$top_menu") -> getField('name');
+		$this -> assign("top_menu_name", $top_menu_name);
+		$this -> assign("title", get_system_config("SYSTEM_NAME") . "-" . $top_menu_name);
+		$left_menu = list_to_tree($menu, $top_menu);
+		$erji = array();
+		foreach ($left_menu as $k=>$v){
+			$erji[$k]['url'] = U($v['url']); 
+			$erji[$k]['name'] = $v['name'];
+			if(isset($v['_child'])){
+				$erji[$k]['url'] = U($v['_child'][0]['url']); 
+			}
+		}	
+		$this -> ajaxReturn($erji);
+	}
 }
 ?>

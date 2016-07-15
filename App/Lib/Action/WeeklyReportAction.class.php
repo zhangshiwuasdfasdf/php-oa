@@ -285,6 +285,7 @@ class WeeklyReportAction extends CommonAction {
 		$this -> assign('last_report_plan', $last_report_plan);
 		//$time = array();
 		$begin=date('Y-m-01', strtotime(date("Y-m-d")));
+		$begin=date('Y-m-d', strtotime("$begin -6 day"));
 	    $end = date('Y-m-d', strtotime("$begin +1 month -1 day"));
 	    $begin = strtotime($begin);$end = strtotime($end);
 	    for ($i = $begin ;$i <= $end ; $i+=24*3600){
@@ -339,10 +340,7 @@ class WeeklyReportAction extends CommonAction {
 				$this -> error($model -> getError());
 			}
 		}
-		$open=fopen("C:\log.txt","a" );
-		fwrite($open,json_encode($_GET)."\r\n");
-		fwrite($open,json_encode($_POST)."\r\n");
-		fclose($open);
+		
 		if (in_array('user_id', $model -> getDbFields())) {
 			$model -> user_id = is_mobile_request()?$user['id']:get_user_id();
 		};
@@ -358,6 +356,7 @@ class WeeklyReportAction extends CommonAction {
 		$model -> create_time = time();
 		$str = str_replace(array("\r\n", "\r", "\n"), "", $_POST['excel_html']);
 		$str = preg_replace("/[\s]{2,}/","",$str);
+		$str = str_replace("0.5pt","1pt",$str);
 		
 		
 		/*保存当前数据对象 */
@@ -402,6 +401,7 @@ class WeeklyReportAction extends CommonAction {
 		
 		$str = str_replace(array("\r\n", "\r", "\n"), "", $_POST['excel_html']);
 		$str = preg_replace("/[\s]{2,}/","",$str);
+		$str = str_replace("0.5pt","1pt",$str);
 		$id = $_POST['id'];
 		/*保存当前数据对象 */
 		$list = $model -> save();
@@ -468,7 +468,7 @@ class WeeklyReportAction extends CommonAction {
 		}
 
 		if ($list !== false) {//保存成功
-			$this -> assign('jumpUrl', get_return_url());
+			$this -> assign('jumpUrl', U("monthly_report/index"));
 			$this -> success('操作成功!');
 		} else {
 			$this -> error('新增失败!');

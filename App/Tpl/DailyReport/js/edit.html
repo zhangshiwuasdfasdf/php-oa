@@ -24,8 +24,8 @@
 			add_subject();
 		}
 		$("input[name=subject]:eq({$key})").val("{$vo.subject}");
-
-		$arr_item = "{$vo.item}".split("|||");
+		$arr_item = "{$vo.item}";
+		$arr_item = $arr_item.split("|||");
 		$arr_start_time = "{$vo.start_time}".split("|||");
 		$arr_end_time = "{$vo.end_time}".split("|||");
 		$arr_status = "{$vo.status}".split("|||");
@@ -46,7 +46,7 @@
 		</volist>
 		<volist name = "last_report_plan"	id = "vo" >		
 		
-		if({$key}>6){
+		if({$key}>2){
 			add_plan();
 		}
 		
@@ -106,6 +106,7 @@
 
 			$("textarea[name=item]", this).each(function() {
 				$(this).attr('name', "item_" + $row_count + "[]");
+				$(this).val($(this).val().replace(/\n/g,""));
 			});
 
 			$("select[name=start_time]", this).each(function() {

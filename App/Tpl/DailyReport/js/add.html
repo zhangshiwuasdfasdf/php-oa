@@ -53,6 +53,7 @@
 
 			$("textarea[name=item]", this).each(function() {
 				$(this).attr('name', "item_" + $row_count + "[]");
+				$(this).val($(this).val().replace(/\n/g,""));
 			});
 
 			$("select[name=start_time]", this).each(function() {
@@ -69,6 +70,7 @@
 			$row_count++;
 		});
 	}
+	
 
 	function add_subject() {
 		$html = $("#sample_subject").html();

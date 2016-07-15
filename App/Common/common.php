@@ -2513,7 +2513,7 @@ function seniority($date2){
 	    }  
 	    list($Y1,$m1,$d1)=explode('/',$date1);  
 	    list($Y2,$m2,$d2)=explode('/',$date2);  
-	    $Y=$Y2-$Y1;  
+	    $y=$Y2-$Y1;  
 	    $m=$m2-$m1;  
 	    $d=$d2-$d1;  
 	    if($d<0){  
@@ -2529,7 +2529,7 @@ function seniority($date2){
 	    }elseif($m == 0){
 			return $d.'日';
 	    }else{
-		    return $Y.'年'.$m.'月';  
+		    return $y.'年'.$m.'月';  
 	    }
 	    
 	}

@@ -481,7 +481,7 @@ class DailyReportAction extends CommonAction {
 		}
 
 		if ($list !== false) {//保存成功
-			$this -> assign('jumpUrl', get_return_url());
+			$this -> assign('jumpUrl', U("daily_report/index"));
 			$this -> success('操作成功!');
 		} else {
 			$this -> error('新增失败!');

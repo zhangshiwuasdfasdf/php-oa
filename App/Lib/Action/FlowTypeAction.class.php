@@ -45,6 +45,7 @@ class FlowTypeAction extends CommonAction {
 		$this -> display();
 		return;
 	}
+
 	function mark() {
    		$action = $_REQUEST['action'];
 		$id = $_REQUEST["id"];

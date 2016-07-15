@@ -45,7 +45,7 @@
 		</volist>
 		<volist name = "last_report_plan"	id = "vo" >		
 		
-		if({$key}>6){
+		if({$key}>2){
 			add_plan();
 		}
 		
@@ -64,7 +64,17 @@
 	}
 
 	function init_seq() {
-
+		$key=1;
+		$("#work_content input[name='work_seq[]']").each(function(){
+			$(this).val($key);
+			$key++;
+		});
+		
+		$key=1;
+		$(".work_plan input[name='plan_seq[]']").each(function(){
+			$(this).val($key);
+			$key++;
+		});		
 	}
 
 	function init_add_link() {
@@ -95,6 +105,7 @@
 
 			$("textarea[name=item]", this).each(function() {
 				$(this).attr('name', "item_" + $row_count + "[]");
+				$(this).val($(this).val().replace(/\n/g,""));
 			});
 
 			$("select[name=start_time]", this).each(function() {
@@ -123,6 +134,7 @@
 	function add_subject() {
 		$html = $("#sample_subject").html();
 		$("#work_content").append($html);
+		init_seq();
 	}
 
 	function add_item($obj) {
@@ -133,7 +145,7 @@
 	function add_plan() {
 		$html = $("#sample_plan").html();
 		$("#plan").append($html);
-
+		init_seq();
 	}
 
 	function save($submit) {
