@@ -173,6 +173,8 @@
 			success: function(result){
 				if(result){
 					if(result.data){
+						//console.log(JSON.stringify(result.info));
+						//$("table").append(result.info);
 						$("#confirm_wrap").val(result.data.confirm_name_display);
 					}else{
 						ui_alert("暂时无法获取审批流程，请联系管理员",function(){
@@ -451,6 +453,12 @@
 		});
 		if(i==1){
 			$key=0;
+			$("input[name='types[]']").each(function(){
+				$(this).attr('id','types_'+$key);
+				$(this).attr('onchange','sum3('+$key+')');
+				$key++;
+			});
+			$key=0;
 			$("input[name='nums[]']").each(function(){
 				$(this).attr('id','num_'+$key);
 				$(this).attr('onchange','sum3('+$key+')');
@@ -465,6 +473,41 @@
 			$key=0;
 			$("input[name='amounts[]']").each(function(){
 				$(this).attr('id','amounts_'+$key);
+				$key++;
+			});
+			$key=0;
+			$("input[name='goods_id[]']").each(function(){
+				$(this).next().children().attr('onclick','select_goods('+$key+')');
+				$(this).attr('id','goods_id_'+$key);
+				$(this).prev().attr('id','goods_name_'+$key);
+				$key++;
+			});
+		}else if(i==2){
+			$key=0;
+			$("input[name='types[]']").each(function(){
+				$(this).attr('id','types_'+$key);
+				$key++;
+			});
+			$key=0;
+			$("input[name='nums[]']").each(function(){
+				$(this).attr('id','num_'+$key);
+				$key++;
+			});
+			$key=0;
+			$("input[name='prices[]']").each(function(){
+				$(this).attr('id','prices_'+$key);
+				$key++;
+			});
+			$key=0;
+			$("input[name='amounts[]']").each(function(){
+				$(this).attr('id','amounts_'+$key);
+				$key++;
+			});
+			$key=0;
+			$("input[name='goods_id[]']").each(function(){
+				$(this).next().children().attr('onclick','select_goods('+$key+')');
+				$(this).attr('id','goods_id_'+$key);
+				$(this).prev().attr('id','goods_name_'+$key);
 				$key++;
 			});
 		}
@@ -498,5 +541,7 @@
 		window.open("{:U('import_goods_procurement_allocation')}", "_self");
 		return false;
 	}
-
+	function select_goods(i) {
+		winopen("{:U('winpop_goods',array('id'=>'"+i+"'))}", 730, 500);
+	}
 </script>

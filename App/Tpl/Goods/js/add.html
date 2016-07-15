@@ -1,0 +1,11 @@
+<script type="text/javascript">
+	function save() {
+		window.onbeforeunload=null;
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+	function select_cate_id() {
+		winopen("{:U('winpop')}", 730, 500);
+	}
+</script>

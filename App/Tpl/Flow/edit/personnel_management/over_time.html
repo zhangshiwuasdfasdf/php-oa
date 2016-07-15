@@ -15,7 +15,7 @@
   </tr>
   <tr>
     <td width="88" height="60" align="center">加班事由（详写）</td>
-    <td height="60" colspan="5"><textarea id="reason" name="reason" style="width:97%; height:70px; padding-left:5px;padding-top:5px;" rows="4" >{$vo.reason}</textarea></td>
+    <td height="60" colspan="5"><textarea class="editor" id="reason" name="reason" style="width:97%; height:70px; padding-left:5px;padding-top:5px;" rows="4" >{$vo.reason}</textarea></td>
   </tr>
   <tr>
     <td width="88" height="50" align="center">加班时间</td>
@@ -28,7 +28,7 @@
   </tr>
   <tr>
     <td width="88" height="50" align="center">加班效率评估</td>
-    <td height="50" colspan="5"><textarea id="efficiency" name="efficiency" style="width:97%; height:70px; padding-left:5px;padding-top:5px;" rows="4" >{$vo.efficiency}</textarea></td>
+    <td height="50" colspan="5"><textarea class="editor" id="efficiency" name="efficiency" style="width:97%; height:70px; padding-left:5px;padding-top:5px;" rows="4" >{$vo.efficiency}</textarea></td>
   </tr>
   <tr>
     <td width="88" height="50" align="center">加班抵用方式</td>
@@ -37,12 +37,13 @@
     	<input name="use_type" value="申请加班费" <if condition="($vo.use_type eq '申请加班费')">checked="checked"</if> style="margin-left:15px;" type="radio" >申请加班费
     </td>
   </tr>
-  <tr>
+  <!-- <tr>
     <td width="88" height="50" align="center">部门领导审批</td>
     <td height="50" colspan="5"><input style="width:97%; height:50px; padding-left:20px;" type="text" <if condition="($flow_log_all[0])">value="{$flow_log_all[0].result|show_result}"</if> disabled/></td>
   </tr>
   <tr>
     <td width="88" height="50" align="center">行政部审核</td>
     <td height="50" colspan="5"><input style="width:97%; height:50px;padding-left:20px;" type="text" <if condition="($flow_log_all[1])">value="{$flow_log_all[1].result|show_result}"</if> disabled/></td>
-  </tr>
+  </tr> -->
+  {$confirm_text}
 </table>

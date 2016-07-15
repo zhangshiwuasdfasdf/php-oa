@@ -25,10 +25,11 @@
     <td height="36" align="center">手机号码</td>
     <td height="36"><input id="mobile_tel" name="mobile_tel" value="{$vo.mobile_tel}" style="width:97%; height:36px;text-align:center;" type="text" disabled/></td>
   </tr>
-  <tr>
+  <!-- <tr>
     <td height="50" align="center">部门领导审批</td>
-    <td height="50" colspan="7"><input style="width:97%; height:50px; padding-left:20px;" type="text" <if condition="($flow_log[0])">value="{$flow_log[0].result|show_result}"</if> disabled/></td>
-  </tr>
+    <td height="50" colspan="2"><input style="width:97%; height:50px; padding-left:20px;" type="text" <if condition="($flow_log[0])">value="{$flow_log[0].result|show_result}"</if> disabled/></td>
+  </tr> -->
+  {$confirm_text}
   <tr>
     <td height="50" align="center">备注</td>
     <td height="50" colspan="7"><input id="mark" name="mark" value="{$vo.mark}" style="width:97%; height:50px; padding-left:20px;" type="text" disabled/></td>

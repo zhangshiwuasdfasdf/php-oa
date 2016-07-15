@@ -26,8 +26,9 @@
     <td height="36"><input id="mobile_tel" name="mobile_tel" value="{$user_info.mobile_tel}" style="width:97%; height:36px;text-align:center;" type="text" check="require" msg="请输入手机号码"/></td>
   </tr>
   <tr>
-    <td height="50" align="center">部门领导审批</td>
-    <td height="50" colspan="2"><input style="width:97%; height:50px; padding-left:20px;" type="text" disabled/></td>
+    <!-- <td height="50" align="center">部门领导审批</td>
+    <td height="50" colspan="2"><input style="width:97%; height:50px; padding-left:20px;" type="text" disabled/></td> -->
+  	{$confirm_text}
   	<td height="50" colspan="5">
   		<button onclick="showflow();return false;">查看审批流程</button>
 		<input id="confirm_wrap" style="width:250px;" disabled>

@@ -60,7 +60,7 @@ class CommonAction extends Action {
 		$this -> assign('js_file', 'js/' . ACTION_NAME);
 		$this -> _assign_menu();
 		$this -> _assign_new_count();
-
+		
 	}
 
 	protected function _welogin($code){

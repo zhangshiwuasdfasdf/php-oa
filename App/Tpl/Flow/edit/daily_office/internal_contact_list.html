@@ -29,13 +29,13 @@
   </tr>
   <tr>
     <td width="17%" height="36" align="center"><strong>需求说明</strong></td>
-    <td height="36" colspan="5"><textarea id="content" name="content" style=" resize:none; outline:none; border:none;width:99%; padding-left:5px;" rows="3" >{$vo.content}</textarea></td>
+    <td height="36" colspan="5"><textarea class="editor" id="content" name="content" style=" resize:none; outline:none; border:none;width:99%; padding-left:5px;" rows="3" >{$vo.content}</textarea></td>
   </tr>
   <tr>
     <td width="17%" align="center"><strong>详细描述</strong></td>
-    <td colspan="5"><textarea id="describe" name="describe" style=" resize:none; outline:none; border:none;width:99%; padding-left:5px;" rows="8" >{$vo.describe}</textarea></td>
+    <td colspan="5"><textarea class="editor" id="describe" name="describe" style=" resize:none; outline:none; border:none;width:99%; padding-left:5px;" rows="8" >{$vo.describe}</textarea></td>
   </tr>
-  <tr>
+  <!-- <tr>
     <td width="17%" height="36" align="center"><strong>部门领导审核</strong></td>
     <td height="36" colspan="2"><input style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" <if condition="($flow_log[0])">value="{$flow_log[0].result|show_result}"</if> disabled/></td>
     <td width="17%" height="36" align="center"><strong>申请人</strong></td>
@@ -54,5 +54,6 @@
   <tr>
     <td width="17%" height="36" align="center"><strong>总经理审批</strong></td>
     <td height="36" colspan="5"><input style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" <if condition="($flow_log[3])">value="{$flow_log[3].result|show_result}"</if> disabled/></td>
-  </tr>
+  </tr> -->
+  {$confirm_text}
 </table>

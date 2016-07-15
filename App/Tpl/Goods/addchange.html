@@ -1,0 +1,47 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'新建资产加减','search'=>'N'))}
+
+<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"  class="well form-horizontal">
+	<input type="hidden" id="ajax" name="ajax" value="0">
+	<input type="hidden" id="add_file" name="add_file">
+	<input type="hidden" id="folder" name="folder" value="{$folder}">
+	<input type="hidden" id="fid" name="fid" value="{$folder}">
+	<input type="hidden" id="opmode" name="opmode" value="add">
+
+	<div class="form-group col-xs-6">
+		<label class="col-sm-2 control-label" for="goods_name">资产：</label>
+		<div class="col-sm-8">
+			<div class="input-group">
+				<input name="goods_name" class="form-control" id="goods_name" type="text" readonly="readonly" msg="请选择资产" check="require"/>
+				<input name="goods_id" id="goods_id" type="hidden" msg="请选择资产" check="require" />
+				<span class="input-group-btn">
+					<button class="btn btn-sm btn-primary" onclick="select_goods()" type="button">
+						选择
+					</button> </span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="num">数量：</label>
+		<div class="col-sm-10">
+			<input type="text" id="num" name="num" value="{$vo.num}" class="form-control" >
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="mark">备注：</label>
+		<div class="col-sm-10">
+			<input type="text" id="mark" name="mark" value="{$vo.mark}" class="form-control"  check="require" msg="请输入名称">
+		</div>
+	</div>
+	<!-- <div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="cate_id">类别：</label>
+		<div class="col-sm-10">
+			<input type="text" id="cate_id" name="cate_id" value="{$vo.cate_id}" class="form-control"  check="require" msg="请输入类别">
+		</div>
+	</div> -->
+	
+	<div class="action">
+		<input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save();">
+		<input  class="btn btn-sm btn-primary" type="button" value="取消" onclick="go_return_url();">
+	</div>
+</form>

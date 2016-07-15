@@ -316,6 +316,11 @@ function showflow_leave(){
 		});
 		if(i==1){
 			$key=0;
+			$("input[name='types[]']").each(function(){
+				$(this).attr('id','types_'+$key);
+				$key++;
+			});
+			$key=0;
 			$("input[name='nums[]']").each(function(){
 				$(this).attr('id','num_'+$key);
 				$(this).attr('onchange','sum3('+$key+')');
@@ -352,4 +357,7 @@ function showflow_leave(){
 			$("#consult span").last().find("b").remove();
 		});
 	}); 
+	function select_goods(i) {
+		winopen("{:U('winpop_goods',array('id'=>'"+i+"'))}", 730, 500);
+	}
 </script>

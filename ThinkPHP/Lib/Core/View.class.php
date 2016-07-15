@@ -105,7 +105,7 @@ class View {
     		unset($this->tVar['js_file']);
     		unset($this->tVar['top_menu']);
     		unset($this->tVar['title']);
-    		unset($this->tVar['new_count']);
+//     		unset($this->tVar['new_count']);
     		unset($this->tVar['task_count']);
     		unset($this->tVar['widget']);
     		unset($this->tVar['home_sort']);

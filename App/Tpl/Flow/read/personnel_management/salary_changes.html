@@ -47,14 +47,14 @@ table div{ padding-left:2%;}
   <tr>
     <td height="100" align="center"><p >申请变动理由</p></td>
     <td height="100" colspan="5" align="center">
-    	<div><textarea id="reason" name="reason" rows="4" class="te1" disabled>{$vo.reason}</textarea></div>
+    	<div><div id="reason" name="reason" rows="4" class="te1" disabled>{$vo.reason}</div></div>
     	<div><span>申请人签名/日期：</span><span> {$vo.user_name}/{$vo.create_time|toDate='Y-m-d'}</span></div>
     </td>
   </tr>
   <tr>
     <td height="33" colspan="6" align="center">部门领导意见</td>
   </tr>
-  <tr>
+  <!-- <tr>
     <td height="100" colspan="6">
     	<div>直接领导意见：</div>
         <div><textarea id="from_leader_review" name="from_leader_review" onchange="setFromLeaderReview($('#from_leader_review').val(),{$vo.id},{$vo.flow_id})" <if condition="($flow_index.1 neq 1)">disabled</if> rows="2" class="te1">{$vo.from_leader_review}</textarea></div>
@@ -93,5 +93,6 @@ table div{ padding-left:2%;}
         <div><textarea rows="2" class="te1" disabled></textarea></div>
         <div><span class="ma2">签名/日期：</span><span></span></div>
     </td>
-  </tr>
+  </tr> -->
+  {$confirm_text}
 </table>

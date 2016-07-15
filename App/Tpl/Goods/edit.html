@@ -1,0 +1,93 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'编辑资产','search'=>'N'))}
+
+<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"  class="well form-horizontal">
+	<input type="hidden" id="ajax" name="ajax" value="0">
+	<input type="hidden" id="id" name="id" value="{$vo.id}">
+	<input type="hidden" id="add_file" name="add_file" value="{$vo.add_file}">
+	<input type="hidden" id="opmode" name="opmode" value="edit">
+	<input type="hidden" id="is_submit" name="is_submit" value="1">
+
+	<div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="goods_sn">资产货号：</label>
+		<div class="col-sm-10">
+			<input type="text" id="goods_sn" name="goods_sn" value="{$vo.goods_sn}" class="form-control" >
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="goods_label">资产标签：</label>
+		<div class="col-sm-10">
+			<input type="text" id="goods_label" name="goods_label" value="{$vo.goods_label}" class="form-control" >
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="goods_name">名称：</label>
+		<div class="col-sm-10">
+			<input type="text" id="goods_name" name="goods_name" value="{$vo.goods_name}" class="form-control"  check="require" msg="请输入名称">
+		</div>
+	</div>
+	<!-- <div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="cate_id">类别：</label>
+		<div class="col-sm-10">
+			<input type="text" id="cate_id" name="cate_id" value="{$vo.cate_id}" class="form-control"  check="require" msg="请输入类别">
+		</div>
+	</div> -->
+	<div class="form-group col-xs-6">
+		<label class="col-sm-2 control-label" for="cate_name">类别：</label>
+		<div class="col-sm-8">
+			<div class="input-group">
+				<input name="cate_name" class="form-control" id="cate_name" type="text" value="{$vo.cate_name}" readonly="readonly" msg="请选择上级部门" check="require"/>
+				<input name="cate_id"  id="cate_id" type="hidden" value="{$vo.cate_id}" msg="请选择类别" check="require" />
+				<span class="input-group-btn">
+					<button class="btn btn-sm btn-primary" onclick="select_cate_id()" type="button">
+						选择
+					</button> </span>
+			</div>
+		</div>
+	</div>
+			
+	<div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="goods_weight">质量：</label>
+		<div class="col-sm-10">
+			<input type="text" id="goods_weight" name="goods_weight" value="{$vo.goods_weight}" class="form-control" >
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="market_price">市场价：</label>
+		<div class="col-sm-10">
+			<input type="text" id="market_price" name="market_price" value="{$vo.market_price}" class="form-control" >
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="keywords">关键词：</label>
+		<div class="col-sm-10">
+			<input type="text" id="keywords" name="keywords" value="{$vo.keywords}" class="form-control" >
+		</div>
+	</div>
+	<div class="form-group col-sm-6">
+		<label class="col-sm-2 control-label" for="spec">规格：</label>
+		<div class="col-sm-10">
+			<input type="text" id="spec" name="spec" value="{$vo.spec}" class="form-control" >
+		</div>
+	</div>
+	<div class="form-group col-sm-6 ">
+		<label class="col-sm-2 control-label" for="is_del">状态*：</label>
+		<div class="col-sm-10">
+			<select   name="is_del" id="is_del" class="form-control">
+				<option  value="0">启用</option>
+				<option value="1">禁用</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group col-sm-12">
+		<label class="col-sm-1 control-label" for="is_del">描述：</label>
+		<div class="col-xs-12" id="div_content">
+			<textarea class="editor" id="describe" name="describe" style="width:100%;height:300px;" msg="请输入内容">{$vo.describe}</textarea>
+		</div>
+	</div>
+	<div class="action">
+		<input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save();">
+		<input  class="btn btn-sm btn-primary" type="button" value="保存为草稿" onclick="$('#is_submit').val(0);save();">
+		<input  class="btn btn-sm btn-primary" type="button" value="取消" onclick="go_return_url();">
+	</div>
+</form>

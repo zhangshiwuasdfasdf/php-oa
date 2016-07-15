@@ -31,6 +31,7 @@ class HomeAction extends CommonAction {
 		$config = D("UserConfig") -> get_config();
 		$this -> assign("home_sort", $config['home_sort']);
 		$this -> assign("ceo_incentive", get_system_config("CEO_INCENTIVE"));
+	
 		$this -> get_user_info();
  		$this -> _mail_list();
 // 		$this -> _flow_list();
@@ -45,10 +46,10 @@ class HomeAction extends CommonAction {
 		$this -> _jinianri_list();
 		$this -> _xinjin_list();
 		$this -> _daily_list();
-		$this -> ＿shuoshuo();
+		$this -> shuoshuo();
 		$this -> display();
 	}
-	public function ＿shuoshuo(){
+	public function shuoshuo(){
 		$map['bianqian'] = array('neq','');
 		$user = M('User')->where($map)->getField('id,name,bianqian');
 		foreach($user as $k=>$v){
@@ -61,7 +62,10 @@ class HomeAction extends CommonAction {
 		if(!is_mobile_request()){
 			$this -> assign("bianq", $users);
 		}
-		
+		elseif(ACTION_NAME == 'shuoshuo') {
+			$this -> assign("bianq", array_slice($users,0,20));
+			$this->display();
+		}
 	}
 	
 	private function my_sort($arrays,$sort_key,$sort_order=SORT_DESC,$sort_type=SORT_REGULAR ){ 
@@ -218,6 +222,7 @@ class HomeAction extends CommonAction {
 		$new_notice_list = $model -> where($where) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
 		$new_notice_list1 = $model -> where($where1) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
 		$mobile_new_notice_list = array();
+		$j = 0;
 		foreach ($new_notice_list as $k=>$v){
 			if(!empty($v['add_file'])){			
 				$files = array_filter(explode(';', $v['add_file']));
@@ -229,8 +234,9 @@ class HomeAction extends CommonAction {
 			if($v['folder'] == 71){
 				$new_notice_list[$k]['name'] = substr($v['name'],18);	
 			}
-			if(is_mobile_request() && ($v['folder'] == '71' || $v['folder'] == '72')){
-				$mobile_new_notice_list[] = $v;
+			if(is_mobile_request() && $v['folder'] == '72' && $j<15){
+				$j++;
+				$mobile_new_notice_list[] = array('folder'=>$v['folder'],'name'=>$v['name']);
 			}
 		}
 		if(is_mobile_request()){
@@ -258,10 +264,8 @@ class HomeAction extends CommonAction {
 		$model = M("Task");
 		$where = array();
 		$task_all_count = $model -> where($where) -> field('id,name,executor,create_time') -> order('create_time desc') ->limit(6) -> select();
-		if(!is_mobile_request()){
-			$this -> assign("task_all_count", $task_all_count);
-		}
-		
+		$this -> assign("task_all_count", $task_all_count);
+
 		//等我接受的任务
 		
 		$where = array();
@@ -360,7 +364,7 @@ class HomeAction extends CommonAction {
 		}
 	}
 	public function ajax_set_bianqian(){
-		$user_id = $_GET['user_id'];
+		$user_id = is_mobile_request()?$_GET['id']:$_GET['user_id'];
 		if($user_id){
 			$data['id'] = $user_id;
 		}

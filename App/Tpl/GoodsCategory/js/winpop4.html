@@ -1,0 +1,34 @@
+<script type="text/javascript">
+	function save(type) {
+		if ($("#name1").val().length > 0) {
+			if(type!='undefined'){
+				$("#dept_name_"+type, parent.document).val($("#name1").val());
+				$("#dept_id_"+type, parent.document).val($("#val").val());
+			}else{
+				$("#dept_name", parent.document).val($("#name1").val());
+				$("#dept_id", parent.document).val($("#val").val());
+			}
+			
+		} else {
+			ui_error("请选择位置");
+			return false;
+		}
+		myclose();
+	}
+
+
+	$(document).ready(function() {
+		$(".popup_tree_menu a").click(function() {
+			$("#val").val($(this).attr("node"));
+			$("#name1").val($(this).children("span").text());
+			$(".popup_tree_menu .tree_menu  a.active").removeClass("active");
+			$(this).addClass("active");
+		});
+		//默认子公司节点收起
+		$(".tree_menu a").next().hide();
+		//子公司节点的展开和收起
+		$(".tree_menu a").click(function(){
+			$(this).next().slideToggle();
+		});
+	}); 
+</script>

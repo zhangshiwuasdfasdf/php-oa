@@ -1,0 +1,11 @@
+<script type="text/javascript">
+	function save() {
+		window.onbeforeunload=null;
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('savechange')}");
+		}
+	}
+	function select_goods() {
+		winopen("{:U('winpop_goods')}", 730, 500);
+	}
+</script>

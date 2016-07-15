@@ -162,10 +162,10 @@ class PopupAction extends CommonAction {
 	function mobile_pic_upload(){
 			$picname = $_FILES['mypic']['name'];
 			$picsize = $_FILES['mypic']['size'];
-			
+			$user_pic_pre = $_REQUEST['user_pic_pre']?$_REQUEST['user_pic_pre']:'';
 			if ($picname != "") {
-				if ($picsize > 512000) { //限制上传大小
-					echo '图片大小不能超过500k';
+				if ($picsize > 5*1024*1024) { //限制上传大小
+					echo '图片大小不能超过5MB';
 					exit;
 				}
 				$type = strstr($picname, '.'); //限制上传格式
@@ -174,14 +174,16 @@ class PopupAction extends CommonAction {
 					exit;
 				}
 				$rand = rand(100, 999);
-				$pics = $_REQUEST['id'] . $type; //命名图片名称
+				$pics = $user_pic_pre.$_REQUEST['id'] . $type; //命名图片名称
+				
 				//上传路径
 				$pic_path = "./Data/Files/emp_pic/". $pics;
 				
 				$res = move_uploaded_file($_FILES['mypic']['tmp_name'], $pic_path);
 				if($res){
 					$data['id'] = intval($_REQUEST['id']);
-					$data['pic'] = 'emp_pic/'.$pics;
+					$data[$user_pic_pre.'pic'] = 'emp_pic/'.$pics;
+					
 					M('User')->save($data);
 					$size = round($picsize/1024,2); //转换成kb
 					$arr = array(
