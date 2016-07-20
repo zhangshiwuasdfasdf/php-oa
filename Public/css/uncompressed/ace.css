@@ -14555,6 +14555,12 @@ th[aria-selected=true] .ui-jqgrid-sortable {
 	width: 43px;
 	height: 53px;
 }
+.head-goods-icon {
+	background: url("../../img/menu_icon/09.png") no-repeat;
+	display: inline-block;
+	width: 43px;
+	height: 53px;
+}
 .flow_ele {
 	display: inline-block;
 	height: 8px;

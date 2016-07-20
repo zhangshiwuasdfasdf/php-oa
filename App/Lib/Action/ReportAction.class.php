@@ -33,21 +33,21 @@ class ReportAction extends CommonAction {
 		$this -> assign('auth', $auth);
 
 		
-		if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
-			$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
-			$map['user_id'] = array('in',$child_ids);
-		}elseif(D("Role") -> check_duty('SHOW_LOG_LOW')){//允许查看自己及下一级日志
-			$child_ids = array_merge(array(intval(get_user_id())),get_child_ids(get_user_id()));
-			$map['user_id'] = array('in',$child_ids);
-		}
-		else{//查看自己的日志
-			$map['user_id'] = array('eq',intval(get_user_id()));
-		}
+// 		if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
+// 			$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
+// 			$map['user_id'] = array('in',$child_ids);
+// 		}elseif(D("Role") -> check_duty('SHOW_LOG_LOW')){//允许查看自己及下一级日志
+// 			$child_ids = array_merge(array(intval(get_user_id())),get_child_ids(get_user_id()));
+// 			$map['user_id'] = array('in',$child_ids);
+// 		}
+// 		else{//查看自己的日志
+// 			$map['user_id'] = array('eq',intval(get_user_id()));
+// 		}
 			
 
-		if ( D("Role") -> check_duty('SHOW_LOG')) {//查看所有日志
-			$map=array();
-		}
+// 		if ( D("Role") -> check_duty('SHOW_LOG')) {//查看所有日志
+// 			$map=array();
+// 		}
 
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);

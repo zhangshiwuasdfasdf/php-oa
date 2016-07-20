@@ -465,6 +465,13 @@ class DailyReportAction extends CommonAction {
 		if (false === $model -> create()) {
 			$this -> error($model -> getError());
 		}
+		if(is_mobile_request()){//手机端处理
+			$model -> user_id = $model -> id;
+			$model -> user_name = get_user_name();
+			$model -> create_time = time();
+			unset($model -> id);
+			unset($model -> token);
+		}
 		$opmode = $_POST["opmode"];
 		switch($opmode) {
 			case "add" :

@@ -245,7 +245,7 @@ class MonthlyReportAction extends CommonAction {
 
 		$where_comment['doc_id'] = array('eq', $id);
 		$where_comment['is_del'] = array('eq', 0);
-		$comment = M("DailyReportComment") -> where($where_comment) -> select();
+		$comment = M("MonthlyReportComment") -> where($where_comment) -> select();
 		$this -> assign('comment', $comment);
 
 		$model_report_look = M('ReportLook');
@@ -463,6 +463,13 @@ class MonthlyReportAction extends CommonAction {
 		$model = D('MonthlyReportComment');
 		if (false === $model -> create()) {
 			$this -> error($model -> getError());
+		}
+		if(is_mobile_request()){//手机端处理
+			$model -> user_id = $model -> id;
+			$model -> user_name = get_user_name();
+			$model -> create_time = time();
+			unset($model -> id);
+			unset($model -> token);
 		}
 		$opmode = $_POST["opmode"];
 		switch($opmode) {
