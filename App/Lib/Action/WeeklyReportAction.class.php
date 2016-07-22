@@ -283,14 +283,15 @@ class WeeklyReportAction extends CommonAction {
 		$where_plan['type'] = array('eq', 2);
 		$last_report_plan = M("WeeklyReportDetail") -> where($where_plan) -> select();
 		$this -> assign('last_report_plan', $last_report_plan);
-		//$time = array();
+		$time = array();
 		$begin=date('Y-m-01', strtotime(date("Y-m-d")));
 		$begin=date('Y-m-d', strtotime("$begin -6 day"));
-	    $end = date('Y-m-d', strtotime("$begin +1 month -1 day"));
+	    $end = date('Y-m-d', strtotime("$begin +1 month +6 day"));
 	    $begin = strtotime($begin);$end = strtotime($end);
 	    for ($i = $begin ;$i <= $end ; $i+=24*3600){
 	    	$time[date("Y-m-d",$i)] = date("Y-m-d", $i);
 	    }
+	    
 		$this -> assign('time', $time);
 
 		$this -> display();
