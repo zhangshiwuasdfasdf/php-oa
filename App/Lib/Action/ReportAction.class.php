@@ -12,16 +12,27 @@
  -------------------------------------------------------------------------*/
 
 class ReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','delivery_read'=>'read','delivery_edit'=>'read','delivery_del'=>'read','delivery'=>'read','export_delivery_report' => 'read','import_delivery_report' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','delivery_read'=>'read','delivery_read_all'=>'read','delivery_edit'=>'read','delivery_del'=>'read','delivery'=>'read','export_delivery_report' => 'read','import_delivery_report' => 'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
-		$map['is_del'] = array('eq', '0');
-		if (!empty($_POST['content'])) {
-			$where['content'] = array('like', '%' . $_POST['content'] . '%');
-			$where['plan'] = array('like', '%' . $_POST['content'] . '%');
-			$where['_logic'] = 'or';
-			$map['_complex'] = $where;
+		if (!empty($_POST['eq_addr'])) {
+			$where_delivery['addr'] = array('eq',$_POST['eq_addr']);
 		}
+// 		if (!empty($_POST['be_create_time'])) {
+// 			$where['be_create_time'] = array('like', '%' . $_POST['content'] . '%');
+// 			$where['plan'] = array('like', '%' . $_POST['content'] . '%');
+// 			$where['_logic'] = 'or';
+// 			$map['_complex'] = $where;
+// 		}
+		$start_time = $_POST['be_create_time'];
+		$end_time = $_POST['en_create_time'];
+		if (!empty($start_time)) {
+			$where_delivery_detail['date'][] = array('egt', trim($start_time));
+		}
+		if (!empty($end_time)) {
+			$where_delivery_detail['date'][] = array('elt', trim($end_time));
+		}
+		$map['_complex'] = array('delivery'=>$where_delivery,'delivery_detail'=>$where_delivery_detail);
 	}
 	
 	public function delivery() {
@@ -49,9 +60,9 @@ class ReportAction extends CommonAction {
 // 			$map=array();
 // 		}
 
-		if (method_exists($this, '_search_filter')) {
-			$this -> _search_filter($map);
-		}
+// 		if (method_exists($this, '_search_filter')) {
+// 			$this -> _search_filter($map);
+// 		}
 
 		$model = D("Delivery");
 		if (!empty($model)) {
@@ -93,17 +104,6 @@ class ReportAction extends CommonAction {
 	}
 
 	public function delivery_read($id) {
-// 		if(is_mobile_request()){
-// 			$id = $_REQUEST['pid'];
-// 		}
-		$this -> assign('uid',get_user_id());
-		$this -> assign('id', $id);
-		$this -> assign('auth', $this -> config['auth']);
-
-		$widget['date'] = true;
-		$widget['uploader'] = true;
-		$widget['editor'] = true;
-		$this -> assign("widget", $widget);
 
 		$where['id'] = array('eq', $id);
 		$delivery = M("Delivery") -> where($where) -> order('id desc') -> find();
@@ -111,20 +111,110 @@ class ReportAction extends CommonAction {
 		
 		$where_detail['pid'] = $delivery['id'];
 		$delivery_detail = M("DeliveryDetail") -> where($where_detail) -> select();
-
-		$this -> assign('delivery_detail', $delivery_detail);
-
-		$store_name = M("DeliveryDetail") -> field('store_name') ->distinct(true) -> select();
+		
+		$sum_day = array();
+		$aa = array();
+		$store_name_same = array();
+		foreach ($delivery_detail as $k=>$v){
+			$aa[$v['date']][$v['express']][$v['store_name']] = $v['num'];
+			$store_name_same[$v['date']][$v['store_name']][$v['express']] = $v['num'];
+			if(!strstr($v['store_name'], '小计')){//统计每天的总量时把含有小计的商家名过滤
+				$sum_day[$v['date']] += $v['num'];
+			}
+		}
+// 		dump($aa);
+		$this -> assign('sum_day', $sum_day);
+		$this -> assign('delivery_detail', $aa);
+		$this -> assign('store_name_same', $store_name_same);
+		
+		$store_name = M("DeliveryDetail") -> where($where_detail) -> field('store_name') ->distinct(true) -> select();
+		$store_name = rotate($store_name);
+		$store_name = $store_name['store_name'];
 		$this -> assign('store_name', $store_name);
+		$this -> assign('store_name_num', count($store_name));
 		
-		$date = M("DeliveryDetail") -> field('date') ->distinct(true) -> select();
+		$date = M("DeliveryDetail") -> where($where_detail) -> field('date') ->distinct(true) -> select();
+		$date = rotate($date);
+		$date = $date['date'];
 		$this -> assign('date', $date);
+		$this -> assign('date_num', count($date));
 		
-		$express = M("DeliveryDetail") -> field('express') ->distinct(true) -> select();
+		$express = M("DeliveryDetail") -> where($where_detail) -> field('express') ->distinct(true) -> select();
+		$express = rotate($express);
+		$express = $express['express'];
 		$this -> assign('express', $express);
+		$this -> assign('express_num', count($express));
 		
 		$this -> display();
 	}
+	
+	public function delivery_read_all() {
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		$this -> assign('auth', $this -> config['auth']);
+		$this -> assign('user_id', get_user_id());
+		
+		$addr = M("Delivery") -> field('addr as id,addr as name') ->distinct(true) -> select();
+		$this -> assign('addr_list', $addr);
+		
+		$where = $this -> _search();
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($where);
+		}
+		
+// 		$where['id'] = array('eq', $id);
+		$delivery = M("Delivery") -> where($where['_complex']['delivery']) -> order('id desc') -> select();
+		$this -> assign('delivery', $delivery);
+		
+		$delivery_id = rotate($delivery);
+		$delivery_id = $delivery_id['id'];
+		$delivery_id = implode(',',$delivery_id);
+		
+		$where_detail = $where['_complex']['delivery_detail'];
+		$where_detail['pid'] = array('in',$delivery_id);
+// 		dump($where_detail);
+		$delivery_detail = M("DeliveryDetail") -> where($where_detail) -> select();
+// 		dump($delivery_detail);
+// 		return;
+		$sum_day = array();
+		$aa = array();
+		$store_name_same_day = array();
+		$store_name_same = array();
+		foreach ($delivery_detail as $k=>$v){
+			$aa[$v['date']][$v['express']][$v['store_name']] = $v['num'];
+			$store_name_same_day[$v['date']][$v['store_name']][$v['express']] = $v['num'];
+			$store_name_same[$v['store_name']] += $v['num'];
+			if(!strstr($v['store_name'], '小计')){//统计每天的总量时把含有小计的商家名过滤
+				$sum_day[$v['date']] += $v['num'];
+			}
+		}
+		// 		dump($aa);
+		$this -> assign('sum_day', $sum_day);
+		$this -> assign('delivery_detail', $aa);
+		$this -> assign('store_name_same_day', $store_name_same_day);
+		$this -> assign('store_name_same', $store_name_same);
+	
+		$store_name = M("DeliveryDetail") -> where($where_detail) -> field('store_name') ->distinct(true) -> select();
+		$store_name = rotate($store_name);
+		$store_name = $store_name['store_name'];
+		$this -> assign('store_name', $store_name);
+		$this -> assign('store_name_num', count($store_name));
+	
+		$date = M("DeliveryDetail") -> where($where_detail) -> field('date') ->distinct(true) -> select();
+		$date = rotate($date);
+		$date = $date['date'];
+		$this -> assign('date', $date);
+		$this -> assign('date_num', count($date));
+	
+		$express = M("DeliveryDetail") -> where($where_detail) -> field('express') ->distinct(true) -> select();
+		$express = rotate($express);
+		$express = $express['express'];
+		$this -> assign('express', $express);
+		$this -> assign('express_num', count($express));
+	
+		$this -> display();
+	}
+	
 	public function delivery_del($id) {
 		$this -> assign('uid',get_user_id());
 		$this -> assign('id', $id);
@@ -351,111 +441,47 @@ class ReportAction extends CommonAction {
 // 		$i = 1;
 		//dump($list);
 		
-		//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
 		$q = $objPHPExcel -> setActiveSheetIndex(0);
 		//第一列为用户
-		$q = $q -> setCellValue("A1", '序号');
+		$q = $q -> setCellValue("A1", '基地月仓库发货日报表');
+		$q->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		
-		$q = $q -> setCellValue("B1", '主要工作事项');
-		$q = $q -> mergeCells('B1:C1');
-		$q = $q -> setCellValue("D1", '工作内容');
-		$q = $q -> mergeCells('D1:E1');
-		$q = $q -> setCellValue("F1", '工作时间（起）hh:mm半小时为单位');
-		$q = $q -> setCellValue("G1", '工作时间（止）hh:mm半小时为单位');
-		$q = $q -> setCellValue("H1", '工作进度（进行中/已完成）');
+		$q = $q -> mergeCells('A1:Z1');
 		
-		$q = $q -> setCellValue("A2", '1');
-		$q = $q -> mergeCells('A2:A3');
-		$q = $q -> mergeCells('B2:C3');
-		$q = $q -> mergeCells('D2:E2');
-		$q = $q -> mergeCells('D3:E3');
-		$q = $q -> setCellValue("A4", '2');
-		$q = $q -> mergeCells('A4:A5');
-		$q = $q -> mergeCells('B4:C5');
-		$q = $q -> mergeCells('D4:E4');
-		$q = $q -> mergeCells('D5:E5');
-		$q = $q -> setCellValue("A6", '3');
-		$q = $q -> mergeCells('A6:A7');
-		$q = $q -> mergeCells('B6:C7');
-		$q = $q -> mergeCells('D6:E6');
-		$q = $q -> mergeCells('D7:E7');
-		$q = $q -> setCellValue("A8", '今日工作小结');
-		$q = $q -> mergeCells('A8:A9');
-		$q = $q -> mergeCells('B8:H9');
+		$q = $q -> setCellValue("A3", '日期');
+		$q = $q -> setCellValue("B3", '快递单位');
 		
-		$q = $q -> setCellValue("A10", '今日自我评价：');
-		$q = $q -> setCellValue("B10", '认真');
-		$q = $q -> setCellValue("C10", '效率');
-		$q = $q -> setCellValue("D10", '坚守承诺');
-		$q = $q -> setCellValue("E10", '保证完成任务');
-		$q = $q -> setCellValue("F10", '乐观');
-		$q = $q -> setCellValue("G10", '自信');
-		$q = $q -> setCellValue("H10", '爱与奉献');
-		$q = $q -> setCellValue("I10", '绝不找借口');
-		$q = $q -> setCellValue("J10", '合计');
+		for($i=ord('C');$i<=ord('Z');$i++){
+			$q = $q -> setCellValue(chr($i)."2", '某某某商家');
+			$q ->getStyle(chr($i)."2")->getAlignment()->setWrapText(true);
+			$q ->getRowDimension(2)->setRowHeight(80);
+			$q = $q -> setCellValue(chr($i)."3", $i-ord('C')+1);
+		}
 		
-		$q = $q -> setCellValue("A11", '每项1-10分');
+		$q = $q -> setCellValue("A4", date('Y/m/d',time()));
+		$q = $q -> setCellValue("B4", '韵达');
 		
-		$q = $q -> setCellValue("A14", '明日工作计划（A类最重要 B类重要 C类次重要）');
-		$q = $q -> mergeCells('A14:I14');
+		$q = $q -> setCellValue("A5", date('Y/m/d',time()));
+		$q = $q -> setCellValue("B5", '中通');
 		
-		$q->getStyle('A14')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$q = $q -> setCellValue("A6", date('Y/m/d',time()));
+		$q = $q -> setCellValue("B6", '京东');
 		
-		$q = $q -> setCellValue("A15", '序号');
-		$q = $q -> setCellValue("B15", '主要工作事项');
-		$q = $q -> mergeCells('B15:C15');
-		$q = $q -> setCellValue("D15", '计划推荐目标');
-		$q = $q -> mergeCells('D15:E15');
-		$q = $q -> setCellValue("F15", '时间安排（起）hh:mm半小时为单位');
-		$q = $q -> setCellValue("G15", '时间安排（止）hh:mm半小时为单位');
-		$q = $q -> setCellValue("H15", '重要性（A/B/C）');
-		$q = $q -> setCellValue("I15", '协助需求（不需要协助/需要协助）');
+		$q = $q -> setCellValue("A7", date('Y/m/d',time()));
+		$q = $q -> setCellValue("B7", '邮政小包');
 		
-		$q = $q -> setCellValue("A16", '1');
-		$q = $q -> mergeCells('B16:C16');
-		$q = $q -> mergeCells('D16:E16');
+		$q = $q -> setCellValue("A8", date('Y/m/d',time()));
+		$q = $q -> setCellValue("B8", '汇通');
 		
-		$q = $q -> setCellValue("A17", '2');
-		$q = $q -> mergeCells('B17:C17');
-		$q = $q -> mergeCells('D17:E17');
+		$q = $q -> setCellValue("A9", date('Y/m/d',time()));
+		$q = $q -> setCellValue("B9", '申通');
 		
-		$q = $q -> setCellValue("A18", '3');
-		$q = $q -> mergeCells('B18:C18');
-		$q = $q -> mergeCells('D18:E18');
+		$q = $q -> setCellValue("A10", date('Y/m/d',time()));
+		$q = $q -> setCellValue("B10", '顺丰');
 		
-		$q = $q -> setCellValue("A19", '4');
-		$q = $q -> mergeCells('B19:C19');
-		$q = $q -> mergeCells('D19:E19');
-		
-		$q = $q -> setCellValue("A20", '5');
-		$q = $q -> mergeCells('B20:C20');
-		$q = $q -> mergeCells('D20:E20');
-		
-		$q = $q -> setCellValue("A21", '6');
-		$q = $q -> mergeCells('B21:C21');
-		$q = $q -> mergeCells('D21:E21');
-		
-		$q = $q -> setCellValue("A22", '7');
-		$q = $q -> mergeCells('B22:C22');
-		$q = $q -> mergeCells('D22:E22');
-		
-		$q = $q -> setCellValue("A23", '明日目标');
-		$q = $q -> mergeCells('A23:A24');
-		$q = $q -> mergeCells('B23:I24');
-		
-		$q ->getColumnDimension('A')->setWidth(20);
-		$q ->getColumnDimension('B')->setWidth(20);
-		$q ->getColumnDimension('C')->setWidth(20);
-		$q ->getColumnDimension('D')->setWidth(20);
-		$q ->getColumnDimension('E')->setWidth(20);
-		$q ->getColumnDimension('F')->setWidth(20);
-		$q ->getColumnDimension('G')->setWidth(20);
-		$q ->getColumnDimension('H')->setWidth(30);
-		$q ->getColumnDimension('I')->setWidth(40);
-		$q ->getColumnDimension('J')->setWidth(20);
 		// Rename worksheet
-		$title = '日报';
-		$objPHPExcel -> getActiveSheet() -> setTitle('日报');
+		$title = '基地发货日报导入模板';
+		$objPHPExcel -> getActiveSheet() -> setTitle('基地发货日报导入模板');
 		
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel -> setActiveSheetIndex(0);
@@ -502,6 +528,17 @@ class ReportAction extends CommonAction {
 					$y++;
 				}
 			
+				$title = $sheetData[1]['A'];
+				$title1 = explode('基地',$title);
+				if($title1[0]!='金华' && $title1[0]!='宁波' && $title1[0]!='杭州' && $title1[0]!='嘉兴'){
+					$this -> error('园区必须是金华、宁波、杭州、嘉兴中的一个');
+					exit ;
+				}
+				$title2 = explode('月',$title1[1]);
+				if(!is_numeric($title2[0]) || $title2[0]<0 || $title2[0]>12){
+					$this -> error('月份必须是1-12');
+					exit ;
+				}
 				$model_delivery = M("Delivery");
 				$delivery = array();
 				$delivery['user_id'] = get_user_id();
@@ -509,24 +546,38 @@ class ReportAction extends CommonAction {
 				$delivery['dept_id'] = get_dept_id();
 				$delivery['dept_name'] = get_dept_name();
 				$delivery['create_time'] = time();
+				$delivery['addr'] = $title1[0];
+				$delivery['month'] = $title2[0];
 				$pid = $model_delivery->add($delivery);
 				if($pid){
 					$model_delivery_detail = M("DeliveryDetail");
-					for($i=3;$i<$x-1;$i++){
+					for($i=3;$i<$x;$i++){
 						for($j=4;$j<$y;$j++){
-							if($sheetData[$j][ToNumberSystem26($i)]!='' && $sheetData[$j]['A']!='小计'){
+							if($sheetData[$j][ToNumberSystem26($i)]!='' && $sheetData[$j]['A']!='小计' && $sheetData[$j]['B']!='小计' && $sheetData[$j]['A']!='总计' && $sheetData[$j]['B']!='总计' && $sheetData[2][ToNumberSystem26($i)]!='合计' && $sheetData[3][ToNumberSystem26($i)]!='合计'){
 								$delivery_detail = array();
 								$delivery_detail['pid'] = $pid;
 								$delivery_detail['store_name'] = $sheetData[2][ToNumberSystem26($i)];
 								$delivery_detail['express'] = $sheetData[$j]['B'];
 								$date_0 = $sheetData[$j]['A'];
-								$date_array = explode('-',$date_0);
-								$delivery_detail['date'] = '20'.$date_array[2].'-'.$date_array[0].'-'.$date_array[1];
+
+								$delivery_detail['date'] = date('Y-m-d',strtotime($date_0));
+								if($delivery_detail['date']=='1970-01-01'){
+									$date_array = explode('-',$date_0);
+									$delivery_detail['date'] = '20'.$date_array[2].'-'.$date_array[0].'-'.$date_array[1];
+								}
 								$delivery_detail['num'] = $sheetData[$j][ToNumberSystem26($i)];
-								$res = $model_delivery_detail->add($delivery_detail);
-								if(!$res){
-									$this -> error('导入具体信息失败：'.ToNumberSystem26($i).' '.$j);
-									exit ;
+								
+								$where = array();
+								$where['store_name'] = array('eq',$delivery_detail['store_name']);
+								$where['express'] = array('eq',$delivery_detail['express']);
+								$where['date'] = array('eq',$delivery_detail['date']);
+								$is_exist = $model_delivery_detail->where($where)->find();
+								if(empty($is_exist)){
+									$res = $model_delivery_detail->add($delivery_detail);
+									if(!$res){
+										$this -> error('导入具体信息失败：'.ToNumberSystem26($i).' '.$j);
+										exit ;
+									}
 								}
 							}
 						}

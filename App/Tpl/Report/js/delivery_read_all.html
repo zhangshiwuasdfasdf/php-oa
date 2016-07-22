@@ -1,0 +1,34 @@
+<script type="text/javascript">
+
+	function add() {
+		window.open("{:U('add')}", "_self");
+	}
+
+	function move_to(val) {
+		var vars = $("#form_data").serialize();
+		sendAjax("{:U('mark','action=move_folder')}", "val=" + val + "&" + vars);
+		location.reload();
+	}
+
+	$(document).ready(function() {
+		set_return_url();
+		$("#move_to li").click(function() {
+			move_to($(this).attr("id"));
+		});
+	}); 
+	var q = $(".td_h").height();
+	$(".td_h img").css('min-height',q);
+	
+	var m=$('#line_1').offset().top;
+	var l=$(".line_3").offset().left;
+	
+	$("#line_1").css('left',l);
+	$(window).bind("scroll", function(event){
+		if($(document).scrollTop()>=145){
+			$('#line_1').addClass('line_1');
+		}else{
+			$('#line_1').removeClass('line_1');
+		}
+	})
+	
+</script>

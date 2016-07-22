@@ -13,7 +13,7 @@
 
 class StaffAction extends CommonAction {
 	//过滤查询字段
-	protected $config=array('app_type'=>'common', 'action_auth' => array('get_dept_and_user' => 'read'));
+	protected $config=array('app_type'=>'common', 'action_auth' => array('get_dept_and_user' => 'read','get_user_by_id' => 'read'));
 	private $position;
 	private $rank;
 	private $dept;
@@ -49,7 +49,9 @@ class StaffAction extends CommonAction {
 			$a = str_replace('tree_menu','submenu',$a);
 			$a = str_replace('<a class=""','<a class="dropdown-toggle"',$a);
 			$a = preg_replace('/submenu/','nav-list',$a,1);
-			$this -> assign('menu', $a);
+			if(!is_mobile_request()){
+				$this -> assign('menu', $a);
+			}
 			$this -> display();
 		}else{//手机端通讯录
 			$prefix = C('DB_PREFIX');
@@ -94,6 +96,14 @@ class StaffAction extends CommonAction {
 		$a = preg_replace('/submenu/','nav-list',$a,1);
 // 		echo $a;
 		$this -> ajaxReturn($a, "", 1);
+	}
+	public function get_user_by_id(){
+		if(is_mobile_request()){
+			$user_id = intval($_REQUEST['target_user_id']);
+			$info = D('UserView')->field('id,emp_no,sex,birthday,dept_name,duty,email,mobile_tel,name,pic,bk_pic')->find($user_id);
+// 			$info = get_user_info($user_id, 'id,emp_no,sex,birthday,dept_name,duty,email,mobile_tel,name,pic,bk_pic');
+			$this -> ajaxReturn($info, "", 1);
+		}
 	}
 }
 ?>

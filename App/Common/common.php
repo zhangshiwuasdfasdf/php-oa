@@ -2744,4 +2744,13 @@ function getConfirmTextNotMe($confirm_position_arr=array(),$flow_type_id=null,$u
 	}
 	return $text;
 }
+function array_sum_except($exc,$array){
+	$sum = 0;
+	foreach ($array as $k=>$v){
+		if(!strstr($k, $exc)){
+			$sum += $v;
+		}
+	}
+	return $sum;
+}
 ?>
