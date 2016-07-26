@@ -80,12 +80,31 @@ class StaffAction extends CommonAction {
 		$node = D("Dept");
 		$menu = array();
 		$where['is_del'] = array('eq',0);
-		$menu = $node -> field('id,pid,name') ->where($where)-> order('sort asc') -> select();
+		$menu = $node -> field('id,pid,name,is_real_dept') ->where($where)-> order('sort asc') -> select();
+		
 		foreach ($menu as $k=>$v){
 			$users = M('User')->field('id,name,pos_id as pid')->where(array('pos_id'=>$v['id']))->select();
 			foreach ($users as $kk=>$vv){
 				$users[$kk]['id'] = $users[$kk]['name'].'|'.$users[$kk]['id'].';';
-				$menu[] = $users[$kk];
+				if($v['is_real_dept']){
+					$menu[] = $users[$kk];
+				}else{
+					$pid = $v['pid'];
+					$is = M("Dept")->field('id,pid,is_real_dept')->find($pid);
+					while ($is['is_real_dept']=='0'){
+						$pid = $is['pid'];
+						$is = M("Dept")->field('id,pid,is_real_dept')->find($pid);
+					}
+					$users[$kk]['pid'] = $is['id'];
+					$menu[] = $users[$kk];
+				}
+				
+			}
+		}
+		//把不是部门的删掉
+		foreach ($menu as $k=>$v){
+			if($v['is_real_dept']=='0'){
+				unset($menu[$k]);
 			}
 		}
 		$tree = list_to_tree($menu);
