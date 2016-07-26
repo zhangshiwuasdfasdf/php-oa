@@ -12,15 +12,30 @@
  -------------------------------------------------------------------------*/
 
 class MonthlyReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('getselecttime'=>'read','share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_monthly_report' => 'read','import_monthly_report' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('getselecttime'=>'read','share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_monthly_report' => 'read','import_monthly_report' => 'read','get_dept_child' => 'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
-		if (!empty($_POST['content'])) {
-			$where['content'] = array('like', '%' . $_POST['content'] . '%');
-			$where['plan'] = array('like', '%' . $_POST['content'] . '%');
-			$where['_logic'] = 'or';
-			$map['_complex'] = $where;
+		if (!empty($_POST['eq_dept_id'])) {
+			$map['dept_id'] = array('eq', $_POST['eq_dept_id']);
+		}
+		if (!empty($_POST['eq_user_id'])) {
+			$map['user_id'] = array('eq', $_POST['eq_user_id']);
+		}
+		if (!empty($_POST['be_create_time']) && !empty($_POST['en_create_time'])) {
+			$map['work_date'] = array('between', array($_POST['be_create_time'],$_POST['en_create_time']));
+		}elseif (!empty($_POST['be_create_time'])) {
+			$map['work_date'] = array('egt', $_POST['be_create_time']);
+		}elseif (!empty($_POST['en_create_time'])) {
+			$map['work_date'] = array('elt', $_POST['en_create_time']);
+		}
+		if (!empty($_POST['eq_dept_id_0'])) {
+			$dept_id = $_POST['eq_dept_id_0'];
+			$map['pos_id'] = array('in', get_child_dept_all($dept_id));
+		}
+		if (!empty($_POST['eq_dept_id_1'])) {
+			$dept_id = $_POST['eq_dept_id_1'];
+			$map['pos_id'] = array('in', array($dept_id));
 		}
 	}
 
@@ -36,7 +51,7 @@ class MonthlyReportAction extends CommonAction {
 			$dept_id = get_dept_id();
 			$dept_name = get_dept_name();
 			$menu = array();
-			$dept_menu = $node -> field('id,pid,name') -> where("is_del=0") -> order('sort asc') -> select();
+			$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
 			$dept_tree = list_to_tree($dept_menu, $dept_id);
 			$count = count($dept_tree);
 			if (empty($count)) {
@@ -97,16 +112,55 @@ class MonthlyReportAction extends CommonAction {
 			}
 		}
 
-		if ( D("Role") -> check_duty('SHOW_LOG')) {
-			$map = array();
+		if ( D("Role") -> check_duty('SHOW_LOG')) {//查看所有日志
+			$node = D("Dept");
+			$dept_id = get_dept_id();
+			$dept_name = get_dept_name();
+			$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+			
+			$dept_tree = list_to_tree($dept_menu);
+			$count = count($dept_tree);
+			if(!is_mobile_request()){
+				if (empty($count)) {
+					/*获取部门列表*/
+					$html = '';
+					$html = $html . "<option value='{$dept_id}'>{$dept_name}</option>";
+					$this -> assign('dept_list', $html);
+					/*获取人员列表*/
+					$where['dept_id'] = array('eq', $dept_id);
+					$emp_list = D("User") -> where($where) -> getField('id,name');
+					$this -> assign('emp_list', $emp_list);
+				} else {
+					/*获取部门列表*/
+					$this -> assign('dept_list', select_tree_menu($dept_tree));
+					$dept_list = tree_to_list($dept_tree);
+					$dept_list = rotate($dept_list);
+					$dept_list = $dept_list['id'];
+				
+					/*获取人员列表*/
+					$where['dept_id'] = array('in', $dept_list);
+					$emp_list = D("User") -> where($where) -> getField('id,name');
+					$this -> assign('emp_list', $emp_list);
+				}
+			}
+			
+			$where = array();
+			$map=array();
+			$where['is_submit'] = array('eq', 1);
+			$where['user_id'] = get_user_id();
+			$where['_logic'] = 'or';
+
+			$map['_complex'] = $where;
+// 			$map['user_id'] = get_user_id();
 			$map['is_del'] = array('eq', '0');
+
 		}
 
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
 
-		$model = D("MonthlyReport");
+		$model = D("MonthlyReportView");
 		if (!empty($model)) {
 			$monthly_report_common = $this -> _list($model, $map);
 			$monthly_report_extension = array();

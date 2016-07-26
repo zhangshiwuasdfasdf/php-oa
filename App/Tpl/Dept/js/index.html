@@ -50,6 +50,7 @@
 			$(this).addClass("active");
 			sendAjax("{:U('read')}", "id=" + $(this).attr("node"), function(data) {
 				showdata(data);
+				console.log(JSON.stringify(data));
 			});
 			return false;
 		});
