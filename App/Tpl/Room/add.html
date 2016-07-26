@@ -1,0 +1,87 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'会议室创建','search'=>'N'))}
+<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
+	<input type="hidden" id="ajax" name="ajax" value="0">
+	<input type="hidden" id="opmode" name="opmode" value="add">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="name">会议室地点*：</label>
+		<div class="col-sm-10">
+			<input class="form-control" type="text" id="meet_addr" name="meet_addr" check="require" msg="请输入会议室地点">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="name">会议室门牌号*：</label>
+		<div class="col-sm-10">
+			<input class="form-control" type="text" id="meet_num" name="meet_num" check="require" msg="请输入会议室门牌号">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="meet_name">会议室名称*：</label>
+		<div class="col-sm-10">
+			<select name="meet_name" id="meet_name" class="form-control" check="require" msg="请输入会议室名称">
+				{:fill_option($room_name_list)}
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="meet_status">会议室状态*：</label>
+		<div class="col-sm-10">
+			<select name="meet_status" id="meet_status" class="form-control" check="require" msg="请输入会议室状态">
+				{:fill_option($room_status_list)}
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="name">可容人数*：</label>
+		<div class="col-sm-10">
+			<input class="form-control" type="text" id=""persons"" name="persons" check="require" msg="请输入可容人数">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">视频会议：</label>
+		<div class="col-sm-10">
+			<label for="meet_video"><input type="radio" name="meet_video" id="meet_video" value="0" checked="checked" />否</label> 
+			<label for="meet_video2"><input type="radio" name="meet_video" id="meet_video2" value="1" />是</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">摄像头：</label>
+		<div class="col-sm-10">
+			<label for="meet_camera"><input type="radio" name="meet_camera" id="meet_camera" value="0" checked="checked" />否</label> 
+			<label for="meet_camera2"><input type="radio" name="meet_camera" id="meet_camera2" value="1" />是</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">电视屏幕：</label>
+		<div class="col-sm-10">
+			<label for="meet_tv"><input type="radio" name="meet_tv" id="meet_tv" value="0" checked="checked" />否</label> 
+			<label for="meet_tv2"><input type="radio" name="meet_tv" id="meet_tv2" value="1" />是</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">投影仪：</label>
+		<div class="col-sm-10">
+			<label for="meet_projector"><input type="radio" name="meet_projector" id="meet_projector" value="0" checked="checked" />否</label> 
+			<label for="meet_projector2"><input type="radio" name="meet_projector" id="meet_projector2" value="1" />是</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="projector_shadow">投影效果*：</label>
+		<div class="col-sm-10">
+			<select name="projector_shadow" id="projector_shadow" class="form-control" check="require" msg="请输入投影效果">
+				{:fill_option($room_shadow_list)}
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="name">开放时间段*：</label>
+		<div class="col-sm-10">
+			<input class="form-control" type="text" id="time_frame" name="time_frame" check="require" msg="请输入开放时间段">
+			<!--<input data-date-format="yyyy-mm-dd" id="write_time" name="write_time" type="text" class="form-control input-date in1" check="require" msg="请输入填表日期">
+		--></div>
+	</div>
+	<div class="action">
+		<input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save();">
+		<input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
+	</div>
+</form>

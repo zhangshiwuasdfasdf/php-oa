@@ -711,5 +711,12 @@ class CommonAction extends Action {
 		}	
 		$this -> ajaxReturn($erji);
 	}
+	public function get_dept_child(){
+		$dept_id_0 = $_GET['dept_id_0'];
+		$dept_menu = M('dept') -> field('id,pid,name') -> where("is_del=0") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu, $dept_id_0);
+		$tree_menu = select_tree_menu($dept_tree);
+		$this -> ajaxReturn($tree_menu);
+	}
 }
 ?>

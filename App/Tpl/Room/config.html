@@ -1,9 +1,5 @@
 <layout name='Layout/ace_layout' />
-<input type="hidden" name="ajax" id="ajax" value="1">
-<select name="dept_list" id="dept_list" class="display-none">
-	{:fill_option($dept_list)}
-</select>
-{:W('PageHeader',array('name'=>'部门管理','search'=>'N'))}
+{:W('PageHeader',array('name'=>'会议室管理','search'=>'N'))}
 <form id="form_search" name="form_search" method="post">
 	<div class="operate panel panel-default">
 		<div class="panel-body">
@@ -29,45 +25,17 @@
 			<input type="hidden" name="id" id="id">
 			<input type="hidden" name="opmode" id="opmode" value="">
 			<div class="form-group col-xs-12">
-				<label class="col-sm-4 control-label" for="dept_no">编码*：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" id="dept_no" name="dept_no" check="require" msg="请输入编码">
-				</div>
-			</div>
-			<div class="form-group col-xs-12">
 				<label class="col-sm-4 control-label" for="name">名称*：</label>
 				<div class="col-sm-8">
 					<input class="form-control" type="text" id="name" name="name" check="require" msg="请输入名称">
 				</div>
 			</div>
 			<div class="form-group col-xs-12">
-				<label class="col-sm-4 control-label" for="short">简称*：</label>
+				<label class="col-sm-4 control-label" for="dept_grade_id">上一级*：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" id="short" name="short" check="require" msg="请输入简称">
-				</div>
-			</div>
-
-			<div class="form-group col-xs-12">
-				<label class="col-sm-4 control-label" for="dept_grade_id">部门级别*：</label>
-				<div class="col-sm-8">
-					<select name="dept_grade_id" id="dept_grade_id" class="form-control" msg="请选择职级" check="require">
-						<option>选择部门级别</option>
+					<select name="pid" id="dept_grade_id" class="form-control" msg="请选择上一级" check="require">
 						{:fill_option($dept_grade_list)}
 					</select>
-				</div>
-			</div>
-
-			<div class="form-group col-xs-12">
-				<label class="col-sm-4 control-label" for="dept_name">上级部门*：</label>
-				<div class="col-sm-8">
-					<div class="input-group">
-						<input name="dept_name" class="form-control" id="dept_name" type="text" readonly="readonly" msg="请选择上级部门" check="require"/>
-						<input name="pid" id="pid" type="hidden" msg="请选择上级部门" check="require" />
-						<span class="input-group-btn">
-							<button class="btn btn-sm btn-primary" onclick="select_pid()" type="button">
-								选择
-							</button> </span>
-					</div>
 				</div>
 			</div>
 			<div class="form-group col-xs-12">
@@ -83,15 +51,6 @@
 					<select   name="is_del" id="is_del" class="form-control">
 						<option  value="0">启用</option>
 						<option value="1">禁用</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group col-xs-12">
-				<label class="col-sm-4 control-label" for="is_real_dept">是否是真正部门*：</label>
-				<div class="col-sm-8">
-					<select   name="is_real_dept" id="is_real_dept" class="form-control">
-						<option value="0">否</option>
-						<option value="1">是</option>
 					</select>
 				</div>
 			</div>

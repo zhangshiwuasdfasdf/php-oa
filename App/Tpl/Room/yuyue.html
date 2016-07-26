@@ -1,0 +1,98 @@
+<layout name='Layout/ace_layout' />
+	<input type="hidden" name="ajax" id="ajax" value="1">
+	<select name="dept_list" id="dept_list" class="hidden">
+		{:fill_option($dept_list)}
+	</select>
+	<div class="popup-header clearfix">
+		<div class="pull-left">
+			<h1>预约会议室</h1>
+		</div>
+	</div>
+	<div class="popup-body" style="height: 445px;overflow-y: auto;">
+		<form id="form_data" name="form_data" method="post" class="form-horizontal" enctype="multipart/form-data">
+			<input type="hidden" name="opmode" id="opmode" value="new">
+			<table class="table table-bordered" >
+				<tr>
+					<th class="col-10">
+					<nobr>
+						申请时间
+					</nobr></th>
+					<td class="col-20">{$create_time}
+					<input class="form-control" type="text" id="create_time" name="create_time" value="{$create_time}">
+					</td>
+					<th  class="col-5">申请人*</th>
+					<td class="col-20">
+					<input  class="form-control" type="text" id="user_id" name="user_id" class="input-sm" check="require" msg="请输入申请人">
+					</td>
+				</tr>
+				<tr>
+					<th>公司</th>
+					<td >
+						<input  class="form-control" type="text" id="company" name="company" class="input-sm">
+					</td>
+					<th>部门</th>
+					<td>
+						<input  class="form-control" type="text" id="dept" name="dept" class="input-sm">
+					</td>
+				</tr>
+				<tr>
+					<th>岗位</th>
+					<td class="col-20">
+						<input  class="form-control" type="text" id="post" name="post" class="input-sm">
+					</td>
+					<th>会议室</th>
+					<td>
+						<input  class="form-control" type="text" id="meet_room" name="meet_room" class="input-sm">
+					</td>
+				</tr>
+				<tr>
+					<th class="col-10">会议室主题*</th>
+					<td colspan="3">
+						<input  class="form-control" type="text" id="meet_theme" name="meet_theme" class="input-sm">
+					</td>
+				</tr>
+				<tr>
+					<th>
+					<nobr>
+						会议日期起始*
+					</nobr></th>
+					<td colspan="3">
+						<input type="text" id="start_time" name="start_time" class="input-sm">-
+						<input type="text" id="end_time" name="end_time" class="input-sm">
+					</td>
+				</tr>
+				<tr>
+					<th>参会人员</th>
+					<td colspan="3">
+						<div id="recever" class="inputbox">
+							<a class="pull-right btn btn-link text-center" onclick="popup_contact();"> <i class="fa fa-user"></i> </a>
+							<div class="wrap" >
+								<span class="address_list"></span>
+								<span class="text" >
+									<input class="letter" type="text"  >
+								</span>
+							</div>
+							<div class="search dropdown ">
+								<ul class="dropdown-menu"></ul>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>会议时间段*</th>
+					<td colspan="3">
+						<input type="text" id="email" name="email" class="form-control">
+					</td>
+				</tr>
+				<tr> 
+					<td colspan="4">
+						<input type="button" class="btn btn-sm btn-primary" value="提交" onclick="save();"/>
+						<input type="button" class="btn btn-sm btn-default" value="返回" onclick="go_return_url();"/>
+					</td>
+					
+				</tr>
+			</table>
+		</form>
+		<b>带*的为必填选项</b>
+	</div>
+	</div>

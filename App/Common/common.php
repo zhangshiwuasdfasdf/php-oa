@@ -2753,4 +2753,7 @@ function array_sum_except($exc,$array){
 	}
 	return $sum;
 }
+function get_room_list($name){
+	return  M("room_config")->where("id=$name")->getField("name");
+}
 ?>

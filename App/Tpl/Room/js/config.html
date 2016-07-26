@@ -3,13 +3,13 @@
 		$("#opmode").val("add");
 		$("#id").val("");
 		if (check_form("form_data")){
-			sendForm("form_data", "{:U('save')}", "__URL__");
+			sendForm("form_data", "{:U('addConfig')}", "__URL__");
 		}
 	};
 
 	function save(){
 		if (check_form("form_data")) {
-			sendForm("form_data", "{:U('save')}", "__URL__");
+			sendForm("form_data", "{:U('updConfig')}", "__URL__");
 		}
 	}
 
@@ -30,10 +30,6 @@
 		});
 	}
 
-	function select_pid() {
-		winopen("{:U('winpop')}", 730, 500);
-	}
-
 	function showdata(result) {
 		for (var s in result.data) {
 			set_val(s, result.data[s]);
@@ -44,13 +40,13 @@
 
 
 	$(document).ready(function(){
+		set_return_url();
 		set_val('eq_is_del', "{$eq_is_del}");
 		$(".sub_left_menu .tree_menu a").click(function() {
 			$(".sub_left_menu .tree_menu a.active").removeClass("active");
 			$(this).addClass("active");
-			sendAjax("{:U('read')}", "id=" + $(this).attr("node"), function(data) {
+			sendAjax("{:U('getConfig')}", "id=" + $(this).attr("node"), function(data) {
 				showdata(data);
-				console.log(JSON.stringify(data));
 			});
 			return false;
 		});

@@ -18,12 +18,18 @@ class ReportAction extends CommonAction {
 		if (!empty($_POST['eq_addr'])) {
 			$where_delivery['addr'] = array('eq',$_POST['eq_addr']);
 		}
-// 		if (!empty($_POST['be_create_time'])) {
-// 			$where['be_create_time'] = array('like', '%' . $_POST['content'] . '%');
-// 			$where['plan'] = array('like', '%' . $_POST['content'] . '%');
-// 			$where['_logic'] = 'or';
-// 			$map['_complex'] = $where;
-// 		}
+		if (!empty($_POST['eq_user'])) {
+			$where_delivery['user_name'] = array('eq',$_POST['eq_user']);
+		}
+		$start_time_0 = $_POST['be_create_time_0'];
+		$end_time_0 = $_POST['en_create_time_0'];
+		if (!empty($start_time_0)) {
+			$where_delivery['create_time'][] = array('egt', strtotime(trim($start_time_0)));
+		}
+		if (!empty($end_time_0)) {
+			$where_delivery['create_time'][] = array('elt', strtotime(trim($end_time_0).' 24:00:00'));
+		}
+		
 		$start_time = $_POST['be_create_time'];
 		$end_time = $_POST['en_create_time'];
 		if (!empty($start_time)) {
@@ -43,30 +49,19 @@ class ReportAction extends CommonAction {
 		$auth = $this -> config['auth'];
 		$this -> assign('auth', $auth);
 
+		$addr = M("Delivery") -> field('addr as id,addr as name') ->distinct(true) -> select();
+		$this -> assign('addr_list', $addr);
 		
-// 		if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
-// 			$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
-// 			$map['user_id'] = array('in',$child_ids);
-// 		}elseif(D("Role") -> check_duty('SHOW_LOG_LOW')){//允许查看自己及下一级日志
-// 			$child_ids = array_merge(array(intval(get_user_id())),get_child_ids(get_user_id()));
-// 			$map['user_id'] = array('in',$child_ids);
-// 		}
-// 		else{//查看自己的日志
-// 			$map['user_id'] = array('eq',intval(get_user_id()));
-// 		}
-			
+		$user_list = M("Delivery") -> field('user_name as id,user_name as name') ->distinct(true) -> select();
+		$this -> assign('user_list', $user_list);
 
-// 		if ( D("Role") -> check_duty('SHOW_LOG')) {//查看所有日志
-// 			$map=array();
-// 		}
-
-// 		if (method_exists($this, '_search_filter')) {
-// 			$this -> _search_filter($map);
-// 		}
-
+		$where = $this -> _search();
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($where);
+		}
 		$model = D("Delivery");
 		if (!empty($model)) {
-			$this -> _list($model, $map);
+			$this -> _list($model, $where['_complex']['delivery']);
 		}		
 		$this -> display();
 	}
