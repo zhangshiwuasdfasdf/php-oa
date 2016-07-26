@@ -600,6 +600,10 @@ ul.tree_menu i {
 	width: 130px;
 	display: inline-block;
 }
+.input-time-h{
+	width: 130px;
+	display: inline-block;
+}
 .ul_table {
 	position: relative;
 	margin-bottom: 15px;

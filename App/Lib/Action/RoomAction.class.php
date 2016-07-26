@@ -50,6 +50,11 @@ class RoomAction extends CommonAction {
 	}
 	
 	public function add(){
+		$widget['uploader'] = true;
+		$widget['editor'] = true;
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		
 		$node = M("Room_config");
 		$list = $node -> where(array('is_del'=> 0,'pid'=>1)) -> order('sort asc') -> getField('id,name');
 		$list2 = $node -> where(array('is_del'=> 0,'pid'=>2)) -> order('sort asc') -> getField('id,name');
@@ -117,8 +122,16 @@ class RoomAction extends CommonAction {
 	}
 	
 	public function edit(){
+		$widget['uploader'] = true;
+		$widget['editor'] = true;
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		
 		$id = $_REQUEST['id'];
 		$model = M("room_meet")->find($id);
+		$temp = explode("-",$model['time_frame']);
+		$model['start'] = $temp[0];
+		$model['end'] = $temp[1];
 		$this -> assign("list",$model);
 		
 		$node = M("Room_config");
@@ -131,11 +144,38 @@ class RoomAction extends CommonAction {
 		$this -> display();
 	}
 	
-	function save(){
+	function save_meet(){
 		$this ->_update("room_meet");
 	}
 	
-	function yeyue(){
+	function yuyue(){
+		$widget['uploader'] = true;
+		$widget['editor'] = true;
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		
+		$id = $_REQUEST['id'];
+		$model = M("room_meet");
+		$dept = M("Dept");
+		$config = M("room_config");
+		$user = M("user");
+		$name = $model -> find($id);
+		$meet_name = $config -> field("name") -> find($name['meet_name']);
+		$pos_id = $user->where("id = ".get_user_id()) -> getField("pos_id");
+		$where['is_del'] = 0;
+		$where['id'] = $pos_id;
+		$pos_name = $dept -> where($where) -> getField('name');
+		$this -> assign("pos_name",$pos_name);
+		$this -> assign('meet_name',$meet_name);
+		$this -> assign("section",getTimeSection($name['time_frame']));
 		$this ->display();
+	}
+	//处理时间段
+	private function getTimeSection($time){
+		$section = explode("-",$time);
+		for ($i=intval($section[0]),$i<=$intval($section[1]),){
+			
+		}
+		
 	}
 }

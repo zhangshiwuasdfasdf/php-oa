@@ -17,32 +17,32 @@
 					<nobr>
 						申请时间
 					</nobr></th>
-					<td class="col-20">{$create_time}
-					<input class="form-control" type="text" id="create_time" name="create_time" value="{$create_time}">
+					<td class="col-20">
+					<input class="form-control" type="text" id="create_time" name="create_time" value="{:date('Y-m-d H:s:i')}" readonly="readonly">
 					</td>
 					<th  class="col-5">申请人*</th>
 					<td class="col-20">
-					<input  class="form-control" type="text" id="user_id" name="user_id" class="input-sm" check="require" msg="请输入申请人">
+					<input  class="form-control" type="text" id="user_id" name="user_id" class="input-sm" value="{:get_user_name()}" readonly="readonly" check="require" msg="请输入申请人">
 					</td>
 				</tr>
 				<tr>
 					<th>公司</th>
 					<td >
-						<input  class="form-control" type="text" id="company" name="company" class="input-sm">
+						<input  class="form-control" type="text" id="company" name="company" class="input-sm" readonly="readonly" value="{:get_system_config('SYSTEM_NAME')}">
 					</td>
 					<th>部门</th>
 					<td>
-						<input  class="form-control" type="text" id="dept" name="dept" class="input-sm">
+						<input  class="form-control" type="text" id="dept" name="dept" class="input-sm" readonly="readonly" value="{:get_dept_name()}">
 					</td>
 				</tr>
 				<tr>
 					<th>岗位</th>
 					<td class="col-20">
-						<input  class="form-control" type="text" id="post" name="post" class="input-sm">
+						<input  class="form-control" type="text" id="post" name="post" class="input-sm" value="{$pos_name}" readonly="readonly">
 					</td>
 					<th>会议室</th>
 					<td>
-						<input  class="form-control" type="text" id="meet_room" name="meet_room" class="input-sm">
+						<input  class="form-control" type="text" id="meet_room" name="meet_room" class="input-sm" value="{$meet_name.name}" readonly="readonly">
 					</td>
 				</tr>
 				<tr>
@@ -57,12 +57,12 @@
 						会议日期起始*
 					</nobr></th>
 					<td colspan="3">
-						<input type="text" id="start_time" name="start_time" class="input-sm">-
-						<input type="text" id="end_time" name="end_time" class="input-sm">
+						<input class="input-time-h" type="text" id="start_time" name="start_time" check="require" msg="请输入开始时间" readonly="readonly">-
+						<input class="input-time-h" type="text" id="end_time" name="end_time" check="require" msg="请输入结束时间" readonly="readonly">
 					</td>
 				</tr>
 				<tr>
-					<th>参会人员</th>
+					<th>参会人员*</th>
 					<td colspan="3">
 						<div id="recever" class="inputbox">
 							<a class="pull-right btn btn-link text-center" onclick="popup_contact();"> <i class="fa fa-user"></i> </a>

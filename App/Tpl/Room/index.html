@@ -70,7 +70,7 @@
 		            <li>开放时间段：{$vo.time_frame}</li>
 		        </ul>
 		        <div>
-		            <a href="{:U('yuyue')}">预约</a>
+		            <a href="{:U('yuyue',array('id'=>$vo['id']))}">预约</a>
 		            <a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a>
 		            <a href="{:U('del_meet',array('id'=>$vo['id']))}">删除</a>
 		        </div>

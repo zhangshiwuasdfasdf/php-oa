@@ -4,6 +4,7 @@
 	<input type="hidden" id="ajax" name="ajax" value="0">
 	<input type="hidden" id="id" name="id" value="{$list.id}">
 	<input type="hidden" id="opmode" name="opmode" value="edit">
+	<input type="hidden" id="time_frame" name="time_frame" value="">
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="name">会议室地点*：</label>
 		<div class="col-sm-10">
@@ -99,9 +100,9 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="name">开放时间段*：</label>
 		<div class="col-sm-10">
-			<input class="form-control" type="text" id="time_frame" name="time_frame" check="require" msg="请输入开放时间段" value="{$list.time_frame}">
-			<!--<input data-date-format="yyyy-mm-dd" id="write_time" name="write_time" type="text" class="form-control input-date in1" check="require" msg="请输入填表日期">
-		--></div>
+			<input class="input-time-h" type="text" id="start_time" name="start_time" value="{$list.start}" check="require" msg="请输入开始时间" readonly="readonly">-
+			<input class="input-time-h" type="text" id="end_time" name="end_time" value="{$list.end}" check="require" msg="请输入结束时间" readonly="readonly">
+		</div>
 	</div>
 	<div class="action">
 		<input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save();">

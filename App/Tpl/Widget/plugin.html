@@ -14,7 +14,6 @@
 	<script type="text/javascript" src="__PUBLIC__/plupload/plupload.full.min.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/plupload/plupload.setting.js"></script>
 </notempty>
-
 <notempty name="widget.editor">
 	<script type="text/javascript" src="__PUBLIC__/editor/kindeditor.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/editor/lang/zh_CN.js"></script>
@@ -59,6 +58,19 @@
 			startView : 2,
 			forceParse : 0,
 			showMeridian : 1,
+			minuteStep:30
+		});
+		$(".input-time-h").datetimepicker({
+			format : "hh:ii",
+			language:  'zh-CN',
+			weekStart: 1,
+			todayBtn:  0,
+			autoclose: 1,
+			todayHighlight: 0,
+			startView: 1,
+			minView: 0,
+			maxView: 1,
+			forceParse: 0,
 			minuteStep:30
 		});
 		</notempty>

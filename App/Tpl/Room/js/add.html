@@ -1,8 +1,19 @@
-<script type="text/javascript">
+<script type="text/javascript"><!--
 $(document).ready(function() {
 });
 function save() {
 	window.onbeforeunload = null;
+	$start_time = $("#start_time").val();
+	$end_time = $("#end_time").val();
+	$start = $start_time.split(":");
+	$end = $end_time.split(":");
+	$start = Number($start[0]);
+	$end = Number($end[0]);
+	if($start >= $end){
+		ui_error("开始时间必须小于结束时间");
+		return false;
+	}
+	$("#time_frame").val($start_time +"-"+ $end_time);
 	if (check_form("form_data")) {
 		sendForm("form_data", "{:U('save')}");
 	}
