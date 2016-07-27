@@ -92,24 +92,30 @@
 		
 	function save() {
 		window.onbeforeunload = null;
-		to = $(".accept:checked").val();
 		sender = "";
-		if(to == "pre"){
-			$("#recever .address_list span").each(function() {
-				sender += $(this).attr("id") + "|";
-			});
-			if (sender == "") {
-				ui_error("请选择接收人");
-				$("#recever .letter").focus();
-				return false;
-			}
-			$("#to").val(sender);
-		}else{
-			$("#to").val("0");
+		$("#recever .address_list span").each(function() {
+			sender += $(this).attr("id") + "|";
+		});
+		if (sender == "") {
+			ui_error("请选择接收人");
+			$("#recever .letter").focus();
+			return false;
 		}
-		
+		$start_time = $("#start_time").val();
+		$end_time = $("#end_time").val();
+		$start = $start_time.split(":");
+		$end = $end_time.split(":");
+		$start = Number($start[0]);
+		$end = Number($end[0]);
+		if($start >= $end){
+			ui_error("开始时间必须小于结束时间");
+			return false;
+		}
+		$("#takes_id").val(sender);
+		$("#create_time").val(new Date().getTime()/1000);
+		$("#time_section").val($start_time + "-" + $end_time);
 		if (check_form("form_data")) {
-			sendForm("form_data", "{:U('save')}");
+			sendForm("form_data", "{:U('add_order')}");
 		}
 	}
 </script>

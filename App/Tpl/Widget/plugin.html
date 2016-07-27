@@ -52,7 +52,7 @@
 			format : "yyyy-mm-dd hh:ii",
 			language : "zh-CN",
 			weekStart : 1,
-			todayBtn : 1,
+			todayBtn : 0,
 			autoclose : 1,
 			todayHighlight : 1,
 			startView : 2,
@@ -72,6 +72,18 @@
 			maxView: 1,
 			forceParse: 0,
 			minuteStep:30
+		});
+		$(".input-date-times").datetimepicker({
+			format : "yyyy-mm-dd",
+			language : "zh-CN",
+			weekStart : 1,
+			todayBtn : 0,
+			autoclose : 1,
+			todayHighlight : 1,
+			startView : 2,
+			forceParse : 0,
+			showMeridian : 1,
+			minView : 2
 		});
 		</notempty>
 

@@ -1,0 +1,45 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'预约列表','search'=>'N'))}
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-10 ">申请编号</span>
+				<span class="col-15 ">申请时间</span>
+				<span class="col-10 ">申请人</span>
+				<span class="col-20 ">公司</span>
+				<span class="col-15 ">部门</span>
+				<span class="col-15 ">岗位</span>
+				<span class="col-20">会议主题</span>
+			</div>
+			<div class="pull-right">
+				<span class="col-15 ">操作</span>
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<foreach name="list" item="vo">
+				<li class="tbody">
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.id}</span>
+						<span class="col-15 ">{$vo.create_time|date='Y-m-d H:i:s',###}</span>
+						<span class="col-10 ">{$vo.proposer}</span>
+						<span class="col-20 ">{$vo.company}</span>
+						<span class="col-15 ">{$vo.dept}</span>
+						<span class="col-15 ">{$vo.post}</span>
+						<span class="col-20">{$vo.theme}</span>
+					</div>
+					<div class="pull-right">
+						<span class="col-15 "><a href="{:U('edit_order','id='.$vo['id'])}">编辑</a></span>
+					</div>
+				</li>
+			</foreach>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>

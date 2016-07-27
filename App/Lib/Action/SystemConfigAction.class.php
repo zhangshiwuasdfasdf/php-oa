@@ -27,7 +27,6 @@ class SystemConfigAction extends CommonAction {
 		$this->_destory($id);		
 	}
 	function holiday(){
-		dump(isHzYuanQu(7));
 		$model = D("Holiday");
 		$this -> _list($model, $map,'date',true);
 		$this->display();
