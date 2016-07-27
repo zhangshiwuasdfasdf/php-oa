@@ -1388,7 +1388,11 @@ class FlowAction extends CommonAction {
 			
 			return false;
 		}
-		$flow = getFlow($uid,$day);
+// 		if(isHzYuanQu($uid)){
+// 			$flow = HzYuanQuFlow($uid,$day);
+// 		}else{
+			$flow = getFlow($uid,$day);
+// 		}
 		if(!empty($flow)){
 			if($this->isAjax()){
 				$this->ajaxReturn(getFlowData($flow),null,1);
@@ -1410,7 +1414,12 @@ class FlowAction extends CommonAction {
 		if(empty($uid)){
 			return false;
 		}
-		$flow = array(getParentid($uid),getHRDeputyGeneralManagerId($uid));
+// 		if(isHzYuanQu($uid)){
+// 			$flow = HzYuanQuFlowOrigin($uid);
+// 		}else{
+			$flow = array(getParentid($uid),getHRDeputyGeneralManagerId($uid));
+// 		}
+		
 		if(!empty($flow)){
 			if($this->isAjax()){
 				$this->ajaxReturn(getFlowData($flow),null,1);
@@ -1432,7 +1441,12 @@ class FlowAction extends CommonAction {
 			return false;
 		}
 		$Parentid = getParentid($uid);
-		$flow = array($Parentid,getHRDeputyGeneralManagerId($uid));
+// 		if(isHzYuanQu($uid)){
+// 			$flow = HzYuanQuFlowOrigin($uid);
+// 		}else{
+			$flow = array($Parentid,getHRDeputyGeneralManagerId($uid));
+// 		}
+		
 		if($this->isAjax()){
 			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 		}

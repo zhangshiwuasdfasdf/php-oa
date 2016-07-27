@@ -611,8 +611,9 @@ function get_dept_id() {
 	return session('dept_id');
 }
 
-function get_dept_name() {
-	$result = M("Dept") -> find(session("dept_id"));
+function get_dept_name($dept_id) {
+	$dept_id = $dept_id?$dept_id:session("dept_id");
+	$result = M("Dept") -> find($dept_id);
 	return $result['name'];
 }
 
@@ -2755,5 +2756,49 @@ function array_sum_except($exc,$array){
 }
 function get_room_list($name){
 	return  M("room_config")->where("id=$name")->getField("name");
+}
+function testhz(){
+	$user_list = array('方磊','陈威','祝群超','孟慧','崔文娟','赵梦瑶','汪晓欢','王晓冬','朱小虎','林陈簪','张佩','罗学云','代新虎','朱高飞','项增钢','吕健','王博云','王俊','徐益芬','童海刚','王利平','庞志华','张勇','刘冰','陈国芝');
+	foreach ($user_list as $k=>$v){
+		$user = M('User')->where(array('name'=>$v))->find();
+		$p1 = getParentid($user['id']);
+		$p2 = getParentid($p1);
+		$user_p1 = M('User')->find($p1);
+		$user_p2 = M('User')->find($p2);
+		echo $v.'---'.$user_p1['name'].'=>'.$user_p2['name'].'<br />';
+	}
+}
+function HzYuanQuFlowOrigin($uid){
+	$user = D('UserView')->find($uid);
+	$p1 = getParentid($user['id']);
+	
+// 	获取本园区老大和园区老大（刘清）
+	$dept_id = isHeadquarters($uid);
+	$YuanQuBoss = M('User')->where(array('pos_id'=>$dept_id))->find();
+	$YuanQuBossBoss_id = getParentid($YuanQuBoss['id']);
+	
+// 	如果一级审批人为本园区老大，且发起人不是副总级别的，就不让往上走
+//  如果一级审批人为园区老大（刘清），就不让往上走
+	if($p1==$YuanQuBoss['id'] && $user['position_name']!='副总' || $p1==$YuanQuBossBoss_id){
+		return array($p1);
+	}else{
+		$p2 = getParentid($p1);
+		return array_unique(array($p1,$p2));
+	}
+}
+function HzYuanQuFlow($uid,$day){
+	$flow_origin = HzYuanQuFlowOrigin($uid);
+	if($day<=0){
+		return array();
+	}
+	if($day<3){
+		return array($flow_origin[0]);
+	}else{
+		return $flow_origin;
+	}
+}
+function isHzYuanQu($uid){
+	$dept = M('Dept')->find(isHeadquarters($uid));
+	return strpos($dept['name'],'杭州')!==false;
 }
 ?>
