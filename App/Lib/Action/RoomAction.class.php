@@ -165,17 +165,50 @@ class RoomAction extends CommonAction {
 		$where['is_del'] = 0;
 		$where['id'] = $pos_id;
 		$pos_name = $dept -> where($where) -> getField('name');
+		$this -> assign("id",$id);
 		$this -> assign("pos_name",$pos_name);
 		$this -> assign('meet_name',$meet_name);
-		$this -> assign("section",getTimeSection($name['time_frame']));
+		$this -> assign("section",$this ->getTimeSection($name['time_frame']));
 		$this ->display();
 	}
 	//处理时间段
 	private function getTimeSection($time){
 		$section = explode("-",$time);
-		for ($i=intval($section[0]),$i<=$intval($section[1]),){
-			
+		$am = explode(":",$section[0]);
+		$pm = explode(":",$section[1]);
+		$start = intval($section[0]);
+		$end = intval($section[1]);
+		$ts = array();
+		for ($i=$start;$i<=$end;$i++){
+			if($am[1] != "00") {
+				$ts[] = $section[0] .'-'.($i+1).":00";$am = "00";
+			}else{
+				if($i == $end){
+					if($pm[1] != "00"){
+						$ts[] = $i .":00-".$i .":30";
+					}
+				}else{
+					$ts[] = $i .":00".'-'.$i .":30";
+					$ts[] = $i .":30".'-'.($i+1) .":00";
+				}
+			}
 		}
-		
+		return $ts;
+	}
+	
+	function add_order(){
+		parent::_insert("room_order");
+	}
+	
+	function lists(){
+		$map['is_del'] = 0;
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($map);
+		}
+		$model = M("room_order");
+		if (!empty($model)) {
+			$order = $this -> _list($model, $map);
+		}
+		$this -> display();
 	}
 }

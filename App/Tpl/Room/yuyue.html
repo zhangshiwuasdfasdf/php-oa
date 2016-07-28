@@ -10,7 +10,12 @@
 	</div>
 	<div class="popup-body" style="height: 445px;overflow-y: auto;">
 		<form id="form_data" name="form_data" method="post" class="form-horizontal" enctype="multipart/form-data">
-			<input type="hidden" name="opmode" id="opmode" value="new">
+			<input type="hidden" name="opmode" id="opmode" value="add">
+			<input type="hidden" name="create_time" id="create_time">
+			<input type="hidden" name="takes_id" id="takes_id">
+			<input type="hidden" name="time_section" id="time_section">
+			<input type="hidden" id="ajax" name="ajax" value="0">
+			<input type="hidden" id="meet_id" name="meet_id" value="{$id}">
 			<table class="table table-bordered" >
 				<tr>
 					<th class="col-10">
@@ -18,37 +23,37 @@
 						申请时间
 					</nobr></th>
 					<td class="col-20">
-					<input class="form-control" type="text" id="create_time" name="create_time" value="{:date('Y-m-d H:s:i')}" readonly="readonly">
+					<input class="form-control" type="text" id="create_time" name="time" value="{:date('Y-m-d H:s:i')}" readonly="readonly">
 					</td>
 					<th  class="col-5">申请人*</th>
 					<td class="col-20">
-					<input  class="form-control" type="text" id="user_id" name="user_id" class="input-sm" value="{:get_user_name()}" readonly="readonly" check="require" msg="请输入申请人">
+					<input  class="form-control" type="text" id="proposer" name="proposer" value="{:get_user_name()}" readonly="readonly" check="require" msg="请输入申请人">
 					</td>
 				</tr>
 				<tr>
 					<th>公司</th>
 					<td >
-						<input  class="form-control" type="text" id="company" name="company" class="input-sm" readonly="readonly" value="{:get_system_config('SYSTEM_NAME')}">
+						<input  class="form-control" type="text" id="company" name="company" readonly="readonly" value="{:get_system_config('SYSTEM_NAME')}">
 					</td>
 					<th>部门</th>
 					<td>
-						<input  class="form-control" type="text" id="dept" name="dept" class="input-sm" readonly="readonly" value="{:get_dept_name()}">
+						<input  class="form-control" type="text" id="dept" name="dept" readonly="readonly" value="{:get_dept_name()}">
 					</td>
 				</tr>
 				<tr>
 					<th>岗位</th>
 					<td class="col-20">
-						<input  class="form-control" type="text" id="post" name="post" class="input-sm" value="{$pos_name}" readonly="readonly">
+						<input  class="form-control" type="text" id="post" name="post" value="{$pos_name}" readonly="readonly">
 					</td>
 					<th>会议室</th>
 					<td>
-						<input  class="form-control" type="text" id="meet_room" name="meet_room" class="input-sm" value="{$meet_name.name}" readonly="readonly">
+						<input  class="form-control" type="text" id="meet_room" name="meet_room" value="{$meet_name.name}" readonly="readonly">
 					</td>
 				</tr>
 				<tr>
 					<th class="col-10">会议室主题*</th>
 					<td colspan="3">
-						<input  class="form-control" type="text" id="meet_theme" name="meet_theme" class="input-sm">
+						<input  class="form-control" type="text" id="theme" name="theme" check="require" msg="请输入会议主题">
 					</td>
 				</tr>
 				<tr>
@@ -57,8 +62,8 @@
 						会议日期起始*
 					</nobr></th>
 					<td colspan="3">
-						<input class="input-time-h" type="text" id="start_time" name="start_time" check="require" msg="请输入开始时间" readonly="readonly">-
-						<input class="input-time-h" type="text" id="end_time" name="end_time" check="require" msg="请输入结束时间" readonly="readonly">
+						<input class="input-date-times" type="text" id="start_time" name="start_time" check="require" msg="请输入开始时间" readonly="readonly">-
+						<input class="input-date-times" type="text" id="end_time" name="end_time" check="require" msg="请输入结束时间" readonly="readonly">
 					</td>
 				</tr>
 				<tr>
@@ -81,7 +86,9 @@
 				<tr>
 					<th>会议时间段*</th>
 					<td colspan="3">
-						<input type="text" id="email" name="email" class="form-control">
+						<volist id="vo" name="section">
+							<span class="time_section">{$vo}</span>
+						</volist>
 					</td>
 				</tr>
 				<tr> 
@@ -96,3 +103,14 @@
 		<b>带*的为必填选项</b>
 	</div>
 	</div>
+<style type="text/css">
+	.time_section{
+		display: block;
+		height: 30px;
+		width: 100px;
+		line-height: 30px;
+		text-align: center;
+		float: left;
+		border: 1px solid #ccc;
+	}
+</style>
