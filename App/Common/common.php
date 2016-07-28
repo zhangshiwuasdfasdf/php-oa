@@ -611,9 +611,12 @@ function get_dept_id() {
 	return session('dept_id');
 }
 
-function get_dept_name($dept_id) {
-	$dept_id = $dept_id?$dept_id:session("dept_id");
-	$result = M("Dept") -> find($dept_id);
+function get_dept_name() {
+	$result = M("Dept") -> find(session("dept_id"));
+	return $result['name'];
+}
+function get_dept_name_by_id($val) {
+	$result = M("Dept") -> find($val);
 	return $result['name'];
 }
 
