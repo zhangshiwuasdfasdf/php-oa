@@ -1,5 +1,23 @@
 <script type="text/javascript">
 	$(document).ready(function() {
+		/*鼠标移上去显示预订人*/
+		$(document).on("mouseover",".booked",function() {
+			$frame = $(this).text().trim();
+			$dlist = $("#start_time").val();
+			sendAjax("{:U('showydr')}", "frame=" + $frame + "&date=" + $dlist, function(data) {
+				ui_error("预订人：" +data.proposer);
+			});
+		});
+		/*更改日期时,修改日期列表*/
+		$(document).on("change","#start_time",function(){
+			$frame = $("#start_time").attr("msg");
+			$dlist = $("#start_time").val();
+			$meet = $("#meet_id").val();
+			sendAjax("{:U('getTimeList')}", "frame=" + $frame + "&date=" + $dlist + "&meet=" + $meet, function(data) {
+				showdata(data);
+			});
+		}); 
+			
 		/*单击删除已选联系人*/
 		$(document).on("click", ".inputbox .address_list a.del", function() {
 			$(this).parent().parent().remove();
@@ -92,6 +110,16 @@
 		
 	function save() {
 		window.onbeforeunload = null;
+		if($("#theme").val() == ""){
+			ui_error("请输入会议室主题");
+			return false;
+		}
+		$start_time = $("#start_time").val();
+		if($start_time == ""){
+			ui_error("请选择会议日期");
+			$("#start_time").focus();
+			return false;
+		}
 		sender = "";
 		$("#recever .address_list span").each(function() {
 			sender += $(this).attr("id") + "|";
@@ -101,21 +129,46 @@
 			$("#recever .letter").focus();
 			return false;
 		}
-		$start_time = $("#start_time").val();
-		$end_time = $("#end_time").val();
-		$start = $start_time.split(":");
-		$end = $end_time.split(":");
-		$start = Number($start[0]);
-		$end = Number($end[0]);
-		if($start >= $end){
-			ui_error("开始时间必须小于结束时间");
+		$flag = false;
+		$section = "";
+		$(".time_section").each(function(){
+			if($(this).attr("msg") == "1"){
+				$flag = true;
+				$section += $(this).text().trim() + "|";
+			}
+		});
+		if(!$flag){
+			ui_error("请选择时间段");
 			return false;
 		}
+		$("#time_section").val($section);
+		$("#date_section").val($start_time);
 		$("#takes_id").val(sender);
 		$("#create_time").val(new Date().getTime()/1000);
-		$("#time_section").val($start_time + "-" + $end_time);
 		if (check_form("form_data")) {
 			sendForm("form_data", "{:U('add_order')}");
+		}
+	}
+	
+	function showdata(result) {
+		$(".contain").html("");
+		html = "";
+		for (var s in result) {
+			$tmp = result[s].color;
+			html += "<span class='time_section "+result[s].color+"' onclick=selectTime(this)>"+ result[s].time +"</span>";
+		}
+		$('.contain').append(html);
+	}
+	
+	function selectTime(obj){
+		if($(obj).attr("msg") == "1"){
+			$(obj).css("background-color","");
+			 $(obj).css("color","");
+			 $(obj).attr("msg","");	
+		}else{
+			$(obj).css("background-color","#03fbc1");
+			 $(obj).css("color","#FFFFFF");
+			 $(obj).attr("msg","1");	
 		}
 	}
 </script>

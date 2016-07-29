@@ -38,6 +38,7 @@ class DailyReportAction extends CommonAction {
 			$map['pos_id'] = array('in', array($dept_id));
 		}
 	}
+	
 	public function index() {
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
