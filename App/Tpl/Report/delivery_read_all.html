@@ -39,16 +39,17 @@
 	</div>
 </form>
 <h1 align="center" style="font-size: 18px;">基地仓库发货日报汇总表</h1>
+<div id="table_p" style="">
 <table width="" border="1" cellspacing="0" cellpadding="0" style=" background:#fff; margin:auto;">
   <tr height="150" id="line_1">
     <td class="td_h" style=" margin:0; padding:0;" width="160px" height="105" colspan="2"><img style=" margin:0; padding:0; width:100%; height:auto;" src="__PUBLIC__/img/img/bq.png"/></td>
     <volist name = "store_name"	id = "vo" >
-		<td width="40px" style="text-align: center"><p style="width:15px; margin:0 auto;">{$vo}</p></td>
+		<td width="40px" style="text-align: center"><p style="width:15px; margin:0 auto;word-break:break-all;">{$vo}</p></td>
 	</volist>
 	<td width="40px" style="text-align: center"><p style="width:15px; margin:0 auto;">合计</p></td>
   </tr>
   <tr class="line_2" id="line_2">
-    <td width="80px" height="30" align="center">日期</td>
+    <td width="80px" height="30" align="center" >日期</td>
     <td width="80px" height="30" align="center">快递单位</td>
     <volist name = "store_name"	id = "vo" >
 		<td width="40px" height="30" style="text-align: center">{$key+1}</td>
@@ -61,7 +62,7 @@
   	 		<td width="80" height="30" align="center">{$vo}</td>
     		<td width="80" height="30" align="center">{$voo}</td>
 	  	 	<volist name = "store_name"	id = "vooo" >
-	  	 		<td width="40" height="30" style="text-align: center">{$delivery_detail.$vo.$voo.$vooo}</td>
+	  	 		<td width="40" height="30" style="text-align: center;word-break:break-all;">{$delivery_detail.$vo.$voo.$vooo}</td>
 			</volist>
 			<td width="40" height="30" align="center">{$delivery_detail.$vo.$voo|array_sum_except='小计',###}</td>
 		</tr>
@@ -70,18 +71,21 @@
   	 		<td width="80" height="30" align="center">{$vo}</td>
     		<td width="80" height="30" align="center">小计</td>
 	  	 	<volist name = "store_name"	id = "vooo" >
-	  	 		<td width="40px" height="30" style="text-align: center">{$store_name_same_day.$vo.$vooo|array_sum}</td>
+	  	 		<td width="40" height="30" style="text-align: center">{$store_name_same_day.$vo.$vooo|array_sum}</td>
 			</volist>
-			<td width="40px" height="30" align="center">{$sum_day.$vo}</td>
+			<td width="40" height="30" align="center">{$sum_day.$vo}</td>
 	 </tr>
   </volist>
   	 <tr>
-    		<td width="160px" height="30" align="center" colspan="2">总计</td>
+    		<td width="160" height="30" align="center" colspan="2">总计</td>
 	  	 	<volist name = "store_name"	id = "vooo" >
-	  	 		<td width="40px" height="30" style="text-align: center">{$store_name_same.$vooo}</td>
+	  	 		<td width="40" height="30" style="text-align: center">{$store_name_same.$vooo}</td>
 			</volist>
-			<td width="40px" height="30" align="center">{$sum_day|array_sum}</td>
+			<td width="40" height="30" align="center">{$sum_day|array_sum}</td>
 	 </tr>
 </table>
-
+</div>
+<div class="pagination">
+				{$page}
+</div>
 

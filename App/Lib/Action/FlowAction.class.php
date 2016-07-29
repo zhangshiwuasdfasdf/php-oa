@@ -1492,7 +1492,7 @@ class FlowAction extends CommonAction {
 		$user_to = $model->where(array('pos_id'=>array('eq',$dept_id_to),'is_del'=>array('eq',0)))->order('position_sort')->find();
 		
 		if(!empty($user_from) && !empty($user_to)){
-			$flow = array($user_from['id'],$user_to['id'],getHRDeputyGeneralManagerId($user_from['id']),getGeneralManagerId($uid));
+			$flow = checkFlowNotMe(array($user_from['id'],$user_to['id'],getHRDeputyGeneralManagerId($user_from['id']),getGeneralManagerId($uid)));
 			if($this->isAjax()){
 				$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 			}

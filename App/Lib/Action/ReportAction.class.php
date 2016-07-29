@@ -144,6 +144,7 @@ class ReportAction extends CommonAction {
 	}
 	
 	public function delivery_read_all() {
+		ini_set("memory_limit","800M");
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
 		$this -> assign('auth', $this -> config['auth']);
@@ -189,6 +190,7 @@ class ReportAction extends CommonAction {
 		$this -> assign('store_name_same_day', $store_name_same_day);
 		$this -> assign('store_name_same', $store_name_same);
 	
+// 		dump($where_detail);
 		$store_name = M("DeliveryDetail") -> where($where_detail) -> field('store_name') ->distinct(true) -> select();
 		$store_name = rotate($store_name);
 		$store_name = $store_name['store_name'];
@@ -198,6 +200,16 @@ class ReportAction extends CommonAction {
 		$date = M("DeliveryDetail") -> where($where_detail) -> field('date') ->distinct(true) -> select();
 		$date = rotate($date);
 		$date = $date['date'];
+		asort($date);
+		$date = array_values($date);
+		$date_num_o = count($date);
+		
+		if($_REQUEST['p']){
+			$date = array($date[$_REQUEST['p']-1]);
+		}else{
+			$date = array($date[0]);
+		}
+		
 		$this -> assign('date', $date);
 		$this -> assign('date_num', count($date));
 	
@@ -206,6 +218,22 @@ class ReportAction extends CommonAction {
 		$express = $express['express'];
 		$this -> assign('express', $express);
 		$this -> assign('express_num', count($express));
+		
+// 		$this->_list(M("DeliveryDetail"), $where_detail);
+// 		echo $_REQUEST['p'];
+		import("@.ORG.Util.Page2");
+		//创建分页对象
+		if (!empty($_REQUEST['list_rows'])) {
+			$listRows = $_REQUEST['list_rows'];
+		} else {
+			$listRows = get_user_config('list_rows');
+		}
+		$p = new Page2($date_num_o*$listRows, $listRows);
+		$p -> totalPages = $date_num_o;
+		$p -> parameter = $this -> _search();
+		//分页显示
+		$page = $p -> show();
+		$this -> assign("page", $page);
 	
 		$this -> display();
 	}
