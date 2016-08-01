@@ -1,5 +1,4 @@
 <layout name='Layout/ace_layout' />
-	<input type="hidden" name="ajax" id="ajax" value="1">
 	<select name="dept_list" id="dept_list" class="hidden">
 		{:fill_option($dept_list)}
 	</select>
@@ -8,14 +7,15 @@
 			<h1>预约会议室</h1>
 		</div>
 	</div>
-	<div class="popup-body" style="height: 445px;overflow-y: auto;">
-		<form id="form_data" name="form_data" method="post" class="form-horizontal" enctype="multipart/form-data">
+	<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
 			<input type="hidden" name="opmode" id="opmode" value="add">
 			<input type="hidden" name="create_time" id="create_time">
 			<input type="hidden" name="takes_id" id="takes_id">
+			<input type="hidden" name="date_section" id="date_section">
 			<input type="hidden" name="time_section" id="time_section">
 			<input type="hidden" id="ajax" name="ajax" value="0">
 			<input type="hidden" id="meet_id" name="meet_id" value="{$id}">
+			<input type="hidden" id="user_id" name="user_id" value="{:get_user_id()}">
 			<table class="table table-bordered" >
 				<tr>
 					<th class="col-10">
@@ -59,11 +59,10 @@
 				<tr>
 					<th>
 					<nobr>
-						会议日期起始*
+						会议日期*
 					</nobr></th>
 					<td colspan="3">
-						<input class="input-date-times" type="text" id="start_time" name="start_time" check="require" msg="请输入开始时间" readonly="readonly">-
-						<input class="input-date-times" type="text" id="end_time" name="end_time" check="require" msg="请输入结束时间" readonly="readonly">
+						<input class="input-date-times" type="text" id="start_time" name="start_time" readonly="readonly" msg="{$time_frame}" value="{$start_time}">
 					</td>
 				</tr>
 				<tr>
@@ -86,14 +85,17 @@
 				<tr>
 					<th>会议时间段*</th>
 					<td colspan="3">
-						<volist id="vo" name="section">
-							<span class="time_section">{$vo}</span>
+						<div class="contain">
+						<volist id="vo" name="new">
+							<span class="time_section {$vo['color']}" 
+							<if condition = "$vo['color'] eq 'noyud'">onclick="selectTime(this);"</if>>{$vo['time']}</span>
 						</volist>
+						</div>
 					</td>
 				</tr>
 				<tr> 
 					<td colspan="4">
-						<input type="button" class="btn btn-sm btn-primary" value="提交" onclick="save();"/>
+						<input type="button" class="btn btn-sm btn-primary" value="预约" onclick="save();"/>
 						<input type="button" class="btn btn-sm btn-default" value="返回" onclick="go_return_url();"/>
 					</td>
 					
@@ -101,7 +103,6 @@
 			</table>
 		</form>
 		<b>带*的为必填选项</b>
-	</div>
 	</div>
 <style type="text/css">
 	.time_section{
@@ -112,5 +113,12 @@
 		text-align: center;
 		float: left;
 		border: 1px solid #ccc;
+	}
+	.noyud:hover{
+		cursor: pointer;
+	}
+	.booked{
+		background: red;
+		color: #fff;
 	}
 </style>

@@ -33,7 +33,11 @@
 						<span class="col-20">{$vo.theme}</span>
 					</div>
 					<div class="pull-right">
-						<span class="col-15 "><a href="{:U('edit_order','id='.$vo['id'])}">编辑</a></span>
+						<if condition="1">
+							<span class="col-5 "><a href="{:U('yuyue',array('id'=>$vo['meet_id'],'yid'=>$vo['id']))}">查看</a></span>
+							<span class="col-5 "><a href="{:U('yuyue','id='.$vo['meet_id'])}">编辑</a></span>
+							<span class="col-7 "><a href="{:U('cancel_yuyue','id='.$vo['id'])}">取消预约</a></span>
+						</if>
 					</div>
 				</li>
 			</foreach>

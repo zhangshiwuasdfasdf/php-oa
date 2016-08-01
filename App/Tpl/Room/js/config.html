@@ -33,9 +33,17 @@
 	function showdata(result) {
 		for (var s in result.data) {
 			set_val(s, result.data[s]);
+				if("pid" == s){
+				if(result.data[s] == "0"){
+					$("#hidd_del").hide();
+				}else{
+					$("#hidd_del").show();
+				}
+			}
 		}
 		$("#dept_name").val($("#dept_list option[value='" + $("#pid").val() + "']").text());
 		$("#opmode").val("edit");
+		
 	}
 
 
