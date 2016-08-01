@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class FlowAction extends CommonAction {
-	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin','export_goods_procurement_allocation'=>'admin','import_goods_procurement_allocation'=>'admin','del'=>'write','winpop_goods'=>'admin'));
+	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin','export_goods_procurement_allocation'=>'admin','import_goods_procurement_allocation'=>'admin','del'=>'write','winpop_goods'=>'admin'));
 
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -2022,6 +2022,7 @@ class FlowAction extends CommonAction {
 		$where['_string'] = "result is null";
 		$to_confirm = $model -> where($where) -> find();
 		$this -> assign("to_confirm", $to_confirm);
+		
 
 		
 		if (!empty($to_confirm)) {
@@ -2040,6 +2041,12 @@ class FlowAction extends CommonAction {
 		$where['emp_no'] = array('neq', $vo['emp_no']);
 		$confirmed = $model -> Distinct(true) -> where($where) -> field('emp_no,user_name') -> select();
 		$this -> assign("confirmed", $confirmed);
+		
+		$can_cancel = 0;
+		if(!$confirmed && $vo['user_id']==get_user_id()){
+			$can_cancel = 1;
+		}
+		$this -> assign("can_cancel", $can_cancel);
 		
 		//从$vo中获取数据放到$flow_arr中，再调用ajaxgetflow_*获取审核流程
 		$flow_arr = array('uid'=>$vo['user_id'],'dept_id'=>$vo['dept_id'],'flow_type_id'=>$vo['type']);
@@ -2358,7 +2365,68 @@ class FlowAction extends CommonAction {
 			//错误提示
 		}
 	}
-
+	public function cancel(){
+		$flow_id = $_GET['id'];
+		
+		$model = M('Flow');
+		$vo = $model->find($flow_id);
+		
+		$model = M('FlowLog');
+		$where = array();
+		$where['flow_id'] = $flow_id;
+		$where['_string'] = "result is not null";
+		$where['emp_no'] = array('neq', $vo['emp_no']);
+		$confirmed = $model -> Distinct(true) -> where($where) -> field('emp_no,user_name') -> select();
+		$this -> assign("confirmed", $confirmed);
+		
+		$can_cancel = 0;
+		if(!$confirmed && $vo['user_id']==get_user_id()){
+			$can_cancel = 1;
+		}
+		if($can_cancel==1){
+			$res = M('Flow')->where(array('id'=>$flow_id))->setField('is_del',1);
+			if($res && getModelName($flow_id)=='FlowLeave'){//请假/调休单
+				$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+				$create_time = strtotime($flow['start_time']);
+				if($flow['style']=='调休'){
+					$flow_hour = M('FlowHour')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+					if(!$flow_hour){
+						$del_hour = $flow['day_num']*8+$flow['hour_num'];
+						$flow = M('Flow')->find($flow_id);
+						$data['hour'] = $del_hour*(-1);
+						$data['create_time'] = $create_time;
+						$data['user_id'] = $flow['user_id'];
+						$data['status'] = 4;
+						M('FlowHour')->add($data);
+					}else{
+						$data['status'] = 4;
+						M('FlowHour')->where('flow_id='.$flow_id)->save($data);
+					}
+				}else if($flow['style']=='年假'){
+					$flow_year = M('FlowYear')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+					if(!$flow_year){
+						$del_half_year = $flow['day_num']*2+($flow['hour_num']>0?1:0);
+						$flow = M('Flow')->find($flow_id);
+						$data['hour'] = $del_half_year*(-1);
+						$data['create_time'] = $create_time;
+						$data['user_id'] = $flow['user_id'];
+						$data['status'] = 4;
+						M('FlowYear')->add($data);
+					}else{
+						$data['status'] = 4;
+						M('FlowYear')->where('flow_id='.$flow_id)->save($data);
+					}
+				}
+			}
+			
+			$this -> assign('jumpUrl', U('flow/folder?fid=submit'));
+			$this -> success('操作成功!');
+		}else{
+			$this -> error('操作失败!');
+		}
+		
+		echo $can_cancel;
+	}
 	public function mark() {
 		$action = $_REQUEST['action'];
 		switch ($action) {

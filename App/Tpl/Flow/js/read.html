@@ -6,7 +6,12 @@
 	function reject() {
 		sendForm("form_confirm", "{:U('mark','action=reject')}", "{:U('read','id='.$vo['id'])}");
 	}
-
+	
+	function cancel(){
+		window.onbeforeunload = null;
+		sendForm("form_data", "{:U('cancel','id='.$vo['flow_id'])}");
+	}
+	
 	function back_to(emp_no) {
 		sendForm("form_confirm", fix_url("{:U('mark','action=back')}?emp_no=" + emp_no), "{:U('read','id='.$vo['id'])}");
 	}

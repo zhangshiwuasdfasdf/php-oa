@@ -32,6 +32,9 @@ h1{ text-align:center;}
 			<eq name="is_edit" value="1">
 				<a onclick="save();" class="btn btn-sm btn-primary">保存</a>
 			</eq>
+			<eq name="can_cancel" value="1">
+				<a onclick="cancel();" class="btn btn-sm btn-primary">作废</a>
+			</eq>
 		</div>
 	</div>
 </div>
@@ -131,13 +134,16 @@ h1{ text-align:center;}
 							<a class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" href="#">退回到<span class="fa fa-caret-down"></span> </a>
 							<ul class="dropdown-menu col-5">
 								<volist name="confirmed" id="vo">
-									<li onclick="back_to('{$vo.emp_no}');">
-										<a>{$vo.user_name}</a>
-									</li>
+									<if condition="($vo.emp_no neq get_user_info(get_user_id(), 'emp_no'))">
+										<li onclick="back_to('{$vo.emp_no}');">
+											<a>{$vo.user_name}</a>
+										</li>
+									</if>
+									
 								</volist>
-								<li onclick="back_to('{$emp_no}');">
+								<!-- <li onclick="back_to('{$emp_no}');">
 									<a>{$user_name}</a>
-								</li>
+								</li> -->
 							</ul>
 						</div>
 					</notempty>
