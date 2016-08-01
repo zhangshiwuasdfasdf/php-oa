@@ -161,7 +161,15 @@ class FlowAction extends CommonAction {
 					$map['step'] = 40;
 					//$map加上自己园区的
 					if(isHeadquarters(get_user_id())==0){//总部
-						$map['dept_id'] = array('in',get_child_dept_all(27));
+						//云客服部考勤单独做
+						$pos_id = get_user_info(get_user_id(), 'pos_id');
+						$pos = M('Dept')->find($pos_id);
+						if($pos['name']=='云客服前台'){
+							$map['dept_id'] = array('in',get_child_dept_all($pos['pid']));
+						}else{
+							$map['dept_id'] = array('in',get_child_dept_all(27));
+						}
+						
 					}elseif (isHeadquarters(get_user_id())>0){//园区
 						//园区加上总部下面的分公司财务
 						
@@ -607,7 +615,7 @@ class FlowAction extends CommonAction {
 			$pos_id = get_user_info(get_user_id(), 'pos_id');
 			$pos = M('Dept')->find($pos_id);
 			if($pos['name']=='云客服前台'){
-				$dept_id = get_dept_id();
+				$dept_id = $pos['pid'];
 				$this -> _folder_export_detail_leave($date,$dept_id);
 			}else{
 				$this -> _folder_export_detail_leave($date);

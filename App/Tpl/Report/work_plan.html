@@ -1,0 +1,95 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'工作计划导入','search'=>'M'))}
+<form method="post" name="form_adv_search" id="form_adv_search">
+	<div class="adv_search panel panel-default  display-none"  id="adv_search">
+		<div class="panel-heading">
+			<div class="row">
+				<h4 class="col-xs-6">高级搜索</h4>
+				<div class="col-xs-6 text-right">
+					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+					<a  class="btn btn-sm " onclick="close_adv_search();">关闭</a>
+				</div>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="eq_addr">园区：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_addr">
+							<option value="">选择园区</option>
+							{:fill_option($addr_list)};
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="eq_user">导入人：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_user">
+							<option value="">选择导入人</option>
+							{:fill_option($user_list)};
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="be_create_time_0">时间：</label>
+				<div class="col-sm-8">
+					<div class="input-daterange input-group" >
+						<input type="text" class="input-sm form-control text-center" name="be_create_time_0" />
+						<span class="input-group-addon">-</span>
+						<input type="text" class="input-sm form-control text-center" name="en_create_time_0" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-right">
+			<a class="btn btn-sm btn-primary" onclick="add_work_plan()">新建</a>
+		</div>
+	</div>
+</div>
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-10">部门</span>
+				<span class="col-10">导入人</span>
+				<span class="col-10">园区</span>
+				<span class="col-15">导入时间</span>
+			</div>
+			<div class="pull-right">
+				<span class="col-8">操作</span>
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<form method="post" action="" id="form_data">
+				<foreach name="list" item="vo">
+					<li class="tbody">
+						<div class="pull-left">
+							<span class="col-10">{$vo.dept_name}</span>
+							<span class="col-10">{$vo.user_name}</span>
+							<span class="col-10">{$vo.addr}</span>
+							<span class="col-15"><a href="{:U('delivery_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d h:i:s'}</a></span>
+						
+						</div>
+						<div class="pull-right">
+							<span class="col-8"><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('delivery_del','id='.$vo['id'])}">删除</a></span>
+						
+						</div>
+					</li>
+				</foreach>
+			</form>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>
