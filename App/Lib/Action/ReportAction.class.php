@@ -241,7 +241,7 @@ class ReportAction extends CommonAction {
 		$page = $p -> show();
 		$this -> assign("page", $page);
 	
-		$this -> display('delivery_read_all');
+		$this -> display();
 	}
 	
 	public function delivery_del($id) {
