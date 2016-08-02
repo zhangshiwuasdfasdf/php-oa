@@ -238,7 +238,7 @@ class ReportAction extends CommonAction {
 		$page = $p -> show();
 		$this -> assign("page", $page);
 	
-		$this -> display();
+		$this -> display('delivery_read_all');
 	}
 	
 	public function delivery_del($id) {
@@ -799,7 +799,7 @@ class ReportAction extends CommonAction {
 				}
 				//$y=3;
 					
-// 				echo $x;
+				echo $x;
 				
 				$merges = $objPHPExcel -> getActiveSheet()->getMergeCells();
 				foreach ($merges as $k=>$v){
@@ -810,8 +810,8 @@ class ReportAction extends CommonAction {
 						$y = $tt[1];
 					}
 				}
-// 				echo $y;
-// 				exit;
+				echo $y;
+				exit;
 				$dept_name = $sheetData[3]['A'];
 				if(!$dept_name){
 					$this -> error('请写部门');

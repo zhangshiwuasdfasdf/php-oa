@@ -57,6 +57,9 @@
 				<span class="col-16 ">类型</span>				
 			</div>
 			<div class="pull-right">
+				<if condition="($name eq 'over_time')">
+				<span  class="col-9  ">加班抵用方式</span>
+				</if>
 				<if condition="($hui neq '1')">
 				<span  class="col-9  ">登录时间</span>
 				</if>
@@ -103,6 +106,9 @@
 							</if>
 						</div>
 						<div class="pull-right">
+							<if condition="($name eq 'over_time')">
+							<span  class="col-9 " style="color:{$vo.id|get_add_type_in_over_time='color'}">{$vo.id|get_add_type_in_over_time='name'}</span>
+							</if>
 							<if condition="($hui neq '1')">
 							<span class="col-9" style="height:20px;">{$vo.create_time|toDate='Y-m-d'}</span>
 							</if>
