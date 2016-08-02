@@ -13,7 +13,7 @@
 	.left_li2 a {overflow:hidden; display:block; float:left; text-align:center; width:80px; height:27px; line-height:26px; font-size:14px; border-bottom:1px solid #000;}
 	.left_ul li span{overflow:hidden; display:block; float:left; text-align:center; width:80px; height:27px; line-height:26px; font-size:14px; border-bottom:1px solid #000;}
 	
-	.right{ float:left; max-height:700px; width:1140px; border:solid 1px #000; overflow:auto; margin-left:-1px;}
+	.right{ float:left; max-height:700px; width:80%; border:solid 1px #000; overflow:auto; margin-left:-1px;}
 	.right_top{ height:118px;   border-bottom:solid 1px #000; overflow:hidden;}
 	.right_top span{ display:block; width:50px; height:118px;  float:left; border-right:1px solid #000;}
 	.right_top a{word-break:break-all; display:block;width:20px; height:118px; text-align:center;margin-left:15px; overflow:hidden;}
@@ -23,6 +23,7 @@
 </style>
 {:W('PageHeader',array('name'=>'查看仓库发货报表','search'=>'N'))}
 <body>
+<div style="width:100%">
 <Div class="left" style="background:#fff;">
 	<img src="__PUBLIC__/img/img/bq.png">
     <ul class="left_ul">
@@ -80,6 +81,7 @@
   	 	</volist>
   	 	
     </ul>
+</div>
 </div>
 <script>
 	$(".right_bottom").scroll(function(){
