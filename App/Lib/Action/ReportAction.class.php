@@ -593,7 +593,6 @@ class ReportAction extends CommonAction {
 				while($sheetData[$y]['A']!=''){
 					$y++;
 				}
-			
 				$title = $sheetData[1]['A'];
 				$title1 = explode('基地',$title);
 				if($title1[0]!='金华' && $title1[0]!='宁波' && $title1[0]!='杭州' && $title1[0]!='嘉兴'){
@@ -626,11 +625,15 @@ class ReportAction extends CommonAction {
 								$delivery_detail['express'] = $sheetData[$j]['B'];
 								$date_0 = $sheetData[$j]['A'];
 
-								$delivery_detail['date'] = date('Y-m-d',strtotime($date_0));
-								if($delivery_detail['date']=='1970-01-01'){
-									$date_array = explode('-',$date_0);
-									$delivery_detail['date'] = '20'.$date_array[2].'-'.$date_array[0].'-'.$date_array[1];
+								$date_temp = explode('-',$date_0);
+								if($date_temp){
+									$date_0 = '20'.$date_temp[2].'-'.$date_temp[0].'-'.$date_temp[1];
 								}
+								$delivery_detail['date'] = date('Y-m-d',strtotime($date_0));
+// 								if($delivery_detail['date']=='1970-01-01'){
+// 									$date_array = explode('-',$date_0);
+// 									$delivery_detail['date'] = '20'.$date_array[2].'-'.$date_array[0].'-'.$date_array[1];
+// 								}
 								$delivery_detail['num'] = $sheetData[$j][ToNumberSystem26($i)];
 								
 								$where = array();

@@ -17,7 +17,7 @@
 	.right_top{ height:118px;   border-bottom:solid 1px #000; overflow:hidden;}
 	.right_top span{ display:block; width:50px; height:118px;  float:left; border-right:1px solid #000;}
 	.right_top a{word-break:break-all; display:block;width:20px; height:118px; text-align:center;margin-left:15px; overflow:hidden;}
-	.right_bottom{  max-height:560px; overflow:auto;}
+	.right_bottom{  max-height:563px; overflow:auto;}
 	.right_bottom li{ border-bottom:1px solid #000; height:27px; overflow:auto;}
 	.right_bottom span{ display:block; width:50px; height:26px; text-align:center; float:left; border-right:solid 1px #000;}
 </style>
@@ -35,7 +35,7 @@
     			</volist>
     			<span>{$vo}</span>
     		</volist>
-            <div style="height:17px; width:80px; float:left; border-right:solid 1px #000;"></div>
+            <div style="height:20px; width:80px; float:left; border-right:solid 1px #000;"></div>
         </li>
         <li class="left_li2">
         	<a>快递单位</a>
@@ -45,7 +45,7 @@
     			</volist>
     			<a title="小计">小计</a>
     		</volist>
-            <div style="height:17px; width:81px; float:left;"></div>
+            <div style="height:20px; width:81px; float:left;"></div>
         </li>
     </ul>
 </Div>
@@ -54,9 +54,9 @@
       	<volist name = "store_name"	id = "vo" >
       		<span><a title="{$vo}">{$vo}</a></span>
       	</volist>
-      	<span><a title="小计">小计</a></span>
+      	<span><a title="合计">合计</a></span>
     </div>
-    <ul class="right_bottom" style="width:{:count($store_name)*50+50}px">
+    <ul class="right_bottom" style="width:{:count($store_name)*50+50+17}px">
         <li style="width:{:count($store_name)*50+50}px">
            	<volist name = "store_name"	id = "vo" >
 	      		<span>{$key+1}</span>

@@ -13,10 +13,10 @@
 		</div>
 		<div class="panel-body">
 			<div class="form-group col-sm-6">
-				<label class="col-sm-4 control-label" for="eq_addr">园区：</label>
+				<label class="col-sm-4 control-label" for="eq_addr">基地：</label>
 				<div class="col-sm-8">
 					<select class="form-control" name="eq_addr">
-							<option value="">选择园区</option>
+							<option value="">选择基地</option>
 							{:fill_option($addr_list)};
 					</select>
 				</div>
@@ -58,7 +58,7 @@
 			<div class="pull-left">
 				<span class="col-10">部门</span>
 				<span class="col-10">导入人</span>
-				<span class="col-10">园区</span>
+				<span class="col-10">基地</span>
 				<span class="col-15">导入时间</span>
 				<span class="col-10">月份</span>
 			</div>
@@ -78,7 +78,7 @@
 							<span class="col-10">{$vo.dept_name}</span>
 							<span class="col-10">{$vo.user_name}</span>
 							<span class="col-10">{$vo.addr}</span>
-							<span class="col-15"><a href="{:U('work_plan_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d h:i:s'}</a></span>
+							<span class="col-15"><a href="{:U('work_plan_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d H:i:s'}</a></span>
 							<span class="col-10">{$vo.date}</span>
 						</div>
 						<div class="pull-right">
