@@ -1,0 +1,43 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'查看仓库发货报表','search'=>'N'))}
+<body style="font-family: '微软雅黑';font-size: 14px;  margin:0; padding:0;">
+<h1 align="center" style="font-size: 18px;">{$delivery.addr}基地{$delivery.month}月仓库发货日报表</h1>
+<table width="" border="1" cellspacing="0" cellpadding="0" style=" background:#fff; margin:auto;">
+  <tr height="150">
+    <td class="td_h" style=" margin:0; padding:0;" height="105" width="160px" colspan="2"><img style=" margin:0; padding:0; width:100%; height:auto;" src="__PUBLIC__/img/img/bq.png"/></td>
+    <volist name = "store_name"	id = "vo" >
+		<td width="40px" style="text-align: center"><p style="width:15px; margin:0 auto;">{$vo}</p></td>
+	</volist>
+	<td width="40px" style="text-align: center"><p style="width:15px; margin:0 auto;">合计</p></td>
+  </tr>
+  <tr>
+    <td width="80px" height="30" align="center">日期</td>
+    <td width="80px" height="30" align="center">快递单位</td>
+    <volist name = "store_name"	id = "vo" >
+		<td width="40px" height="30" style="text-align: center">{$key+1}</td>
+	</volist>
+	<td width="40px" height="30" style="text-align: center"></td>
+  </tr>
+  <volist name = "date"	id = "vo" >
+  	 <volist name = "express"	id = "voo" >
+  	 	<tr>
+  	 		<td width="80" height="30" align="center">{$vo}</td>
+    		<td width="80" height="30" align="center">{$voo}</td>
+	  	 	<volist name = "store_name"	id = "vooo" >
+	  	 		<td width="40" height="30" style="text-align: center">{$delivery_detail.$vo.$voo.$vooo}</td>
+			</volist>
+			<td width="40" height="30" align="center">{$delivery_detail.$vo.$voo|array_sum_except='小计',###}</td>
+		</tr>
+	 </volist>
+	 <tr>
+  	 		<td width="80" height="30" align="center">{$vo}</td>
+    		<td width="80" height="30" align="center">小计</td>
+	  	 	<volist name = "store_name"	id = "vooo" >
+	  	 		<td width="40px" height="30" style="text-align: center">{$store_name_same.$vo.$vooo|array_sum}</td>
+			</volist>
+			<td width="40px" height="30" align="center">{$sum_day.$vo}</td>
+	 </tr>
+  </volist>
+</table>
+</body>
+

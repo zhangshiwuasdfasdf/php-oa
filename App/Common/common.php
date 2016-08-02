@@ -2794,4 +2794,14 @@ function isHzYuanQu($uid){
 	$dept = M('Dept')->find(isHeadquarters($uid));
 	return strpos($dept['name'],'杭州')!==false;
 }
+function get_add_type_in_over_time($flow_id,$opt){
+	$over_time = M('FlowOverTime')->where(array('flow_id'=>$flow_id))->field('use_type')->find();
+	
+	if($over_time['use_type']=='调休'){
+		$data = array('name'=>$over_time['use_type'],'color'=>'green');
+	}elseif($over_time['use_type']=='申请加班费'){
+		$data = array('name'=>$over_time['use_type'],'color'=>'red');
+	}
+	return $data[$opt];
+}
 ?>
