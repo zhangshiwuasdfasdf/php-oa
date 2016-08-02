@@ -254,6 +254,7 @@ class CommonAction extends Action {
 			$name = $this -> getActionName();
 		}
 		$model = D($name);
+		
 		if(is_mobile_request()){
 			unset($_GET['id']);
 			unset($_GET['token']);

@@ -95,10 +95,12 @@
 		winopen(fix_url("{:U('popup/help')}?subject="+$subject+"&item="+$item),740,630);
 	}
 
-	function save() {
-		window.onbeforeunload=null;
+	function save($submit) {
+		$('#is_submit').val($submit);
+		init_input_name();
+		window.onbeforeunload = null;
 		if (check_form("form_data")) {
-			sendForm("form_data", "{:U('save_work_plan')}");
+			sendForm("form_data", "{:U('save')}");
 		}
 	}
 	

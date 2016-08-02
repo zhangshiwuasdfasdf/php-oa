@@ -60,6 +60,7 @@
 				<span class="col-10">导入人</span>
 				<span class="col-10">园区</span>
 				<span class="col-15">导入时间</span>
+				<span class="col-10">月份</span>
 			</div>
 			<div class="pull-right">
 				<span class="col-8">操作</span>
@@ -77,11 +78,11 @@
 							<span class="col-10">{$vo.dept_name}</span>
 							<span class="col-10">{$vo.user_name}</span>
 							<span class="col-10">{$vo.addr}</span>
-							<span class="col-15"><a href="{:U('delivery_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d h:i:s'}</a></span>
-						
+							<span class="col-15"><a href="{:U('work_plan_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d h:i:s'}</a></span>
+							<span class="col-10">{$vo.date}</span>
 						</div>
 						<div class="pull-right">
-							<span class="col-8"><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('delivery_del','id='.$vo['id'])}">删除</a></span>
+							<span class="col-8"><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('work_plan_del','id='.$vo['id'])}">删除</a></span>
 						
 						</div>
 					</li>

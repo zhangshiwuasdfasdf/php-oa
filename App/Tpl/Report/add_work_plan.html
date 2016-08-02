@@ -1,19 +1,44 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'新建工作计划','search'=>'N'))}
-<div class="operate panel panel-default">
-		<div class="panel-body">
-			<div class="pull-left">
-				<div class="btn-group">
-					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 管理 <b class="fa fa-caret-down"></b></a>
-					<ul class="dropdown-menu">
-						<li>
-							<a onclick="import_work_plan_report();">导入</a>
-						</li>
-						<li>
-							<a onclick="export_work_plan_report();">导出模板</a>
-						</li>
-					</ul>
-				</div>
+{:W('PageHeader',array('name'=>'新建文档','search'=>'N'))}
+
+<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
+	<input type="hidden" id="ajax" name="ajax" value="0">
+	<input type="hidden" id="add_file" name="add_file">
+	<input type="hidden" id="folder" name="folder" value="{$folder}">
+	<input type="hidden" id="fid" name="fid" value="{$folder}">
+	<input type="hidden" id="opmode" name="opmode" value="add">
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="addr">园区：</label>
+		<!-- <div class="col-sm-10">
+			<input class="form-control" type="text" id="name" name="name" value="{$vo.name}"  check="require" msg="请输入文件名">
+		</div> -->
+		<div class="col-sm-2">
+			<input class="form-control" type="text" id="addr" name="addr" value="{$vo.addr}"  check="require" msg="请输入园区名">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="name">附件：</label>
+		<div class="col-sm-10">
+			{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'add'))}
+		</div>
+	</div>
+	<!-- <div class="form-group">
+		<div class="col-xs-12">
+			<textarea class="editor" id="content" name="content" style="width:100%;height:300px;" check="require" msg="请输入内容">{$vo.content}</textarea>
+		</div>
+	</div> -->
+	<div class="form-group">
+		<label class="col-sm-2 control-label">时间：</label>
+		<div class="col-sm-1">
+			<div>
+				<input type="text" data-date-format="yyyy-mm-dd" class="form-control input-date-m" name="date" />
 			</div>
 		</div>
 	</div>
+	<div class="action">
+		<input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save();">
+		<input class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
+	</div>
+</form>

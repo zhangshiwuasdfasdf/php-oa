@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class ReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','delivery_read'=>'read','delivery_read_all'=>'read','delivery_edit'=>'read','delivery_del'=>'read','delivery'=>'read','export_delivery_report' => 'read','import_delivery_report' => 'read','work_plan'=>'read','add_work_plan'=>'read','export_work_plan_report' => 'read','import_work_plan_report' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','delivery_read'=>'read','delivery_read_all'=>'read','delivery_edit'=>'read','delivery_del'=>'read','delivery'=>'read','export_delivery_report' => 'read','import_delivery_report' => 'read','work_plan'=>'read','add_work_plan'=>'read','export_work_plan_report' => 'read','import_work_plan_report' => 'read','save_work_plan'=>'read','work_plan_del'=>'read','work_plan_read'=>'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 		if (!empty($_POST['eq_addr'])) {
@@ -203,7 +203,7 @@ class ReportAction extends CommonAction {
 		$date = M("DeliveryDetail") -> where($where_detail) -> field('date') ->distinct(true) -> select();
 		$date = rotate($date);
 		$date = $date['date'];
-		asort($date);
+		arsort($date);
 		$date = array_values($date);
 		$date_num_o = count($date);
 		
@@ -221,6 +221,9 @@ class ReportAction extends CommonAction {
 		$express = $express['express'];
 		$this -> assign('express', $express);
 		$this -> assign('express_num', count($express));
+		
+		$this -> assign('recent_date_1', date('Y-m').'-01');
+		$this -> assign('recent_date', date('Y-m-d'));
 		
 // 		$this->_list(M("DeliveryDetail"), $where_detail);
 // 		echo $_REQUEST['p'];
@@ -265,6 +268,26 @@ class ReportAction extends CommonAction {
 		}else{
 				$this -> error('删除失败！');
 		}
+	}
+	public function work_plan_del($id) {
+		$this -> assign('uid',get_user_id());
+		$this -> assign('id', $id);
+		$this -> assign('auth', $this -> config['auth']);
+	
+		$widget['date'] = true;
+		$widget['uploader'] = true;
+		$widget['editor'] = true;
+		$this -> assign("widget", $widget);
+	
+		$where['id'] = array('eq', $id);
+		$workplan_res = M("WorkPlan") -> where($where) -> delete();
+	
+		if($workplan_res){
+			$this -> success('删除成功！');
+		}else{
+			$this -> error('删除失败！');
+		}
+		
 	}
 	public function edit($id) {
 
@@ -335,46 +358,41 @@ class ReportAction extends CommonAction {
 		$this -> _del($id);
 	}
 
+	
 	/** 插入新新数据  **/
-	protected function _insert() {
-		$model = D("DailyReport");
-		if(!is_mobile_request()){
-			if (false === $model -> create()) {
-				$this -> error($model -> getError());
-			}
-		}else{
-			$user = D('UserView')->find($_GET['id']);
+	protected function _insert($name = null) {
+		if (empty($name)) {
+			$name = $this -> getActionName();
+		}
+		$model = D($name);
+	
+		if(is_mobile_request()){
 			unset($_GET['id']);
+			unset($_GET['token']);
 			if (false === $model -> create($_GET)) {
 				$this -> error($model -> getError());
 			}
+		}else{
+			if (false === $model -> create()) {
+				$this -> error($model -> getError());
+			}
 		}
-		
-		if (in_array('user_id', $model -> getDbFields())) {
-			$model -> user_id = is_mobile_request()?$user['id']:get_user_id();
-		};
-		if (in_array('user_name', $model -> getDbFields())) {
-			$model -> user_name = is_mobile_request()?$user['name']:get_user_name();
-		};
-		if (in_array('dept_id', $model -> getDbFields())) {
-			$model -> dept_id = is_mobile_request()?$user['dept_id']:get_dept_id();
-		};
-		if (in_array('dept_name', $model -> getDbFields())) {
-			$model -> dept_name = is_mobile_request()?$user['dept_name']:get_dept_name();
-		};
-		$model -> create_time = time();
+		$model->user_id = get_user_id();
+		$model->user_name = get_user_name();
+		$model->dept_id = get_dept_id();
+		$model->dept_name = get_dept_name();
+		$model->create_time = time();
 		/*保存当前数据对象 */
 		$list = $model -> add();
-		
 		if ($list !== false) {//保存成功
 			$this -> assign('jumpUrl', get_return_url());
-			$this -> success('新增成功!');
+			$this -> success('新增成功!'.$list);
 		} else {
 			$this -> error('新增失败!');
 			//失败提示
 		}
 	}
-
+	
 	/** 插入新新数据  **/
 	protected function _update() {
 		$model = D("DailyReport");
@@ -671,21 +689,46 @@ class ReportAction extends CommonAction {
 	
 		$auth = $this -> config['auth'];
 		$this -> assign('auth', $auth);
+		
+		$addr = M("WorkPlan") -> field('addr as id,addr as name') ->distinct(true) -> select();
+		$this -> assign('addr_list', $addr);
 	
-// 		$addr = M("Delivery") -> field('addr as id,addr as name') ->distinct(true) -> select();
-// 		$this -> assign('addr_list', $addr);
+		$user_list = M("WorkPlan") -> field('user_name as id,user_name as name') ->distinct(true) -> select();
+		$this -> assign('user_list', $user_list);
 	
-// 		$user_list = M("Delivery") -> field('user_name as id,user_name as name') ->distinct(true) -> select();
-// 		$this -> assign('user_list', $user_list);
+		$where = $this -> _search();
+		if (!empty($_POST['eq_addr'])) {
+			$where['addr'] = array('eq',$_POST['eq_addr']);
+		}
+		if (!empty($_POST['user_name'])) {
+			$where['user_name'] = array('eq',$_POST['user_name']);
+		}
+		$start_time_0 = $_POST['be_create_time_0'];
+		$end_time_0 = $_POST['en_create_time_0'];
+		if (!empty($start_time_0)) {
+			$where['date'][] = array('egt', date('Y-m',strtotime(trim($start_time_0))));
+		}
+		if (!empty($end_time_0)) {
+			$where['date'][] = array('elt', date('Y-m',strtotime(trim($end_time_0))));
+		}
+		$model = D("WorkPlan");
+		if (!empty($model)) {
+			$this -> _list($model, $where);
+		}
+		$this -> display();
+	}
+	public function work_plan_read() {
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		$this -> assign('user_id', get_user_id());
 	
-// 		$where = $this -> _search();
-// 		if (method_exists($this, '_search_filter')) {
-// 			$this -> _search_filter($where);
-// 		}
-// 		$model = D("Delivery");
-// 		if (!empty($model)) {
-// 			$this -> _list($model, $where['_complex']['delivery']);
-// 		}
+		$auth = $this -> config['auth'];
+		$this -> assign('auth', $auth);
+	
+		$model = D("WorkPlan");
+		$id = $_GET['id'];
+		$vo = $model->find($id);
+		$this -> assign('vo', $vo);
 		$this -> display();
 	}
 	function export_work_plan_report(){
@@ -875,5 +918,8 @@ class ReportAction extends CommonAction {
 		} else {
 			$this -> display();
 		}
+	}
+	function save_work_plan(){
+		$this->_save('WorkPlan');
 	}
 }

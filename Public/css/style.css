@@ -604,6 +604,10 @@ ul.tree_menu i {
 	width: 130px;
 	display: inline-block;
 }
+.input-date-m{
+	width: 130px;
+	display: inline-block;
+}
 .ul_table {
 	position: relative;
 	margin-bottom: 15px;
