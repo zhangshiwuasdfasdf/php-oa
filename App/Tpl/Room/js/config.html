@@ -41,11 +41,12 @@
 				}
 			}
 		}
+		set_val("dept_grade_id", result.data['pid']);
 		$("#dept_name").val($("#dept_list option[value='" + $("#pid").val() + "']").text());
 		$("#opmode").val("edit");
 		
 	}
-
+	
 
 	$(document).ready(function(){
 		set_return_url();

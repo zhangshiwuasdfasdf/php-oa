@@ -1,25 +1,36 @@
 <?php
 class RoomAction extends CommonAction {
 	
-	//过滤查询字段
+	//会议室管理-过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
 		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
-			$map['name'] = array('like', "%" . $_POST['keyword'] . "%");
+			$map['meet_name'] = array('like', "%" . $_POST['keyword'] . "%");
+		}
+	}
+	//预约列表-查询
+	function _search_filter2(&$map) {
+		$map['is_del'] = array('eq', '0');
+		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
+			$map['proposer'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
 	}
 	
 	public function index(){
-		$where = $this -> _search();
+		$map = $this -> _search("room_meet");
 		if (method_exists($this, '_search_filter')) {
-			$this -> _search_filter($where);
+			$this -> _search_filter($map);
 		}
-		
 		$model = D('Room_meet');
+		$node = M("Room_config");
 		if (!empty($model)) {
-			$res = $this -> _list($model, $where);
+			$res = $this -> _list($model, $map);
 			$this -> assign('task_extension', $res);
 		}
+		$list2 = $node -> where(array('is_del'=> 0,'pid'=>2)) -> order('sort asc') -> getField('id,name');
+		$list = $node -> where(array('is_del'=> 0,'pid'=>1)) -> order('sort asc') -> getField('id,name');
+		$this -> assign('room_name_list',$list);
+		$this -> assign('room_status_list',$list2);
 		$this -> display();
 	}
 	
@@ -170,11 +181,13 @@ class RoomAction extends CommonAction {
 		$where['id'] = $pos_id;
 		$pos_name = $dept -> where($where) -> getField('name');
 		$this -> assign("id",$id);
+		$this -> assign("yid",$yid);
 		$this -> assign("start_time",date("Y-m-d"));
 		$this -> assign("pos_name",$pos_name);
 		$this -> assign('meet_name',$meet_name);
 		$this -> assign("time_frame",$name['time_frame']);
 		$this -> assign("new" ,$this->getTimeContain($name['time_frame'],date("Y-m-d"),$id,$yid));
+		//dump($this->getTimeContain($name['time_frame'],date("Y-m-d"),$id,$yid));
 		$this ->display();
 	}
 	//处理时间段
@@ -184,22 +197,26 @@ class RoomAction extends CommonAction {
 		$pm = explode(":",$section[1]);
 		$start = intval($section[0]);
 		$end = intval($section[1]);
-		dump($yid);
 		if(empty($yid)){
 			$now_sec = M("room_order")->where(array("date_section"=>$date,"is_del"=>"0","meet_id"=>$meet))->field("time_section")->select();
 			$now_sec = rotate($now_sec);
+			$now_sec = $now_sec['time_section'];
+			foreach ($now_sec as $k=>$v){
+				$tmp = trim($v,"|");
+				$arr = explode("|",$tmp);
+				foreach($arr as $vv){
+					$new_sec[] = $vv;
+				}
+			}
 		}else{
 			$now_sec = M("room_order")->find($yid);
-		}
-		$now_sec = $now_sec['time_section'];
-		foreach ($now_sec as $k=>$v){
-			$tmp = trim($v,"|");
+			$now_sec = $now_sec['time_section'];
+			$tmp = trim($now_sec,"|");
 			$arr = explode("|",$tmp);
 			foreach($arr as $vv){
 				$new_sec[] = $vv;
 			}
 		}
-		dump($new_sec);
 		$ts = array();
 		for ($i=$start;$i<=$end;$i++){
 			if($am[1] != "00") {
@@ -260,15 +277,15 @@ class RoomAction extends CommonAction {
 	}
 	
 	function lists(){
-		$map['is_del'] = 0;
-		$map['user_id'] = get_user_id();
-		if (method_exists($this, '_search_filter')) {
-			$this -> _search_filter($map);
+		$map = $this -> _search("room_order");
+		if (method_exists($this, '_search_filter2')) {
+			$this -> _search_filter2($map);
 		}
 		$model = M("room_order");
 		if (!empty($model)) {
 			$order = $this -> _list($model, $map);
 		}
+		$this->assign("user_id",get_user_id());
 		$this -> display();
 	}
 	
@@ -314,5 +331,27 @@ class RoomAction extends CommonAction {
 	function cancel_yuyue(){
 		$id = $_REQUEST['id'];
 		$this -> _del($id,"room_order");
+	}
+	function lookyy(){
+		$id = $_REQUEST['id'];
+		$yid = $_REQUEST['yid'];
+		$model = M("room_meet");
+		$order = M("room_order");
+		$name = $model -> find($id);
+		//会议室预定信息
+		$list = $order -> find($yid);
+		$tmp = explode('.',$list['create_time']);
+		$list['create_time'] = $tmp[0];
+		$li = explode("|",rtrim($list['takes_id'],"|"));
+		$per = array();
+		foreach ($li as $k=>$v){
+			$per[$k]['name'] = get_user_info($v, "name");
+			$per[$k]['id'] = $list['id'];
+		}
+		$this -> assign('meet',$name);
+		$this -> assign('vo',$list);
+		$this -> assign("per",$per);
+		$this -> assign("new" ,$this->getTimeContain($name['time_frame'],date("Y-m-d"),$id,$yid));
+		$this ->display();
 	}
 }

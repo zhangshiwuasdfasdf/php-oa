@@ -7,7 +7,9 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="name">会议室地点*：</label>
 		<div class="col-sm-10">
-			<input class="form-control" type="text" id="meet_addr" name="meet_addr" check="require" msg="请输入会议室地点">
+			<select name="meet_addr" id="meet_addr" class="form-control" check="require" msg="请输入会议室名称">
+				{:fill_option($room_name_list)}
+			</select>
 		</div>
 	</div>
 	<div class="form-group">
@@ -19,9 +21,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="meet_name">会议室名称*：</label>
 		<div class="col-sm-10">
-			<select name="meet_name" id="meet_name" class="form-control" check="require" msg="请输入会议室名称">
-				{:fill_option($room_name_list)}
-			</select>
+			<input class="form-control" type="text" id="meet_name" name="meet_name" check="require" msg="请输入会议室地点">
 		</div>
 	</div>
 	<div class="form-group">
