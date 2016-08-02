@@ -5,7 +5,7 @@
 			$frame = $(this).text().trim();
 			$dlist = $("#start_time").val();
 			sendAjax("{:U('showydr')}", "frame=" + $frame + "&date=" + $dlist, function(data) {
-				ui_error("预订人：" +data.proposer);
+				ui_info("预订人：" +data.proposer);
 			});
 		});
 		/*更改日期时,修改日期列表*/
