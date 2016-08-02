@@ -2760,6 +2760,12 @@ function array_sum_except($exc,$array){
 function get_room_list($name){
 	return  M("room_config")->where("id=$name")->getField("name");
 }
+function conv_inputbox($name, $data) {
+	$html = "<span data=$data id=$data>";
+	$html .= "<nobr><b  title=$name>$name</b>";
+	$html .= "<a class=\"del\" title=\"删除\"><i class=\"fa fa-times\"></i></a></nobr></span>";
+	return $html;
+}
 
 function HzYuanQuFlowOrigin($uid){
 	$user = D('UserView')->find($uid);

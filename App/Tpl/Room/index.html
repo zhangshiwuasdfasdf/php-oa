@@ -16,25 +16,29 @@
 			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label" for="li_name">会议室地点：</label>
 				<div class="col-sm-8">
-					<input  class="form-control" type="text" id="eq_name" name="eq_name" >
+					<select name="eq_meet_addr" id="meet_addr" class="form-control" check="require" msg="请输入会议室名称">
+						{:fill_option($room_name_list)}
+					</select>
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label" for="li_content">会议室门牌号：</label>
 				<div class="col-sm-8">
-					<input  class="form-control" type="text" id="li_content" name="li_content" >
+					<input  class="form-control" type="text" id="li_content" name="li_meet_num" >
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label" for="eq_user_name">会议室名称：</label>
 				<div class="col-sm-8">
-					<input  class="form-control" type="text" id="li_user_name" name="li_user_name" >
+					<input  class="form-control" type="text" id="li_user_name" name="li_meet_name" >
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label" for="be_create_time">会议室状态：</label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" name="eq_create_time" />
+					<select name="eq_meet_status" id="meet_status" class="form-control" check="require" msg="请输入会议室状态">
+						{:fill_option($room_status_list)}
+					</select>
 				</div>
 			</div>
 		</div>
@@ -57,8 +61,8 @@
 		<foreach name="list" item="vo">
 			 <div class="m_f1">
 		        <ul>
-		            <div>{$vo.meet_name|get_room_list}</div>
-		            <li>会议室地点：{$vo.meet_addr}</li>
+		            <div>{$vo.meet_name}</div>
+		            <li>会议室地点：{$vo.meet_addr|get_room_list}</li>
 		            <li>会议室门牌号：{$vo.meet_num}</li>
 		            <li>会议室状态：{$vo.meet_status|get_room_list}</li>
 		            <li>可容人数：{$vo.persons}</li>
