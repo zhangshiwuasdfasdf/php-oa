@@ -61,6 +61,7 @@ class ReportAction extends CommonAction {
 		}
 		$model = D("Delivery");
 		if (!empty($model)) {
+			$where['_complex']['delivery']['user_id'] = get_user_id();
 			$this -> _list($model, $where['_complex']['delivery']);
 		}		
 		$this -> display();
@@ -153,17 +154,45 @@ class ReportAction extends CommonAction {
 		$this -> assign('auth', $this -> config['auth']);
 		$this -> assign('user_id', get_user_id());
 		
-		$addr = M("Delivery") -> field('addr as id,addr as name') ->distinct(true) -> select();
-		$this -> assign('addr_list', $addr);
+		$addr_list = M("Delivery") -> field('addr as id,addr as name') ->distinct(true) -> select();
+		$this -> assign('addr_list', $addr_list);
 		
 		$where = $this -> _search();
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($where);
 		}
 		
+		$role_user = D('Role')->get_role_list(get_user_id());
+		foreach ($role_user as $k=>$v){
+			$role = M('Role')->field('name')->find($v['role_id']);
+			$role_name = $role['name'];
+			$res = explode('基地发货日报表-',$role_name);
+			if(count($res)>1){
+				if($res[1] == '全国'){
+					$addr['addr'] = array();
+					$addr['addr'] = array('neq','');
+					$addr['_string'] = '1=1';
+					break;
+				}elseif ($res[1] == '杭州'){
+					$addr['_string'] .= 'or addr like "%杭州%" ';
+				}elseif ($res[1] == '宁波'){
+					$addr['_string'] .= 'or addr like "%宁波%" ';
+				}elseif ($res[1] == '金华'){
+					$addr['_string'] .= 'or addr like "%金华%" ';
+				}
+			}
+		}
+		if($addr['_string']){
+			$addr['_string'] = substr($addr['_string'],2);
+		}
+		
+		$where['_complex']['delivery']['_complex'] = $addr;
+		
 // 		$where['id'] = array('eq', $id);
 		$delivery = M("Delivery") -> where($where['_complex']['delivery']) -> order('id desc') -> select();
 		$this -> assign('delivery', $delivery);
+// 		dump($where['_complex']['delivery']);
+// 		dump(count($delivery));
 		
 		$delivery_id = rotate($delivery);
 		$delivery_id = $delivery_id['id'];

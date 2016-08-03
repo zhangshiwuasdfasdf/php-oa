@@ -161,7 +161,8 @@ class CommonAction extends Action {
 		}
 		$model = D($name);
 		if (!empty($model)) {
-			$this -> _list($model, $map);
+			$v = $this -> _list($model, $map);
+// 			dump($map);
 		}
 		$this -> display();
 	}
