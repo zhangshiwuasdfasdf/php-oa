@@ -222,6 +222,7 @@ class ReportAction extends CommonAction {
 		$this -> assign('store_name_same_day', $store_name_same_day);
 		$this -> assign('store_name_same', $store_name_same);
 	
+// 		dump($store_name_same);
 // 		dump($where_detail);
 		$store_name = M("DeliveryDetail") -> where($where_detail) -> field('store_name') ->distinct(true) -> select();
 		$store_name = rotate($store_name);
