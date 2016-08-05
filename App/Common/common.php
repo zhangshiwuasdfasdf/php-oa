@@ -2810,4 +2810,16 @@ function get_add_type_in_over_time($flow_id,$opt){
 	}
 	return $data[$opt];
 }
+/*
+ * 获取一级部门
+ */
+function get_first_dept(){
+	$res = isHeadquarters(get_user_id());
+	if($res>0){
+		$yuanqu = M('Dept')->find($res);
+		return $yuanqu['name'];
+	}elseif ($res==0){
+		return get_dept_name();
+	}
+}
 ?>

@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class ReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','delivery_read'=>'read','delivery_read_all'=>'read','delivery_edit'=>'read','delivery_del'=>'read','delivery'=>'read','export_delivery_report' => 'read','import_delivery_report' => 'read','work_plan'=>'read','add_work_plan'=>'read','export_work_plan_report' => 'read','import_work_plan_report' => 'read','save_work_plan'=>'read','work_plan_del'=>'read','work_plan_read'=>'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','delivery_read'=>'read','delivery_read_all'=>'read','delivery_edit'=>'read','delivery_del'=>'read','delivery'=>'read','export_delivery_report' => 'read','import_delivery_report' => 'read','work_plan'=>'read','add_work_plan'=>'read','export_work_plan_report' => 'read','import_work_plan_report' => 'read','save_work_plan'=>'read','work_plan_del'=>'read','work_plan_read'=>'read','store_problem'=>'read','store_problem_read_all'=>'read','add_store_problem'=>'read','export_store_problem_report'=>'read','import_store_problem_report'=>'read','store_problem_read'=>'read','store_problem_del'=>'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 		if (!empty($_POST['eq_addr'])) {
@@ -318,6 +318,31 @@ class ReportAction extends CommonAction {
 			$this -> error('删除失败！');
 		}
 		
+	}
+	public function store_problem_del($id) {
+		$this -> assign('uid',get_user_id());
+		$this -> assign('id', $id);
+		$this -> assign('auth', $this -> config['auth']);
+	
+		$widget['date'] = true;
+		$widget['uploader'] = true;
+		$widget['editor'] = true;
+		$this -> assign("widget", $widget);
+	
+		$where['id'] = array('eq', $id);
+		$res = M("StoreProblem") -> where($where) -> delete();
+	
+		if($res){
+			$where_detail['store_problem_id'] = $id;
+			$detail_res = M("StoreProblemDetail") -> where($where_detail) -> delete();
+			if($detail_res){
+				$this -> success('删除成功！');
+			}else{
+				$this -> error('删除失败！');
+			}
+		}else{
+			$this -> error('删除失败！');
+		}
 	}
 	public function edit($id) {
 
@@ -634,6 +659,9 @@ class ReportAction extends CommonAction {
 					$this -> error('月份必须是1-12');
 					exit ;
 				}
+// 				echo $sheetData[4]['A'];
+// 				exit;
+				
 				$model_delivery = M("Delivery");
 				$delivery = array();
 				$delivery['user_id'] = get_user_id();
@@ -656,7 +684,7 @@ class ReportAction extends CommonAction {
 								$date_0 = $sheetData[$j]['A'];
 
 								$date_temp = explode('-',$date_0);
-								if($date_temp){
+								if(count($date_temp)>1){
 									$date_0 = '20'.$date_temp[2].'-'.$date_temp[0].'-'.$date_temp[1];
 								}
 								$delivery_detail['date'] = date('Y-m-d',strtotime($date_0));
@@ -723,18 +751,18 @@ class ReportAction extends CommonAction {
 		$auth = $this -> config['auth'];
 		$this -> assign('auth', $auth);
 		
-		$addr = M("WorkPlan") -> field('addr as id,addr as name') ->distinct(true) -> select();
-		$this -> assign('addr_list', $addr);
+		$dept_list = M("WorkPlan") -> field('dept_name as id,dept_name as name') ->distinct(true) -> select();
+		$this -> assign('dept_list', $dept_list);
 	
 		$user_list = M("WorkPlan") -> field('user_name as id,user_name as name') ->distinct(true) -> select();
 		$this -> assign('user_list', $user_list);
 	
 		$where = $this -> _search();
-		if (!empty($_POST['eq_addr'])) {
-			$where['addr'] = array('eq',$_POST['eq_addr']);
+		if (!empty($_POST['eq_dept'])) {
+			$where['dept_name'] = array('eq',$_POST['eq_dept']);
 		}
-		if (!empty($_POST['user_name'])) {
-			$where['user_name'] = array('eq',$_POST['user_name']);
+		if (!empty($_POST['eq_user'])) {
+			$where['user_name'] = array('eq',$_POST['eq_user']);
 		}
 		$start_time_0 = $_POST['be_create_time_0'];
 		$end_time_0 = $_POST['en_create_time_0'];
@@ -954,5 +982,488 @@ class ReportAction extends CommonAction {
 	}
 	function save_work_plan(){
 		$this->_save('WorkPlan');
+	}
+	
+	public function store_problem() {
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		$this -> assign('user_id', get_user_id());
+	
+		$auth = $this -> config['auth'];
+		$this -> assign('auth', $auth);
+	
+		$addr = M("StoreProblem") -> field('addr as id,addr as name') ->distinct(true) -> select();
+		$this -> assign('addr_list', $addr);
+	
+		$user_list = M("StoreProblem") -> field('user_name as id,user_name as name') ->distinct(true) -> select();
+		$this -> assign('user_list', $user_list);
+	
+		if (!empty($_POST['eq_addr'])) {
+			$where['addr'] = array('eq',$_POST['eq_addr']);
+		}
+		if (!empty($_POST['eq_user'])) {
+			$where['user_name'] = array('eq',$_POST['eq_user']);
+		}
+		$start_time_0 = $_POST['be_create_time_0'];
+		$end_time_0 = $_POST['en_create_time_0'];
+		if (!empty($start_time_0)) {
+			$where['create_time'][] = array('egt', strtotime(trim($start_time_0)));
+		}
+		if (!empty($end_time_0)) {
+			$where['create_time'][] = array('elt', strtotime(trim($end_time_0).' 24:00:00'));
+		}
+		
+		$model = D("StoreProblem");
+		if (!empty($model)) {
+			$where['user_id'] = get_user_id();
+			$this -> _list($model, $where);
+		}
+		$this -> display();
+	}
+	public function add_store_problem() {
+		$widget['date'] = true;
+		$widget['uploader'] = true;
+		$widget['editor'] = true;
+		$this -> assign("widget", $widget);
+		$file = M('File')->where(array('name'=>array('like','%商家问题受理导入模板%')))->find();
+	
+		$this -> assign("file_id", $file['id']);
+		$this -> display();
+	}
+// 	function export_store_problem_report(){
+// 		//导入thinkphp第三方类库
+// 		Vendor('Excel.PHPExcel');
+	
+// 		$objPHPExcel = new PHPExcel();
+	
+// 		$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+// 		// Add some data
+// 		// 		$i = 1;
+// 		//dump($list);
+	
+// 		$q = $objPHPExcel -> setActiveSheetIndex(0);
+// 		//第一列为用户
+// 		$q = $q -> setCellValue("A1", '基本信息');
+// 		$q->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q = $q -> mergeCells('A1:I1');
+	
+// 		$q = $q -> setCellValue("J1", '事件信息');
+// 		$q->getStyle('J1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q = $q -> mergeCells('J1:L1');
+		
+// 		$q = $q -> setCellValue("M1", '处理信息');
+// 		$q->getStyle('M1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q = $q -> mergeCells('M1:O1');
+		
+// 		$q = $q -> setCellValue("P1", '赔付金额');
+// 		$q->getStyle('P1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q = $q -> mergeCells('P1:U1');
+		
+// 		$q = $q -> setCellValue("A2", '受理日期');
+// 		$q->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	
+// 		$q = $q -> setCellValue("B2", '受理人');
+// 		$q->getStyle('B2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("C2", '店铺名称');
+// 		$q->getStyle('C2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("D2", '系统订单号');
+// 		$q->getStyle('D2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("E2", '淘宝订单号');
+// 		$q->getStyle('E2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("F2", '收货人');
+// 		$q->getStyle('F2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("G2", '买家id');
+// 		$q->getStyle('G2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("H2", '快递公司');
+// 		$q->getStyle('H2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("I2", '快递单号');
+// 		$q->getStyle('I2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("J2", '问题大类');
+// 		$q->getStyle('J2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("K2", '问题小类');
+// 		$q->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("L2", '事件详情');
+// 		$q->getStyle('L2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("M2", '处理详情');
+// 		$q->getStyle('M2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("N2", '处理进度');
+// 		$q->getStyle('N2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("O2", '协调结果');
+// 		$q->getStyle('O2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("P2", '货品成本价');
+// 		$q->getStyle('P2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("Q2", '首发快递费');
+// 		$q->getStyle('Q2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("R2", '重发快递费');
+// 		$q->getStyle('R2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("S2", '退件快递费');
+// 		$q->getStyle('S2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("T2", '其他');
+// 		$q->getStyle('T2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("U2", '小计');
+// 		$q->getStyle('U2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+// 		$q = $q -> setCellValue("A3", '2016/4/1  10:30:00');
+// 		$q->getStyle('A3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("A3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("B3", '王晓冬');
+// 		$q->getStyle('B3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("B3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("C3", '安琪卫士');
+// 		$q->getStyle('C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("C3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("D3", 'S1603030001381');
+// 		$q->getStyle('D3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("D3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValueExplicit("E3", '1677740519172636',PHPExcel_Cell_DataType::TYPE_STRING);
+// 		$q->getStyle('E3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("E3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("F3", '蒋荣艳');
+// 		$q->getStyle('F3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("F3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("G3", 'tb1125758_2012');
+// 		$q->getStyle('G3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("G3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("H3", '韵达');
+// 		$q->getStyle('H3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("H3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValueExplicit("I3", '1600762220968',PHPExcel_Cell_DataType::TYPE_STRING);
+// 		$q->getStyle('I3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("I3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("J3", '投诉类');
+// 		$q->getStyle('J3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("J3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("K3", '仓库错发');
+// 		$q->getStyle('K3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("K3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("L3", '3.3北京 北京市 丰台区 太平桥街道高楼5号院1号楼2110室(100073).');
+// 		$q->getStyle('L3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("L3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("N3", '已处理完毕');
+// 		$q->getStyle('N3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("N3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("O3", '公司赔付');
+// 		$q->getStyle('O3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("O3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("R3", '5.5');
+// 		$q->getStyle('R3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("R3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("T3", '1');
+// 		$q->getStyle('T3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("T3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		$q = $q -> setCellValue("U3", '6.5');
+// 		$q->getStyle('U3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+// 		$q ->getStyle("U3")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+// 		for($i=ord('A');$i<=ord('U');$i++){
+// 			if(chr($i)=='L' || chr($i)=='M'){
+// 				$q ->getColumnDimension(chr($i))->setWidth(60);
+// 			}else{
+// 				$q ->getColumnDimension(chr($i))->setWidth(20);
+// 			}
+// 		}
+		
+		
+// 		// Rename worksheet
+// 		$title = '商家问题受理导入模板';
+// 		$objPHPExcel -> getActiveSheet() -> setTitle('商家问题受理导入模板');
+	
+// 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+// 		$objPHPExcel -> setActiveSheetIndex(0);
+// 		$file_name = $title.".xlsx";
+// 		// Redirect output to a client’s web browser (Excel2007)
+// 		header("Content-Type: application/force-download");
+// 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+// 		header("Content-Disposition:attachment;filename =" . str_ireplace('+', '%20', URLEncode($file_name)));
+// 		header('Cache-Control: max-age=0');
+	
+// 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+// 		//readfile($filename);
+// 		$objWriter -> save('php://output');
+// 		exit ;
+// 	}
+	function import_store_problem_report(){
+		$save_path = get_save_path();
+		$opmode = $_POST["opmode"];
+		if ($opmode == "import") {
+			
+			import("@.ORG.Util.UploadFile");
+			$upload = new UploadFile();
+			$upload -> savePath = $save_path;
+			$upload -> allowExts = array('xlsx');
+			$upload -> saveRule = uniqid;
+			$upload -> autoSub = false;
+			if (!$upload -> upload()) {
+				$this -> error($upload -> getErrorMsg());
+			} else {
+				
+				//取得成功上传的文件信息
+				$uploadList = $upload -> getUploadFileInfo();
+				Vendor('Excel.PHPExcel');
+				//导入thinkphp第三方类库
+
+// 				echo 11;
+// 				exit;
+					
+				$inputFileName = $save_path . $uploadList[0]["savename"];
+				
+
+// 				echo $inputFileName;
+// 				exit;
+					
+				$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+
+// 				echo 13;
+// 				exit;
+					
+				$sheetData = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);
+	
+// 				echo 1;
+// 				exit;
+				
+				$y=3;
+				while($sheetData[$y]['E']!=''){
+					$y++;
+				}
+				$model_store_problem = M("StoreProblem");
+				$store_problem = array();
+				$store_problem['user_id'] = get_user_id();
+				$store_problem['user_name'] = get_user_name();
+				$store_problem['dept_id'] = get_dept_id();
+				$store_problem['dept_name'] = get_dept_name();
+				$store_problem['create_time'] = time();
+				$store_problem['addr'] = get_first_dept();
+				$pid = $model_store_problem->add($store_problem);
+// 				exit;
+				if($pid){
+					$model_store_problem_detail = M("StoreProblemDetail");
+					for($j=3;$j<$y;$j++){
+						$store_problem_detail = array();
+						$store_problem_detail['store_problem_id'] = $pid;
+						$store_problem_detail['warehouse_addr'] = $sheetData[$j]['A'];
+						$store_problem_detail['accept_date'] = $sheetData[$j]['B'];
+						$store_problem_detail['accept_person'] = $sheetData[$j]['C'];
+						$store_problem_detail['store_name'] = $sheetData[$j]['D'];
+						$store_problem_detail['system_id'] = $sheetData[$j]['E'];
+						$store_problem_detail['taobao_id'] = $sheetData[$j]['F'];
+						$store_problem_detail['consignee'] = $sheetData[$j]['G'];
+						$store_problem_detail['buyer_id'] = $sheetData[$j]['H'];
+						$store_problem_detail['delivery'] = $sheetData[$j]['I'];
+						$store_problem_detail['delivery_id'] = $sheetData[$j]['J'];
+						$store_problem_detail['problem_big'] = $sheetData[$j]['K'];
+						$store_problem_detail['problem_small'] = $sheetData[$j]['L'];
+						$store_problem_detail['event_detail'] = $sheetData[$j]['M'];
+						$store_problem_detail['handle_detail'] = $sheetData[$j]['N'];
+						$store_problem_detail['handle_schedule'] = $sheetData[$j]['O'];
+						$store_problem_detail['coordination_result'] = $sheetData[$j]['P'];
+						$store_problem_detail['goods_cost_price'] = $sheetData[$j]['Q'];
+						$store_problem_detail['first_courier_fee'] = $sheetData[$j]['R'];
+						$store_problem_detail['repeat_courier_fee'] = $sheetData[$j]['S'];
+						$store_problem_detail['return_courier_fee'] = $sheetData[$j]['T'];
+						$store_problem_detail['other'] = $sheetData[$j]['U'];
+						$store_problem_detail['sum'] = $sheetData[$j]['V'];
+// 						$date_0 = $sheetData[$j]['A'];
+
+// 						$date_temp = explode('-',$date_0);
+// 						if(count($date_temp)>1){
+// 							$date_0 = '20'.$date_temp[2].'-'.$date_temp[0].'-'.$date_temp[1];
+// 						}
+// 						$delivery_detail['date'] = date('Y-m-d',strtotime($date_0));
+					
+// 						$delivery_detail['num'] = $sheetData[$j][ToNumberSystem26($i)];
+
+// 						$where = array();
+// 						$where['store_name'] = array('eq',$delivery_detail['store_name']);
+// 						$where['express'] = array('eq',$delivery_detail['express']);
+// 						$where['date'] = array('eq',$delivery_detail['date']);
+// 						$is_exist = $model_delivery_detail->where($where)->find();
+// 						if(empty($is_exist)){
+							$res = $model_store_problem_detail->add($store_problem_detail);
+// 							if(!$res){
+// 								$this -> error('导入具体信息失败：'.ToNumberSystem26($i).' '.$j);
+// 								exit ;
+// 							}
+// 						}
+					}
+				}else{
+					$this -> error('导入发货报表失败');
+					exit ;
+				}
+	
+				if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName)) {
+					unlink($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName);
+				}
+				// 				$this -> assign('jumpUrl', U("daily_report/edit",array('id'=>$pid)));
+				$this -> success('导入成功！');
+			}
+		} else {
+			$this -> display();
+		}
+	}
+	public function store_problem_read($id) {
+	
+		$where['id'] = array('eq', $id);
+		$store_problem = M("StoreProblem") -> where($where) -> order('id desc') -> find();
+		$this -> assign('store_problem', $store_problem);
+	
+		$where_detail['store_problem_id'] = $store_problem['id'];
+		$store_problem_detail = M("StoreProblemDetail") -> where($where_detail) -> select();
+	
+// 		$sum_day = array();
+// 		$aa = array();
+// 		$store_name_same = array();
+// 		foreach ($delivery_detail as $k=>$v){
+// 			$aa[$v['date']][$v['express']][$v['store_name']] = $v['num'];
+// 			$store_name_same[$v['date']][$v['store_name']][$v['express']] = $v['num'];
+// 			if(!strstr($v['store_name'], '小计')){//统计每天的总量时把含有小计的商家名过滤
+// 				$sum_day[$v['date']] += $v['num'];
+// 			}
+// 		}
+		$this -> assign('sum_item', count($store_problem_detail));
+		$this -> assign('store_problem_detail', $store_problem_detail);
+// 		$this -> assign('store_name_same', $store_name_same);
+	
+// 		$store_name = M("DeliveryDetail") -> where($where_detail) -> field('store_name') ->distinct(true) -> select();
+// 		$store_name = rotate($store_name);
+// 		$store_name = $store_name['store_name'];
+// 		$this -> assign('store_name', $store_name);
+// 		$this -> assign('store_name_num', count($store_name));
+	
+// 		$date = M("DeliveryDetail") -> where($where_detail) -> field('date') ->distinct(true) -> select();
+// 		$date = rotate($date);
+// 		$date = $date['date'];
+// 		$this -> assign('date', $date);
+// 		$this -> assign('date_num', count($date));
+	
+// 		$express = M("DeliveryDetail") -> where($where_detail) -> field('express') ->distinct(true) -> select();
+// 		$express = rotate($express);
+// 		$express = $express['express'];
+		$express = array();
+		for ($i=0;$i<30;$i++){
+			$express[] = $i;
+		}
+		$this -> assign('express', $express);
+// 		$this -> assign('express_num', count($express));
+	
+		$this -> display();
+	}
+	
+	public function store_problem_read_all() {
+		ini_set("memory_limit","800M");
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		$this -> assign('auth', $this -> config['auth']);
+		$this -> assign('user_id', get_user_id());
+	
+		$addr_list = M("StoreProblem") -> field('addr as id,addr as name') ->distinct(true) -> select();
+		$this -> assign('addr_list', $addr_list);
+		
+		$warehouse_addr_list = M("StoreProblemDetail") -> field('warehouse_addr as id,warehouse_addr as name') ->distinct(true) -> select();
+		$this -> assign('warehouse_addr_list', $warehouse_addr_list);
+		
+		$handle_schedule_list = M("StoreProblemDetail") -> field('handle_schedule as id,handle_schedule as name') ->distinct(true) -> select();
+		$this -> assign('handle_schedule_list', $handle_schedule_list);
+	
+		$where = $this -> _search();
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($where);
+		}
+	
+		$role_user = D('Role')->get_role_list(get_user_id());
+		foreach ($role_user as $k=>$v){
+			$role = M('Role')->field('name')->find($v['role_id']);
+			$role_name = $role['name'];
+			$res = explode('商家问题受理表-',$role_name);
+			if(count($res)>1){
+				if($res[1] == '全国'){
+					$addr['addr'] = array();
+					$addr['addr'] = array('neq','');
+					$addr['_string'] = '1=1';
+					break;
+				}elseif ($res[1] == '杭州'){
+					$addr['_string'] .= 'or addr like "%杭州%" ';
+				}elseif ($res[1] == '宁波'){
+					$addr['_string'] .= 'or addr like "%宁波%" ';
+				}elseif ($res[1] == '金华'){
+					$addr['_string'] .= 'or addr like "%金华%" ';
+				}
+			}
+		}
+		if($addr['_string']){
+			$addr['_string'] = substr($addr['_string'],2);
+		}
+	
+		if (!empty($_POST['eq_addr'])) {
+			$where['addr'] = array('eq',$_POST['eq_addr']);
+		}
+		if (!empty($_POST['eq_warehouse_addr'])) {
+			$where_detail['warehouse_addr'] = array('eq',$_POST['eq_warehouse_addr']);
+		}
+		if (!empty($_POST['eq_handle_schedule'])) {
+			$where_detail['handle_schedule'] = array('eq',$_POST['eq_handle_schedule']);
+		}
+		$start_time = $_POST['be_accept_date'];
+		$end_time = $_POST['en_accept_date'];
+		if (!empty($start_time)) {
+			$month = date('m',strtotime(trim($start_time)));
+			$where_detail['accept_date'][] = array('egt', date('Y/n/j H:i:s',strtotime(trim($start_time))));
+		}
+		if (!empty($end_time)) {
+			$where_detail['accept_date'][] = array('elt', date('Y/n/j H:i:s',strtotime(trim($end_time).' 24:00:00')));
+		}
+		
+		$where['_complex'] = $addr;
+		
+		// 		$where['id'] = array('eq', $id);
+		$store_problem = M("StoreProblem") -> where($where) -> order('id desc') -> select();
+		$this -> assign('store_problem', $store_problem);
+	
+		$store_problem = rotate($store_problem);
+		$store_problem_id = $store_problem['id'];
+		$store_problem_id = implode(',',$store_problem_id);
+	
+// 		$where_detail = $where['_complex']['delivery_detail'];
+		$where_detail['store_problem_id'] = array('in',$store_problem_id);
+	
+// 		$store_problem_detail = M("StoreProblemDetail") -> where($where_detail) -> select();
+		$res = $this->_list(M("StoreProblemDetail"), $where_detail);
+		$this -> assign('sum_item', count($res));
+// 		dump($where_detail);
+		$this -> display();
 	}
 }

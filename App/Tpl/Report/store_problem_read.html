@@ -1,0 +1,106 @@
+<layout name='Layout/ace_layout' />
+<style>
+	*{ font-family:"微软雅黑";}
+	a{ text-decoration:none;}
+	body{ margin:0px; padding:0;}
+	ul,li{ list-style:none; margin:0; padding:0;}
+	
+	.right{ float:left; height:650px; width:100%; border:solid 1px #000; overflow:auto; margin-left:-1px;}
+    .right_top{ overflow: auto; height: 60px;}
+    .right_top ul{ float: left;}
+    .right_top ul li{ display: block;}
+    .right_top span{ display: block; width: auto; height: 30px; border-bottom: 1px solid #000; line-height: 30px; text-align: center; border-right: 1px solid #000;}
+    .right_top a{ display: block;float: left; width: 120px; height: 28px;border-bottom:1px solid #000; line-height: 28px; text-align: center; border-right:solid 1px #000;}
+    
+    
+	.right_bottom{ height:560px; overflow:auto;}
+	.right_bottom li{  height:27px !important; overflow:auto;}
+	.right_bottom span{border-bottom:1px solid #000; display:block; width:120px; height:26px; text-align:center; float:left; border-right:solid 1px #000;}
+</style>
+{:W('PageHeader',array('name'=>'查看商家问题受理','search'=>'N'))}
+<body>
+<div class="right" style="height:{$sum_item*26+81}px;">
+    <div class="right_top">
+        <ul>
+            <li><span>基本信息</span></li>
+            <li>
+                <a>仓库地点</a>
+                <a>受理日期</a>
+                <a>受理人</a>
+                <a>店铺名称</a>
+                <a style="width:140px;">系统订单号</a>
+                <a style="width:140px;">淘宝订单号</a>
+                <a>收货人</a>
+                <a style="width:140px;">买家id</a>
+                <a>快递公司</a>
+                <a style="width:140px;">快递单号</a>
+            </li>
+        </ul>
+        <ul>
+            <li><span>事件信息</span></li>
+            <li>
+                <a>问题大类</a>
+                <a>问题小类</a>
+                <a style="width:200px;">事件详情</a>
+            </li>
+        </ul>
+        <ul>
+            <li><span>处理信息</span></li>
+            <li>
+                <a style="width:200px;">处理详情</a>
+                <a>处理进度</a>
+                <a>协调结果</a>
+            </li>
+        </ul>
+        <ul>
+            <li><span>赔付金额</span></li>
+            <li>
+                <a>货品成本价</a>
+                <a>首发快递费</a>
+                <a>重发快递费</a>
+                <a>退件快递费</a>
+                <a>其他</a>
+                <a>小计</a>
+            </li>
+        </ul>
+    </div><ul class="right_bottom" style="height:{$sum_item*26+22}px;">
+    	<volist name = "store_problem_detail"	id = "vo" >
+    		<li>
+	            <span>{$vo.warehouse_addr}</span>
+	            <span>{$vo.accept_date}</span>
+	            <span>{$vo.accept_person}</span>
+	            <span>{$vo.store_name}</span>
+	            <span style="width:140px;">{$vo.system_id}</span>
+	            <span style="width:140px;">{$vo.taobao_id}</span>
+	            <span>{$vo.consignee}</span>
+	            <span style="width:140px;">{$vo.buyer_id}</span>
+	            <span>{$vo.delivery}</span>
+	            <span style="width:140px;">{$vo.delivery_id}</span>
+	            <span>{$vo.problem_big}</span>
+	            <span>{$vo.problem_small}</span>
+	            <span style="width:200px; overflow:hidden;"><a title="{$vo.event_detail}" style="line-height:26px;">{$vo.event_detail}</a></span>
+	            <span style="width:200px; overflow:hidden;">{$vo.handle_detail}</span>
+	            <span>{$vo.handle_schedule}</span>
+	            <span>{$vo.coordination_result}</span>
+	            <span>{$vo.goods_cost_price}</span>
+	            <span>{$vo.first_courier_fee}</span>
+	            <span>{$vo.repeat_courier_fee}</span>
+	            <span>{$vo.return_courier_fee}</span>
+	            <span>{$vo.other}</span>
+	            <span>{$vo.sum}</span>
+	        </li>
+    	</volist>
+        
+       
+    </ul>
+</div>
+<script>
+	function s(){
+		var m=$('.right_top a').length*121+235;
+        $('.right_top').css('width',m);
+        $('.right_bottom').css('width',m);
+	}
+	s();
+</script>
+</body>
+

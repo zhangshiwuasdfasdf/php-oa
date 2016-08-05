@@ -1,5 +1,5 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'新建文档','search'=>'N'))}
+{:W('PageHeader',array('name'=>'新建工作计划','search'=>'N'))}
 
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
@@ -8,15 +8,12 @@
 	<input type="hidden" id="fid" name="fid" value="{$folder}">
 	<input type="hidden" id="opmode" name="opmode" value="add">
 
-	<div class="form-group">
+	<!-- <div class="form-group">
 		<label class="col-sm-2 control-label" for="addr">园区：</label>
-		<!-- <div class="col-sm-10">
-			<input class="form-control" type="text" id="name" name="name" value="{$vo.name}"  check="require" msg="请输入文件名">
-		</div> -->
 		<div class="col-sm-2">
 			<input class="form-control" type="text" id="addr" name="addr" value="{$vo.addr}"  check="require" msg="请输入园区名">
 		</div>
-	</div>
+	</div> -->
 
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="name">附件：</label>
