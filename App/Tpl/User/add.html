@@ -6,14 +6,11 @@
 		<div class="pull-left">
 			<h1>添加员工</h1>
 		</div>
-		<div class="pull-right">
-			<!--<a onclick="save();" class="btn btn-sm btn-primary">确定</a>-->
-			<a onclick="myclose();" class="btn btn-sm btn-default">关闭</a>
-		</div>
 	</div>
-	<div class="popup-body" style="height: 445px;overflow-y: auto;">
-		<form id="form_data" name="form_data" method="post" action="{:U('addUser')}" class="form-horizontal" enctype="multipart/form-data">
-			<input type="hidden" name="opmode" id="opmode" value="new">
+	<div class="popup-body" style="overflow-y: auto;">
+		<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
+		<!--<form id="form_data" name="form_data" method="post" action="{:U('addUser')}" class="form-horizontal" enctype="multipart/form-data">
+			--><input type="hidden" name="opmode" id="opmode" value="new">
 			<table class="table table-bordered" >
 				<tr>
 					<th class="col-10">
@@ -106,18 +103,20 @@
 					<td>
 					<input type="text" id="email" name="email" class="form-control">
 					</td>
-					<th>状态</th>
+					<th>是否关联账号</th>
 					<td>
-					<select class="form-control col-10"  name="is_del" id="is_del">
-						<option  value="0">启用</option>
-						<option value="1">禁用</option>
-					</select></td>
+					<select class="form-control col-10"  name="more-role" id="is_del" onchange="moreRole();" style="float:left;">
+						<option  value="0">不是</option>
+						<option value="1">是</option>
+					</select>
+					<input type="text" id="more_zh" name="more_zh" class="input-sm display-none" style="float:left;margin-left: 10px;" placeholder="请输入主账号的用户名">
+					</td>
 				</tr>
 				<tr>
 					<td colspan="4">
-						<input type="submit" class="btn btn-sm btn-primary" value="新增" onclick="return check_form('form_data');"/>
+						<input type="submit" class="btn btn-sm btn-primary" value="新增" onclick="save();"/>
+						<input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
 					</td>
-					
 				</tr>
 			</table>
 		</form>

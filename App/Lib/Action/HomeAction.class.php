@@ -53,10 +53,12 @@ class HomeAction extends CommonAction {
 		$map['bianqian'] = array('neq','');
 		$user = M('User')->where($map)->getField('id,name,bianqian');
 		foreach($user as $k=>$v){
-			$temp = explode('|',$v['bianqian']);
-			$user[$k]['bianqian'] = $temp[0];
-			$user[$k]['time'] = $temp[1];
-			$user[$k]['len'] = mb_strlen($temp[0]);
+			$temp = array_filter(explode('|',$v['bianqian']));
+			if($temp[0]){
+				$user[$k]['bianqian'] = $temp[0];
+				$user[$k]['time'] = $temp[1];
+				$user[$k]['len'] = mb_strlen($temp[0]);	
+			}
 		}
 		$users = $this -> my_sort($user, 'time');
 		if(!is_mobile_request()){

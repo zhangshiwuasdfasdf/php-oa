@@ -2,7 +2,7 @@
 	function save_comment() {
 		window.onbeforeunload = null;
 		if (check_form("form_data")) {
-			sendForm("form_data", "{:U('save_comment')}", "__SELF__");
+			sendForm("form_data", "{:U('save_comment')}");
 		}
 	}
 

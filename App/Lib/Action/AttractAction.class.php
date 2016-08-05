@@ -9,4 +9,13 @@ class AttractAction extends CommonAction {
 	public function down() {
 		$this -> _down();
 	}
+	function import_client(){
+		$opmode = $_POST['opmode'];
+		if($opmode == 'import'){
+			
+		}else{
+			$this -> display();
+		}
+	}
+
 }

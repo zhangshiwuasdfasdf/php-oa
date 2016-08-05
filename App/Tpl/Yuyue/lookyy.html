@@ -1,13 +1,5 @@
 <layout name='Layout/ace_layout' />
-	<select name="dept_list" id="dept_list" class="hidden">
-		{:fill_option($dept_list)}
-	</select>
-	<div class="popup-header clearfix">
-		<div class="pull-left">
-		<eq name="yid" value=""><h1>预约会议室</h1><else /><h1>查看预定详情</h1></eq>
-			
-		</div>
-	</div>
+{:W('PageHeader',array('name'=>'查看预定详情','search'=>'N'))}
 	<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
 			<input type="hidden" name="opmode" id="opmode" value="add">
 			<input type="hidden" name="create_time" id="create_time">
@@ -24,37 +16,37 @@
 						申请时间
 					</nobr></th>
 					<td class="col-20">
-					<input class="form-control" type="text" id="create_time" name="time" value="{:date('Y-m-d H:s:i')}" readonly="readonly">
+					<input class="form-control" type="text" id="create_time" name="time" value="{$vo.create_time|date='Y-m-d H:i:s',###}" readonly="readonly">
 					</td>
 					<th  class="col-5">申请人*</th>
 					<td class="col-20">
-					<input  class="form-control" type="text" id="proposer" name="proposer" value="{:get_user_name()}" readonly="readonly" check="require" msg="请输入申请人">
+					<input  class="form-control" type="text" id="proposer" name="proposer" value="{$vo.proposer}" readonly="readonly" check="require" msg="请输入申请人">
 					</td>
 				</tr>
 				<tr>
 					<th>公司</th>
 					<td >
-						<input  class="form-control" type="text" id="company" name="company" readonly="readonly" value="{:get_system_config('SYSTEM_NAME')}">
+						<input  class="form-control" type="text" id="company" name="company" readonly="readonly" value="{$vo.company}">
 					</td>
 					<th>部门</th>
 					<td>
-						<input  class="form-control" type="text" id="dept" name="dept" readonly="readonly" value="{:get_dept_name()}">
+						<input  class="form-control" type="text" id="dept" name="dept" readonly="readonly" value="{$vo.dept}">
 					</td>
 				</tr>
 				<tr>
 					<th>岗位</th>
 					<td class="col-20">
-						<input  class="form-control" type="text" id="post" name="post" value="{$pos_name}" readonly="readonly">
+						<input  class="form-control" type="text" id="post" name="post" value="{$vo.post}" readonly="readonly">
 					</td>
 					<th>会议室</th>
 					<td>
-						<input  class="form-control" type="text" id="meet_room" name="meet_room" value="{$time_frame.meet_name}" readonly="readonly">
+						<input  class="form-control" type="text" id="meet_room" name="meet_room" value="{$meet.meet_name}" readonly="readonly">
 					</td>
 				</tr>
 				<tr>
 					<th class="col-10">会议室主题*</th>
 					<td colspan="3">
-						<input  class="form-control" type="text" id="theme" name="theme" check="require" msg="请输入会议主题">
+						<input  class="form-control" type="text" id="theme" name="theme" check="require" msg="请输入会议主题" value="{$vo.theme}">
 					</td>
 				</tr>
 				<tr>
@@ -63,7 +55,7 @@
 						会议日期*
 					</nobr></th>
 					<td colspan="3">
-						<input class="input-date-times" type="text" id="start_time" name="start_time" readonly="readonly" msg="{$time_frame.time_frame}" value="{$start_time}">
+						<input class="form-control" type="text" id="start_time" name="start_time" readonly="readonly" msg="{$time_frame}" value="{$vo.date_section}">
 					</td>
 				</tr>
 				<tr>
@@ -72,7 +64,11 @@
 						<div id="recever" class="inputbox">
 							<a class="pull-right btn btn-link text-center" onclick="popup_contact();"> <i class="fa fa-user"></i> </a>
 							<div class="wrap" >
-								<span class="address_list"></span>
+								<span class="address_list">
+								<volist name="per" id="p">
+									{:conv_inputbox($p['name'],$p['id'])}
+								</volist>
+								</span>
 								<span class="text" >
 									<input class="letter" type="text"  >
 								</span>
@@ -88,17 +84,13 @@
 					<td colspan="3">
 						<div class="contain">
 						<volist id="vo" name="new">
-							<span class="time_section {$vo['color']}" 
-							<if condition = "$vo['color'] eq 'noyud'">onclick="selectTime(this);"</if>>{$vo['time']}</span>
+							<span class="time_section {$vo['color']}">{$vo['time']}</span>
 						</volist>
 						</div>
 					</td>
 				</tr>
 				<tr> 
 					<td colspan="4">
-					<eq name="yid" value="">
-						<input type="button" class="btn btn-sm btn-primary" value="预约" onclick="save();"/>
-					</eq>
 						<input type="button" class="btn btn-sm btn-default" value="返回" onclick="go_return_url();"/>
 					</td>
 					
@@ -117,11 +109,8 @@
 		float: left;
 		border: 1px solid #ccc;
 	}
-	.noyud:hover{
-		cursor: pointer;
-	}
 	.booked{
-		background: red;
+		background: #03fbc1;
 		color: #fff;
 	}
 </style>

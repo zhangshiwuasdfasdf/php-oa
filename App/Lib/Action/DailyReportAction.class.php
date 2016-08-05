@@ -46,7 +46,6 @@ class DailyReportAction extends CommonAction {
 
 		$auth = $this -> config['auth'];
 		$this -> assign('auth', $auth);
-
 		if ($auth['admin']) {
 			$node = D("Dept");
 			$dept_id = get_dept_id();
@@ -512,7 +511,7 @@ class DailyReportAction extends CommonAction {
 		}
 
 		if ($list !== false) {//保存成功
-			$this -> assign('jumpUrl', U("daily_report/index"));
+			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('操作成功!');
 		} else {
 			$this -> error('新增失败!');

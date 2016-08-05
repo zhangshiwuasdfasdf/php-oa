@@ -44,6 +44,7 @@
 		</div>
 	</div>
 </form>
+<if condition="$auth['admin']">
 <div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-left"></div>
@@ -52,6 +53,7 @@
 		</div>
 	</div>
 </div>
+</if>
 	<empty name="list">
 		<li class="no-data">
 			没找到数据
@@ -75,8 +77,10 @@
 		        </ul>
 		        <div>
 		            <a href="{:U('yuyue',array('id'=>$vo['id']))}">预约</a>
+		            <if condition="$auth['admin']">
 		            <a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a>
 		            <a href="{:U('del_meet',array('id'=>$vo['id']))}">删除</a>
+		            </if>
 		        </div>
     		</div>
 		</foreach>

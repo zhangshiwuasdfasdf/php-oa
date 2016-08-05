@@ -1,7 +1,7 @@
  *{ font-family: '微软雅黑';}
  ul,li{ list-style: none; margin: 0; padding: 0;}
  .content:after {content:".";　height:0;visibility:hidden;display:block;clear:both;}
- .m_f1{ width: 222px; height: auto; border: solid 1px #acc6dc;float: left;margin-left: 10px;} 
+ .m_f1{ width: 222px; height: auto; border: solid 1px #acc6dc;float: left;margin-left: 10px;margin-bottom: 10px;} 
  .m_f1 ul div{ width: 220px; height: 25px; text-align: center; line-height: 25px; background: #d8d8d8; font-size: 14px;}
  .m_f1 ul li{ width: 220px; background: #efefef; border-bottom: solid 2px #fff; line-height: 20px; height: 20px; font-size: 12px; white-space: nowrap;padding-left: 5px;}
  .m_f1 div{ width: 220px; overflow: hidden; height: 19px;}

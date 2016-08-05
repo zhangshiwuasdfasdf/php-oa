@@ -541,7 +541,7 @@ class MonthlyReportAction extends CommonAction {
 		}
 
 		if ($list !== false) {//保存成功
-			$this -> assign('jumpUrl', U("weekly_report/index"));
+			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('操作成功!');
 		} else {
 			$this -> error('新增失败!');

@@ -7,18 +7,28 @@
 		}
 
 		function save() {
-			if (check_form("form_data")) {
-				var vars = $("#form_data").serialize();
-				sendAjax("{:U('addUser')}", vars, function(data) {
+			var mr = $("#is_del option:selected").val();
+			if(mr == '1'){
+				var zh = ("more_zh").val();
+				if(zh == ""){
+					ui_error("主账号的用户名不能为空！");
+					return false;
+				}
+				sendAjax("{:U('bindVerify')}", "zh="+zh, function(data) {
 					if (data.status) {
-						ui_alert(data.info, function() {
-							parent.location.reload(true);
-							myclose();
-						});
-					} else {
-						ui_error(data.info);
+						ui_alert(data.info,function(){
+							location.reload();
+						});									
 					}
 				});
 			}
+			
+			if (check_form("form_data")) {
+				
+			}
+		}
+		function moreRole(){
+			var mr = $("#is_del option:selected").val();
+			(mr == "1")?$("#more_zh").show():$("#more_zh").hide();
 		}
 </script>

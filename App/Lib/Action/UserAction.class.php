@@ -274,28 +274,6 @@ class UserAction extends CommonAction {
 	}
 	public function createname(){
 		
-// 		$open=fopen("C:\log8.txt","a" );
-// 		$handle = @fopen("C:\log7.txt", "r");
-// 		if ($handle) {
-// 			while (!feof($handle)) {
-// 				$buffer = fgets($handle, 70);
-// 				if($buffer!='' && $buffer!=' ' && strlen($buffer)>2){
-					
-// 					$buffer_array = explode(' ',$buffer);
-// 					foreach ($buffer_array as $k=>$v){
-// 						if($v!='' && $v!=' '&& !empty($v) && $k<count($buffer_array)-1){
-// // 							echo $v;
-// 							$str = 'insert into smeoa_firstname(name) values(\''.$v.'\');';
-// 							fwrite($open,$str."\r\n");
-// 						}
-// 					}
-// 				}
-// 			}
-// 			fclose($handle);
-// 		}
-// 		fclose($open);
-// 		echo 1;
-		
 		ini_set('max_execution_time', '0');
 		$num = $_GET['num']?$_GET['num']:2000;
 		for($i=0;$i<$num;$i++){
@@ -330,41 +308,10 @@ class UserAction extends CommonAction {
 			M('Name2')->add(array('name'=>$name));
 		}
 		exit(json_encode('a'));
-
-		// 		$sum = 2000000;
-		// 		for($i=1;$i<101;$i++){
-		// 			$sum_1 = M('Lastname')->field('name,rate')->find($i);
-		// 			$sum_ = $sum_1['rate']/100*$sum;
-		// 			for($j=0;$j<$sum_;$j++){
-		// 				$mid1 = rand(0,1000);
-		// 				$is = rand(0,1000);
-		// 				if($is/1000>0.4){
-		// 					$mid2 = rand(0,1000);
-		// 					$firstname2 = M('Firstname')->field('name')->find($mid2);
-		// 				}
-		// 				$firstname1 = M('Firstname')->field('name')->find($mid1);
-			
-		// 				$name = $sum_1['name'].$firstname1['name'].$firstname2['name'];
-		// 				M('Name')->add(array('name'=>$name));
-		// 			}
-		// 		}
-		
-		
-		// 		for($i=0;$i<2000000;$i++){
-		// 			$xid = rand(0,560);
-		// 			$mid1 = rand(0,1000);
-		// 			$is = rand(0,1000);
-		// 			if($is/1000>0.4){
-		// 				$mid2 = rand(0,1000);
-		// 				$firstname2 = M('Firstname')->field('name')->find($mid2);
-		// 			}
-		// 			$lastname = M('Lastname')->field('name')->find($xid);
-		// 			$firstname1 = M('Firstname')->field('name')->find($mid1);
-			
-		// 			$name = $lastname['name'].$firstname1['name'].$firstname2['name'];
-		// 			M('Name')->add(array('name'=>$name));
-		// 		}
-		
+	}
+	public function bindVerify(){
+		$zh = $_POST['zh'];
+		$this ->ajaxReturn("aaa");
 	}
 }
 ?>

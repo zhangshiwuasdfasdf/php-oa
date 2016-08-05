@@ -1,6 +1,6 @@
 <?php
 class RoomAction extends CommonAction {
-	
+	protected $config = array('app_type' => 'common', 'action_auth' => array('index' => 'read', 'yuyue' => 'read','save_order' => 'read','save_meet' => 'read','del_meet' => 'read','add_order' => 'read','showydr' => 'read'));
 	//会议室管理-过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -17,6 +17,9 @@ class RoomAction extends CommonAction {
 	}
 	
 	public function index(){
+		
+		$auth = $this -> config['auth'];
+		$this -> assign('auth', $auth);
 		$map = $this -> _search("room_meet");
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
@@ -175,7 +178,6 @@ class RoomAction extends CommonAction {
 		$config = M("room_config");
 		$user = M("user");
 		$name = $model -> find($id);
-		$meet_name = $config -> field("name") -> find($name['meet_name']);
 		$pos_id = $user->where("id = ".get_user_id()) -> getField("pos_id");
 		$where['is_del'] = 0;
 		$where['id'] = $pos_id;
@@ -184,8 +186,7 @@ class RoomAction extends CommonAction {
 		$this -> assign("yid",$yid);
 		$this -> assign("start_time",date("Y-m-d"));
 		$this -> assign("pos_name",$pos_name);
-		$this -> assign('meet_name',$meet_name);
-		$this -> assign("time_frame",$name['time_frame']);
+		$this -> assign("time_frame",$name);
 		$this -> assign("new" ,$this->getTimeContain($name['time_frame'],date("Y-m-d"),$id,$yid));
 		//dump($this->getTimeContain($name['time_frame'],date("Y-m-d"),$id,$yid));
 		$this ->display();
@@ -256,7 +257,11 @@ class RoomAction extends CommonAction {
 		/*保存当前数据对象 */
 		$list = $model -> add();
 		if ($list !== false) {//保存成功
-				$data['content']= $_POST['proposer'] ."预约了" . $_POST['date_section'] ." " .$_POST['time_section'] . "的会议,邀请您参加!";
+				$section = array_filter(explode("|",rtrim($_POST['time_section'],"|")));
+				foreach ($section as $k=>$v){
+					$time_sec .= $v ." ";
+				}
+				$data['content']= $_POST['proposer'] ."预约了" . $_POST['date_section'] ." " .$time_sec . "主题为:" . $_POST['theme'] . "的会议,邀请您参加!【系统自动发送,请勿回复!】";
 				$data['sender_id']=get_user_id();
 				$data['sender_name']=get_user_name();
 				$data['create_time']=time();
