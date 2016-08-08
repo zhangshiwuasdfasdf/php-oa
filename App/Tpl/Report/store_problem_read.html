@@ -5,21 +5,21 @@
 	body{ margin:0px; padding:0;}
 	ul,li{ list-style:none; margin:0; padding:0;}
 	
-	.right{ float:left; height:650px; width:100%; border:solid 1px #000; overflow:auto; margin-left:-1px;}
+	.right{ float:left; width:100%; border:solid 1px #000; overflow:auto; margin-left:-1px;}
     .right_top{ overflow: auto; height: 60px;}
     .right_top ul{ float: left;}
     .right_top ul li{ display: block;}
     .right_top span{ display: block; width: auto; height: 30px; border-bottom: 1px solid #000; line-height: 30px; text-align: center; border-right: 1px solid #000;}
-    .right_top a{ display: block;float: left; width: 120px; height: 28px;border-bottom:1px solid #000; line-height: 28px; text-align: center; border-right:solid 1px #000;}
+    .right_top a{ display: block;float: left; width: 120px; height: 28px;border-bottom:1px solid #000; line-height: 29px; text-align: center; border-right:solid 1px #000;}
     
     
-	.right_bottom{ height:560px; overflow:auto;}
+	.right_bottom{ overflow:auto;}
 	.right_bottom li{  height:27px !important; overflow:auto;}
 	.right_bottom span{border-bottom:1px solid #000; display:block; width:120px; height:26px; text-align:center; float:left; border-right:solid 1px #000;}
 </style>
 {:W('PageHeader',array('name'=>'查看商家问题受理','search'=>'N'))}
-<body>
-<div class="right" style="height:{$sum_item*26+81}px;">
+
+<div class="right" style="height:600px;">
     <div class="right_top">
         <ul>
             <li><span>基本信息</span></li>
@@ -63,7 +63,7 @@
                 <a>小计</a>
             </li>
         </ul>
-    </div><ul class="right_bottom" style="height:{$sum_item*26+22}px;">
+    </div><ul class="right_bottom" style="height:520px;">
     	<volist name = "store_problem_detail"	id = "vo" >
     		<li>
 	            <span>{$vo.warehouse_addr}</span>
@@ -79,7 +79,7 @@
 	            <span>{$vo.problem_big}</span>
 	            <span>{$vo.problem_small}</span>
 	            <span style="width:200px; overflow:hidden;"><a title="{$vo.event_detail}" style="line-height:26px;">{$vo.event_detail}</a></span>
-	            <span style="width:200px; overflow:hidden;">{$vo.handle_detail}</span>
+	            <span style="width:200px; overflow:hidden;"><a title="{$vo.handle_detail}" style="line-height:26px;">{$vo.handle_detail}</a></span>
 	            <span>{$vo.handle_schedule}</span>
 	            <span>{$vo.coordination_result}</span>
 	            <span>{$vo.goods_cost_price}</span>
@@ -96,11 +96,11 @@
 </div>
 <script>
 	function s(){
-		var m=$('.right_top a').length*121+235;
+		var m=$('.right_top a').length*121+252;
         $('.right_top').css('width',m);
         $('.right_bottom').css('width',m);
 	}
 	s();
 </script>
-</body>
+
 

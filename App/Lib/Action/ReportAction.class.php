@@ -98,7 +98,9 @@ class ReportAction extends CommonAction {
 		$widget['uploader'] = true;
 		$widget['editor'] = true;
 		$this -> assign("widget", $widget);
+		$file = M('File')->where(array('name'=>array('like','%工作计划导入模板%')))->find();
 		
+		$this -> assign("file_id", $file['id']);
 		$this -> display();
 	}
 
@@ -981,6 +983,16 @@ class ReportAction extends CommonAction {
 		}
 	}
 	function save_work_plan(){
+		$add_file = $_POST['add_file'];
+		$add_file = explode(';',$add_file);
+		foreach ($add_file as $k=>$v){
+			if(!empty($v)){
+				$file = M('File')->field('extension')->where(array('sid'=>$v))->find();
+				if($file['extension']!='xlsx' && $file['extension']!='xls'){
+					$this->error('格式不符，必须是excel！');
+				}
+			}
+		}
 		$this->_save('WorkPlan');
 	}
 	
@@ -1237,6 +1249,7 @@ class ReportAction extends CommonAction {
 				Vendor('Excel.PHPExcel');
 				//导入thinkphp第三方类库
 
+			
 // 				echo 11;
 // 				exit;
 					
@@ -1307,18 +1320,19 @@ class ReportAction extends CommonAction {
 					
 // 						$delivery_detail['num'] = $sheetData[$j][ToNumberSystem26($i)];
 
-// 						$where = array();
-// 						$where['store_name'] = array('eq',$delivery_detail['store_name']);
-// 						$where['express'] = array('eq',$delivery_detail['express']);
-// 						$where['date'] = array('eq',$delivery_detail['date']);
-// 						$is_exist = $model_delivery_detail->where($where)->find();
-// 						if(empty($is_exist)){
+						$where = array();
+						$where['system_id'] = array('eq',$store_problem_detail['system_id']);
+						$is_exist = $model_store_problem_detail->where($where)->find();
+						if(empty($is_exist)){
 							$res = $model_store_problem_detail->add($store_problem_detail);
 // 							if(!$res){
 // 								$this -> error('导入具体信息失败：'.ToNumberSystem26($i).' '.$j);
 // 								exit ;
 // 							}
-// 						}
+						}else{
+							$store_problem_detail['id'] = $is_exist['id'];
+							$res = $model_store_problem_detail->save($store_problem_detail);
+						}
 					}
 				}else{
 					$this -> error('导入发货报表失败');
@@ -1461,7 +1475,7 @@ class ReportAction extends CommonAction {
 		$where_detail['store_problem_id'] = array('in',$store_problem_id);
 	
 // 		$store_problem_detail = M("StoreProblemDetail") -> where($where_detail) -> select();
-		$res = $this->_list(M("StoreProblemDetail"), $where_detail);
+		$res = $this->_list(M("StoreProblemDetail"), $where_detail,'accept_date');
 		$this -> assign('sum_item', count($res));
 // 		dump($where_detail);
 		$this -> display();

@@ -1367,7 +1367,7 @@
 					locopts = opts_from_locale(xopts.language),
 					// Options priority: js args, data-attrs, locales, defaults
 					opts = $.extend({}, defaults, locopts, elopts, options);
-				if ($this.is('.input-daterange') || opts.inputs){
+				if ($this.is('.input-daterange') || $this.is('.input-daterange-m') || opts.inputs){
 					var ropts = {
 						inputs: opts.inputs || $this.find('input').toArray()
 					};

@@ -19,6 +19,9 @@ input[type=checkbox].ace,input[type=radio].ace{
 .input-daterange input.input-sm{
 	font-size:14px;
 }
+.input-daterange-m input.input-sm{
+	font-size:14px;
+}
 .well {
 	box-shadow: rgba(0, 0, 0, 0) 0px 1px 1px 0px 
 }
