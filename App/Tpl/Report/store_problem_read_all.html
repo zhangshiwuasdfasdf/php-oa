@@ -78,7 +78,7 @@
             <li><span>基本信息</span></li>
             <li>
                 <a>仓库地点</a>
-                <a>受理日期</a>
+                <a style="width:150px;">受理日期</a>
                 <a>受理人</a>
                 <a>店铺名称</a>
                 <a style="width:140px;">系统订单号</a>
@@ -120,7 +120,7 @@
     	<volist name = "list"	id = "vo" >
     		<li>
 	            <span>{$vo.warehouse_addr}</span>
-	            <span>{$vo.accept_date}</span>
+	            <span style="width:150px;">{$vo.accept_date}</span>
 	            <span>{$vo.accept_person}</span>
 	            <span>{$vo.store_name}</span>
 	            <span style="width:140px;">{$vo.system_id}</span>
@@ -151,7 +151,7 @@
 </div>
 <script>
 	function s(){
-		var m=$('.right_top a').length*121+235;
+		var m=$('.right_top a').length*121+265;
         $('.right_top').css('width',m);
         $('.right_bottom').css('width',m);
 	}

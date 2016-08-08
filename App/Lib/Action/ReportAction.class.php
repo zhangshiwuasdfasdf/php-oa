@@ -1289,7 +1289,7 @@ class ReportAction extends CommonAction {
 						$store_problem_detail = array();
 						$store_problem_detail['store_problem_id'] = $pid;
 						$store_problem_detail['warehouse_addr'] = $sheetData[$j]['A'];
-						$store_problem_detail['accept_date'] = $sheetData[$j]['B'];
+						$store_problem_detail['accept_date'] = date('Y/m/d H:i:s',strtotime($sheetData[$j]['B']));
 						$store_problem_detail['accept_person'] = $sheetData[$j]['C'];
 						$store_problem_detail['store_name'] = $sheetData[$j]['D'];
 						$store_problem_detail['system_id'] = $sheetData[$j]['E'];
@@ -1454,11 +1454,10 @@ class ReportAction extends CommonAction {
 		$start_time = $_POST['be_accept_date'];
 		$end_time = $_POST['en_accept_date'];
 		if (!empty($start_time)) {
-			$month = date('m',strtotime(trim($start_time)));
-			$where_detail['accept_date'][] = array('egt', date('Y/n/j H:i:s',strtotime(trim($start_time))));
+			$where_detail['accept_date'][] = array('egt', date('Y/m/d H:i:s',strtotime(trim($start_time))));
 		}
 		if (!empty($end_time)) {
-			$where_detail['accept_date'][] = array('elt', date('Y/n/j H:i:s',strtotime(trim($end_time).' 24:00:00')));
+			$where_detail['accept_date'][] = array('elt', date('Y/m/d H:i:s',strtotime(trim($end_time).' 24:00:00')));
 		}
 		
 		$where['_complex'] = $addr;
@@ -1478,6 +1477,10 @@ class ReportAction extends CommonAction {
 		$res = $this->_list(M("StoreProblemDetail"), $where_detail,'accept_date');
 		$this -> assign('sum_item', count($res));
 // 		dump($where_detail);
+		$aa = M("StoreProblemDetail")->field('id')->where($where_detail)->order('accept_date desc')->select();
+// 		dump(rotate($aa)['id']);
+		
+// 		dump($bb);
 		$this -> display();
 	}
 }
