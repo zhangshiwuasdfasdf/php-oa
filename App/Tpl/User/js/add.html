@@ -11,7 +11,7 @@
 			if(mr == '1'){
 				var zh = ("more_zh").val();
 				if(zh == ""){
-					ui_error("主账号的用户名不能为空！");
+					ui_error("涓昏处鍙风殑鐢ㄦ埛鍚嶄笉鑳戒负绌猴紒");
 					return false;
 				}
 				sendAjax("{:U('bindVerify')}", "zh="+zh, function(data) {

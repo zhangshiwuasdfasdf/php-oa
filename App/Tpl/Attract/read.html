@@ -1,0 +1,88 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'招商进度日报详情','search'=>'N'))}
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-left">
+			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+		</div>
+	</div>
+</div>
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-10 ">日期</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">招商方式</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">信息来源</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">招商人员</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">客户姓名</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">客户电话</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">主营行业</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">预计日发单量</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">客户意向</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-25 ">接洽内容&备注</span>
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<foreach name="list" item="vo">
+				<li class="tbody">
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.riqi}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.manner}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.source}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.person}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.client}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.phone}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.trade}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.receipt}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.intention}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-25 ">{$vo.remarks}&nbsp;</span>
+					</div>
+				</li>
+			</foreach>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>

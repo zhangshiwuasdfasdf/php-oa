@@ -1,0 +1,101 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'招商进度日报','search'=>'M'))}
+<form method="post" name="form_adv_search" id="form_adv_search">
+	<div class="adv_search panel panel-default  display-none"  id="adv_search">
+		<div class="panel-heading">
+			<div class="row">
+				<h4 class="col-xs-6">高级搜索</h4>
+				<div class="col-xs-6 text-right">
+					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+					<a  class="btn btn-sm " onclick="close_adv_search();">关闭</a>
+				</div>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="li_name">月份：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_months">
+							<option value="">选择月份</option>
+							{:fill_option($months)};
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="li_content">基地：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_base">
+							<option value="">选择基地</option>
+							{:fill_option($addr_list)};
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<div style="width: 1650px;height: auto;">
+				<ul class="right_ul">
+					<li class="title_li">
+						<span>到访日期</span>
+						<span>招商方式</span>
+						<span>信息来源</span>
+						<span>招商人员</span>
+						<span>客户姓名</span>
+						<span>客户电话</span>
+						<span>主营行业</span>
+						<span>商家快递费用</span>
+						<span>预计日发单量</span>
+						<span>计划签约日期</span>
+						<span>客户最关心的问题</span>
+						<span style="width: 332px;">备注</span>	
+					</li>
+					<empty name="list">
+						<li class="no-data">
+							没找到数据
+						</li>
+					<else/>
+					<foreach name="list" item="vo">
+					<li>
+						<span>{$vo.riqi}</span>
+						<span>{$vo.manner}</span>
+						<span>{$vo.source}</span>
+						<span>{$vo.person}</span>
+						<span>{$vo.client}</span>
+						<span>{$vo.phone}</span>
+						<span>{$vo.trade}</span>
+						<span>{$vo.receipt}</span>
+						<span>{$vo.intention}</span>
+						<span style="width: 332px;">{$vo.remarks}</span>	
+					</li>
+			</foreach>
+		</empty>
+	</ul>
+	<div class="pagination">
+				{$page}
+			</div>
+</div>
+<style>
+	.right_ul{
+		list-style:none;
+		width: 1640px;
+		height: auto;
+		clear: both;
+		border-top: 1px solid #000;
+	}
+	.title_li span{
+		background: #ccc;
+	}
+	.right_ul span{
+		border-bottom: 1px solid #000;
+	    border-right: 1px solid #000;
+	    border-left: 1px solid #000;
+	    display: block;
+	    float: left;
+	    height: 26px;
+	    line-height:26px;
+	    text-align: center;
+	    width: 120px;
+	    overflow: hidden;
+	    margin-left: -1px;
+	}
+</style>
