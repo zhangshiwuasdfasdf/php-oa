@@ -57,11 +57,12 @@ class VisitorAction extends CommonAction {
 				$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 				$sd = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);//转行为数组格式
 //				header("Content-Type:text/html;charset=utf-8");
-//				dump($sd);die;
 				$date['user_id'] = get_user_id();
 				$date['user_name'] = get_user_name();
 				$date['create_time'] = date("Y-m-d H:i:s");
-				$date['base'] = 'xx';
+				$dept_id = isHeadquarters(get_user_id());
+				if( $dept_id > 0){$dept = M('dept')->find($dept_id);$yq_name = $dept['name'];}else{$yq_name = '总部';}
+				$date['base'] = $yq_name;
 				$pid = M('visitor')->add($date);//添加主表数组
 				if($pid){
 					$x = 2;
@@ -69,7 +70,8 @@ class VisitorAction extends CommonAction {
 					$ad = M('visitor_detail');
 					for ($i=2;$i<$x;$i++){//循环取出每条数据
 						$info['pid'] = $pid;
-						$info['riqi'] = $sd[$i]['A'];
+						$rq = explode('-',trim($sd[$i]['A']));
+						$info['riqi'] = '20'.$rq[2].'/'.$rq[0].'/'.$rq[1];
 						$info['manner'] = $sd[$i]['B'];
 						$info['source'] = $sd[$i]['C'];
 						$info['person'] = $sd[$i]['D'];
@@ -81,6 +83,7 @@ class VisitorAction extends CommonAction {
 						$info['singed_date'] = $sd[$i]['J'];
 						$info['concern'] = $sd[$i]['K'];
 						$info['remarks'] = $sd[$i]['L'];
+						$info['base'] = $yq_name;
 						$ad -> add($info);
 					}
 				}
@@ -122,7 +125,7 @@ class VisitorAction extends CommonAction {
 	}
 	//统计
 	function statistics(){
-		$map = $this -> _search();
+		$map = $this -> _search('Visitor_detail');
 		if (method_exists($this, '_search_filter2')) {
 			$this -> _search_filter2($map);
 		}
@@ -133,13 +136,8 @@ class VisitorAction extends CommonAction {
 			$this -> assign('info', $info);
 		}
 		//今天是
-		$attr = M('visitor');
-		$where['is_del'] = '0';
-		$where['today'] = date("Y/m/d");
-		$info = $attr -> where($where)->find();
-		$addr = $attr -> field('base as id,base as name') ->distinct(true) -> select();
-		$months = $attr -> field('months as id,months as name') ->distinct(true) -> select();
-		$this -> assign('info',$info);
+		$addr = $model -> field('riqi as id,riqi as name') ->distinct(true) -> select();
+		$months = $model -> field('base as id,base as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
 		$this -> assign('months', $months);
 		$this -> display();

@@ -15,7 +15,10 @@
 			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label" for="li_name">月份：</label>
 				<div class="col-sm-8">
-					<input  class="form-control" type="text" id="li_today" name="li_today" >
+					<select class="form-control" name="eq_months">
+							<option value="">选择基地</option>
+							{:fill_option($months)};
+					</select>
 				</div>
 			</div>
 			<div class="form-group col-sm-6">

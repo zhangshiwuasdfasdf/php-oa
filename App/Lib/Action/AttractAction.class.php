@@ -20,7 +20,9 @@ class AttractAction extends CommonAction {
 			$this -> assign('info', $info);
 		}
 		$addr = $model -> field('base as id,base as name') ->distinct(true) -> select();
+		$months = $model -> field('months as id,months as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
+		$this -> assign('months', $months);
 		$this -> display();	
 	}
 	//下载模板
@@ -48,6 +50,8 @@ class AttractAction extends CommonAction {
 			if (!$upload -> upload()) {//上传模板失败
 				$this -> error($upload -> getErrorMsg());
 			} else {
+				$dept_id = isHeadquarters(get_user_id());
+				if( $dept_id > 0){$dept = M('dept')->find($dept_id);$yq_name = $dept['name'];}else{$yq_name = '总部';}
 				//取得成功上传的文件信息
 				$upload_list = $upload -> getUploadFileInfo();
 				$file_info = $upload_list[0];
@@ -59,9 +63,6 @@ class AttractAction extends CommonAction {
 				$date['user_id'] = get_user_id();
 				$date['user_name'] = get_user_name();
 				$date['create_time'] = time();
-				$dept_id = isHeadquarters(get_user_id());
-				if( $dept_id > 0){$dept = M('dept')->find($dept_id);$yq_name = $dept['name'];}else{$yq_name = '总部';}
-				$date['base'] = $yq_name;
 				$rq = explode('-',trim($sd[1]['B']));
 				$date['today'] = '20'.$rq[2].'/'.$rq[0].'/'.$rq[1];
 				$rq = explode('-',trim($sd[1]['D']));
@@ -69,7 +70,8 @@ class AttractAction extends CommonAction {
 				$date['days'] = $sd[1]['F'];
 				$date['target'] = $sd[1]['H'];
 				$date['actuality'] = $sd[1]['J'];
-				$date['months'] = '20'.$rq[2].'-'.$rq[0];
+				$date['base'] = $yq_name;
+				$date['months'] = '20'.$rq[2].'/'.$rq[0];
 				$pid = M('attract')->add($date);//添加主表数组
 				if($pid){
 					$x = 3;
@@ -87,6 +89,8 @@ class AttractAction extends CommonAction {
 						$info['trade'] = $sd[$i]['G'];
 						$info['receipt'] = $sd[$i]['H'];
 						$info['intention'] = $sd[$i]['I'];
+						$info['base'] = $yq_name;
+						$info['months'] = '20'.$rqs[2].'-'.$rqs[0];
 						$info['remarks'] = $sd[$i]['J'];
 						$ad -> add($info);
 					}
@@ -129,7 +133,7 @@ class AttractAction extends CommonAction {
 	}
 	//统计
 	function statistics(){
-		$map = $this -> _search();
+		$map = $this -> _search("Attract_detail");
 		if (method_exists($this, '_search_filter2')) {
 			$this -> _search_filter2($map);
 		}
@@ -143,10 +147,10 @@ class AttractAction extends CommonAction {
 		$attr = M('attract');
 		$where['is_del'] = '0';
 		$where['today'] = date("Y/m/d");
-		$info = $attr -> where($where)->find();
-		$addr = $attr -> field('base as id,base as name') ->distinct(true) -> select();
-		$months = $attr -> field('months as id,months as name') ->distinct(true) -> select();
-		$this -> assign('info',$info);
+		$data = $attr -> where($where)->find();
+		$addr = $model -> field('base as id,base as name') ->distinct(true) -> select();
+		$months = $model -> field('months as id,months as name') ->distinct(true) -> select();
+		$this -> assign('data',$data);
 		$this -> assign('addr_list', $addr);
 		$this -> assign('months', $months);
 		$this -> display();
