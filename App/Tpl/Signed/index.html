@@ -1,5 +1,5 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'招商进度日报导入','search'=>'M'))}
+{:W('PageHeader',array('name'=>'签约客户信息','search'=>'M'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default  display-none"  id="adv_search">
 		<div class="panel-heading">
@@ -40,7 +40,7 @@
 							<a class="link down" onclick="import_report();">导入信息</a>
 						</li>
 						<li>
-							<a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode('2205'))}">导出模板</a> 
+							<a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode('2216'))}">导出模板</a> 
 						</li>
 					</ul>
 				</div>
@@ -61,19 +61,22 @@
 				<span class="col-10 ">基地</span>
 			</div>
 			<div class="pull-left">
-				<span class="col-10 ">今天是</span>
+				<span class="col-15 ">截止目前时间进度</span>
 			</div>
 			<div class="pull-left">
-				<span class="col-10 ">考核截止日期</span>
+				<span class="col-15 ">考核开始日期</span>
 			</div>
 			<div class="pull-left">
-				<span class="col-15 ">本次考核周期天数</span>
+				<span class="col-15 ">考核截止日期</span>
 			</div>
 			<div class="pull-left">
-				<span class="col-10 ">本月签约目标</span>
+				<span class="col-15 ">招商任务完成进度</span>
 			</div>
 			<div class="pull-left">
-				<span class="col-10 ">本月累计签约</span>
+				<span class="col-15 ">截止目前累计签约数量</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-15 ">年度目标签约数量</span>
 			</div>
 			<div class="pull-right">
 				<span class="col-15 ">操作</span>
@@ -96,19 +99,22 @@
 						<span class="col-10 ">{$vo.base}&nbsp;</span>
 					</div>
 					<div class="pull-left">
-						<span class="col-10 ">{$vo.today}&nbsp;</span>
+						<span class="col-15 ">{$vo.current}&nbsp;</span>
 					</div>
 					<div class="pull-left">
-						<span class="col-10 ">{$vo.end_time}&nbsp;</span>
+						<span class="col-15 ">{$vo.kh_start}&nbsp;</span>
 					</div>
 					<div class="pull-left">
-						<span class="col-15 ">{$vo.days}&nbsp;</span>
+						<span class="col-15 ">{$vo.kh_off}&nbsp;</span>
 					</div>
 					<div class="pull-left">
-						<span class="col-10 ">{$vo.target}&nbsp;</span>
+						<span class="col-15 ">{$vo.schedule}&nbsp;</span>
 					</div>
 					<div class="pull-left">
-						<span class="col-10 ">{$vo.actuality}&nbsp;</span>
+						<span class="col-15 ">{$vo.signed}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-15 ">{$vo.total_signed}&nbsp;</span>
 					</div>
 					<div class="pull-right">
 						<span class="col-10 "><a href="{:U('read','id='.$vo['id'])}">查看详情</a></span>

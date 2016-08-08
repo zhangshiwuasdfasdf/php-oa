@@ -1,5 +1,5 @@
 <?php
-class AttractAction extends CommonAction {
+class VisitorAction extends CommonAction {
 	protected $config = array('app_type' => 'personal');
 	
 	function _search_filter(&$map) {
@@ -8,21 +8,21 @@ class AttractAction extends CommonAction {
 			$map['user_name'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
 	}
-	//列表页
-	function index (){
+	function index(){
 		$map = $this -> _search();
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
-		$model = D('Attract');
+		$model = D('Visitor');
 		if (!empty($model)) {
 			$info = $this -> _list($model, $map);
 			$this -> assign('info', $info);
 		}
 		$addr = $model -> field('base as id,base as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
-		$this -> display();	
+		$this -> display();
 	}
+	
 	//下载模板
 	public function down() {
 		$this -> _down();
@@ -56,38 +56,31 @@ class AttractAction extends CommonAction {
 				$inputFileName = $file_info['savepath'] . $file_info["savename"];
 				$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 				$sd = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);//转行为数组格式
+//				header("Content-Type:text/html;charset=utf-8");
+//				dump($sd);die;
 				$date['user_id'] = get_user_id();
 				$date['user_name'] = get_user_name();
-				$date['create_time'] = time();
-				$dept_id = isHeadquarters(get_user_id());
-				if( $dept_id > 0){$dept = M('dept')->find($dept_id);$yq_name = $dept['name'];}else{$yq_name = '总部';}
-				$date['base'] = $yq_name;
-				$rq = explode('-',trim($sd[1]['B']));
-				$date['today'] = '20'.$rq[2].'/'.$rq[0].'/'.$rq[1];
-				$rq = explode('-',trim($sd[1]['D']));
-				$date['end_time'] = '20'.$rq[2].'/'.$rq[0].'/'.$rq[1];
-				$date['days'] = $sd[1]['F'];
-				$date['target'] = $sd[1]['H'];
-				$date['actuality'] = $sd[1]['J'];
-				$date['months'] = '20'.$rq[2].'-'.$rq[0];
-				$pid = M('attract')->add($date);//添加主表数组
+				$date['create_time'] = date("Y-m-d H:i:s");
+				$date['base'] = 'xx';
+				$pid = M('visitor')->add($date);//添加主表数组
 				if($pid){
-					$x = 3;
+					$x = 2;
 					while ($sd[$x]['A'] != ''){$x++;}//确定一共有多少条数据
-					$ad = M('attract_detail');
-					for ($i=3;$i<$x;$i++){//循环取出每条数据
+					$ad = M('visitor_detail');
+					for ($i=2;$i<$x;$i++){//循环取出每条数据
 						$info['pid'] = $pid;
-						$rqs = explode('-',trim($sd[$i]['A']));
-						$info['riqi'] = '20'.$rqs[2].'/'.$rqs[0].'/'.$rqs[1];
+						$info['riqi'] = $sd[$i]['A'];
 						$info['manner'] = $sd[$i]['B'];
 						$info['source'] = $sd[$i]['C'];
 						$info['person'] = $sd[$i]['D'];
 						$info['client'] = $sd[$i]['E'];
 						$info['phone'] = $sd[$i]['F'];
 						$info['trade'] = $sd[$i]['G'];
-						$info['receipt'] = $sd[$i]['H'];
-						$info['intention'] = $sd[$i]['I'];
-						$info['remarks'] = $sd[$i]['J'];
+						$info['cost'] = $sd[$i]['H'];
+						$info['receipt'] = $sd[$i]['I'];
+						$info['singed_date'] = $sd[$i]['J'];
+						$info['concern'] = $sd[$i]['K'];
+						$info['remarks'] = $sd[$i]['L'];
 						$ad -> add($info);
 					}
 				}
@@ -108,7 +101,7 @@ class AttractAction extends CommonAction {
 	//查看详情
 	function read(){
 		$pid = $_REQUEST['id'];
-		$model = D('Attract_detail');
+		$model = D('visitor_detail');
 		$map['pid'] = $pid;
 		if (!empty($model)) {
 			$info = $this -> _list($model, $map);
@@ -133,14 +126,14 @@ class AttractAction extends CommonAction {
 		if (method_exists($this, '_search_filter2')) {
 			$this -> _search_filter2($map);
 		}
-		$model = D('Attract_detail');
+		$model = D('Visitor_detail');
 		//详细列表
 		if (!empty($model)) {
 			$info = $this -> _list($model, $map);
 			$this -> assign('info', $info);
 		}
 		//今天是
-		$attr = M('attract');
+		$attr = M('visitor');
 		$where['is_del'] = '0';
 		$where['today'] = date("Y/m/d");
 		$info = $attr -> where($where)->find();
@@ -151,6 +144,4 @@ class AttractAction extends CommonAction {
 		$this -> assign('months', $months);
 		$this -> display();
 	}
-	
-
 }

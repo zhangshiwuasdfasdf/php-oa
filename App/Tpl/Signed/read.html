@@ -1,0 +1,150 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'招商进度日报详情','search'=>'N'))}
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-left">
+			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+		</div>
+	</div>
+</div>
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-7 ">签约时间</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-7 ">招商方式</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-7 ">信息来源</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-7 ">招商人员</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-7 ">客户姓名</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">客户电话</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-8 ">店铺名称</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-8 ">主营行业</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-8 ">日发单量</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-8 ">合同编号</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-9 ">经营店铺数量</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-9 ">实际入驻时间</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-9 ">实际入仓时间</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-9">仓储面积(㎡)</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-9">办公场地(㎡)</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-8 ">办公人数</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-8 ">快递公司</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-8 ">打包费/元</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-8 ">三项押金/元</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-8 ">备注</span>
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<foreach name="list" item="vo">
+				<li class="tbody">
+					<div class="pull-left">
+						<span class="col-7 ">{$vo.riqi}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-7">{$vo.manner}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-7 ">{$vo.source}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-7 ">{$vo.person}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-7 ">{$vo.client}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.phone}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-8 ">{$vo.shop_name}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-8 ">{$vo.trade}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-8 ">{$vo.receipt}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-9 ">{$vo.contract_no}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-9 ">{$vo.shop_num}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-9 ">{$vo.checkin_time}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-9 ">{$vo.checkca_time}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-9 ">{$vo.storage_area}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-9 ">{$vo.work_area}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-8 ">{$vo.work_person}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-8 ">{$vo.company}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-8 ">{$vo.baling_fee}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-8 ">{$vo.pledge}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-8 ">{$vo.remark}&nbsp;</span>
+					</div>
+				</li>
+			</foreach>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>
+<style type="text/css">
+    </style>  

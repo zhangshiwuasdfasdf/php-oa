@@ -1,5 +1,5 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'招商进度日报导入','search'=>'M'))}
+{:W('PageHeader',array('name'=>'到访客户日报','search'=>'M'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default  display-none"  id="adv_search">
 		<div class="panel-heading">
@@ -13,9 +13,9 @@
 		</div>
 		<div class="panel-body">
 			<div class="form-group col-sm-6">
-				<label class="col-sm-4 control-label" for="li_name">月份：</label>
+				<label class="col-sm-4 control-label" for="li_name">导入时间：</label>
 				<div class="col-sm-8">
-					<input  class="form-control" type="text" id="li_today" name="li_today" >
+					<input  class="form-control" type="text" id="li_create_time" name="li_create_time" >
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
@@ -40,7 +40,7 @@
 							<a class="link down" onclick="import_report();">导入信息</a>
 						</li>
 						<li>
-							<a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode('2205'))}">导出模板</a> 
+							<a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode('2215'))}">导出模板</a> 
 						</li>
 					</ul>
 				</div>
@@ -60,21 +60,6 @@
 			<div class="pull-left">
 				<span class="col-10 ">基地</span>
 			</div>
-			<div class="pull-left">
-				<span class="col-10 ">今天是</span>
-			</div>
-			<div class="pull-left">
-				<span class="col-10 ">考核截止日期</span>
-			</div>
-			<div class="pull-left">
-				<span class="col-15 ">本次考核周期天数</span>
-			</div>
-			<div class="pull-left">
-				<span class="col-10 ">本月签约目标</span>
-			</div>
-			<div class="pull-left">
-				<span class="col-10 ">本月累计签约</span>
-			</div>
 			<div class="pull-right">
 				<span class="col-15 ">操作</span>
 			</div>
@@ -90,25 +75,10 @@
 						<span class="col-10 ">{$vo.user_name}&nbsp;</span>
 					</div>
 					<div class="pull-left">
-						<span class="col-15 ">{$vo.create_time|date='Y-m-d H:i:s',###}&nbsp;</span>
+						<span class="col-15 ">{$vo.create_time}&nbsp;</span>
 					</div>
 					<div class="pull-left">
 						<span class="col-10 ">{$vo.base}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-10 ">{$vo.today}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-10 ">{$vo.end_time}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-15 ">{$vo.days}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-10 ">{$vo.target}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-10 ">{$vo.actuality}&nbsp;</span>
 					</div>
 					<div class="pull-right">
 						<span class="col-10 "><a href="{:U('read','id='.$vo['id'])}">查看详情</a></span>
