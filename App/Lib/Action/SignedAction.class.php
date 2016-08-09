@@ -20,7 +20,9 @@ class SignedAction extends CommonAction {
 			$this -> assign('info', $info);
 		}
 		$addr = $model -> field('base as id,base as name') ->distinct(true) -> select();
+		$months = $model -> field('months as id,months as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
+		$this -> assign('months', $months);
 		$this -> display();	
 	}
 	//下载模板
@@ -48,6 +50,8 @@ class SignedAction extends CommonAction {
 			if (!$upload -> upload()) {//上传模板失败
 				$this -> error($upload -> getErrorMsg());
 			} else {
+				$dept_id = isHeadquarters(get_user_id());
+				if( $dept_id > 0){$dept = M('dept')->find($dept_id);$yq_name = $dept['name'];}else{$yq_name = '总部';}
 				//取得成功上传的文件信息
 				$upload_list = $upload -> getUploadFileInfo();
 				$file_info = $upload_list[0];
@@ -59,13 +63,14 @@ class SignedAction extends CommonAction {
 				$date['user_id'] = get_user_id();
 				$date['user_name'] = get_user_name();
 				$date['create_time'] = time();
-				$date['base'] = 'xx';
+				$date['base'] = $yq_name;
 				$date['current'] = $sd[1]['D'];
 				$date['kh_start'] = $sd[1]['K'];
 				$date['kh_off'] = $sd[1]['Q'];
 				$date['schedule'] = $sd[2]['D'];
 				$date['signed'] = $sd[2]['K'];
 				$date['total_signed'] = $sd[2]['Q'];
+				$date['months'] = date('Y/m/d');
 				$pid = M('signed')->add($date);//添加主表数组
 				if($pid){
 					$x = 4;
@@ -93,6 +98,8 @@ class SignedAction extends CommonAction {
 						$info['baling_fee'] = $sd[$i]['R'];
 						$info['pledge'] = $sd[$i]['S'];
 						$info['remark'] = $sd[$i]['T'];
+						$info['base'] = $yq_name;
+						$info['months'] = date('Y/m');
 						$ad -> add($info);
 					}
 				}
@@ -124,6 +131,42 @@ class SignedAction extends CommonAction {
 	
 	function del(){
 		$this -> _del();
+	}
+	
+	function _search_filter2(&$map) {
+		$map['is_del'] = array('eq', '0');
+		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
+			$map['person'] = array('like', "%" . $_POST['keyword'] . "%");
+		}
+	}
+	//统计
+	function statistics(){
+		$pinfo = M('Signed') -> where('is_del = 0') -> field('id')->select();
+		foreach ($pinfo as $k=>$v){
+			if($v['id']){
+				$arr[] = $v['id'];
+			}
+		}
+		$map = $this -> _search('Signed_detail');
+		if (method_exists($this, '_search_filter2')) {
+			$this -> _search_filter2($map);
+		}
+		$map['pid'] = array('in',$arr);
+		$model = D('Signed_detail');
+		//详细列表
+		if (!empty($model)) {
+			$info = $this -> _list($model, $map);
+			$this -> assign('info', $info);
+		}
+		$sign = M('Signed');
+		$id = $sign -> where('is_del = 0') ->max('id');
+		$data = $sign -> find($id);
+		$this -> assign('data',$data);		
+		$addr = $model -> field('base as id,base as name') ->distinct(true) -> select();
+		$months = $model -> field('months as id,months as name') ->distinct(true) -> select();
+		$this -> assign('addr_list', $addr);
+		$this -> assign('months', $months);
+		$this -> display();
 	}
 	
 
