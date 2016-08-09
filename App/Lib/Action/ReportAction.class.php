@@ -101,6 +101,18 @@ class ReportAction extends CommonAction {
 		$file = M('File')->where(array('name'=>array('like','%工作计划导入模板%')))->find();
 		
 		$this -> assign("file_id", $file['id']);
+	
+		$dept_menu = D("Dept") -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		$count = count($dept_tree);
+		if(empty($count)){
+			/*获取部门列表*/
+			$html = '';
+			$html = $html . "<option value='{$dept_id}'>{$dept_name}</option>";
+			$this -> assign('addr_list', $html);
+		}else{
+			$this -> assign('addr_list', select_tree_menu($dept_tree));
+		}
 		$this -> display();
 	}
 
@@ -150,6 +162,7 @@ class ReportAction extends CommonAction {
 	}
 	
 	public function delivery_read_all() {
+// 		$_REQUEST['export']
 		ini_set("memory_limit","800M");
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
@@ -257,6 +270,9 @@ class ReportAction extends CommonAction {
 		$this -> assign('recent_date_1', date('Y-m').'-01');
 		$this -> assign('recent_date', date('Y-m-d'));
 		
+		if($_REQUEST['export']=='1'){
+			$this->_export_delivery($aa,$sum_day,$store_name_same_day,$store_name_same,$store_name,$express);
+		}
 // 		$this->_list(M("DeliveryDetail"), $where_detail);
 // 		echo $_REQUEST['p'];
 		import("@.ORG.Util.Page2");
@@ -434,11 +450,18 @@ class ReportAction extends CommonAction {
 				$this -> error($model -> getError());
 			}
 		}
-		$model->user_id = get_user_id();
-		$model->user_name = get_user_name();
-		$model->dept_id = get_dept_id();
-		$model->dept_name = get_dept_name();
-		$model->create_time = time();
+		if($name=='WorkPlan'){
+			$model->user_id = get_user_id();
+			$model->user_name = get_user_name();
+			$model->dept_id = get_dept_id();
+			$model->dept_name = get_dept_name();
+			$model->create_time = time();
+			
+			$addr_id = $model->addr_id;
+			$dept = M('Dept')->field('name')->find($addr_id);
+			$model->addr = $dept['name'];
+		}
+		
 		/*保存当前数据对象 */
 		$list = $model -> add();
 		if ($list !== false) {//保存成功
@@ -656,6 +679,14 @@ class ReportAction extends CommonAction {
 					$this -> error('园区必须是金华、宁波、杭州、嘉兴中的一个');
 					exit ;
 				}
+				$isHeadquarters = isHeadquarters(get_user_id());
+				if($isHeadquarters>0){//园区
+					$res = M('Dept')->where(array('id'=>$isHeadquarters,'name'=>array('like','%'.$title1[0].'%')))->find();
+					if(!$res){
+						$this -> error('输入的园区与你所在园区不一致');
+						exit;
+					}
+				}
 				$title2 = explode('月',$title1[1]);
 				if(!is_numeric($title2[0]) || $title2[0]<0 || $title2[0]>12){
 					$this -> error('月份必须是1-12');
@@ -753,7 +784,7 @@ class ReportAction extends CommonAction {
 		$auth = $this -> config['auth'];
 		$this -> assign('auth', $auth);
 		
-		$dept_list = M("WorkPlan") -> field('dept_name as id,dept_name as name') ->distinct(true) -> select();
+		$dept_list = M("WorkPlan") -> field('addr as id,addr as name') ->distinct(true) -> select();
 		$this -> assign('dept_list', $dept_list);
 	
 		$user_list = M("WorkPlan") -> field('user_name as id,user_name as name') ->distinct(true) -> select();
@@ -761,7 +792,7 @@ class ReportAction extends CommonAction {
 	
 		$where = $this -> _search();
 		if (!empty($_POST['eq_dept'])) {
-			$where['dept_name'] = array('eq',$_POST['eq_dept']);
+			$where['addr'] = array('eq',$_POST['eq_dept']);
 		}
 		if (!empty($_POST['eq_user'])) {
 			$where['user_name'] = array('eq',$_POST['eq_user']);
@@ -1482,5 +1513,89 @@ class ReportAction extends CommonAction {
 		
 // 		dump($bb);
 		$this -> display();
+	}
+	function _export_delivery($aa,$sum_day,$store_name_same_day,$store_name_same,$store_name,$express){
+		//导入thinkphp第三方类库
+		Vendor('Excel.PHPExcel');
+		
+		$objPHPExcel = new PHPExcel();
+		
+		$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+		// Add some data
+// 		$i = 1;
+		//dump($list);
+		
+		$q = $objPHPExcel -> setActiveSheetIndex(0);
+		//第一列为用户
+		$q = $q -> setCellValue("A1", '基地仓库发货日报汇总表');
+		$q->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+		$q = $q -> mergeCells('A1:'.ToNumberSystem26(count($store_name)+3).'1');
+		
+		$q = $q -> setCellValue("A3", '日期');
+		$q = $q -> setCellValue("B3", '快递单位');
+		
+		for($i=ord('C');$i<ord('C')+count($store_name);$i++){
+			$q = $q -> setCellValue(chr($i)."2", $store_name[$i-ord('C')]);
+			$q ->getStyle(chr($i)."2")->getAlignment()->setWrapText(true);
+			$q ->getRowDimension(2)->setRowHeight(80);
+			$q = $q -> setCellValue(chr($i)."3", $i-ord('C')+1);
+		}
+		$q = $q -> setCellValue(ToNumberSystem26(count($store_name)+3)."2", "合计");
+		$q ->getStyle(ToNumberSystem26(count($store_name)+3)."2")->getAlignment()->setWrapText(true);
+		$q ->getRowDimension(2)->setRowHeight(80);
+		
+		$q = $q -> setCellValue("A4", date('Y/m/d',time()));
+		$q ->getStyle("A4")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		$q = $q -> setCellValue("B4", '韵达');
+		$q ->getStyle("B4")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+		$q = $q -> setCellValue("A5", date('Y/m/d',time()));
+		$q ->getStyle("A5")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		$q = $q -> setCellValue("B5", '中通');
+		$q ->getStyle("B5")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+		$q = $q -> setCellValue("A6", date('Y/m/d',time()));
+		$q ->getStyle("A6")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		$q = $q -> setCellValue("B6", '京东');
+		$q ->getStyle("B6")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+		$q = $q -> setCellValue("A7", date('Y/m/d',time()));
+		$q ->getStyle("A7")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		$q = $q -> setCellValue("B7", '邮政小包');
+		$q ->getStyle("B7")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+		$q = $q -> setCellValue("A8", date('Y/m/d',time()));
+		$q ->getStyle("A8")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		$q = $q -> setCellValue("B8", '汇通');
+		$q ->getStyle("B8")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+		$q = $q -> setCellValue("A9", date('Y/m/d',time()));
+		$q ->getStyle("A9")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		$q = $q -> setCellValue("B9", '申通');
+		$q ->getStyle("B9")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+		$q = $q -> setCellValue("A10", date('Y/m/d',time()));
+		$q ->getStyle("A10")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		$q = $q -> setCellValue("B10", '顺丰');
+		$q ->getStyle("B10")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		
+		// Rename worksheet
+		$title = '基地发货日报导出';
+		$objPHPExcel -> getActiveSheet() -> setTitle('基地发货日报导出');
+		
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel -> setActiveSheetIndex(0);
+		$file_name = $title.".xlsx";
+		// Redirect output to a client’s web browser (Excel2007)
+		header("Content-Type: application/force-download");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header("Content-Disposition:attachment;filename =" . str_ireplace('+', '%20', URLEncode($file_name)));
+		header('Cache-Control: max-age=0');
+		
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		//readfile($filename);
+		$objWriter -> save('php://output');
+		exit ;
 	}
 }

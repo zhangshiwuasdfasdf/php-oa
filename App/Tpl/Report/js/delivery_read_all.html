@@ -2,4 +2,8 @@
 	$(document).ready(function() {
 		set_return_url();
 	}); 
+	function export_delivery_report_condition() {
+		window.open("{:U('delivery_read_all','export=1')}", "_blank");
+		return false;
+	}
 </script>

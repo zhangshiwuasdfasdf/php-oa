@@ -74,7 +74,7 @@
 				<foreach name="list" item="vo">
 					<li class="tbody">
 						<div class="pull-left">
-							<span class="col-10">{$vo.dept_name}</span>
+							<span class="col-10">{$vo.addr}</span>
 							<span class="col-10">{$vo.user_name}</span>
 							<span class="col-15"><a href="{:U('work_plan_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d H:i:s'}</a></span>
 							<span class="col-10">{$vo.date}</span>
