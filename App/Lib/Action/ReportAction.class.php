@@ -249,7 +249,9 @@ class ReportAction extends CommonAction {
 		$date = rotate($date);
 		$date = $date['date'];
 		arsort($date);
+		
 		$date = array_values($date);
+		$dateall = $date;
 		$date_num_o = count($date);
 		
 		if($_REQUEST['p']){
@@ -271,7 +273,7 @@ class ReportAction extends CommonAction {
 		$this -> assign('recent_date', date('Y-m-d'));
 		
 		if($_REQUEST['export']=='1'){
-			$this->_export_delivery($aa,$sum_day,$store_name_same_day,$store_name_same,$store_name,$express);
+			$this->_export_delivery($aa,$sum_day,$store_name_same_day,$store_name_same,$store_name,$express,$dateall);
 		}
 // 		$this->_list(M("DeliveryDetail"), $where_detail);
 // 		echo $_REQUEST['p'];
@@ -1514,7 +1516,7 @@ class ReportAction extends CommonAction {
 // 		dump($bb);
 		$this -> display();
 	}
-	function _export_delivery($aa,$sum_day,$store_name_same_day,$store_name_same,$store_name,$express){
+	function _export_delivery($aa,$sum_day,$store_name_same_day,$store_name_same,$store_name,$express,$dateall){
 		//导入thinkphp第三方类库
 		Vendor('Excel.PHPExcel');
 		
@@ -1535,51 +1537,72 @@ class ReportAction extends CommonAction {
 		$q = $q -> setCellValue("A3", '日期');
 		$q = $q -> setCellValue("B3", '快递单位');
 		
+		//由于不能使用getCellValue，故暂时把数据存放在此，用于后面比较
+		$store_name_array = array();
 		for($i=ord('C');$i<ord('C')+count($store_name);$i++){
 			$q = $q -> setCellValue(chr($i)."2", $store_name[$i-ord('C')]);
 			$q ->getStyle(chr($i)."2")->getAlignment()->setWrapText(true);
 			$q ->getRowDimension(2)->setRowHeight(80);
 			$q = $q -> setCellValue(chr($i)."3", $i-ord('C')+1);
+			$store_name_array[chr($i)] = $store_name[$i-ord('C')];
 		}
 		$q = $q -> setCellValue(ToNumberSystem26(count($store_name)+3)."2", "合计");
 		$q ->getStyle(ToNumberSystem26(count($store_name)+3)."2")->getAlignment()->setWrapText(true);
 		$q ->getRowDimension(2)->setRowHeight(80);
+		$store_name_array[ToNumberSystem26(count($store_name)+3)] = "合计";
 		
-		$q = $q -> setCellValue("A4", date('Y/m/d',time()));
-		$q ->getStyle("A4")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		$q = $q -> setCellValue("B4", '韵达');
-		$q ->getStyle("B4")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
+		$i=4;
+		//由于不能使用getCellValue，故暂时把数据存放在此，用于后面比较
+		$date_array = array();
+		$express_array = array();
+		foreach ($dateall as $v){
+			foreach ($express as $vv){
+				$q = $q -> setCellValue("A".$i, $v);
+				$date_array[$i] = $v;
+				$q = $q -> setCellValue("B".$i, $vv);
+				$express_array[$i] = $vv;
+				$i++;
+			}
+			$q = $q -> setCellValue("A".$i, $v);
+			$date_array[$i] = $v;
+			$q = $q -> setCellValue("B".$i, "小计");
+			$express_array[$i] = "小计";
+			$i++;
+		}
+		$q = $q -> setCellValue("A".$i, "总计");
+		$date_array[$i] = "总计";
+		$q = $q -> setCellValue("B".$i, "总计");
+		$express_array[$i] = "总计";
 		
-		$q = $q -> setCellValue("A5", date('Y/m/d',time()));
-		$q ->getStyle("A5")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		$q = $q -> setCellValue("B5", '中通');
-		$q ->getStyle("B5")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		
-		$q = $q -> setCellValue("A6", date('Y/m/d',time()));
-		$q ->getStyle("A6")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		$q = $q -> setCellValue("B6", '京东');
-		$q ->getStyle("B6")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		
-		$q = $q -> setCellValue("A7", date('Y/m/d',time()));
-		$q ->getStyle("A7")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		$q = $q -> setCellValue("B7", '邮政小包');
-		$q ->getStyle("B7")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		
-		$q = $q -> setCellValue("A8", date('Y/m/d',time()));
-		$q ->getStyle("A8")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		$q = $q -> setCellValue("B8", '汇通');
-		$q ->getStyle("B8")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		
-		$q = $q -> setCellValue("A9", date('Y/m/d',time()));
-		$q ->getStyle("A9")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		$q = $q -> setCellValue("B9", '申通');
-		$q ->getStyle("B9")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		
-		$q = $q -> setCellValue("A10", date('Y/m/d',time()));
-		$q ->getStyle("A10")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		$q = $q -> setCellValue("B10", '顺丰');
-		$q ->getStyle("B10")->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_RED);
-		
+		for ($ii=4;$ii<=$i;$ii++){
+			for ($jj=ord('C');$jj<=ord('C')+count($store_name);$jj++){
+				$date_t = $date_array[$ii];
+				$express_t = $express_array[$ii];
+				$store_name_t = $store_name_array[chr($jj)];
+				
+				if($store_name_t=="合计"){
+					if($express_t=="小计"){
+						$q = $q -> setCellValue(chr($jj).$ii, $sum_day[$date_t]);
+					}elseif($express_t=="总计"){
+						$q = $q -> setCellValue(chr($jj).$ii, array_sum($sum_day));
+					}else{
+						$q = $q -> setCellValue(chr($jj).$ii, array_sum($aa[$date_t][$express_t])?array_sum($aa[$date_t][$express_t]):0);
+					}
+				}else{
+					if($express_t=="小计"){
+						$q = $q -> setCellValue(chr($jj).$ii, array_sum($store_name_same_day[$date_t][$store_name_t])?array_sum($store_name_same_day[$date_t][$store_name_t]):0);
+					}elseif($express_t=="总计"){
+						$q = $q -> setCellValue(chr($jj).$ii, $store_name_same[$store_name_t]);
+					}else{
+						if($aa[$date_t][$express_t][$store_name_t]!==''){
+							$q = $q -> setCellValue(chr($jj).$ii, $aa[$date_t][$express_t][$store_name_t]);
+						}
+					}
+				}
+				
+			}
+		}
+// 		exit;
 		// Rename worksheet
 		$title = '基地发货日报导出';
 		$objPHPExcel -> getActiveSheet() -> setTitle('基地发货日报导出');
