@@ -1,5 +1,5 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'签约客户信息','search'=>'M'))}
+{:W('PageHeader',array('name'=>'已签约客户明细年度进度导入','search'=>'M'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default  display-none"  id="adv_search">
 		<div class="panel-heading">
@@ -15,7 +15,10 @@
 			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label" for="li_name">月份：</label>
 				<div class="col-sm-8">
-					<input  class="form-control" type="text" id="li_today" name="li_today" >
+					<select class="form-control" name="eq_months">
+							<option value="">选择时间</option>
+							{:fill_option($months)};
+					</select>
 				</div>
 			</div>
 			<div class="form-group col-sm-6">

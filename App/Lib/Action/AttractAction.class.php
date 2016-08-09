@@ -21,8 +21,10 @@ class AttractAction extends CommonAction {
 		}
 		$addr = $model -> field('base as id,base as name') ->distinct(true) -> select();
 		$months = $model -> field('months as id,months as name') ->distinct(true) -> select();
+		$user_name = $model -> field('user_id as id,user_name as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
 		$this -> assign('months', $months);
+		$this -> assign('user_name', $user_name);
 		$this -> display();	
 	}
 	//下载模板
@@ -118,6 +120,8 @@ class AttractAction extends CommonAction {
 			$info = $this -> _list($model, $map);
 			$this -> assign('info', $info);
 		}
+		$data = M('Attract') -> find($pid);
+		$this -> assign('data',$data);
 		$this -> display();
 	}
 	
@@ -133,10 +137,17 @@ class AttractAction extends CommonAction {
 	}
 	//统计
 	function statistics(){
+		$pinfo = M('Attract') -> where('is_del = 0') -> field('id')->select();
+		foreach ($pinfo as $k=>$v){
+			if($v['id']){
+				$arr[] = $v['id'];
+			}
+		}
 		$map = $this -> _search("Attract_detail");
 		if (method_exists($this, '_search_filter2')) {
 			$this -> _search_filter2($map);
 		}
+		$map['pid'] = array('in',$arr);
 		$model = D('Attract_detail');
 		//详细列表
 		if (!empty($model)) {

@@ -4,6 +4,13 @@ class VisitorAction extends CommonAction {
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
+		if (!empty($_POST['be_create']) && !empty($_POST['en_create'])) {
+			$map['months'] = array('between', array($_POST['be_create'],$_POST['en_create']));
+		}elseif (!empty($_POST['be_create'])) {
+			$map['months'] = array('egt', $_POST['be_create']);
+		}elseif (!empty($_POST['en_create'])) {
+			$map['months'] = array('elt', $_POST['en_create']);
+		}
 		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
 			$map['user_name'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
@@ -19,7 +26,13 @@ class VisitorAction extends CommonAction {
 			$this -> assign('info', $info);
 		}
 		$addr = $model -> field('base as id,base as name') ->distinct(true) -> select();
+		$months = $model -> field('months as id,months as name') ->distinct(true) -> select();
+		$user_name = $model -> field('user_id as id,user_name as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
+		$this -> assign('months', $months);
+		$this -> assign('user_name', $user_name);
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
 		$this -> display();
 	}
 	
@@ -63,6 +76,7 @@ class VisitorAction extends CommonAction {
 				$dept_id = isHeadquarters(get_user_id());
 				if( $dept_id > 0){$dept = M('dept')->find($dept_id);$yq_name = $dept['name'];}else{$yq_name = '总部';}
 				$date['base'] = $yq_name;
+				$date['months'] = date("Y-m-d");
 				$pid = M('visitor')->add($date);//添加主表数组
 				if($pid){
 					$x = 2;
@@ -125,10 +139,17 @@ class VisitorAction extends CommonAction {
 	}
 	//统计
 	function statistics(){
-		$map = $this -> _search('Visitor_detail');
-		if (method_exists($this, '_search_filter2')) {
-			$this -> _search_filter2($map);
+		$pinfo = M('Visitor') -> where('is_del = 0') -> field('id')->select();
+		foreach ($pinfo as $k=>$v){
+			if($v['id']){
+				$arr[] = $v['id'];
+			}
 		}
+		$map = $this -> _search('Visitor_detail');
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($map);
+		}
+		$map['pid'] = array('in',$arr);
 		$model = D('Visitor_detail');
 		//详细列表
 		if (!empty($model)) {
@@ -140,6 +161,8 @@ class VisitorAction extends CommonAction {
 		$months = $model -> field('base as id,base as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
 		$this -> assign('months', $months);
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
 		$this -> display();
 	}
 }
