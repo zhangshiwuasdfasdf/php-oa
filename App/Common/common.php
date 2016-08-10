@@ -2071,15 +2071,16 @@ function getFrontDesk(){
 function getRank($uid){
 	$model_user = D('UserView');
 	$user = $model_user->where(array('id'=>array('eq',$uid)))->find();
-	$position_sort = $user['position_sort'];
-	switch($position_sort){
-		case 2 : return 1;
-		case 3 : return 1;
-		case 4 : return 2;
-		case 5 : return 3;
-		case 6 : return 3;
-		case 7 : return 3;
-		default :return false;
+	$position_name = $user['position_name'];
+	switch($position_name){
+		case '常务副总' : return 1;
+		case '副总' : return 1;
+		case '总监' : return 1;
+		case '经理' : return 2;
+		case '主管' : return 3;
+		case '助理' : return 3;
+		case '员工' : return 3;
+		default :return 3;
 	}
 }
 function getlength($uid){//获取从根节点到uid的长度
