@@ -554,7 +554,6 @@ class CommonAction extends Action {
 		}
 
 		//取得满足条件的记录数
-
 		$count_model = clone $model;
 		//取得满足条件的记录数
 		if (!empty($count_model -> pk)) {

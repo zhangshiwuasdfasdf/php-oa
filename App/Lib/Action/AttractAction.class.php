@@ -4,6 +4,13 @@ class AttractAction extends CommonAction {
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
+		if (!empty($_POST['be_create']) && !empty($_POST['en_create'])) {
+			$map['months'] = array('between', array($_POST['be_create'],$_POST['en_create']));
+		}elseif (!empty($_POST['be_create'])) {
+			$map['months'] = array('egt', $_POST['be_create']);
+		}elseif (!empty($_POST['en_create'])) {
+			$map['months'] = array('elt', $_POST['en_create']);
+		}
 		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
 			$map['user_name'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
@@ -19,12 +26,14 @@ class AttractAction extends CommonAction {
 			$info = $this -> _list($model, $map);
 			$this -> assign('info', $info);
 		}
-		$addr = $model -> field('base as id,base as name') ->distinct(true) -> select();
-		$months = $model -> field('months as id,months as name') ->distinct(true) -> select();
-		$user_name = $model -> field('user_id as id,user_name as name') ->distinct(true) -> select();
+		$addr = $model -> where('is_del = 0') -> field('base as id,base as name') ->distinct(true) -> select();
+		$user_name = $model -> where('is_del = 0') -> field('user_id as id,user_name as name') ->distinct(true) -> select();
+		$months = $model -> where('is_del = 0') -> field('months as id,months as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
-		$this -> assign('months', $months);
 		$this -> assign('user_name', $user_name);
+		$this -> assign('months', $months);
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
 		$this -> display();	
 	}
 	//下载模板
@@ -62,13 +71,31 @@ class AttractAction extends CommonAction {
 				$inputFileName = $file_info['savepath'] . $file_info["savename"];
 				$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 				$sd = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);//转行为数组格式
+				/*header("Content-Type:text/html;charset=utf-8");
+				dump($sd);die;*/
+				//随机判断模板格式
+				$a = $sd[1];
+				$b = $sd[2];
+				$c = $sd[3];
+				if($a['A'] != '今天是' || $a['C'] != '考核截止日期' || $a['E'] != '本次考核周期天数' || $a['G'] != '本月签约目标' || $a['I'] != '本月累计签约' || $b['A'] != '日期' || $b['D'] != '招商人员' || $b['I'] != '客户意向'){
+					if (file_exists($inputFileName)) {
+						unlink($inputFileName);
+					}
+					$this -> error('模板格式错误，无法导入!',get_return_url());die;
+				}
+				if($c['A'] == '' || $c['B'] == '' || $c['D'] == '' || $c['I'] == ''){
+					if (file_exists($inputFileName)) {
+						unlink($inputFileName);
+					}
+					$this -> error('导入信息不全，无法导入!',get_return_url());die;
+				}
 				$date['user_id'] = get_user_id();
 				$date['user_name'] = get_user_name();
 				$date['create_time'] = time();
 				$rq = explode('-',trim($sd[1]['B']));
 				$date['today'] = '20'.$rq[2].'/'.$rq[0].'/'.$rq[1];
-				$rq = explode('-',trim($sd[1]['D']));
-				$date['end_time'] = '20'.$rq[2].'/'.$rq[0].'/'.$rq[1];
+				$rq2 = explode('-',trim($sd[1]['D']));
+				$date['end_time'] = '20'.$rq2[2].'/'.$rq2[0].'/'.$rq2[1];
 				$date['days'] = $sd[1]['F'];
 				$date['target'] = $sd[1]['H'];
 				$date['actuality'] = $sd[1]['J'];
@@ -129,12 +156,6 @@ class AttractAction extends CommonAction {
 		$this -> _del();
 	}
 	
-	function _search_filter2(&$map) {
-		$map['is_del'] = array('eq', '0');
-		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
-			$map['person'] = array('like', "%" . $_POST['keyword'] . "%");
-		}
-	}
 	//统计
 	function statistics(){
 		$pinfo = M('Attract') -> where('is_del = 0') -> field('id')->select();
@@ -144,26 +165,35 @@ class AttractAction extends CommonAction {
 			}
 		}
 		$map = $this -> _search("Attract_detail");
-		if (method_exists($this, '_search_filter2')) {
-			$this -> _search_filter2($map);
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($map);
 		}
 		$map['pid'] = array('in',$arr);
 		$model = D('Attract_detail');
 		//详细列表
 		if (!empty($model)) {
-			$info = $this -> _list($model, $map);
+			$info = $this -> _list($model, $map,'riqi');
 			$this -> assign('info', $info);
 		}
 		//今天是
 		$attr = M('attract');
-		$where['is_del'] = '0';
-		$where['today'] = date("Y/m/d");
-		$data = $attr -> where($where)->find();
-		$addr = $model -> field('base as id,base as name') ->distinct(true) -> select();
-		$months = $model -> field('months as id,months as name') ->distinct(true) -> select();
+		if(!empty($map['months'][1][0])){
+			$mid = $map['months'][1][0];
+			$mid = implode('/',explode('-',$mid));
+			$prefix = substr($mid, 0, 7);
+			$where3['end_time'] = array('like', $prefix .'%');
+			$where3['is_del'] = 0;
+			$data = $attr -> where($where3) -> find();
+		}else{
+			$mid = $attr -> where('is_del = 0') -> max('id');
+			$data = $attr -> find($mid);
+		}
+		$where2['pid'] = array('in',$arr);
+		$addr = $model -> where($where2) -> field('base as id,base as name') ->distinct(true) -> select();
 		$this -> assign('data',$data);
 		$this -> assign('addr_list', $addr);
-		$this -> assign('months', $months);
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
 		$this -> display();
 	}
 	

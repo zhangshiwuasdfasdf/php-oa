@@ -1,7 +1,7 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'已签约客户明细年度进度导入','search'=>'M'))}
+{:W('PageHeader',array('name'=>'已签约客户明细年进度导入','search'=>'N'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
-	<div class="adv_search panel panel-default  display-none"  id="adv_search">
+	<div class="adv_search panel panel-default "  id="adv_search">
 		<div class="panel-heading">
 			<div class="row">
 				<h4 class="col-xs-6">高级搜索</h4>
@@ -13,11 +13,21 @@
 		</div>
 		<div class="panel-body">
 			<div class="form-group col-sm-6">
-				<label class="col-sm-4 control-label" for="li_name">月份：</label>
+				<label class="col-sm-4 control-label" for="li_name">导入时间：</label>
 				<div class="col-sm-8">
-					<select class="form-control" name="eq_months">
-							<option value="">选择时间</option>
-							{:fill_option($months)};
+					<div class="input-daterange input-group" >
+						<input type="text" class="input-sm form-control text-center" name="be_create" />
+						<span class="input-group-addon">-</span>
+						<input type="text" class="input-sm form-control text-center" name="en_create" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="li_content">导入人：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_user_id">
+							<option value="">选择导入人</option>
+							{:fill_option($user_name)};
 					</select>
 				</div>
 			</div>
@@ -55,31 +65,13 @@
 	<ul>
 		<li class="thead">
 			<div class="pull-left">
-				<span class="col-10 ">导入人</span>
-			</div>
-			<div class="pull-left">
 				<span class="col-15 ">导入时间</span>
 			</div>
 			<div class="pull-left">
+				<span class="col-10 ">导入人</span>
+			</div>
+			<div class="pull-left">
 				<span class="col-10 ">基地</span>
-			</div>
-			<div class="pull-left">
-				<span class="col-15 ">截止目前时间进度</span>
-			</div>
-			<div class="pull-left">
-				<span class="col-15 ">考核开始日期</span>
-			</div>
-			<div class="pull-left">
-				<span class="col-15 ">考核截止日期</span>
-			</div>
-			<div class="pull-left">
-				<span class="col-15 ">招商任务完成进度</span>
-			</div>
-			<div class="pull-left">
-				<span class="col-15 ">截止目前累计签约数量</span>
-			</div>
-			<div class="pull-left">
-				<span class="col-15 ">年度目标签约数量</span>
 			</div>
 			<div class="pull-right">
 				<span class="col-15 ">操作</span>
@@ -93,31 +85,13 @@
 			<foreach name="list" item="vo">
 				<li class="tbody">
 					<div class="pull-left">
-						<span class="col-10 ">{$vo.user_name}&nbsp;</span>
-					</div>
-					<div class="pull-left">
 						<span class="col-15 ">{$vo.create_time|date='Y-m-d H:i:s',###}&nbsp;</span>
 					</div>
 					<div class="pull-left">
+						<span class="col-10 ">{$vo.user_name}&nbsp;</span>
+					</div>
+					<div class="pull-left">
 						<span class="col-10 ">{$vo.base}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-15 ">{$vo.current}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-15 ">{$vo.kh_start}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-15 ">{$vo.kh_off}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-15 ">{$vo.schedule}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-15 ">{$vo.signed}&nbsp;</span>
-					</div>
-					<div class="pull-left">
-						<span class="col-15 ">{$vo.total_signed}&nbsp;</span>
 					</div>
 					<div class="pull-right">
 						<span class="col-10 "><a href="{:U('read','id='.$vo['id'])}">查看详情</a></span>
