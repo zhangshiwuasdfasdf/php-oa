@@ -808,6 +808,41 @@ class ReportAction extends CommonAction {
 		if (!empty($end_time_0)) {
 			$where['date'][] = array('elt', date('Y-m',strtotime(trim($end_time_0))));
 		}
+		$role_user = D('Role')->get_role_list(get_user_id());
+		foreach ($role_user as $k=>$v){
+			$role = M('Role')->field('name')->find($v['role_id']);
+			$role_name = $role['name'];
+			$res = explode('工作计划查看-',$role_name);
+			if(count($res)>1){
+				if($res[1] == '全国'){
+					$addr['addr'] = array();
+					$addr['addr'] = array('neq','');
+					$addr['_string'] = '1=1';
+					break;
+				}elseif ($res[1] == '杭州'){
+					$dept = M('Dept')->where(array('name'=>'杭州园区'))->find();
+					$arr = get_child_dept_all($dept['id']);
+					$arr[] = $dept['id'];
+					$addr['addr_id'] = array('in',$arr);
+				}elseif ($res[1] == '宁波'){
+					$dept = M('Dept')->where(array('name'=>'宁波园区'))->find();
+					$arr = get_child_dept_all($dept['id']);
+					$arr[] = $dept['id'];
+					$addr['addr_id'] = array('in',$arr);
+				}elseif ($res[1] == '金华'){
+					$dept = M('Dept')->where(array('name'=>'金华园区'))->find();
+					$arr = get_child_dept_all($dept['id']);
+					$arr[] = $dept['id'];
+					$addr['addr_id'] = array('in',$arr);
+				}
+			}
+		}
+// 		if($addr['_string']){
+// 			$addr['_string'] = substr($addr['_string'],2);
+// 		}
+		
+		$where['_complex'] = $addr;
+// 		dump($where);
 		$model = D("WorkPlan");
 		if (!empty($model)) {
 			$this -> _list($model, $where);
