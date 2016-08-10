@@ -1543,16 +1543,18 @@ class ReportAction extends CommonAction {
 		//由于不能使用getCellValue，故暂时把数据存放在此，用于后面比较
 		$store_name_array = array();
 		for($i=ord('C');$i<ord('C')+count($store_name);$i++){
-			$q = $q -> setCellValue(chr($i)."2", $store_name[$i-ord('C')]);
-			$q ->getStyle(chr($i)."2")->getAlignment()->setWrapText(true);
+			$q = $q -> setCellValue(chrr($i)."2", $store_name[$i-ord('C')]);
+			$q ->getStyle(chrr($i)."2")->getAlignment()->setWrapText(true);
 			$q ->getRowDimension(2)->setRowHeight(80);
-			$q = $q -> setCellValue(chr($i)."3", $i-ord('C')+1);
-			$store_name_array[chr($i)] = $store_name[$i-ord('C')];
+			$q = $q -> setCellValue(chrr($i)."3", $i-ord('C')+1);
+			$store_name_array[chrr($i)] = $store_name[$i-ord('C')];
 		}
+		
 		$q = $q -> setCellValue(ToNumberSystem26(count($store_name)+3)."2", "合计");
 		$q ->getStyle(ToNumberSystem26(count($store_name)+3)."2")->getAlignment()->setWrapText(true);
 		$q ->getRowDimension(2)->setRowHeight(80);
 		$store_name_array[ToNumberSystem26(count($store_name)+3)] = "合计";
+		
 		
 		$i=4;
 		//由于不能使用getCellValue，故暂时把数据存放在此，用于后面比较
@@ -1581,24 +1583,24 @@ class ReportAction extends CommonAction {
 			for ($jj=ord('C');$jj<=ord('C')+count($store_name);$jj++){
 				$date_t = $date_array[$ii];
 				$express_t = $express_array[$ii];
-				$store_name_t = $store_name_array[chr($jj)];
+				$store_name_t = $store_name_array[chrr($jj)];
 				
 				if($store_name_t=="合计"){
 					if($express_t=="小计"){
-						$q = $q -> setCellValue(chr($jj).$ii, $sum_day[$date_t]);
+						$q = $q -> setCellValue(chrr($jj).$ii, $sum_day[$date_t]);
 					}elseif($express_t=="总计"){
-						$q = $q -> setCellValue(chr($jj).$ii, array_sum($sum_day));
+						$q = $q -> setCellValue(chrr($jj).$ii, array_sum($sum_day));
 					}else{
-						$q = $q -> setCellValue(chr($jj).$ii, array_sum($aa[$date_t][$express_t])?array_sum($aa[$date_t][$express_t]):0);
+						$q = $q -> setCellValue(chrr($jj).$ii, array_sum($aa[$date_t][$express_t])?array_sum($aa[$date_t][$express_t]):0);
 					}
 				}else{
 					if($express_t=="小计"){
-						$q = $q -> setCellValue(chr($jj).$ii, array_sum($store_name_same_day[$date_t][$store_name_t])?array_sum($store_name_same_day[$date_t][$store_name_t]):0);
+						$q = $q -> setCellValue(chrr($jj).$ii, array_sum($store_name_same_day[$date_t][$store_name_t])?array_sum($store_name_same_day[$date_t][$store_name_t]):0);
 					}elseif($express_t=="总计"){
-						$q = $q -> setCellValue(chr($jj).$ii, $store_name_same[$store_name_t]);
+						$q = $q -> setCellValue(chrr($jj).$ii, $store_name_same[$store_name_t]);
 					}else{
 						if($aa[$date_t][$express_t][$store_name_t]!==''){
-							$q = $q -> setCellValue(chr($jj).$ii, $aa[$date_t][$express_t][$store_name_t]);
+							$q = $q -> setCellValue(chrr($jj).$ii, $aa[$date_t][$express_t][$store_name_t]);
 						}
 					}
 				}

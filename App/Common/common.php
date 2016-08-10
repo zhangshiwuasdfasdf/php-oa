@@ -2822,4 +2822,11 @@ function get_first_dept(){
 		return get_dept_name();
 	}
 }
+/*
+ * chr()的强化版
+ * 例如：chrr(91)='AA'
+ */
+function chrr($num){
+	return ToNumberSystem26($num-64);
+}
 ?>
