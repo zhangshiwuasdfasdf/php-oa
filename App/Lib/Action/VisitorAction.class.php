@@ -25,11 +25,9 @@ class VisitorAction extends CommonAction {
 			$info = $this -> _list($model, $map);
 			$this -> assign('info', $info);
 		}
-		$addr = $model -> field('base as id,base as name') ->distinct(true) -> select();
-		$months = $model -> field('months as id,months as name') ->distinct(true) -> select();
-		$user_name = $model -> field('user_id as id,user_name as name') ->distinct(true) -> select();
+		$addr = $model -> where('is_del = 0') -> field('base as id,base as name') ->distinct(true) -> select();
+		$user_name = $model -> where('is_del = 0') -> field('user_id as id,user_name as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
-		$this -> assign('months', $months);
 		$this -> assign('user_name', $user_name);
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
@@ -70,6 +68,20 @@ class VisitorAction extends CommonAction {
 				$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 				$sd = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);//转行为数组格式
 //				header("Content-Type:text/html;charset=utf-8");
+				$a = $sd[1];
+				$b = $sd[2];
+				if($a['A'] != '到访日期' || $a['B'] != '招商方式' || $a['C'] != '信息来源' || $a['D'] != '招商人员' || $a['E'] != '客户姓名' || $a['G'] != '主营行业' || $a['I'] != '预计日发单量' || $a['K'] != '客户最关心的问题'){
+					if (file_exists($inputFileName)) {
+						unlink($inputFileName);
+					}
+					$this -> error('模板格式错误，无法导入!',get_return_url());die;
+				}
+				if($b['A'] == '' || $b['B'] == '' || $b['D'] == '' || $b['I'] == ''){
+					if (file_exists($inputFileName)) {
+						unlink($inputFileName);
+					}
+					$this -> error('导入信息不全，无法导入!',get_return_url());die;
+				}
 				$date['user_id'] = get_user_id();
 				$date['user_name'] = get_user_name();
 				$date['create_time'] = date("Y-m-d H:i:s");
@@ -98,6 +110,7 @@ class VisitorAction extends CommonAction {
 						$info['concern'] = $sd[$i]['K'];
 						$info['remarks'] = $sd[$i]['L'];
 						$info['base'] = $yq_name;
+						$info['months'] = '20'.$rq[2].'-'.$rq[0].'-'.$rq[1];
 						$ad -> add($info);
 					}
 				}
@@ -153,14 +166,13 @@ class VisitorAction extends CommonAction {
 		$model = D('Visitor_detail');
 		//详细列表
 		if (!empty($model)) {
-			$info = $this -> _list($model, $map);
+			$info = $this -> _list($model, $map,'riqi');
 			$this -> assign('info', $info);
 		}
 		//今天是
-		$addr = $model -> field('riqi as id,riqi as name') ->distinct(true) -> select();
-		$months = $model -> field('base as id,base as name') ->distinct(true) -> select();
+		$where2['pid'] = array('in',$arr);
+		$addr = $model -> where($where2) -> field('base as id,base as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
-		$this -> assign('months', $months);
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
 		$this -> display();

@@ -1,7 +1,7 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'招商进度日报表','search'=>'M'))}
+{:W('PageHeader',array('name'=>'招商进度日报表','search'=>'N'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
-	<div class="adv_search panel panel-default  display-none"  id="adv_search">
+	<div class="adv_search panel panel-default "  id="adv_search">
 		<div class="panel-heading">
 			<div class="row">
 				<h4 class="col-xs-6">高级搜索</h4>
@@ -15,10 +15,11 @@
 			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label" for="li_name">月份：</label>
 				<div class="col-sm-8">
-					<select class="form-control" name="eq_months">
-							<option value="">选择月份</option>
-							{:fill_option($months)};
-					</select>
+					<div class="input-daterange input-group" >
+						<input type="text" class="input-sm form-control text-center" name="be_create" />
+						<span class="input-group-addon">-</span>
+						<input type="text" class="input-sm form-control text-center" name="en_create" />
+					</div>
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
@@ -33,7 +34,7 @@
 		</div>
 	</div>
 </form>
-<div style="width: 1650px;height: auto;">
+<div style="width: 100%;height: auto;overflow: auto">
 				<ul class="right_ul">
 					<li>
 						<span>今天是</span>
@@ -80,10 +81,10 @@
 			</foreach>
 		</empty>
 	</ul>
-	<div class="pagination">
+</div>
+<div class="pagination">
 				{$page}
 			</div>
-</div>
 <style>
 	.right_ul{
 		list-style:none;

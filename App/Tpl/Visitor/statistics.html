@@ -1,7 +1,7 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'到访客户池统计','search'=>'M'))}
+{:W('PageHeader',array('name'=>'到访客户池统计','search'=>'N'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
-	<div class="adv_search panel panel-default  display-none"  id="adv_search">
+	<div class="adv_search panel panel-default "  id="adv_search">
 		<div class="panel-heading">
 			<div class="row">
 				<h4 class="col-xs-6">高级搜索</h4>
@@ -13,7 +13,7 @@
 		</div>
 		<div class="panel-body">
 			<div class="form-group col-sm-6">
-				<label class="col-sm-4 control-label" for="be_create">导入时间段：</label>
+				<label class="col-sm-4 control-label" for="be_create">到访日期：</label>
 				<div class="col-sm-8">
 					<div class="input-daterange input-group" >
 						<input type="text" class="input-sm form-control text-center" name="be_create" />
@@ -27,14 +27,14 @@
 				<div class="col-sm-8">
 					<select class="form-control" name="eq_base">
 							<option value="">选择部门</option>
-							{:fill_option($months)};
+							{:fill_option($addr_list)};
 					</select>
 				</div>
 			</div>
 		</div>
 	</div>
 </form>
-<div style="width: 1650px;height: auto;">
+<div style="width: 100%;height: auto;overflow: auto">
 				<ul class="right_ul">
 					<li class="title_li">
 						<span>到访日期</span>
@@ -47,8 +47,8 @@
 						<span>商家快递费用</span>
 						<span>预计日发单量</span>
 						<span>计划签约日期</span>
-						<span>客户最关心的问题</span>
-						<span style="width: 332px;">备注</span>	
+						<span style="width: 220px;">客户最关心的问题</span>
+						<span style="width: 232px;">备注</span>	
 					</li>
 					<empty name="list">
 						<li class="no-data">
@@ -73,10 +73,10 @@
 			</foreach>
 		</empty>
 	</ul>
-	<div class="pagination">
+</div>
+<div class="pagination">
 				{$page}
 			</div>
-</div>
 <style>
 	.right_ul{
 		list-style:none;
