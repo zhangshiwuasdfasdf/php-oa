@@ -1506,7 +1506,10 @@ class ReportAction extends CommonAction {
 // 		$where_detail = $where['_complex']['delivery_detail'];
 		$where_detail['store_problem_id'] = array('in',$store_problem_id);
 	
-// 		$store_problem_detail = M("StoreProblemDetail") -> where($where_detail) -> select();
+		if($_REQUEST['export']=='1'){
+			$store_problem_detail = M("StoreProblemDetail") -> where($where_detail) ->order('accept_date desc')-> select();
+			$this->_export_problem($store_problem_detail);
+		}
 		$res = $this->_list(M("StoreProblemDetail"), $where_detail,'accept_date');
 		$this -> assign('sum_item', count($res));
 // 		dump($where_detail);
@@ -1606,6 +1609,118 @@ class ReportAction extends CommonAction {
 		// Rename worksheet
 		$title = '基地发货日报导出';
 		$objPHPExcel -> getActiveSheet() -> setTitle('基地发货日报导出');
+		
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel -> setActiveSheetIndex(0);
+		$file_name = $title.".xlsx";
+		// Redirect output to a client’s web browser (Excel2007)
+		header("Content-Type: application/force-download");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header("Content-Disposition:attachment;filename =" . str_ireplace('+', '%20', URLEncode($file_name)));
+		header('Cache-Control: max-age=0');
+		
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		//readfile($filename);
+		$objWriter -> save('php://output');
+		exit ;
+	}
+	function _export_problem($store_problem_detail){
+		//导入thinkphp第三方类库
+		Vendor('Excel.PHPExcel');
+		
+		$objPHPExcel = new PHPExcel();
+		
+		$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+		// Add some data
+		// 		$i = 1;
+		//dump($list);
+		
+		$q = $objPHPExcel -> setActiveSheetIndex(0);
+		//
+		$q = $q -> setCellValue("A1", '基本信息');
+		$q->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$q = $q -> mergeCells('A1:J1');
+		$q = $q -> setCellValue("K1", '事件信息');
+		$q->getStyle('K1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$q = $q -> mergeCells('K1:M1');
+		$q = $q -> setCellValue("N1", '处理信息');
+		$q->getStyle('N1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$q = $q -> mergeCells('N1:P1');
+		$q = $q -> setCellValue("Q1", '赔付金额');
+		$q->getStyle('Q1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$q = $q -> mergeCells('Q1:V1');
+		
+		$row_2 = array(
+			'A'=>'仓库地点',
+			'B'=>'受理日期',
+			'C'=>'受理人',
+			'D'=>'店铺名称',
+			'E'=>'系统订单号',
+			'F'=>'淘宝订单号',
+			'G'=>'收货人',
+			'H'=>'买家id',
+			'I'=>'快递公司',
+			'J'=>'快递单号',
+			'K'=>'问题大类',
+			'L'=>'问题小类',
+			'M'=>'事件详情',
+			'N'=>'处理详情',
+			'O'=>'处理进度',
+			'P'=>'协调结果',
+			'Q'=>'货品成本价',
+			'R'=>'首发快递费',
+			'S'=>'重发快递费',
+			'T'=>'退件快递费',
+			'U'=>'其他',
+			'V'=>'小计',
+		);
+		foreach ($row_2 as $k=>$v){
+			$q = $q -> setCellValue($k."2", $v);
+			$q->getStyle($k.'2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		}
+		
+		foreach ($store_problem_detail as $k=>$v){
+			$row = $k+3;
+			unset($v['id']);
+			unset($v['store_problem_id']);
+			$col = ord('A');
+			foreach ($v as $kk=>$vv){
+				$q = $q -> setCellValueExplicit(chr($col).$row, $vv,PHPExcel_Cell_DataType::TYPE_STRING);
+				$q->getStyle(chr($col).$row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+				$col++;
+			}
+		}
+		
+		$col_width = array(
+				'A'=>10,
+				'B'=>20,
+				'C'=>20,
+				'D'=>20,
+				'E'=>20,
+				'F'=>20,
+				'G'=>20,
+				'H'=>20,
+				'I'=>20,
+				'J'=>20,
+				'K'=>20,
+				'L'=>20,
+				'M'=>60,
+				'N'=>60,
+				'O'=>20,
+				'P'=>20,
+				'Q'=>20,
+				'R'=>20,
+				'S'=>20,
+				'T'=>20,
+				'U'=>20,
+				'V'=>20,
+		);
+		foreach ($col_width as $k=>$v){
+			$q ->getColumnDimension($k)->setWidth($v);
+		}
+		// Rename worksheet
+		$title = '商家问题受理表导出';
+		$objPHPExcel -> getActiveSheet() -> setTitle('商家问题受理表导出');
 		
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel -> setActiveSheetIndex(0);

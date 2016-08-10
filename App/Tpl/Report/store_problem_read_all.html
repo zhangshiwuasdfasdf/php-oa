@@ -18,6 +18,20 @@
 	.right_bottom span{border-bottom:1px solid #000; display:block; width:120px; height:26px; text-align:center; float:left; border-right:solid 1px #000;}
 </style>
 {:W('PageHeader',array('name'=>'查看商家问题受理','search'=>'N'))}
+<div class="operate panel panel-default">
+		<div class="panel-body">
+			<div class="pull-left">
+				<div class="btn-group">
+					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 管理 <b class="fa fa-caret-down"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a onclick="export_store_problem();" >导出</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+</div>
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default"  id="adv_search">
 		<div class="panel-heading">
