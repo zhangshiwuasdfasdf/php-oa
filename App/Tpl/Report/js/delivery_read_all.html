@@ -3,7 +3,11 @@
 		set_return_url();
 	}); 
 	function export_delivery_report_condition() {
-		window.open("{:U('delivery_read_all','export=1')}", "_blank");
+		var eq_addr = "{$post.eq_addr}";
+		var be_create_time = "{$post.be_create_time}";
+		var en_create_time = "{$post.en_create_time}";
+		
+		window.open("{:U('delivery_read_all',array('export'=>1,'eq_addr'=>'"+eq_addr+"','be_create_time'=>'"+be_create_time+"','en_create_time'=>'"+en_create_time+"'))}", "_blank");
 		return false;
 	}
 </script>

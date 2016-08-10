@@ -3,7 +3,13 @@
 		set_return_url();
 	}); 
 	function export_store_problem() {
-		window.open("{:U('store_problem_read_all','export=1')}", "_blank");
+		var eq_addr = "{$post.eq_addr}";
+		var eq_warehouse_addr = "{$post.eq_warehouse_addr}";
+		var eq_handle_schedule = "{$post.eq_handle_schedule}";
+		var be_accept_date = "{$post.be_accept_date}";
+		var en_accept_date = "{$post.en_accept_date}";
+		
+		window.open("{:U('store_problem_read_all',array('export'=>1,'eq_addr'=>'"+eq_addr+"','eq_warehouse_addr'=>'"+eq_warehouse_addr+"','eq_handle_schedule'=>'"+eq_handle_schedule+"','be_accept_date'=>'"+be_accept_date+"','en_accept_date'=>'"+en_accept_date+"'))}", "_blank");
 		return false;
 	}
 </script>

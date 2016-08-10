@@ -15,14 +15,14 @@ class ReportAction extends CommonAction {
 	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','delivery_read'=>'read','delivery_read_all'=>'read','delivery_edit'=>'read','delivery_del'=>'read','delivery'=>'read','export_delivery_report' => 'read','import_delivery_report' => 'read','work_plan'=>'read','add_work_plan'=>'read','export_work_plan_report' => 'read','import_work_plan_report' => 'read','save_work_plan'=>'read','work_plan_del'=>'read','work_plan_read'=>'read','store_problem'=>'read','store_problem_read_all'=>'read','add_store_problem'=>'read','export_store_problem_report'=>'read','import_store_problem_report'=>'read','store_problem_read'=>'read','store_problem_del'=>'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
-		if (!empty($_POST['eq_addr'])) {
-			$where_delivery['addr'] = array('eq',$_POST['eq_addr']);
+		if (!empty($_REQUEST['eq_addr'])) {
+			$where_delivery['addr'] = array('eq',$_REQUEST['eq_addr']);
 		}
-		if (!empty($_POST['eq_user'])) {
-			$where_delivery['user_name'] = array('eq',$_POST['eq_user']);
+		if (!empty($_REQUEST['eq_user'])) {
+			$where_delivery['user_name'] = array('eq',$_REQUEST['eq_user']);
 		}
-		$start_time_0 = $_POST['be_create_time_0'];
-		$end_time_0 = $_POST['en_create_time_0'];
+		$start_time_0 = $_REQUEST['be_create_time_0'];
+		$end_time_0 = $_REQUEST['en_create_time_0'];
 		if (!empty($start_time_0)) {
 			$where_delivery['create_time'][] = array('egt', strtotime(trim($start_time_0)));
 		}
@@ -30,8 +30,8 @@ class ReportAction extends CommonAction {
 			$where_delivery['create_time'][] = array('elt', strtotime(trim($end_time_0).' 24:00:00'));
 		}
 		
-		$start_time = $_POST['be_create_time'];
-		$end_time = $_POST['en_create_time'];
+		$start_time = $_REQUEST['be_create_time'];
+		$end_time = $_REQUEST['en_create_time'];
 		if (!empty($start_time)) {
 			$where_delivery_detail['date'][] = array('egt', trim($start_time));
 		}
@@ -202,12 +202,13 @@ class ReportAction extends CommonAction {
 		}
 		
 		$where['_complex']['delivery']['_complex'] = $addr;
-		
+		$this -> assign('post', $_POST);
 // 		$where['id'] = array('eq', $id);
 		$delivery = M("Delivery") -> where($where['_complex']['delivery']) -> order('id desc') -> select();
 		$this -> assign('delivery', $delivery);
 // 		dump($where['_complex']['delivery']);
-// 		dump(count($delivery));
+// 		dump($_REQUEST);
+// 		dump(($delivery));
 		
 		$delivery_id = rotate($delivery);
 		$delivery_id = $delivery_id['id'];
@@ -217,7 +218,7 @@ class ReportAction extends CommonAction {
 		$where_detail['pid'] = array('in',$delivery_id);
 // 		dump($where_detail);
 		$delivery_detail = M("DeliveryDetail") -> where($where_detail) -> select();
-// 		dump($delivery_detail);
+		
 // 		return;
 		$sum_day = array();
 		$aa = array();
@@ -231,7 +232,7 @@ class ReportAction extends CommonAction {
 				$sum_day[$v['date']] += $v['num'];
 			}
 		}
-		// 		dump($aa);
+// 				dump($aa);
 		$this -> assign('sum_day', $sum_day);
 		$this -> assign('delivery_detail', $aa);
 		$this -> assign('store_name_same_day', $store_name_same_day);
@@ -1475,17 +1476,17 @@ class ReportAction extends CommonAction {
 			$addr['_string'] = substr($addr['_string'],2);
 		}
 	
-		if (!empty($_POST['eq_addr'])) {
-			$where['addr'] = array('eq',$_POST['eq_addr']);
+		if (!empty($_REQUEST['eq_addr'])) {
+			$where['addr'] = array('eq',$_REQUEST['eq_addr']);
 		}
-		if (!empty($_POST['eq_warehouse_addr'])) {
-			$where_detail['warehouse_addr'] = array('eq',$_POST['eq_warehouse_addr']);
+		if (!empty($_REQUEST['eq_warehouse_addr'])) {
+			$where_detail['warehouse_addr'] = array('eq',$_REQUEST['eq_warehouse_addr']);
 		}
-		if (!empty($_POST['eq_handle_schedule'])) {
-			$where_detail['handle_schedule'] = array('eq',$_POST['eq_handle_schedule']);
+		if (!empty($_REQUEST['eq_handle_schedule'])) {
+			$where_detail['handle_schedule'] = array('eq',$_REQUEST['eq_handle_schedule']);
 		}
-		$start_time = $_POST['be_accept_date'];
-		$end_time = $_POST['en_accept_date'];
+		$start_time = $_REQUEST['be_accept_date'];
+		$end_time = $_REQUEST['en_accept_date'];
 		if (!empty($start_time)) {
 			$where_detail['accept_date'][] = array('egt', date('Y/m/d H:i:s',strtotime(trim($start_time))));
 		}
@@ -1494,7 +1495,8 @@ class ReportAction extends CommonAction {
 		}
 		
 		$where['_complex'] = $addr;
-		
+// 		dump($_POST);
+		$this -> assign('post', $_POST);
 		// 		$where['id'] = array('eq', $id);
 		$store_problem = M("StoreProblem") -> where($where) -> order('id desc') -> select();
 		$this -> assign('store_problem', $store_problem);
