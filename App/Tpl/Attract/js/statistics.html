@@ -1,0 +1,10 @@
+<script type="text/javascript">
+$(document).ready(function() {
+});
+function export_info(){
+	var be = "{$post.be_create}";
+	var en = "{$post.en_create}";
+	var base = "{$post.eq_base}";
+	window.open("{:U('export_info',array('be_create'=>'"+be+"','en_create'=>'"+en+"','eq_base'=>'"+base+"'))}");
+}
+</script>

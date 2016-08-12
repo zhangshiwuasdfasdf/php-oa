@@ -10,10 +10,10 @@
 	height: 2000px;
 	display: none;
 }
-.input-daterange {
+.input-daterange ,.input-date-m {
 	width: 260px;
 }
-.input-daterange .input-date {
+.input-daterange .input-date ,.input-date-m .input-date {
 	width: 120px;
 }
 .pace .pace-progress {
@@ -709,6 +709,9 @@ ul.tree_menu i {
 	width: 110px;
 }
 .input-date-time,.input-date-time-readonly {
+	width: 150px;
+}
+.input-date-m,.input-date-m-readonly {
 	width: 150px;
 }
 #top_menu .nav {

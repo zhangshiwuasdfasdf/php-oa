@@ -8,17 +8,18 @@
 				<div class="col-xs-6 text-right">
 					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
 					<a  class="btn btn-sm " onclick="close_adv_search();">关闭</a>
+					<a  class="btn btn-sm btn-primary" onclick="export_info();">导出</a>
 				</div>
 			</div>
 		</div>
 		<div class="panel-body">
 			<div class="form-group col-sm-6">
-				<label class="col-sm-4 control-label" for="li_name">签约时间：</label>
+				<label class="col-sm-4 control-label" for="li_name">月份：</label>
 				<div class="col-sm-8">
-					<div class="input-daterange input-group" >
-						<input type="text" class="input-sm form-control text-center" name="be_create" />
+					<div class="input-group" >
+						<input type="text" class="input-date-m input-sm form-control text-center" name="be_create" />
 						<span class="input-group-addon">-</span>
-						<input type="text" class="input-sm form-control text-center" name="en_create" />
+						<input type="text" class="input-date-m input-sm form-control text-center" name="en_create" />
 					</div>
 				</div>
 			</div>
@@ -102,7 +103,7 @@
 						<span>{$vo.company}</span>
 						<span>{$vo.baling_fee}</span>
 						<span>{$vo.pledge}</span>
-						<span>{$vo.remark}</span>	
+						<span><a title="{$vo.remark}">{$vo.remark}</a></span>	
 					</li>
 			</foreach>
 		</empty>
