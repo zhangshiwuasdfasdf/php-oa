@@ -3,26 +3,20 @@
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
 	<input type="hidden" id="id" name="id" value="{$vo.id}">
+	<input type="hidden" id="forum_id" name="forum_id" value="{$vo.forum_id}">
+	<input type="hidden" id="folder_id" name="folder_id" value="{$vo.folder_id}">
 	<input type="hidden" id="add_file" name="add_file" value="{$vo.add_file}">
 	<input type="hidden" id="opmode" name="opmode" value="edit">
 
 	<div class="form-group">
-		<label class="col-sm-2 control-label" for="name">标题*：</label>
-		<div class="col-sm-10">
-			<input value="{$vo.name}" class="form-control" type="text" id="name" name="name" check="require" msg="请输入标题">
+		<div class="col-xs-12">
+			<textarea  class="editor" id="content" name="content" style="width:100%;height:300px;" check="require" msg="请输入内容">{$vo.content}</textarea>
 		</div>
 	</div>
-
 	<div class="form-group">
 		<label class="col-sm-2 control-label">附件：</label>
 		<div class="col-sm-10">
 			{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'edit'))}
-		</div>
-	</div>
-
-	<div class="form-group">
-		<div class="col-xs-12">
-			<textarea  class="editor" id="content" name="content" style="width:100%;height:300px;" check="require" msg="请输入内容">{$vo.content}</textarea>
 		</div>
 	</div>
 	<div class="action">

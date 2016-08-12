@@ -16,8 +16,8 @@ class ForumAction extends CommonAction {
 		'app_type' => 'folder',
 		'pid'=>'forum_id',
 		'sub_model'=>'ForumPost',
-		'action_auth' => array('folder' => 'read','mark' => 'admin', 'upload' => 'write'),
-		'sub_action_auth'=>array('save_post' => 'write', 'edit_post' => 'write', 'del_post' => 'admin')
+		'action_auth' => array('folder' => 'read','mark' => 'write', 'upload' => 'write'),
+		'sub_action_auth'=>array('save_post' => 'write', 'edit_post' => 'write', 'del_post' => 'admin','update_post' => 'write')
 	);
 	//过滤查询字段
 
@@ -131,6 +131,7 @@ class ForumAction extends CommonAction {
 		}
 
 		$this -> assign("forum_id", $id);
+		$this -> assign("folder_id", $folder_id);
 		$this -> display();
 	}
 
@@ -170,7 +171,7 @@ class ForumAction extends CommonAction {
 					$folder = M("Forum") -> distinct(true) -> where($where) -> field("folder") -> select();
 					if (count($folder) == 1) {
 						$auth = D("SystemFolder") -> get_folder_auth($folder[0]["folder"]);
-						if ($auth['admin'] == true) {
+						if ($auth['write'] == true) {
 							$field = 'is_del';
 							$result = $this -> _set_field($id, $field, 1);
 							if ($result) {
@@ -228,7 +229,24 @@ class ForumAction extends CommonAction {
 	}
 
 	public function save_post() {
-		$this->_save("ForumPost");
+		$id = $_POST['forum_id'];
+		$fid = $_POST['folder_id'];
+		$model = M("Forum");
+		$model -> where("id=$id") -> setInc('reply', 1);
+		
+		$model = D("ForumPost");
+		if (false === $model -> create()) {
+			$this -> error($model -> getError());
+		}
+		/*保存当前数据对象 */
+		$list = $model -> add();
+		if ($list !== false) {//保存成功
+			$this -> assign('jumpUrl', U('read',array('id'=>$id,'fid'=>$fid)));
+			$this -> success('新增成功!'.$list);
+		} else {
+			$this -> error('新增失败!');
+			//失败提示
+		}
 	}
 
 	public function edit_post(){
@@ -238,8 +256,29 @@ class ForumAction extends CommonAction {
 
 		$this->_edit("ForumPost");
 	}
+	
+	public function update_post(){
+		$id = $_REQUEST['forum_id'];
+		$fid = $_REQUEST['folder_id'];
+		$model = D("ForumPost");
+		if (false === $model -> create()) {
+			$this -> error($model -> getError());
+		}
+		$list = $model -> save();
+		if (false !== $list) {
+			$this -> assign('jumpUrl', U('read',array('id'=>$id,'fid'=>$fid)));
+			$this -> success('编辑成功!');
+			//成功提示
+		} else {
+			$this -> error('编辑失败!');
+			//错误提示
+		}
+	}
 
 	public function del_post(){
+		$forum_id = $_REQUEST['forum_id'];
+		$model = M("Forum");
+		$model -> where("id=$forum_id") -> setDec('reply', 1);
 		$id=$_REQUEST['id'];
 		$this->_del($id,"ForumPost");
 	}

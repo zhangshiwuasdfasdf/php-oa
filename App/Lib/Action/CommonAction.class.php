@@ -179,6 +179,8 @@ class CommonAction extends Action {
 			$this -> error(0, "读取失败", 0);
 		}			
 			$vo = $model -> find($id);
+			$vo['forum_id'] = $_REQUEST['forum_id'];
+			$vo['folder_id'] = $_REQUEST['folder_id'];
 			if ($this -> isAjax()) {
 				if ($vo !== false) {// 读取成功
 					$this -> ajaxReturn($vo, "读取成功", 1);
@@ -266,7 +268,6 @@ class CommonAction extends Action {
 				$this -> error($model -> getError());
 			}
 		}
-		
 		/*保存当前数据对象 */
 		$list = $model -> add();
 		if ($list !== false) {//保存成功

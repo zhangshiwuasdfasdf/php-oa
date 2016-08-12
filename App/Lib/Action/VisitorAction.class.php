@@ -177,6 +177,14 @@ class VisitorAction extends CommonAction {
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
 		$this -> assign('post',$_POST);
+		//序号连续
+		$rows = get_user_config('list_rows');
+		if(isset($_POST['p'])){
+			$number = $_POST['p']*$rows-$rows+1;
+		}else{
+			$number = 1*$rows-$rows+1;
+		}
+		$this -> assign('rows',$number);
 		$this -> display();
 	}
 	

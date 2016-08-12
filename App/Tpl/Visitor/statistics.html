@@ -38,6 +38,7 @@
 <div style="width: 100%;height: auto;overflow: auto">
 				<ul class="right_ul">
 					<li class="title_li">
+						<span>序号</span>
 						<span>到访日期</span>
 						<span>招商方式</span>
 						<span>信息来源</span>
@@ -48,8 +49,8 @@
 						<span>商家快递费用</span>
 						<span>预计日发单量</span>
 						<span>计划签约日期</span>
-						<span style="width: 220px;">客户最关心的问题</span>
-						<span style="width: 232px;">备注</span>	
+						<span style="width: 170px;">客户最关心的问题</span>
+						<span style="width: 163px;">备注</span>	
 					</li>
 					<empty name="list">
 						<li class="no-data">
@@ -58,6 +59,7 @@
 					<else/>
 					<foreach name="list" item="vo">
 					<li>
+						<span>{$rows+$key}</span>
 						<span>{$vo.riqi}</span>
 						<span>{$vo.manner}</span>
 						<span>{$vo.source}</span>
@@ -68,8 +70,8 @@
 						<span>{$vo.cost}</span>
 						<span>{$vo.receipt}</span>
 						<span>{$vo.singed_date}</span>
-						<span style="width: 220px;"><a title="{$vo.concern}">{$vo.concern}</a></span>
-						<span style="width: 232px;"><a title="{$vo.remarks}">{$vo.remarks}</a></span>	
+						<span style="width: 170px;"><a title="{$vo.concern}">{$vo.concern}</a></span>
+						<span style="width: 163px;"><a title="{$vo.remarks}">{$vo.remarks}</a></span>	
 					</li>
 			</foreach>
 		</empty>

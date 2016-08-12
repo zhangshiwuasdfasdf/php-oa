@@ -1,11 +1,12 @@
 <layout name='Layout/ace_layout' />
 <input type="hidden" name="id" id="id" value="{$vo.id}">
+<php>dump(get_return_url());</php>
 {:W('PageHeader',array('name'=>$forum['name'],'search'=>'N'))}
 <div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-left">
 			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
-			<if condition="$auth['admin']">
+			<if condition="($auth['admin']) or ($forum.user_id eq $user_id)">
 				<a onclick="del();"  class="btn btn-sm btn-danger">删除</a>
 			</if>
 		</div>
@@ -69,7 +70,7 @@
 				</if>
 			</div>
 			<div class="pull-right">
-				<a href="#reply" class="btn btn-sm btn-primary">#{$key+1}回复</a>
+				<a href="#reply" class="btn btn-sm btn-primary">回复{$key+1}#</a>
 			</div></td>
 		</tr>
 		<td style="width:145px;text-align:center;vertical-align:top;padding:0;margin:0;">
@@ -100,6 +101,7 @@
 	<form method="post" action="" id="form_data" name="form_data">
 		<input type="hidden" id="ajax" name="ajax" value="0">
 		<input type="hidden" id="forum_id" name="forum_id" value="{$forum_id}">
+		<input type="hidden" id="folder_id" name="folder_id" value="{$folder_id}">
 		<input type="hidden" id="add_file" name="add_file" value="">
 		<input type="hidden" id="opmode" name="opmode" value="add">
 		<table class="table table-bordered">

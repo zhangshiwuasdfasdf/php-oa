@@ -196,7 +196,29 @@ class AttractAction extends CommonAction {
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
 		$this -> assign('post',$_POST);
+		//完成率
+		$finsh = $this -> jsfinsh($data['actuality'],$data['target']);
+		$this -> assign('finsh',$finsh);
+		$d = strtotime($data['today']);
+		$tmp = explode('/',$data['today']);
+		$to = strtotime($tmp[0].'/'.$tmp[1].'/01');
+		$day = ($d - $to) / 86400;
+		$lv = $this -> jsfinsh($day,$data['days']);
+		$this -> assign('lv',$lv);
+		//序号连续
+		$rows = get_user_config('list_rows');
+		if(isset($_POST['p'])){
+			$number = $_POST['p']*$rows-$rows+1;
+		}else{
+			$number = 1*$rows-$rows+1;
+		}
+		$this -> assign('rows',$number);
 		$this -> display();
+	}
+	
+	function jsfinsh($a,$b,$c=2){
+		$d = (intval($a)/intval($b))*100;
+		return round($d,$c);
 	}
 	
 	//导出

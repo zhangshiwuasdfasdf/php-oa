@@ -96,7 +96,6 @@ class AuthCheckBehavior extends Behavior {
 						$where["id"] = array('in', array_filter(explode(',', $id)));
 					}
 					$model = D(MODULE_NAME);
-
 					$folder_id = $model -> where($where) -> getField('folder');
 					$auth = D("SystemFolder") -> get_folder_auth($folder_id);
 

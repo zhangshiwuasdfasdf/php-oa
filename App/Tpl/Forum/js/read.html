@@ -6,13 +6,13 @@
 	function reply() {
 		window.onbeforeunload=null;
 		if (check_form("form_data")) {
-			sendForm("form_data", "{:U('save_post')}", "__SELF__");
+			sendForm("form_data", "{:U('save_post')}");
 		}
 	}
 
 	function del() {
 		ui_confirm('确定要删除吗?',function(){
-			sendAjax("{:U('mark','action=del')}", 'id=' + $("#tid").val(), function(data) {
+			sendAjax("{:U('mark','action=del')}", 'id=' + $("#forum_id").val(), function(data) {
 				if (data.status) {
 					ui_alert(data.info,function(){
 						go_return_url();
@@ -24,7 +24,7 @@
 
 	function del_post(id) {
 		ui_confirm('确定要删除吗?',function(){
-			sendAjax("{:U('del_post')}", 'id=' + id, function(data) {
+			sendAjax("{:U('del_post')}", 'id=' + id +'&forum_id=' + $("#forum_id").val(), function(data) {
 				if (data.status) {
 					ui_alert(data.info,function(){
 						location.reload();
@@ -39,7 +39,7 @@
 	}
 
 	function edit_post(id) {
-		window.open(fix_url("{:U('edit_post')}?id=" + id), "_self");
+		window.open(fix_url("{:U('edit_post')}?id=" + id+"&forum_id=" + $("#forum_id").val() + "&folder_id=" + $("#folder_id").val()), "_self");
 	}
 
 
