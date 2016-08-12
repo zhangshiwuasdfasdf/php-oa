@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class WeeklyReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'del' => 'write', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_weekly_report' => 'read','import_weekly_report' => 'read','get_dept_child' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'del' => 'write', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_weekly_report' => 'read','import_weekly_report' => 'read','get_dept_child' => 'read','get_real_dept'=>'read','get_username_by_dept'=>'read','json'=>'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 	$map['is_del'] = array('eq', '0');
@@ -101,7 +101,7 @@ class WeeklyReportAction extends CommonAction {
 			}
 		} else {
 			if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
-				$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
+				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids_all(get_user_id()));
 				$map['user_id'] = array('in',$child_ids);
 			}elseif(D("Role") -> check_duty('SHOW_LOG_LOW')){//允许查看自己及下一级日志
 				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids(get_user_id()));
@@ -170,7 +170,7 @@ class WeeklyReportAction extends CommonAction {
 			foreach ($weekly_report_common as $k=>$v){
 				$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
 				$weekly_report_extension[$k]['comment_last'] = $comment_last['content'];
-				$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id'])))->find();
+				$report_look[$k] = $model_report_look->where(array('type'=>array('eq','weekly'),'pid'=>array('eq',$v['id'])))->order('create_time desc')->limit(2)->select();
 				$weekly_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
 			}
 			$this -> assign('weekly_report_extension', $weekly_report_extension);
@@ -194,6 +194,7 @@ class WeeklyReportAction extends CommonAction {
 		}
 		$this -> assign('now_time',time());
 		$this -> assign('end_time',$weekly_ids);
+		$this -> assign('report',$report_look);
 		$this -> display();
 	}
 
@@ -788,5 +789,27 @@ class WeeklyReportAction extends CommonAction {
 		$cal_result=ceil(($date_now+$weekday_now)/7);
 		$date_2 = date('Y-m-', strtotime($date)).'第'. $cal_result . '周';
 		return $date_2;
+	}
+	function json() {
+		header("Cache-Control: no-cache, must-revalidate");
+		header("Content-Type:text/html; charset=utf-8");
+		$user_id = $_REQUEST["uid"];
+		$start_date = $_REQUEST["start_date"];
+		$end_date = $_REQUEST["end_date"];
+	
+		$where['user_id'] = $user_id;
+		$where['is_del']=array('eq',0);
+		$where['work_date'] = array( array('egt', $this->_get_week_by_date($start_date)), array('elt', $this->_get_week_by_date($end_date)));
+		$list = M("WeeklyReport") -> where($where) -> order('work_date desc') -> select();
+		foreach ($list as $k=>$v){
+			$num = substr($v['work_date'],-4,-3);
+			$month = substr($v['work_date'],0,7);
+			$last_day = date('d',strtotime('+1 month -1 day',strtotime($month.'-01')));
+			$should = 7-date('w',strtotime($month.'-01'))+($num-1)*7;
+			$work_date_last = $should>$last_day?$last_day:$should;
+			$work_date_last = $work_date_last<10?'0'.$work_date_last:$work_date_last;
+			$list[$k]['work_date_last'] = $month.'-'.$work_date_last;
+		}
+		exit(json_encode($list));
 	}
 }

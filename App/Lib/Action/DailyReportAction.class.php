@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class DailyReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write','del' => 'write', 'del_comment' => 'write','export_daily_report' => 'read','import_daily_report' => 'read','get_dept_child' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write','del' => 'write', 'del_comment' => 'write','export_daily_report' => 'read','import_daily_report' => 'read','get_dept_child' => 'read','get_real_dept'=>'read','get_username_by_dept'=>'read','json'=>'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -109,7 +109,7 @@ class DailyReportAction extends CommonAction {
 		} else {
 			$map = $this -> _search();
 			if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
-				$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
+				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids_all(get_user_id()));
 				$map['user_id'] = array('in',$child_ids);
 			}elseif(D("Role") -> check_duty('SHOW_LOG_LOW')){//允许查看自己及下一级日志
 				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids(get_user_id()));
@@ -184,7 +184,7 @@ class DailyReportAction extends CommonAction {
 				foreach ($daily_report_common as $k=>$v){
 					$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
 					$daily_report_extension[$k]['comment_last'] = $comment_last['content'];
-					$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id'])))->find();
+					$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id'])))->order('create_time desc')->limit(2)->select();
 					$daily_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
 				}
 				$this -> assign('daily_report_extension', $daily_report_extension);
@@ -258,7 +258,21 @@ class DailyReportAction extends CommonAction {
 		$widget['uploader'] = true;
 		$widget['editor'] = true;
 		$this -> assign("widget", $widget);
-
+		
+		$auth = $this -> config['auth'];
+		if (!$auth['admin']) {
+			if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
+				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids_all(get_user_id()));
+				$where_last['user_id'] = array('in',$child_ids);
+			}elseif(D("Role") -> check_duty('SHOW_LOG_LOW')){//允许查看自己及下一级日志
+				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids(get_user_id()));
+				$where_last['user_id'] = array('in',$child_ids);
+			}else{//查看自己的日志
+				$where_last['user_id'] = array('eq',intval(get_user_id()));
+			}
+		}
+		
+		
 		$date_1 = date('Y-m-d', strtotime('0 day'));
 		$date_2 = date('Y-m-d', strtotime('-1 day'));
 		$date_3 = date('Y-m-d', strtotime('-2 day'));
@@ -268,6 +282,10 @@ class DailyReportAction extends CommonAction {
 		$where_last['id'] = array('eq', $id);
 		$last_report = M("DailyReport") -> where($where_last) -> order('id desc') -> find();
 		$this -> assign('last_report', $last_report);
+		
+		if(empty($last_report)){
+			$this->error('权限不足！');
+		}
 		
 		$where_detail['pid'] = $last_report['id'];
 		$where_detail['type'] = array('eq', 1);
@@ -777,5 +795,18 @@ class DailyReportAction extends CommonAction {
 		} else {
 			$this -> display();
 		}
+	}
+	function json() {
+		header("Cache-Control: no-cache, must-revalidate");
+		header("Content-Type:text/html; charset=utf-8");
+		$user_id = $_REQUEST["uid"];
+		$start_date = $_REQUEST["start_date"];
+		$end_date = $_REQUEST["end_date"];
+	
+		$where['user_id'] = $user_id;
+		$where['is_del']=array('eq',0);
+		$where['work_date'] = array( array('egt', $start_date), array('elt', $end_date));
+		$list = M("DailyReport") -> where($where) -> order('work_date desc') -> select();
+		exit(json_encode($list));
 	}
 }

@@ -718,5 +718,19 @@ class CommonAction extends Action {
 		$tree_menu = select_tree_menu($dept_tree);
 		$this -> ajaxReturn($tree_menu);
 	}
+	public function get_real_dept(){
+		$node = D("Dept");
+		$menu = array();
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		$html = tree_to_html($dept_tree);
+// 		$tree_menu = select_tree_menu($dept_tree);
+		$this -> ajaxReturn($html);
+	}
+	public function get_username_by_dept(){
+		$dept_id = $_GET['dept_id'];
+		$users = D('UserView')->field('id,name,pos_name')->where(array('dept_id'=>array('eq',$dept_id)))->select();
+		$this -> ajaxReturn($users);
+	}
 }
 ?>

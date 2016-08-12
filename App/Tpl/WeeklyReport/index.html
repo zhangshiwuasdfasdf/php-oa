@@ -1,4 +1,88 @@
 <layout name='Layout/ace_layout' />
+<style>
+//一级遮罩
+#fullbg { 
+background-color:gray; 
+left:0; 
+opacity:0.5; 
+position:absolute; 
+top:0; 
+z-index:3; 
+filter:alpha(opacity=50); 
+-moz-opacity:0.5; 
+-khtml-opacity:0.5; 
+} 
+#dialog { 
+overflow:auto;
+background-color:#fff; 
+border:5px solid rgba(0,0,0, 0.4); 
+height:70%; 
+left:190px; 
+//margin:-200px 0 0 -200px; 
+padding:1px; 
+position:fixed !important; /* 浮动对话框 */ 
+position:absolute; 
+top:23%; 
+width:85%; 
+z-index:5; 
+border-radius:5px; 
+display:none; 
+} 
+#dialog p { 
+margin:0 0 12px; 
+height:24px; 
+line-height:24px; 
+background:#CCCCCC; 
+} 
+#dialog p.close { 
+text-align:right; 
+padding-right:10px; 
+} 
+#dialog p.close a { 
+color:red; 
+text-decoration:none; 
+} 
+//组织架构
+@charset "utf-8";
+/* CSS Document */
+*{ margin:0; padding:0; font-family:"微软雅黑";}
+a{ text-decoration:none;}
+ul li{ list-style:none;}
+img{ margin:0; padding:0;}
+
+.content{height:900px; overflow:auto; position:relative;}
+.top{ width:84px; position:absolute; left:50%; margin-left:-42px;}
+.top_span{ display:block; width:82px; height:32px; line-height:32px; border:1px solid #666566; font-size:14px; color:#333; background:#c1ffe1; border-radius:5px; text-align:center; cursor: default;}
+.top_img{ margin-left:41px;}
+.bottom_s{position:absolute; left:56px;  border-bottom:1px #666566 solid; height:67px; top:11px;}
+.bottom_x{ overflow:auto; position:absolute; width:100%; top:78px;}
+.bottom_x_li{ float:left; overflow:hidden;}
+.bottom_yj_img{ display:block; margin-left:30px;}
+.bottom_yj_a{ display:block; width:60px; height:26px; line-height:26px; border:solid 1px #666566; background:#ffdfff; font-size:14px; color:#333; text-align:center; overflow:hidden; white-space:nowrap; cursor: default;}
+
+.bottom_x_ej{ float:left;}
+.bottom_ej_img{ display:block; margin-left:30px;}
+.bottom_ej_a{ display:block; width:60px; height:26px; line-height:26px; border:solid 1px #666566; background:#e1e1e1; font-size:14px; color:#333; text-align:center; margin-left:46px; margin-top:-28px;overflow:hidden; white-space:nowrap; cursor: default;}
+.bottom_ej_a2{ display:block; width:60px; height:26px; line-height:26px; border:solid 1px #666566; background:#e1e1e1; font-size:14px; color:#333; text-align:center; margin-left:46px; margin-top:-14px; overflow:hidden; white-space:nowrap; cursor: default;}
+
+.bottom_x_sj{ float:left; margin-top:31px;}
+.bottom_sj_img{ display:block;}
+.bottom_sj_a{display:block; width:60px; height:26px; line-height:26px; border:solid 1px #666566; background:#e1e1e1; font-size:14px; color:#333; text-align:center; margin-left:19px; overflow:hidden; white-space:nowrap;}
+.bottom_sj_img2{ display:block;margin-left:49px;}
+/*.zzbg{ width: 100%; height: 100%; position: fixed; top: 0; left: 0; }*/
+.zz{width: 218px; height: 209px; border-top: solid 1px #666566; position: fixed; background: #fff;border-right:  solid 1px #666566;}
+.zz_1{ overflow: hidden; border-left: solid 1px #666566;}
+.zz_1 a{ display: block; width: 99px; height: 29px; float: left; border-bottom:  solid 1px #666566; border-right:  solid 1px #666566; font-size: 14px; font-weight: bold; line-height: 29px; text-align: center;}
+.zz_2{ overflow: auto; height: 178px; border-left: solid 1px #666566; border-bottom:  solid 1px #666566;}
+.zz_2 a{ display: block; width: 99px; height: 29px; float: left; border-bottom:  solid 1px #666566; border-right:  solid 1px #666566; font-size: 14px; line-height: 29px; text-align: center; color: #666;}
+.gbzz{ position: absolute; display: block; width: 19px; height: 19px; right: -9px; top: -10px;}
+.zzzy{position: absolute; display: block; width: 15px; height: 3px; left: -15px; top: 10px;}
+
+.yy{position: absolute; width:550px;height:400px;background:white;top:50%;margin-top:-100px;left:40%;margin-left:-100px;z-index:20}
+.gbzz2{ position: absolute; display: block; width: 19px; height: 19px; right: -9px; top: -10px;}
+.zzzy2{position: absolute; display: block; width: 15px; height: 3px; left: -15px; top: 10px;}
+
+</style>
 {:W('PageHeader',array('name'=>'工作周报','search'=>'M'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default  display-none"  id="adv_search">
@@ -57,10 +141,317 @@
 <div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-right">
+			<a class="btn btn-sm btn-primary" onclick="open_and_show_dept()">查看</a>
 			<a class="btn btn-sm btn-primary" onclick="add()">新建</a>
 		</div>
 	</div>
 </div>
+<div class="yy_f" style="z-index:10;position:fixed;width:100%;height:100%;top:0;left:0;background:rgba(0,0,0,0.4);display:none;">
+<div id="cal" class="yy" style="display:none;" uid>
+	<img src="__PUBLIC__/img/img/gbzz.png" class="gbzz2">
+	<div id="top" class="operate panel panel-default" style="width:550px;">
+		<div class="panel-body">
+			<div class="pull-left">
+				<a id="panel" class="btn btn-sm btn-primary"></a>
+				<a onclick="pushBtm('MU');showdata($('.yy').attr('uid'))" class="btn btn-sm btn-primary"><i class="fa fa-chevron-left"></i></a>
+				<a onclick="pushBtm('MD');showdata($('.yy').attr('uid'))" class="btn btn-sm btn-primary"><i class="fa fa-chevron-right"></i></a>
+				<!-- <a onclick="pushBtm('');showdata($('.yy').attr('uid'))" class="btn btn-sm btn-primary">今天</a> -->
+				<input type="text" name="start_date" id="start_date" style="display:none">
+				<input type="text" name="end_date" id="end_date" style="display:none">
+			</div>
+			<div class="pull-right">
+				<!-- <a onclick="month_view();" class="btn btn-sm btn-primary">月视图</a>
+				<a onclick="day_view();" class="btn btn-sm btn-primary">日视图</a> -->
+			</div>
+		</div>
+	</div>
+	<form method="post" action="" name="CLD">
+		<div style="display:none">
+			<font>公历
+				<select id="year" onchange=changeCld() name=SY>
+					<script language=JavaScript>
+						for ( i = 1900; i < 2050; i++)
+							document.write('<option>' + i)
+					</script>
+				</select>年
+				<select id="month" onchange=changeCld() name=SM>
+					<script language=JavaScript>
+						for ( i = 1; i < 13; i++)
+							document.write('<option>' + i)
+					</script>
+				</select>月</font><font id="GZ"></font>
+		</div>
+		<div style="height:400px;width:550px;" class="Schedule">
+			<div class="mv-container" style="min-height:0px;">
+				<table class="mv-daynames-table" cellspacing="0" cellpadding="0">
+					<tbody>
+						<tr>
+							<th title="周日" class="mv-dayname">周日</th>
+							<th title="周一" class="mv-dayname">周一</th>
+							<th title="周二" class="mv-dayname">周二</th>
+							<th title="周三" class="mv-dayname">周三</th>
+							<th title="周四" class="mv-dayname">周四</th>
+							<th title="周五" class="mv-dayname">周五</th>
+							<th title="周六" class="mv-dayname">周六</th>
+						</tr>
+					</tbody>
+				</table>
+				<div class="mv-event-container" id="mvEventContainer">
+					<div class="month-row" style="top: 0%; height: 17.66%;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle   "><span class="left" id="SD0"></span><span class="pull-right hidden-xs" id="LD0"></span></td>
+									<td class="st-dtitle  "><span class="left" id="SD1"></span><span class="pull-right hidden-xs" id="LD1"></span></td>
+									<td class="st-dtitle  "><span class="left" id="SD2"></span><span class="pull-right hidden-xs" id="LD2"></span></td>
+									<td class="st-dtitle  "><span class="left" id="SD3"></span><span class="pull-right hidden-xs" id="LD3"></span></td>
+									<td class="st-dtitle "><span class="left" id="SD4"></span><span class="pull-right hidden-xs" id="LD4"></span></td>
+									<td class="st-dtitle "><span class="left" id="SD5"></span><span class="pull-right hidden-xs" id="LD5"></span></td>
+									<td class="st-dtitle "><span class="left" id="SD6"></span><span class="pull-right hidden-xs" id="LD6"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL0"></ul></td>
+									<td class="st-c "><ul id="UL1"></ul></td>
+									<td class="st-c "><ul id="UL2"></ul></td>
+									<td class="st-c "><ul id="UL3"></ul></td>
+									<td class="st-c "><ul id="UL4"></ul></td>
+									<td class="st-c "><ul id="UL5"></ul></td>
+									<td class="st-c "><ul id="UL6"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="month-row" style="top: 16.6%; height: 17.66%;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle "><span class="left" id="SD7"></span><span class="pull-right hidden-xs" id="LD7"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD8"></span><span class="pull-right hidden-xs" id="LD8"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD9"></span><span class="pull-right hidden-xs" id="LD9"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD10"></span><span class="pull-right hidden-xs" id="LD10"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD11"></span><span class="pull-right hidden-xs" id="LD11"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD12"></span><span class="pull-right hidden-xs" id="LD12"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD13"></span><span class="pull-right hidden-xs" id="LD13"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL7"></ul></td>
+									<td class="st-c "><ul id="UL8"></ul></td>
+									<td class="st-c "><ul id="UL9"></ul></td>
+									<td class="st-c "><ul id="UL10"></ul></td>
+									<td class="st-c "><ul id="UL11"></ul></td>
+									<td class="st-c "><ul id="UL12"></ul></td>
+									<td class="st-c "><ul id="UL13"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="month-row" style="top: 33.33%; height: 17.66%;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle "><span class="left" id="SD14"></span><span class="pull-right hidden-xs" id="LD14"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD15"></span><span class="pull-right hidden-xs" id="LD15"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD16"></span><span class="pull-right hidden-xs" id="LD16"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD17"></span><span class="pull-right hidden-xs" id="LD17"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD18"></span><span class="pull-right hidden-xs" id="LD18"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD19"></span><span class="pull-right hidden-xs" id="LD19"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD20"></span><span class="pull-right hidden-xs" id="LD20"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL14"></ul></td>
+									<td class="st-c "><ul id="UL15"></ul></td>
+									<td class="st-c "><ul id="UL16"></ul></td>
+									<td class="st-c "><ul id="UL17"></ul></td>
+									<td class="st-c "><ul id="UL18"></ul></td>
+									<td class="st-c "><ul id="UL19"></ul></td>
+									<td class="st-c "><ul id="UL20"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="month-row" style="top: 50%; height: 17.66%;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle "><span class="left" id="SD21"></span><span class="pull-right hidden-xs" id="LD21"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD22"></span><span class="pull-right hidden-xs" id="LD22"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD23"></span><span class="pull-right hidden-xs" id="LD23"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD24"></span><span class="pull-right hidden-xs" id="LD24"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD25"></span><span class="pull-right hidden-xs" id="LD25"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD26"></span><span class="pull-right hidden-xs" id="LD26"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD27"></span><span class="pull-right hidden-xs" id="LD27"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL21"></ul></td>
+									<td class="st-c "><ul id="UL22"></ul></td>
+									<td class="st-c "><ul id="UL23"></ul></td>
+									<td class="st-c "><ul id="UL24"></ul></td>
+									<td class="st-c "><ul id="UL25"></ul></td>
+									<td class="st-c "><ul id="UL26"></ul></td>
+									<td class="st-c "><ul id="UL27"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="month-row" style="top: 66.66%;height:17.66%;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle "><span class="left" id="SD28"></span><span class="pull-right hidden-xs" id="LD28"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD29"></span><span class="pull-right hidden-xs" id="LD29"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD30"></span><span class="pull-right hidden-xs" id="LD30"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD31"></span><span class="pull-right hidden-xs" id="LD31"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD32"></span><span class="pull-right hidden-xs" id="LD32"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD33"></span><span class="pull-right hidden-xs" id="LD33"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD34"></span><span class="pull-right hidden-xs" id="LD34"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL28"></ul></td>
+									<td class="st-c "><ul id="UL29"></ul></td>
+									<td class="st-c "><ul id="UL30"></ul></td>
+									<td class="st-c "><ul id="UL31"></ul></td>
+									<td class="st-c "><ul id="UL32"></ul></td>
+									<td class="st-c "><ul id="UL33"></ul></td>
+									<td class="st-c "><ul id="UL34"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="month-row" style="top: 83.33%; bottom: 0px;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle "><span class="left" id="SD35"></span><span class="pull-right hidden-xs" id="LD35"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD36"></span><span class="pull-right hidden-xs" id="LD36"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD37"></span><span class="pull-right hidden-xs" id="LD37"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD38"></span><span class="pull-right hidden-xs" id="LD38"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD39"></span><span class="pull-right hidden-xs" id="LD39"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD40"></span><span class="pull-right hidden-xs" id="LD40"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD41"></span><span class="pull-right hidden-xs" id="LD41"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL35"></ul></td>
+									<td class="st-c "><ul id="UL36"></ul></td>
+									<td class="st-c "><ul id="UL37"></ul></td>
+									<td class="st-c "><ul id="UL38"></ul></td>
+									<td class="st-c "><ul id="UL39"></ul></td>
+									<td class="st-c "><ul id="UL40"></ul></td>
+									<td class="st-c "><ul id="UL41"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+</form>
+</div>
+</div>
+<div id="fullbg"></div> 
+<div id="dialog"> 
+<p class="close"><a href="#" onclick="closeBg();">关闭</a></p> 
+<div>
+	<div class="content">
+	
+    	<div class="bottom_s">
+            <div class="top">
+                <span class="top_span">神洲酷奇</span>
+                <img class="top_img" src="__PUBLIC__/img/img/zx.png"/>
+            </div>
+        </div>
+        <ul class="bottom_x">
+        </ul>
+</div>
+    <div class="zz">
+        <img src="__PUBLIC__/img/img/gbzz.png" class="gbzz">
+        <img src="__PUBLIC__/img/img/zzzy.png" class="zzzy">
+        <div class="zz_1">
+            <a>姓名</a>
+            <a>岗位</a>
+        </div>
+        <div class="zz_2">
+        </div>
+    </div>
+</div> 
+</div> 
 <div class="ul_table">
 	<ul>
 		<li class="thead">
@@ -70,6 +461,7 @@
 				<span class="col-10">岗位</span>
 				<span class="col-10">日期</span>
 				<span class="col-25">最近评论</span>
+				<span class="col-25">已查看</span>
 			</div>
 			<div class="pull-right">
 				<span class="col-10">状态</span>
@@ -90,6 +482,7 @@
 							<span class="col-10">{$vo.pos_id||get_dept_name_by_id}</span>
 							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}">{$vo.work_date}</a></span>
 							<span class="col-25">{$weekly_report_extension.$key.comment_last}</span>
+							<span class="col-25">{$report.$key.0.look_name} {$report.$key.1.look_name}</span>
 						</div>
 						<div class="pull-right">
 							<span class="col-10">{$vo.is_submit|is_submit}</span>

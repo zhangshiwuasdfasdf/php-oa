@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class MonthlyReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('getselecttime'=>'read','share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_monthly_report' => 'read','import_monthly_report' => 'read','get_dept_child' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('getselecttime'=>'read','share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_monthly_report' => 'read','import_monthly_report' => 'read','get_dept_child' => 'read','get_real_dept'=>'read','get_username_by_dept'=>'read','json'=>'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -101,7 +101,7 @@ class MonthlyReportAction extends CommonAction {
 			}
 		} else {
 			if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
-				$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
+				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids_all(get_user_id()));
 				$map['user_id'] = array('in',$child_ids);
 			}elseif(D("Role") -> check_duty('SHOW_LOG_LOW')){//允许查看自己及下一级日志
 				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids(get_user_id()));
@@ -166,9 +166,11 @@ class MonthlyReportAction extends CommonAction {
 			$monthly_report_extension = array();
 			$weekly_ids = array();
 			$model_comment = D("MonthlyReportComment");
+			$model_report_look = M('ReportLook');
 			foreach ($monthly_report_common as $k=>$v){
 				$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
 				$monthly_report_extension[$k]['comment_last'] = $comment_last['content'];
+				$report_look[$k] = $model_report_look->where(array('type'=>array('eq','monthly'),'pid'=>array('eq',$v['id'])))->order('create_time desc')->limit(2)->select();
 				$weekly_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
 			}
 			$this -> assign('monthly_report_extension', $monthly_report_extension);
@@ -192,6 +194,7 @@ class MonthlyReportAction extends CommonAction {
 		}
 		$this -> assign('now_time',time());
 		$this -> assign('end_time',$weekly_ids);
+		$this -> assign('report',$report_look);
 		$this -> display();
 	}
 
@@ -789,5 +792,21 @@ class MonthlyReportAction extends CommonAction {
 		} else {
 			$this -> display();
 		}
+	}
+	function json() {
+		header("Cache-Control: no-cache, must-revalidate");
+		header("Content-Type:text/html; charset=utf-8");
+		$user_id = $_REQUEST["uid"];
+		$start_date = $_REQUEST["start_date"];
+		$end_date = $_REQUEST["end_date"];
+	
+		$where['user_id'] = $user_id;
+		$where['is_del']=array('eq',0);
+		$where['work_date'] = array( array('egt', $start_date), array('elt', $end_date));
+		$list = M("MonthlyReport") -> where($where) -> order('work_date desc') -> select();
+		foreach ($list as $k=>$v){
+			$list[$k]['work_date_last'] = date('Y-m-d',strtotime('+1 month -1 day',strtotime($v['work_date'])));
+		}
+		exit(json_encode($list));
 	}
 }

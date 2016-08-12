@@ -450,6 +450,7 @@ function get_child_ids($parent_id){//获取直接下级的id
 	if(!empty($pos_id)){
 		$model_dept = D("Dept");
 		$dept = $model_dept->where(array('pid'=>$pos_id['pos_id']))->field('id')->select();
+		
 		if(!empty($dept) && is_array($dept)){
 			foreach ($dept as $dep){
 				$dept_new[] = $dep['id'];
@@ -488,20 +489,26 @@ function get_child_ids_2($parent_id){//获取下级的下级的id
 	}
 }
 function get_child_ids_all($parent_id){//获取所有（包括间接）下级的id
-	if($parent_id){
-		$child_user_id = get_child_ids($parent_id);
-		if(!empty($child_user_id)&&is_array($child_user_id)){
-			foreach ($child_user_id as $k=>$child_user_idd){
-				$child_user_id[$k] = get_child_ids_all($child_user_idd);
-			}
-		}else{
-			return array();
-		}
-		return $child_user_id;
-	}
-	else{
-		return array();
-	}
+	$pos_id = M('User')->field('pos_id')->find($parent_id);
+	$child_depts =  get_child_dept_all($pos_id['pos_id']);
+	$child_users = M('User')->field('id')->where(array('pos_id'=>array('in',$child_depts)))->select();
+	$child_users = rotate($child_users);
+	$child_users = $child_users['id'];
+	return $child_users;
+// 	if($parent_id){
+// 		$child_user_id = get_child_ids($parent_id);
+// 		if(!empty($child_user_id)&&is_array($child_user_id)){
+// 			foreach ($child_user_id as $k=>$child_user_idd){
+// 				$child_user_id[$k] = get_child_ids_all($child_user_idd);
+// 			}
+// 		}else{
+// 			return array();
+// 		}
+// 		return $child_user_id;
+// 	}
+// 	else{
+// 		return array();
+// 	}
 	
 }
 
@@ -2829,5 +2836,38 @@ function get_first_dept(){
  */
 function chrr($num){
 	return ToNumberSystem26($num-64);
+}
+function tree_to_html($tree){
+	$html = '';
+	
+	if(!empty($tree) && is_array($tree)){
+		foreach ($tree as $k0=>$v0){
+			foreach ($v0['_child'] as $k1=>$v1){
+				foreach ($v1['_child'] as $k2=>$v2){
+					//$html.='<ul id=\''.$v2['id'].'\' name=\''.$v2['name'].'\'>';
+					$html.='<li class="bottom_x_li" style="width:108px">';
+					$html.='<img class="bottom_yj_img" src="/php-oa/Public/img/img/zx_x.png"/>';
+					$html.='<a class="bottom_yj_a" id="'.$v2['id'].'">'.$v2['name'].'</a>';
+					$html.='<ul class="bottom_x_ej" style="margin-left:0px;">';
+					$le = count($v2['_child']);
+					foreach ($v2['_child'] as $k3=>$v3){
+						$html.='<li id="'.$v3['id'].'">';
+						if($k3<$le-1){
+							$html.='<img class="bottom_ej_img" src="/php-oa/Public/img/img/wx.png"/>';
+							$html.='<a class="bottom_ej_a">'.$v3['name'].'</a>';
+						}else{
+							$html.='<img class="bottom_ej_img" src="/php-oa/Public/img/img/wx_s.png"/>';
+							$html.='<a class="bottom_ej_a2">'.$v3['name'].'</a>';
+						}
+						$html.='</li>';
+// 						$html.='<li id=\''.$v3['id'].'\' name=\''.$v3['name'].'\'>';
+					}	
+					$html.='</ul>';
+					$html.='</li>';
+				}	
+			}
+		}
+	}
+	return $html;
 }
 ?>

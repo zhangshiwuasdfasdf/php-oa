@@ -94,7 +94,7 @@ class HomeAction extends CommonAction {
 	
 	protected function _daily_list(){
 		//日报
-		$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
+		$child_ids = array_merge(array(intval(get_user_id())),get_child_ids_all(get_user_id()));
 		$map['user_id'] = array('in',$child_ids);
 		$model = D("DailyReport");
 		$dailyList = $model -> where($map) -> field("id,user_name,work_date,create_time") -> order("create_time desc") -> limit(6) -> select();
@@ -103,7 +103,7 @@ class HomeAction extends CommonAction {
 		}
 		
 		//周报
-		$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
+		$child_ids = array_merge(array(intval(get_user_id())),get_child_ids_all(get_user_id()));
 		$map['user_id'] = array('in',$child_ids);
 		$model = D("WeeklyReport");
 		$weeklyList = $model -> where($map) -> field("id,user_name,work_date,create_time") -> order("create_time desc") -> limit(6) -> select();
@@ -112,7 +112,7 @@ class HomeAction extends CommonAction {
 		}
 		
 		//月报
-		$child_ids = array_merge(array(intval(get_user_id())),array_keys(array_to_one_dimension(get_child_ids_all(get_user_id()))));
+		$child_ids = array_merge(array(intval(get_user_id())),get_child_ids_all(get_user_id()));
 		$map['user_id'] = array('in',$child_ids);
 		$model = D("MonthlyReport");
 		$monthlyList = $model -> where($map) -> field("id,user_name,work_date,create_time") -> order("create_time desc") -> limit(6) -> select();
