@@ -2783,7 +2783,16 @@ function conv_inputbox($name, $data) {
 	$html .= "<a class=\"del\" title=\"删除\"><i class=\"fa fa-times\"></i></a></nobr></span>";
 	return $html;
 }
-
+function shifzc($list){
+	if(!empty($list)){
+		$tmp = explode('|',$list);
+		foreach ($tmp as $k=>$v){
+			$arr[] = ($v == '0') ? "旧版" : "新版";
+		}
+		return implode('，',$arr);
+	}
+	return '';
+}
 function HzYuanQuFlowOrigin($uid){
 	$user = D('UserView')->find($uid);
 	$p1 = getParentid($user['id']);
