@@ -1,0 +1,10 @@
+<script type="text/javascript">
+$(document).ready(function() {
+});
+function save() {
+	window.onbeforeunload = null;
+	if (check_form("form_data")) {
+		sendForm("form_data", "{:U('save_order')}");
+	}
+}
+</script>

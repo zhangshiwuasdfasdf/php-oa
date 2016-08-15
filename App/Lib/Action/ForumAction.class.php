@@ -16,7 +16,7 @@ class ForumAction extends CommonAction {
 		'app_type' => 'folder',
 		'pid'=>'forum_id',
 		'sub_model'=>'ForumPost',
-		'action_auth' => array('folder' => 'read','mark' => 'write', 'upload' => 'write'),
+		'action_auth' => array('folder' => 'read','mark' => 'write', 'upload' => 'write', 'update_forum' => 'write'),
 		'sub_action_auth'=>array('save_post' => 'write', 'edit_post' => 'write', 'del_post' => 'admin','update_post' => 'write')
 	);
 	//过滤查询字段
@@ -261,6 +261,24 @@ class ForumAction extends CommonAction {
 		$id = $_REQUEST['forum_id'];
 		$fid = $_REQUEST['folder_id'];
 		$model = D("ForumPost");
+		if (false === $model -> create()) {
+			$this -> error($model -> getError());
+		}
+		$list = $model -> save();
+		if (false !== $list) {
+			$this -> assign('jumpUrl', U('read',array('id'=>$id,'fid'=>$fid)));
+			$this -> success('编辑成功!');
+			//成功提示
+		} else {
+			$this -> error('编辑失败!');
+			//错误提示
+		}
+	}
+	
+	public function update_forum(){
+		$id = $_REQUEST['forum_id'];
+		$fid = $_REQUEST['folder_id'];
+		$model = M("Forum");
 		if (false === $model -> create()) {
 			$this -> error($model -> getError());
 		}
