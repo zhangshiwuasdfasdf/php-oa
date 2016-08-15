@@ -1,0 +1,54 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'日/周/月报','search'=>'N'))}
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-left"></div>
+		<div class="pull-right">
+			<a  onclick="add();" class="btn btn-sm btn-primary" >新建</a>
+		</div>
+	</div>
+</div>
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-10 ">导入人</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-15 ">导入时间</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">部门</span>
+			</div>
+			<div class="pull-right">
+				<span class="col-15 ">操作</span>
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<foreach name="list" item="vo">
+				<li class="tbody">
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.user_name}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-15 ">{$vo.create_time}&nbsp;</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">{$vo.base}&nbsp;</span>
+					</div>
+					<div class="pull-right">
+						<span class="col-10 "><a href="{:U('read','id='.$vo['id'])}">查看详情</a></span>
+						<span class="col-5 "><a href="{:U('del','id='.$vo['id'])}">删除</a></span>
+					</div>
+				</li>
+			</foreach>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>

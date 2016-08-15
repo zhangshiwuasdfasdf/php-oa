@@ -27,7 +27,7 @@
 		<div  class="pull-left">
 			 {$forum.create_time|toDate='Y-m-d H:i'}
 			<if condition="($auth['write']) and ($forum.user_id eq $user_id)">
-				<a href="" onclick="edit();return false;" class="btn btn-link">编辑</a>
+				<a onclick="edit();return false;" class="btn btn-link">编辑</a>
 			</if>
 		</div>
 		<div class="pull-right">

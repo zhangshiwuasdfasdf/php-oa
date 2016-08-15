@@ -1,0 +1,174 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'','search'=>'N'))}
+<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal" onSubmi="return check_form('form_data');">
+<div class="main_gt">
+    <div class="wjmain">
+        <h1 class="wjtitle">日报、周报、月报问卷调查</h1>
+        <p>非常抱歉，浪费您几分钟时间完成如下的调查以便我们更好的完善OA系统。感谢您的配合【在您完成调查后，即可进入OA系统正常使用，尽请谅解】</p>
+        <div>
+            <ul>
+                <li class="gt_1">
+                    <div class="divs">
+                        <span>新版日报</span>
+                        <div id="localImag" ><img class="imgs" id="preview"></div>
+                        <input check="require" msg="请选择新版日报图片" name="photo[]" type="file" value="上传" id="doc" class="doc" onchange="javascript:setImagePreview('doc','preview','localImag');">
+                    </div>
+                    <div class="divs">
+                       <span>老版日报</span>
+                       <div id="localImag2" ><img class="imgs" id="preview2"></div>
+                        <input check="require" msg="请选择老版日报图片" name="photo[]" type="file" value="上传" id="doc2" class="doc" onchange="javascript:setImagePreview('doc2','preview2','localImag2');">
+                    </div>
+                </li>
+                
+                <li>
+                    <input type="button" value="下一页" class="wj_tj" id="first">
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="wjmain2">
+        <h1 class="wjtitle">日报、周报、月报问卷调查</h1>
+        <p>非常抱歉，浪费您几分钟时间完成如下的调查以便我们更好的完善OA系统。感谢您的配合【在您完成调查后，即可进入OA系统正常使用，尽请谅解】</p>
+        <div>
+            <ul>
+                <li class="gt_1">
+                    <div class="divs">
+                        <span>新版周报</span>
+                       <div id="localImag3" ><img class="imgs" id="preview3"></div>
+                        <input check="require" msg="请选择新版周报图片" name="photo[]" type="file" value="上传" id="doc3" class="doc" onchange="javascript:setImagePreview('doc3','preview3','localImag3');">
+                    </div>
+                    <div class="divs">
+                       <span>老版周报</span>
+                       <div id="localImag4" ><img class="imgs" id="preview4"></div>
+                        <input check="require" msg="请选择老版周报图片" name="photo[]" type="file" value="上传" id="doc4" class="doc" onchange="javascript:setImagePreview('doc4','preview4','localImag4');">
+                    </div>
+                </li>
+                
+                <li>
+                    
+                    <input type="button" value="下一页" class="wj_tj" id="second">
+                    <input type="button" value="上一页" class="wj_tj" id="s1">
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="wjmain3">
+        <h1 class="wjtitle">日报、周报、月报问卷调查</h1>
+        <p>非常抱歉，浪费您几分钟时间完成如下的调查以便我们更好的完善OA系统。感谢您的配合【在您完成调查后，即可进入OA系统正常使用，尽请谅解】</p>
+        <div>
+            <ul>
+                <li class="gt_1">
+                    <div class="divs">
+                        <span>新版月报</span>
+                        <div id="localImag5" ><img class="imgs" id="preview5"></div>
+                        <input check="require" msg="请选择新版月报图片" name="photo[]" type="file" value="上传" id="doc5" class="doc" onchange="javascript:setImagePreview('doc5','preview5','localImag5');">
+                    </div>
+                    <div class="divs">
+                       <span>老版月报</span>
+                       <div id="localImag6" ><img class="imgs" id="preview6"></div>
+                        <input check="require" msg="请选择老版月报图片" name="photo[]" type="file" value="上传" id="doc6" class="doc" onchange="javascript:setImagePreview('doc6','preview6','localImag6');">
+                    </div>
+                </li>
+                
+                <li>
+                    <input type="submit" value="提交" class="wj_tj" onclick="save();">
+                    <input type="button" value="上一页" class="wj_tj" id="s2">
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</form>
+<script src="__PUBLIC__/js/jquery-1.11.0.min.js"></script>
+<script>
+    $('#first').click(function(){
+        $('.wjmain2').show()
+        $('.wjmain,wjmain3').hide()
+        
+    })
+    $('#second').click(function(){
+        $('.wjmain,wjmain2').hide()
+        $('.wjmain3').show()
+    })
+    $('#s2').click(function(){
+        $('.wjmain,.wjmain3').hide()
+        $('.wjmain2').show()
+    })
+    $('#s1').click(function(){
+        $('.wjmain2,wjmain3').hide()
+        $('.wjmain').show()
+    })
+    
+//下面用于图片上传预览功能
+function setImagePreview(p1,p2,p3) {
+var docObj=document.getElementById(p1);
+ 
+var imgObjPreview=document.getElementById(p2);
+if(docObj.files &&docObj.files[0])
+{
+//火狐下，直接设img属性
+imgObjPreview.style.display = 'block';
+imgObjPreview.style.width = '258px';
+imgObjPreview.style.height = '100px'; 
+//imgObjPreview.src = docObj.files[0].getAsDataURL();
+ 
+//火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+}
+else
+{
+//IE下，使用滤镜
+docObj.select();
+var imgSrc = document.selection.createRange().text;
+var localImagId = document.getElementById(p3);
+//必须设置初始大小
+localImagId.style.width = "258px";
+localImagId.style.height = "100px";
+//图片异常的捕捉，防止用户修改后缀来伪造图片
+try{
+localImagId.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+}
+catch(e)
+{
+alert("您上传的图片格式不正确，请重新选择!");
+return false;
+}
+imgObjPreview.style.display = 'none';
+document.selection.empty();
+}
+return true;
+}
+    
+</script>
+<style>
+/*重置*/
+ul,li{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+input{ margin:0; padding:0;}
+img{ margin: 0; padding: 0;}
+/*wenjuan*/
+*{ font-family:"微软雅黑";}
+.main_gt{ background: rgba(0,0,0,0.4);}
+.wjmain,.wjmain2,.wjmain3{ position:absolute; width:600px; left:42%; margin-left: -230px; top:10%; border:solid 1px #e5e5e5; box-shadow:#666 1px 1px 2px; padding:0 20px 20px 20px; background: #fff;}
+    .wjmain2,.wjmain3{ display: none;}
+.wjtitle{ display:block; text-align:center; font-size:25px;}
+
+.gt_1{ overflow: hidden; padding-bottom: 30px; margin-bottom: 10px;}
+.gt_1 .divs{ float: left; width: 258px; height: 144px; margin-left: 20px; position: relative;}
+.gt_1 .imgs{ display: block; border: solid 1px #919191; width: 258px; height: auto; min-height: 120px;}
+    
+#l,.doc{position: absolute; left: 50%; margin-left: -36px; bottom: -24px; width: 72px; height: 26px; line-height: 26px; font-size: 14px; color: #fff;}
+    
+.gt_1 span{ display: block; width: 70px; height: 14px; font-size: 14px; color: #323232; position: absolute; top: 50%; margin-top: -7px; left: 50%; margin-left: -35px;}
+
+.wjl3{ width:100%; height:auto; overflow:hidden;}
+.wjl3 textarea{ width:90%; margin-left:5%; font-size:14px;}
+.wj_tj{ width:60px; height:30px; float:right; margin-top:20px;}
+
+.gt_2{ overflow: hidden;}
+.gt_2 div{float: left;}
+.r{ width: 10%; height: 20px; font-size: 20px; color: #323232;}
+.t{ width: 80%;}
+.t textarea{ width: 100%; font-size: 14px; color: #666;}    
+</style>

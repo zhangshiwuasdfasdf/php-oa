@@ -394,6 +394,11 @@ class HomeAction extends CommonAction {
 		}
 		
 	}
+	
+	public function suggest(){
+		
+		$this -> display();		
+	}
 	//杭州园区
  	public function hangzhou() {
  		$this -> _grader_notice('79','83');

@@ -2846,17 +2846,17 @@ function tree_to_html($tree){
 				foreach ($v1['_child'] as $k2=>$v2){
 					//$html.='<ul id=\''.$v2['id'].'\' name=\''.$v2['name'].'\'>';
 					$html.='<li class="bottom_x_li" style="width:108px">';
-					$html.='<img class="bottom_yj_img" src="/php-oa/Public/img/img/zx_x.png"/>';
+					$html.='<img class="bottom_yj_img" src="./Public/img/img/zx_x.png"/>';
 					$html.='<a class="bottom_yj_a" id="'.$v2['id'].'">'.$v2['name'].'</a>';
 					$html.='<ul class="bottom_x_ej" style="margin-left:0px;">';
 					$le = count($v2['_child']);
 					foreach ($v2['_child'] as $k3=>$v3){
 						$html.='<li id="'.$v3['id'].'">';
 						if($k3<$le-1){
-							$html.='<img class="bottom_ej_img" src="/php-oa/Public/img/img/wx.png"/>';
+							$html.='<img class="bottom_ej_img" src="./Public/img/img/wx.png"/>';
 							$html.='<a class="bottom_ej_a">'.$v3['name'].'</a>';
 						}else{
-							$html.='<img class="bottom_ej_img" src="/php-oa/Public/img/img/wx_s.png"/>';
+							$html.='<img class="bottom_ej_img" src="./Public/img/img/wx_s.png"/>';
 							$html.='<a class="bottom_ej_a2">'.$v3['name'].'</a>';
 						}
 						$html.='</li>';
