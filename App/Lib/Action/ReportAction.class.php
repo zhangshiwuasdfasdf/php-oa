@@ -27,9 +27,8 @@ class ReportAction extends CommonAction {
 			$where_delivery['create_time'][] = array('egt', strtotime(trim($start_time_0)));
 		}
 		if (!empty($end_time_0)) {
-			$where_delivery['create_time'][] = array('elt', strtotime(trim($end_time_0).' 24:00:00'));
+			$where_delivery['create_time'][] = array('elt', strtotime('+1 month',strtotime(trim($end_time_0).'-01')));
 		}
-		
 		$start_time = $_REQUEST['be_create_time'];
 		$end_time = $_REQUEST['en_create_time'];
 		if (!empty($start_time)) {
@@ -62,8 +61,19 @@ class ReportAction extends CommonAction {
 		$model = D("Delivery");
 		if (!empty($model)) {
 			$where['_complex']['delivery']['user_id'] = get_user_id();
-			$this -> _list($model, $where['_complex']['delivery']);
-		}		
+			$vo = $this -> _list($model, $where['_complex']['delivery']);
+			foreach ($vo as $k=>$v){
+				$date = M('DeliveryDetail')->where(array('pid'=>$v['id']))->field('date')->distinct(true)->select();
+				foreach ($date as $kk=>$vv){
+					$vo[$k]['date'].=$vv['date'].',';
+				}
+			}
+			$vo[0]['date'] = substr($vo[0]['date'],0,strlen($vo[0]['date'])-1);
+		}	
+		if(strlen($vo[0]['date'])>22){
+			$vo[0]['date'] = substr($vo[0]['date'],0,22).'...';
+		}
+		$this -> assign('voo', $vo);
 		$this -> display();
 	}
 
@@ -1335,6 +1345,42 @@ class ReportAction extends CommonAction {
 					
 				$sheetData = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);
 	
+				//合理性校验
+				if($sheetData[1]['A']!='基本信息' || $sheetData[1]['K']!='事件信息' || $sheetData[1]['N']!='处理信息' || $sheetData[1]['Q']!='赔付金额'){
+					$this -> error('导入具体信息失败！,请按照模板导入！');
+				}
+				$row_2 = array(
+					'A'=>'仓库地点',
+					'B'=>'受理日期',
+					'C'=>'受理人',
+					'D'=>'店铺名称',
+					'E'=>'系统订单号',
+					'F'=>'淘宝订单号',
+					'G'=>'收货人',
+					'H'=>'买家id',
+					'I'=>'快递公司',
+					'J'=>'快递单号',
+					'K'=>'问题大类',
+					'L'=>'问题小类',
+					'M'=>'事件详情',
+					'N'=>'处理详情',
+					'O'=>'处理进度',
+					'P'=>'协调结果',
+					'Q'=>'货品成本价',
+					'R'=>'首发快递费',
+					'S'=>'重发快递费',
+					'T'=>'退件快递费',
+					'U'=>'其他',
+					'V'=>'小计',
+				);
+				foreach ($row_2 as $k=>$v){
+					if($sheetData[2][$k]!=$v){
+						$this -> error('导入具体信息失败！,请按照模板导入！');
+					}
+				}
+				if($sheetData[3]['E']==''){
+					$this -> error('请导入至少一条数据！');
+				}
 // 				echo 1;
 // 				exit;
 				

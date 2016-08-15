@@ -1314,7 +1314,6 @@ class FlowAction extends CommonAction {
 			}
 			$info['user_id'] = $uid;
 		}
-		
 		$info['available_hour'] = getAvailableHour();
 		$info['available_year'] = getAvailableYearHour()/2;
 		$this -> assign("user_info", $info);
