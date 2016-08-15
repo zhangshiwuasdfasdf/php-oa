@@ -73,14 +73,13 @@
 				<foreach name="list" item="vo">
 					<li class="tbody">
 						<div class="pull-left">
-							<span class="col-10">{$vo.user_name}</span>
-							<span class="col-20">{$vo.addr}</span>
-							<span class="col-15"><a href="{:U('store_problem_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d H:i:s'}</a></span>
+							<span class="col-10">{$vo.user_name}&nbsp;</span>
+							<span class="col-20">{$vo.addr}&nbsp;</span>
+							<span class="col-15"><a href="{:U('store_problem_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d H:i:s'}&nbsp;</a></span>
 						
 						</div>
 						<div class="pull-right">
-							<span class="col-8"><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('store_problem_del','id='.$vo['id'])}">删除</a></span>
-						
+							<span class="col-8"><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('store_problem_del','id='.$vo['id'])}">删除&nbsp;</a></span>
 						</div>
 					</li>
 				</foreach>

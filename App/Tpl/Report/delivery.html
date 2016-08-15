@@ -33,7 +33,7 @@
 			</div>
 			
 			<div class="form-group col-sm-6">
-				<label class="col-sm-4 control-label" for="be_create_time_0">时间：</label>
+				<label class="col-sm-4 control-label" for="be_create_time_0">年份/月份：</label>
 				<div class="col-sm-8">
 					<div class="input-group" >
 						<input type="text" class="input-date-m input-sm form-control text-center" name="be_create_time_0" />
@@ -56,11 +56,10 @@
 	<ul>
 		<li class="thead">
 			<div class="pull-left">
-				<span class="col-10">部门</span>
 				<span class="col-10">导入人</span>
 				<span class="col-10">基地</span>
 				<span class="col-15">导入时间</span>
-				<span class="col-15">日期</span>
+				<span class="col-20">日期</span>
 			</div>
 			<div class="pull-right">
 				<span class="col-8">操作</span>
@@ -75,14 +74,13 @@
 				<foreach name="list" item="vo">
 					<li class="tbody">
 						<div class="pull-left">
-							<span class="col-10">{$vo.dept_name}</span>
-							<span class="col-10">{$vo.user_name}</span>
-							<span class="col-10">{$vo.addr}</span>
-							<span class="col-15"><a href="{:U('delivery_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d H:i:s'}</a></span>
-							<span class="col-15">{$voo.$key.date}</span>
+							<span class="col-10">{$vo.user_name}&nbsp;</span>
+							<span class="col-10">{$vo.addr}&nbsp;</span>
+							<span class="col-15"><a href="{:U('delivery_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d H:i:s'}&nbsp;</a></span>
+							<span class="col-20">{$voo.$key.date}&nbsp;</span>
 						</div>
 						<div class="pull-right">
-							<span class="col-8"><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('delivery_del','id='.$vo['id'])}">删除</a></span>
+							<span class="col-8"><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('delivery_del','id='.$vo['id'])}">删除&nbsp;</a></span>
 						
 						</div>
 					</li>

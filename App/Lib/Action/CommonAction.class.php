@@ -733,7 +733,7 @@ class CommonAction extends Action {
 		$users = D('UserView')->field('id,name,pos_id')->where(array('dept_id'=>array('eq',$dept_id)))->select();
 		foreach ($users as $k=>$v){
 			$pos_name = M('Dept')->field('name')->find($v['pos_id']);
-			$users[$k]['pos_name'] = $pos_name['pos_name'];
+			$users[$k]['pos_name'] = $pos_name['name'];
 		}
 		$this -> ajaxReturn($users);
 	}

@@ -490,11 +490,11 @@ function get_child_ids_2($parent_id){//获取下级的下级的id
 }
 function get_child_ids_all($parent_id){//获取所有（包括间接）下级的id
 	$pos_id = M('User')->field('pos_id')->find($parent_id);
-	$child_depts =  get_child_dept_all($pos_id['pos_id']);
+	$child_depts =  get_child_dept_all($pos_id['pos_id'],false);
 	$child_users = M('User')->field('id')->where(array('pos_id'=>array('in',$child_depts)))->select();
 	$child_users = rotate($child_users);
 	$child_users = $child_users['id'];
-	return $child_users;
+	return $child_users?$child_users:array();
 // 	if($parent_id){
 // 		$child_user_id = get_child_ids($parent_id);
 // 		if(!empty($child_user_id)&&is_array($child_user_id)){
@@ -545,18 +545,27 @@ function get_child_depts($pid){
 	}
 	return $a;
 }
-function get_child_dept_all($pid){
+/*
+ * $flag=true表示包括自己
+ * $flag=false表示不包括自己
+ */
+function get_child_dept_all($pid,$flag=true){
 	$child = get_child_depts($pid);
 	$a = $child;
 	if($child){
 		foreach ($child as $k=>$v){
-			$b = get_child_dept_all($v);
+			$b = get_child_dept_all($v,$flag);
 			if(!empty($b)){
 				$a = array_unique(array_merge($a,$b));
 			}
 		}
 	}
-	return array_merge($a,array($pid));
+	if($flag){
+		return array_merge($a,array($pid));
+	}else{
+		return $a;
+	}
+	
 }
 
 function get_emp_no() {

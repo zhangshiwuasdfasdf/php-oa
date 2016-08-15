@@ -49,6 +49,62 @@ class HomeAction extends CommonAction {
 		$this -> shuoshuo();
 		$this -> display();
 	}
+	public function index_new() {
+		$widget['jquery-ui'] = true;
+		$this -> assign("widget", $widget);
+	
+		cookie("current_node", null);
+		cookie("top_menu", null);
+	
+		$config = D("UserConfig") -> get_config();
+		$this -> assign("home_sort", $config['home_sort']);
+		$this -> assign("ceo_incentive", get_system_config("CEO_INCENTIVE"));
+	
+		$this -> get_user_info();
+		$this -> _mail_list();
+		// 		$this -> _flow_list();
+		// 		$this -> _schedule_list();
+		$this -> _notice_list();
+		// 		$this -> _doc_list();
+		// 		$this -> _forum_list();
+		// 		$this -> _news_list();
+		// 		$this -> _slide_list();
+		$this -> _task_list();
+		$this -> _shouxing_list();
+		$this -> _jinianri_list();
+		$this -> _xinjin_list();
+		$this -> _daily_list();
+		$this -> shuoshuo();
+		$this -> display();
+	}
+	public function shouy(){
+		$widget['jquery-ui'] = true;
+		$this -> assign("widget", $widget);
+	
+		cookie("current_node", null);
+		cookie("top_menu", null);
+	
+		$config = D("UserConfig") -> get_config();
+		$this -> assign("home_sort", $config['home_sort']);
+		$this -> assign("ceo_incentive", get_system_config("CEO_INCENTIVE"));
+	
+		$this -> get_user_info();
+		$this -> _mail_list();
+		// 		$this -> _flow_list();
+		// 		$this -> _schedule_list();
+		$this -> _notice_list();
+		// 		$this -> _doc_list();
+		// 		$this -> _forum_list();
+		// 		$this -> _news_list();
+		// 		$this -> _slide_list();
+		$this -> _task_list();
+		$this -> _shouxing_list();
+		$this -> _jinianri_list();
+		$this -> _xinjin_list();
+		$this -> _daily_list();
+		$this -> shuoshuo();
+		$this -> display();
+	}
 	public function shuoshuo(){
 		$map['bianqian'] = array('neq','');
 		$user = M('User')->where($map)->getField('id,name,bianqian');
@@ -349,7 +405,7 @@ class HomeAction extends CommonAction {
 		$model = D('User');
 		$where = array();
 		$where = array('id'=>$user_id);
-		$info = $model->where($where)-> field('id,name,dept_id,position_id,sex,birthday,pic,email,duty,office_tel,mobile_tel,create_time')->find();
+		$info = $model->where($where)-> field('id,name,dept_id,pos_id,position_id,sex,birthday,pic,email,duty,office_tel,mobile_tel,create_time')->find();
 		$info['create_time'] = date('Y年m月d日',$info['create_time']);
 		$model = D('Dept');
 		$where = array();
@@ -361,6 +417,8 @@ class HomeAction extends CommonAction {
 		$where = array('id'=>$info['position_id']);
 		$position_info = $model->where($where)-> field('name')->find();
 		$info['position'] = $position_info['name']?$position_info['name']:'';
+		$pos_name = M('Dept')-> field('name')->find($info['pos_id']);
+		$info['pos_name'] = $pos_name['name']?$pos_name['name']:'';
 		if(!is_mobile_request()){
 			$this->assign('info',$info);
 		}
