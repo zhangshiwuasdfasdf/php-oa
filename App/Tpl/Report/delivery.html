@@ -79,7 +79,7 @@
 							<span class="col-10">{$vo.user_name}</span>
 							<span class="col-10">{$vo.addr}</span>
 							<span class="col-15"><a href="{:U('delivery_read','id='.$vo['id'])}">{$vo.create_time|toDate='Y-m-d H:i:s'}</a></span>
-							<span class="col-15">{$vo.create_time|toDate='Y-m-d H:i:s'}</span>
+							<span class="col-15">{$voo.$key.date}</span>
 						</div>
 						<div class="pull-right">
 							<span class="col-8"><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('delivery_del','id='.$vo['id'])}">删除</a></span>
