@@ -7,7 +7,7 @@ ul,li{ list-style:none; margin:0; padding:0;}
 a{ text-decoration:none;}
 input{ outline:none; margin:0; padding:0;}
 /*头部*/
-.top{ width:100%; height:90px; background-color:#308983; position:fixed; top:0; left:0; border-bottom:4px solid #4f5f6f;}
+.top{ width:100%; height:94px; background-color:#308983; position:fixed; top:0; left:0; border-bottom:4px solid #4f5f6f;}
 .top_s{width:100%; height:60px; overflow:hidden;}
 .img_a{ height:60px; float:left;}
 .logo_img{ margin-left:5%; margin-top:5px; width:375px; height:55px;}

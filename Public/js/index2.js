@@ -19,7 +19,7 @@ function ww(){
 	var w = $(".left").width()
 	$(".menu_ul2").css('left',w)
 	var	g = $(".menu_li1 a").width()-4
-	$(".sanj").css('left',g)
+	$(".sanj").css('left',g+8)
 }
 ww();
 

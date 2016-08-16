@@ -1,94 +1,270 @@
-<nav class="navbar navbar-default " role="navigation" style="position: relative;display:none;">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-6">
-			<span class="sr-only">Toggle navigation</span>
-			<i class="fa fa-bars fa-lg"></i>
-      </button>
-		  <div class="hidden-xs">&nbsp;</div>
-          <a href="{:U('home/index')}" class="navbar-brand"><img src="__PUBLIC__/img/img/logo.png">{:get_system_config("SYSTEM_NAME")}</a>
+<link href="__PUBLIC__/css/index2.css" rel="stylesheet" type="text/css">
+<div class="top" >
+	<div class="top_s">
+    	<a class="img_a">
+    		<img class="logo_img" src="__PUBLIC__/img/logo2.png"/> 
+        </a>
+        <div class="tuic">
+            <a class="tuic_a1">OA问题反馈</a>
+            <a class="tuic_a2"><img src="__PUBLIC__/img/tc.png"/><span>退出</span></a>
         </div>
-        <div style="float:left;margin-top: 50px;margin-left: 10px;"><a href="#" style="color: #fff;">切换用户</a></div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar-collapse-6">
-          <ul class="nav navbar-nav navbar-right" style="margin-right: 8%;">
-				<foreach name="top_menu" item="top_menu_vo">
-				<a class="btn btn-app app-nav btn-xs nav-app"  href="#" url="{:U($top_menu_vo['url'])}" node="{$top_menu_vo.id}" onclick="click_top_menu(this)" >
-					<i class="{$top_menu_vo.icon} bigger-100"></i><!--{$top_menu_vo.name}-->
-					<php>
-						$bc_class="";
-						$module_count=0;
-						$icon_class=$top_menu_vo['icon'];
-						if(strpos($icon_class,"bc-")!==false){
-							$bc_class=get_bc_class($icon_class);
-							$module_count=array_sum($new_count[$bc_class]);
-							if($module_count>99){
-								$module_count="99+";
-							}
-							if($module_count==0){
-								$module_count=null;
-							}
-						}</php>
-						<notempty name="module_count">
-							<span class="badge badge-pink">{$module_count}</span>
-						</notempty>					
-				</a>&nbsp;&nbsp;
-				</foreach><a class="btn btn-app btn-xs btn-danger" style="margin-top:15px;margin-bottom:20px;margin-left:7px;margin-right:10px;" href="{:U('login/logout')}" ><i class="fa fa-sign-out bigger-100" style="margin-left: 0;"></i>退出</a>
-          </ul>
+        <div class="qhlb">
+        	<a>切换老版</a>
         </div>
-        <div id="erNav"></div>
-</nav>
-<script src="__PUBLIC__/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript"><!--
-$(document).ready(function() {
-	$('.nav-app,#erNav').hover(function() {
-		var obj = $("#erNav");
-		if($(this).attr("node")){
-			$(".er_menu").html("");
-			var node = $(this).attr("node");
-			$.post("{:U('Common/test')}", "id=" + $(this).attr("node"), function(data) {
-				var html = "<span class=\"er_menu\">";
-				for(var i in data){
-					html += "<a href='"+data[i].url+"'>"+ data[i].name +"</a>";
-				}
-				html += "</span>";
-				$(obj).append(html);
-			});
-		}
-		$(obj).stop().slideDown();
-		
-	}, function() {
-		$("#erNav").stop().slideUp();
-	});
-	
-});
-</script>
-<style type="text/css">
-		#erNav {
-			text-align: center;
-			display: none;
-			height: 20px;
-			width: 100%;
-			float: right;
-			margin-right: 10%;
-			width: 50%;
-			height: 30px;
-			line-height: 25px;
-		}
-        .er_menu {
-        	list-style:none; 
-		    margin: 0px;
-		    padding: 0px;
-		    z-index: 99;
-		    height: 20px;
-		    width: auto;
-        }
-        .er_menu a{
-        	width: auto;
-        	padding: 0 5px;
-        	color: #fff ;
-        }
-        .er_menu li a:hover{
-        	text-decoration: none;
-        }
-    </style>   
+        <div class="top_menu_r">
+            <a>上班签入</a>
+            <a>下班签出</a>
+        </div>    
+    </div>
+    
+    <!--菜单栏-->
+    <div class="right_tb">
+        <a class="right_zm" href="{:U('home/index_new')}" target="zm">
+            <img src="__PUBLIC__/img/zm.png"/>
+            <span>桌&nbsp;面</span>
+        </a>
+        <a class="right_zm" href="{:U('profile/userlist')}" target="zm">
+            <img src="__PUBLIC__/img/zm.png"/>
+            <span>桌&nbsp;面2</span>
+        </a>
+    </div>
+</div>
+
+<!--left-->
+<ul class="left">
+	<li class="li_ss">
+        <a title="搜索">
+            <img class="menu_img" src="__PUBLIC__/img/left1.png"/>
+        </a>
+    </li>
+    <li class="li1">
+    	<ul class="menu_ul1" style="margin-left:0px;">
+        	<!--个人中心-->
+        	<li class="menu_li1" >
+            	<a class="menu_li1_a" title="个人中心" id="gr_yj_a">
+                    <img class="sanj" src="__PUBLIC__/img/sanj.png"/>
+                    <img class="menu_img" src="__PUBLIC__/img/left2.png"/>
+                </a>
+                
+                <ul class="menu_ul2" id="gr_ej">
+                    <li class="menu_li2">
+                    	<a class="menu_li2_a" id="gr_ej_a">
+                            <span class="cd_span"></span>
+                            <div class="cd_div">用户设置</div>
+                            <img class="cd_ts" src="__PUBLIC__/img/cd_ts.png"/>
+                        </a>
+                        <ul class="menu_ul3" id="gr_sj">
+                            <li class="menu_li3"><a><span class="cd_span2"></span><div class="cd_div">用户资料</div></a></li>
+                            <li class="menu_li3"><a><span class="cd_span2"></span><div class="cd_div">修改密码</div></a></li>
+                            <li class="menu_li3"><a><span class="cd_span2"></span><div class="cd_div">个人简历</div></a></li>
+                            <li class="menu_li3"><a><span class="cd_span2"></span><div class="cd_div">用户设置</div></a></li>
+                        </ul>
+                    </li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">每日说说</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">待办事项</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">联系人</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">意见箱</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">日程</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">消息</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">日报</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">周报</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">月报</div></a></li>
+                </ul>
+            </li>
+            
+            <!--人力资源管理-->
+            <li class="menu_li1">
+            	<a class="menu_li1_a" title="人力资源管理" id="rl_yj_a">
+                    <img class="sanj" src="__PUBLIC__/img/sanj.png"/>
+                    <img class="menu_img" src="__PUBLIC__/img/left3.png"/>
+                </a>
+                
+                <ul class="menu_ul2" id="rl_ej">
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">请假/调休单</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">外勤/出差单</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">用人申请流程</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">员工调岗/调职申请</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">试用期评估表</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">员工调薪申请</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">转正申请</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">离职申请流程</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">离职交接流程</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">出勤证明流程</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">加班调休申请</div></a></li>
+                </ul>
+            </li>
+            
+			<!--行政管理-->
+            <li class="menu_li1" >
+            	<a class="menu_li1_a" title="行政管理" id="xz_yj_a">
+                    <img class="sanj" src="__PUBLIC__/img/sanj.png"/>
+                    <img class="menu_img" src="__PUBLIC__/img/left6.png"/>
+                </a>
+                
+                <ul class="menu_ul2" id="xz_ej">
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">文件审批流程</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">内部联络单</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">名片使用</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">合同审阅流程</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">会务证明流程</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">用印申请</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">转正申请</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">人事任免、业务提成通知</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">办公用品采购</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">办公用品领用</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">公交卡使用申请</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">私车公用申请流程</div></a></li>
+                    <li class="menu_li2">
+                        <a class="menu_li2_a" id="xz_ej_a">
+                            <span class="cd_span"></span>
+                            <div class="cd_div">公告</div>
+                            <img class="cd_ts" src="__PUBLIC__/img/cd_ts.png"/>
+                        </a>
+                        <ul class="menu_ul3" id="xz_sj">
+                            <li class="menu_li3"><a><span class="cd_span2"></span><div class="cd_div">公告搜索</div></a></li>
+                            <li class="menu_li3"><a><span class="cd_span2"></span><div class="cd_div">公告管理</div></a></li>
+                            <li class="menu_li3"><a><span class="cd_span2"></span><div class="cd_div">企业概况</div></a></li>
+                            <li class="menu_li3"><a><span class="cd_span2"></span><div class="cd_div">企业制度</div></a></li>
+                            <li class="menu_li3"><a><span class="cd_span2"></span><div class="cd_div">企业公告</div></a></li>
+                            <li class="menu_li3"><a><span class="cd_span2"></span><div class="cd_div">学习天地</div></a></li>
+                            <li class="menu_li3">
+                                <a class="menu_li2_a" id="xz_sj_a1">
+                                    <span class="cd_span2"></span>
+                                    <div class="cd_div">园区公告</div>
+                                    <img class="cd_ts" src="__PUBLIC__/img/cd_ts.png"/>
+                                </a>
+                                <ul class="menu_ul4" id="xz_sij1">
+                                	<li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">杭州园区</div></a></li>
+                                    <li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">嘉兴园区</div></a></li>
+                                    <li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">金华园区</div></a></li>
+                                    <li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">宁波园区</div></a></li>
+                                </ul>
+                            </li>
+                            <li class="menu_li3">
+                                <a class="menu_li2_a" id="xz_sj_a2">
+                                    <span class="cd_span2"></span>
+                                    <div class="cd_div">园区概况</div>
+                                    <img class="cd_ts" src="__PUBLIC__/img/cd_ts.png"/>
+                                </a>
+                                <ul class="menu_ul4" id="xz_sij2">
+                                	<li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">杭州园区</div></a></li>
+                                    <li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">嘉兴园区</div></a></li>
+                                    <li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">金华园区</div></a></li>
+                                    <li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">宁波园区</div></a></li>
+                                </ul>
+                            </li>
+                            <li class="menu_li3">
+                                <a class="menu_li2_a" id="xz_sj_a3">
+                                    <span class="cd_span2"></span>
+                                    <div class="cd_div">会议室预定</div>
+                                    <img class="cd_ts" src="__PUBLIC__/img/cd_ts.png"/>
+                                </a>
+                                <ul class="menu_ul4" id="xz_sij3">
+                                	<li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">会议室管理</div></a></li>
+                                    <li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">预约列表</div></a></li>
+                                    <li class="menu_li4"><a><span class="cd_span3"></span><div class="cd_div">参数配置</div></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>   
+                </ul>
+            </li>
+            
+            <!--资产管理-->
+            <li class="menu_li1">
+            	<a class="menu_li1_a" title="资产管理" id="zc_yj_a">
+                    <img class="sanj" src="__PUBLIC__/img/sanj.png"/>
+                    <img class="menu_img" src="__PUBLIC__/img/left7.png"/>
+                </a>
+                
+                <ul class="menu_ul2" id="zc_ej">
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">资产目录</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">资产目录级别</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">资产</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">资产加减</div></a></li>
+                </ul>
+            </li>
+            
+            <!--信息管理-->
+            <li class="menu_li1">
+            	<a class="menu_li1_a" title="信息管理" id="xx_yj_a">
+                    <img class="sanj" src="__PUBLIC__/img/sanj.png"/>
+                    <img class="menu_img" src="__PUBLIC__/img/left8.png"/>
+                </a>
+                
+                <ul class="menu_ul2" id="xx_ej">
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">OA问题反馈</div></a></li>
+                </ul>
+            </li>
+            
+            <!--档案中心-->
+            <li class="menu_li1">
+            	<a class="menu_li1_a" title="档案中心" id="da_yj_a">
+                    <img class="sanj" src="__PUBLIC__/img/sanj.png"/>
+                    <img class="menu_img" src="__PUBLIC__/img/left9.png"/>
+                </a>
+                
+                <ul class="menu_ul2" id="da_ej">
+                    <li class="menu_li2"><a href="{:U('profile/userlist')}"><span class="cd_span"></span><div class="cd_div">员工档案管理</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">部门档案管理</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">通讯录</div></a></li>
+                </ul>
+            </li>
+            
+            <!--知识中心-->
+            <li class="menu_li1" >
+            	<a class="menu_li1_a" title="知识中心" id="zs_yj_a">
+                    <img class="sanj" src="__PUBLIC__/img/sanj.png"/>
+                    <img class="menu_img" src="__PUBLIC__/img/left10.png"/>
+                </a>
+                
+                <ul class="menu_ul2" id="zs_ej">
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">文档搜索</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">文档库管理</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">模板</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">人事管理</div></a></li>
+                </ul>
+            </li>
+            
+            <!--统计中心-->
+            <li class="menu_li1">
+            	<a class="menu_li1_a" title="统计中心" id="tj_yj_a">
+                    <img class="sanj" src="__PUBLIC__/img/sanj.png"/>
+                    <img class="menu_img" src="__PUBLIC__/img/left12.png"/>
+                </a>
+                
+                <ul class="menu_ul2" id="tj_ej">
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">基地发货日报导入</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">基地发货日报表</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">工作计划导入</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">客户管理报表</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">商家问题受理导入</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">商家问题受理表</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">招商进度日报导入</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">招商进度日报表</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">到访客户池导入</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">到访客户池统计</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">已签约客户明细年进度导入</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">已签约客户明细年进度表</div></a></li>
+                </ul>
+            </li>
+            
+            <!--系统管理-->
+            <li class="menu_li1">
+            	<a class="menu_li1_a" title="系统管理" id="xt_yj_a">
+                    <img class="sanj" src="__PUBLIC__/img/sanj.png"/>
+                    <img class="menu_img" src="__PUBLIC__/img/left13.png"/>
+                </a>
+                
+                <ul class="menu_ul2" id="xt_ej">
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">公司信息管理</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">权限管理</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">系统设定</div></a></li>
+                    <li class="menu_li2"><a><span class="cd_span"></span><div class="cd_div">基础数据</div></a></li>
+                </ul>
+            </li>
+
+        </ul> 
+    </li>
+
+</ul>

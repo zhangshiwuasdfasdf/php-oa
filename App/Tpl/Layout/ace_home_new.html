@@ -47,27 +47,22 @@
 	<script src="__PUBLIC__/js/html5shiv.js"></script>
 	<script src="__PUBLIC__/js/respond.min.js"></script>
 	<![endif]-->
+	
+<script type="text/javascript">
+window.jQuery
+		|| document
+				.write("<script src='__PUBLIC__/js/jquery-2.1.0.min.js'>"
+						+ "<" + "/script>");
+</script>
 <include file="Public:script" />
 
 </head>
 <body>
 <div class="shade"></div>
 <include file="Layout:ace_header_new" />
-<div class="main-container" id="main-container">
-<div class="main-container-inner">
-<div class="main-content" style="margin-left: 0px">
-<div class="page-content {$Think.MODULE_NAME }">
-<div class="row">
-<div class="col-xs-12"><!-- PAGE CONTENT BEGINS --> {__CONTENT__}
-<!-- PAGE CONTENT ENDS --></div>
-<!-- /.col --></div>
-<!-- /.row -->
+<div class="right">
+{__CONTENT__}
 </div>
-<!-- /.page-content --></div>
-<!-- /.main-content --></div>
-<!-- /#ace-settings-container --></div>
-<!-- /.main-container-inner -->
-
 <a href="#" id="btn-scroll-up"
 	class="btn-scroll-up btn btn-sm btn-inverse"> <i
 	class="fa fa-double-angle-up fa-only bigger-110"></i> </a>
@@ -79,12 +74,7 @@
 
 <!--[if !IE]>
 	-->
-<script type="text/javascript">
-	window.jQuery
-			|| document
-					.write("<script src='__PUBLIC__/js/jquery-2.1.0.min.js'>"
-							+ "<" + "/script>");
-</script>
+
 <!-- <![endif]-->
 
 <!--[if IE]>
@@ -102,6 +92,7 @@
 <script src="__PUBLIC__/js/uncompressed/ace-elements.js"></script>
 <script src="__PUBLIC__/js/uncompressed/ace.js"></script>
 <script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/index2.js"></script>
 <include file="$js_file" />
 <!-- inline scripts related to this page -->
 </body>

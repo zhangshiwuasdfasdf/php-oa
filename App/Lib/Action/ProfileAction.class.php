@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class ProfileAction extends CommonAction {
-	protected $config=array('app_type'=>'common', 'action_auth' => array('upload' => 'read','reset_pwd'=>'read','password'=>'read','save'=>'read','resume'=>'read','addResume'=>'read','save_resume'=>'read','add_record'=>'read','save_record'=>'read','userlist'=>'read','user'=>'read'));
+	protected $config=array('app_type'=>'common', 'action_auth' => array('upload' => 'read','reset_pwd'=>'read','password'=>'read','save'=>'read','resume'=>'read','addResume'=>'read','save_resume'=>'read','add_record'=>'read','save_record'=>'read','userlist'=>'read','user'=>'read','get_dept_child'=>'read'));
 	
 	function index(){	
 		$auth = $this -> config['auth'];
