@@ -452,10 +452,43 @@ class HomeAction extends CommonAction {
 		}
 		
 	}
-	
+	//日、周、月报样式调查 ->页面
 	public function suggest(){
-		
+		$sug = M("User_suggest_detail");
+		$max = $sug -> max('now');
+		$info = $sug -> where('now = '.$max) -> select();
+		if(!empty($info)){
+			$file = M('file');
+			$list = array();
+			foreach($info as $k=>$v){
+				$list[] = $file -> find($v['fid']);
+			}
+			$this -> assign('list',$list);
+		}
 		$this -> display();		
+	}
+	//保存
+	public function save_order(){
+		$sug = M('User_suggest'); 
+		$ids = $sug -> field('user_id') -> select();
+		$sign = false;
+		$id = get_user_id();
+		foreach ($ids as $k => $v){
+			if($v['user_id'] == $id){$sign =  true;break;}
+		}
+		if(!$sign){
+			$data['sustain'] = $_POST['gt1'] .'|' .$_POST['gt2'] . '|' .$_POST['gt3'];
+			$data['suggest'] = $_POST['yj1'] .'|' .$_POST['yj2'] . '|' .$_POST['yj3'];
+			$data['user_id'] = get_user_id();
+			$data['user_name'] = get_user_name();
+			$data['create_time'] = time();
+			$flag = $sug -> add($data);
+			if(false !== $flag){
+				$this -> redirect("Home/index");die;
+			}
+		}
+		$this -> redirect("Home/index");die;
+			
 	}
 	//杭州园区
  	public function hangzhou() {

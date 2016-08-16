@@ -1,6 +1,5 @@
 <layout name='Layout/ace_layout' />
 <input type="hidden" name="id" id="id" value="{$vo.id}">
-<php>dump(get_return_url());</php>
 {:W('PageHeader',array('name'=>$forum['name'],'search'=>'N'))}
 <div class="operate panel panel-default">
 	<div class="panel-body">
@@ -70,7 +69,7 @@
 				</if>
 			</div>
 			<div class="pull-right">
-				<a href="#reply" class="btn btn-sm btn-primary">回复{$key+1}#</a>
+				<a href="#reply" class="btn btn-sm btn-primary">回复{$rows+$key}#</a>
 			</div></td>
 		</tr>
 		<td style="width:145px;text-align:center;vertical-align:top;padding:0;margin:0;">

@@ -19,8 +19,11 @@ class IndexAction extends CommonAction {
 		//$this -> redirect("Home/index");die;
 		
 		$resume = M("User_suggest_detail") -> find();
-		$sug = M('User_suggest') -> where("user_id = ".get_user_id()) -> find();
-		if(!is_null($resume) && !is_null($sug)){
+		$sug = M('User_suggest') ;
+		$max = $sug -> max('now');
+		$where['user_id'] = get_user_id();
+		$info = $sug -> where($where) -> find();
+		if(!empty($resume) && empty($info)){
 			$this -> redirect("Home/suggest");die;
 		}else{
 			$this -> redirect("Home/index");die;

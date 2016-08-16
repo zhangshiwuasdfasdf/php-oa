@@ -132,6 +132,14 @@ class ForumAction extends CommonAction {
 
 		$this -> assign("forum_id", $id);
 		$this -> assign("folder_id", $folder_id);
+		// 序号
+		$rows = get_user_config('list_rows');
+		if(isset($_POST['p'])){
+			$number = $_POST['p']*$rows-$rows+1;
+		}else{
+			$number = 1*$rows-$rows+1;
+		}
+		$this -> assign('rows',$number);
 		$this -> display();
 	}
 

@@ -1,6 +1,20 @@
 <?php
 class ResearchAction extends CommonAction {
 	function index(){
+		$model = D('User_suggest');
+		if (!empty($model)) {
+			$res = $this -> _list($model, $map);
+		}
+		
+		$dayNew = 0;$dayOld = 0;$monNew = 0;$monOld = 0;$wekNew = 0;$wekOld = 0;
+		foreach ($res as $k => $v){
+			$tmp = explode('|',$v['sustain']);
+			if($tmp[0] == '1'){$dayNew ++; }elseif($tmp[0] == '0'){$dayOld++;}
+			if($tmp[1] == '1'){$monNew ++; }elseif($tmp[1] == '0'){$monOld++;}
+			if($tmp[2] == '1'){$wekNew ++; }elseif($tmp[2] == '0'){$wekOld++;}
+		}
+		$info = array('dn' => $dayNew,'do' => $dayOld , 'mn' => $monNew ,'mo' => $monOld ,'wn' => $wekNew , 'wo' => $wekOld);
+		$this -> assign('res',$info);
 		$this -> display();
 	}
 	

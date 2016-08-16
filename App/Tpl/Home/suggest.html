@@ -1,6 +1,6 @@
-<style>
+<style type="text/css">
 /*重置*/
-body,ul,li{ margin:0; padding:0; list-style:none;}
+ul,li{ margin:0; padding:0; list-style:none;}
 a{ text-decoration:none;}
 input{ margin:0; padding:0;}
 img{ margin: 0; padding: 0;}
@@ -28,6 +28,7 @@ img{ margin: 0; padding: 0;}
 .t{ width: 80%;}
 .t textarea{ width: 100%; font-size: 14px; color: #666;}    
 </style>
+<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal" action="{:U('save_order')}" onSubmit="return check_form();">
 <div class="main_gt">
     <div class="wjmain">
         <h1 class="wjtitle">日报、周报、月报问卷调查</h1>
@@ -37,18 +38,18 @@ img{ margin: 0; padding: 0;}
                 <li class="gt_1">
                     <div>
                         <span>新版日志</span>
-                        <label for="l"><img></label>
-                        <label for="l" class="w"><input id="l" name="gt" type="radio">支持</label>
+                        <label for="l"><img src="{$list[0]['savename']}"></label>
+                        <label for="l" class="w"><input id="l" name="gt1" type="radio" value="1">支持</label>
                     </div>
                     <div>
                        <span>老版日志</span>
-                        <label for="r"><img></label>
-                        <label for="r" class="w"><input id="r" name="gt" type="radio">不支持</label>
+                        <label for="r"><img src="{$list[1]['savename']}"></label>
+                        <label for="r" class="w"><input id="r" name="gt1" type="radio" value="0">支持</label>
                     </div>
                 </li>
                 <li class="gt_2">
                     <div class="r">建议:</div>
-                    <div class="t"><textarea rows="5"></textarea></div>
+                    <div class="t"><textarea rows="5" name="jy1"></textarea></div>
                 </li>
                 <li>
                     <input type="button" value="下一页" class="wj_tj" id="first">
@@ -64,18 +65,18 @@ img{ margin: 0; padding: 0;}
                 <li class="gt_1">
                     <div>
                         <span>新版日志</span>
-                        <label for="l"><img></label>
-                        <label for="l" class="w"><input id="l" name="gt" type="radio">支持</label>
+                        <label for="l"><img src="{$list[2]['savename']}"></label>
+                        <label for="2" class="w"><input id="2" name="gt2" type="radio" value="1">支持</label>
                     </div>
                     <div>
                        <span>老版日志</span>
-                        <label for="r"><img></label>
-                        <label for="r" class="w"><input id="r" name="gt" type="radio">不支持</label>
+                        <label for="r"><img src="{$list[3]['savename']}"></label>
+                        <label for="r2" class="w"><input id="r2" name="gt2" type="radio" value="0">支持</label>
                     </div>
                 </li>
                 <li class="gt_2">
                     <div class="r">建议:</div>
-                    <div class="t"><textarea rows="5"></textarea></div>
+                    <div class="t"><textarea rows="5" name="jy2"></textarea></div>
                 </li>
                 <li>
                     
@@ -93,21 +94,21 @@ img{ margin: 0; padding: 0;}
                 <li class="gt_1">
                     <div>
                         <span>新版日志</span>
-                        <label for="l"><img></label>
-                        <label for="l" class="w"><input id="l" name="gt" type="radio">支持</label>
+                        <label for="l"><img src="{$list[4]['savename']}"></label>
+                        <label for="3" class="w"><input id="3" name="gt3" type="radio" value="1">支持</label>
                     </div>
                     <div>
                        <span>老版日志</span>
-                        <label for="r"><img></label>
-                        <label for="r" class="w"><input id="r" name="gt" type="radio">不支持</label>
+                        <label for="r"><img src="{$list[5]['savename']}"></label>
+                        <label for="r3" class="w"><input id="r3" name="gt3" type="radio" value="0">支持</label>
                     </div>
                 </li>
                 <li class="gt_2">
                     <div class="r">建议:</div>
-                    <div class="t"><textarea rows="5"></textarea></div>
+                    <div class="t"><textarea rows="5" name="jy3"></textarea></div>
                 </li>
                 <li>
-                    <input type="button" value="提交" class="wj_tj">
+                    <input type="submit" value="提交" class="wj_tj" >
                     <input type="button" value="上一页" class="wj_tj" id="s2">
                     
                 </li>
@@ -115,22 +116,33 @@ img{ margin: 0; padding: 0;}
         </div>
     </div>
 </div>
+</form>
 <script src="__PUBLIC__/js/jquery-1.11.0.min.js"></script>
-<script>
-    $('#first').click(function(){
-        $('.wjmain2').show()
-        $('.wjmain,wjmain3').hide()
-    })
-    $('#second').click(function(){
-        $('.wjmain,wjmain2').hide()
-        $('.wjmain3').show()
-    })
-    $('#s2').click(function(){
-        $('.wjmain,.wjmain3').hide()
-        $('.wjmain2').show()
-    })
-    $('#s1').click(function(){
-        $('.wjmain2,wjmain3').hide()
-        $('.wjmain').show()
-    })
+<script type="text/javascript">
+$(document).ready(function() {
+	  $('#first').click(function(){
+	        $('.wjmain2').show()
+	        $('.wjmain,wjmain3').hide()
+	    })
+	    $('#second').click(function(){
+	        $('.wjmain,wjmain2').hide()
+	        $('.wjmain3').show()
+	    })
+	    $('#s2').click(function(){
+	        $('.wjmain,.wjmain3').hide()
+	        $('.wjmain2').show()
+	    })
+	    $('#s1').click(function(){
+	        $('.wjmain2,wjmain3').hide()
+	        $('.wjmain').show()
+	    })
+});
+function check_form(){
+  var gt1 = $("input[name='gt1']:checked").val();
+  if(gt1 == undefined){alert('请选择日报支持的版本');return false;}
+  var gt2 = $("input[name='gt2']:checked").val();
+  if(gt2 == undefined){alert('请选择周报支持的版本');return false;}
+  var gt3 = $("input[name='gt3']:checked").val();
+  if(gt3 == undefined){alert('请选择月报支持的版本');return false;}
+}
 </script>
