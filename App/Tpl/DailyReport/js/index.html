@@ -34,7 +34,7 @@
 			success: function(result){
 				$(".bottom_x").html(result);
 				w();
-				console.log(JSON.stringify(result));
+				//console.log(JSON.stringify(result));
 				showBg();
 				$(document.body).css({
 				   "overflow-x":"hidden",
@@ -49,7 +49,7 @@
 						data:{dept_id:dept_id},
 						dataType: "json",
 						success: function(result){
-							console.log(JSON.stringify(result));
+							//console.log(JSON.stringify(result));
 							var html = '';
 							for(var i = 0;i<result.length;i++){
 								html+='<a class="name" id="'+result[i].id+'">'+result[i].name+'</a>';
@@ -81,12 +81,16 @@
 						$(".zz").scrollLeft($("#dialog").scrollLeft())	
 					})
 					*/
-				    var m=$(this).offset().left+l
-				    var n=$(this).offset().top+h-2
+					
+					$('.bottom_yj_a').index(this)
+					var l1 = $(".content").offset().left;
+					var t1 = $(".content").offset().top;
+				    var l=$(this).width()+15
+				    
+				    var m=$(this).offset().left+l-l1
+				    var n=$(this).offset().top+h-2-t1
 				    $('.zz').show()
 				    $('.zz').css({left:m,top:n})
-				 //   alert(m);
-				  //  alert(n);
 				})
 				$('.gbzz').click(function(){
 				    $('.zz').hide()
@@ -120,9 +124,12 @@
 						}
 					});
 					$('.bottom_yj_a').index(this)
+					var l1 = $(".content").offset().left;
+					var t1 = $(".content").offset().top;
 				    var l=$(this).width()+15
-				    var m=$(this).offset().left+l+2
-				    var n=$(this).offset().top
+				    var m=$(this).offset().left+l+2-l1
+				    var n=$(this).offset().top-t1
+					
 				    $('.zz').show()
 				    $('.zz').css({left:m,top:n})
 				})
@@ -216,9 +223,9 @@
 		$("#panel").html(y + "年" + m + "月");
 		start_date1 = $("#UL0").attr("class").substr(4);
 		end_date1 = $("#UL41").attr("class").substr(4);
-		console.log(uid);
-		console.log(JSON.stringify(start_date1));
-		console.log(JSON.stringify(end_date1));
+		//console.log(uid);
+		//console.log(JSON.stringify(start_date1));
+		//console.log(JSON.stringify(end_date1));
 		$.getJSON("{:U('json')}", {
 			uid:uid,
 			start_date : start_date1,
@@ -227,7 +234,7 @@
 			count = 0;
 			prev_date = '';
 			$(".mv-container ul").html("");
-			console.log(JSON.stringify(data));
+			//console.log(JSON.stringify(data));
 			if (data != null) {
 				$.each(data, function(i) {
 					html = '<li id=li_' + data[i].id + ' style=background-color:#CCFFCC' + ">";

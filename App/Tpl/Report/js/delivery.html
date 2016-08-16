@@ -5,5 +5,13 @@
 	$(document).ready(function() {
 		set_return_url();
 	});
+	function export_delivery_report() {
+		window.open("{:U('export_delivery_report')}", "_blank");
+		return false;
+	}
 
+	function import_delivery_report() {
+		window.open("{:U('import_delivery_report')}", "_self");
+		return false;
+	}
 </script>

@@ -2879,4 +2879,7 @@ function tree_to_html($tree){
 	}
 	return $html;
 }
+function user_status($is_del){
+	return $is_del=='1'?'禁用':'启用';
+}
 ?>

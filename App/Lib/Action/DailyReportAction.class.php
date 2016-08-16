@@ -253,7 +253,6 @@ class DailyReportAction extends CommonAction {
 		$this -> assign('uid',get_user_id());
 		$this -> assign('id', $id);
 		$this -> assign('auth', $this -> config['auth']);
-
 		$widget['date'] = true;
 		$widget['uploader'] = true;
 		$widget['editor'] = true;

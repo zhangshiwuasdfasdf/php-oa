@@ -35,10 +35,10 @@
 			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label" for="be_create_time_0">月份：</label>
 				<div class="col-sm-8">
-					<div class="input-daterange-m input-group" >
-						<input type="text" class="input-sm form-control text-center" name="be_create_time_0" />
+					<div class="input-group" >
+						<input type="text" class="input-date-m input-sm form-control text-center" name="be_create_time_0" />
 						<span class="input-group-addon">-</span>
-						<input type="text" class="input-sm form-control text-center" name="en_create_time_0" />
+						<input type="text" class="input-date-m input-sm form-control text-center" name="en_create_time_0" />
 					</div>
 				</div>
 			</div>
@@ -47,6 +47,16 @@
 </form>
 <div class="operate panel panel-default">
 	<div class="panel-body">
+		<div class="pull-left">
+			<div class="btn-group">
+				<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 管理 <b class="fa fa-caret-down"></b></a>
+				<ul class="dropdown-menu">
+					<li>
+						<a target="_blank" href="{:U('down?attach_id='.f_encode($file_id))}" >导出模板</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 		<div class="pull-right">
 			<a class="btn btn-sm btn-primary" onclick="add_work_plan()">新建</a>
 		</div>

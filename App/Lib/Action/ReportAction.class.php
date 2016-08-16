@@ -797,6 +797,10 @@ class ReportAction extends CommonAction {
 		$auth = $this -> config['auth'];
 		$this -> assign('auth', $auth);
 		
+		$file = M('File')->where(array('name'=>array('like','%工作计划导入模板%')))->find();
+		
+		$this -> assign("file_id", $file['id']);
+		
 		$dept_list = M("WorkPlan") -> field('addr as id,addr as name') ->distinct(true) -> select();
 		$this -> assign('dept_list', $dept_list);
 	
@@ -1083,6 +1087,10 @@ class ReportAction extends CommonAction {
 		$auth = $this -> config['auth'];
 		$this -> assign('auth', $auth);
 	
+		$file = M('File')->where(array('name'=>array('like','%商家问题受理导入模板%')))->find();
+		
+		$this -> assign("file_id", $file['id']);
+		
 		$addr = M("StoreProblem") -> field('addr as id,addr as name') ->distinct(true) -> select();
 		$this -> assign('addr_list', $addr);
 	

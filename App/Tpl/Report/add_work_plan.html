@@ -1,19 +1,5 @@
 <layout name='Layout/ace_layout' />
 {:W('PageHeader',array('name'=>'新建工作计划','search'=>'N'))}
-<div class="operate panel panel-default">
-		<div class="panel-body">
-			<div class="pull-left">
-				<div class="btn-group">
-					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 管理 <b class="fa fa-caret-down"></b></a>
-					<ul class="dropdown-menu">
-						<li>
-							<a target="_blank" href="{:U('down?attach_id='.f_encode($file_id))}" >导出模板</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-</div>
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
 	<input type="hidden" id="add_file" name="add_file" check="require" msg="请添加附件">

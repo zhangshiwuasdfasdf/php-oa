@@ -47,9 +47,20 @@
 </form>
 <div class="operate panel panel-default">
 	<div class="panel-body">
-		<div class="pull-right">
-			<a class="btn btn-sm btn-primary" onclick="add()">新建</a>
+		<div class="pull-left">
+			<div class="btn-group">
+					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#">管理<b class="fa fa-caret-down"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a onclick="import_delivery_report();">导入</a>
+						</li>
+						<li>
+							<a onclick="export_delivery_report();">导出模板</a>
+						</li>
+					</ul>
+				</div>
 		</div>
+		<div class="pull-right"></div>
 	</div>
 </div>
 <div class="ul_table">

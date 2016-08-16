@@ -12,9 +12,11 @@
  -------------------------------------------------------------------------*/
 
 class ProfileAction extends CommonAction {
-	protected $config=array('app_type'=>'personal');
+	protected $config=array('app_type'=>'common', 'action_auth' => array('upload' => 'read','reset_pwd'=>'read','password'=>'read','save'=>'read','resume'=>'read','addResume'=>'read','save_resume'=>'read','add_record'=>'read','save_record'=>'read','userlist'=>'read','user'=>'read'));
 	
 	function index(){	
+		$auth = $this -> config['auth'];
+		
 		$user=D("UserView")->find(get_user_id());
 		$this->assign("vo",$user);
 		$this->display();
@@ -355,6 +357,145 @@ class ProfileAction extends CommonAction {
 				$this -> error('编辑失败!');
 			}
 		}
+	}
+	public function userlist(){
+		//管理员可以查看所有人，普通人只能查看自己及以下
+		$auth = $this -> config['auth'];
+// 		dump($auth);
+		if ($auth['admin']) {
+			$where = array();
+		}else{
+			$child_ids = array_merge(array(get_user_id()),get_child_ids_all(get_user_id()));
+			$where['id'] = array('in',$child_ids);
+		}
+		//搜索条件
+		if (!empty($_POST['li_name'])) {
+			$where['name'] = array('like', '%'.$_POST['li_name'].'%');
+		}
+		if (!empty($_POST['is_del'])) {
+			$where['is_del'] = $_POST['is_del'];
+		}
+		if (!empty($_POST['eq_dept_id_0'])) {
+			$dept_id = $_POST['eq_dept_id_0'];
+			$where['pos_id'] = array('in', get_child_dept_all($dept_id));
+		}
+		if (!empty($_POST['eq_dept_id_1'])) {
+			$dept_id = $_POST['eq_dept_id_1'];
+			$where['pos_id'] = array('in', array($dept_id));
+		}
+		//取出数据
+		$users = $this->_list(D("UserView"), $where,'id',true);
+		foreach ($users as $k=>$v){
+			$pos_id = M('Dept')->field('name')->find($v['pos_id']);
+			$users_extension[$k]['pos_name'] = $pos_id['name'];
+		}
+		$this->assign("users_extension",$users_extension);
+		//选择部门的内容
+		$dept_id = get_dept_id();
+		$dept_name = get_dept_name();
+		$dept_menu = D("Dept") -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+			
+		$dept_tree = list_to_tree($dept_menu);
+		$count = count($dept_tree);
+		$where = array();
+		if (empty($count)) {
+			/*获取部门列表*/
+			$html = '';
+			$html = $html . "<option value='{$dept_id}'>{$dept_name}</option>";
+			$this -> assign('dept_list', $html);
+		} else {
+			/*获取部门列表*/
+			$this -> assign('dept_list', select_tree_menu($dept_tree));
+		}
+		$this->display();
+	}
+	public function user(){
+		//管理员可以查看所有人，普通人只能查看自己及以下
+		$id = $_REQUEST['id'];
+		$auth = $this -> config['auth'];
+		if (!$auth['admin']) {
+			$child_ids = array_merge(array(get_user_id()),get_child_ids_all(get_user_id()));
+			if(!in_array($id,$child_ids)){
+				$this->error('无权查看');
+			}
+		}
+		$user=D("UserView")->find($id);
+		$pos_name = M('Dept')->field('name')->find($user['pos_id']);
+		$user['pos_name'] = $pos_name['name'];
+// 		dump($user);
+		$this->assign("vo",$user);
+		
+		$widget['uploader'] = true;
+		$widget['editor'] = true;
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		
+		if(empty($id)){
+			$id = get_user_id();
+		}
+		//简历
+		$resume = M('user_resume');
+		$list = $resume -> where(array('user_id' => $id)) -> find();//获取文件(简历)
+		if(is_null($list)){
+			
+		}else{
+			if($list['pic']){$list['pic'] = get_save_url() . $list['pic'];}
+			foreach ($list as $k => $v){
+				$info[$k] = explode('|',$v);
+			}
+			//教育经历
+			foreach ($info['education'] as $v){
+				$education[] = explode(',',$v);
+			}
+			foreach ($info['training'] as $v){
+				$train[] = explode(',',$v);
+			}
+			foreach ($info['family'] as $v){
+				$family[] = explode(',',$v);
+			}
+			foreach ($info['work_experience'] as $v){
+				$work[] = explode(',',$v);
+			}
+			$this->assign('list',$info);
+// 			echo $info['pic'][0];
+			$this->assign('educa',$education);
+			$this->assign('train',$train);
+			$this->assign('family',$family);
+			$this->assign('work',$work);
+			$this->assign('id', 'jl_'.$id);
+			//履历
+			$record = M('user_record');
+			$data_file = $record -> where(array('user_id' => $id))->find();
+			foreach ($data_file as $k => $v){
+				$data[$k] = explode('|',$v);
+			}
+			foreach ($data['discipline'] as $v){
+				$discipline[] = explode(',',$v);
+			}
+			foreach ($data['promotion'] as $v){
+				$promotion[] = explode(',',$v);
+			}
+			foreach ($data['performance'] as $v){
+				$performance[] = explode(',',$v);
+			}
+			foreach ($data['award_punish'] as $v){
+				$award_punish[] = explode(',',$v);
+			}
+			foreach ($data['study'] as $v){
+				$study[] = explode(',',$v);
+			}
+			foreach ($data['part_time'] as $v){
+				$part_time[] = explode(',',$v);
+			}
+			$this->assign('data',$data);
+			$this->assign('disc',$discipline);
+			$this->assign('prom',$promotion);
+			$this->assign('perf',$performance);
+			$this->assign('award',$award_punish);
+			$this->assign('study',$study);
+			$this->assign('part',$part_time);
+		}
+		$this->display();
 	}
 }
 ?>
