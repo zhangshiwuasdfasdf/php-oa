@@ -70,7 +70,7 @@ img{ margin:0; padding:0;}
 .bottom_sj_a{display:block; width:60px; height:26px; line-height:26px; border:solid 1px #666566; background:#e1e1e1; font-size:14px; color:#333; text-align:center; margin-left:19px; overflow:hidden; white-space:nowrap;}
 .bottom_sj_img2{ display:block;margin-left:49px;}
 /*.zzbg{ width: 100%; height: 100%; position: fixed; top: 0; left: 0; }*/
-.zz{width: 218px; height: 209px; border-top: solid 1px #666566; position: fixed; background: #fff;border-right:  solid 1px #666566;}
+.zz{width: 218px; height: 209px; border-top: solid 1px #666566; position: absolute; background: #fff;border-right:  solid 1px #666566;}
 .zz_1{ overflow: hidden; border-left: solid 1px #666566;}
 .zz_1 a{ display: block; width: 99px; height: 29px; float: left; border-bottom:  solid 1px #666566; border-right:  solid 1px #666566; font-size: 14px; font-weight: bold; line-height: 29px; text-align: center;}
 .zz_2{ overflow: auto; height: 178px; border-left: solid 1px #666566; border-bottom:  solid 1px #666566;}
@@ -439,17 +439,17 @@ img{ margin:0; padding:0;}
         </div>
         <ul class="bottom_x">
         </ul>
+        <div class="zz">
+	        <img src="__PUBLIC__/img/img/gbzz.png" class="gbzz">
+	        <img src="__PUBLIC__/img/img/zzzy.png" class="zzzy">
+	        <div class="zz_1">
+	            <a>姓名</a>
+	            <a>岗位</a>
+	        </div>
+	        <div class="zz_2">
+	        </div>
+	    </div>
 </div>
-    <div class="zz">
-        <img src="__PUBLIC__/img/img/gbzz.png" class="gbzz">
-        <img src="__PUBLIC__/img/img/zzzy.png" class="zzzy">
-        <div class="zz_1">
-            <a>姓名</a>
-            <a>岗位</a>
-        </div>
-        <div class="zz_2">
-        </div>
-    </div>
 </div> 
 </div> 
 <div class="ul_table">
@@ -477,15 +477,15 @@ img{ margin:0; padding:0;}
 				<foreach name="list" item="vo">
 					<li class="tbody">
 						<div class="pull-left">
-							<span class="col-10">{$vo.dept_name}</span>
-							<span class="col-10">{$vo.user_name}</span>
-							<span class="col-10">{$vo.pos_id||get_dept_name_by_id}</span>
-							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}">{$vo.work_date}</a></span>
-							<span class="col-25">{$monthly_report_extension.$key.comment_last}</span>
-							<span class="col-25">{$report.$key.0.look_name} {$report.$key.1.look_name}</span>
+							<span class="col-10">&nbsp;{$vo.dept_name}</span>
+							<span class="col-10">&nbsp;{$vo.user_name}</span>
+							<span class="col-10">&nbsp;{$vo.pos_id||get_dept_name_by_id}</span>
+							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}">&nbsp;{$vo.work_date}</a></span>
+							<span class="col-25">&nbsp;{$monthly_report_extension.$key.comment_last}</span>
+							<span class="col-25">&nbsp;{$report.$key.0.look_name} {$report.$key.1.look_name}</span>
 						</div>
 						<div class="pull-right">
-							<span class="col-10">{$vo.is_submit|is_submit}</span>
+							<span class="col-10">&nbsp;{$vo.is_submit|is_submit}</span>
 							<if condition="($vo.user_id eq $user_id) && ($now_time elt $end_time[$key])">
 								<span class="col-4"><a href="{:U('edit','id='.$vo['id'])}">修改</a></span>
 								<span class="col-4"><a href="{:U('del','id='.$vo['id'])}">删除</a></span>
