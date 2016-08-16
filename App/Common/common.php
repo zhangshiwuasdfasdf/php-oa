@@ -1258,6 +1258,20 @@ function show_file($add_file) {
 		}
 	}
 }
+function show_comment($comm){
+	if(!empty($comm) && is_array($comm)){
+		$post = M('Forum_post');
+		$id = get_user_id();
+		foreach ($comm as $k => $v){
+			$info = $post -> where('is_del = 0') -> find($v);
+			echo '<hr><div class="post_content">' . $info['content'] . '<span class="pull-right">评论人：'. $info['user_name'] ;
+			 if($id == $info['user_id']){
+			 	echo '　<a onclick="del_post();return false;" class="btn btn-link">删除</a>';
+			 }
+			echo '</span></div>';
+		}		
+	}
+}
 function mobile_show_file($add_file,$action='message'){
 	$files = array_filter(explode(';', $add_file));
 	$a = '';

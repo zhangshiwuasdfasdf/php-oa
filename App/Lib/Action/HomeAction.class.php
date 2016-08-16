@@ -478,7 +478,7 @@ class HomeAction extends CommonAction {
 		}
 		if(!$sign){
 			$data['sustain'] = $_POST['gt1'] .'|' .$_POST['gt2'] . '|' .$_POST['gt3'];
-			$data['suggest'] = $_POST['yj1'] .'|' .$_POST['yj2'] . '|' .$_POST['yj3'];
+			$data['suggest'] = $_POST['jy1'] .'|' .$_POST['jy2'] . '|' .$_POST['jy3'];
 			$data['user_id'] = get_user_id();
 			$data['user_name'] = get_user_name();
 			$data['create_time'] = time();

@@ -8,9 +8,9 @@
 		</div>
 	</div>
 	<div class="popup-body" style="overflow-y: auto;">
-		<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
-		<!--<form id="form_data" name="form_data" method="post" action="{:U('addUser')}" class="form-horizontal" enctype="multipart/form-data">
-			--><input type="hidden" name="opmode" id="opmode" value="new">
+		<!--<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
+		--><form id="form_data" name="form_data" method="post" action="{:U('addUser')}" class="form-horizontal" enctype="multipart/form-data" onSubmit="return check_form('form_data');">
+			<input type="hidden" name="opmode" id="opmode" value="new">
 			<table class="table table-bordered" >
 				<tr>
 					<th class="col-10">
@@ -114,7 +114,7 @@
 				</tr>
 				<tr>
 					<td colspan="4">
-						<input type="submit" class="btn btn-sm btn-primary" value="新增" onclick="save();"/>
+						<input type="submit" class="btn btn-sm btn-primary" value="新增"/>
 						<input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
 					</td>
 				</tr>
