@@ -121,3 +121,15 @@ function check(){
 		check_num--;
 	}  
 }
+
+
+function im(){
+	var z=$(".left_db img").width()
+	
+	if(z>='56px'){
+		$(".left_db img").css({'width':'auto','height':'48px'})	
+	}else{
+		$(".left_db img").css({'width':'100%','height':'auto'})	
+	}
+}		
+im();

@@ -264,6 +264,19 @@ class MonthlyReportAction extends CommonAction {
 		$widget['uploader'] = true;
 		$widget['editor'] = true;
 		$this -> assign("widget", $widget);
+		
+		$auth = $this -> config['auth'];
+		if (!$auth['admin']) {
+			if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
+				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids_all(get_user_id()));
+				$where_last['user_id'] = array('in',$child_ids);
+			}elseif(D("Role") -> check_duty('SHOW_LOG_LOW')){//允许查看自己及下一级日志
+				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids(get_user_id()));
+				$where_last['user_id'] = array('in',$child_ids);
+			}else{//查看自己的日志
+				$where_last['user_id'] = array('eq',intval(get_user_id()));
+			}
+		}
 
 		$date_1 = date('Y-m-d', strtotime('0 day'));
 		$date_2 = date('Y-m-d', strtotime('-1 day'));
@@ -274,6 +287,10 @@ class MonthlyReportAction extends CommonAction {
 		$where_last['id'] = array('eq', $id);
 		$last_report = M("MonthlyReport") -> where($where_last) -> order('id desc') -> find();
 		$this -> assign('last_report', $last_report);
+		
+		if(empty($last_report)){
+			$this->error('权限不足！');
+		}
 		
 		$path = get_save_path()."excel_monthly/".$id .".txt";
 		$str = file_get_contents($path);
