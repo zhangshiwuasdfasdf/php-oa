@@ -69,7 +69,7 @@
 				</if>
 			</div>
 			<div class="pull-right">
-				<a href="#reply" class="btn btn-sm btn-primary">回复{$rows+$key}#</a>
+				<a class="btn btn-sm btn-primary huifuer" mss="{$vo.id}">回复#{$rows+$key}</a>
 			</div></td>
 		</tr>
 		<td style="width:145px;text-align:center;vertical-align:top;padding:0;margin:0;">
@@ -87,6 +87,7 @@
 					附件：{$vo.add_file|show_file}
 				</div>
 			</gt>
+				{$info[$key]['comm_ids']|show_comment}
 			</td>
 		</tr>
 	</foreach>
@@ -135,3 +136,45 @@
 	</div>
 </if>
 </div>
+
+<div class="display-none" id="erReply">
+	<form method="post" action="" id="form_data2" name="form_data">
+		<input type="hidden" id="ajax2" name="ajax" value="0">
+		<input type="hidden" id="forum_id2" name="forum_id" value="{$forum_id}">
+		<input type="hidden" id="folder_id2" name="folder_id" value="{$folder_id}">
+		<input type="hidden" id="id2" name="pid" value="">
+		<input type="hidden" id="opmode2" name="opmode" value="add">
+		<table class="table table-bordered" style="margin-bottom: 1px;">
+			<tr>
+				<td>
+					<div class="huifulc"></div>
+				</td>
+			</tr>
+			<tr>
+			<td style="width:100%;vertical-align:top;">
+			<div >
+				<textarea  class="editor" name="content" id="content2" style="width:100%;height:220px;"></textarea>
+			</div></td>
+			</tr>
+			<tr>
+				<td>
+					<div class="operate panel panel-default">
+					<div class="panel-body">
+						<div class="pull-left">
+							<a class="btn btn-sm btn-primary ercanner">返回</a>
+						</div>
+						<div class="pull-right">
+							<a onclick="reply_comment();"  class="btn btn-sm btn-primary">提交</a>
+						</div>
+					</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<style type="text/css">
+#erReply{ position: fixed; width: 80%; height: auto; top: 18%; left: 10%; display: none;overflow: auto;background: #ccc;}
+#erReply .form_data{ position: absolute; top: 0; left: 0; width: 92%; height: auto;}
+hr{border-color: #ccc;}
+</style>

@@ -122,14 +122,24 @@ class ForumAction extends CommonAction {
 
 		$where = array();
 		$where['forum_id'] = $id;
+		$where['pid'] = 0;
 		$where['is_del'] = 0;
 
 		$model = M("ForumPost");
 
 		if (!empty($model)) {
-			$this -> _list($model, $where, "id", true);
+			$res = $this -> _list($model, $where, "id", true);
 		}
-
+		$where['pid'] = array('neq',0);
+		$info = $model -> where($where) -> select();
+		foreach ($res as $k => $v){
+			foreach ($info as $kk => $vv){
+				if($vv['pid'] == $v['id']){
+					$res[$k]['comm_ids'][] = $vv['id'];
+				}
+			}
+		}
+		$this -> assign('info',$res);
 		$this -> assign("forum_id", $id);
 		$this -> assign("folder_id", $folder_id);
 		// 序号

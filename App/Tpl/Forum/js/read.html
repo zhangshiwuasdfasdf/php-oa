@@ -23,6 +23,7 @@
 	}
 
 	function del_post(id) {
+		if(typeof(id) == "undefined"){alert('hehe');}
 		ui_confirm('确定要删除吗?',function(){
 			sendAjax("{:U('del_post')}", 'id=' + id +'&forum_id=' + $("#forum_id").val(), function(data) {
 				if (data.status) {
@@ -40,6 +41,13 @@
 
 	function edit_post(id) {
 		window.open(fix_url("{:U('edit_post')}?id=" + id+"&forum_id=" + $("#forum_id").val() + "&folder_id=" + $("#folder_id").val()), "_self");
+	}
+	
+	function reply_comment(){
+		window.onbeforeunload=null;
+		if (check_form("form_data2")) {
+			sendForm("form_data2", "{:U('save_post')}");
+		}
 	}
 
 
@@ -88,5 +96,16 @@
 				// 设定等比例缩放后的高度
 			}
 		});
+		
+		  $('.huifuer').click(function(){
+			  $("#id2").val($(this).attr('mss'));
+			  var lou = $(this).text().trim();
+			  var num = lou.split('#');
+			  $('.huifulc').text("回复" + num[1] + '楼');
+		        $('#erReply').slideDown()
+		    })
+		    $('.ercanner').click(function(){
+		        $('#erReply').slideUp() 
+		    })
 	}); 
 </script>
