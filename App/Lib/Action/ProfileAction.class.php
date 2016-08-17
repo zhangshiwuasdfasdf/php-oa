@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class ProfileAction extends CommonAction {
-	protected $config=array('app_type'=>'common', 'action_auth' => array('upload' => 'read','reset_pwd'=>'read','password'=>'read','save'=>'read','resume'=>'read','addResume'=>'read','save_resume'=>'read','add_record'=>'read','save_record'=>'read','userlist'=>'read','user'=>'read','get_dept_child'=>'read'));
+	protected $config=array('app_type'=>'common', 'action_auth' => array('upload' => 'read','reset_pwd'=>'read','password'=>'read','save'=>'read','resume'=>'read','addResume'=>'read','save_resume'=>'read','add_record'=>'read','save_record'=>'read','userlist'=>'read','user'=>'read','get_dept_child'=>'read','export_sign'=>'read'));
 	
 	function index(){	
 		$auth = $this -> config['auth'];
@@ -513,7 +513,61 @@ class ProfileAction extends CommonAction {
 			}
 			
 		}
+		//签入数据
+		$signdata = M('SignInOut')->where(array('user_id'=>$id))->order('time asc')->select();
+		foreach ($signdata as $k=>$v){
+			$date = date('Y-m-d',$v['time']);
+			$signdata_new[$date][$v['type']] = date('Y-m-d H:i:s',$v['time']);
+		}
+		$this->assign('signdata_new',$signdata_new);
+		$this->assign('signdata_count',count($signdata_new));
 		$this->display();
+	}
+	public function export_sign(){
+		//导入thinkphp第三方类库
+		Vendor('Excel.PHPExcel');
+		
+		$objPHPExcel = new PHPExcel();
+		
+		$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+		// Add some data
+
+		//签入数据
+		$signdata = M('SignInOut')->where(array('user_id'=>get_user_id()))->order('time asc')->select();
+		foreach ($signdata as $k=>$v){
+			$date = date('Y-m-d',$v['time']);
+			$signdata_new[$date][$v['type']] = date('Y-m-d H:i:s',$v['time']);
+		}
+		
+		$q = $objPHPExcel -> setActiveSheetIndex(0);
+		//第一列为用户
+		$q = $q -> setCellValue("A1", '签入时间');
+		$q = $q -> setCellValue("B1", '签出时间');
+		
+		$i = 2;
+		foreach ($signdata_new as $k=>$v){
+			$q = $q -> setCellValue("A".$i, $v['in']);
+			$q = $q -> setCellValue("B".$i, $v['out']);
+			$i++;
+		}
+		
+		// Rename worksheet
+		$title = 'oa签入数据导出';
+		$objPHPExcel -> getActiveSheet() -> setTitle('oa签入数据导出');
+		
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel -> setActiveSheetIndex(0);
+		$file_name = $title.".xlsx";
+		// Redirect output to a client’s web browser (Excel2007)
+		header("Content-Type: application/force-download");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header("Content-Disposition:attachment;filename =" . str_ireplace('+', '%20', URLEncode($file_name)));
+		header('Cache-Control: max-age=0');
+		
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		//readfile($filename);
+		$objWriter -> save('php://output');
+		exit ;
 	}
 }
 ?>

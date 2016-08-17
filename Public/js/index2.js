@@ -157,4 +157,17 @@ $(".img_a").click(function(){
 		})
 });
 })
-
+function sign(type){
+	$.ajax({
+		type:'get', 
+		url: "./index.php?m=Common&a=sign",
+		data:{type:type},
+		dataType: "json",
+		success: function(result){
+			alert(JSON.stringify(result));
+		},
+		error:function(e){
+			alert(JSON.stringify(result));
+		}
+	});
+}

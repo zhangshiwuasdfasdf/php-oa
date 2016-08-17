@@ -29,6 +29,10 @@
 	function select_avatar() {
 		winopen("{:U('popup/avatar')}?id=" + $("#id").val(), 730, 500);
 	}
+	function export_sign(){
+		window.open("{:U('export_sign')}", "_blank");
+		return false;
+	}
 	$(document).ready(function() {
 		
 	}); 

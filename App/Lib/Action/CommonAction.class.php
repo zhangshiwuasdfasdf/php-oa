@@ -737,5 +737,23 @@ class CommonAction extends Action {
 		}
 		$this -> ajaxReturn($users);
 	}
+	public function sign(){
+		$type = $_GET['type'];
+		$user_id = get_user_id();
+		
+		$time = time();
+		$date = date('Y-m-d',$time);
+		$res = M('SignInOut')->where(array('user_id'=>$user_id,'type'=>$type,'time'=>array('between',array(strtotime($date),strtotime($date.' 24:00:00')))))->find();
+		if($res){
+			$res2 = M('SignInOut')->save(array('id'=>$res['id'],'time'=>$time));
+		}else{
+			$res2 = M('SignInOut')->add(array('user_id'=>$user_id,'type'=>$type,'time'=>$time));
+		}
+		if($res2){
+			$this -> ajaxReturn('操作成功');
+		}else{
+			$this -> ajaxReturn('操作失败');
+		}
+	}
 }
 ?>
