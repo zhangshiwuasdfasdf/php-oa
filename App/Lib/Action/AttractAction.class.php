@@ -77,18 +77,23 @@ class AttractAction extends CommonAction {
 				//随机判断模板格式
 				$a = $sd[1];
 				$b = $sd[2];
-				$c = $sd[3];
-				if($a['A'] != '今天是' || $a['C'] != '考核截止日期' || $a['E'] != '本次考核周期天数' || $a['G'] != '本月签约目标' || $a['I'] != '本月累计签约' || $b['A'] != '日期' || $b['D'] != '招商人员' || $b['I'] != '客户意向'){
+				if($a['A'] != '今天是' || $a['C'] != '考核截止日期' || $a['E'] != '本次考核周期天数' || $a['G'] != '本月累计签约目标/单' || $a['I'] != '当月实际签约/单' || $a['K'] != '截至目前签约总量' || $b['A'] != '日期' || $b['D'] != '招商人员' || $b['I'] != '客户意向级别' || $b['J'] != '客户最关心的问题' || $b['L'] != '是否到访' || $b['P'] != '签约日单量'){
 					if (file_exists($inputFileName)) {
 						unlink($inputFileName);
 					}
 					$this -> error('模板格式错误，无法导入!',get_return_url());die;
 				}
-				if($c['A'] == '' || $c['B'] == '' || $c['D'] == '' || $c['I'] == ''){
-					if (file_exists($inputFileName)) {
-						unlink($inputFileName);
-					}
+				//随机判断上传的数据是否为空
+				$x = 3;
+				while (!empty($sd[$x]['A'])){$x++;}//确定一共有多少条数据
+				for ($i=3;$i<$x;$i++){//循环取出每条数据
+					$c = mt_rand(3,$x-1);
+					if($sd[$c]['A'] == '' || $sd[$c]['B'] == '' || $sd[$c]['D'] == '' || $sd[$c]['I'] == '' || $sd[$c]['K'] == '' || $sd[$c]['L'] == '' || $sd[$c]['N'] == ''){
+						if (file_exists($inputFileName)) {
+							unlink($inputFileName);
+						}
 					$this -> error('导入信息不全，无法导入!',get_return_url());die;
+					}
 				}
 				$date['user_id'] = get_user_id();
 				$date['user_name'] = get_user_name();
@@ -100,12 +105,11 @@ class AttractAction extends CommonAction {
 				$date['days'] = $sd[1]['F'];
 				$date['target'] = $sd[1]['H'];
 				$date['actuality'] = $sd[1]['J'];
+				$date['total_sign'] = $sd[1]['L'];
 				$date['base'] = $yq_name;
 				$date['months'] = '20'.$rq[2].$rq[0];
 				$pid = M('attract')->add($date);//添加主表数组
 				if($pid){
-					$x = 3;
-					while ($sd[$x]['A'] != ''){$x++;}//确定一共有多少条数据
 					$ad = M('attract_detail');
 					for ($i=3;$i<$x;$i++){//循环取出每条数据
 						$info['pid'] = $pid;
@@ -119,9 +123,17 @@ class AttractAction extends CommonAction {
 						$info['trade'] = $sd[$i]['G'];
 						$info['receipt'] = $sd[$i]['H'];
 						$info['intention'] = $sd[$i]['I'];
+						$info['concern'] = $sd[$i]['J'];
+						$info['remarks'] = $sd[$i]['K'];
+						$info['visited'] = $sd[$i]['L'];
+						$vd = explode('-',trim($sd[$i]['M']));
+						$info['visitdate'] = '20'.$vd[2].'/'.$vd[0].'/'.$vd[1];
+						$info['signed'] = $sd[$i]['N'];
+						$gd = explode('-',trim($sd[$i]['O']));
+						$info['signdate'] = '20'.$gd[2].'/'.$gd[0].'/'.$gd[1];
+						$info['signreceipt'] = $sd[$i]['P'];
 						$info['base'] = $yq_name;
 						$info['months'] = '20'.$rqs[2].$rqs[0];
-						$info['remarks'] = $sd[$i]['J'];
 						$ad -> add($info);
 					}
 				}
@@ -199,6 +211,7 @@ class AttractAction extends CommonAction {
 		//完成率
 		$finsh = $this -> jsfinsh($data['actuality'],$data['target']);
 		$this -> assign('finsh',$finsh);
+		
 		$d = strtotime($data['today']);
 		$tmp = explode('/',$data['today']);
 		$to = strtotime($tmp[0].'/'.$tmp[1].'/01');

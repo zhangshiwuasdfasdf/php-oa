@@ -256,4 +256,5 @@ class NoticeAction extends CommonAction {
 		$where['id']=array('eq',get_user_id());
 		return M("UserConfig") -> where($where) -> setField('readed_notice', $readed_notice);
 	}
+	
 }

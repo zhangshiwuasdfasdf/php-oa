@@ -40,21 +40,22 @@
 					<li>
 						<span>截止目前时间进度</span>
 						<span>{$lv}%</span>
-						<span>截止目前任务完成率</span>
-						<span>{$finsh}%</span>
 						<span>今天是</span>
 						<span>{$data.today}</span>
 						<span>考核截止日期</span>
 						<span>{$data.end_time}</span>
 						<span>本次考核周期天数</span>
 						<span>{$data.days}</span>
-						<span>本月签约目标</span>
+						<span style="width: 150px;">截止目前任务完成进度</span>
+						<span style="width: 150px;">{$finsh}%</span>
+						<span style="width: 180px;">本月累计签约目标</span>
 						<span>{$data.target}</span>
-						<span>本月累计签约</span>
-						<span style="width: 93px;">{$data.actuality}</span>
+						<span>当月实际签约</span>
+						<span>{$data.actuality}</span>
+						<span>截至目前签约总量</span>
+						<span>{$data.total_sign}</span>
 					</li>
 					<li class="title_li">
-						<span>序号</span>
 						<span>日期</span>
 						<span>招商方式</span>
 						<span>信息来源</span>
@@ -63,8 +64,14 @@
 						<span>客户电话</span>
 						<span>主营行业</span>
 						<span>预计日发单量</span>
-						<span>客户意向</span>
-						<span style="width: 450px;">接洽内容&备注</span>	
+						<span>客户意向级别</span>
+						<span style="width: 180px;">客户最关心的问题</span>
+						<span style="width: 180px;">接洽内容&备注</span>
+						<span>是否到访</span>
+						<span>客户到访日期</span>
+						<span>是否签约</span>
+						<span>签约日期</span>
+						<span>签约日单量</span>
 					</li>
 					<empty name="list">
 						<li class="no-data">
@@ -73,7 +80,6 @@
 					<else/>
 					<foreach name="list" item="vo">
 					<li>
-						<span class="number">{$rows+$key}</span>
 						<span>{$vo.riqi}</span>
 						<span>{$vo.manner}</span>
 						<span>{$vo.source}</span>
@@ -83,7 +89,13 @@
 						<span>{$vo.trade}</span>
 						<span>{$vo.receipt}</span>
 						<span>{$vo.intention}</span>
-						<span style="width: 450px;"><a title="{$vo.remarks}">{$vo.remarks}</a></span>	
+						<span style="width: 180px;"><a title="{$vo.concern}">{$vo.concern}</a></span>
+						<span style="width: 180px;"><a title="{$vo.remarks}">{$vo.remarks}</a></span>
+						<span>{$vo.visited}</span>
+						<span>{$vo.visitdate}</span>
+						<span>{$vo.signed}</span>
+						<span>{$vo.signdate}</span>
+						<span>{$vo.signreceipt}</span>	
 					</li>
 			</foreach>
 		</empty>
@@ -95,7 +107,7 @@
 <style>
 	.right_ul{
 		list-style:none;
-		width: 1640px;
+		width: 2024px;
 		height: auto;
 		clear: both;
 		border-top: 1px solid #000;

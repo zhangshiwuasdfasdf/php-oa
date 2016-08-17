@@ -892,6 +892,7 @@ function list_to_tree($list, $root = 0, $pk = 'id', $pid = 'pid', $child = '_chi
 	if (is_array($list)) {
 		// 创建基于主键的数组引用
 		$refer = array();
+		//id 作为键 => 存储每条部门信息为数据
 		foreach ($list as $key => $data) {
 			$refer[$data[$pk]] = &$list[$key];
 		}
@@ -901,6 +902,7 @@ function list_to_tree($list, $root = 0, $pk = 'id', $pid = 'pid', $child = '_chi
 			if (isset($data[$pid])) {
 				$parentId = $data[$pid];
 			}
+			// 上一级是不是我想要的
 			if ((string)$root == $parentId) {
 				$tree[] = &$list[$key];
 			} else {
@@ -1266,7 +1268,7 @@ function show_comment($comm){
 			$info = $post -> where('is_del = 0') -> find($v);
 			echo '<hr><div class="post_content">' . $info['content'] . '<span class="pull-right">评论人：'. $info['user_name'] ;
 			 if($id == $info['user_id']){
-			 	echo '　<a onclick="del_post();return false;" class="btn btn-link">删除</a>';
+			 	echo '　<a onclick="del_post();return false;" class="btn btn-link comm_del" mss='.$info['id'].'>删除</a>';
 			 }
 			echo '</span></div>';
 		}		

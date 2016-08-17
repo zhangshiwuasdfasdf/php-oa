@@ -65,17 +65,21 @@ class AuthCheckBehavior extends Behavior {
 				break;
 
 			case 'folder' :
+				//获取系统默认的访问权限
 				$action_auth = C('AUTH');
+				//当前访问Action 访问权限
 				if (!empty($params['action_auth'])) {
 					$action_auth = array_merge($action_auth, $params['action_auth']);
 				}
+				//当前访问Action 子权限
 				if (!empty($params['sub_action_auth'])) {
 					$action_auth = array_merge($action_auth, $params['sub_action_auth']);
 				}
-
+				
 				$fid = $_REQUEST['fid'];
 				$id = $_REQUEST['id'];
 				$sub_action_auth = $params['sub_action_auth'];
+				//当前访问Action名称 在子权限中
 				if (array_key_exists(ACTION_NAME, $sub_action_auth)) {
 					$id = $_REQUEST[$params['pid']];
 					if (empty($id)) {
@@ -83,12 +87,13 @@ class AuthCheckBehavior extends Behavior {
 						$id = M($params['sub_model']) -> where($where) -> getfield($params['pid']);
 					}
 				};
-
+				//当前访问URL中是否有fid
 				if (isset($fid)) {
 					$folder_id = $fid;
 					$auth = D("SystemFolder") -> get_folder_auth($folder_id);
 					break;
 				}
+				//当前访问URL中是否有id
 				if (isset($id)) {
 					if (is_array($id)) {
 						$where["id"] = array("in", array_filter($id));
@@ -109,6 +114,7 @@ class AuthCheckBehavior extends Behavior {
 				break;
 		}
 		//die;
+		// 当前访问Action中配置的权限是否存在
 		if ($auth[$action_auth[ACTION_NAME]]) {
 			$this -> config['auth'] = $auth;
 			return true;

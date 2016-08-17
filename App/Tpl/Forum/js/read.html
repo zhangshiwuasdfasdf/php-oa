@@ -23,7 +23,7 @@
 	}
 
 	function del_post(id) {
-		if(typeof(id) == "undefined"){alert('hehe');}
+		if(typeof(id) == "undefined"){id = $(".comm_del").attr('mss').trim();}
 		ui_confirm('确定要删除吗?',function(){
 			sendAjax("{:U('del_post')}", 'id=' + id +'&forum_id=' + $("#forum_id").val(), function(data) {
 				if (data.status) {

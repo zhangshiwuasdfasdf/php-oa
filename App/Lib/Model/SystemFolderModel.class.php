@@ -75,7 +75,6 @@ class SystemFolderModel extends CommonModel {
 		if($folder['folder'] = 'NoticeFolder'){//公告所有用户都可以读
 			$result['read']=true;
 		}
-		
 		return $result;			
 	}
 
@@ -98,6 +97,7 @@ class SystemFolderModel extends CommonModel {
 	private function _check_auth($auth_list){
 			$arrtmp = array_filter(explode(';', $auth_list));
 			foreach ($arrtmp as $item) {
+				//权限里面有部门dept
 				if (stripos($item, "dept_")!==false){
 					$arr_dept = explode('|', $item);
 					$dept_id=substr($arr_dept[1],5);

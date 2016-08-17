@@ -16,10 +16,13 @@
 						<span>{$data.end_time}</span>
 						<span>本次考核周期天数</span>
 						<span>{$data.days}</span>
-						<span>本月签约目标</span>
+						<span>本月累计签约目标/单</span>
 						<span>{$data.target}</span>
-						<span>本月累计签约</span>
-						<span style="width: 570px;">{$data.actuality}</span>
+						<span>当月实际签约/单</span>
+						<span style="width: 180px;">{$data.actuality}</span>
+						<span style="width: 180px;">截至目前签约总量</span>
+						<span>{$data.total_sign}</span>
+						<span style="width: 477px;"></span>
 					</li>
 					<li class="title_li">
 						<span>日期</span>
@@ -30,8 +33,14 @@
 						<span>客户电话</span>
 						<span>主营行业</span>
 						<span>预计日发单量</span>
-						<span>客户意向</span>
-						<span style="width: 570px;">接洽内容&备注</span>	
+						<span>客户意向级别</span>
+						<span style="width: 180px;">客户最关心的问题</span>
+						<span style="width: 180px;">接洽内容&备注</span>
+						<span>是否到访</span>
+						<span>客户到访日期</span>
+						<span>是否签约</span>
+						<span>签约日期</span>
+						<span>签约日单量</span>
 					</li>
 					<empty name="list">
 						<li class="no-data">
@@ -49,7 +58,13 @@
 						<span>{$vo.trade}</span>
 						<span>{$vo.receipt}</span>
 						<span>{$vo.intention}</span>
-						<span style="width: 570px;"><a title="{$vo.remarks}">{$vo.remarks}</a></span>	
+						<span style="width: 180px;"><a title="{$vo.concern}">{$vo.concern}</a></span>
+						<span style="width: 180px;"><a title="{$vo.remarks}">{$vo.remarks}</a></span>
+						<span>{$vo.visited}</span>
+						<span>{$vo.visitdate}</span>
+						<span>{$vo.signed}</span>
+						<span>{$vo.signdate}</span>
+						<span>{$vo.signreceipt}</span>	
 					</li>
 			</foreach>
 		</empty>
@@ -61,7 +76,7 @@
 <style>
 	.right_ul{
 		list-style:none;
-		width: 1640px;
+		width: 2024px;
 		height: auto;
 		clear: both;
 		border-top: 1px solid #000;

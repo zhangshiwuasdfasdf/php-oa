@@ -53,7 +53,7 @@
 							<a class="link down" onclick="import_report();">导入信息</a>
 						</li>
 						<li>
-							<a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode('2338'))}">导出模板</a> 
+							<a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode('2214'))}">导出模板</a> 
 						</li>
 					</ul>
 				</div>
@@ -68,10 +68,10 @@
 				<span class="col-10 ">日期</span>
 			</div>
 			<div class="pull-left">
-				<span class="col-10 ">导入人</span>
+				<span class="col-15 ">导入时间</span>
 			</div>
 			<div class="pull-left">
-				<span class="col-15 ">导入时间</span>
+				<span class="col-10 ">导入人</span>
 			</div>
 			<div class="pull-left">
 				<span class="col-10 ">基地</span>
@@ -92,10 +92,10 @@
 						<span class="col-10 ">{$vo.today}&nbsp;</span>
 					</div>
 					<div class="pull-left">
-						<span class="col-10 ">{$vo.user_name}&nbsp;</span>
+						<span class="col-15 ">{$vo.create_time|date='Y-m-d H:i:s',###}&nbsp;</span>
 					</div>
 					<div class="pull-left">
-						<span class="col-15 ">{$vo.create_time|date='Y-m-d H:i:s',###}&nbsp;</span>
+						<span class="col-10 ">{$vo.user_name}&nbsp;</span>
 					</div>
 					<div class="pull-left">
 						<span class="col-10 ">{$vo.base}&nbsp;</span>
