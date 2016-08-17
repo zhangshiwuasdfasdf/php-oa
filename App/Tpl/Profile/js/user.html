@@ -4,7 +4,11 @@
 			sendForm("form_data", "{:U('save_resume')}", "__URL__");
 		}
 	}
-	
+	function save2() {
+		if (check_form("form_data2")) {
+			sendForm("form_data2", "{:U('save_record')}", "__URL__");
+		}
+	}
 	function add_subject($i) {
 		$html = $(".sample_"+$i+":last").html();
 		$(".sample_"+$i+":last").after("<tr class=sample_"+ $i+">"+$html+"</tr>");
@@ -13,9 +17,13 @@
 		$html = $(".sample_"+$i+":last").html();
 		$(".sample_"+$i+":last").after("<tbody class=sample_"+ $i+">"+$html+"</tbody>");
 	}
+	function add_subject3($i) {
+		$html = $(".sample_item"+$i+":last").html();
+		$(".sample_item"+$i+":last").after("<tr class=sample_item"+$i+">"+$html+"</tr>");
+	}
 	function quit(){
 		ui_confirm('确定要取消吗?',function(){
-			location.href = "{:U('Profile/Index')}";
+			location.href = "{:U('Profile/userlist')}";
 		});
 	}
 	function select_avatar() {

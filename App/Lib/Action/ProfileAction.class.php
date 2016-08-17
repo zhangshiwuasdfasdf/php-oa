@@ -388,6 +388,11 @@ class ProfileAction extends CommonAction {
 		foreach ($users as $k=>$v){
 			$pos_id = M('Dept')->field('name')->find($v['pos_id']);
 			$users_extension[$k]['pos_name'] = $pos_id['name'];
+			if(!empty($v['more_role'])){
+				$users_extension[$k]['more_role'] = '是';
+			}else{
+				$users_extension[$k]['more_role'] = '否';
+			}
 		}
 		$this->assign("users_extension",$users_extension);
 		//选择部门的内容
@@ -422,6 +427,7 @@ class ProfileAction extends CommonAction {
 		$user=D("UserView")->find($id);
 		$pos_name = M('Dept')->field('name')->find($user['pos_id']);
 		$user['pos_name'] = $pos_name['name'];
+		$user['more_role'] = $user['more_role']?'是':'否';
 // 		dump($user);
 		$this->assign("vo",$user);
 		
@@ -463,6 +469,12 @@ class ProfileAction extends CommonAction {
 			$this->assign('family',$family);
 			$this->assign('work',$work);
 			$this->assign('id', 'jl_'.$id);
+			if($id==get_user_id()){
+				$this->assign('can_modify_user_resume',1);
+			}else{
+				$this->assign('can_modify_user_resume',0);
+			}
+			
 			//履历
 			$record = M('user_record');
 			$data_file = $record -> where(array('user_id' => $id))->find();
@@ -494,6 +506,12 @@ class ProfileAction extends CommonAction {
 			$this->assign('award',$award_punish);
 			$this->assign('study',$study);
 			$this->assign('part',$part_time);
+			if($auth['admin']){
+				$this->assign('can_modify_user_record',1);
+			}else{
+				$this->assign('can_modify_user_record',0);
+			}
+			
 		}
 		$this->display();
 	}

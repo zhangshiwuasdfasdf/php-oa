@@ -1,7 +1,8 @@
 <layout name='Layout/ace_home_new' />
-{:W('PageHeader',array('name'=>$folder_name,'search'=>'M'))}
+
+{:W('PageHeader',array('name'=>$folder_name,'search'=>'N'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
-	<div class="adv_search panel panel-default  display-none"  id="adv_search">
+	<div class="adv_search panel panel-default "  id="adv_search">
 		<div class="panel-heading">
 			<div class="row">
 				<h4 class="col-xs-6">高级搜索</h4>
@@ -61,6 +62,7 @@
 			<div class="pull-right">
 				<span class="col-20 autocut">部门</span>
 				<span class="col-20">岗位</span>
+				<span class="col-10 ">是否关联账号</span>
 				<span class="col-10 ">状态</span>
 			</div>
 		</li>
@@ -79,8 +81,8 @@
 					<div class="pull-right">
 						<span class="col-20 autocut">&nbsp;{$vo.dept_name}</span>
 						<span class="col-20">&nbsp;{$users_extension.$key.pos_name}</span>
+						<span class="col-10">&nbsp;{$users_extension.$key.more_role}</span>
 						<span class="col-10">&nbsp;{$vo.is_del|user_status}</span>
-						
 					</div>
 				</li>
 			</foreach>

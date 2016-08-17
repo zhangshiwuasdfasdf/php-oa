@@ -1,4 +1,283 @@
 <layout name='Layout/ace_home_new' />
 <!--right-->
-<iframe id="right_iframe" src="{:U('home/shouy')}" width="100%" height="100%" marginwidth=0 marginheight=0 frameborder=0 scrolling=auto name="zm"></iframe>
 
+<link rel="stylesheet" href="__PUBLIC__/css/shouy.css">
+<!--left-->
+<div class="left_sj">
+    <img src="__PUBLIC__/img/sj.png"/>
+    <span id="left_span"></span>
+</div>
+
+<!--个人信息-->
+<div class="left_top">
+    <div class="left_top_gr">
+    	<span>个人信息</span>
+    </div>
+    
+    <div class="left_z">  
+        <div class="left_tx">
+            <div class="left_tx_li">
+                <img src="./Data/Files/{$info.pic}"/>
+            </div>
+        </div>
+        <a class="left_tx_xg" onclick="select_avatar();">更换头像</a>
+        <select class="select_xl">
+        	<option>
+            	<span id="ge_bm">技术部</span>
+            	<span>></span>
+                <span id="ge_gw">产品经理</span>
+                <span>></span>
+                <span id="gr_name">胡庭</span>
+            </option>
+            <option>
+            	<span id="ge_bm">技术部</span>
+            	<span>></span>
+                <span id="ge_gw">产品经理</span>
+                <span>></span>
+                <span id="gr_name"></span>
+            </option>
+            <option>
+            	<span id="ge_bm">技术部</span>
+            	<span>></span>
+                <span id="ge_gw">产品经理</span>
+                <span>></span>
+                <span id="gr_name"></span>
+            </option>
+        </select>
+        <div class="left_db">
+            <a href="#"><img src="__PUBLIC__/img/daib2.png"/></a>
+            <a href="#"><img src="__PUBLIC__/img/yijian.png"/></a>
+            <a href="#"><img src="__PUBLIC__/img/zhannx.png"/></a>
+        </div>
+    </div> 
+</div>
+
+<!--今日任务便签-->
+<div class="left_bq">
+	<div class="left_bq_title">
+    	<span>今日任务便签及昨日未尽工作提醒</span>
+    </div>
+    <textarea class="left_textarea" rows="3"></textarea>
+    <div class="left_bq_div">
+        <ul class="left_bq_nr">
+            <li><a href="#" title="">1.参加OA会议参加OA会议参加OA会议参加OA会议参加OA会议</a></li>
+            <li><a href="#" title="">1.参加OA会议</a></li>
+            <li><a href="#" title="">1.参加OA会议</a></li>
+        </ul>
+    </div>
+</div>
+
+<!--BBS-->
+<div class="left_bbs">
+	<div class="left_bbs_title">
+    	<span>公司BBS</span>
+    </div>
+    <div class="left_bbs_div">
+        <ul class="left_bbs_nr">
+            <li><a href="#" title="">公司bbs</a></li>
+            <li><a href="#" title="">公司bbs</a></li>
+            <li><a href="#" title="">公司bbs</a></li>
+        </ul>
+    </div>
+</div>
+
+<!--公司新闻与今日头条-->
+<div class="right1" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+	<div class="right_title1">
+    	<span class="right_title_span1"></span>
+    	<span class="right_title_span2">公司新闻与今日头条</span>
+        <a class="right_title_a"><img  src="__PUBLIC__/img/more.png"/></a>
+    </div>
+    <ul class="right_content">
+    	<li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管理制1</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+        <li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管理制2</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+    </ul>
+</div>
+
+<!--通知与公告-->
+<div class="right2" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+	<div class="right_title2">
+    	<span class="right_title_span1"></span>
+    	<span class="right_title_span2">通知与公告</span>
+        <a class="right_title_a"><img  src="__PUBLIC__/img/more.png"/></a>
+    </div>
+    <ul class="right_content">
+    	<li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管理制度后3</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+        <li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管理4</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+    </ul>
+</div>
+
+<!--公司制度与公告-->
+<div class="right3" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+	<div class="right_title3">
+    	<span class="right_title_span1"></span>
+    	<span class="right_title_span2">公司制度与公告</span>
+        <a class="right_title_a"><img  src="__PUBLIC__/img/more.png"/></a>
+    </div>
+    <ul class="right_content">
+    	<li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管理制5</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+        <li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管理制度6</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+    </ul>
+</div>
+
+<!--本月工作计划与目标-->
+<div class="right4" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+	<div class="right_title4">
+    	<span class="right_title_span1"></span>
+    	<span class="right_title_span2">本月工作计划与目标</span>
+        <a class="right_title_a"><img  src="__PUBLIC__/img/more.png"/></a>
+    </div>
+    <ul class="right_content">
+    	<li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管理制度后7</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+        <li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤8</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+    </ul>
+</div>
+
+<!--本周工作计划与目标-->
+<div class="right5" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+	<div class="right_title5">
+    	<span class="right_title_span1"></span>
+    	<span class="right_title_span2">本周工作计划与目标</span>
+        <a class="right_title_a"><img  src="__PUBLIC__/img/more.png"/></a>
+    </div>
+    <ul class="right_content">
+    	<li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管9</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+        <li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管10</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+    </ul>
+</div>
+
+<!--公司活动-->
+<div class="right6" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+	<div class="right_title6">
+    	<span class="right_title_span1"></span>
+    	<span class="right_title_span2">公司活动</span>
+        <a class="right_title_a"><img  src="__PUBLIC__/img/more.png"/></a>
+    </div>
+    <ul class="right_content">
+    	<li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管理11</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+        <li class="right_content_li">
+            <img class="right_content_img1" src="__PUBLIC__/img/li_jt.png"/>
+            <a class="right_content_a">后勤管理制12</a>
+            <img class="right_content_img2"/>
+            <span class="right_content_span">2016-08-03</span>
+        </li>
+    </ul>
+</div>
+
+<div class="bottom">
+	<ul class="bottom_ul">
+        <span class="bottom_tj_span"><img class="bottom_tj" src="__PUBLIC__/img/bottom_tj.png"/></span>
+    </ul>
+    <a class="bottom_a"><img class="bottom_more" src="__PUBLIC__/img/more.png"/></a>
+</div>
+
+
+<div class="bottom_tc_bg">
+    <div class="bottom_tc">
+    
+    	<div class="bottom_tc_ss">
+        	<input class="bottom_ss_in" type="search"/>
+            <a class="bottom_ss_a"><img src="__PUBLIC__/img/ss_top.png"/></a>
+            <span class="bottom_span2" onClick="checkbox()">确定</span>
+            <span class="bottom_span1">取消</span> 
+        </div>
+        
+        <ul class="bottom_tc_ul">
+            <li><input id="box1" name="box" type="checkbox" value="工作日志" onClick="check()"/><label for="box1">工作日志</label></li>
+            <li><input id="box2" name="box" type="checkbox" value="工作计划" onClick="check()"/><label for="box2">工作计划</label></li>
+            <li><input id="box3" name="box" type="checkbox" value="部门规定" onClick="check()"/><label for="box3">部门规定</label></li>
+            <li><input id="box4" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box4">公司制度</label></li>
+            <li><input id="box5" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box5">公司制度</label></li>
+            <li><input id="box6" name="box" type="checkbox" value="工作日志" onClick="check()"/><label for="box6">工作日志</label></li>
+            <li><input id="box7" name="box" type="checkbox" value="工作计划" onClick="check()"/><label for="box7">工作计划</label></li>
+            <li><input id="box8" name="box" type="checkbox" value="部门规定" onClick="check()"/><label for="box8">部门规定</label></li>
+            <li><input id="box9" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box9">公司制度</label></li>
+            <li><input id="box10" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box10">公司制度</label></li>
+            <li><input id="box11" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box11">公司制度</label></li>
+            
+            
+            <li><input id="box12" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box12">公司制度</label></li>
+            <li><input id="box1" name="box" type="checkbox" value="工作日志" onClick="check()"/><label for="box1">工作日志</label></li>
+            <li><input id="box2" name="box" type="checkbox" value="工作计划" onClick="check()"/><label for="box2">工作计划</label></li>
+            <li><input id="box3" name="box" type="checkbox" value="部门规定" onClick="check()"/><label for="box3">部门规定</label></li>
+            <li><input id="box4" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box4">公司制度</label></li>
+            <li><input id="box5" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box5">公司制度</label></li>
+            <li><input id="box6" name="box" type="checkbox" value="工作日志" onClick="check()"/><label for="box6">工作日志</label></li>
+            <li><input id="box7" name="box" type="checkbox" value="工作计划" onClick="check()"/><label for="box7">工作计划</label></li>
+            <li><input id="box8" name="box" type="checkbox" value="部门规定" onClick="check()"/><label for="box8">部门规定</label></li>
+            <li><input id="box9" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box9">公司制度</label></li>
+            <li><input id="box10" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box10">公司制度</label></li>
+            <li><input id="box11" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box11">公司制度</label></li>
+            <li><input id="box12" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box12">公司制度</label></li>
+        </ul>
+       <!-- <div class="bottom_an">
+            <span class="bottom_span1">取消</span>
+            <span class="bottom_span2" onClick="checkbox()">确定</span>
+        </div>-->
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.12.3.min.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/js/shouy.js"></script>
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+function select_avatar() {
+	winopen("{:U('popup/avatar')}?id=" + $("#id").val(), 730, 500);
+}
+</script>

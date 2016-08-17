@@ -75,6 +75,7 @@ class HomeAction extends CommonAction {
 		$this -> _xinjin_list();
 		$this -> _daily_list();
 		$this -> shuoshuo();
+		
 		$this -> display();
 	}
 	public function shouy(){
