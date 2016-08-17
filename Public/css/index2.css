@@ -81,3 +81,7 @@ input{ outline:none; margin:0; padding:0;}
 
 /*右边*/
 .right{ width:97%; height:100%; position:fixed; top:94px; left:3%; z-index:1;}
+.ul_table ul {
+	height:424px;
+	overflow:auto;
+}
