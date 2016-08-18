@@ -60,7 +60,7 @@ class CommonAction extends Action {
 		$this -> assign('js_file', 'js/' . ACTION_NAME);
 		$this -> _assign_menu();
 		$this -> _assign_new_count();
-
+		$this -> _display_sign();
 	}
 
 	protected function _welogin($code){
@@ -737,22 +737,49 @@ class CommonAction extends Action {
 		}
 		$this -> ajaxReturn($users);
 	}
+	protected function _display_sign(){
+		$time = time();
+		$date = date('Y-m-d',$time);
+		$start = strtotime($date);
+		$end = strtotime($date.' 24:00:00');
+		$in_res = M('SignInOut')->where(array('user_id'=>get_user_id(),'type'=>'in','time'=>array('between',array($start,$end))))->select();
+		if($in_res){
+			$this -> assign("sign_in", false);
+		}else{
+			$this -> assign("sign_in", true);
+		}
+		$out_res = M('SignInOut')->where(array('user_id'=>get_user_id(),'type'=>'out','time'=>array('between',array($start,$end))))->select();
+		if($out_res){
+			$this -> assign("sign_out", false);
+		}else{
+			$this -> assign("sign_out", true);
+		}
+	}
 	public function sign(){
 		$type = $_GET['type'];
+		$type_name = $type=='in'?'签入':'签出';
 		$user_id = get_user_id();
 		
 		$time = time();
 		$date = date('Y-m-d',$time);
+		//签出时核对下有没有签入过
+		if($type=='out'){
+			$check = M('SignInOut')->where(array('user_id'=>$user_id,'type'=>'in','time'=>array('between',array(strtotime($date),strtotime($date.' 24:00:00')))))->find();
+			if(empty($check)){
+				$this -> ajaxReturn(array('msg'=>'您今天还未签入，请先签入','code'=>$type,'status'=>0));
+			}
+		}
+		
 		$res = M('SignInOut')->where(array('user_id'=>$user_id,'type'=>$type,'time'=>array('between',array(strtotime($date),strtotime($date.' 24:00:00')))))->find();
 		if($res){
-			$res2 = M('SignInOut')->save(array('id'=>$res['id'],'time'=>$time));
+			$this -> ajaxReturn(array('msg'=>'您已'.$type_name,'code'=>$type,'status'=>1));
 		}else{
 			$res2 = M('SignInOut')->add(array('user_id'=>$user_id,'type'=>$type,'time'=>$time));
 		}
 		if($res2){
-			$this -> ajaxReturn('操作成功');
+			$this -> ajaxReturn(array('msg'=>$type_name.'成功','code'=>$type,'status'=>1));
 		}else{
-			$this -> ajaxReturn('操作失败');
+			$this -> ajaxReturn(array('msg'=>$type_name.'失败','code'=>$type,'status'=>0));
 		}
 	}
 }

@@ -12,8 +12,12 @@
         	<a>切换老版</a>
         </div>
         <div class="top_menu_r">
-            <a onclick="sign('in')">上班签入</a>
-            <a onclick="sign('out')">下班签出</a>
+        	<if condition="($sign_in eq true)">
+        		<a id="in" onclick="sign('in')">上班签入</a>
+        	</if>
+            <if condition="($sign_out eq true)">
+            	<a id="out" onclick="sign('out')">下班签出</a>
+            </if>
         </div>    
     </div>
     

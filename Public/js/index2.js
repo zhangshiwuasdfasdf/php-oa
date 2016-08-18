@@ -164,10 +164,18 @@ function sign(type){
 		data:{type:type},
 		dataType: "json",
 		success: function(result){
-			alert(JSON.stringify(result));
+			alert(result.msg);
+			if(result.status==1){
+				if(result.code=='in'){
+					$(".top_menu_r #in").attr('style','display:none');
+				}else{
+					$(".top_menu_r #out").attr('style','display:none');
+				}
+			}
+			
 		},
 		error:function(e){
-			alert(JSON.stringify(result));
+			alert(result.msg);
 		}
 	});
 }
