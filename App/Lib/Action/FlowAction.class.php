@@ -1424,7 +1424,7 @@ class FlowAction extends CommonAction {
 // 		if(isHzYuanQu($uid)){
 // 			$flow = HzYuanQuFlowOrigin($uid);
 // 		}else{
-			$flow = array(getParentid($uid),getHRDeputyGeneralManagerId($uid));
+			$flow = checkFlowNotMe(array(getParentid($uid),getHRDeputyGeneralManagerId($uid)));
 // 		}
 		
 		if(!empty($flow)){
@@ -1451,7 +1451,7 @@ class FlowAction extends CommonAction {
 // 		if(isHzYuanQu($uid)){
 // 			$flow = HzYuanQuFlowOrigin($uid);
 // 		}else{
-			$flow = array($Parentid,getHRDeputyGeneralManagerId($uid));
+			$flow = checkFlowNotMe(array($Parentid,getHRDeputyGeneralManagerId($uid)));
 // 		}
 		
 		if($this->isAjax()){
@@ -1470,11 +1470,11 @@ class FlowAction extends CommonAction {
 		}
 		$dept_idd = getDeptManagerId($uid,$dept_id);
 		if($add=='1'){//辞职补充
-			$flow = array($dept_idd,getHRDeputyGeneralManagerId($uid),getZhaopinDirector($uid));
-			$confirm_text = getConfirmText(array('getDeptManagerId,getHRDeputyGeneralManagerId','getZhaopinDirector'),$array['flow_type_id'],$uid);
+			$flow = checkFlowNotMe(array($dept_idd,getHRDeputyGeneralManagerId($uid),getZhaopinDirector($uid)));
+			$confirm_text = getConfirmTextNotMe(array('getDeptManagerId,getHRDeputyGeneralManagerId','getZhaopinDirector'),$array['flow_type_id'],$uid);
 		}else{
-			$flow = array($dept_idd,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid),getZhaopinDirector($uid));
-			$confirm_text = getConfirmText(array('getDeptManagerId,getHRDeputyGeneralManagerId','getGeneralManagerId','getZhaopinDirector'),$array['flow_type_id'],$uid);
+			$flow = checkFlowNotMe(array($dept_idd,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid),getZhaopinDirector($uid)));
+			$confirm_text = getConfirmTextNotMe(array('getDeptManagerId,getHRDeputyGeneralManagerId','getGeneralManagerId','getZhaopinDirector'),$array['flow_type_id'],$uid);
 		}
 		if(!empty($flow)){
 			if($this->isAjax()){
@@ -1554,7 +1554,7 @@ class FlowAction extends CommonAction {
 		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
 		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
-		$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
+		$flow = checkFlowNotMe(array($dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
 		if($this->isAjax()){
 			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 		}
@@ -1566,7 +1566,7 @@ class FlowAction extends CommonAction {
 		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
 		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
-		$flow = array($dept_uid,getOfficeManagerId(),getLegalManagerId());
+		$flow = checkFlowNotMe(array($dept_uid,getOfficeManagerId(),getLegalManagerId()));
 		if($this->isAjax()){
 			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 		}
@@ -1580,7 +1580,7 @@ class FlowAction extends CommonAction {
 		$parentid = getParentid($uid);
 		$dept_uid = getDeptManagerId($uid,$dept_id);
 		if(getRank($uid)>1){//普通
-			$flow = array($parentid,$dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
+			$flow = checkFlowNotMe(array($parentid,$dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
 			if($this->isAjax()){
 				$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 			}
@@ -1588,7 +1588,7 @@ class FlowAction extends CommonAction {
 			$this->_add_flow_index_log($flow);
 			return array('flow'=>$flow,'confirm_text'=>$this->fetch('',$confirm_text,''));
 		}else{//行政副总，部门总监及以上
-			$flow = array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
+			$flow = checkFlowNotMe(array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
 			if($this->isAjax()){
 				$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 			}
@@ -1655,7 +1655,7 @@ class FlowAction extends CommonAction {
 // 		$parentid_2 = getParentid(null,$dept_id_to);
 		$dept_uid_2 = getDeptManagerId(null,$dept_id_to);
 		
-		$flow = array($parentid_1,$dept_uid_1,$dept_uid_2,$dept_uid_2,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
+		$flow = checkFlowNotMe(array($parentid_1,$dept_uid_1,$dept_uid_2,$dept_uid_2,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
 		if($this->isAjax()){
 			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 		}
@@ -1671,11 +1671,11 @@ class FlowAction extends CommonAction {
 		$parentid_1 = getParentid($uid,$dept_id_from);
 		$dept_uid_1 = getDeptManagerId($uid,$dept_id_from);
 		
-		$flow = array($parentid_1,$dept_uid_1,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid));
+		$flow = checkFlowNotMe(array($parentid_1,$dept_uid_1,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
 		if($this->isAjax()){
 			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 		}
-		$confirm_text = getConfirmText(array('getParentid','getDeptManagerId','getHRDeputyGeneralManagerId','getGeneralManagerId','self'),$array['flow_type_id'],$uid);
+		$confirm_text = getConfirmTextNotMe(array('getParentid','getDeptManagerId','getHRDeputyGeneralManagerId','getGeneralManagerId','self'),$array['flow_type_id'],$uid);
 		$this->_add_flow_index_log($flow,$flow_log);
 		return array('flow'=>$flow,'confirm_text'=>$this->fetch('',$confirm_text,''));
 	}
@@ -1694,11 +1694,11 @@ class FlowAction extends CommonAction {
 		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
 		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
-		$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getFinancialManagerId(),getGeneralManagerId($uid));
+		$flow = checkFlowNotMe(array($dept_uid,getHRDeputyGeneralManagerId($uid),getFinancialManagerId(),getGeneralManagerId($uid)));
 		if($this->isAjax()){
 			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 		}
-		$confirm_text = getConfirmText(array('getDeptManagerId','getHRDeputyGeneralManagerId','getFinancialManagerId','getGeneralManagerId'),$array['flow_type_id'],$uid);
+		$confirm_text = getConfirmTextNotMe(array('getDeptManagerId','getHRDeputyGeneralManagerId','getFinancialManagerId','getGeneralManagerId'),$array['flow_type_id'],$uid);
 		$this->_add_flow_index_log($flow,$flow_log);
 		return array('flow'=>$flow,'confirm_text'=>$this->fetch('',$confirm_text,''));
 	}
@@ -1718,11 +1718,11 @@ class FlowAction extends CommonAction {
 		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
 		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
-		$flow = array($dept_uid,getHRDeputyGeneralManagerId($uid),getFinancialManagerId(),getGeneralManagerId($uid));
+		$flow = checkFlowNotMe(array($dept_uid,getHRDeputyGeneralManagerId($uid),getFinancialManagerId(),getGeneralManagerId($uid)));
 		if($this->isAjax()){
 			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 		}
-		$confirm_text = getConfirmText(array('getDeptManagerId','getHRDeputyGeneralManagerId','getFinancialManagerId','getGeneralManagerId'),$array['flow_type_id'],$uid);
+		$confirm_text = getConfirmTextNotMe(array('getDeptManagerId','getHRDeputyGeneralManagerId','getFinancialManagerId','getGeneralManagerId'),$array['flow_type_id'],$uid);
 		$this->_add_flow_index_log($flow,$flow_log);
 		return array('flow'=>$flow,'confirm_text'=>$this->fetch('',$confirm_text,''));
 	}
