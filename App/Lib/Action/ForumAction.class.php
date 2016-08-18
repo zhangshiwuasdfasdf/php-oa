@@ -167,6 +167,7 @@ class ForumAction extends CommonAction {
 		if (!empty($model)) {
 			$this -> _list($model, $map,$sortby);
 		}
+		
 		$where = array();
 		$folder_id = $map['folder'];
 		$where['id'] = array('eq', $folder_id);

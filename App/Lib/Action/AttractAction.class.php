@@ -87,8 +87,7 @@ class AttractAction extends CommonAction {
 				$x = 3;
 				while (!empty($sd[$x]['A'])){$x++;}//确定一共有多少条数据
 				for ($i=3;$i<$x;$i++){//循环取出每条数据
-					$c = mt_rand(3,$x-1);
-					if($sd[$c]['A'] == '' || $sd[$c]['B'] == '' || $sd[$c]['D'] == '' || $sd[$c]['I'] == '' || $sd[$c]['K'] == '' || $sd[$c]['L'] == '' || $sd[$c]['N'] == ''){
+					if($sd[$i]['A'] == '' || $sd[$i]['B'] == '' || $sd[$i]['C'] == '' || $sd[$i]['D'] == ''  || $sd[$i]['E'] == ''  || $sd[$i]['F'] == ''  || $sd[$i]['G'] == ''  || $sd[$i]['H'] == '' || $sd[$i]['I'] == '' || $sd[$i]['K'] == '' || $sd[$i]['L'] == '' || $sd[$i]['N'] == ''){
 						if (file_exists($inputFileName)) {
 							unlink($inputFileName);
 						}
@@ -216,7 +215,7 @@ class AttractAction extends CommonAction {
 		$tmp = explode('/',$data['today']);
 		$to = strtotime($tmp[0].'/'.$tmp[1].'/01');
 		$day = ($d - $to) / 86400;
-		$lv = $this -> jsfinsh($day,$data['days']);
+		$lv = $this -> jsfinsh($day+1,$data['days']);
 		$this -> assign('lv',$lv);
 		//序号连续
 		$rows = get_user_config('list_rows');
