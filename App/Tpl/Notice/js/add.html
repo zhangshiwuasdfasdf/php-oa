@@ -5,7 +5,7 @@
 		$("#id").val("");
 		$("#admin").val("");
 		$("#admin_list span.address_list span").each(function(){			
-			$("#read").val($("#read").val() + $(this).text().replace(';', '') + '|' + $(this).attr("data") + ";");
+			$("#read").val($("#read").val() + $(this).attr("data") + ";");
 		});
 		if (check_form("form_data")) {
 			sendForm("form_data", "{:U('save')}");

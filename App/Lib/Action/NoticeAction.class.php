@@ -199,14 +199,50 @@ class NoticeAction extends CommonAction {
 		$where['_complex'] = $self;
 		$where['_logic'] = 'OR';
 		$map['_complex'] = $where;
-		
-		if (!empty($model)) {
-			$this -> _list($model, $map);
+		$res = $model -> where($map) -> order('id desc') -> select();
+		$pos_id = M('User')->field('pos_id')->find(get_user_id());
+		$Parentid = $pos_id['pos_id'];
+		$parent_list = array();
+		while($Parentid){//获取上级数组
+			$parent_list[] = $Parentid;
+			$Parentid = getParentDept(null,$Parentid);
 		}
-
+		
+		foreach ($res as $k=>$v){
+			$tmp = explode(';',$v['read']);
+			$res[$k]['can'] = false;
+			foreach ($tmp as $kk => $vv){
+				if(in_array($vv,$parent_list)){
+					$res[$k]['can'] = true;
+					break;
+				}
+			}	
+		}
+		foreach ($res as $k => $v){
+			if(!$v['can']){
+				unset($res[$k]);
+			}
+		}
+		if (!empty($_REQUEST['list_rows'])) {
+			$listRows = $_REQUEST['list_rows'];
+		} else {
+			$listRows = get_user_config('list_rows');
+		}
+		$now = intval($_REQUEST['p']); $rows =  intval($listRows);
+		$offset = $rows * ($now - 1);
+		$ress = array_slice($res , $offset , $rows);
+		$this -> assign('res',$ress);
 		$this -> assign("folder_name", D("SystemFolder") -> get_folder_name($folder_id));
 		$this -> assign('auth', $this -> config['auth']);
 		$this -> _assign_folder_list();
+		//分页
+		import("@.ORG.Util.Page");
+		//创建分页对象
+		$p = new Page(count($res), $listRows);
+		$p -> parameter = $this -> _search();
+		//分页显示
+		$page = $p -> show();
+		$this -> assign("page", $page);
 
 		$this -> display();
 	}
@@ -256,5 +292,4 @@ class NoticeAction extends CommonAction {
 		$where['id']=array('eq',get_user_id());
 		return M("UserConfig") -> where($where) -> setField('readed_notice', $readed_notice);
 	}
-	
 }

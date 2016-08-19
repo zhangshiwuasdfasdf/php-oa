@@ -98,10 +98,29 @@ function get_new_count() {
 	$where['folder'] = array('in', $folder_list);
 	$where['create_time'] = array("egt", time() - 3600 * 24 * 30);
 	$readed = array_filter(explode(",", get_user_config("readed_notice")));
-
-	$where['id'] = array("not in", $readed);
+	if(!empty($readed)){
+		$where['id'] = array("not in", $readed);
+	}
 	$where['is_submit'] = 1;//只获取提交的
-
+	//新增 是否有查看权限
+	$pos_id = M('User')->field('pos_id')->find(get_user_id());
+	$Parentid = $pos_id['pos_id'];
+	$parent_list = array();
+	while($Parentid){//获取上级数组
+		$parent_list[] = $Parentid;
+		$Parentid = getParentDept(null,$Parentid);
+	}
+	$nList = M('Notice') -> where($where) -> select();
+	foreach ($nList as $k=>$v){
+		$tmp = explode(';',$v['read']);
+		foreach ($tmp as $kk => $vv){
+			if(in_array($vv,$parent_list)){
+				$arr[]= $v['id'];
+				break;
+			}
+		}	
+	}
+	$where['id'] = array("in", $arr);
 	$new_notice_count = M('Notice') -> where($where) -> count();
 	$data['bc-notice']['bc-notice-new'] = $new_notice_count;
 

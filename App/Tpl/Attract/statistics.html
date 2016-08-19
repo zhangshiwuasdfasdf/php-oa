@@ -54,8 +54,10 @@
 						<span>{$data.actuality}</span>
 						<span>截至目前签约总量</span>
 						<span>{$data.total_sign}</span>
+						<span></span>
 					</li>
 					<li class="title_li">
+						<span>序号</span>
 						<span>日期</span>
 						<span>招商方式</span>
 						<span>信息来源</span>
@@ -80,6 +82,7 @@
 					<else/>
 					<foreach name="list" item="vo">
 					<li>
+						<span>{$rows+$key}</span>
 						<span>{$vo.riqi}</span>
 						<span>{$vo.manner}</span>
 						<span>{$vo.source}</span>
@@ -107,7 +110,7 @@
 <style>
 	.right_ul{
 		list-style:none;
-		width: 2024px;
+		width: 2143px;
 		height: auto;
 		clear: both;
 		border-top: 1px solid #000;

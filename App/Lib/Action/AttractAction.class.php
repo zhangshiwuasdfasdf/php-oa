@@ -125,11 +125,19 @@ class AttractAction extends CommonAction {
 						$info['concern'] = $sd[$i]['J'];
 						$info['remarks'] = $sd[$i]['K'];
 						$info['visited'] = $sd[$i]['L'];
-						$vd = explode('-',trim($sd[$i]['M']));
-						$info['visitdate'] = '20'.$vd[2].'/'.$vd[0].'/'.$vd[1];
+						if(!empty($sd[$i]['M'])){
+							$vd = explode('-',trim($sd[$i]['M']));
+							$info['visitdate'] = '20'.$vd[2].'/'.$vd[0].'/'.$vd[1];
+						}else{
+							$info['visitdate'] = '';
+						}
 						$info['signed'] = $sd[$i]['N'];
-						$gd = explode('-',trim($sd[$i]['O']));
-						$info['signdate'] = '20'.$gd[2].'/'.$gd[0].'/'.$gd[1];
+						if(!empty($sd[$i]['O'])){
+							$gd = explode('-',trim($sd[$i]['O']));
+							$info['signdate'] = '20'.$gd[2].'/'.$gd[0].'/'.$gd[1];
+						}else{
+							$info['signdate'] = '';
+						}
 						$info['signreceipt'] = $sd[$i]['P'];
 						$info['base'] = $yq_name;
 						$info['months'] = '20'.$rqs[2].$rqs[0];

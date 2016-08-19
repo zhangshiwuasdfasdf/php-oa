@@ -61,7 +61,7 @@ class SystemFolderModel extends CommonModel {
 		return $folder_list;
 	}
 	
-	function get_folder_auth($folder_id){				 
+	function get_folder_auth($folder_id){		
 		$auth_list=M("SystemFolder")->where("id=$folder_id")->Field('admin,write,read')->find();
 		$result= array_map(array("SystemFolderModel","_check_auth"),$auth_list);
 		if ($result['admin']==true){
