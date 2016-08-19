@@ -1,37 +1,74 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'查看工作日报','search'=>'N'))}
+{:W('PageHeader',array('name'=>'查看工作月报','search'=>'N'))}
 
 <table class="table table-bordered">
 	<tr>
-		<th colspan="5" class="text-center" style="position: relative;">{$last_report.work_date}工作日报<span style="display: block;position: absolute;top: 8px;right: 30px;">填写时间：{$last_report.create_time|toDate='Y.m.d H:i'}</span></th>
+		<th colspan="5" class="text-center">{$last_report.work_date}工作月报</th>
 	</tr>
 	<tr>
-		<td class="col-10 text-center">工作总结 </td>
-		<td class="col-40 text-center"> {$last_report.content} </td>
+		<td class="col-11 text-center">序号</td>
+		<td>主要工作事项</td>
+		<td>工作内容</td>
+		<td class="col-20 text-center">工作时间</td>
+		<td class="col-10 text-center">工作进度</td>
 	</tr>
+	<volist name = "last_report_detail"	id = "vo" >
+		<tr>
+			<volist name="vo.item" id="sub_vo" key="k">
+				<tr>
+					<eq name="k" value="1">
+						<td rowspan="{$vo.item|count}" class="text-center">{$i}</td>
+						<td rowspan="{$vo.item|count}">{$vo.subject}</td>
+					</eq>
+					<td>{$sub_vo}</td>
+					<td>{$vo['start_time'][$k-1]}-{$vo['end_time'][$k-1]}</td>
+					<td>{$vo['status'][$k-1]|status_wek}</td>
+				</tr>
+			</volist>
+	</volist>
 	<tr>
-		<td class="col-10 text-center">未完成工作 </td>
-		<td class="col-40 text-center"> {$last_report.undoo} </td>
+		<td class="text-center"> 本月工作小结 </td>
+		<td colspan="4"> {$last_report.content} </td>
 	</tr>
-	<tr>
-		<td class="col-10 text-center">明日计划 </td>
-		<td class="col-40 text-center"> {$last_report.plan} </td>
-	</tr>
-	<tr>
-		<td class="col-10 text-center">意见/建议 </td>
-		<td class="col-40 text-center"> {$last_report.suggest} </td>
-	</tr>
-	
+	<if condition="$excelCon">
+		<tr>
+			<td class="text-center" colspan="5">一键复制</td>
+		</tr>
+		<tr>
+			<td colspan="5" width="100%;">{$excelCon}</td>
+		</tr>
+	</if>
 </table>
 
 <table class="table table-bordered">
 	<tr>
-		<td class="col-10 text-center">明日目标:</td>
-		<td class="col-40 text-center">{$last_report.plan}</td>
+		<th colspan="6" class="text-center">下月工作计划（A类最重要 B类重要 C类次重要）</th>
 	</tr>
 	<tr>
-		<td class="col-10 text-center">附件:</td>
-		<td class="col-40 text-center">{:W('File',array('add_file'=>$last_report['add_file'],'mode'=>'show'))}</td>
+		<td class="col-8 text-center">序号</td>
+		<td>主要工作事项</td>
+		<td>计划推荐目标</td>
+		<td class="col-20 text-center">时间安排</td>
+		<td class="col-8 text-center">重要性</td>
+		<td class="col-10 text-center">协助需求</td>
+	</tr>
+	<volist name = "last_report_plan"	id = "vo" >
+		<tr>
+			<td class="text-center">{$i}</td>
+			<td>{$vo.subject}</td>
+			<td>{$vo.item}</td>
+			<td>{$vo.start_time-$vo.end_time}</td>
+			<td >{$vo.priority}</td>
+			<td>{$vo.is_need_help|need_help}</td>
+		</tr>
+	</volist>
+	<tr>
+		<td class="text-center">下月目标:</td>
+		<td colspan="5">{$last_report.plan}</td>
+	</tr>
+	<tr>
+		<td class="text-center">附件:</td>
+		<td colspan="5">{:W('File',array('add_file'=>$last_report['add_file'],'mode'=>'show'))}</td>
 	</tr>
 </table>
 {:W('PageHeader',array('name'=>'查看记录','search'=>'N'))}
@@ -109,7 +146,6 @@
 	<div class="space-12"></div>
 	</foreach>
 <hr></hr>
-
 <if condition="$last_report['user_id'] neq $uid">
 	{:W('PageHeader',array('name'=>'工作指导','search'=>'N'))}
 	<a id="reply"></a>

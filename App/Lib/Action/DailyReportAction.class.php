@@ -177,7 +177,6 @@ class DailyReportAction extends CommonAction {
 		if (!empty($model)) {
 			if(!is_mobile_request()){
 				$daily_report_common = $this -> _list($model, $map);
-// 				dump($map);
 				$daily_report_extension = array();
 				$model_comment = D("DailyReportComment");
 				$model_report_look = M('ReportLook');
@@ -209,6 +208,7 @@ class DailyReportAction extends CommonAction {
 		if(!is_mobile_request()){
 			$this -> assign('now_time',time());
 			$this -> assign('end_time',$daily_ids);
+// 			dump($report_look);
 			$this -> assign('report',$report_look);
 		}
 		$this -> display();
@@ -343,18 +343,18 @@ class DailyReportAction extends CommonAction {
 		$last_report = M("DailyReport") -> where($where_last) -> order('id desc') -> find();
 		$this -> assign('last_report', $last_report);
 
-		$where_detail['pid'] = $last_report['id'];
-		$where_detail['type'] = array('eq', 1);
-		$last_report_detail = M("DailyReportDetail") -> where($where_detail) -> select();
-		$this -> assign('last_report_detail', $last_report_detail);
+// 		$where_detail['pid'] = $last_report['id'];
+// 		$where_detail['type'] = array('eq', 1);
+// 		$last_report_detail = M("DailyReportDetail") -> where($where_detail) -> select();
+// 		$this -> assign('last_report_detail', $last_report_detail);
 
-		$where_plan['pid'] = $last_report['id'];
-		$where_plan['type'] = array('eq', 2);
-		$last_report_plan = M("DailyReportDetail") -> where($where_plan) -> select();
-		$this -> assign('last_report_plan', $last_report_plan);
+// 		$where_plan['pid'] = $last_report['id'];
+// 		$where_plan['type'] = array('eq', 2);
+// 		$last_report_plan = M("DailyReportDetail") -> where($where_plan) -> select();
+// 		$this -> assign('last_report_plan', $last_report_plan);
 		
-		$time = array('00:00' => '00:00', '00:30' => '00:30', '01:00' => '01:00', '01:30' => '01:30', '02:00' => '02:00', '02:30' => '02:30', '03:00' => '03:00', '03:30' => '03:30', '04:00' => '04:00', '04:30' => '04:30', '05:00' => '05:00', '05:30' => '05:30', '06:00' => '06:00', '06:30' => '06:30', '07:00' => '07:00', '07:30' => '07:30', '08:00' => '08:00', '08:30' => '08:30', '09:00' => '09:00', '09:30' => '09:30', '10:00' => '10:00', '10:30' => '10:30', '11:00' => '11:00', '11:30' => '11:30', '12:00' => '12:00', '13:00' => '13:00', '13:30' => '13:30', '14:00' => '14:00', '14:30' => '14:30', '15:00' => '15:00', '15:30' => '15:30', '16:00' => '16:00', '16:30' => '16:30', '17:00' => '17:00', '17:30' => '17:30', '18:00' => '18:00', '18:30' => '18:30', '19:00' => '19:00', '19:30' => '19:30', '20:00' => '20:00', '20:30' => '20:30', '21:00' => '21:00', '21:30' => '21:30', '22:00' => '22:00', '22:30' => '22:30', '23:00' => '23:00', '23:30' => '23:30', '24:00' => '24:00');
-		$this -> assign('time', $time);
+// 		$time = array('00:00' => '00:00', '00:30' => '00:30', '01:00' => '01:00', '01:30' => '01:30', '02:00' => '02:00', '02:30' => '02:30', '03:00' => '03:00', '03:30' => '03:30', '04:00' => '04:00', '04:30' => '04:30', '05:00' => '05:00', '05:30' => '05:30', '06:00' => '06:00', '06:30' => '06:30', '07:00' => '07:00', '07:30' => '07:30', '08:00' => '08:00', '08:30' => '08:30', '09:00' => '09:00', '09:30' => '09:30', '10:00' => '10:00', '10:30' => '10:30', '11:00' => '11:00', '11:30' => '11:30', '12:00' => '12:00', '13:00' => '13:00', '13:30' => '13:30', '14:00' => '14:00', '14:30' => '14:30', '15:00' => '15:00', '15:30' => '15:30', '16:00' => '16:00', '16:30' => '16:30', '17:00' => '17:00', '17:30' => '17:30', '18:00' => '18:00', '18:30' => '18:30', '19:00' => '19:00', '19:30' => '19:30', '20:00' => '20:00', '20:30' => '20:30', '21:00' => '21:00', '21:30' => '21:30', '22:00' => '22:00', '22:30' => '22:30', '23:00' => '23:00', '23:30' => '23:30', '24:00' => '24:00');
+// 		$this -> assign('time', $time);
 
 		$this -> display();
 	}
