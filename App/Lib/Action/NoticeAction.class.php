@@ -13,7 +13,7 @@
 
 class NoticeAction extends CommonAction {
 
-	protected $config = array('app_type' => 'folder', 'action_auth' => array('folder' => 'read','sign'=>'read','mark' => 'read', 'upload' => 'read'));
+	protected $config = array('app_type' => 'folder', 'action_auth' => array('folder' => 'read','sign'=>'read','mark' => 'read', 'upload' => 'read' ,'changeplan' => 'read', 'changeup' => 'read'));
 
 	//过滤查询字段
 	function _search_filter(&$map) {
@@ -110,7 +110,23 @@ class NoticeAction extends CommonAction {
 				break;
 		}
 	}
-
+	//异步修改工作计划状态
+	function changeplan(){
+		$sid = $_REQUEST['sid'];
+		$id = $_REQUEST['id'];
+		if($id){
+			$model = M('notice');
+			$plan = $model -> getFieldById($id,'plan');
+			$data['plan'] = $plan . '|' .$sid;
+			$data['id'] = $id;
+			$result = $model -> save($data);
+			if($result){
+				$this ->ajaxReturn('', "工作计划状态修改成功",1);
+			}else{
+				$this ->ajaxReturn('', "工作计划状态修改失败",0);
+			}
+		}
+	}
 	function sign(){
 		$user_id = get_user_id();
 		$id = $_REQUEST['id'];
@@ -140,9 +156,28 @@ class NoticeAction extends CommonAction {
 
 		$fid = $_REQUEST['fid'];
 		$this -> assign('folder', $fid);
+		//部门查看权限
+		if(in_array($fid , array('72','74','94','96'))){
+			$this ->assign('ckdept','1');
+		}
+		//企业概况
+		if(in_array($fid , array('68','96'))){
+			$this -> assign('ckfile','1');
+		}
+		//计划类型
+		if($fid == '94'){
+			$this ->assign('ckplan','1');
+		}
+		//公司新闻与今日头条
+		if($fid == '95'){
+			$this -> assign('cknews','1');
+		}
 		$this -> display();
 	}
-
+	
+	function changeup(){
+		$this ->ajaxReturn(array('ckfile'=> '1'), "签收成功",1);
+	}
 	public function edit() {
 		$id = $_REQUEST['id'];
 		$vo = D("Notice") -> find($id);
@@ -175,6 +210,11 @@ class NoticeAction extends CommonAction {
 
 
 	public function folder() {
+		$folder_id = $_REQUEST['fid'];
+		
+		if(in_array($folder_id , array('72','74','94','96'))){
+			$this -> inform($folder_id);die;
+		}
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
 
@@ -188,7 +228,44 @@ class NoticeAction extends CommonAction {
 			$this -> _search_filter($map);
 		}
 
-		$folder_id = $_REQUEST['fid'];
+		$this -> assign("folder_id", $folder_id);
+
+		$map['folder'] = $folder_id;
+		//已提交或自己的草稿
+		$where['is_submit'] = 1;
+		$self['is_submit'] = 0;
+		$self['user_id'] = get_user_id();
+		$where['_complex'] = $self;
+		$where['_logic'] = 'OR';
+		$map['_complex'] = $where;
+		$res = $model -> where($map) -> order('id desc') -> select();
+		if(!empty($model)){
+			$res = $this -> _list($model, $map);
+		}
+		$this -> assign('res',$res);
+		$this -> assign("folder_name", D("SystemFolder") -> get_folder_name($folder_id));
+		$this -> assign('auth', $this -> config['auth']);
+		$this -> _assign_folder_list();
+
+		$this -> display();
+	}
+	// 通知与公告
+	public function inform($folder_id){
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		
+		if($folder_id == '94'){
+			$this -> assign('ckplan', '1');
+		}
+		$arr_read = array_filter(explode(",", get_user_config("readed_notice")));
+		$this -> assign("readed_id",$arr_read);
+						
+		$model = D("Notice");
+		$map = $this -> _search();
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($map);
+		}
+
 		$this -> assign("folder_id", $folder_id);
 
 		$map['folder'] = $folder_id;
@@ -243,10 +320,8 @@ class NoticeAction extends CommonAction {
 		//分页显示
 		$page = $p -> show();
 		$this -> assign("page", $page);
-
-		$this -> display();
+		$this -> display('inform');
 	}
-	
 	public function upload() {
 		$this -> _upload();
 	}

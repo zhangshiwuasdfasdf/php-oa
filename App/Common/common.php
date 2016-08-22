@@ -2818,6 +2818,13 @@ function conv_inputbox($name, $data) {
 	$html .= "<a class=\"del\" title=\"删除\"><i class=\"fa fa-times\"></i></a></nobr></span>";
 	return $html;
 }
+function toPlan($plan){
+	if(!empty($plan)){
+		$p = explode('|',$plan);
+		if($p[1]){return '已完成';}
+		return '<select name="plan_sec"><option value="0">进行中</option><option value="1">已完成</option></select>';
+	}
+}
 function shifzc($list){
 	if(!empty($list)){
 		$tmp = explode('|',$list);

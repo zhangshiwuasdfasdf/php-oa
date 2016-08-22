@@ -95,20 +95,21 @@
 			<div class="pull-right">
 				<span class="col-10  "> 发布时间 </span>
 				<span class="col-6  "> 发布人 </span>			
-				<span class="col-6  "> 提交状态 </span>		
+				<span class="col-6  "> 提交状态 </span>
+				<if condition="$ckplan eq '1'"><span class="col-6  "> 计划状态 </span></if>	
 			</div>
 			<div class="auto">
 				标题
 			</div>
 		</li>
-		<empty name="list">
+		<empty name="res">
 			<ul>
 				<li class="no-data">
 					没找到数据
 				</li>
 				<else/>
 				<form method="post" action="" name="form_data" id="form_data">
-					<foreach name="list" item="vo">
+					<foreach name="res" item="vo">
 						<li class="tbody  <php> if((!in_array($vo['id'],$readed_id))&&($vo['create_time']>=time()-3600*30*24)) echo("bold")</php>" >
 							<div class="pull-left">
 								<label class="inline pull-left col-3">
@@ -124,6 +125,9 @@
 									<else /> 已提交
 									</if>
 								</span>
+								<if condition="$ckplan eq '1'"><span class="col-6" node="{$vo.id}">
+								 	{$vo.plan|toPlan}
+								 </span></if>	
 							</div>
 							<div class="auto">
 								<a href="{:U('read','id='.$vo['id'])}" >{$vo.name}
