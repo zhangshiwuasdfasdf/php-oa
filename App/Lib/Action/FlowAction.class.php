@@ -1630,7 +1630,7 @@ class FlowAction extends CommonAction {
 		}else{
 			if(get_user_info($uid, 'position_name')=='副总'){
 				$flow = checkFlowNotMe(array($parentid,getParentid($parentid),getHRDeputyGeneralManagerId($uid)),$uid);
-				$confirm_text = getConfirmTextNotMe(array('getGeneralManagerIdY','getGeneralManagerIdF','getHRDeputyGeneralManagerId'),$array['flow_type_id'],$uid);
+				$confirm_text = getConfirmTextNotMe(array('getParentid','getParentid','getHRDeputyGeneralManagerId'),$array['flow_type_id'],$uid);
 			}else{
 				$flow = checkFlowNotMe(array($dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)),$uid);
 				$confirm_text = getConfirmTextNotMe(array('getDeptManagerId','getHRDeputyGeneralManagerId','getGeneralManagerId'),$array['flow_type_id'],$uid);
