@@ -4,9 +4,40 @@
 		$("#opmode").val("add");
 		$("#id").val("");
 		$("#admin").val("");
+		
 		$("#admin_list span.address_list span").each(function(){			
 			$("#read").val($("#read").val() + $(this).attr("data") + ";");
 		});
+		if($("#read").val() == "" && "{$ckdept}" == "1"){
+			ui_error("请选择可看部门");
+			return false;
+		}
+		if("{$ckdept}" == ""){
+			$("#read").val("27;");
+		}
+		if("{$ckplan}" == "1" && $("input[name='plan']:checked").val() == ''){
+			ui_error("请选择计划类型");
+			return false;
+		}
+		if("{$ckfile}" == "1" && $("#add_file").val() == ""){
+			ui_error("请在附件中添加上传的图片");
+			return false;
+		}
+		if("{$ckfile}" == "1" || $$("input[name='plan']").attr('mss') == "1"){
+			var flag = false;
+			$("#file_list li .data .auto").each(function(){
+				var con = $(this).text().trim();
+				var pos = con.lastIndexOf(".");
+				var ext = con.substring(pos+1);
+				if(ext !== "jpg" && ext !== "jpeg" && ext !== "png"){
+					flag = true;
+				}
+			});	
+			if(flag){
+				ui_error("附件中上传类型必须是图片格式");
+				return false;
+			}
+		}
 		if (check_form("form_data")) {
 			sendForm("form_data", "{:U('save')}");
 		}
@@ -14,4 +45,13 @@
 	function select_auth() {
 		winopen("{:U('popup/noticeauth')}", 730, 574);
 	}
+	$(document).ready(function() {
+		$("input[name='plan']").change(function(){
+			if($(this).val() == "2"){
+				sendAjax("{:U('changeup')}",'',function(){
+					location.reload();
+				});
+			}
+		});
+	});
 </script>

@@ -185,6 +185,7 @@ class AttractAction extends CommonAction {
 			}
 		}
 		$map = $this -> _search("Attract_detail");
+		if(!empty($map)){$this -> assign('sfexport','1');}
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
@@ -197,13 +198,21 @@ class AttractAction extends CommonAction {
 		}
 		//今天是
 		$attr = M('attract');
-		if(!empty($map['months'][1][0])){
-			$mid = $map['months'][1][0];
-			$mid = implode('/',explode('-',$mid));
+		if(!empty($map['months'])){
+			$item = $map['months'][0];
+			if (stripos($item, "egt")!==false || stripos($item, "elt")!==false){
+				$mid = $map['months'][1];
+			}else{
+				$mid = $map['months'][1][1];
+			}
+			$mid_y = substr($mid, 0, 4);
+			$mid_m = substr($mid, 4, 2);
+			$mid = $mid_y . '/' . $mid_m;
 			$prefix = substr($mid, 0, 7);
 			$where3['end_time'] = array('like', $prefix .'%');
 			$where3['is_del'] = 0;
 			$data = $attr -> where($where3) -> find();
+			$this -> assign('sfexport','1');
 		}else{
 			$mid = $attr -> where('is_del = 0') -> max('id');
 			$data = $attr -> find($mid);
@@ -251,18 +260,75 @@ class AttractAction extends CommonAction {
 		$objPHPExcel -> getProperties() -> setCreator("神洲酷奇OA") -> setLastModifiedBy("神洲酷奇OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
 		// Add some data
 		$q = $objPHPExcel -> setActiveSheetIndex(0);
-		$tit = array('日期','招商方式','信息来源','招商人员','客户姓名','客户电话','主营行业','预计日发单量','客户意向','接洽内容&备注');
+		//添加招商总计信息
+		//今天是
+		$map = $this -> _search("Attract_detail");
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($map);
+		}
+		$attr = M('attract');
+		if(!empty($map['months'])){
+			$item = $map['months'][0];
+			if (stripos($item, "egt")!==false || stripos($item, "elt")!==false){
+				$mid = $map['months'][1];
+			}else{
+				$mid = $map['months'][1][1];
+			}
+			$mid_y = substr($mid, 0, 4);
+			$mid_m = substr($mid, 4, 2);
+			$mid = $mid_y . '/' . $mid_m;
+			$prefix = substr($mid, 0, 7);
+			$where3['end_time'] = array('like', $prefix .'%');
+			$where3['is_del'] = 0;
+			$data = $attr -> where($where3) -> find();
+			$this -> assign('sfexport','1');
+		}else{
+			$mid = $attr -> where('is_del = 0') -> max('id');
+			$data = $attr -> find($mid);
+		}
+		//完成率
+		$finsh = $this -> jsfinsh($data['actuality'],$data['target']);
+		
+		$d = strtotime($data['today']);
+		$tmp = explode('/',$data['today']);
+		$to = strtotime($tmp[0].'/'.$tmp[1].'/01');
+		$day = ($d - $to) / 86400;
+		$lv = $this -> jsfinsh($day+1,$data['days']);
+		$this -> assign('lv',$lv);
+		
+		$q = $q -> setCellValue('A1', '截止目前时间进度');
+		$q = $q -> setCellValue('B1', $lv.'%');
+		$q = $q -> setCellValue('C1', '今天是');
+		$q = $q -> setCellValue('D1', $data['today']);
+		$q = $q -> setCellValue('E1', '考核截止日期');
+		$q = $q -> setCellValue('F1', $data['end_time']);
+		$q = $q -> setCellValue('G1', '本次考核周期天数');
+		$q = $q -> setCellValue('H1', $data['days']);
+		$q = $q -> setCellValue('I1', '截止目前任务完成进度');
+		$q = $q -> setCellValue('J1', $finsh.'%');
+		$q = $q -> setCellValue('K1', '本月累计签约目标/单');
+		$q = $q -> setCellValue('L1', $data['target']);
+		$q = $q -> setCellValue('M1', '当月实际签约/单');
+		$q = $q -> setCellValue('N1', $data['actuality']);
+		$q = $q -> setCellValue('O1', '截至目前签约总量');
+		$q = $q -> setCellValue('P1', $data['total_sign']);
+		//添加列表 头信息
+		$tit = array('日期','招商方式','信息来源','招商人员','客户姓名','客户电话','主营行业','预计日发单量','客户意向','客户最关心的问题','接洽内容&备注','是否到访','客户到访日期','是否签约','签约日期','签约日单量');
 		$n = 0;
-		for ($i=ord('A');$i<=ord('J');$i++){
-			$q = $q -> setCellValue(chr($i).'1', $tit[$n]);
-			$q->getColumnDimension(chr($i))->setWidth(15);
-			$q->getColumnDimension('J')->setWidth(30);
-			$q -> getRowDimension(1)->setRowHeight(35);
-			$q -> getStyle(chr($i).'1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);//设置水平对齐方式
-			$q -> getStyle(chr($i).'1')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);//设置垂直居中
-			$q -> getStyle(chr($i).'1')->getFill()->getStartColor()->setARGB('FF808080');
-			$q -> getStyle(chr($i).'1')->getFont()->setName('微软雅黑');
-			$q -> getStyle(chr($i).'1')->getFont()->setSize(11);
+		for ($i=ord('A');$i<=ord('P');$i++){
+			for($j = 1 ;$j < 3 ; $j++){
+				$q = $q -> setCellValue(chr($i).'2', $tit[$n]);
+				$q->getColumnDimension(chr($i))->setWidth(15);
+				$q->getStyle(chr($i).'2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID); 
+				$q->getColumnDimension('J')->setWidth(30);
+				$q->getColumnDimension('K')->setWidth(30);
+				$q -> getRowDimension($j)->setRowHeight(35);
+				$q -> getStyle(chr($i).$j)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);//设置水平对齐方式
+				$q -> getStyle(chr($i).$j)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);//设置垂直居中
+				$q -> getStyle(chr($i).$j)->getFill()->getStartColor()->setARGB('FF808080');
+				$q -> getStyle(chr($i).$j)->getFont()->setName('微软雅黑');
+				$q -> getStyle(chr($i).$j)->getFont()->setSize(11);
+			}
 			$n++;	
 		}
 		
@@ -272,14 +338,11 @@ class AttractAction extends CommonAction {
 				$arr[] = $v['id'];
 			}
 		}
-		$map = $this -> _search("Attract_detail");
-		if (method_exists($this, '_search_filter')) {
-			$this -> _search_filter($map);
-		}
+	
 		$map['pid'] = array('in',$arr);
 		$list = M('Attract_detail') -> where($map) -> order('riqi DESC') -> select();
 		foreach ($list as $k => $v){
-			$i = $k+2;
+			$i = $k+3;
 			$q = $q -> setCellValue('A'.$i , $v['riqi']);
 			$q = $q -> setCellValue('B'.$i , $v['manner']);
 			$q = $q -> setCellValue('C'.$i , $v['source']);
@@ -289,7 +352,13 @@ class AttractAction extends CommonAction {
 			$q = $q -> setCellValue('G'.$i , $v['trade']);
 			$q = $q -> setCellValue('H'.$i , $v['receipt']);
 			$q = $q -> setCellValue('I'.$i , $v['intention']);
-			$q = $q -> setCellValue('J'.$i , $v['remarks']);
+			$q = $q -> setCellValue('J'.$i , $v['concern']);
+			$q = $q -> setCellValue('K'.$i , $v['remarks']);
+			$q = $q -> setCellValue('L'.$i , $v['visited']);
+			$q = $q -> setCellValue('M'.$i , $v['visitdate']);
+			$q = $q -> setCellValue('N'.$i , $v['signed']);
+			$q = $q -> setCellValue('O'.$i , $v['signdate']);
+			$q = $q -> setCellValue('P'.$i , $v['signreceipt']);
 			for ($j=ord('A');$j<=ord('J');$j++){
 				$q -> getStyle()->getFont(ord($j).$i)->setName('微软雅黑');
 				$q -> getStyle()->getFont(ord($j).$i)->setSize(11);

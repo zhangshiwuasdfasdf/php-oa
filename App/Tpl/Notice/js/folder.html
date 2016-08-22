@@ -42,12 +42,23 @@
 			$(this).parent().parent().hide();
 		});
 	}
-
-
+	
+	
 	$(document).ready(function() {
 		set_return_url();
 		$("#move_to li").click(function() {
 			move_to($(this).attr("id"));
+		});
+		$("select[name='plan_sec']").change(function(){
+			var sec = $(this).val();
+			var id = $(this).parent().attr('node');
+			if(sec == '1'){
+				sendAjax("{:U('changeplan')}", 'sid='+ sec + '&id=' + id, function(data) {
+						ui_alert(data.info,function(){
+							location.reload();
+						});				
+				});
+			}
 		});
 	}); 
 </script>

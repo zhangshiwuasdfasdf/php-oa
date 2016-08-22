@@ -8,7 +8,7 @@
 				<div class="col-xs-6 text-right">
 					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
 					<a  class="btn btn-sm " onclick="close_adv_search();">关闭</a>
-					<a  class="btn btn-sm btn-primary" onclick="export_info();">导出</a>
+					<eq name="sfexport" value="1"><a  class="btn btn-sm btn-primary" onclick="export_info();">导出</a></eq>
 				</div>
 			</div>
 		</div>
@@ -38,23 +38,26 @@
 <div style="width: 100%;height: auto;overflow: auto">
 				<ul class="right_ul">
 					<li>
-						<span>截止目前时间进度</span>
+						<span style="width: 150px;font-weight: bold;">截止目前时间进度</span>
 						<span>{$lv}%</span>
-						<span>今天是</span>
+						<span style="font-weight: bold;">今天是</span>
 						<span>{$data.today}</span>
-						<span>考核截止日期</span>
+						<span style="font-weight: bold;">考核截止日期</span>
 						<span>{$data.end_time}</span>
-						<span>本次考核周期天数</span>
+						<span style="font-weight: bold;">本次考核周期天数</span>
 						<span>{$data.days}</span>
-						<span style="width: 150px;">截止目前任务完成进度</span>
-						<span style="width: 150px;">{$finsh}%</span>
-						<span style="width: 180px;">本月累计签约目标</span>
+						<span style="width: 1162px;"></span>
+					</li>
+					<li>
+						<span style="width: 150px;font-weight: bold;">截止目前任务完成进度</span>
+						<span>{$finsh}%</span>
+						<span style="font-weight: bold;">本月累计签约目标</span>
 						<span>{$data.target}</span>
-						<span>当月实际签约</span>
+						<span style="font-weight: bold;">当月实际签约</span>
 						<span>{$data.actuality}</span>
-						<span>截至目前签约总量</span>
+						<span style="font-weight: bold;">截至目前签约总量</span>
 						<span>{$data.total_sign}</span>
-						<span></span>
+						<span style="width: 1162px;"></span>
 					</li>
 					<li class="title_li">
 						<span>序号</span>
