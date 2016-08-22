@@ -25,7 +25,7 @@
 					<p class="form-control-static text-center">
 						工作总结：</p></span>
 				<div class="col-sm-10">
-					<textarea name="content" id="content" class="form-control" style="height:120px;">{$last_report.content}</textarea>
+					<textarea name="content" id="content" class="form-control" style="height:120px;" check="require" msg="请填写工作总结">{$last_report.content}</textarea>
 				</div>
 			</li>
 			<li class="tbody">
@@ -46,7 +46,7 @@
 						明日计划:
 					</p></span>
 				<div class="col-sm-10">
-					<textarea name="plan" class="form-control" style="height:120px;">{$last_report.plan}</textarea>
+					<textarea name="plan" class="form-control" style="height:120px;" check="require" msg="请填写明日计划">{$last_report.plan}</textarea>
 				</div>
 			</li>
 			<li class="tbody">

@@ -730,7 +730,8 @@ class CommonAction extends Action {
 	}
 	public function get_username_by_dept(){
 		$dept_id = $_GET['dept_id'];
-		$users = D('UserView')->field('id,name,pos_id')->where(array('dept_id'=>array('eq',$dept_id),'is_del'=>'0'))->select();
+		$child_dept = get_child_dept_all($dept_id);
+		$users = D('UserView')->field('id,name,pos_id')->where(array('pos_id'=>array('in',$child_dept),'is_del'=>'0'))->select();
 		foreach ($users as $k=>$v){
 			$pos_name = M('Dept')->field('name')->find($v['pos_id']);
 			$users[$k]['pos_name'] = $pos_name['name'];

@@ -29,7 +29,7 @@
 						已完成工作：
 					</p></span>
 				<div class="col-sm-10">
-					<textarea name="done" id="done" class="form-control" style="height:120px;">{$last_report.done}</textarea>
+					<textarea name="done" id="done" class="form-control" style="height:120px;" check="require" msg="请填写已完成工作">{$last_report.done}</textarea>
 				</div>
 			</li>
 			<li class="tbody">
@@ -80,7 +80,7 @@
 						下月工作计划:
 					</p></span>
 				<div class="col-sm-10">
-					<textarea name="plan" class="form-control" style="height:120px;">{$last_report.plan}</textarea>
+					<textarea name="plan" class="form-control" style="height:120px;" check="require" msg="请填写下月工作计划">{$last_report.plan}</textarea>
 				</div>
 			</li>
 			<li class="tbody">
