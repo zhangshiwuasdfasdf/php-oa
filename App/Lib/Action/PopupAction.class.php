@@ -52,6 +52,11 @@ class PopupAction extends CommonAction {
 				$where['is_del']=array('eq',0);
 				$data = $model -> table($sql . "a") -> where($where) -> select();
 				break;
+			
+			case "notice" :
+				$model = M("Dept");
+				$data = tree_to_list(list_to_tree( M("Dept")->where(array('is_del'=>0,'is_real_dept'=>1)) -> select(), $id));
+				break;
 
 			case "rank" :
 				$sql = D("UserView") -> buildSql();
@@ -178,7 +183,7 @@ class PopupAction extends CommonAction {
 		$list = list_to_tree($list);
 		$this -> assign('list_position', popup_tree_menu($list));
 
-		$this -> assign('type', 'company');
+		$this -> assign('type', 'notice');
 		$this -> display();
 		return;
 	}

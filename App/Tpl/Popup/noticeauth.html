@@ -2,10 +2,9 @@
 <script type="text/javascript">
 	function save() {
 		$("#rc select option").each(function(i) {
-			email = ($(this).html().split(";")[1].split("&")[0]);
 			emp_no = $(this).val();
 			name = jQuery.trim($(this).text()).replace(/<.*>/, '');
-			html = conv_inputbox_item(emp_no, name, email, emp_no);
+			html = conv_inputbox_item(emp_no, name, name, emp_no);
 			$("#admin_list .address_list", parent.document).append(html);
 		});
 
@@ -29,13 +28,23 @@
 
 	function showdata(result) {
 		$("#addr_list").html("");
-		if ( type = $("input[name='type']:checked").val() == "company") {
-			var id = $("#company a.active").attr("node");
-			var dept_name = $("#company a.active span").text();
+		if ( type = $("input[name='type']:checked").val() == "notice") {
+			var id = $("#notice a.active").attr("node");
+			var dept_name = $("#notice a.active span").text();
 			var email = "dept@group";
 			var name = dept_name + "&lt;" + email + "&gt;";
-			var html_string = conv_address_item(id, name);
+			var html_string = conv_address_item(id, dept_name);
 			$("#addr_list").html(html_string);
+		}
+		for (s in result.data) {
+			var id = result.data[s].id;
+			var position_name = result.data[s].position_name;
+			var emp_no = result.data[s].emp_no;
+			var email = result.data[s].email;
+			var name = result.data[s].name;
+			//var name = name + "/" + position_name + "&lt;" + email + "&gt;";
+			var html_string = conv_address_item(id, name);
+			$("#addr_list").append(html_string);
 		}
 	}
 
@@ -177,7 +186,7 @@
 	<div class="panel-heading clearfix">
 		<div class="pull-left">
 			<label>
-				<input class="ace"  type="radio" id="rb_company" name="type" value="company" >
+				<input class="ace"  type="radio" id="rb_notice" name="type" value="notice" >
 				<span class="lbl">公司</span> </label>
 
 		</div>
@@ -192,7 +201,7 @@
 				<b>地址簿</b>
 			</div>
 			<div class="popup_tree_menu" >
-				<div id="company" class="display-none" style="height:200px;">
+				<div id="notice" class="display-none" style="height:200px;">
 					{$list_company}
 				</div>
 				<div id="position" class="display-none" style="height:200px;">

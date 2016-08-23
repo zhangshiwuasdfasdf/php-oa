@@ -320,8 +320,10 @@ class NoticeAction extends CommonAction {
 			$listRows = get_user_config('list_rows');
 		}
 		$now = intval($_REQUEST['p']); $rows =  intval($listRows);
+		if(!isset($now)){$now = 1;}
 		$offset = $rows * ($now - 1);
 		$ress = array_slice($res , $offset , $rows);
+		dump($now);
 		$this -> assign('res',$ress);
 		$this -> assign("folder_name", D("SystemFolder") -> get_folder_name($folder_id));
 		$this -> assign('auth', $this -> config['auth']);

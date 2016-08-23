@@ -59,5 +59,9 @@
 				$("#cknews").attr("mss","1");
 			}
 		});
+		/*单击删除已选联系人*/
+		$(document).on("click", ".inputbox .address_list a.del", function() {
+			$(this).parent().parent().remove();
+		});
 	});
 </script>
