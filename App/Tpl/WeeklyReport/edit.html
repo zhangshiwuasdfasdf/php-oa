@@ -1,4 +1,8 @@
 <layout name='Layout/ace_layout' />
+<style>
+.form-control-static{line-height: 8;font-weight: bold;}
+.ul_table .rr .tbody{background-color:#f1f5fa;}
+</style>
 {:W('PageHeader',array('name'=>'修改工作周报','search'=>'N'))}
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
@@ -14,15 +18,12 @@
 					<input type="text" name="work_date" value="{$last_report.work_date}">
 					工作周报
 				</div>
-				<div class="col-sm-3">
-					<span class="form-control-static pull-right">日事日毕 每天做一个全新的自己</span>
-				</div>
 			</li>
 			<div style="overflow: hidden;width: 100%;">
-			<div style="float: left;width: 10%;height: 563px;background-color: #fff;">
-				<span style="text-align: center;display: block;width: 12px;height: 108px;margin: auto;margin-top: 200px;line-height: 2;">本周工作总结</span>
+			<div style="float: left;width: 10%;height: 563px;background-color: #f1f5fa;">
+				<span style="text-align: center;display: block;width: 12px;height: 108px;margin: auto;margin-top: 200px;line-height: 2;font-weight: bold;">本周工作总结</span>
 			</div>
-			<div style="float: left;width: 90%;">
+			<div class="rr" style="float: left;width: 90%;">
 			<li class="tbody">
 				<span class="col-sm-2">
 					<p class="form-control-static text-center">
@@ -64,7 +65,7 @@
 		</ul>
 	</div>
 	<div class="ul_table border-bottom">
-		<ul>
+		<ul class="rr">
 			<li class="tbody">
 				<span class="col-sm-2">
 					<p class="form-control-static text-center">

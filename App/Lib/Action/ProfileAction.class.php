@@ -443,7 +443,18 @@ class ProfileAction extends CommonAction {
 		$resume = M('user_resume');
 		$list = $resume -> where(array('user_id' => $id)) -> find();//获取文件(简历)
 		if(is_null($list)){
+			$this->assign('id', 'jl_'.$id);
+			if($id==get_user_id()){
+				$this->assign('can_modify_user_resume',1);
+			}else{
+				$this->assign('can_modify_user_resume',0);
+			}
 			
+			if($auth['admin']){
+				$this->assign('can_modify_user_record',1);
+			}else{
+				$this->assign('can_modify_user_record',0);
+			}
 		}else{
 			if($list['pic']){$list['pic'] = get_save_url() . $list['pic'];}
 			foreach ($list as $k => $v){

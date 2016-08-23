@@ -1,4 +1,8 @@
 <layout name='Layout/ace_layout' />
+<style>
+.form-control-static{line-height: 8;font-weight: bold;}
+.ul_table .rr .tbody{background-color:#f1f5fa;}
+</style>
 {:W('PageHeader',array('name'=>'新建工作日报','search'=>'N'))}
 <!-- <div class="operate panel panel-default">
 		<div class="panel-body">
@@ -23,7 +27,7 @@
 	<input type="hidden" id="opmode" name="opmode" value="add">
 	<input type="hidden" id="is_submit" name="is_submit">
 	<div class="ul_table border-bottom">
-		<ul>
+		<ul class="rr">
 			<li class="thead">
 				<div class="col-sm-3"></div>
 				<div class="col-sm-6 text-center">
@@ -31,9 +35,6 @@
 						{:fill_option($work_date_list)}
 					</select>
 					工作日报
-				</div>
-				<div class="col-sm-3">
-					<span class="form-control-static pull-right">日事日毕 每天做一个全新的自己</span>
 				</div>
 			</li>
 			
@@ -59,7 +60,7 @@
 		</ul>
 	</div>
 	<div class="ul_table border-bottom">
-		<ul>
+		<ul class="rr">
 			<li class="tbody">
 				<span class="col-sm-2">
 					<p class="form-control-static text-center">

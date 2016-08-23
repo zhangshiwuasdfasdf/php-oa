@@ -333,8 +333,12 @@ class MonthlyReportAction extends CommonAction {
 		}
 		$report_look = $model_report_look->where(array('type'=>array('eq','monthly'),'pid'=>array('eq',$id)))->order('create_time desc')->select();
 		$this -> assign('report_look', $report_look);
-
-		$this -> display();
+		
+		if($last_report['create_time']<strtotime('2016-08-23')){
+			$this -> display('read_0');
+		}else{
+			$this -> display();
+		}
 	}
 
 	public function edit($id) {
@@ -381,7 +385,11 @@ class MonthlyReportAction extends CommonAction {
 	    }
 		$this -> assign('time', $time);
 
-		$this -> display();
+		if($last_report['create_time']<strtotime('2016-08-23')){
+			$this -> display('edit_0');
+		}else{
+			$this -> display();
+		}
 	}
 
 	function plan() {
