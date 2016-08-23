@@ -320,7 +320,7 @@ class DailyReportAction extends CommonAction {
 		}
 		$report_look = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$id)))->order('create_time desc')->select();
 		$this -> assign('report_look', $report_look);
-		if($last_report['create_time']<strtotime('2016-08-23')){
+		if($last_report['create_time']<strtotime('2016-08-23 13:00')){
 			$this -> display('read_0');
 		}else{
 			$this -> display();
