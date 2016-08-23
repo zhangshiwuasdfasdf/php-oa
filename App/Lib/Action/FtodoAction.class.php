@@ -83,7 +83,26 @@ class FtodoAction extends CommonAction {
 					$flow_list[$k]['flow_name'] = $s;
 				}
 			}
-		$this -> assign("list2", $flow_list);
+			$uid = get_user_id();
+			if($uid == '111' || $uid == '13' || $uid == '260' || $uid == '1'){
+				$notice = M('notice') -> where(array('folder'=>'95','is_submit'=>2)) -> select();
+				if(!empty($notice)){
+					$j = count($flow_list);
+					foreach ($notice as $k => $v){
+						$flow_list[$j]['doc_no'] = '95';
+						$flow_list[$j]['type_name'] = '今日头条与公司新闻';
+						$flow_list[$j]['create_time'] = $v['create_time'];
+						$flow_list[$j]['user_name'] = $v['user_name'];
+						$flow_list[$j]['step'] = 20;
+						$flow_list[$j]['flow_name'] = "姚一飞 或 张婷 或 彭梦洁 (审批中)";
+						$flow_list[$j]['name'] = $v['name'];
+						$flow_list[$j]['flag'] = '1';
+						$flow_list[$j]['id'] = $v['id'];
+						$j++;
+					}
+				}
+			}
+		$this -> assign("lists", $flow_list);
 		}
 		$this -> display();
 	}

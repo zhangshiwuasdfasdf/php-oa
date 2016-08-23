@@ -22,6 +22,17 @@
 	function edit() {
 		window.open(fix_url("{:U('edit')}?id=" + $("#id").val()), "_self");
 	}
+	
+	function confirm(j){
+		sendAjax("{:U('confirm')}", 'id=' + $("#id").val() + '&fi=' + j, function(data) {
+			if (data.status) {
+				ui_alert(data.info,function(){
+					//location.reload();//重载当前页
+					go_return_url();//返回上一页
+				});								
+			}
+		});
+	}
 
 	//增加签收
 	function sign() 

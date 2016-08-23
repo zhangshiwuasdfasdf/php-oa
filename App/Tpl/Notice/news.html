@@ -109,7 +109,6 @@
 				<else/>
 				<form method="post" action="" name="form_data" id="form_data">
 					<foreach name="list" item="vo">
-						<php> if(in_array($vo['is_submit'],array(2,3))){if($user_id != $vo['user_id']){continue;}}</php>
 						<li class="tbody  <php> if((!in_array($vo['id'],$readed_id))&&($vo['create_time']>=time()-3600*30*24)) echo("bold")</php>" >
 							<div class="pull-left">
 								<label class="inline pull-left col-3">
@@ -122,8 +121,7 @@
 								<span class="col-6 "> {$vo.user_name} </span>
 								<span class="col-6 "> 
 									<if condition="($vo.is_submit eq 0)"> <a href="{:U('edit','id='.$vo['id'])}" >草稿</a>
-									<elseif condition="($vo.is_submit eq 2)" /> 审批中 
-									<else />已提交
+									<else /> 已提交
 									</if>
 								</span>
 							</div>

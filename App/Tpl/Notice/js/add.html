@@ -4,7 +4,9 @@
 		$("#opmode").val("add");
 		$("#id").val("");
 		$("#admin").val("");
-		
+		if("{$cknews}" == "1"){
+			$("#is_submit").val(2);
+		}
 		$("#admin_list span.address_list span").each(function(){			
 			$("#read").val($("#read").val() + $(this).attr("data") + ";");
 		});
@@ -23,7 +25,11 @@
 			ui_error("请在附件中添加上传的图片");
 			return false;
 		}
-		if("{$ckfile}" == "1" || $$("input[name='plan']").attr('mss') == "1"){
+		if($("#cknews").attr('mss') == "1" && $("#add_file").val() == ""){
+			ui_error("请在附件中添加上传的图片");
+			return false;
+		}
+		if("{$ckfile}" == "1" || $("#cknews").attr('mss') == "1"){
 			var flag = false;
 			$("#file_list li .data .auto").each(function(){
 				var con = $(this).text().trim();
@@ -48,9 +54,9 @@
 	$(document).ready(function() {
 		$("input[name='plan']").change(function(){
 			if($(this).val() == "2"){
-				sendAjax("{:U('changeup')}",'',function(){
-					location.reload();
-				});
+				$("#cknews").attr("mss","0");
+			}else{
+				$("#cknews").attr("mss","1");
 			}
 		});
 	});

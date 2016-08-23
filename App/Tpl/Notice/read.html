@@ -13,7 +13,12 @@
             <!--<if condition="$is_sign eq 0">
 			<a onclick="sign()" class="btn btn-sm btn-primary">请签收</a>
             </if>
-			--><a onclick="winprint()" class="btn btn-sm btn-primary">打印</a>
+			-->
+			<if condition="$confirm eq 1">
+				<a onclick="confirm(1);" class="btn btn-sm btn-primary">同意</a>
+				<a onclick="confirm(3);" class="btn btn-sm btn-danger">拒绝</a>
+            </if>
+			<a onclick="winprint()" class="btn btn-sm btn-primary">打印</a>
 		</div>
 	</div>
 </div>

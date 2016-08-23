@@ -54,7 +54,7 @@
 			</div>
 			<div class="pull-right">
 				<span  class="col-9  ">登录时间</span>
-				<span  class="col-6  "> 登录人</span>
+				<span  class="col-6  "> 发起人</span>
 				<span class="col-6  ">状态</span>
 				<span class="col-30  ">流程</span>
 			</div>
@@ -63,7 +63,7 @@
 			</div>
 		</li>
 	</ul>
-	<empty name="list2">
+	<empty name="lists">
 		<ul>
 			<li class="no-data">
 				没找到数据
@@ -72,7 +72,7 @@
 		<else/>
 		<form method="post" action="" name="form_data" id="form_data">
 			<ul>
-				<foreach name="list2" item="vo">
+				<foreach name="lists" item="vo">
 					<li class="tbody">
 						<div class="pull-left">
 							<span class="col-16 ">{$vo.doc_no}</span>
@@ -85,11 +85,11 @@
 							<span class="col-30" style="height:20px;">{$vo.flow_name}</span>
 						</div>
 						<div class="autocut auto">
-							<in name="folder" value="darft">
-								<a href="{:U('flow/edit','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
+							<if condition="$vo.flag eq '1'" >
+								<a href="{:U('notice/read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
 								<else/>
 								<a href="{:U('flow/read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
-							</in>
+							</if>
 							<eq name="vo.name|strlen" value="0">
 								无标题
 							</eq></a> 
@@ -97,9 +97,9 @@
 					</li>
 				</foreach>
 			</ul>
-		</form>
+		</form><!--
 		<div class="pagination">
 			{$page}
 		</div>
-	</empty>
+	--></empty>
 </div>

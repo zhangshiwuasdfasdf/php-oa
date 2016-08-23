@@ -13,7 +13,7 @@
 
 class NoticeAction extends CommonAction {
 
-	protected $config = array('app_type' => 'folder', 'action_auth' => array('folder' => 'read','sign'=>'read','mark' => 'read', 'upload' => 'read' ,'changeplan' => 'read', 'changeup' => 'read'));
+	protected $config = array('app_type' => 'folder', 'action_auth' => array('folder' => 'read','sign'=>'read','mark' => 'read', 'upload' => 'read' ,'changeplan' => 'read' ,'confirm' => 'read'));
 
 	//过滤查询字段
 	function _search_filter(&$map) {
@@ -127,6 +127,23 @@ class NoticeAction extends CommonAction {
 			}
 		}
 	}
+	
+	function confirm(){
+		$id = $_REQUEST['id'];
+		$fi = $_REQUEST['fi'];
+		if($id){
+			$model = M('notice');
+			$data['is_submit'] = $fi;
+			$data['id'] = $id;
+			$result = $model -> save($data);
+			if($result){
+				$this ->ajaxReturn('', "请求成功",1);
+			}else{
+				$this ->ajaxReturn('', "请求失败",0);
+			}
+		}
+	}
+	
 	function sign(){
 		$user_id = get_user_id();
 		$id = $_REQUEST['id'];
@@ -175,9 +192,6 @@ class NoticeAction extends CommonAction {
 		$this -> display();
 	}
 	
-	function changeup(){
-		$this ->ajaxReturn(array('ckfile'=> '1'), "签收成功",1);
-	}
 	public function edit() {
 		$id = $_REQUEST['id'];
 		$vo = D("Notice") -> find($id);
@@ -192,6 +206,9 @@ class NoticeAction extends CommonAction {
 
 	public function read() {
 		$id = is_mobile_request()==true?$_REQUEST['notice_id']:$_REQUEST['id'];
+		if($_REQUEST['fid'] == 'confirm'){
+			$this -> assign('confirm',1);
+		}
 		$this -> _readed($id);
 		$user_id = get_user_id();
 		$model = M("Notice");
@@ -205,6 +222,10 @@ class NoticeAction extends CommonAction {
 		$signok = $User->where("notice_id=$id and user_id=$user_id and is_sign=1")->select();
 		$this->assign('is_sign',count($signok));
 
+		//今日头条或公司新闻
+		if($folder_id == '95'){
+			$model -> where("id = $id") -> setInc("views");
+		}
 		$this -> _edit(null,$id);
 	}
 
@@ -227,17 +248,11 @@ class NoticeAction extends CommonAction {
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
-
+		$this -> assign('user_id', get_user_id());
 		$this -> assign("folder_id", $folder_id);
 
 		$map['folder'] = $folder_id;
 		//已提交或自己的草稿
-		$where['is_submit'] = 1;
-		$self['is_submit'] = 0;
-		$self['user_id'] = get_user_id();
-		$where['_complex'] = $self;
-		$where['_logic'] = 'OR';
-		$map['_complex'] = $where;
 		$res = $model -> where($map) -> order('id desc') -> select();
 		if(!empty($model)){
 			$res = $this -> _list($model, $map);
@@ -246,7 +261,6 @@ class NoticeAction extends CommonAction {
 		$this -> assign("folder_name", D("SystemFolder") -> get_folder_name($folder_id));
 		$this -> assign('auth', $this -> config['auth']);
 		$this -> _assign_folder_list();
-
 		$this -> display();
 	}
 	// 通知与公告
@@ -322,6 +336,8 @@ class NoticeAction extends CommonAction {
 		$this -> assign("page", $page);
 		$this -> display('inform');
 	}
+	//今日头条和公司新闻显示页面
+	
 	public function upload() {
 		$this -> _upload();
 	}
