@@ -554,6 +554,8 @@ class ProfileAction extends CommonAction {
 		//第一列为用户
 		$q = $q -> setCellValue("A1", '签入时间');
 		$q = $q -> setCellValue("B1", '签出时间');
+		$q = $q -> setCellValue("C1", '部门：'.get_dept_name());
+		$q = $q -> setCellValue("D1", '姓名：'.get_user_name());
 		
 		$i = 2;
 		foreach ($signdata_new as $k=>$v){
@@ -561,7 +563,10 @@ class ProfileAction extends CommonAction {
 			$q = $q -> setCellValue("B".$i, $v['out']);
 			$i++;
 		}
-		
+		$q ->getColumnDimension('A')->setWidth(20);
+		$q ->getColumnDimension('B')->setWidth(20);
+		$q ->getColumnDimension('C')->setWidth(20);
+		$q ->getColumnDimension('D')->setWidth(20);
 		// Rename worksheet
 		$title = 'oa签入数据导出';
 		$objPHPExcel -> getActiveSheet() -> setTitle('oa签入数据导出');
