@@ -77,6 +77,7 @@
 			</div>
 		</div>
 	</volist>
+	<if condition = "$ckplan eq '1'">计划时间 :　{$vo.plan_time}<br /></if>
 	{$vo.content}
 	<volist name="file_list" id="file">
 	{$file.name}

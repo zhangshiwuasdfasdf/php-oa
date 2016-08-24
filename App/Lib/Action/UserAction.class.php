@@ -130,74 +130,29 @@ class UserAction extends CommonAction {
 	}
 	//添加新用户
 	public function  addUser(){
-		if(!empty($_FILES['resume']['name'])){
-			import("@.ORG.Util.UploadFile");
-			$upload = new UploadFile();
-			$upload -> subFolder = strtolower(MODULE_NAME);
-			$upload -> savePath = get_save_path();
-			$upload -> saveRule = "uniqid";
-			$upload -> autoSub = true;
-			$upload -> subType = "date";
-			$upload->allowExts  = array('xlsx','xls');// 设置附件上传类型
-			if(!$upload->upload()) {// 上传错误提示错误信息
-				$this->error($upload->getErrorMsg());
-			 }else{// 上传成功 获取上传文件信息
-				$info =  $upload->getUploadFileInfo();
-				$file_info = $info[0];
-				$file_path = $file_info['savepath'] . $file_info['savename'];
-				 // 创建数据对象
-				$model = D("User");
-				if (!$model -> create()) {
-					$this -> error($model -> getError());
-				} else {
-					// 写入帐号数据
-					$model ->letter=get_letter($model ->name);
-					$model -> pic = 'emp_pic/no_avatar.jpg';
-					$model ->password=md5('123456');
-					$model ->add_resume = $file_path;
-					if ($result = $model -> add()){
-						$data['id']=$result;
-						M("UserConfig")->add($data);
-						resume_upload($file_path,$result);//调用xlsx文件上传方法
-	
-						$model = D("Role");
-						$model -> del_role($result);
-						$role_list = $model->where(array('name'=>array('eq','基本权限')))->getField('id');
-						$result = $model -> set_role($result, $role_list);
-						
-						$this -> assign('jumpUrl', get_return_url());
-						$this -> success('用户添加成功！','index.php?m=user&a=index');
-					} else {
-						$this -> error('用户添加失败！');
-					}
-				}
-			 }
-		}else{
-			$model = D("User");
-			if (!$model -> create()) {
-				$this -> error($model -> getError());
-			} else {
-				// 写入帐号数据
-				$model ->letter=get_letter($model ->name);
-				$model ->password=md5('123456');
-				if ($result = $model -> add()){
-					$data['id']=$result;
-					M("UserConfig")->add($data);
+		$model = D("User");
+		if (!$model -> create()) {
+			$this -> error($model -> getError());
+		} else {
+			// 写入帐号数据
+			$model ->letter=get_letter($model ->name);
+			$model ->password=md5('123456');
+			
+			if ($result = $model -> add()){
+				$data['id']=$result;
+				M("UserConfig")->add($data);
 
-					$model = D("Role");
-					$model -> del_role($result);
-					$role_list = $model->where(array('name'=>array('eq','基本权限')))->getField('id');
-					$result = $model -> set_role($result, $role_list);
-					
-					$this -> assign('jumpUrl', get_return_url());
-					$this -> success('用户添加成功！','index.php?m=user&a=index');
-				} else {
-					$this -> error('用户添加失败！');
-				}
+				$model = D("Role");
+				$model -> del_role($result);
+				$role_list = $model->where(array('name'=>array('eq','基本权限')))->getField('id');
+				$result = $model -> set_role($result, $role_list);
+				
+				$this -> assign('jumpUrl', get_return_url());
+				$this -> success('用户添加成功！','index.php?m=user&a=index');
+			} else {
+				$this -> error('用户添加失败！');
 			}
 		}
-		 
-		
 	}
 	function upload() {
 		$this -> _upload(true);

@@ -1,0 +1,191 @@
+<layout name='Layout/ace_home' />
+<link href="__PUBLIC__/css/now_index.css" rel="stylesheet" type="text/css">
+<!--main-->
+<div class="main">
+	<div class="maleft">
+   	  <div class="gerenxinxi">
+       	<span class="grs1">个人信息</span>
+        <div class="grd1">
+            <div>
+                <img id="emp_pic" src="./Data/Files/{$info.pic}">
+            </div>
+        </div>
+        <input type="hidden" name="id" id="id" value="{$Think.session.user_id}">
+		<input type="hidden" name="pic" id="pic" >
+        <span class="grs2" onclick="select_avatar();">更换头像</span>
+        <span class="grs3">{$Think.session.user_name}</span>
+        <span class="grs4">{$info.dept}</span>
+        <input type="text" placeholder="说点什么吧" class="grin" id="bianqian" onchange="setbianqian({$Think.session.user_id},$('#bianqian').val())">
+        </div>
+        <div class="leftrw">
+        	<a class="rwa1"  onclick="set_cookie('top_menu', 198);" href="{:U('ftodo/index','fid=about_me')}">
+        		<img src="__PUBLIC__/img/img/daib2.png">
+                	<php>
+							$module_count=0;
+							$bc_class= 'bc-flow';
+							$count1=array_sum($new_count[$bc_class]);
+							$count2=array_sum($new_count['bc-task']);
+							$module_count = $count1 + $count2;
+							if($module_count>99){
+								$module_count="99+";
+							}
+							if($module_count==0){
+								$module_count=null;
+							}
+						</php>
+                	<notempty name="module_count">
+							<p>{$module_count}</p>
+					</notempty>
+            </a>
+            <a class="rwa2" onclick="set_cookie('top_menu', 198);" href="{:U('complaint/index','fid=inbox')}">
+            	<img src="__PUBLIC__/img/img/yijian.png">
+                	<php>
+							$module_count=0;
+							$bc_class= 'bc-complaint';
+							$module_count=array_sum($new_count[$bc_class]);
+							if($module_count>99){
+								$module_count="99+";
+							}
+							if($module_count==0){
+								$module_count=null;
+							}
+						</php>
+                	<notempty name="module_count">
+							<p>{$module_count}</p>
+					</notempty>
+            </a>
+            <a class="rwa3" onclick="set_cookie('top_menu', 217);" href="{:U('message/index','fid=about_me')}">
+            	<img src="__PUBLIC__/img/img/zhannx.png">
+                	<php>
+							$module_count=0;
+							$bc_class= 'bc-message';
+							$module_count=array_sum($new_count[$bc_class]);
+							if($module_count>99){
+								$module_count="99+";
+							}
+							if($module_count==0){
+								$module_count=null;
+							}
+						</php>
+                	<notempty name="module_count">
+							<p>{$module_count}</p>
+					</notempty>
+            </a>
+        </div>
+        <div class="meirishuo">
+        	<div class="mrsd1">
+            	<img src="__PUBLIC__/img/img/meirishuoshuo.png">
+                <span>每日说说</span>
+            </div>
+            <div class="mrsd2">
+            	<div class="shuoshuo">
+            		<marquee direction="up" behavior="scroll" scrollamount="1" scrolldelay="0" loop="-1" height="120">
+	            		<volist name="bianq" id="vo">
+	            			<if condition="$vo.len lt 36">
+	            				<span class="bq1">{$vo.name}&nbsp;说:{$vo.bianqian}</span>
+	            			<else/>
+	            				<span class="bq2">{$vo.name}&nbsp;说:{$vo.bianqian}</span>
+	            			</if>
+	            		</volist>
+            		</marquee>
+            	</div>
+                <a onclick="set_cookie('top_menu', 83);" href="{:U('shuo/index','fid=75')}">更多&gt;&gt;</a>
+            </div>
+        </div>
+        <div class="tianqi">
+        	<div class="tqd1">
+            	<span class="tqd1s1">天气</span>
+                <span class="tqd1s2"></span>
+            </div>
+			<div class="tqd2">
+            	<IFRAME id="tianqi8_wetherinfo" name="tianqi8_wetherinfo" src="http://tq.ss256.com/code/freeweather7.htm?id=101210101&fcolor=&imgurl=tb/tbb/tb1&bimg=&bcolor=&fsize=" frameBorder=0 width=140 height=60 ALIGN=CENTER MARGINWIDTH=0 MARGINHEIGHT=0 HSPACE=0 VSPACE=0 SCROLLING=NO allowtransparency=true></IFRAME>
+            </div>            
+        </div>
+    </div>
+    <div class="macenter">
+    	<div class="ysk">
+            <a class="cena1" onclick="set_cookie('top_menu', 216);" href="{:U('task/folder','fid=about_me')}">
+                <img src="__PUBLIC__/img/img/task.png">
+            </a>
+            <a class="cena2" onclick="set_cookie('top_menu', 87);" href="{:U('flow/folder','fid=submit')}">
+                <img src="__PUBLIC__/img/img/flow.png">
+            </a>
+            <a class="cena3" onclick="set_cookie('top_menu', 216);" href="{:U('daily_report/index','fid=me')}">
+                <img src="__PUBLIC__/img/img/week.png">
+            </a>
+            <a class="cena4" onclick="set_cookie('top_menu', 198);" href="{:U('schedule/index')}">
+                <img src="__PUBLIC__/img/img/work.png">
+            </a>
+            <a class="cena5" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=71')}">
+                <img src="__PUBLIC__/img/img/zhidu.png">
+            </a>
+        </div>
+        <div class="qygg">
+        	<div><span>企业公告</span></div>
+            <ul class="ggul">
+            	<volist id="vo" name="new_notice_list">
+            		<if condition="$vo.folder eq 72">
+		            	<li>
+		                	<a class="gglis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
+		                    <span class="gglis2">{$vo.create_time|date='Y-m-d',###}</span>
+		                </li>
+		             </if>
+                </volist>
+            </ul>
+            <a class="ggs1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=72')}">更多&gt;&gt;</a>
+        </div>
+        <div class="qygk">
+        	<div><span>企业概况</span></div>
+            <ul class="gkul">
+            <volist id="vo" name="new_notice_list1" mod="2">
+	             <eq name="mod" value="1">
+		            	<li class="gkl2">
+		                	<a class="gklis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
+		                    <span class="gklis2">{$vo.create_time|date='Y-m-d',###}</span>
+		                </li>
+		           </eq>
+		           <eq name="mod" value="0">
+		            	<li class="gkl1">
+		                	<a class="gklis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
+		                    <span class="gklis2">{$vo.create_time|date='Y-m-d',###}</span>
+		                </li>
+		           </eq>
+	          </volist>
+            </ul>
+            <a class="gks1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=68')}">更多&gt;&gt;</a>
+        </div>
+    </div>
+    <div class="maright">
+    	<div class="gzbb">
+        	<div><span>工作报表</span></div>
+            <ul class="gzul">
+            	<volist id="vo" name="dailyList">
+		            	<li><a class="gzlis1" onclick="set_cookie('top_menu', 216);" href="{:U('daily_report/read','id='.$vo['id'])}">【日报】{$vo.user_name}</a></li>
+            	</volist>
+            	<volist id="vo" name="weeklyList">
+		            	<li><a class="gzlis1" onclick="set_cookie('top_menu', 216);" href="{:U('weekly_report/read','id='.$vo['id'])}">【周报】{$vo.user_name}</a></li>
+            	</volist>
+            	<volist id="vo" name="monthlyList">
+		            	<li><a class="gzlis1" onclick="set_cookie('top_menu', 216);" href="{:U('monthly_report/read','id='.$vo['id'])}">【月报】{$vo.user_name}</a></li>
+            	</volist>
+            </ul>
+            <a class="gzs1" onclick="set_cookie('top_menu', 216);" href="{:U('daily_report/index')}">更多&gt;&gt;</a>
+        </div>
+        <div class="yqmh">
+        	<div class="yqd1"><span>园区门户</span></div>
+            <div class="yqd2">
+            	<a class="hzyq"  href="{:U('hangzhou','fid=79')}"><img src="__PUBLIC__/img/img/hangzhou.png"></a>
+                <a class="jxyq"  href="{:U('jiaxing','fid=80')}"><img src="__PUBLIC__/img/img/jiaxing.png"></a>
+                <a class="jhyq"  href="{:U('jinhua','fid=81')}"><img src="__PUBLIC__/img/img/jinhua.png"></a>
+                <a class="nbyq"  href="{:U('ningbo','fid=82')}"><img src="__PUBLIC__/img/img/ningbo.png"></a>
+            </div>
+        </div>
+        <div class="rl">
+        	<div class="rld1"><span>日历</span></div>
+            <div class="rld2">
+            	<iframe class="rlif" src="__PUBLIC__/img/rl/index.html" frameBorder=0 width="294" height="222" ALIGN=CENTER MARGINWIDTH=0 MARGINHEIGHT=0 HSPACE=0 VSPACE=0 SCROLLING=NO allowtransparency=true></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/index.js"></script>

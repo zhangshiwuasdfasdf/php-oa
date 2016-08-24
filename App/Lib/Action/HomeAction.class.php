@@ -21,7 +21,7 @@ class HomeAction extends CommonAction {
 		}
 	}
 
-	public function index() {
+	public function index_old() {
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
 
@@ -49,7 +49,7 @@ class HomeAction extends CommonAction {
 		$this -> shuoshuo();
 		$this -> display();
 	}
-	public function index_new() {
+	public function index() {
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
 	
@@ -64,7 +64,7 @@ class HomeAction extends CommonAction {
 		$this -> _mail_list();
 		// 		$this -> _flow_list();
 		// 		$this -> _schedule_list();
-		$this -> _notice_list();
+		$this -> _notice_list_new();
 		// 		$this -> _doc_list();
 		// 		$this -> _forum_list();
 		// 		$this -> _news_list();
@@ -78,34 +78,7 @@ class HomeAction extends CommonAction {
 		
 		$this -> display();
 	}
-	public function shouy(){
-		$widget['jquery-ui'] = true;
-		$this -> assign("widget", $widget);
 	
-		cookie("current_node", null);
-		cookie("top_menu", null);
-	
-		$config = D("UserConfig") -> get_config();
-		$this -> assign("home_sort", $config['home_sort']);
-		$this -> assign("ceo_incentive", get_system_config("CEO_INCENTIVE"));
-	
-		$this -> get_user_info();
-		$this -> _mail_list();
-		// 		$this -> _flow_list();
-		// 		$this -> _schedule_list();
-		$this -> _notice_list();
-		// 		$this -> _doc_list();
-		// 		$this -> _forum_list();
-		// 		$this -> _news_list();
-		// 		$this -> _slide_list();
-		$this -> _task_list();
-		$this -> _shouxing_list();
-		$this -> _jinianri_list();
-		$this -> _xinjin_list();
-		$this -> _daily_list();
-		$this -> shuoshuo();
-		$this -> display();
-	}
 	public function shuoshuo(){
 		$map['bianqian'] = array('neq','');
 		$user = M('User')->where($map)->getField('id,name,bianqian');
@@ -278,8 +251,8 @@ class HomeAction extends CommonAction {
 		$where['folder'] = array("in", $folder_list);
 		$where1['is_del'] = array('eq', '0');
 		$where1['folder'] = '68';
-		$new_notice_list = $model -> where($where) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
-		$new_notice_list1 = $model -> where($where1) -> field("id,name,content,folder,create_time,add_file") -> order("create_time desc") -> select();
+		$new_notice_list = $model -> where($where) -> field("id,name,content,folder,create_time,add_file,user_name") -> order("create_time desc") -> select();
+		$new_notice_list1 = $model -> where($where1) -> field("id,name,content,folder,create_time,add_file,user_name") -> order("create_time desc") -> select();
 		$mobile_new_notice_list = array();
 		$j = 0;
 		foreach ($new_notice_list as $k=>$v){
@@ -308,7 +281,70 @@ class HomeAction extends CommonAction {
 			$this -> assign("new_notice_list1", $new_notice_list1);
 		}
 	}
+	
+	protected function _notice_list_new() {
+		$model = D("Notice");
 
+		//已提交或自己的草稿
+		$map['is_del'] = 0;
+		$where['is_submit'] = 1;
+		$self['is_submit'] = 0;
+		$self['user_id'] = get_user_id();
+		$where['_complex'] = $self;
+		$where['_logic'] = 'OR';
+		$map['_complex'] = $where;
+		$res = $model -> where($map) -> field("id,name,content,folder,create_time,add_file,user_name,plan,read,views") -> order("create_time desc") -> select();
+		$pos_id = M('User')->field('pos_id')->find(get_user_id());
+		$Parentid = $pos_id['pos_id'];
+		$parent_list = array();
+		while($Parentid){//获取上级数组
+			$parent_list[] = $Parentid;
+			$Parentid = getParentDept(null,$Parentid);
+		}
+		foreach ($res as $k=>$v){
+			$tmp = explode(';',$v['read']);
+			$res[$k]['can'] = false;
+			foreach ($tmp as $kk => $vv){
+				if(in_array($vv,$parent_list)){
+					$res[$k]['can'] = true;
+					break;
+				}
+			}	
+		}
+		$tmp_news = array();
+		foreach ($res as $k => $v){
+			if(!$v['can']){
+				unset($res[$k]);
+			}
+			if($v['folder'] == 95){$tmp_news[] = $v;}
+		}
+		
+		//得到今日头条有多少个
+		$ni = 0;
+		$news_notice = array();
+		foreach ($tmp_news as $k => $v){
+			if($tmp_news[0]['plan'] == '1' && $tmp_news[1]['plan'] == '1'){//前两个都是今日头条
+				$news_notice[] = $v;
+				break;
+			}elseif($v['plan'] == '1'){
+				$news_notice[] = $v;
+				$ni = $ni + 4;
+			}else {
+				$news_notice[] = $v;
+				$ni++;
+			}
+			if($ni >= 8){break;}
+		}
+		header("Content-Type:text/html;charset=utf-8");
+		/*echo '<pre>';
+		print_r($tmp_news);
+		echo '</pre>';die;*/
+		$this -> assign('news_notice',$news_notice);
+	}
+	
+	protected function _work_plan(){
+		
+	}
 	protected function _forum_list() {
 		$model = D('Forum');
 		$where['is_del'] = array('eq', '0');

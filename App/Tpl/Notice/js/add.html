@@ -17,6 +17,9 @@
 		if("{$ckdept}" == ""){
 			$("#read").val("27;");
 		}
+		if("{$ckplan}" == "1"){
+			$("#plan_time").val($("input[name='be_create']").val() + "～" + $("input[name='en_create']").val())
+		}
 		if("{$ckplan}" == "1" && $("input[name='plan']:checked").val() == ''){
 			ui_error("请选择计划类型");
 			return false;

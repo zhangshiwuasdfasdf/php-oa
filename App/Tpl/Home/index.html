@@ -1,191 +1,427 @@
-<layout name='Layout/ace_home' />
-<link href="__PUBLIC__/css/now_index.css" rel="stylesheet" type="text/css">
-<!--main-->
-<div class="main">
-	<div class="maleft">
-   	  <div class="gerenxinxi">
-       	<span class="grs1">个人信息</span>
-        <div class="grd1">
-            <div>
-                <img id="emp_pic" src="./Data/Files/{$info.pic}">
+<layout name='Layout/ace_home_new' />
+<!-- right-->
+<div class="right_l1" id="right_title1"  ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)"> 
+    <div class="right_l1_s"> 
+        <div class="right_l1_gr">个人信息</div>
+        <div class="right_l1_tx">
+            <div class="right_l1_tx_li">
+                <img id="emp_pic" src="./Data/Files/{$info.pic}" />
             </div>
         </div>
         <input type="hidden" name="id" id="id" value="{$Think.session.user_id}">
-		<input type="hidden" name="pic" id="pic" >
-        <span class="grs2" onclick="select_avatar();">更换头像</span>
-        <span class="grs3">{$Think.session.user_name}</span>
-        <span class="grs4">{$info.dept}</span>
-        <input type="text" placeholder="说点什么吧" class="grin" id="bianqian" onchange="setbianqian({$Think.session.user_id},$('#bianqian').val())">
+        <a class="left_tx_xg" onclick="select_avatar();">更换头像</a> 
+        <div class="right_ge">
+            <span class="sc">{$info.dept}</span>
+            <span>></span>
+            <span>{$info.duty}</span>
+            <span>></span>
+            <a class="ge_name">{$info.name}</a>
+            <img class="grxx_xial" src="__PUBLIC__/img/new_home//grxx_xial.png"/>
         </div>
-        <div class="leftrw">
-        	<a class="rwa1"  onclick="set_cookie('top_menu', 198);" href="{:U('ftodo/index','fid=about_me')}">
-        		<img src="__PUBLIC__/img/img/daib2.png">
-                	<php>
-							$module_count=0;
-							$bc_class= 'bc-flow';
-							$count1=array_sum($new_count[$bc_class]);
-							$count2=array_sum($new_count['bc-task']);
-							$module_count = $count1 + $count2;
-							if($module_count>99){
-								$module_count="99+";
-							}
-							if($module_count==0){
-								$module_count=null;
-							}
-						</php>
-                	<notempty name="module_count">
-							<p>{$module_count}</p>
-					</notempty>
-            </a>
-            <a class="rwa2" onclick="set_cookie('top_menu', 198);" href="{:U('complaint/index','fid=inbox')}">
-            	<img src="__PUBLIC__/img/img/yijian.png">
-                	<php>
-							$module_count=0;
-							$bc_class= 'bc-complaint';
-							$module_count=array_sum($new_count[$bc_class]);
-							if($module_count>99){
-								$module_count="99+";
-							}
-							if($module_count==0){
-								$module_count=null;
-							}
-						</php>
-                	<notempty name="module_count">
-							<p>{$module_count}</p>
-					</notempty>
-            </a>
-            <a class="rwa3" onclick="set_cookie('top_menu', 217);" href="{:U('message/index','fid=about_me')}">
-            	<img src="__PUBLIC__/img/img/zhannx.png">
-                	<php>
-							$module_count=0;
-							$bc_class= 'bc-message';
-							$module_count=array_sum($new_count[$bc_class]);
-							if($module_count>99){
-								$module_count="99+";
-							}
-							if($module_count==0){
-								$module_count=null;
-							}
-						</php>
-                	<notempty name="module_count">
-							<p>{$module_count}</p>
-					</notempty>
-            </a>
-        </div>
-        <div class="meirishuo">
-        	<div class="mrsd1">
-            	<img src="__PUBLIC__/img/img/meirishuoshuo.png">
-                <span>每日说说</span>
+        <div class="right_ge_x">
+            <div class="right_ge1">
+                <span class="sc1">市场部</span>
+                <span>></span>
+                <span>设计师1</span>
+                <span>></span>
+                <span class="ge_name">你</span>
+                <img class="grxx_xial1" src="__PUBLIC__/img/new_home//grxx_xial.png"/>
             </div>
-            <div class="mrsd2">
-            	<div class="shuoshuo">
-            		<marquee direction="up" behavior="scroll" scrollamount="1" scrolldelay="0" loop="-1" height="120">
-	            		<volist name="bianq" id="vo">
-	            			<if condition="$vo.len lt 36">
-	            				<span class="bq1">{$vo.name}&nbsp;说:{$vo.bianqian}</span>
-	            			<else/>
-	            				<span class="bq2">{$vo.name}&nbsp;说:{$vo.bianqian}</span>
-	            			</if>
-	            		</volist>
-            		</marquee>
-            	</div>
-                <a onclick="set_cookie('top_menu', 83);" href="{:U('shuo/index','fid=75')}">更多&gt;&gt;</a>
+            <div class="right_ge1">
+                <span class="sc1">市场部</span>
+                <span>></span>
+                <span>设计师2</span>
+                <span>></span>
+                <span class="ge_name">我</span>
+                <img class="grxx_xial1" src="__PUBLIC__/img/new_home//grxx_xial.png"/>
             </div>
-        </div>
-        <div class="tianqi">
-        	<div class="tqd1">
-            	<span class="tqd1s1">天气</span>
-                <span class="tqd1s2"></span>
+            <div class="right_ge1">
+                <span class="sc1">市场部</span>
+                <span>></span>
+                <span>设计师3</span>
+                <span>></span>
+                <span class="ge_name">他</span>
+                <img class="grxx_xial1" src="__PUBLIC__/img/new_home//grxx_xial.png"/>
             </div>
-			<div class="tqd2">
-            	<IFRAME id="tianqi8_wetherinfo" name="tianqi8_wetherinfo" src="http://tq.ss256.com/code/freeweather7.htm?id=101210101&fcolor=&imgurl=tb/tbb/tb1&bimg=&bcolor=&fsize=" frameBorder=0 width=140 height=60 ALIGN=CENTER MARGINWIDTH=0 MARGINHEIGHT=0 HSPACE=0 VSPACE=0 SCROLLING=NO allowtransparency=true></IFRAME>
-            </div>            
+
         </div>
     </div>
-    <div class="macenter">
-    	<div class="ysk">
-            <a class="cena1" onclick="set_cookie('top_menu', 216);" href="{:U('task/folder','fid=about_me')}">
-                <img src="__PUBLIC__/img/img/task.png">
-            </a>
-            <a class="cena2" onclick="set_cookie('top_menu', 87);" href="{:U('flow/folder','fid=submit')}">
-                <img src="__PUBLIC__/img/img/flow.png">
-            </a>
-            <a class="cena3" onclick="set_cookie('top_menu', 216);" href="{:U('daily_report/index','fid=me')}">
-                <img src="__PUBLIC__/img/img/week.png">
-            </a>
-            <a class="cena4" onclick="set_cookie('top_menu', 198);" href="{:U('schedule/index')}">
-                <img src="__PUBLIC__/img/img/work.png">
-            </a>
-            <a class="cena5" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=71')}">
-                <img src="__PUBLIC__/img/img/zhidu.png">
-            </a>
-        </div>
-        <div class="qygg">
-        	<div><span>企业公告</span></div>
-            <ul class="ggul">
-            	<volist id="vo" name="new_notice_list">
-            		<if condition="$vo.folder eq 72">
-		            	<li>
-		                	<a class="gglis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
-		                    <span class="gglis2">{$vo.create_time|date='Y-m-d',###}</span>
-		                </li>
-		             </if>
-                </volist>
-            </ul>
-            <a class="ggs1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=72')}">更多&gt;&gt;</a>
-        </div>
-        <div class="qygk">
-        	<div><span>企业概况</span></div>
-            <ul class="gkul">
-            <volist id="vo" name="new_notice_list1" mod="2">
-	             <eq name="mod" value="1">
-		            	<li class="gkl2">
-		                	<a class="gklis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
-		                    <span class="gklis2">{$vo.create_time|date='Y-m-d',###}</span>
-		                </li>
-		           </eq>
-		           <eq name="mod" value="0">
-		            	<li class="gkl1">
-		                	<a class="gklis1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
-		                    <span class="gklis2">{$vo.create_time|date='Y-m-d',###}</span>
-		                </li>
-		           </eq>
-	          </volist>
-            </ul>
-            <a class="gks1" onclick="set_cookie('top_menu', 83);" href="{:U('notice/folder','fid=68')}">更多&gt;&gt;</a>
-        </div>
+    
+    <div class="left_db">
+        <a onclick="set_cookie('top_menu', 198);" href="{:U('schedule/index')}"><img src="__PUBLIC__/img/new_home//rcap.png"/></a>
+        <a onclick="set_cookie('top_menu', 198);" href="{:U('complaint/index','fid=inbox')}"><img src="__PUBLIC__/img/new_home//yjx.png"/></a>
+        <a onclick="set_cookie('top_menu', 217);" href="{:U('message/index','fid=about_me')}"><img src="__PUBLIC__/img/new_home//znx.png"/></a>
     </div>
-    <div class="maright">
-    	<div class="gzbb">
-        	<div><span>工作报表</span></div>
-            <ul class="gzul">
-            	<volist id="vo" name="dailyList">
-		            	<li><a class="gzlis1" onclick="set_cookie('top_menu', 216);" href="{:U('daily_report/read','id='.$vo['id'])}">【日报】{$vo.user_name}</a></li>
-            	</volist>
-            	<volist id="vo" name="weeklyList">
-		            	<li><a class="gzlis1" onclick="set_cookie('top_menu', 216);" href="{:U('weekly_report/read','id='.$vo['id'])}">【周报】{$vo.user_name}</a></li>
-            	</volist>
-            	<volist id="vo" name="monthlyList">
-		            	<li><a class="gzlis1" onclick="set_cookie('top_menu', 216);" href="{:U('monthly_report/read','id='.$vo['id'])}">【月报】{$vo.user_name}</a></li>
-            	</volist>
+</div> 
+
+<div class="right_z1" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+    <div class="right_z1_top" id="right_title4">
+        <span class="right_z1_span1"></span>
+        <span class="right_z1_span2">公司新闻/今日头条</span>
+    </div>
+    <volist id="vo" name="news_notice">
+        	<if condition="$vo.plan eq '1'"> 
+	       		 <div class="right_z1_content">
+			        <div class="right_z1_title1">
+			            <a class="right_z1_title1_a" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
+			            <span class="right_z1_title1_rq">{$vo.create_time|date='Y-m-d',###}</span>
+			            <span class="gstt"><img src="__PUBLIC__/img/new_home//gstt.png"/></span>
+			        </div>
+			        <div class="right_z1_title2">
+			        	{$vo.add_file|news_home_view}
+			        </div>
+			        <div class="right_z1_title3">
+			            <span>发布人：</span>
+			            <span>{$vo.user_name}</span>
+			            <span>---</span>
+			            <span>{$vo.create_time|news_home_time}</span>
+			        </div>
+			    </div>
+			    <else />
+			    <p class="right_z1_content1"><a href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}<if condition="$vo.views egt 100">　{$vo.create_time|date='Y-m-d',###}</if></a>
+			    	<if condition="$vo.views egt 100"><span><img src="__PUBLIC__/img/new_home//hot.png"/></span></if>
+			    </p>
+		    </if>
+    </volist>
+    <div class="more2">more></div>
+</div>
+
+
+<div class="right_r1" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+    <div class="right_z1_top" id="right_title7">
+        <span class="right_z1_span1"></span>
+        <span class="right_z1_span2">工作计划与目标</span>
+    </div>
+    <ul class="right_r1_biao">
+        <li class="right_biao_li1">
+            <span class="bt">标题</span>
+            <span class="sj">计划时间</span>
+            <span class="zt">计划状态</span>
+            <span class="lx">计划类型</span>
+        </li>
+        <li class="right_r1_li2" >
+            <a class="bt2">2016年8月工作计划</a>
+            <a class="sj2" title="2016-08-16至2016-08-20">2016-08-16至2016-08-20</a>
+            <span class="zt2">进行中</span>
+            <span class="lx2">月计划</span>
+        </li>
+        <li class="right_r1_li2" >
+            <a class="bt2">2016年8月工作计划</a>
+            <a class="sj2" title="2016-08-16至2016-08-20">2016-08-16至2016-08-20</a>
+            <span class="zt2">进行中</span>
+            <span class="lx2">月计划</span>
+        </li>
+        <li class="right_r1_li2" >
+            <a class="bt2">2016年8月工作计划</a>
+            <a class="sj2" title="2016-08-16至2016-08-20">2016-08-16至2016-08-20</a>
+            <span class="zt2">进行中</span>
+            <span class="lx2">月计划</span>
+        </li>
+        <li class="right_r1_li2" >
+            <a class="bt2">2016年8月工作计划</a>
+            <a class="sj2" title="2016-08-16至2016-08-20">2016-08-16至2016-08-20</a>
+            <span class="zt2">进行中</span>
+            <span class="lx2">月计划</span>
+        </li>
+        <li class="right_r1_li2" >
+            <a class="bt2">2016年8月工作计划</a>
+            <a class="sj2" title="2016-08-16至2016-08-20">2016-08-16至2016-08-20</a>
+            <span class="zt2">进行中</span>
+            <span class="lx2">月计划</span>
+        </li>
+        <li class="right_r1_li2" >
+            <a class="bt2">2016年8月工作计划</a>
+            <a class="sj2" title="2016-08-16至2016-08-20">2016-08-16至2016-08-20</a>
+            <span class="zt2">进行中</span>
+            <span class="lx2">月计划</span>
+        </li>
+    </ul>
+    <div class="more2">more></div>
+</div>
+
+<div class="right_l2"  ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+    <div class="right_l2_top" id="right_title2">
+        <span class="right_l2_span1"></span>
+        <span class="right_l2_span2">待办事项（32项）</span>
+    </div>
+    <div class="right_l2_content">
+        <div class="right_l2_div">
+            <ul class="right_l2_ul">
+                <li><a>男举105公斤级：杨哲第四</a></li>
+                <li><a>男举105公斤级：杨哲第四</a></li>
+                <li><a>男举105公斤级：杨哲第四</a></li>
+                <li><a>男举105公斤级：杨哲第四</a></li>
+                <li><a>男举105公斤级：杨哲第四</a></li>
+                <li><a>男举105公斤级：杨哲第四</a></li>
             </ul>
-            <a class="gzs1" onclick="set_cookie('top_menu', 216);" href="{:U('daily_report/index')}">更多&gt;&gt;</a>
         </div>
-        <div class="yqmh">
-        	<div class="yqd1"><span>园区门户</span></div>
-            <div class="yqd2">
-            	<a class="hzyq"  href="{:U('hangzhou','fid=79')}"><img src="__PUBLIC__/img/img/hangzhou.png"></a>
-                <a class="jxyq"  href="{:U('jiaxing','fid=80')}"><img src="__PUBLIC__/img/img/jiaxing.png"></a>
-                <a class="jhyq"  href="{:U('jinhua','fid=81')}"><img src="__PUBLIC__/img/img/jinhua.png"></a>
-                <a class="nbyq"  href="{:U('ningbo','fid=82')}"><img src="__PUBLIC__/img/img/ningbo.png"></a>
-            </div>
-        </div>
-        <div class="rl">
-        	<div class="rld1"><span>日历</span></div>
-            <div class="rld2">
-            	<iframe class="rlif" src="__PUBLIC__/img/rl/index.html" frameBorder=0 width="294" height="222" ALIGN=CENTER MARGINWIDTH=0 MARGINHEIGHT=0 HSPACE=0 VSPACE=0 SCROLLING=NO allowtransparency=true></iframe>
-            </div>
-        </div>
+        <div class="more1">more></div>
     </div>
 </div>
-<script type="text/javascript" src="__PUBLIC__/js/index.js"></script>
+
+<div class="right_z2" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+    <div class="right_z1_top" id="right_title5">
+        <span class="right_z1_span1"></span>
+        <span class="right_z1_span2">企业公告</span>
+    </div>
+    <div class="right_z2_title">
+        <span class="qb">全部</span>
+        <span>|</span>
+        <span class="wd">未读</span>
+        <span>|</span>
+        <span class="zd">制度</span>
+        <span>|</span>
+        <span class="tz">通知</span>
+    </div>
+    
+    <div class="right_z2_content">
+        <ul id="z2_ul1" >
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-11)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+        </ul>
+        <ul id="z2_ul2" >
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-12)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+        </ul>
+        <ul id="z2_ul3" >
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-12)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-13)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+        </ul>
+        <ul id="z2_ul4" >
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-14)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+            <li>
+                <span class="right_z2_span1">》</span>
+                <a>【2016】人发12号公布“招商个人奖”评比结果通知</a>
+                <span class="right_z2_span2">(2016-08-16)</span>
+            </li>
+        </ul>
+    </div> 
+    <div class="more2">more></div>
+</div>
+
+<div class="right_r2_bg" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+<div class="right_r2" >
+    <div class="right_r2_div1">
+        <div class="r2_div1" >
+            <img class="i1" id="right_title8" src="__PUBLIC__/img/new_home//jrrw1.png"/>
+            <img class="i2" id="i2_1" src="__PUBLIC__/img/new_home//rwj1.png"/>
+        </div>
+        <img class="r2_img1" src="__PUBLIC__/img/new_home//bq_l.png"/>
+        <div class="r2_ul_div">
+            <ul class="r2_ul" id="r2_ul_1">
+                <li><a title="张继科避免王皓式悲剧避免王皓式悲剧避免王皓式悲剧">张继科避免王皓式悲剧避免王皓式悲剧避免王皓式悲剧</a></li>
+                <li><a title="">张继科避免王皓式悲剧</a></li>
+                <li><a title="">张继科避免王皓式悲剧</a></li>
+            </ul>
+        </div>
+        <img class="r2_img2" src="__PUBLIC__/img/new_home//bq_r.png"/>
+    </div>
+   
+    <img class="bg_x" src="__PUBLIC__/img/new_home//bq_x.png"/>
+    <div class="right_r2_div2">
+        <div class="r2_div1">
+            <img class="i1" src="__PUBLIC__/img/new_home//wwcrw1.png"/>
+            <img class="i2" id="i2_2" src="__PUBLIC__/img/new_home//rwj2.png"/>
+        </div>
+        <img class="r2_img3" src="__PUBLIC__/img/new_home//bq_l.png"/>
+        <div class="r2_ul_div">
+            <ul class="r2_ul" id="r2_ul_2">
+                <li><a title="张继科避免王皓式悲剧避免王皓式悲剧避免王皓式悲剧">张继科避免王皓式悲剧避免王皓式悲剧避免王皓式悲剧</a></li>
+                <li><a title="">张继科避免王皓式悲剧</a></li>
+                <li><a title="">张继科避免王皓式悲剧</a></li>   
+            </ul>
+        </div>
+        <img class="r2_img4" src="__PUBLIC__/img/new_home//bq_r.png"/>
+    </div>
+    <div class="xhx"></div>
+</div>
+</div>
+
+<div class="right_l3" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+    <div class="right_l3_top" id="right_title3">
+        <span class="right_l3_span1"></span>
+        <span class="right_l3_span2">公司BBS</span>
+    </div>
+    <div class="right_l3_title">
+        <div class="right_l3_div"><img src="__PUBLIC__/img/new_home//bbs.png"/></div>
+        <ul class="right_l3_ul">
+            <li class="l3_1">神洲酷奇官方贴吧期待您们加入！</li>
+            <li class="l3_2">关注账户：57人</li>
+            <li class="l3_2">累计发帖：20万</li>
+            <li class="l3_3">
+                <a>个人专栏</a>
+                <a>热门讨论</a>
+                <a>心情随笔</a>
+                <a>每日话题</a>
+            </li>
+        </ul>
+    </div>
+    <div class="right_l3_content">
+        <ul>
+            <li><a>男举105公斤级：杨哲第四</a></li>
+            <li><a>男举105公斤级：杨哲第四</a></li>
+            <li><a>男举105公斤级：杨哲第四</a></li>
+            <li><a>男举105公斤级：杨哲第四</a></li>
+            <li><a>男举105公斤级：杨哲第四</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="right_z3"  ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+    <div class="right_z1_top" id="right_title6">
+        <span class="right_z1_span1"></span>
+        <span class="right_z1_span2">企业概况</span>
+    </div>
+    <div class="right_z3_title">
+        <div class="right_z3_div"><img src="__PUBLIC__/img/new_home//qygk.png"/></div>
+        <div class="right_z3_div2">
+            <a>热烈欢迎王冠加入EBU项目中心2015-09-07</a>
+        </div>
+    </div>
+    <div class="right_z3_title">
+        <div class="right_z3_div"><img src="__PUBLIC__/img/new_home//qygk.png"/></div>
+        <div class="right_z3_div2">
+            <a>热烈欢迎王冠加入EBU项目中心2015-09-07</a>
+        </div>
+    </div>
+    <div class="more2">more></div>
+</div>
+
+<div class="right_r3" ondrop="drop(event,this)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event, this)">
+    <div class="right_z1_top" id="right_title9">
+        <span class="right_z1_span1"></span>
+        <span class="right_z1_span2">员工活动</span>
+    </div>
+    <div class="right_r3_title">
+        <div class="right_r3_div"><img src="__PUBLIC__/img/new_home//hd.png"/></div>
+        <div class="right_r3_div2">
+            <a>[热烈欢迎]王冠加入EBU项目中心代表团</a>
+            <p>[中国和美国]的区别?具体表现在哪？外行人看来很蠢的设计实际上却是</p>
+        </div>
+    </div>
+    <div class="right_r3_title">
+        <div class="right_r3_div"><img src="__PUBLIC__/img/new_home//hd.png"/></div>
+        <div class="right_r3_div2">
+            <a>[热烈欢迎]王冠加入EBU项目中心代表团</a>
+            <p>[中国和美国]的区别?具体表现在哪？外行人看来很蠢的设计实际上却是</p>
+        </div>
+    </div>
+    <div class="more2">more></div>
+</div>    
+
+<script type="text/javascript" src="__PUBLIC__/js/new_home/index.js"></script>
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+function select_avatar() {
+	winopen("{:U('popup/avatar')}?id=" + $("#id").val(), 730, 500);
+}
+</script>
