@@ -1,0 +1,16 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'每月考勤表导入','search'=>'N'))}
+<form class="well form-horizontal" method='post' id="form_data" name="form_data" enctype="multipart/form-data">
+	<input type="hidden" id="ajax" name="ajax" value="0">
+	<input type="hidden" id="opmode" name="opmode" value="add"/>
+	<div class="form-group">
+		1.下载Excel格式模板<br/>
+		2.按照Excel格式填写，不要调整模板结构<br/>
+		3.选择要导入的文件<br/>
+		<input type="file" name="uploadfile" check="require" msg="请选择要上传的文件"/>
+	</div>
+</form>
+<div class="action">
+	<input class="btn btn-sm btn-primary" type="button" value="导入" onclick="save();">
+	<input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
+</div>

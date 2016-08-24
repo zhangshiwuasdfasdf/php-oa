@@ -524,6 +524,17 @@ class ProfileAction extends CommonAction {
 			}
 			
 		}
+		//考勤动态
+		//打卡
+		$attendance = M('Attendance')->where(array('user_id'=>$id,'is_del'=>0,'mark'=>array('in',array('in','out'))))->select();
+		$this->_list(M('Attendance'), array('user_id'=>$id,'is_del'=>0,'mark'=>array('in',array('in','out'))),'',false,'attendance');
+// 		$this->assign('attendance',$attendance);
+		
+		//考勤统计
+		$attendance_table = M('AttendanceTable')->where(array('user_id'=>$id,'is_del'=>0))->select();
+		$this->_list(M('AttendanceTable'), array('user_id'=>$id,'is_del'=>0),'',false,'attendance_table');
+// 		$this->assign('attendance_table',$attendance_table);
+		
 		//签入数据
 		$signdata = M('SignInOut')->where(array('user_id'=>$id))->order('time asc')->select();
 		foreach ($signdata as $k=>$v){

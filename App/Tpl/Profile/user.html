@@ -884,8 +884,82 @@
         <li>
             <div class="nav_1">
                 <span class="block"></span>
-                <h1>考勤动态</h1>
+                <h1>每月打卡信息</h1>
             </div>
+            <table width="401" border="0" cellspacing="1" cellpadding="0" class="ta2" >
+                <tr>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">考勤号码</span></td>
+                    <td width="400" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">考勤日期时间</span></td>
+              </tr>
+              <foreach name="attendance" item="vo">
+              	<tr>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.num}</span></td>
+                    <td width="400" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.attendance_time|date="Y/m/d H:i:s",###}</span></td>
+              	</tr>
+              </foreach>
+            </table>
+            <div class="pagination">
+				{$page}
+			</div>
+            <div class="nav_1">
+                <span class="block"></span>
+                <h1>每月考勤表</h1>
+            </div>
+            <table width="1400" border="0" cellspacing="1" cellpadding="0" class="ta2" >
+                <tr>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">考勤月份</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">应出勤天数</span></td>
+                    
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">实际出勤</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">迟到/早退</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">补勤</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">病假</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">事假</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">旷工</span></td>
+                    
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">产假</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">婚假</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">丧假</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">工伤</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">年假</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">调休</span></td>
+                    
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">平时</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">周末</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">法定</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">成长赞助</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">备注</span></td>
+              </tr>
+              <foreach name="attendance_table" item="vo">
+              	<tr>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.month|strtotime|date="Y年m月",###}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.should_day}</span></td>
+                    
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.actually_day}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.late}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.supply_attendance}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.sick_leave}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.casual_leave}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.absent}</span></td>
+                    
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.maternity_leave}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.marriage_leave}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.bereavement_leave}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.accidents}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.annual_leave}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.leave_in_lieu}</span></td>
+                    
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.overtime_weekday}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.overtime_weekends}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.overtime_legal}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.growth_sponsorship}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.remark}</span></td>
+              	</tr>
+              </foreach>
+            </table>
+            <div class="pagination">
+				{$page}
+			</div>
         </li>
         <li>
             <div class="nav_1">

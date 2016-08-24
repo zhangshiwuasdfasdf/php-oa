@@ -1,0 +1,34 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	set_return_url();
+});
+function add() {
+	window.open("{:U('add')}", "_self");
+}
+function import_attendance(){
+	window.open("{:U('import_attendance')}", "_self");
+}
+function export_attendance(){
+	var map = '{$map}';
+	window.open("{:U('export_attendance',array('map'=>'"+map+"'))}", "_self");
+}
+function mark(action) {
+	var vars = $("#form_data").serialize();
+	switch(action){
+		case "del":
+			ui_confirm('确定要删除吗?',function(){
+				sendAjax("{:U('mark','action=del')}", vars, function(data) {
+					if (data.status) {
+						ui_alert(data.info,function(){
+							$("input[name='id[]']:checkbox:checked").each(function() {
+								$(this).parents("li").remove();
+							});
+						});				
+					}
+				});
+			});
+			break;
+		default:
+	}
+}
+</script>

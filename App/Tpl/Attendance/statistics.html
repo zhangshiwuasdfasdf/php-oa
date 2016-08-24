@@ -1,0 +1,137 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'招商进度日报表','search'=>'N'))}
+<form method="post" name="form_adv_search" id="form_adv_search">
+	<div class="adv_search panel panel-default "  id="adv_search">
+		<div class="panel-heading">
+			<div class="row">
+				<h4 class="col-xs-6">高级搜索</h4>
+				<div class="col-xs-6 text-right">
+					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+					<a  class="btn btn-sm " onclick="close_adv_search();">关闭</a>
+					<eq name="sfexport" value="1"><a  class="btn btn-sm btn-primary" onclick="export_info();">导出</a></eq>
+				</div>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="li_name">月份：</label>
+				<div class="col-sm-8">
+					<div class="input-group" >
+						<input type="text" class="input-date-m input-sm form-control text-center" name="be_create" />
+						<span class="input-group-addon">-</span>
+						<input type="text" class="input-date-m input-sm form-control text-center" name="en_create" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="li_content">基地：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_base">
+							<option value="">选择基地</option>
+							{:fill_option($addr_list)};
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<div style="width: 100%;height: auto;overflow: auto">
+				<ul class="right_ul">
+					<li>
+						<span style="width: 150px;font-weight: bold;">截止目前时间进度</span>
+						<span>{$lv}%</span>
+						<span style="font-weight: bold;">今天是</span>
+						<span>{$data.today}</span>
+						<span style="font-weight: bold;">考核截止日期</span>
+						<span>{$data.end_time}</span>
+						<span style="font-weight: bold;">本次考核周期天数</span>
+						<span>{$data.days}</span>
+						<span style="width: 1162px;"></span>
+					</li>
+					<li>
+						<span style="width: 150px;font-weight: bold;">截止目前任务完成进度</span>
+						<span>{$finsh}%</span>
+						<span style="font-weight: bold;">本月累计签约目标</span>
+						<span>{$data.target}</span>
+						<span style="font-weight: bold;">当月实际签约</span>
+						<span>{$data.actuality}</span>
+						<span style="font-weight: bold;">截至目前签约总量</span>
+						<span>{$data.total_sign}</span>
+						<span style="width: 1162px;"></span>
+					</li>
+					<li class="title_li">
+						<span>序号</span>
+						<span>日期</span>
+						<span>招商方式</span>
+						<span>信息来源</span>
+						<span>招商人员</span>
+						<span>客户姓名</span>
+						<span>客户电话</span>
+						<span>主营行业</span>
+						<span>预计日发单量</span>
+						<span>客户意向级别</span>
+						<span style="width: 180px;">客户最关心的问题</span>
+						<span style="width: 180px;">接洽内容&备注</span>
+						<span>是否到访</span>
+						<span>客户到访日期</span>
+						<span>是否签约</span>
+						<span>签约日期</span>
+						<span>签约日单量</span>
+					</li>
+					<empty name="list">
+						<li class="no-data">
+							没找到数据
+						</li>
+					<else/>
+					<foreach name="list" item="vo">
+					<li>
+						<span>{$rows+$key}</span>
+						<span>{$vo.riqi}</span>
+						<span>{$vo.manner}</span>
+						<span>{$vo.source}</span>
+						<span>{$vo.person}</span>
+						<span>{$vo.client}</span>
+						<span>{$vo.phone}</span>
+						<span>{$vo.trade}</span>
+						<span>{$vo.receipt}</span>
+						<span>{$vo.intention}</span>
+						<span style="width: 180px;"><a title="{$vo.concern}">{$vo.concern}</a></span>
+						<span style="width: 180px;"><a title="{$vo.remarks}">{$vo.remarks}</a></span>
+						<span>{$vo.visited}</span>
+						<span>{$vo.visitdate}</span>
+						<span>{$vo.signed}</span>
+						<span>{$vo.signdate}</span>
+						<span>{$vo.signreceipt}</span>	
+					</li>
+			</foreach>
+		</empty>
+	</ul>
+</div>
+<div class="pagination">
+				{$page}
+			</div>
+<style>
+	.right_ul{
+		list-style:none;
+		width: 2143px;
+		height: auto;
+		clear: both;
+		border-top: 1px solid #000;
+	}
+	.title_li span{
+		background: #ccc;
+	}
+	.right_ul span{
+		border-bottom: 1px solid #000;
+	    border-right: 1px solid #000;
+	    border-left: 1px solid #000;
+	    display: block;
+	    float: left;
+	    height: 26px;
+	    line-height:26px;
+	    text-align: center;
+	    width: 120px;
+	    overflow: hidden;
+	    margin-left: -1px;
+	}
+</style>
