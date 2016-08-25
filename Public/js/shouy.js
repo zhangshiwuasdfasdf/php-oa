@@ -51,13 +51,17 @@ $(".bottom").mousemove(function (event) {
 	if (clicked == "Nope.") {
 		difx7 = mausx7 - winx7;
 		dify7 = mausy7 - winy7;
+	}if(winx7<0){
+		$(".bottom").addClass("xuanz")
 	}
 
 	var newx7 = event.pageX - difx7 - $(".bottom").css("marginLeft").replace('px', '');
 	var newy7 = event.pageY - dify7 - $(".bottom").css("marginTop").replace('px', '');
 	$(".bottom").css({ top: newy7, left: newx7 });
-
-  
+	$(this).css("cursor","move");	
+	/*var r=$(".bottom").offset().left;
+	var w=$(".bottom").width();
+	var h=$(".bottom").height();*/
 });
 
 $(".bottom").mousedown(function (event) {
@@ -81,12 +85,13 @@ $(".bottom_tj_span").click(function(){
 	})
 })
 
+
 function checkbox()
 	{
 	var str=document.getElementsByName("box");
 	var objarray=str.length;
 	var chestr="";
-	for (i=0;i<objarray;i++)
+	for (var i=0;i<objarray;i++)
 	{
 	 if(str[i].checked == true)
 	 {
@@ -102,7 +107,7 @@ function checkbox()
 		
 		for(var j=0; j<check_num; j++){
 			var q=chestr.split(';')
-			$(".bottom_ul").prepend('<li class="bottom_ul_li"><a>'+q[j]+'</a></li>')
+			$(".bottom_tj_span").before('<li class="bottom_ul_li"><a>'+q[j]+'</a></li>')
 		}
 		
 	}
@@ -114,9 +119,9 @@ function check(){
 	check_num++;
 	else
 	check_num--;   
-	if(check_num>10)
+	if(check_num>8)
 	{
-		alert("最多只能选10个！");
+		alert("最多只能选8个！");
 		event.srcElement.checked=false;
 		check_num--;
 	}  
@@ -124,9 +129,9 @@ function check(){
 
 
 function im(){
-	var z=$(".left_db img").width()
+	var z=$(".left_db img").height()
 	
-	if(z>='56px'){
+	if(z>='56'){
 		$(".left_db img").css({'width':'auto','height':'48px'})	
 	}else{
 		$(".left_db img").css({'width':'100%','height':'auto'})	

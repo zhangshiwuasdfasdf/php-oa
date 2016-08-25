@@ -9,9 +9,10 @@
 	<input type="hidden" id="opmode" name="opmode" value="add">
 	<input type="hidden" id="is_submit" name="is_submit" value="1">
 	<input type="hidden" name="read" id="read">
+	<input type="hidden" name="plan_time" id="plan_time">
 
 	<div class="form-group">
-		<label class="col-sm-2 control-label" for="name">标题：</label>
+		<label class="col-sm-2 control-label" for="name">标题：*</label>
 		<div class="col-sm-10">
 			<input type="text" id="name" name="name" value="{$vo.name}" class="form-control"  check="require" msg="请输入标题">
 		</div>
@@ -23,9 +24,21 @@
 			<input type="radio" name="type" value="2" onclick="$('#div_content').attr('style','display:none')" />图片 
 		</div>
 	</div>
+	<if condition="$ckplan eq '1'">
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="type">计划时间：*</label>
+			<div class="col-sm-4">
+				<div class="input-group" >
+					<input type="text" class="input-date-times input-sm form-control text-center" name="be_create" check="require" msg="请选择计划开始时间" />
+					<span class="input-group-addon">-</span>
+					<input type="text" class="input-date-times input-sm form-control text-center" name="en_create" check="require" msg="请选择计划结束时间" />
+				</div>
+			</div>
+		</div>
+	</if>
 	<if condition="$ckdept eq '1'">
 		<div class="form-group">
-			<label class="col-sm-2 control-label" for="folder_name">可见部门：</label>
+			<label class="col-sm-2 control-label" for="folder_name">可见部门：*</label>
 			<div class="col-sm-10">
 				<div id="admin_list" class="inputbox">
 					<a class="pull-right btn btn-link text-center" onclick="select_auth();"> <i class="fa fa-user"></i> </a>

@@ -181,8 +181,10 @@ class NoticeAction extends CommonAction {
 		if(in_array($fid , array('68','96'))){
 			$this -> assign('ckfile','1');
 		}
-		//计划类型
+		//工作计划
 		if($fid == '94'){
+			$widget['date'] = true;	
+			$this -> assign("widget", $widget);
 			$this ->assign('ckplan','1');
 		}
 		//公司新闻与今日头条
@@ -226,6 +228,10 @@ class NoticeAction extends CommonAction {
 		if($folder_id == '95'){
 			$model -> where("id = $id") -> setInc("views");
 		}
+		//工作计划
+		if($folder_id == '94'){
+			$this -> assign('ckplan', '1');
+		}
 		$this -> _edit(null,$id);
 	}
 
@@ -250,8 +256,15 @@ class NoticeAction extends CommonAction {
 		}
 		$this -> assign('user_id', get_user_id());
 		$this -> assign("folder_id", $folder_id);
-
+		
 		$map['folder'] = $folder_id;
+		$where['is_submit'] = 1;
+		$self['is_submit'] = 0;
+		$self['user_id'] = get_user_id();
+		$where['_complex'] = $self;
+		$where['_logic'] = 'OR';
+		$map['_complex'] = $where;
+		
 		//已提交或自己的草稿
 		$res = $model -> where($map) -> order('id desc') -> select();
 		if(!empty($model)){
@@ -319,11 +332,12 @@ class NoticeAction extends CommonAction {
 		} else {
 			$listRows = get_user_config('list_rows');
 		}
-		$now = intval($_REQUEST['p']); $rows =  intval($listRows);
-		if(!isset($now)){$now = 1;}
-		$offset = $rows * ($now - 1);
+		if(is_null($listRows)){$listRows = 20;}
+		$now = $_REQUEST['p'];
+		if(is_null($now)){$now = '1';}
+		 $rows =  intval($listRows);
+		$offset = $rows * (intval($now) - 1);
 		$ress = array_slice($res , $offset , $rows);
-		dump($now);
 		$this -> assign('res',$ress);
 		$this -> assign("folder_name", D("SystemFolder") -> get_folder_name($folder_id));
 		$this -> assign('auth', $this -> config['auth']);

@@ -94,9 +94,9 @@
 			</div>
 			<div class="pull-right">
 				<span class="col-10  "> 发布时间 </span>
-				<span class="col-6  "> 发布人 </span>			
-				<span class="col-6  "> 提交状态 </span>
-				<if condition="$ckplan eq '1'"><span class="col-6  "> 计划状态 </span></if>	
+				<span class="col-6  "> 发布人 </span>
+				<if condition="$ckplan neq '1'"><span class="col-6  "> 状态 </span></if>			
+				<if condition="$ckplan eq '1'"><span class="col-6  "> 状态 </span></if>	
 			</div>
 			<div class="auto">
 				标题
@@ -120,11 +120,13 @@
 							<div class="pull-right">
 								<span class="col-10 "> {$vo.create_time|toDate='Y-m-d'} </span>
 								<span class="col-6 "> {$vo.user_name} </span>
-								<span class="col-6 "> 
-									<if condition="($vo.is_submit eq 0)"> <a href="{:U('edit','id='.$vo['id'])}" >草稿</a>
-									<else /> 已提交
-									</if>
-								</span>
+								<if condition="$ckplan neq '1'">
+									<span class="col-6 "> 
+										<if condition="($vo.is_submit eq 0)"> <a href="{:U('edit','id='.$vo['id'])}" >草稿</a>
+										<else /> 已提交
+										</if>
+									</span>
+								</if>
 								<if condition="$ckplan eq '1'"><span class="col-6" node="{$vo.id}">
 								 	{$vo.plan|toPlan}
 								 </span></if>	
