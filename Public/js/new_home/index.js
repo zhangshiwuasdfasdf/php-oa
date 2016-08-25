@@ -39,30 +39,6 @@ function he(){
 	$(".left").css('height',h)
 	var hc=h+160	
 	$(".left_ck").css('top',hc)
-	//right的高度
-	/*var r0=$(window).height()
-	var r=r0-160
-	$(".right").css('height',r)*/	
-	
-	//9个模块上边距
-	/*var l1=$('.right_l1').height()+185;
-	var l2=$('.right_l2').height();
-	var l3=$('.right_l3').height();
-	var z1=$('.right_z1').height()+140;
-	var z2=$('.right_z2').height()+5;
-	var z3=$('.right_z3').height();
-	var r1=$('.right_r1').height()+185;
-	var r2=$('.right_r2').height()+15;
-	var r3=$('.right_r3').height();
-	$('.right_l2').css('marginTop',l1);
-	$('.right_l3').css('marginTop',l1+l2);
-	$('.right_z2').css('marginTop',z1);
-	$('.right_z3').css('marginTop',z1+z2);
-	$('.right_r2').css('marginTop',r1);
-	$('.right_r3').css('marginTop',r1+r2);*/
-	
-	//var l=l1+l2+l3-160
-	//$(".left").css('height',l)
 	
 	var w=$(window).width()-$(".left").width()
 	var q2=$(window).width()*0.01
@@ -70,17 +46,21 @@ function he(){
 	var s=w-$(window).width()*0.04
 	var x=s/3
 	$('.right').css('width',w)
-	$(".right_l1,.right_l2,.right_l3,.right_z1,.right_z2,.right_z3,.right_r1,.right_r2,.right_r3").css('width',x)
+	$(".right_l1,.right_l2,.right_l3,.right_z1,.right_z2,.right_z3,.right_r1,.right_r2_bg,.right_r3").css('width',x)
 	$(".right_l1,.right_l2,.right_l3").css('marginLeft',q1)
 	
 	$(".right_z1,.right_z2,.right_z3").css('marginLeft',q2)
-	$(".right_r1,.right_r2,.right_r3").css('marginLeft',q2)
+	$(".right_r1,.right_r2_bg,.right_r3").css('marginLeft',q2)
 	
 	//个人信息距离左边值
 	var l=$('.sc').offset().left-120;
 	var l0=q1-120;	
 	var l1=l-l0
 	$('.sc1').css('marginLeft',l1)
+	
+	var a0=$(".right_z1").height()
+	$(".right_l1,.right_l2,.right_l3,.right_z2,.right_z3,.right_r1,.right_r2_bg,.right_r3").css('height',a0) 
+	
 }
 he();
 
@@ -278,7 +258,7 @@ $('#left_a9').click(function(){
 	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul6,.menu_ul17_0,.menu_ul17_1,.menu_ul17_2").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	var t1=$(".menu_ul16").height()
-	var t=$(this).offset().top-t1+76
+	var t=$(this).offset().top-t1+60
 	var w=$(".left").width()
 	$(".menu_ul16").css({"top":t,"left":w})
 	$(".menu_ul16").slideToggle()
@@ -291,19 +271,27 @@ $(".menu_li16_a").click(function(){
 	$(".menu_ul17_0").slideToggle()	
 })
 $(".menu_li16_a1").click(function(){
-	$(".menu_li16_a,.menu_li16_a2").removeClass("hover_bg16")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_0,.menu_ul17_2").hide()
+	$(".menu_li16_a,.menu_li16_a2,.menu_li16_a3").removeClass("hover_bg16")
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_0,.menu_ul17_2,.menu_ul17_3").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li16_a1").toggleClass("hover_bg16")
 	$(".menu_ul17_1").slideToggle()	
 })
 $(".menu_li16_a2").click(function(){
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_1,.menu_ul17_0").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_1,.menu_ul17_0,.menu_ul17_3").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
-	$(".menu_li16_a,.menu_li16_a1").removeClass("hover_bg16")
+	$(".menu_li16_a,.menu_li16_a1,.menu_li16_a3").removeClass("hover_bg16")
 	$()
 	$(".menu_li16_a2").toggleClass("hover_bg16")
 	$(".menu_ul17_2").slideToggle()	
+})
+$(".menu_li16_a3").click(function(){
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_1,.menu_ul17_0,.menu_ul17_2").hide()
+	$(".ani_ss").animate({opacity:0,width:'0px'})
+	$(".menu_li16_a,.menu_li16_a1,.menu_li16_a2").removeClass("hover_bg16")
+	$()
+	$(".menu_li16_a3").toggleClass("hover_bg16")
+	$(".menu_ul17_3").slideToggle()	
 })
 
 

@@ -1,5 +1,5 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'与我有关的任务','search'=>'N'))}
+{:W('PageHeader',array('name'=>'等待我接受的任务','search'=>'N'))}
 <div class="ul_table">
 	<ul>
 		<li class="thead">
@@ -86,9 +86,9 @@
 						</div>
 						<div class="autocut auto">
 							<if condition="$vo.flag eq '1'" >
-								<a href="{:U('notice/read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
+								<a href="{:U('notice/read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}</a>
 								<else/>
-								<a href="{:U('flow/read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}
+								<a href="{:U('flow/read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}</a>
 							</if>
 							<eq name="vo.name|strlen" value="0">
 								无标题
@@ -97,9 +97,9 @@
 					</li>
 				</foreach>
 			</ul>
-		</form><!--
+		</form>
 		<div class="pagination">
-			{$page}
+			{$pages}
 		</div>
-	--></empty>
+	</empty>
 </div>

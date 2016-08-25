@@ -62,9 +62,10 @@ class HomeAction extends CommonAction {
 	
 		$this -> get_user_info();
 		$this -> _mail_list();
+		$this -> _notice_list_new();
+		$this -> _plan_work();
 		// 		$this -> _flow_list();
 		// 		$this -> _schedule_list();
-		$this -> _notice_list_new();
 		// 		$this -> _doc_list();
 		// 		$this -> _forum_list();
 		// 		$this -> _news_list();
@@ -293,7 +294,7 @@ class HomeAction extends CommonAction {
 		$where['_complex'] = $self;
 		$where['_logic'] = 'OR';
 		$map['_complex'] = $where;
-		$res = $model -> where($map) -> field("id,name,content,folder,create_time,add_file,user_name,plan,read,views") -> order("create_time desc") -> select();
+		$res = $model -> where($map) -> field("id,name,content,folder,create_time,add_file,user_name,plan,read,views,plan_time") -> order("create_time desc") -> select();
 		$pos_id = M('User')->field('pos_id')->find(get_user_id());
 		$Parentid = $pos_id['pos_id'];
 		$parent_list = array();
@@ -312,39 +313,147 @@ class HomeAction extends CommonAction {
 			}	
 		}
 		$tmp_news = array();
+		$stipulate = array();
+		$zhidu = array();
+		$tongzhi = array();
+		$weidu = array();
+		//企业公告->未读
+		$arr_read = array_filter(explode(",", get_user_config("readed_notice")));
 		foreach ($res as $k => $v){
 			if(!$v['can']){
 				unset($res[$k]);
 			}
-			if($v['folder'] == 95){$tmp_news[] = $v;}
+			if($v['folder'] == 95){$tmp_news[] = $v;}//今日头条与公司新闻
+			if($v['folder'] == 71 || $v['folder'] == 72){$stipulate[] = $v;}//企业制度与通知
+			if($v['folder'] == 71){$zhidu[] = $v;}
+			if($v['folder'] == 72){$tongzhi[] = $v;}
+			if($v['folder'] == 71 || $v['folder'] == 72){//企业制度与通知里的未读
+				if(!in_array($v['id'],$arr_read) &&($v['create_time']>=time()-3600*30*24)){
+					$weidu[] = $v;
+				}
+			}
 		}
 		
-		//得到今日头条有多少个
+		//今日头条与公司新闻
 		$ni = 0;
+		$nt = 1;
 		$news_notice = array();
 		foreach ($tmp_news as $k => $v){
 			if($tmp_news[0]['plan'] == '1' && $tmp_news[1]['plan'] == '1'){//前两个都是今日头条
 				$news_notice[] = $v;
 				break;
-			}elseif($v['plan'] == '1'){
+			}elseif($v['plan'] == '1' && $nt == 1){
 				$news_notice[] = $v;
 				$ni = $ni + 4;
-			}else {
+				$nt = 0;
+			}elseif($v['plan'] == '2') {
 				$news_notice[] = $v;
 				$ni++;
 			}
 			if($ni >= 8){break;}
 		}
 		header("Content-Type:text/html;charset=utf-8");
-		/*echo '<pre>';
-		print_r($tmp_news);
-		echo '</pre>';die;*/
-		$this -> assign('news_notice',$news_notice);
+		//工作计划
+		$pn = 0;
+		$plan_notice = array();
+		foreach ($res as $v){
+			if($v['folder'] == 94){
+				$plan_notice[$pn] = $v;
+				$kd = array_filter(explode(';',$v['read']));
+				if(in_array('27',$kd)){
+					$plan_notice[$pn]['comp'] = 1;
+				}
+				$pn++;
+			}
+			if($pn >= 6){break;}
+		}
+		
+		foreach ($stipulate as $k => $v){
+			if(($k == 0) && ($v['create_time'] >= time()-3600*24*5)){
+				$stipulate[$k]['new'] == 'abc'; 
+				echo $k;
+			}
+		}
+		echo '<pre>';
+		dump($stipulate);
+		echo '</pre>';die;
+		
+		$this -> assign('news_notice',$news_notice);//今日头条与公司新闻
+		$this -> assign('plan_notice',$plan_notice);//工作计划
+		$this -> assign('stipulate',$stipulate);//公司制度与通知
+		$this -> assign('zhidu',$zhidu);
+		$this -> assign('tongzhi',$tongzhi);
+		$this -> assign('weidu',$weidu);//公司制度与通知未读
+		$this -> assign('notice_list',$res);//全部
+	}
+	//代办事项
+	protected function _plan_work(){
+		//任务
+		$this -> assign("folder", 'confirm');
+		$where_log['type'] = 1;
+		$where_log['status'] = 0;
+		$where_log['executor'] = get_user_id();
+		$task_list = M("TaskLog") -> where($where_log) -> getField('task_id id,task_id');
+		$where['id'] = array('in', $task_list);
+		$model = D('Task');
+		if (!empty($model)) {
+			$task_extension = $model -> where($where) -> order("create_time desc") -> select();
+			$this -> assign('task_extension', $task_extension);
+			$this -> assign('task_count',count($task_extension));
+		}
+		//审批
+		$emp_no = get_emp_no();
+		$FlowLog = M("FlowLog");
+		$where1['emp_no'] = $emp_no;
+		$where1['_string'] = "result is null";
+		$log_list = $FlowLog -> where($where1) -> field('flow_id') -> select();
+
+		$log_list = rotate($log_list);
+		if (!empty($log_list)) {
+			$map['id'] = array('in', $log_list['flow_id']);
+		} else {
+			$map['_string'] = '1=2';
+		}
+		//$map加上自己园区的
+		if(isHeadquarters(get_user_id())==0){//总部
+			$map['dept_id'] = array('in',get_child_dept_all(1));
+		}elseif (isHeadquarters(get_user_id())>0){//园区
+			$map['dept_id'] = array('in',get_child_dept_all(isHeadquarters(get_user_id())));
+		}elseif (isHeadquarters(get_user_id())==-1){//副总
+			$map['dept_id'] = array('in',get_child_dept_all(86));
+		}elseif (isHeadquarters(get_user_id())==-2){//总经理
+			$map['dept_id'] = array('in',get_child_dept_all(27));
+		}
+		$model = D("FlowView");
+		if(!empty($model)){
+			$flow_list = $model -> where($map) -> select();
+			$uid = get_user_id();
+			if($uid == '111' || $uid == '13' || $uid == '260' || $uid == '1'){
+				$notice = M('notice') -> where(array('folder'=>'95','is_submit'=>2)) ->order("create_time desc") -> select();
+				if(!empty($notice)){
+					$j = count($flow_list);
+					foreach ($notice as $k => $v){
+						$flow_list[$j]['doc_no'] = '95';
+						$flow_list[$j]['type_name'] = '今日头条与公司新闻';
+						$flow_list[$j]['create_time'] = $v['create_time'];
+						$flow_list[$j]['user_name'] = $v['user_name'];
+						$flow_list[$j]['step'] = 20;
+						$flow_list[$j]['flow_name'] = "姚一飞 或 张婷 或 彭梦洁 (审批中)";
+						$flow_list[$j]['name'] = $v['name'];
+						$flow_list[$j]['flag'] = '1';
+						$flow_list[$j]['id'] = $v['id'];
+						$j++;
+					}
+				}
+			}
+			$this -> assign("lists", $flow_list);
+			$this -> assign('daiban_count',count($flow_list)+count($task_extension));
+			/*echo '<pre>';
+			print_r(count($task_extension));
+			echo '</pre>';die;*/
+		}
 	}
 	
-	protected function _work_plan(){
-		
-	}
 	protected function _forum_list() {
 		$model = D('Forum');
 		$where['is_del'] = array('eq', '0');

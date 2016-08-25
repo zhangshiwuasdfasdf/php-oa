@@ -2559,6 +2559,58 @@ function exp_info($info){
 	}
 	return '';
 }
+function news_home_view($add){
+	if(!empty($add)){
+		$files = array_filter(explode(';',$add));
+		$file = M("file");
+		foreach ($files as $k => $v){
+			$j = $k +1;
+			$finfo = $file -> getBySid($v);
+			$save = $finfo['savename'];
+			$path = get_save_url();
+			echo "<span class=\"num$j\"><img src=\"$path$save\"/></span>";
+			if($j >= 3){break;}
+		}
+	}
+	echo '';
+}
+function news_home_time($time){
+	if(!empty($time)){
+		$t=time()-$time;
+	    $f=array(
+	        '31536000'=>'年',
+	        '2592000'=>'个月',
+	        '604800'=>'星期',
+	        '86400'=>'天',
+	        '3600'=>'小时',
+	        '60'=>'分钟',
+	        '1'=>'秒'
+	    );
+	    foreach ($f as $k=>$v)    {
+	        if (0 !=$c=floor($t/(int)$k)) {
+	            return $c.$v.'前';
+	        }
+	    }
+	}
+	return '';
+}
+function plan_home_show($plan){
+	if(!empty($plan)){
+		$ps = explode('|',$plan);
+		$con = '';
+		if(count($ps) == 1){
+			$con .= '<span class="zt2">进行中</span>';
+		}else{
+			$con .= '<span class="zt2">已完成</span>';
+		}
+		if($ps[0] == '1'){
+			$con .='<span class="lx2">月计划</span>';
+		}else{
+			$con .='<span class="lx2">周计划</span>';
+		}
+	}
+	echo $con;
+}
 function seniority($date2){
 	$date1 = date("Y/m/d");
 	if(!empty($date2)){
