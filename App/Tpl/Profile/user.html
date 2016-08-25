@@ -52,7 +52,7 @@
         <li>考勤动态</li>
         <li>OA签入数据</li>
     </ul>
-    <ul class="ul2" style="overflow: auto;height: 509px;">
+    <ul class="ul2" style="overflow: auto;height: 460px;">
         <li>
             <div class="nav_1">
                 <span class="block"></span>
@@ -899,7 +899,7 @@
               </foreach>
             </table>
             <div class="pagination">
-				{$page}
+				{$page_attendance}
 			</div>
             <div class="nav_1">
                 <span class="block"></span>
@@ -958,7 +958,7 @@
               </foreach>
             </table>
             <div class="pagination">
-				{$page}
+				{$page_attendance_table}
 			</div>
         </li>
         <li>
@@ -983,6 +983,7 @@
       </li>
     </ul>
     <script>
+    	var profile_user_index = "{$profile_user_index}";
         $('.ul2 li').hide()
         $('.ul2 li:first').show()
         $('.ul1 li').click(function(){
@@ -991,5 +992,7 @@
             $(this).addClass('bs_block')
             $('.ul2 li').hide()
             $('.ul2 li').eq(n).show()
+            set_cookie('profile_user_index',n);
         })
+       	$('.ul1 li').eq(profile_user_index).click();
     </script>

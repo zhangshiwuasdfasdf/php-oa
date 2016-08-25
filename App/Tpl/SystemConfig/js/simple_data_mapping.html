@@ -1,0 +1,30 @@
+<script type="text/javascript">
+	function add() {
+		window.open("{:U('add')}", "_self");
+	}
+
+	function noneDR(obj) {
+		sendAjax("{:U('noneDR')}", "id=" + $(obj).attr("id"), function(data) {
+			if(data.status == 1){
+				showdata(data);
+			}else{
+				alert('昨天没有未写日报的人');
+			}
+		});
+	}
+	
+	function showdata(result) {
+		for (var s in result.data) {
+			$("#sample1").append(result.data[s].name+'　');
+		}
+	}
+	$(document).ready(function(){
+		set_return_url();
+	})
+	function add() {
+		winopen("{:U('add_simple_data_mapping')}", 730, 500);
+	}
+	function edit(id) {
+		winopen("{:U('edit_simple_data_mapping',array('id'=>'"+id+"'))}", 730, 500);
+	}
+</script>

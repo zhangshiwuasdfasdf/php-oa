@@ -111,7 +111,8 @@
 			</nobr></td>
 			<td class="text-center">
 			<nobr>
-				<a >编辑</a>
+				<a onclick="edit('{$vo.id}')">编辑</a>
+				<a href="{:U('del_simple_data_mapping','id='.$vo['id'])}" onclick="if(!confirm('真的要删除吗?')){return false;}">删除</a>
 			</nobr></td>
 		</tr>
 	</foreach>

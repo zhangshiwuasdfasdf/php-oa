@@ -154,6 +154,17 @@ function winclose() {
 	$("#dialog").html("");
 	$("#dialog").remove();
 }
+function myclose2() {
+	parent.winclose2();
+}
+
+function winclose2() {
+	$("html,body").css("overflow", "auto");
+	$("div.shade").hide();
+	$("#dialog").html("");
+	$("#dialog").remove();
+	location.reload();
+}
 
 /* 在iframe里显示textarea的内容*/
 function show_content() {

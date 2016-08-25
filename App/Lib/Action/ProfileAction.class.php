@@ -526,14 +526,19 @@ class ProfileAction extends CommonAction {
 		}
 		//考勤动态
 		//打卡
+		C('VAR_PAGE','p_attendance');//p的名字变一下
 		$attendance = M('Attendance')->where(array('user_id'=>$id,'is_del'=>0,'mark'=>array('in',array('in','out'))))->select();
-		$this->_list(M('Attendance'), array('user_id'=>$id,'is_del'=>0,'mark'=>array('in',array('in','out'))),'',false,'attendance');
+		$this->_list(M('Attendance'), array('user_id'=>$id,'is_del'=>0,'mark'=>array('in',array('in','out'))),'',false,'attendance','page_attendance');
 // 		$this->assign('attendance',$attendance);
 		
+		C('VAR_PAGE','p_attendance_table');//p的名字变一下
 		//考勤统计
 		$attendance_table = M('AttendanceTable')->where(array('user_id'=>$id,'is_del'=>0))->select();
-		$this->_list(M('AttendanceTable'), array('user_id'=>$id,'is_del'=>0),'',false,'attendance_table');
+		$this->_list(M('AttendanceTable'), array('user_id'=>$id,'is_del'=>0),'',false,'attendance_table','page_attendance_table');
 // 		$this->assign('attendance_table',$attendance_table);
+
+		C('VAR_PAGE','p');//p的名字变回来
+		$this->assign('profile_user_index',cookie('profile_user_index'));
 		
 		//签入数据
 		$signdata = M('SignInOut')->where(array('user_id'=>$id))->order('time asc')->select();

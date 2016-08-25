@@ -532,7 +532,7 @@ class CommonAction extends Action {
 		return $map;
 	}
 
-	protected function _list($model, $map, $sortBy = '', $asc = false,$temp='list') {
+	protected function _list($model, $map, $sortBy = '', $asc = false,$temp='list',$page_temp='page',$p_temp='p') {
 		//排序字段 默认为主键名
 		if (isset($_REQUEST['_order'])) {
 			$order = $_REQUEST['_order'];
@@ -609,7 +609,7 @@ class CommonAction extends Action {
 			$this -> assign('order', $order);
 			$this -> assign('sortImg', $sortImg);
 			$this -> assign('sortType', $sortAlt);
-			$this -> assign("page", $page);
+			$this -> assign($page_temp, $page);
 		}
 		return $voList;
 	}

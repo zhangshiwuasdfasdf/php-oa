@@ -112,6 +112,7 @@ class SystemConfigAction extends CommonAction {
 // 		}
 // 		dump($D);
 		$map = array();
+		$map['is_del'] = 0;
 		if($_POST['li_data_type']){
 			$map['data_type'] = array('like','%'.$_POST['li_data_type'].'%');
 		}
@@ -122,8 +123,71 @@ class SystemConfigAction extends CommonAction {
 			$map['data_name'] = array('like','%'.$_POST['li_data_name'].'%');
 		}
 		$model = M('SimpleDataMapping');
-		$this->_list($model, $map);
+		$this->_list($model, $map,'data_type,data_code',true);
 		$this->display();
+	}
+	function add_simple_data_mapping() {
+		$this -> display();
+	}
+	function edit_simple_data_mapping() {
+		$id = $_REQUEST['id'];
+		$data = M('SimpleDataMapping')->find($id);
+		$this -> assign('data', $data);
+		$this -> display();
+	}
+	function save_simple_data_mapping(){
+		$this->_save('SimpleDataMapping');
+	}
+	protected function _insert($name = null) {
+		if (empty($name)) {
+			$name = $this -> getActionName();
+		}
+		$model = D($name);
+	
+		if (false === $model -> create()) {
+			$this -> error($model -> getError());
+		}
+		$model->create_user = get_user_name();
+		$model->create_time = time();
+		$model->is_del = 0;
+		/*保存当前数据对象 */
+		$list = $model -> add();
+		if ($list !== false) {//保存成功
+			$this -> assign('jumpUrl', get_return_url());
+			$this -> success('新增成功!'.$list);
+		} else {
+			$this -> error('新增失败!');
+			//失败提示
+		}
+	}
+	protected function _update($name = null) {
+		if (empty($name)) {
+			$name = $this -> getActionName();
+		}
+		$model = D($name);
+		if (false === $model -> create()) {
+			$this -> error($model -> getError());
+		}
+		$model->update_user = get_user_name();
+		$model->update_time = time();
+		$list = $model -> save();
+		if (false !== $list) {
+			$this -> assign('jumpUrl', get_return_url());
+			$this -> success('编辑成功!');
+			//成功提示
+		} else {
+			$this -> error('编辑失败!');
+			//错误提示
+		}
+	}
+	function del_simple_data_mapping(){
+		$id=$_REQUEST['id'];
+		$res = M('SimpleDataMapping')->where(array('id'=>$id))->setField('is_del',1);
+		if(false !== $res){
+			$this -> success('删除成功!');
+		}else{
+			$this -> success('删除失败!');
+		}
 	}
 }
 ?>
