@@ -123,7 +123,7 @@ class SystemConfigAction extends CommonAction {
 			$map['data_name'] = array('like','%'.$_POST['li_data_name'].'%');
 		}
 		$model = M('SimpleDataMapping');
-		$this->_list($model, $map,'data_type,data_code',true);
+		$this->_list($model, $map,'create_time',false);
 		$this->display();
 	}
 	function add_simple_data_mapping() {

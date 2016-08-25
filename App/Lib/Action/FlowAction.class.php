@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class FlowAction extends CommonAction {
-	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin','export_goods_procurement_allocation'=>'admin','import_goods_procurement_allocation'=>'admin','del'=>'write','winpop_goods'=>'admin'));
+	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin','export_goods_procurement_allocation'=>'admin','import_goods_procurement_allocation'=>'admin','del'=>'write','winpop_goods'=>'admin','getlist'=>'read'));
 
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -2832,5 +2832,16 @@ class FlowAction extends CommonAction {
 			$this->_add_flow_index_log($flow,$flow_log);
 		}
 		return $flow_message;
+	}
+	//每隔流程做一个列表页
+	function getlist(){
+		$type = $_REQUEST['type'];
+		$flow_name = M('FlowType')->field('id,name')->find($type);
+		$this -> assign("flow_name", $flow_name);
+		
+		$this->_list(M('Flow'), array('type'=>$type,'user_id'=>get_user_id(),'is_del'=>0));
+// 		$flow = M('Flow')->where(array('type'=>$type,'user_id'=>get_user_id()))->select();
+// 		$this -> assign("flow", $flow);
+		$this -> display();
 	}
 }
