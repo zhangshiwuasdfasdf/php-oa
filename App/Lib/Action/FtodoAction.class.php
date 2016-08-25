@@ -3,18 +3,10 @@ class FtodoAction extends CommonAction {
 	function index(){
 		//任务
 		$this -> assign("folder", 'confirm');
+		$where_log['type'] = 1;
+		$where_log['status'] = 0;
 		$where_log['executor'] = get_user_id();
-		$where_log['transactor'] = get_user_id();
-		$where_log['_logic'] = 'or';
-		$task_list1 = M("TaskLog") -> where($where_log) -> getField('task_id id,task_id');
-
-		$where_task['executor'] = array('like',array('%'.get_user_name().'|'.get_user_id().';'.'%','%'.get_dept_name().'|'.'dept_'.get_dept_id().';'.'%'),'or');
-		$task_list = M("Task")->field('id') -> where($where_task) -> select();
-		$task_list2 = array();
-		foreach ($task_list as $v){
-			$task_list2[] = $v['id'];
-		}
-		$task_list = array_unique(array_merge($task_list1,$task_list2));
+		$task_list = M("TaskLog") -> where($where_log) -> getField('task_id id,task_id');
 		$where['id'] = array('in', $task_list);
 		
 		$model = D('Task');
@@ -55,7 +47,7 @@ class FtodoAction extends CommonAction {
 		}
 		$model = D("FlowView");
 		if(!empty($model)){
-			$flow_list = $this -> _list($model, $map ,'',false,'list2');
+			$flow_list = $model -> where($map) -> select();
 			foreach ($flow_list as $k=>$v){
 				$auth = M('FlowLog')->where(array('flow_id'=>array('eq',$v['id']),'_string'=>'result is not null'))->select();
 				if($auth){
@@ -102,7 +94,22 @@ class FtodoAction extends CommonAction {
 					}
 				}
 			}
-		$this -> assign("lists", $flow_list);
+			$listRows = get_user_config('list_rows');
+			if(is_null($listRows)){$listRows = 12;}
+			$now = $_REQUEST['p'];
+			if(is_null($now)){$now = '1';}
+			$rows =  intval($listRows);
+			$offset = $rows * (intval($now) - 1);
+			$ress = array_slice($flow_list , $offset , $rows);
+			//分页
+			import("@.ORG.Util.Page");
+			//创建分页对象
+			$p = new Page(count($flow_list), $listRows);
+			$p -> parameter = $this -> _search();
+			//分页显示
+			$page = $p -> show();
+			$this -> assign("pages", $page);
+			$this -> assign("lists", $ress);
 		}
 		$this -> display();
 	}
