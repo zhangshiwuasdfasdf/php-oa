@@ -95,7 +95,7 @@ class ForumAction extends CommonAction {
 		$widget['editor'] = true;
 		$this -> assign("widget",$widget);
 		$this -> assign('auth', $this -> config['auth']);
-
+		
 		$model = M("Forum");
 
 		$id = $_REQUEST['id'];
@@ -114,10 +114,29 @@ class ForumAction extends CommonAction {
 
 		$this -> assign('user', $user);
 		$this -> assign('user_id',$user_id);
-
+		//添加查看次数和关注人数
 		$model = M("Forum");
 		$model -> where("id=$id") -> setInc('views', 1);
-
+		$atten = M("ForumAtten");
+		$atten_list = $atten -> find();
+		if(empty($atten_list)){
+			$data['atten_user'] = $user_id . ',';
+			$data['atten_num'] = 1;
+			$atten -> add($data);
+		}else{
+			$tmp = array_filter(explode(',',rtrim($atten_list['atten_user'],',')));
+			$flag = true;
+			foreach ($tmp as $k => $v){
+				if($v == $user_id){
+					$flag = false;
+				}
+			}
+			if($flag){
+				$atten_list['atten_user'] .=  $user_id .',';
+				$atten_list['atten_num'] += 1;
+				$atten -> save($atten_list);
+			}
+		}
 		$model = M("Forum");
 
 		$where = array();

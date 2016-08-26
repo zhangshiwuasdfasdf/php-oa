@@ -64,6 +64,8 @@ class HomeAction extends CommonAction {
 		$this -> _mail_list();
 		$this -> _notice_list_new();
 		$this -> _plan_work();
+		$this -> _memo_task();
+		$this -> _bbs_info();
 		// 		$this -> _flow_list();
 		// 		$this -> _schedule_list();
 		// 		$this -> _doc_list();
@@ -312,11 +314,13 @@ class HomeAction extends CommonAction {
 				}
 			}	
 		}
-		$tmp_news = array();
-		$stipulate = array();
-		$zhidu = array();
-		$tongzhi = array();
-		$weidu = array();
+		$tmp_news = array();//今日头条/公司新闻
+		$stipulate = array();//制度与通知
+		$zhidu = array();//制度
+		$tongzhi = array();//通知
+		$weidu = array();//公告未读
+		$survey = array();//企业概况
+		$staff_activity = array();//员工活动
 		//企业公告->未读
 		$arr_read = array_filter(explode(",", get_user_config("readed_notice")));
 		foreach ($res as $k => $v){
@@ -332,6 +336,8 @@ class HomeAction extends CommonAction {
 					$weidu[] = $v;
 				}
 			}
+			if($v['folder'] == 68){$survey[] = $v;}
+			if($v['folder'] == 96){$staff_activity[] = $v;}
 		}
 		
 		//今日头条与公司新闻
@@ -341,7 +347,7 @@ class HomeAction extends CommonAction {
 		foreach ($tmp_news as $k => $v){
 			if($tmp_news[0]['plan'] == '1' && $tmp_news[1]['plan'] == '1'){//前两个都是今日头条
 				$news_notice[] = $v;
-				break;
+				$ni = $ni + 4;
 			}elseif($v['plan'] == '1' && $nt == 1){
 				$news_notice[] = $v;
 				$ni = $ni + 4;
@@ -365,18 +371,12 @@ class HomeAction extends CommonAction {
 				}
 				$pn++;
 			}
-			if($pn >= 6){break;}
+			if($pn >= 10){break;}
 		}
 		
-		foreach ($stipulate as $k => $v){
-			if(($k == 0) && ($v['create_time'] >= time()-3600*24*5)){
-				$stipulate[$k]['new'] == 'abc'; 
-				echo $k;
-			}
-		}
-		echo '<pre>';
-		dump($stipulate);
-		echo '</pre>';die;
+		/*echo '<pre>';
+		dump($plan_notice);
+		echo '</pre>';die;*/
 		
 		$this -> assign('news_notice',$news_notice);//今日头条与公司新闻
 		$this -> assign('plan_notice',$plan_notice);//工作计划
@@ -384,6 +384,8 @@ class HomeAction extends CommonAction {
 		$this -> assign('zhidu',$zhidu);
 		$this -> assign('tongzhi',$tongzhi);
 		$this -> assign('weidu',$weidu);//公司制度与通知未读
+		$this -> assign('survey',$survey);//企业概况
+		$this -> assign('staff_activity',$staff_activity);
 		$this -> assign('notice_list',$res);//全部
 	}
 	//代办事项
@@ -448,12 +450,64 @@ class HomeAction extends CommonAction {
 			}
 			$this -> assign("lists", $flow_list);
 			$this -> assign('daiban_count',count($flow_list)+count($task_extension));
-			/*echo '<pre>';
-			print_r(count($task_extension));
-			echo '</pre>';die;*/
 		}
 	}
-	
+	//今日便签和未完成的任务
+	protected function _memo_task(){
+		$model = M('DailyReport');
+		if(!empty($model)){
+			$where['user_id'] = get_user_id();
+			$info = $model -> where($where) -> field('id,undoo,plan') -> order("id desc") -> find();
+			if($info){
+				$this -> assign('meta',$info);
+			}
+		}
+	   $uplan = M('UndooPlan');
+	   $time = strtotime(date('Y-m-d') . '00:00:00');
+	   $map['user_id'] = get_user_id();
+	   $map['create_time'] = array('egt',$time);
+	   $list = $uplan -> where($map) -> select();
+	   if($list){
+	   		$this -> assign('tmpmeta',$list);
+	   }
+	}
+	//异步添加今日便签和未完成任务
+	public function set_today_task(){
+		$data['content'] = $_REQUEST['content'];
+		$data['flag'] = $_REQUEST['flag'];
+		$data['user_id'] = get_user_id();
+		$data['create_time'] = time();
+		if(M('undooPlan') -> add($data)){
+			$this ->ajaxReturn('', "新建成功",1);
+		}else{
+			$this ->ajaxReturn('', "新建失败",0);
+		}
+	}
+	//首页论坛bbs的信息
+	protected function _bbs_info(){
+		$where['folder'] = 'ForumFolder';
+		$model = M("SystemFolder");
+		$list = $model -> where($where) -> order("id desc") -> getField('id,name');
+		$this -> assign('folder_list', $list);//bbs模块
+		$wm = array();
+		foreach ($list as $k => $v){
+			$wm[] = $k;
+		}
+		if(!empty($wm)){
+			$map['folder'] = array('IN' , $wm);
+		}
+		$map['is_del'] = 0;
+		$bbs_list = M('forum') -> where($map) -> order("views desc") -> getField('id,folder,name');
+		$bbs_count = M('forum') -> where($map) -> count();
+		$atten_num = M('ForumAtten') -> getField('atten_num');
+		$this -> assign('bbs_list',$bbs_list);
+		$this -> assign('bbs_count',$bbs_count);
+		$this -> assign('atten_num',$atten_num);
+		
+		/*echo '<pre>';
+		dump($bbs_list);
+		echo '</pre>';die;*/
+	}
 	protected function _forum_list() {
 		$model = D('Forum');
 		$where['is_del'] = array('eq', '0');

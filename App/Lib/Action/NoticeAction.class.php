@@ -238,9 +238,13 @@ class NoticeAction extends CommonAction {
 
 	public function folder() {
 		$folder_id = $_REQUEST['fid'];
-		
+		//有可见部门
 		if(in_array($folder_id , array('72','74','94','96'))){
 			$this -> inform($folder_id);die;
+		}
+		//今日头条/公司新闻添加审批状态
+		if($folder_id == '95'){
+			$this -> assign('spzt',1);
 		}
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
@@ -259,7 +263,7 @@ class NoticeAction extends CommonAction {
 		
 		$map['folder'] = $folder_id;
 		$where['is_submit'] = 1;
-		$self['is_submit'] = 0;
+		$self['is_submit'] = array('IN' , array(0,2));
 		$self['user_id'] = get_user_id();
 		$where['_complex'] = $self;
 		$where['_logic'] = 'OR';

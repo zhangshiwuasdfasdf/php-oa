@@ -2594,6 +2594,18 @@ function news_home_time($time){
 	}
 	return '';
 }
+function home_survey_show($file){
+	if(!empty($file)){
+		$list = array_filter(explode(';',$file));
+		if(!empty($list[0])){
+			$file_info = M('file') -> getBySid($list[0]);
+			$save = $file_info['savename'];
+			$path = get_save_url();
+			echo "<img src=\"$path$save\"/>";
+		}
+	}
+	echo '';
+}
 function plan_home_show($plan){
 	if(!empty($plan)){
 		$ps = explode('|',$plan);

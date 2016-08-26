@@ -95,7 +95,8 @@
 			<div class="pull-right">
 				<span class="col-10  "> 发布时间 </span>
 				<span class="col-6  "> 发布人 </span>			
-				<span class="col-6  "> 状态 </span>		
+				<span class="col-6  "> 状态 </span>
+				<if condition="$spzt eq 1"><span class="col-6  "> 审批状态 </span></if>		
 			</div>
 			<div class="auto">
 				标题
@@ -122,10 +123,12 @@
 								<span class="col-6 "> {$vo.user_name} </span>
 								<span class="col-6 "> 
 									<if condition="($vo.is_submit eq 0)"> <a href="{:U('edit','id='.$vo['id'])}" >草稿</a>
-									<elseif condition="($vo.is_submit eq 2)" /> 审批中 
 									<else />已提交
 									</if>
 								</span>
+								<if condition="$spzt eq 1"><span class="col-6 ">
+									 <if condition="$vo.is_submit eq 2"> 审批中  <else />已通过</if>  
+								 </span></if>
 							</div>
 							<div class="auto">
 								<a href="{:U('read','id='.$vo['id'])}" >{$vo.name}

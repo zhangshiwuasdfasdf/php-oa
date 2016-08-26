@@ -166,6 +166,45 @@
 				error:function(e){}
 				})
 		}
+	//便签
+	$("#i2_1").click(function(){
+		$("#i2_bg1").show();
+		$("#i2_span1").click(function(){
+			$("#i2_bg1").hide();
+		})
+		$("#i2_span2").click(function(){
+			var r2_ul_1 = $("#r2_ul_1");
+			var content = $("#i2_tan1").val();
+			sendAjax("{:U('Home/set_today_task')}", "content=" + content + "&flag=" + 1, function(data) {
+				if(data.status){
+					r2_ul_1.append("<li><a title="+content+">"+content+"</a></li>");
+					ui_info(data.info);
+				}else{
+					ui_info(data.info);
+				}
+				$("#i2_bg1").hide();
+			});
+		})
+	})
+	$("#i2_2").click(function(){
+		$("#i2_bg2").show();
+		$("#i2_span3").click(function(){
+			$("#i2_bg2").hide();
+		})
+		$("#i2_span4").click(function(){
+			var r2_ul_1 = $("#r2_ul_2");
+			var content = $("#i2_tan2").val();
+			sendAjax("{:U('Home/set_today_task')}", "content=" + content + "&flag=" + 2, function(data) {
+				if(data.status){
+					r2_ul_1.append("<li><a title="+content+">"+content+"</a></li>");
+					ui_info(data.info);
+				}else{
+					ui_info(data.info);
+				}
+			});
+			$("#i2_bg2").hide();
+		})	
+	})
 	function select_avatar() {
 		winopen("{:U('popup/avatar')}?id=" + $("#id").val(), 730, 500);
 	}
