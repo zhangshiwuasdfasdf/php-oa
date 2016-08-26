@@ -297,15 +297,15 @@ class HomeAction extends CommonAction {
 		$where['_logic'] = 'OR';
 		$map['_complex'] = $where;
 		$res = $model -> where($map) -> field("id,name,content,folder,create_time,add_file,user_name,plan,read,views,plan_time") -> order("create_time desc") -> select();
-		$pos_id = M('User')->field('pos_id')->find(get_user_id());
-		$Parentid = $pos_id['pos_id'];
+		$pos_id = M('User')->field('dept_id')->find(get_user_id());
+		$Parentid = $pos_id['dept_id'];
 		$parent_list = array();
 		while($Parentid){//获取上级数组
 			$parent_list[] = $Parentid;
 			$Parentid = getParentDept(null,$Parentid);
 		}
 		foreach ($res as $k=>$v){
-			$tmp = explode(';',$v['read']);
+			$tmp = array_filter(explode(';',$v['read']));
 			$res[$k]['can'] = false;
 			foreach ($tmp as $kk => $vv){
 				if(in_array($vv,$parent_list)){
@@ -327,6 +327,8 @@ class HomeAction extends CommonAction {
 			if(!$v['can']){
 				unset($res[$k]);
 			}
+		}
+		foreach ( $res as $k => $v){
 			if($v['folder'] == 95){$tmp_news[] = $v;}//今日头条与公司新闻
 			if($v['folder'] == 71 || $v['folder'] == 72){$stipulate[] = $v;}//企业制度与通知
 			if($v['folder'] == 71){$zhidu[] = $v;}
@@ -339,7 +341,6 @@ class HomeAction extends CommonAction {
 			if($v['folder'] == 68){$survey[] = $v;}
 			if($v['folder'] == 96){$staff_activity[] = $v;}
 		}
-		
 		//今日头条与公司新闻
 		$ni = 0;
 		$nt = 1;
@@ -375,7 +376,7 @@ class HomeAction extends CommonAction {
 		}
 		
 		/*echo '<pre>';
-		dump($plan_notice);
+		dump($parent_list);
 		echo '</pre>';die;*/
 		
 		$this -> assign('news_notice',$news_notice);//今日头条与公司新闻
@@ -396,12 +397,12 @@ class HomeAction extends CommonAction {
 		$where_log['status'] = 0;
 		$where_log['executor'] = get_user_id();
 		$task_list = M("TaskLog") -> where($where_log) -> getField('task_id id,task_id');
-		$where['id'] = array('in', $task_list);
+		 $where['id'] = array('in', $task_list) ;
+			
 		$model = D('Task');
 		if (!empty($model)) {
 			$task_extension = $model -> where($where) -> order("create_time desc") -> select();
 			$this -> assign('task_extension', $task_extension);
-			$this -> assign('task_count',count($task_extension));
 		}
 		//审批
 		$emp_no = get_emp_no();
@@ -449,7 +450,9 @@ class HomeAction extends CommonAction {
 				}
 			}
 			$this -> assign("lists", $flow_list);
-			$this -> assign('daiban_count',count($flow_list)+count($task_extension));
+			$fn = $flow_list ? count($flow_list) : 0 ;
+			$tn = $task_extension ? count($task_extension) : 0 ;
+			$this -> assign('daiban_count',$fn + $tn);
 		}
 	}
 	//今日便签和未完成的任务
