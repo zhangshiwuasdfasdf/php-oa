@@ -308,8 +308,8 @@ class NoticeAction extends CommonAction {
 		$where['_logic'] = 'OR';
 		$map['_complex'] = $where;
 		$res = $model -> where($map) -> order('id desc') -> select();
-		$pos_id = M('User')->field('pos_id')->find(get_user_id());
-		$Parentid = $pos_id['pos_id'];
+		$pos_id = M('User')->field('dept_id')->find(get_user_id());
+		$Parentid = $pos_id['dept_id'];
 		$parent_list = array();
 		while($Parentid){//获取上级数组
 			$parent_list[] = $Parentid;
@@ -389,7 +389,14 @@ class NoticeAction extends CommonAction {
 		}
 	}
 	
-	private function _readed($id) {		
+	private function _readed($id) {
+		$model = M("UserConfig");
+		$is_con = $model -> find(get_user_id());
+		//如果标记通知是否已读中没有当前用户 就添加此用户
+		if(is_null($is_con)){
+			$data['id']=get_user_id();
+			$model -> add($data);		
+		}
 		$folder_list=D("SystemFolder")->get_authed_folder(get_user_id());
 		$map['folder']=array("in",$folder_list);
 		$map['create_time']=array("egt",time() - 3600 * 24 * 30);
@@ -397,7 +404,6 @@ class NoticeAction extends CommonAction {
 		$arr_read = array_filter(explode(",", get_user_config("readed_notice").",".$id));
 		
 		$map['id']=array('in',$arr_read);
-				
 		$readed_notice=M("Notice")->where($map)->getField("id,name");
 		$readed_notice=implode(",",array_keys($readed_notice));
 		$where['id']=array('eq',get_user_id());

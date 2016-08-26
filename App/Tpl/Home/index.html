@@ -295,7 +295,7 @@
 	    <div class="right_r3_title">
 	        <div class="right_r3_div"><img src="__PUBLIC__/img/new_home/hd.png"/></div>
 	        <div class="right_r3_div2">
-	            <a title="{$vo.name}">{$vo.name}</a>
+	            <a title="{$vo.name}" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
 	            <p>{$vo.content|strip_tags}</p>
 	        </div>
 	    </div>

@@ -129,7 +129,7 @@ class UserAction extends CommonAction {
 		echo get_return_url();
 	}
 	//添加新用户
-	public function  addUser(){
+	public function  addUserInfo(){
 		$model = D("User");
 		if (!$model -> create()) {
 			$this -> error($model -> getError());

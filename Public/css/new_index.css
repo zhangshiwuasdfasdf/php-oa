@@ -237,7 +237,7 @@ body{ background:#f3f4f8;}
 .right_l2_span1{ display:block; width:3px; height:20px; background:#376ba4; float:left; margin-top:14px;}
 .right_l2_span2{ color:#fb941e; font-size:20px; margin-left:10px;}
 
-.right_l2_content{ width:100%; height:170px; background:#fff; border: solid 1px #e4e4e4; position:relative;}
+.right_l2_content{ width:100%; height:205px; background:#fff; border: solid 1px #e4e4e4; position:relative;}
 .right_l2_div{ width:90%; height:150px; overflow:hidden; margin-left:5%; margin-top:10px;}
 .right_l2_ul{ width:100%; height:auto;}
 .right_l2_ul li{width:100%; line-height:25px;}
@@ -318,7 +318,7 @@ body{ background:#f3f4f8;}
 .right_r1_li2{ width:100%; font-size:12px; height:20px; line-height:20px; background:#fff; margin-top:10px; overflow:hidden;}
 .right_r1_li2 a {color: #4f4d4e}
 .right_r1_li2 a:hover{text-decoration: none;cursor: pointer;}
-.right_r1_li2_span1{ display:block; width:70%; float:left;overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.right_r1_li2_span1{ display:block; width:65%; float:left;overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
 .right_r1_li2_span2{ display:block; width:100%; float:left;overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
 .bt2{ display:block; width:30%; float:left; overflow:hidden;}
 .sj2{ display:block; width:30%; text-align:center; float:left; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
