@@ -59,7 +59,7 @@ class UserAction extends CommonAction {
 		$name = $this -> getActionName();
 		$model = D($name);
 		if (!empty($model)) {
-			$this -> _list($model, $map,"emp_no",true);
+			$this -> _list($model, $map,"id",true);
 		}
 		$this -> display();							
 	}

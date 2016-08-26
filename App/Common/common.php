@@ -3011,4 +3011,11 @@ function formatto4w($num){
 		return '000'.substr($num,-4);
 	}
 }
+function showsex($sex){
+	if($sex=='male'){
+		return '男';
+	}else{
+		return '女';
+	}
+}
 ?>

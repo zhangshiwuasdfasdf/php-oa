@@ -12,10 +12,12 @@
 			<ul>
 				<li class="thead">
 					<div class="col-sm-7">
-						<span class="text-center" style="width:20%;">员工编码</span>
-						<span class="text-center" style="width:20%;">姓名</span>
+						<span class="text-center" style="width:10%;">序号</span>
+						<span class="text-center" style="width:15%;">员工编码</span>
+						<span class="text-center" style="width:10%;">姓名</span>
+						<span class="text-center" style="width:10%;">性别</span>
 						<span class="text-center" style="width:20%">职级</span>
-						<span class="text-center" style="width:40%">职位</span>
+						<span class="text-center" style="width:35%">职位</span>
 					</div>
 					<div class="col-sm-5">
 						<span style="width:50%;height:15px;">邮件</span>
@@ -26,10 +28,12 @@
 				<volist name="list" id="data">
 					<li class="tbody" email="{$data.email}" duty="{$data.duty}" name="{$data.name}" office_tel="{$data.office_tel}" mobile_tel="{$data.mobile_tel}" >
 					<div class="col-sm-7">
-						<span style="width:20%;" class="text-center emp_no">{$data.emp_no}</span>
-						<span style="width:20%;" class="text-center name">{$data.name}</span>
+						<span style="width:10%;" class="text-center id">{$data.id}</span>
+						<span style="width:15%;" class="text-center emp_no">{$data.emp_no}</span>
+						<span style="width:10%;" class="text-center name">{$data.name}</span>
+						<span style="width:10%;" class="text-center sex">{$data.sex|showsex}</span>
 						<span style="width:20%" class="text-center position">{$data.position_name}</span>
-						<span style="width:40%" class="text-center rank">{$data.duty}</span>
+						<span style="width:35%" class="text-center rank">{$data.duty}</span>
 					</div>
 					<div class="col-sm-5">
 						<span style="width:50%;height:15px;" class="email">{$data.email}</span>
@@ -76,10 +80,12 @@
 <div id="sample" class="display-none">
 	<li class="tbody">
 		<div class="col-sm-7">
-			<span style="width:20%;height:15px;" class="text-center emp_no"></span>
-			<span style="width:20%;height:15px;" class="text-center name"></span>
+			<span style="width:10%;height:10px;" class="text-center id"></span>
+			<span style="width:15%;height:15px;" class="text-center emp_no"></span>
+			<span style="width:10%;height:10px;" class="text-center name"></span>
+			<span style="width:10%;height:10px;" class="text-center sex"></span>
 			<span style="width:20%;height:15px;" class="text-center position"></span>
-			<span style="width:40%;height:15px;" class="text-center rank"></span>
+			<span style="width:35%;height:15px;" class="text-center rank"></span>
 		</div>
 		<div class="col-sm-5">
 			<span style="width:50%;height:15px;" class="email"></span>

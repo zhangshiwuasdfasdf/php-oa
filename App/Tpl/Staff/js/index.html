@@ -8,8 +8,14 @@
 	function showdata(result) {
 		$(".user_list li.tbody").remove();
 		for (var s in result.data) {
+			$("#sample .id").text(result.data[s].id);
 			$("#sample .emp_no").text(result.data[s].emp_no);
 			$("#sample .name").text(result.data[s].name);
+			if(result.data[s].sex=='male'){
+				$("#sample .sex").text('男');
+			}else{
+				$("#sample .sex").text('女');
+			}
 			$("#sample .position").text(result.data[s].position_name);
 			$("#sample .rank").text(result.data[s].duty);
 			$("#sample .email").text(result.data[s].email);
