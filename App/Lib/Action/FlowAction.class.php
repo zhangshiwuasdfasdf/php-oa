@@ -72,9 +72,11 @@ class FlowAction extends CommonAction {
 
 			case 'submit' :
 				$this -> assign("folder_name", '提交');
-				$map['user_id'] = array('eq', $user_id);
+				$auth = $this -> config['auth'];
+				if (!$auth['admin']) {//不是管理员的话就要自己才可以看
+					$map['user_id'] = array('eq', $user_id);
+				}
 				$map['step'] = array( array('gt', 10), array('eq', 0), 'or');
-
 				break;
 			case 'group' :
 				$this -> assign("folder_name", '详情');
@@ -2924,7 +2926,8 @@ class FlowAction extends CommonAction {
 		$map['type'] = $type;
 		
 		$auth = $this -> config['auth'];
-// 		if (!$auth['admin']) {
+		$this -> assign('auth', $auth);
+		if (!$auth['admin']) {
 			$flow_me = M('Flow')->field('id')->where(array('user_id'=>get_user_id()))->select();
 			if(empty($flow_me)){
 				$flow_me = array();
@@ -2940,7 +2943,7 @@ class FlowAction extends CommonAction {
 				$flow_to_me = $flow_to_me['flow_id'];
 			}
 			$map['id'] = array('in',array_merge($flow_me,$flow_to_me));
-// 		}
+		}
 		
 		$map['is_del'] = 0;
 // 		dump($map);

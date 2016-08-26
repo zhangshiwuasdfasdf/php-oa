@@ -97,7 +97,7 @@
 				<span class="col-10 ">考勤号码</span>
 			</div>
 			<div class="pull-left">
-				<span class="col-20 ">考勤日期时间</span>
+				<span class="col-20 ">考勤时间日期</span>
 			</div>
 			<div class="pull-left">
 				<span class="col-10 ">机器号</span>
@@ -105,9 +105,9 @@
 			<div class="pull-left">
 				<span class="col-15 ">导入时间</span>
 			</div>
-			<div class="pull-right">
+			<!-- <div class="pull-right">
 				<span class="col-5 ">操作</span>
-			</div>
+			</div> -->
 		</li>
 		<empty name="list">
 			<li class="no-data">
@@ -142,9 +142,10 @@
 					<div class="pull-left">
 						<span class="col-15 ">{$vo.import_time|date='Y-m-d H:i:s',###}&nbsp;</span>
 					</div>
-					<div class="pull-right">
+					
+					<!-- <div class="pull-right">
 						<span class="col-5 "><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('del','id='.$vo['id'])}">删除</a></span>
-					</div>
+					</div> -->
 				</li>
 			</foreach>
 			</form>

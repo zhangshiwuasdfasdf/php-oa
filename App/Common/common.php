@@ -2997,4 +2997,18 @@ function tree_to_html($tree){
 function user_status($is_del){
 	return $is_del=='1'?'禁用':'启用';
 }
+function formatto4w($num){
+	if($num>=1000){
+		return substr($num,-4);
+	}
+	if($num>=100){
+		return '0'.substr($num,-4);
+	}
+	if($num>=10){
+		return '00'.substr($num,-4);
+	}
+	if($num>=1){
+		return '000'.substr($num,-4);
+	}
+}
 ?>
