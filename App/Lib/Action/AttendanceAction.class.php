@@ -272,6 +272,7 @@ class AttendanceAction extends CommonAction {
 						$info['overtime_legal'] = $sd[$i]['U'];
 						$info['growth_sponsorship'] = $sd[$i]['V'];
 						$info['remark'] = $sd[$i]['W'];
+						$info['create_time'] = $time;
 						$info['is_del'] = 0;
 							
 						$res = $ad->where(array('user_id'=>$sd[$i]['B'],'month'=>date('Y-m',strtotime($t)),'is_del'=>0))->find();

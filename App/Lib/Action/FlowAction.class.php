@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class FlowAction extends CommonAction {
-	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin','export_goods_procurement_allocation'=>'admin','import_goods_procurement_allocation'=>'admin','del'=>'write','winpop_goods'=>'admin','getlist'=>'read'));
+	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin','export_goods_procurement_allocation'=>'admin','import_goods_procurement_allocation'=>'admin','del'=>'write','winpop_goods'=>'admin','getlist'=>'read','get_dept_child'=>'read'));
 
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -1471,10 +1471,10 @@ class FlowAction extends CommonAction {
 		$dept_idd = getDeptManagerId($uid,$dept_id);
 		if($add=='1'){//辞职补充
 			$flow = checkFlowNotMe(array($dept_idd,getHRDeputyGeneralManagerId($uid),getZhaopinDirector($uid)));
-			$confirm_text = getConfirmTextNotMe(array('getDeptManagerId,getHRDeputyGeneralManagerId','getZhaopinDirector'),$array['flow_type_id'],$uid);
+			$confirm_text = getConfirmTextNotMe(array('getDeptManagerId','getHRDeputyGeneralManagerId','getZhaopinDirector'),$array['flow_type_id'],$uid);
 		}else{
 			$flow = checkFlowNotMe(array($dept_idd,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid),getZhaopinDirector($uid)));
-			$confirm_text = getConfirmTextNotMe(array('getDeptManagerId,getHRDeputyGeneralManagerId','getGeneralManagerId','getZhaopinDirector'),$array['flow_type_id'],$uid);
+			$confirm_text = getConfirmTextNotMe(array('getDeptManagerId','getHRDeputyGeneralManagerId','getGeneralManagerId','getZhaopinDirector'),$array['flow_type_id'],$uid);
 		}
 		if(!empty($flow)){
 			if($this->isAjax()){
@@ -1675,7 +1675,7 @@ class FlowAction extends CommonAction {
 		if($this->isAjax()){
 			$this->ajaxReturn(getFlowData(array_unique($flow)),null,1);
 		}
-		$confirm_text = getConfirmTextNotMe(array('getParentid','getDeptManagerId','getHRDeputyGeneralManagerId','getGeneralManagerId','self'),$array['flow_type_id'],$uid);
+		$confirm_text = getConfirmTextNotMe(array('getParentid','getDeptManagerId','getHRDeputyGeneralManagerId','getGeneralManagerId','get_user_id'),$array['flow_type_id'],$uid);
 		$this->_add_flow_index_log($flow,$flow_log);
 		return array('flow'=>$flow,'confirm_text'=>$this->fetch('',$confirm_text,''));
 	}
@@ -2835,13 +2835,172 @@ class FlowAction extends CommonAction {
 	}
 	//每隔流程做一个列表页
 	function getlist(){
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		
 		$type = $_REQUEST['type'];
 		$flow_name = M('FlowType')->field('id,name')->find($type);
 		$this -> assign("flow_name", $flow_name);
+		//搜索条件预设
+		$menu = array();
+		$dept_menu = D("Dept") -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		$this -> assign('dept_list', select_tree_menu($dept_tree));
 		
-		$this->_list(M('Flow'), array('type'=>$type,'user_id'=>get_user_id(),'is_del'=>0));
+		$user_name = M('Flow') -> where('is_del = 0') -> field('user_id as id,user_name as name') ->distinct(true) -> select();
+		$this -> assign('user_name', $user_name);
+		
+		$content_array = array(
+			'leave'=>'style',
+			'outside'=>'outside_type',
+		);
+		$flow = M('Flow')->field('id')->where(array('type'=>$type))->find();
+		$ModelName = getModelName($flow['id']);
+// 		$flow_name = strtolower(substr($ModelName,4));
+		$flow_name = strtolower(preg_replace('/((?<=[a-z])(?=[A-Z]))/', '_', substr($ModelName,4)));
+		$this->_search_provide($ModelName,$content_array[$flow_name],$content_array[$flow_name]);
+// 		$leave_style = M('FlowLeave') -> field('style as id,style as name') ->distinct(true) -> select();
+// 		$this -> assign('leave_style', $leave_style);
+		
+// 		$outside_outside_type = M('FlowOutside') -> field('outside_type as id,outside_type as name') ->distinct(true) -> select();
+// 		$this -> assign('outside_outside_type', $outside_outside_type);
+		//搜索条件预设结束
+		
+		//搜索条件处理
+		if($_POST['eq_dept_id_0']){
+			$where['dept_id'] = $_POST['eq_dept_id_0'];
+		}
+		if($_POST['eq_dept_id_1']){
+			$pos_id = $_POST['eq_dept_id_1'];
+			$user_id_in = M('User')->field('id')->where(array('pos_id'=>$pos_id))->select();
+			$user_id_in = rotate($user_id_in);
+			$user_id_in = $user_id_in['id'];
+			$where['user_id'] = array('in',$user_id_in);
+			
+		}
+		if($_POST['eq_user_id']){
+			$where['user_id'] = $_POST['eq_user_id'];
+		}
+		if($_POST['be_create_time']){
+			$where['create_time'][] = array('egt',strtotime($_POST['be_create_time']));
+		}
+		if($_POST['en_create_time']){
+			$where['create_time'][] = array('elt',strtotime($_POST['en_create_time'].' 24:00:00'));
+		}
+		
+		//特殊条件
+		$condition_array = array(
+				'leave'=>'style',
+				'outside'=>'outside_type',
+				'resignation_list'=>'bt_resignation_time',
+		);
+		$where_in = $this->_getwherein($ModelName,$condition_array[$flow_name]);
+		if($where_in!==false){
+			$where['id'] = array('in',$where_in);
+		}
+// 		if($_POST['leave_style']){
+// 			$where_leave['style'] = $_POST['leave_style'];
+// 		}
+// 		if($_POST['outside_outside_type']){
+// 			$where_outside['outside_type'] = $_POST['outside_outside_type'];
+// 		}
+		
+// 		if(!empty($where_leave)){
+// 			$flow_id_in = M('FlowLeave')->field('flow_id')->where($where_leave)->select();
+// 			$flow_id_in = rotate($flow_id_in);
+// 			$flow_id_in = $flow_id_in['flow_id'];
+// 			$where['id'] = array('in',$flow_id_in);
+// 		}
+// 		if(!empty($where_outside)){
+// 			$flow_id_in = M('FlowOutside')->field('flow_id')->where($where_outside)->select();
+// 			$flow_id_in = rotate($flow_id_in);
+// 			$flow_id_in = $flow_id_in['flow_id'];
+// 			$where['id'] = array('in',$flow_id_in);
+// 		}
+		if(!empty($where)){
+			$map['_complex'] = $where;
+		}
+		
+		$map['type'] = $type;
+		
+		$auth = $this -> config['auth'];
+// 		if (!$auth['admin']) {
+			$flow_me = M('Flow')->field('id')->where(array('user_id'=>get_user_id()))->select();
+			if(empty($flow_me)){
+				$flow_me = array();
+			}else{
+				$flow_me = rotate($flow_me);
+				$flow_me = $flow_me['id'];
+			}
+			$flow_to_me = M('FlowLog')->field('flow_id')->distinct(true)->where(array('user_id'=>get_user_id(),'_complex'=>'result is null'))->select();
+			if(empty($flow_to_me)){
+				$flow_to_me = array();
+			}else{
+				$flow_to_me = rotate($flow_to_me);
+				$flow_to_me = $flow_to_me['flow_id'];
+			}
+			$map['id'] = array('in',array_merge($flow_me,$flow_to_me));
+// 		}
+		
+		$map['is_del'] = 0;
+// 		dump($map);
+// 		dump(array_merge($flow_me,$flow_to_me));
+		$flow_common = $this->_list(M('Flow'), $map);
+		$flow_ext = array();
+		foreach ($flow_common as $k=>$v){
+			$model_name = getModelName($v['id']);
+			$flow_ext[$k] = M($model_name)->where(array('flow_id'=>$v['id']))->find();
+			$pos_id = M('User')->field('pos_id')->find($v['user_id']);
+			$pos_name = M('Dept')->field('name')->find($pos_id['pos_id']);
+			$flow_ext[$k]['pos_name'] =$pos_name['name'];
+		}
+// 		dump($flow_ext);
 // 		$flow = M('Flow')->where(array('type'=>$type,'user_id'=>get_user_id()))->select();
-// 		$this -> assign("flow", $flow);
+		$this -> assign("flow_ext", $flow_ext);
+		$this -> assign("user_id", get_user_id());
 		$this -> display();
+	}
+	
+	function _search_provide($ModelName,$field_id,$field_name){
+// 		$flow = M('Flow')->field('id')->where(array('type'=>$flow_type))->find();
+// 		$ModelName = getModelName($flow['id']);
+		
+		$flow_name = strtolower(substr($ModelName,4));
+		$res = M($ModelName) -> field($field_id.' as id,'.$field_name.' as name') ->distinct(true) -> select();
+		if(!empty($res)){
+			$this -> assign($flow_name.'_'.$field_id, $res);
+		}
+	}
+	function _getwherein($ModelName,$field_name){
+// 		$flow_name = strtolower(substr($ModelName,4));
+		$flow_name = strtolower(preg_replace('/((?<=[a-z])(?=[A-Z]))/', '_', substr($ModelName,4)));
+// 		dump($flow_name);
+// 		dump(substr($field_name,0));
+		if(substr($field_name,0,3)=='bt_'){
+			$field_name = substr($field_name,3);
+			if($_POST['be_'.$flow_name.'_'.$field_name]){
+				$where[$field_name][] = array('egt',$_POST['be_'.$flow_name.'_'.$field_name]);
+			}
+			if($_POST['en_'.$flow_name.'_'.$field_name]){
+				$where[$field_name][] = array('elt',$_POST['en_'.$flow_name.'_'.$field_name]);
+			}
+			if(!empty($where)){
+				$flow_id_in = M($ModelName)->field('flow_id')->where($where)->select();
+				$flow_id_in = rotate($flow_id_in);
+				$flow_id_in = $flow_id_in['flow_id'];
+				return $flow_id_in;
+			}
+		}else{
+			if($_POST[$flow_name.'_'.$field_name]){
+				$where[$field_name] = $_POST[$flow_name.'_'.$field_name];
+			}
+			if(!empty($where)){
+				$flow_id_in = M($ModelName)->field('flow_id')->where($where)->select();
+				$flow_id_in = rotate($flow_id_in);
+				$flow_id_in = $flow_id_in['flow_id'];
+				return $flow_id_in;
+			}
+		}
+		return false;
 	}
 }

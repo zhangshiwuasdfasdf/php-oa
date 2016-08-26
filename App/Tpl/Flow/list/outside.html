@@ -1,0 +1,148 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>array($flow_name['name']),'search'=>'M'))}
+<form method="post" name="form_adv_search" id="form_adv_search">
+	<div class="adv_search panel panel-default  display-none"  id="adv_search">
+		<div class="panel-heading">
+			<div class="row">
+				<h4 class="col-xs-6">高级搜索</h4>
+				<div class="col-xs-6 text-right">
+					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+					<a  class="btn btn-sm " onclick="close_adv_search();">关闭</a>
+				</div>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="dept_id_0">部门：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_dept_id_0" id="eq_dept_id_0">
+						<option value="">选择部门</option>
+						{$dept_list}
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="dept_id_1">岗位：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_dept_id_1" id="eq_dept_id_1">
+						<option value="">选择岗位</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="eq_user_id">申请人：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_user_id" >
+						<option value="">选择人员</option>
+						{:fill_option($user_name)};
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="be_create_time">申请时间段：</label>
+				<div class="col-sm-8">
+					<div class="input-daterange input-group" >
+						<input type="text" class="input-sm form-control text-center" name="be_create_time" id="be_create_time"/>
+						<span class="input-group-addon">-</span>
+						<input type="text" class="input-sm form-control text-center" name="en_create_time" id="en_create_time"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="outside_outside_type">外勤/出差：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="outside_outside_type" >
+						<option value="">选择类型</option>
+						{:fill_option($outside_outside_type)};
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-right">
+			<a class="btn btn-sm btn-primary" href="{:U('add','type='.$flow_name['id'])}" onclick="add()">新建</a>
+		</div>
+	</div>
+</div>
+<div class="ul_table">
+	<ul>
+		<li class="thead" style="padding-left:10px">
+			<div class="pull-left">
+				<span class="col-10 ">编号</span>
+				<span class="col-16 ">申请时间</span>	
+				<span class="col-10 ">部门</span>	
+				<span class="col-10 ">岗位</span>	
+				<span class="col-10 ">申请人</span>				
+			</div>
+			<div class="pull-right">
+				<span  class="col-9  ">外勤/出差</span>
+				<span  class="col-10  "> 天数</span>
+				<span  class="col-10  "> 出发时间</span>
+				<span  class="col-10  "> 结束时间</span>
+				<span class="col-6  ">审批状态</span>
+				<span class="col-6  ">操作</span>
+			</div>
+			<div class="autocut auto">
+				标题
+			</div>
+		</li>
+	</ul>
+	<empty name="list">
+		<ul>
+			<li class="no-data">
+				没找到数据
+			</li>
+		</ul>
+		<else/>
+		<form method="post" action="" name="form_data" id="form_data">
+			<ul>
+				<foreach name="list" item="vo">
+					<li class="tbody">
+						<div class="pull-left">
+							<span class="col-10 ">&nbsp;{$key+1}</span>
+							<span class="col-16  ">&nbsp;{$vo.create_time|date='Y-m-d H:i:s',###}</span>
+							<span class="col-10 ">&nbsp;{$vo.dept_name}</span>	
+							<span class="col-10 ">&nbsp;{$flow_ext.$key.pos_name}</span>
+							<span class="col-10 ">&nbsp;{$vo.user_name}</span>
+						</div>
+						<div class="pull-right">
+							<span class="col-9" style="height:20px;">&nbsp;{$flow_ext.$key.outside_type}</span>
+							<span  class="col-10  ">&nbsp;{$flow_ext.$key.day_num}天{$flow_ext.$key.hour_num}小时</span>
+							<span  class="col-10  ">&nbsp;{$flow_ext.$key.start_time}</span>
+							<span  class="col-10  ">&nbsp;{$flow_ext.$key.end_time}</span>
+							<span class="col-6  ">&nbsp;{$vo.step|show_step}</span>
+							<span class="col-6  "><if condition="($vo.step eq '10')"><a href="{:U('edit','id='.$vo['id'].'&fid=darft')}">修改</a><a href="{:U('del','id='.$vo['id'])}">删除</a></if></span>
+						</div>
+						<div class="autocut auto">
+							<if condition="($vo.step eq '10')">
+								{$vo.name}
+								<eq name="vo.name|strlen" value="0">
+									无标题
+								</eq>
+							<elseif  condition="($vo.user_id eq $user_id)"/>
+								<a href="{:U('read','id='.$vo['id'].'&fid=submit')}">{$vo.name}
+								<eq name="vo.name|strlen" value="0">
+									无标题
+								</eq>
+								</a> 
+							<else/>
+								<a href="{:U('read','id='.$vo['id'].'&fid=confirm')}">{$vo.name}
+								<eq name="vo.name|strlen" value="0">
+									无标题
+								</eq>
+								</a> 
+							</if>
+						</div>
+					</li>
+				</foreach>
+			</ul>
+		</form>
+		<div class="pagination">
+			{$page}
+		</div>
+	</empty>
+</div>

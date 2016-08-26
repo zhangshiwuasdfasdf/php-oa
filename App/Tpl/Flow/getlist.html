@@ -1,115 +1,40 @@
-<layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>array($flow_name['name']),'search'=>'N'))}
-<form method="post" name="form_adv_search" id="form_adv_search">
-	<div class="adv_search panel panel-default  display-none"  id="adv_search">
-		<div class="panel-heading">
-			<div class="row">
-				<h4 class="col-xs-6">高级搜索</h4>
-				<div class="col-xs-6 text-right">
-					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
-					<a  class="btn btn-sm " onclick="close_adv_search();">关闭</a>
-				</div>
-			</div>
-		</div>
-		<div class="panel-body">
-			<eq name="auth.admin" value="true">
-				<div class="form-group col-sm-6">
-					<label class="col-sm-4 control-label" for="dept_id_0">部门：</label>
-					<div class="col-sm-8">
-						<select class="form-control" name="eq_dept_id_0" id="eq_dept_id_0">
-							<option value="">选择部门</option>
-							{$dept_list}
-						</select>
-					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<label class="col-sm-4 control-label" for="dept_id_1">岗位：</label>
-					<div class="col-sm-8">
-						<select class="form-control" name="eq_dept_id_1" id="eq_dept_id_1">
-							<option value="">选择岗位</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<label class="col-sm-4 control-label" for="eq_user_id">撰写人：</label>
-					<div class="col-sm-8">
-						<select class="form-control" name="eq_user_id" >
-							<option value="">选择人员</option>
-							{:fill_option($emp_list)};
-						</select>
-					</div>
-				</div>
-			</eq>
-			
-			<div class="form-group col-sm-6">
-				<label class="col-sm-4 control-label" for="be_create_time">日期：</label>
-				<div class="col-sm-8">
-					<div class="input-daterange input-group" >
-						<input type="text" class="input-sm form-control text-center" name="be_create_time" id="start_month"/>
-						<span class="input-group-addon">-</span>
-						<input type="text" class="input-sm form-control text-center" name="en_create_time" id="end_month"/>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</form>
-<div class="operate panel panel-default">
-	<div class="panel-body">
-		<div class="pull-right">
-			<a class="btn btn-sm btn-primary" href="{:U('add','type='.$flow_name['id'])}" onclick="add()">新建</a>
-		</div>
-	</div>
-</div>
-<div class="ul_table">
-	<ul>
-		<li class="thead" style="padding-left:10px">
-			<div class="pull-left">
-				<span class="col-16 ">编号</span>
-				<span class="col-16 ">类型</span>				
-			</div>
-			<div class="pull-right">
-				<span  class="col-9  ">登录时间</span>
-				<span  class="col-6  "> 登录人</span>
-				<span class="col-6  ">状态</span>
-			</div>
-			<div class="autocut auto">
-				标题
-			</div>
-		</li>
-	</ul>
-	<empty name="list">
-		<ul>
-			<li class="no-data">
-				没找到数据
-			</li>
-		</ul>
-		<else/>
-		<form method="post" action="" name="form_data" id="form_data">
-			<ul>
-				<foreach name="list" item="vo">
-					<li class="tbody">
-						<div class="pull-left">
-							<span class="col-16 ">{$key+1}</span>
-							<span class="col-16  "> {$vo.name}</span>
-						</div>
-						<div class="pull-right">
-							<span class="col-9" style="height:20px;">{$vo.create_time|toDate='Y-m-d'}</span>
-							<span class="col-6" style="height:20px;">{$vo.user_name}</span>
-							<span class="col-6" style="height:20px;">{$vo.step|show_step}</span>
-						</div>
-						<div class="autocut auto">
-							<a href="{:U('read','id='.$vo['id'].'&fid=submit')}">{$vo.name}
-							<eq name="vo.name|strlen" value="0">
-								无标题
-							</eq></a> 
-						</div>
-					</li>
-				</foreach>
-			</ul>
-		</form>
-		<div class="pagination">
-			{$page}
-		</div>
-	</empty>
-</div>
+<if condition="($flow_name.name eq '内部联络单')">
+<include file="Flow/list:internal_contact_list" />
+<elseif condition="($flow_name.name eq '会务证明流程')"/>
+<include file="Flow/list:meeting_communicate" />
+<elseif condition="($flow_name.name eq '名片使用')"/>
+<include file="Flow/list:card_application" />
+
+<elseif condition="($flow_name.name eq '请假/调休单')"/>
+<include file="Flow/list:leave" />
+<elseif condition="($flow_name.name eq '外勤/出差单')"/>
+<include file="Flow/list:outside" />
+<elseif condition="($flow_name.name eq '出勤证明流程')"/>
+<include file="Flow/list:attendance" />
+<elseif condition="($flow_name.name eq '加班调休申请')"/>
+<include file="Flow/list:over_time" />
+<elseif condition="($flow_name.name eq '用人申请流程')"/>
+<include file="Flow/list:employment_application" />
+<elseif condition="($flow_name.name eq '试用期评估表')"/>
+<include file="Flow/list:probation_evaluate" />
+<elseif condition="($flow_name.name eq '转正申请')"/>
+<include file="Flow/list:regular_worker_application" />
+<elseif condition="($flow_name.name eq '离职申请流程')"/>
+<include file="Flow/list:resignation_application" />
+<elseif condition="($flow_name.name eq '离职交接流程')"/>
+<include file="Flow/list:resignation_list" />
+<elseif condition="($flow_name.name eq '员工调岗、调职申请')"/>
+<include file="Flow/list:personnel_changes" />
+<elseif condition="($flow_name.name eq '员工调薪申请')"/>
+<include file="Flow/list:salary_changes" />
+
+<elseif condition="($flow_name.name eq '办公用品领用')"/>
+<include file="Flow/list:office_use_application" />
+<elseif condition="($flow_name.name eq '办公用品采购')"/>
+<include file="Flow/list:office_supplies_application" />
+<elseif condition="($flow_name.name eq '物品采购调拨申请单')"/>
+<include file="Flow/list:goods_procurement_allocation" />
+<else/>
+<include file="Flow/list:common" />
+
+</if>

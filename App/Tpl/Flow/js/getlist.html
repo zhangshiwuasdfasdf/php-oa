@@ -1,0 +1,17 @@
+<script type="text/javascript">
+$("#eq_dept_id_0").change(function () {
+	var dept_id_0 = $(this).val();
+	$.ajax({
+		type:'get', 
+		url: "{:U('get_dept_child')}",
+		data:{dept_id_0:dept_id_0},
+		dataType: "json",
+		success: function(result){
+			$("#eq_dept_id_1").html('<option value="">选择岗位</option>'+result);
+		},
+		error:function(e){
+			$("#eq_dept_id_1").html('<option value="">选择岗位</option>');
+		}
+	});
+});
+</script>
