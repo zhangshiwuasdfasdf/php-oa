@@ -31,7 +31,6 @@ function getNow(){
 }
 getNow();
 
-
 function he(){
 	//left的高度
 	var h0=$(window).height()
@@ -40,27 +39,30 @@ function he(){
 	var hc=h+160	
 	$(".left_ck").css('top',hc)
 	
-	var w=$(window).width()-$(".left").width()
-	var q2=$(window).width()*0.01
-	var q1=$(window).width()*0.01+$(".left").width()
-	var s=w-$(window).width()*0.04
+	var w=$(window).width()-120
+	var q2=w*0.01
+    var q3=Math.round(q2)
+	var s=w-q3*6
 	var x=s/3
+    
+    var st=Math.round(x)
+    
 	$('.right').css('width',w)
-	$(".right_l1,.right_l2,.right_l3,.right_z1,.right_z2,.right_z3,.right_r1,.right_r2_bg,.right_r3").css('width',x)
-	$(".right_l1,.right_l2,.right_l3").css('marginLeft',q1)
+	$("#right_l1,#right_l2,#right_l3,#right_z1,#right_z2,#right_z3,#right_r1,#right_r2_bg,#right_r3").css({'width':st,'padding':q3})
 	
-	$(".right_z1,.right_z2,.right_z3").css('marginLeft',q2)
-	$(".right_r1,.right_r2_bg,.right_r3").css('marginLeft',q2)
+	/*$("#right_l1,#right_l2,#right_l3").css('padding',q2)
+	
+	$("#right_z1,#right_z2,#right_z3").css('padding',q2)
+	$("#right_r1,#right_r2_bg,#right_r3").css('padding',q2)*/
 	
 	//个人信息距离左边值
 	var l=$('.sc').offset().left-120;
-	var l0=q1-120;	
-	var l1=l-l0
+	//var q1=q2+120;
+	//var l0=q1-120;	
+	var l1=l-q2
 	$('.sc1').css('marginLeft',l1)
-	
 }
 he();
-
 /*$(window).scroll(function(){
 	var a0=$(window).height()-$(".left").offset().top-40
 	$(".left").css('height',a0)	
@@ -256,7 +258,7 @@ $('#left_a9').click(function(){
 	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul6,.menu_ul17_0,.menu_ul17_1,.menu_ul17_2").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	var t1=$(".menu_ul16").height()
-	var t=$(this).offset().top-t1+60
+	var t=$(this).offset().top-t1+40
 	var w=$(".left").width()
 	$(".menu_ul16").css({"top":t,"left":w})
 	$(".menu_ul16").slideToggle()
@@ -354,22 +356,7 @@ function checkbox()
 				$(".tb_gb1_b1").index(this)
 				$(this).parent(this).remove()
 			})
-			
-			/*if($("#bottom_a1").is(':hidden')){
-				$(".bottom_ul").before('<a class="bottom_a"><img src="img/bottom_rb.png"/><img class="tb_gb1_b1" src="img/tb_gb1_b1.png"/></a>')	
-			}
-			if($("#bottom_a2").is(':hidden')){
-				$(".bottom_ul").before('<a class="bottom_a"><img src="img/bottom_zb.png"/><img class="tb_gb1_b1" src="img/tb_gb1_b1.png"/></a>')	
-			}
-			if($("#bottom_a3").is(':hidden')){
-				$(".bottom_ul").before('<a class="bottom_a"><img src="img/bottom_yb.png"/><img class="tb_gb1_b1" src="img/tb_gb1_b1.png"/></a>')	
-			}
-			if($("#bottom_a4").is(':hidden')){
-				$(".bottom_ul").before('<a class="bottom_a"><img src="img/bottom_jg.png"/><img class="tb_gb1_b1" src="img/tb_gb1_b1.png"/></a>')	
-			}
-			if($("#bottom_a5").is(':hidden')){
-				$(".bottom_ul").before('<a class="bottom_a"><img src="img/bottom_tt.png"/><img class="tb_gb1_b1" src="img/tb_gb1_b1.png"/></a>')	
-			}*/
+
 		}
 		
 	}
@@ -446,4 +433,24 @@ $('.right_ge1').click(function(){
 	$(".right_ge").children('span').eq(2).text(n);
 	$(".right_ge").children('a').text(o);
 	$(".right_ge_x").slideUp();
+})
+
+//便签
+$("#i2_1").click(function(){
+	$("#i2_bg1").show();
+	$("#i2_span1").click(function(){
+		$("#i2_bg1").hide();
+	})
+	$("#i2_span2").click(function(){
+		$("#i2_bg1").hide();
+	})
+})
+$("#i2_2").click(function(){
+	$("#i2_bg2").show();
+	$("#i2_span3").click(function(){
+		$("#i2_bg2").hide();
+	})
+	$("#i2_span4").click(function(){
+		$("#i2_bg2").hide();
+	})	
 })
