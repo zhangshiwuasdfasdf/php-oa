@@ -9,26 +9,57 @@
 		function save() {
 			var mr = $("#is_del option:selected").val();
 			if(mr == '1'){
-				var zh = ("more_zh").val();
-				if(zh == ""){
+				var pid_uid = $("#pid_uid").val();
+				if(pid_uid == "0"){
 					ui_error("主账号的用户名不能为空！");
 					return false;
+				}else if(pid_uid == '-1'){
+					ui_error("主账号不存在，或主账号的主账号存在，请重新输入！");
+					return false;
 				}
-				sendAjax("{:U('bindVerify')}", "zh="+zh, function(data) {
-					if (data.status) {
-						ui_alert(data.info,function(){
-							location.reload();
-						});									
-					}
-				});
+			}
+			if (check_form("form_data")) {
+				sendForm("form_data", "{:U('addUserInfo')}");
 			}
 			
-			if (check_form("form_data")) {
-				
-			}
 		}
 		function moreRole(){
 			var mr = $("#is_del option:selected").val();
 			(mr == "1")?$("#more_zh").show():$("#more_zh").hide();
+		}
+		function check(user_name){
+			$.ajax({
+				type : "POST",
+				async :false,
+				url : "{:U('check_user_name')}",
+				data : "user_name="+user_name + "&ajax=1",
+				dataType : "json",
+				success : function(data) {
+							if (data.status) {
+								$("#pid_uid").val(data.info);			
+							}else{
+								$("#pid_uid").val('-1');
+								ui_alert('主账号不存在，或主账号的主账号存在，请重新输入！',function(){
+									return false;
+									//location.reload();
+								});	
+								
+							}
+						}
+			});
+			/*
+			sendAjax("{:U('check_user_name')}", "user_name="+user_name, function(data) {
+				if (data.status) {
+					$("#pid_uid").val(data.info);			
+				}else{
+					$("#pid_uid").val('-1');
+					ui_alert('主账号不存在，请重新输入！',function(){
+						return false;
+						//location.reload();
+					});	
+					
+				}
+			});
+			*/
 		}
 </script>

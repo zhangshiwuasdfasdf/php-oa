@@ -289,5 +289,37 @@ class LoginAction extends Action {
 		$data = array('data'=>array('message'=>array('data'=>$message,'count'=>count($message)),'task'=>array('data'=>$task,'count'=>count($task)),'flow'=>array('count'=>$new_confirm_count,'flow_pass_message'=>$flow_pass_message)),'status'=>1);
 		$this->ajaxReturn($data,'JSON');
 	}
+	public function change_user(){
+// 		$_POST['id'];
+		if(!empty($_POST['id']) && !empty($_POST['emp_no']) && !empty($_POST['name']) && !empty($_POST['dept_id'])){
+			session(C('USER_AUTH_KEY'),$_POST['id']);
+			session('user_id',$_POST['id']);
+			session('emp_no', $_POST['emp_no']);
+			session('user_name', $_POST['name']);
+			session('dept_id', $_POST['dept_id']);
+				
+			//保存登录信息
+			$User = M('User');
+			$ip = get_client_ip();
+			$time = time();
+			$data = array();
+			$data['id'] = $_POST['id'];
+			$data['last_login_time'] = $time;
+			$data['login_count'] = array('exp', 'login_count+1');
+			$data['last_login_ip'] = $ip;
+				
+// 			if(is_mobile_request()){//如果是手机端登录，则返回id和token
+// 				$data['last_mobile_login_time'] = $time;
+// 				$User -> save($data);
+// 				$this -> assign('jumpUrl', U("index/index"));
+// 				$this -> assign('id', $auth_info['id']);
+// 				$this -> assign('token', md5($auth_info['password'].md5($time)));
+// 				$this -> display();
+// 			}
+			$User -> save($data);
+			$this ->ajaxReturn(1,1,1);
+		}
+		$this ->ajaxReturn(0,0,0);
+	}
 }
 ?>

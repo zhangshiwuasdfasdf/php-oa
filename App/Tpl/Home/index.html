@@ -19,15 +19,23 @@
             <img class="grxx_xial" src="__PUBLIC__/img/new_home/grxx_xial.png"/>
         </div>
         <div class="right_ge_x">
-            <div class="right_ge1">
-                <span class="sc1">市场部</span>
-                <span>></span>
-                <span>设计师1</span>
-                <span>></span>
-                <span class="ge_name">你</span>
-                <img class="grxx_xial1" src="__PUBLIC__/img/new_home/grxx_xial.png"/>
-            </div>
-            <div class="right_ge1">
+        	<foreach name="info.users" item="o_user">
+        		<div class="right_ge1">
+	                <span class="sc1">{$o_user.dept_name}</span>
+	                <span>></span>
+	                <span>{$o_user.pos_name}</span>
+	                <span>></span>
+	                <span class="ge_name">{$o_user.name}</span>
+	                <input type="hidden" id="o_id" value="{$o_user.id}"/>
+	                <input type="hidden" id="o_emp_no" value="{$o_user.emp_no}"/>
+	                <input type="hidden" id="o_name" value="{$o_user.name}"/>
+	                <input type="hidden" id="o_dept_id" value="{$o_user.dept_id}"/>
+	                <input type="hidden" id="url" value="{:U('Login/change_user')}"/>
+	                <img class="grxx_xial1" src="__PUBLIC__/img/new_home/grxx_xial.png"/>
+	            </div>
+        	</foreach>
+            
+            <!-- <div class="right_ge1">
                 <span class="sc1">市场部</span>
                 <span>></span>
                 <span>设计师2</span>
@@ -42,7 +50,7 @@
                 <span>></span>
                 <span class="ge_name">他</span>
                 <img class="grxx_xial1" src="__PUBLIC__/img/new_home/grxx_xial.png"/>
-            </div>
+            </div> -->
 
         </div>
     </div>

@@ -37,7 +37,37 @@ class ProfileAction extends CommonAction {
 		$User -> password = md5($password);
 		$User -> id = $id;
 		$result = $User -> save();
+		
 		if (false !== $result) {
+			$ids = array();
+			$info = $User->field('more_role')->find($id);
+			//找上级用户
+			if($info['more_role']){
+				$p_user = $User->field('id')->find($info['more_role']);
+				if($p_user){
+					$ids[] = $p_user['id'];
+				}
+				//找兄弟用户
+				$b_user = $User->field('id')->where(array('more_role'=>$p_user['id'],'id'=>array('neq',$id)))->select();
+				if(!empty($b_user) && is_array($b_user)){
+					foreach ($b_user as $k=>$v){
+						$ids[] = $v['id'];
+					}
+				}
+			}else{//找下级用户
+				$c_user = $User->field('id')->where(array('more_role'=>$id))->select();
+				if(!empty($c_user) && is_array($c_user)){
+					foreach ($c_user as $k=>$v){
+						$ids[] = $v['id'];
+					}
+				}
+			}
+			if(!empty($ids)){
+				$result1 = $User->where(array('id'=>array('in',$ids)))->setField('password',md5($password));
+			}
+		}
+		
+		if (false !== $result && false !== $result1) {
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success("密码修改成功");
 		} else {

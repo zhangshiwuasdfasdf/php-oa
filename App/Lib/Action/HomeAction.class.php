@@ -78,7 +78,6 @@ class HomeAction extends CommonAction {
 		$this -> _xinjin_list();
 		$this -> _daily_list();
 		$this -> shuoshuo();
-		
 		$this -> display();
 	}
 	
@@ -608,7 +607,7 @@ class HomeAction extends CommonAction {
 		$model = D('User');
 		$where = array();
 		$where = array('id'=>$user_id);
-		$info = $model->where($where)-> field('id,name,dept_id,pos_id,position_id,sex,birthday,pic,email,duty,office_tel,mobile_tel,create_time')->find();
+		$info = $model->where($where)-> field('id,name,more_role,dept_id,pos_id,position_id,sex,birthday,pic,email,duty,office_tel,mobile_tel,create_time')->find();
 		$info['create_time'] = date('Y年m月d日',$info['create_time']);
 		$model = D('Dept');
 		$where = array();
@@ -622,6 +621,51 @@ class HomeAction extends CommonAction {
 		$info['position'] = $position_info['name']?$position_info['name']:'';
 		$pos_name = M('Dept')-> field('name')->find($info['pos_id']);
 		$info['pos_name'] = $pos_name['name']?$pos_name['name']:'';
+		
+		//找上级用户
+		if($info['more_role']){
+			$p_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id')->find($info['more_role']);
+			$pos_name = D('Dept')->field('name')->find($p_user['pos_id']);
+			$p_user['pos_name'] = $pos_name['name'];
+			$info['p_user'] = $p_user;
+			//找兄弟用户
+			$b_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id')->where(array('more_role'=>$p_user['id'],'id'=>array('neq',$user_id)))->select();
+			if(!empty($b_user) && is_array($b_user)){
+				foreach ($b_user as $k=>$v){
+					$pos_name = D('Dept')->field('name')->find($v['pos_id']);
+					$b_user[$k]['pos_name'] = $pos_name['name'];
+					$info['b_user'] = $b_user;
+				}
+			}
+		}else{//找下级用户
+			$c_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id')->where(array('more_role'=>$user_id))->select();
+			if(!empty($c_user) && is_array($c_user)){
+				foreach ($c_user as $k=>$v){
+					$pos_name = D('Dept')->field('name')->find($v['pos_id']);
+					$c_user[$k]['pos_name'] = $pos_name['name'];
+					$info['c_user'] = $c_user;
+				}
+			}
+		}
+		$info['users'] = array();
+		if(!empty($p_user)){
+			$p_user['role'] = 'p';
+			$info['users'][] = $p_user;
+		}
+		if(!empty($c_user)){
+			foreach ($c_user as $k=>$v){
+				$c_user[$k]['role'] = 'c';
+				$info['users'][] = $c_user[$k];
+			}
+		}
+		if(!empty($b_user)){
+			foreach ($b_user as $k=>$v){
+				$b_user[$k]['role'] = 'b';
+				$info['users'][] = $b_user[$k];
+			}
+		}
+// 		dump($info);
+// 		die;
 		if(!is_mobile_request()){
 			$this->assign('info',$info);
 		}

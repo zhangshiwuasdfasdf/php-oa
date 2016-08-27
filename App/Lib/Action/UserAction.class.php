@@ -138,10 +138,13 @@ class UserAction extends CommonAction {
 			$model ->letter=get_letter($model ->name);
 			$model ->password=md5('123456');
 			
+			if($_POST['more_role'] == '1' || $_POST['pid_uid'] > 0){
+				$model ->more_role = $_POST['pid_uid'];
+			}
 			if ($result = $model -> add()){
 				$data['id']=$result;
 				M("UserConfig")->add($data);
-
+				
 				$model = D("Role");
 				$model -> del_role($result);
 				$role_list = $model->where(array('name'=>array('eq','基本权限')))->getField('id');
@@ -267,6 +270,15 @@ class UserAction extends CommonAction {
 	public function bindVerify(){
 		$zh = $_POST['zh'];
 		$this ->ajaxReturn("aaa");
+	}
+	public function check_user_name(){
+		if($_POST['user_name']){
+			$user = M('User')->field('id')->where(array('emp_no'=>$_POST['user_name'],'more_role'=>0))->find();
+			if($user){
+				$this ->ajaxReturn(1,$user['id'],1);
+			}
+		}
+		$this ->ajaxReturn(0,null,0);
 	}
 }
 ?>

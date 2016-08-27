@@ -105,16 +105,17 @@
 					</td>
 					<th>是否关联账号</th>
 					<td>
-					<select class="form-control col-10"  name="more-role" id="is_del" onchange="moreRole();" style="float:left;">
+					<select class="form-control col-10"  name="more_role" id="is_del" onchange="moreRole();" style="float:left;">
 						<option  value="0">不是</option>
 						<option value="1">是</option>
 					</select>
-					<input type="text" id="more_zh" name="more_zh" class="input-sm display-none" style="float:left;margin-left: 10px;" placeholder="请输入主账号的用户名">
+					<input type="text" id="more_zh" name="more_zh" class="input-sm display-none" style="float:left;margin-left: 10px;" placeholder="请输入主账号的用户名" onchange="check($(this).val())">
+					<input type="hidden" name="pid_uid" id="pid_uid" value="0"/>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="4">
-						<input type="submit" class="btn btn-sm btn-primary" value="新增"/>
+						<input type="button" onclick="save()" class="btn btn-sm btn-primary" value="新增"/>
 						<input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
 					</td>
 				</tr>
