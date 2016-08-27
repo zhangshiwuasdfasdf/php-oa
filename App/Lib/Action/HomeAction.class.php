@@ -632,27 +632,27 @@ class HomeAction extends CommonAction {
 		
 		//找上级用户
 		if($info['more_role']){
-			$p_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id')->find($info['more_role']);
+			$p_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id,duty')->find($info['more_role']);
 			$pos_name = D('Dept')->field('name')->find($p_user['pos_id']);
 			$p_user['pos_name'] = $pos_name['name'];
 			$info['p_user'] = $p_user;
 			//找兄弟用户
-			$b_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id')->where(array('more_role'=>$p_user['id'],'id'=>array('neq',$user_id)))->select();
+			$b_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id,duty')->where(array('more_role'=>$p_user['id'],'id'=>array('neq',$user_id)))->select();
 			if(!empty($b_user) && is_array($b_user)){
-				foreach ($b_user as $k=>$v){
-					$pos_name = D('Dept')->field('name')->find($v['pos_id']);
-					$b_user[$k]['pos_name'] = $pos_name['name'];
-					$info['b_user'] = $b_user;
-				}
+// 				foreach ($b_user as $k=>$v){
+// 					$pos_name = D('Dept')->field('name')->find($v['pos_id']);
+// 					$b_user[$k]['pos_name'] = $pos_name['name'];
+// 				}
+				$info['b_user'] = $b_user;
 			}
 		}else{//找下级用户
-			$c_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id')->where(array('more_role'=>$user_id))->select();
+			$c_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id,duty')->where(array('more_role'=>$user_id))->select();
 			if(!empty($c_user) && is_array($c_user)){
-				foreach ($c_user as $k=>$v){
-					$pos_name = D('Dept')->field('name')->find($v['pos_id']);
-					$c_user[$k]['pos_name'] = $pos_name['name'];
-					$info['c_user'] = $c_user;
-				}
+// 				foreach ($c_user as $k=>$v){
+// 					$pos_name = D('Dept')->field('name')->find($v['pos_id']);
+// 					$c_user[$k]['pos_name'] = $pos_name['name'];
+// 				}
+				$info['c_user'] = $c_user;
 			}
 		}
 		$info['users'] = array();
@@ -672,8 +672,7 @@ class HomeAction extends CommonAction {
 				$info['users'][] = $b_user[$k];
 			}
 		}
-// 		dump($info);
-// 		die;
+		
 		if(!is_mobile_request()){
 			$this->assign('info',$info);
 		}
