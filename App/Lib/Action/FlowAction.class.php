@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class FlowAction extends CommonAction {
-	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'admin', 'report' => 'admin','ajaxgetflow' =>'admin','ajaxgettime' =>'admin','editflow' =>'admin','export_office_supplies_application'=>'admin','import_office_supplies_application'=>'admin','export_goods_procurement_allocation'=>'admin','import_goods_procurement_allocation'=>'admin','del'=>'write','winpop_goods'=>'admin','getlist'=>'read','get_dept_child'=>'read'));
+	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'read', 'report' => 'read','ajaxgetflow' =>'read','ajaxgettime' =>'read','editflow' =>'read','export_office_supplies_application'=>'read','import_office_supplies_application'=>'read','export_goods_procurement_allocation'=>'read','import_goods_procurement_allocation'=>'read','del'=>'write','winpop_goods'=>'read','getlist'=>'read','get_dept_child'=>'read'));
 
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
