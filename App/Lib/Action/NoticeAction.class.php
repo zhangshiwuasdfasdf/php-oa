@@ -174,11 +174,11 @@ class NoticeAction extends CommonAction {
 		$fid = $_REQUEST['fid'];
 		$this -> assign('folder', $fid);
 		//部门查看权限
-		if(in_array($fid , array('72','74','94','96'))){
+		if(in_array($fid , array('72','74','94','96','97'))){
 			$this ->assign('ckdept','1');
 		}
 		//企业概况
-		if(in_array($fid , array('68','96'))){
+		if(in_array($fid , array('68','96','97'))){
 			$this -> assign('ckfile','1');
 		}
 		//工作计划
@@ -216,7 +216,7 @@ class NoticeAction extends CommonAction {
 		$model = M("Notice");
 		$folder_id = $model -> where("id=$id") -> getField('folder');		
 		$this -> assign("auth", $auth = D("SystemFolder") -> get_folder_auth($folder_id));
-			//获得已经签收人员名字
+		//获得已经签收人员名字
 		$User = M('Notice_sign');
 		$signlist = $User->where("notice_id=$id")->select();
 		$this->assign('signlist',$signlist);
@@ -239,7 +239,7 @@ class NoticeAction extends CommonAction {
 	public function folder() {
 		$folder_id = $_REQUEST['fid'];
 		//有可见部门
-		if(in_array($folder_id , array('72','74','94','96'))){
+		if(in_array($folder_id , array('72','74','94','96','97'))){
 			$this -> inform($folder_id);die;
 		}
 		//今日头条/公司新闻添加审批状态
@@ -284,7 +284,7 @@ class NoticeAction extends CommonAction {
 	public function inform($folder_id){
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
-		
+		//工作计划
 		if($folder_id == '94'){
 			$this -> assign('ckplan', '1');
 		}
@@ -315,16 +315,20 @@ class NoticeAction extends CommonAction {
 			$parent_list[] = $Parentid;
 			$Parentid = getParentDept(null,$Parentid);
 		}
-		
+		$user_id = get_user_id();
 		foreach ($res as $k=>$v){
-			$tmp = explode(';',$v['read']);
+			$tmp = array_filter(explode(';',$v['read']));
 			$res[$k]['can'] = false;
 			foreach ($tmp as $kk => $vv){
+				if($vv === "-1" && $user_id == 2){//谢总可以看 
+					$res[$k]['can'] = true;
+					break;
+				}
 				if(in_array($vv,$parent_list)){
 					$res[$k]['can'] = true;
 					break;
 				}
-			}	
+			}
 		}
 		foreach ($res as $k => $v){
 			if(!$v['can']){

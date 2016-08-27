@@ -44,11 +44,17 @@
 	<script src="__PUBLIC__/js/respond.min.js"></script>
 	<![endif]-->
 	<include file="Public:script" />
+	
+	<!-- 新版js -->
+	<script type="text/javascript" src="__PUBLIC__/js/jquery-1.12.3.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/new_home/index.js"></script>
+	<script src="__PUBLIC__/js/new_home/pbl.js"></script>
+	<script src="__PUBLIC__/js/common.js"></script>
 
 </head>
 <body>
 	<div class="shade"></div>
-	<include file="Layout:ace_header" />
+	<include file="Layout:ace_header_new_top" />
 		<div class="main-container" id="main-container">
 			<div class="main-container-inner">
 				<!--<div class="sidebar" id="sidebar">	
@@ -61,7 +67,7 @@
 					</div>
 					{:W('Nav',array('tree'=>$left_menu,'new_count'=>$new_count))}
 				</div>
-				--><div class="main-content">
+				--><div class="main-content" style="margin-top: 160px;margin-left: 0px;">
 					<div class="breadcrumbs" id="breadcrumbs">
 						<ul class="breadcrumb">
 							<li>

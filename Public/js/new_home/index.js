@@ -426,7 +426,6 @@ $(".grxx_xial").click(function(){
 })
 
 $('.right_ge1').click(function(){
-<<<<<<< HEAD
 	var url = $("#url").val();
 	var id = $("#o_id").val();
 	var emp_no = $("#o_emp_no").val();
@@ -451,15 +450,6 @@ $('.right_ge1').click(function(){
 			
 		}
 	});
-	
-=======
-	var m=$(this).children('span').eq(0).html();	
-	var n=$(this).children('span').eq(2).html();
-	var o=$(this).children('span').eq(4).html();
-	$(".right_ge").children('span').eq(0).text(m);
-	$(".right_ge").children('span').eq(2).text(n);
-	$(".right_ge").children('a').text(o);
-	$(".right_ge_x").slideUp();
 })
 
 //便签
@@ -480,5 +470,4 @@ $("#i2_2").click(function(){
 	$("#i2_span4").click(function(){
 		$("#i2_bg2").hide();
 	})	
->>>>>>> 8bf4ce42f2a9c47f00fbe5bf233f4a7cac0e8828
 })

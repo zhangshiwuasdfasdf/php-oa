@@ -1,0 +1,55 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'企业公告_全部','search'=>'N'))}
+<div class="ul_table">
+	<ul>
+		<li class="thead" style="padding-left:10px">
+			<div class="pull-left">
+				<span class="col-16 ">编号</span>
+				<span class="col-16 ">类型</span>				
+			</div>
+			<div class="pull-right">
+				<span  class="col-9  ">发布时间</span>
+				<span  class="col-6  "> 发布人</span>
+				<span class="col-6  ">状态</span>
+			</div>
+			<div class="autocut auto">
+				标题
+			</div>
+		</li>
+	</ul>
+	<empty name="lists">
+		<ul>
+			<li class="no-data">
+				没找到数据
+			</li>
+		</ul>
+		<else/>
+		<form method="post" action="" name="form_data" id="form_data">
+			<ul>
+				<foreach name="lists" item="vo">
+					<li class="tbody">
+						<div class="pull-left">
+							<span class="col-16 ">{$vo.id}</span>
+							<span class="col-16  "> <if condition="$vo.folder eq 71"> 制度 <else />通知</if></span>
+						</div>
+						<div class="pull-right">
+							<span class="col-9" style="height:20px;">{$vo.create_time|toDate='Y-m-d'}</span>
+							<span class="col-6" style="height:20px;">{$vo.user_name}</span>
+							<span class="col-6" style="height:20px;">
+								<if condition="($vo.is_submit eq 0)"> <a href="{:U('edit','id='.$vo['id'])}" >草稿</a>
+								<else /> 已提交
+								</if>
+							</span>
+						</div>
+						<div class="autocut auto">
+							<a href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
+						</div>
+					</li>
+				</foreach>
+			</ul>
+		</form>
+		<div class="pagination">
+			{$pages}
+		</div>
+	</empty>
+</div>

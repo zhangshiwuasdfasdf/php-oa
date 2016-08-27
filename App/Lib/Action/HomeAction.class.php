@@ -303,10 +303,15 @@ class HomeAction extends CommonAction {
 			$parent_list[] = $Parentid;
 			$Parentid = getParentDept(null,$Parentid);
 		}
+		$user_id = get_user_id();
 		foreach ($res as $k=>$v){
 			$tmp = array_filter(explode(';',$v['read']));
 			$res[$k]['can'] = false;
 			foreach ($tmp as $kk => $vv){
+				if($vv === "-1" && $user_id == 2){//谢总可以看 
+					$res[$k]['can'] = true;
+					break;
+				}
 				if(in_array($vv,$parent_list)){
 					$res[$k]['can'] = true;
 					break;
@@ -320,6 +325,7 @@ class HomeAction extends CommonAction {
 		$weidu = array();//公告未读
 		$survey = array();//企业概况
 		$staff_activity = array();//员工活动
+		$ckframe = array();//组织框架
 		//企业公告->未读
 		$arr_read = array_filter(explode(",", get_user_config("readed_notice")));
 		foreach ($res as $k => $v){
@@ -339,7 +345,9 @@ class HomeAction extends CommonAction {
 			}
 			if($v['folder'] == 68){$survey[] = $v;}
 			if($v['folder'] == 96){$staff_activity[] = $v;}
+			if($v['folder'] == 97){$ckframe[] = $v;};
 		}
+		$this -> assign('ckfram' , $ckframe[0]);
 		//今日头条与公司新闻
 		$ni = 0;
 		$nt = 1;
@@ -375,7 +383,7 @@ class HomeAction extends CommonAction {
 		}
 		
 		/*echo '<pre>';
-		dump($parent_list);
+		dump($ckframe[0]);
 		echo '</pre>';die;*/
 		
 		$this -> assign('news_notice',$news_notice);//今日头条与公司新闻

@@ -31,10 +31,10 @@
 		if ( type = $("input[name='type']:checked").val() == "notice") {
 			var id = $("#notice a.active").attr("node");
 			var dept_name = $("#notice a.active span").text();
-			var email = "dept@group";
-			var name = dept_name + "&lt;" + email + "&gt;";
 			var html_string = conv_address_item(id, dept_name);
 			$("#addr_list").html(html_string);
+			var html_xiez = conv_address_item("-1", "谢总(谢树济)");
+			$("#addr_list").append(html_xiez);
 		}
 		for (s in result.data) {
 			var id = result.data[s].id;
