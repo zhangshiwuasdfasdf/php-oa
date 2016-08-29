@@ -1,0 +1,450 @@
+<layout name='Layout/ace_layout_new' />
+{:W('PageHeader',array('name'=>'oa问题反馈','search'=>'N'))}
+<form method="post" name="form_adv_search" id="form_adv_search">
+	<div class="adv_search panel panel-default  display-none"  id="adv_search">
+		<div class="panel-heading">
+			<div class="row">
+				<h4 class="col-xs-6">高级搜索</h4>
+				<div class="col-xs-6 text-right">
+					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+					<a  class="btn btn-sm " onclick="close_adv_search();">关闭</a>
+				</div>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="eq_problem_no">问题编号：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="problem_no" name="problem_no" >
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="dept_id_0">提交人部门：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_dept_id_0" id="eq_dept_id_0">
+						<option value="">选择部门</option>
+						{$dept_list}
+					</select>
+				</div>
+			</div>
+			<!-- <div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="dept_id_1">岗位：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="eq_dept_id_1" id="eq_dept_id_1">
+						<option value="">选择岗位</option>
+					</select>
+				</div>
+			</div> -->
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="li_user_name">提交人：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="user_name" name="user_name" >
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="eq_me">只显示自己提交的：</label>
+				<div class="col-sm-8">
+					<input type="radio" type="text" id="me" name="me" value="1"/>是
+					<input type="radio" type="text" id="me" name="me" value="0"/>否
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="li_deal_user_name">处理人：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="deal_user_name" name="deal_user_name" >
+				</div>
+			</div>
+			
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="type">类型：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="type" id="type">
+						<option value="">选择部门</option>
+						{$type_list}
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="status">状态：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="status" id="status">
+						<option value="">选择状态</option>
+						{$status_list}
+					</select>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label" for="li_title">标题：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="title" name="title" >
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-right">
+			<a class="btn btn-sm btn-primary" onclick="open_and_show_dept()">查看</a>
+			<a class="btn btn-sm btn-primary" onclick="add()">新建</a>
+		</div>
+	</div>
+</div>
+<div class="yy_f" style="z-index:10;position:fixed;width:100%;height:100%;top:0;left:0;background:rgba(0,0,0,0.4);display:none;">
+<div id="cal" class="yy" style="display:none;" uid>
+	<img src="__PUBLIC__/img/img/gbzz.png" class="gbzz2">
+	<div id="top" class="operate panel panel-default" style="width:550px;">
+		<div class="panel-body">
+			<div class="pull-left">
+				<a id="panel" class="btn btn-sm btn-primary"></a>
+				<a onclick="pushBtm('MU');showdata($('.yy').attr('uid'))" class="btn btn-sm btn-primary"><i class="fa fa-chevron-left"></i></a>
+				<a onclick="pushBtm('MD');showdata($('.yy').attr('uid'))" class="btn btn-sm btn-primary"><i class="fa fa-chevron-right"></i></a>
+				<!-- <a onclick="pushBtm('');showdata($('.yy').attr('uid'))" class="btn btn-sm btn-primary">今天</a> -->
+				<input type="text" name="start_date" id="start_date" style="display:none">
+				<input type="text" name="end_date" id="end_date" style="display:none">
+			</div>
+			<div class="pull-right">
+				<!-- <a onclick="month_view();" class="btn btn-sm btn-primary">月视图</a>
+				<a onclick="day_view();" class="btn btn-sm btn-primary">日视图</a> -->
+			</div>
+		</div>
+	</div>
+	<form method="post" action="" name="CLD">
+		<div style="display:none">
+			<font>公历
+				<select id="year" onchange=changeCld() name=SY>
+					<script language=JavaScript>
+						for ( i = 1900; i < 2050; i++)
+							document.write('<option>' + i)
+					</script>
+				</select>年
+				<select id="month" onchange=changeCld() name=SM>
+					<script language=JavaScript>
+						for ( i = 1; i < 13; i++)
+							document.write('<option>' + i)
+					</script>
+				</select>月</font><font id="GZ"></font>
+		</div>
+		<div style="height:400px;width:550px;" class="Schedule">
+			<div class="mv-container" style="min-height:0px;">
+				<table class="mv-daynames-table" cellspacing="0" cellpadding="0">
+					<tbody>
+						<tr>
+							<th title="周日" class="mv-dayname">周日</th>
+							<th title="周一" class="mv-dayname">周一</th>
+							<th title="周二" class="mv-dayname">周二</th>
+							<th title="周三" class="mv-dayname">周三</th>
+							<th title="周四" class="mv-dayname">周四</th>
+							<th title="周五" class="mv-dayname">周五</th>
+							<th title="周六" class="mv-dayname">周六</th>
+						</tr>
+					</tbody>
+				</table>
+				<div class="mv-event-container" id="mvEventContainer">
+					<div class="month-row" style="top: 0%; height: 17.66%;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle   "><span class="left" id="SD0"></span><span class="pull-right hidden-xs" id="LD0"></span></td>
+									<td class="st-dtitle  "><span class="left" id="SD1"></span><span class="pull-right hidden-xs" id="LD1"></span></td>
+									<td class="st-dtitle  "><span class="left" id="SD2"></span><span class="pull-right hidden-xs" id="LD2"></span></td>
+									<td class="st-dtitle  "><span class="left" id="SD3"></span><span class="pull-right hidden-xs" id="LD3"></span></td>
+									<td class="st-dtitle "><span class="left" id="SD4"></span><span class="pull-right hidden-xs" id="LD4"></span></td>
+									<td class="st-dtitle "><span class="left" id="SD5"></span><span class="pull-right hidden-xs" id="LD5"></span></td>
+									<td class="st-dtitle "><span class="left" id="SD6"></span><span class="pull-right hidden-xs" id="LD6"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL0"></ul></td>
+									<td class="st-c "><ul id="UL1"></ul></td>
+									<td class="st-c "><ul id="UL2"></ul></td>
+									<td class="st-c "><ul id="UL3"></ul></td>
+									<td class="st-c "><ul id="UL4"></ul></td>
+									<td class="st-c "><ul id="UL5"></ul></td>
+									<td class="st-c "><ul id="UL6"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="month-row" style="top: 16.6%; height: 17.66%;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle "><span class="left" id="SD7"></span><span class="pull-right hidden-xs" id="LD7"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD8"></span><span class="pull-right hidden-xs" id="LD8"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD9"></span><span class="pull-right hidden-xs" id="LD9"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD10"></span><span class="pull-right hidden-xs" id="LD10"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD11"></span><span class="pull-right hidden-xs" id="LD11"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD12"></span><span class="pull-right hidden-xs" id="LD12"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD13"></span><span class="pull-right hidden-xs" id="LD13"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL7"></ul></td>
+									<td class="st-c "><ul id="UL8"></ul></td>
+									<td class="st-c "><ul id="UL9"></ul></td>
+									<td class="st-c "><ul id="UL10"></ul></td>
+									<td class="st-c "><ul id="UL11"></ul></td>
+									<td class="st-c "><ul id="UL12"></ul></td>
+									<td class="st-c "><ul id="UL13"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="month-row" style="top: 33.33%; height: 17.66%;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle "><span class="left" id="SD14"></span><span class="pull-right hidden-xs" id="LD14"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD15"></span><span class="pull-right hidden-xs" id="LD15"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD16"></span><span class="pull-right hidden-xs" id="LD16"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD17"></span><span class="pull-right hidden-xs" id="LD17"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD18"></span><span class="pull-right hidden-xs" id="LD18"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD19"></span><span class="pull-right hidden-xs" id="LD19"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD20"></span><span class="pull-right hidden-xs" id="LD20"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL14"></ul></td>
+									<td class="st-c "><ul id="UL15"></ul></td>
+									<td class="st-c "><ul id="UL16"></ul></td>
+									<td class="st-c "><ul id="UL17"></ul></td>
+									<td class="st-c "><ul id="UL18"></ul></td>
+									<td class="st-c "><ul id="UL19"></ul></td>
+									<td class="st-c "><ul id="UL20"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="month-row" style="top: 50%; height: 17.66%;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle "><span class="left" id="SD21"></span><span class="pull-right hidden-xs" id="LD21"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD22"></span><span class="pull-right hidden-xs" id="LD22"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD23"></span><span class="pull-right hidden-xs" id="LD23"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD24"></span><span class="pull-right hidden-xs" id="LD24"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD25"></span><span class="pull-right hidden-xs" id="LD25"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD26"></span><span class="pull-right hidden-xs" id="LD26"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD27"></span><span class="pull-right hidden-xs" id="LD27"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL21"></ul></td>
+									<td class="st-c "><ul id="UL22"></ul></td>
+									<td class="st-c "><ul id="UL23"></ul></td>
+									<td class="st-c "><ul id="UL24"></ul></td>
+									<td class="st-c "><ul id="UL25"></ul></td>
+									<td class="st-c "><ul id="UL26"></ul></td>
+									<td class="st-c "><ul id="UL27"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="month-row" style="top: 66.66%;height:17.66%;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle "><span class="left" id="SD28"></span><span class="pull-right hidden-xs" id="LD28"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD29"></span><span class="pull-right hidden-xs" id="LD29"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD30"></span><span class="pull-right hidden-xs" id="LD30"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD31"></span><span class="pull-right hidden-xs" id="LD31"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD32"></span><span class="pull-right hidden-xs" id="LD32"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD33"></span><span class="pull-right hidden-xs" id="LD33"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD34"></span><span class="pull-right hidden-xs" id="LD34"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL28"></ul></td>
+									<td class="st-c "><ul id="UL29"></ul></td>
+									<td class="st-c "><ul id="UL30"></ul></td>
+									<td class="st-c "><ul id="UL31"></ul></td>
+									<td class="st-c "><ul id="UL32"></ul></td>
+									<td class="st-c "><ul id="UL33"></ul></td>
+									<td class="st-c "><ul id="UL34"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="month-row" style="top: 83.33%; bottom: 0px;">
+						<table class="st-bg-table" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-bg ">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+									<td class="st-bg">&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+						<table class="st-grid" cellspacing="0" cellpadding="0">
+							<tbody>
+								<tr>
+									<td class="st-dtitle "><span class="left" id="SD35"></span><span class="pull-right hidden-xs" id="LD35"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD36"></span><span class="pull-right hidden-xs" id="LD36"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD37"></span><span class="pull-right hidden-xs" id="LD37"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD38"></span><span class="pull-right hidden-xs" id="LD38"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD39"></span><span class="pull-right hidden-xs" id="LD39"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD40"></span><span class="pull-right hidden-xs" id="LD40"></span></td>
+									<td class="st-dtitle"><span class="left" id="SD41"></span><span class="pull-right hidden-xs" id="LD41"></span></td>
+								</tr>
+								<tr>
+									<td class="st-c "><ul id="UL35"></ul></td>
+									<td class="st-c "><ul id="UL36"></ul></td>
+									<td class="st-c "><ul id="UL37"></ul></td>
+									<td class="st-c "><ul id="UL38"></ul></td>
+									<td class="st-c "><ul id="UL39"></ul></td>
+									<td class="st-c "><ul id="UL40"></ul></td>
+									<td class="st-c "><ul id="UL41"></ul></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+</form>
+</div>
+</div>
+<div id="fullbg"></div> 
+<div id="dialog"> 
+<p class="close"><a href="#" onclick="closeBg();">关闭</a></p> 
+<div>
+	<div class="content">
+	
+    	<div class="bottom_s">
+            <div class="tops">
+                <span class="top_span">神洲酷奇</span>
+                <img class="top_img" src="__PUBLIC__/img/img/zx.png"/>
+            </div>
+        </div>
+        <ul class="bottom_x">
+        </ul>
+        
+        <div class="zz">
+	        <img src="__PUBLIC__/img/img/gbzz.png" class="gbzz">
+	        <img src="__PUBLIC__/img/img/zzzy.png" class="zzzy">
+	        <div class="zz_1">
+	            <a>姓名</a>
+	            <a>岗位</a>
+	        </div>
+	        <div class="zz_2">
+	        </div>
+	    </div>
+</div>
+    
+</div> 
+</div> 
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-10">部门</span>
+				<span class="col-10">撰写人</span>
+				<span class="col-10">岗位</span>
+				<span class="col-10">日期</span>
+				<span class="col-25">最近评论</span>
+				<span class="col-25">已查看</span>
+			</div>
+			<div class="pull-right">
+				<span class="col-10">状态</span>
+				<span class="col-8">操作</span>
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<form method="post" action="" id="form_data">
+				<foreach name="list" item="vo">
+					<li class="tbody">
+						<div class="pull-left">
+							<span class="col-10">{$vo.dept_name}&nbsp;</span>
+							<span class="col-10">{$vo.user_name}&nbsp;</span>
+							<span class="col-10">{$vo.pos_id|get_dept_name_by_id}&nbsp;</span>
+							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}">{$vo.work_date}&nbsp;</a></span>
+							<span class="col-25">{$daily_report_extension.$key.comment_last}&nbsp;</span>
+							<span class="col-25">{$report.$key.0.look_name} {$report.$key.1.look_name}&nbsp;</span>
+						</div>
+						<div class="pull-right">
+							<span class="col-10">{$vo.is_submit|is_submit}&nbsp;</span>
+							<if condition="($vo.user_id eq $user_id) && ($now_time elt $end_time[$key])">
+								<span class="col-4"><a href="{:U('edit','id='.$vo['id'])}">修改</a></span>
+								<span class="col-4"><a href="{:U('del','id='.$vo['id'])}">删除</a></span>
+							<else/>
+								<span class="col-8"></span>
+							</if>
+						</div>
+					</li>
+				</foreach>
+			</form>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>

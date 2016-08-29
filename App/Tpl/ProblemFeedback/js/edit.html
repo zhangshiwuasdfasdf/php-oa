@@ -1,0 +1,162 @@
+<script>
+	$(document).ready(function() {
+		init_data();
+		init_seq();
+		init_add_link();
+		$(".data.data_1").change(function() {
+			calc_score();
+		});
+		
+		$("select[name='is_need_help[]']").change(function(){
+			if($(this).val()==1){
+				$parent=$(this).parents("div.work_plan");
+				$subject=$parent.find("input[name='plan_subject[]']").val();
+				$item=$parent.find("input[name='plan_item[]']").val();
+				help($subject,$item);
+			}
+		});		
+	});
+
+	function init_data() {
+		<volist name = "last_report_detail"	id = "vo" >	
+		
+		if({$key}>2){
+			add_subject();
+		}
+		$("input[name=subject]:eq({$key})").val("{$vo.subject}");
+		$arr_item = "{$vo.item}";
+		$arr_item = $arr_item.split("|||");
+		$arr_start_time = "{$vo.start_time}".split("|||");
+		$arr_end_time = "{$vo.end_time}".split("|||");
+		$arr_status = "{$vo.status}".split("|||");
+		
+		$k = 0;
+		for (var i in $arr_item) {
+			$item=$(".work_content:eq({$key})");
+			if (i > 1) {
+				$html = $("#sample_item").html();
+				$item.find("div.col-sm-8").append($html);
+			}
+			$item.find("textarea[name=item]:eq(" + $k + ")").text($arr_item[i]);
+			$item.find("select[name=start_time]:eq(" + $k + ") option[value='"+$arr_start_time[i]+"']" ).prop("selected",true);
+			$item.find("select[name=end_time]:eq(" + $k + ") option[value='"+$arr_end_time[i]+"']" ).prop("selected",true);
+			$item.find("select[name=status]:eq(" + $k + ") option[value='"+$arr_status[i]+"']" ).prop("selected",true);
+			$k++;
+		}
+		</volist>
+		<volist name = "last_report_plan"	id = "vo" >		
+		
+		if({$key}>2){
+			add_plan();
+		}
+		
+		 $("input[name='plan_subject[]']:eq({$key})").val("{$vo.subject}");
+		 $("input[name='plan_item[]']:eq({$key})").val("{$vo.item}");
+		 $("select[name='plan_start_time[]']:eq({$key}) option[value='{$vo.start_time}']").prop("selected",true);
+		 $("select[name='plan_end_time[]']:eq({$key}) option[value='{$vo.end_time}']").prop("selected",true);
+		 $("select[name='plan_priority[]']:eq({$key}) option[value='{$vo.priority}']").prop("selected",true);
+		 $("select[name='is_need_help[]']:eq({$key}) option[value='{$vo.is_need_help}']").prop("selected",true);
+		 
+		</volist>		
+	}
+	
+	function set_select($obj,$val){
+		
+	}
+
+	function init_seq() {
+		$key=1;
+		$("#work_content input[name='work_seq[]']").each(function(){
+			$(this).val($key);
+			$key++;
+		});
+		
+		$key=1;
+		$(".work_plan input[name='plan_seq[]']").each(function(){
+			$(this).val($key);
+			$key++;
+		});		
+	}
+
+	function init_add_link() {
+
+	}
+
+	function dec_add(num1, num2) {
+		var reg = /\./i;
+		if (!reg.test(num1) && !reg.test(num2)) {
+			return parseInt(num1) + parseInt(num2);
+		}
+	}
+
+	function calc_score() {
+		$total = 0;
+		$(".data.data_1").each(function() {
+			if ($(this).val() !== '') {
+				$total = dec_add($total, $(this).val());
+			}
+		});
+		$(".data_total.data_1").val($total);
+	}
+
+	function init_input_name() {
+		$row_count = 0;
+		$("#work_content div.work_content").each(function() {
+			$("input[name=subject]", this).attr('name', "subject[]");
+
+			$("textarea[name=item]", this).each(function() {
+				$(this).attr('name', "item_" + $row_count + "[]");
+				$(this).val($(this).val().replace(/\n/g,""));
+			});
+
+			$("select[name=start_time]", this).each(function() {
+				$(this).attr('name', "start_time_" + $row_count + "[]");
+			});
+
+			$("select[name=end_time]", this).each(function() {
+				$(this).attr('name', "end_time_" + $row_count + "[]");
+			});
+
+			$("select[name=status]", this).each(function() {
+				$(this).attr('name', "status_" + $row_count + "[]");
+			});
+			$row_count++;
+		});
+	}
+	
+	function share(){		
+		winopen("{:U('popup/share')}",740,630);
+	}
+
+	function help($subject,$item){
+		winopen(fix_url("{:U('popup/help')}?subject="+$subject+"&item="+$item),740,630);
+	}
+	
+	function add_subject() {
+		$html = $("#sample_subject").html();
+		$("#work_content").append($html);
+		init_seq();
+	}
+
+	function add_item($obj) {
+		$html = $("#sample_item").html();
+		$($obj).parents("div.col-sm-8").append($html);
+	}
+
+	function add_plan() {
+		$html = $("#sample_plan").html();
+		$("#plan").append($html);
+		init_seq();
+
+	}
+
+	function save($submit) {
+		$('#is_submit').val($submit);
+		init_input_name();
+		window.onbeforeunload = null;
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+
+</script>

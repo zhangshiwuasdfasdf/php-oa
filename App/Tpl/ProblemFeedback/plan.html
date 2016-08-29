@@ -1,0 +1,33 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'工作计划','search'=>'N'))}
+<table class="table table-bordered">
+	<tr>
+		<th colspan="6" class="text-center">明日工作计划（A类最重要 B类重要 C类次重要）</th>
+	</tr>
+	<tr>
+		<td class="col-8 text-center">序号</td>
+		<td>主要工作事项</td>
+		<td>计划推荐目标</td>
+		<td class="col-20 text-center">时间安排</td>
+		<td class="col-8 text-center">重要性</td>
+		<td class="col-10 text-center">协助需求</td>
+	</tr>
+	<volist name = "last_report_plan"	id = "vo" >
+		<tr>
+			<td class="text-center">{$i}</td>
+			<td>{$vo.subject}</td>
+			<td>{$vo.item}</td>
+			<td>{$vo.start_time-$vo.end_time}</td>
+			<td >{$vo.priority}</td>
+			<td>{$vo.is_need_help}</td>
+		</tr>
+	</volist>
+	<tr>
+		<td class="text-center">明日目标:</td>
+		<td colspan="5">{$last_report.plan}</td>
+	</tr>
+	<tr>
+		<td class="text-center">附件:</td>
+		<td colspan="5">{:W('File',array('add_file'=>$last_report['add_file'],'mode'=>'show'))}</td>
+	</tr>
+</table>

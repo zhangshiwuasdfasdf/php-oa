@@ -1,0 +1,98 @@
+<layout name='Layout/ace_layout' />
+<style>
+.form-control-static{line-height: 8;font-weight: bold;}
+.ul_table .rr .tbody{background-color:#f1f5fa;}
+</style>
+{:W('PageHeader',array('name'=>'新建工作日报','search'=>'N'))}
+<!-- <div class="operate panel panel-default">
+		<div class="panel-body">
+			<div class="pull-left">
+				<div class="btn-group">
+					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 管理 <b class="fa fa-caret-down"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a onclick="import_daily_report();">导入</a>
+						</li>
+						<li>
+							<a onclick="export_daily_report();">导出模板</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div> -->
+<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="form-horizontal">
+	<input type="hidden" id="ajax" name="ajax" value="0">
+	<input type="hidden" id="add_file" name="add_file">
+	<input type="hidden" id="opmode" name="opmode" value="add">
+	<input type="hidden" id="is_submit" name="is_submit">
+	<div class="ul_table border-bottom">
+		<ul class="rr">
+			<li class="thead">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-6 text-center">
+					<select name="work_date">
+						{:fill_option($work_date_list)}
+					</select>
+					工作日报
+				</div>
+			</li>
+			
+			<li class="tbody">
+				<span class="col-sm-2">
+					<p class="form-control-static text-center">
+						工作总结：
+					</p></span>
+				<div class="col-sm-10">
+					<textarea name="content" class="form-control" style="height:120px;" check="require" msg="请填写工作总结"></textarea>
+				</div>
+			</li>
+			<li class="tbody">
+				<span class="col-sm-2">
+					<p class="form-control-static text-center">
+						未完成工作：
+					</p></span>
+				<div class="col-sm-10">
+					<textarea name="undoo" class="form-control" style="height:120px;"></textarea>
+				</div>
+			</li>
+			
+		</ul>
+	</div>
+	<div class="ul_table border-bottom">
+		<ul class="rr">
+			<li class="tbody">
+				<span class="col-sm-2">
+					<p class="form-control-static text-center">
+						明日计划:
+					</p></span>
+				<div class="col-sm-10">
+					<textarea name="plan" class="form-control" style="height:120px;" check="require" msg="请填写明日计划"></textarea>
+				</div>
+			</li>
+			<li class="tbody">
+				<span class="col-sm-2">
+					<p class="form-control-static text-center">
+						意见/建议:
+					</p></span>
+				<div class="col-sm-10">
+					<textarea name="suggest" class="form-control" style="height:120px;"></textarea>
+				</div>
+			</li>
+			<li class="tbody">
+				<span class="col-sm-2">
+					<p class="form-control-static text-center">
+						附件：
+					</p></span>
+				<div class="col-sm-10">
+					{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'add'))}
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="action text-center">
+		<input class="btn btn-sm btn-primary" type="button" value="临时保存" onclick="save(0);">
+		<input class="btn btn-sm btn-primary" type="button" value="提交日报" onclick="save(1);">
+		<input class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
+	</div>
+</form>

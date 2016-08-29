@@ -1,0 +1,263 @@
+<script type="text/javascript" src="__PUBLIC__/js/calendar2.js"></script>
+<script type="text/javascript">
+	function add() {
+		window.open("{:U('add')}", "_self");
+	}
+	$(document).ready(function() {
+		set_return_url();
+		toggle_adv_search();
+	});
+	function showBg() { 
+		var bh = $("body").height(); 
+		var bw = $("body").width(); 
+		$("#fullbg").css({ 
+		height:bh, 
+		width:bw, 
+		display:"block" 
+		}); 
+		$("#dialog").show(); 
+		} 
+		//关闭灰色 jQuery 遮罩 
+		function closeBg() { 
+			$("#fullbg,#dialog").hide(); 
+			$(document.body).css({
+			   "overflow-x":"auto",
+			   "overflow-y":"auto"
+			 });
+		} 
+		
+	function open_and_show_dept(){
+		$.ajax({
+			type:'get', 
+			url: "{:U('get_real_dept')}",
+			dataType: "json",
+			success: function(result){
+				$(".bottom_x").html(result);
+				w();
+				//console.log(JSON.stringify(result));
+				showBg();
+				$(document.body).css({
+				   "overflow-x":"hidden",
+				   "overflow-y":"hidden"
+				 });
+				$('.bottom_x_ej li').click(function(){
+					$(".zz_2").html('');
+					var dept_id = $(this).attr('id');
+					$.ajax({
+						type:'get', 
+						url: "{:U('get_username_by_dept')}",
+						data:{dept_id:dept_id},
+						dataType: "json",
+						success: function(result){
+							//console.log(JSON.stringify(result));
+							var html = '';
+							for(var i = 0;i<result.length;i++){
+								html+='<a class="name" id="'+result[i].id+'">'+result[i].name+'</a>';
+								html+='<a>'+result[i].pos_name+'</a>';
+							}
+							$(".zz_2").html(html);
+							$('.name').click(function(){
+								get_daily_report_rili_by_id($(this).attr('id'));
+								//alert($(this).attr('id'));
+								$(".yy").attr('style','display:block');
+								$(".yy_f").show();
+							})
+						},
+						error:function(e){
+						}
+					});
+					
+				    $('.bottom_x_ej li').index(this)
+				    var l=$(this).width()+15
+				    var h=$(this).height()-$(this).children('a').height()
+				    var top1 = $("#dialog").scrollTop();
+				    var left1 = $("#dialog").scrollLeft();
+				    /*
+				    $("#dialog").scroll(function(){
+						$(".zz").scrollTop($("#dialog").scrollTop())	
+					})
+					
+					$("#dialog").scroll(function(){
+						$(".zz").scrollLeft($("#dialog").scrollLeft())	
+					})
+					*/
+					
+					$('.bottom_yj_a').index(this)
+					var l1 = $(".content").offset().left;
+					var t1 = $(".content").offset().top;
+				    var l=$(this).width()+15
+				    
+				    var m=$(this).offset().left+l-l1
+				    var n=$(this).offset().top+h-2-t1
+				    $('.zz').show()
+				    $('.zz').css({left:m,top:n})
+				})
+				$('.gbzz').click(function(){
+				    $('.zz').hide()
+				})
+				$('.gbzz2').click(function(){
+				    $('.yy').hide()
+				    $('.yy_f').hide()
+				})
+				$('.bottom_yj_a').click(function(){
+					$(".zz_2").html('');
+					var dept_id = $(this).attr('id');
+					$.ajax({
+						type:'get', 
+						url: "{:U('get_username_by_dept')}",
+						data:{dept_id:dept_id},
+						dataType: "json",
+						success: function(result){
+							var html = '';
+							for(var i = 0;i<result.length;i++){
+								html+='<a class="name" id="'+result[i].id+'">'+result[i].name+'</a>';
+								html+='<a>'+result[i].pos_name+'</a>';
+							}
+							$(".zz_2").html(html);
+							$('.name').click(function(){
+								get_daily_report_rili_by_id($(this).attr('id'));
+								$(".yy").attr('style','display:block');
+								$(".yy_f").show();
+							})
+						},
+						error:function(e){
+						}
+					});
+					$('.bottom_yj_a').index(this)
+					var l1 = $(".content").offset().left;
+					var t1 = $(".content").offset().top;
+				    var l=$(this).width()+15
+				    var m=$(this).offset().left+l+2-l1
+				    var n=$(this).offset().top-t1
+					
+				    $('.zz').show()
+				    $('.zz').css({left:m,top:n})
+				})
+				//show
+			},
+			error:function(e){
+				console.log(JSON.stringify(e));
+			}
+		});
+		
+	}
+	function get_username_by_dept(dept_id){
+		//var dept_id = $(this).val();
+		$.ajax({
+			type:'get', 
+			url: "{:U('get_username_by_dept')}",
+			data:{dept_id:dept_id},
+			dataType: "json",
+			success: function(result){
+				return result;
+				//console.log(JSON.stringify(result));
+				//popDiv(form);
+				//show
+			},
+			error:function(e){
+				//console.log(JSON.stringify(e));
+			}
+		});
+	}
+	$("#eq_dept_id_0").change(function () {
+		var dept_id_0 = $(this).val();
+		$.ajax({
+			type:'get', 
+			url: "{:U('get_dept_child')}",
+			data:{dept_id_0:dept_id_0},
+			dataType: "json",
+			success: function(result){
+				$("#eq_dept_id_1").html('<option value="">选择岗位</option>'+result);
+			},
+			error:function(e){
+				$("#eq_dept_id_1").html('<option value="">选择岗位</option>');
+			}
+		});
+	});
+	$('#start_month').datepicker({
+		format: 'yyyy-mm-dd',
+      	weekStart: 0,
+      	autoclose: true,
+      	todayBtn: 'linked',
+      	language: 'zh-CN'
+	});
+	$('#end_month').datepicker({
+	  	format: 'yyyy-mm-dd',
+      	weekStart: 0,
+      	autoclose: true,
+      	todayBtn: 'linked',
+      	language: 'zh-CN'
+	});
+	function w(){
+		var m=$("li[class='bottom_x_li']").length
+		var v=108
+		//alert(v);
+		var n=m*v-(v-1)
+		$(".bottom_s").css('width',n)
+		var p = m*v
+		$(".content").css('width',p+200);
+	}
+	
+	$('.zz').hide()
+	function get_daily_report_rili_by_id(uid){
+		showdata(uid);
+	}
+
+	var upload_url = "/php-oa/index.php?m=schedule&a=upload";
+	var del_url = "/php-oa/index.php?m=schedule&a=del_file";
+	var _hmt = _hmt || [];
+	var app_path = "/php-oa";
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?2a935166b0c9b73fef3c8bae58b95fe4";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+		
+	})();
+	
+	initial();
+	function showdata(uid) {
+		$(".yy").attr('uid',uid);
+		y = $("#year").val();
+		m = $("#month").val();
+		$("#panel").html(y + "年" + m + "月");
+		start_date1 = $("#UL0").attr("class").substr(4);
+		end_date1 = $("#UL41").attr("class").substr(4);
+		//console.log(uid);
+		//console.log(JSON.stringify(start_date1));
+		//console.log(JSON.stringify(end_date1));
+		$.getJSON("{:U('json')}", {
+			uid:uid,
+			start_date : start_date1,
+			end_date : end_date1
+		}, function(data) {
+			count = 0;
+			prev_date = '';
+			$(".mv-container ul").html("");
+			//console.log(JSON.stringify(data));
+			if (data != null) {
+				$.each(data, function(i) {
+					html = '<li id=li_' + data[i].id + ' style=background-color:#CCFFCC' + ">";
+					html += '<a id=' + data[i].id + ' class="event_msg" title="' + data[i].user_name + '">';
+					html += '日报';
+					html += ' </a>';
+					html += "</li>";
+					if (prev_date == data[i].work_date.substr(0,10)) {
+						count++;
+						if (count == 4) {
+							$("ul.div_" + data[i].work_date.substr(0,10)).append('<li class=\"all\">显示全部...</li>');
+						}
+					}
+					prev_date = data[i].work_date;
+					$("ul.div_" + data[i].work_date.substr(0,10)).append(html);
+				});
+			}
+		});
+	}
+	$(document).on("click", "a.event_msg", (function() {
+		var msg_list = "";
+		current = $(this).attr('id');
+		window.open("{:U('read')}&id="+current);
+	}));
+	
+</script>
