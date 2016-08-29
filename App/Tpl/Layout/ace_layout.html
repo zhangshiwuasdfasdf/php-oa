@@ -48,10 +48,10 @@
 </head>
 <body>
 	<div class="shade"></div>
-	<include file="Layout:ace_header" />
+	<include file="Layout:ace_header_new" />
 		<div class="main-container" id="main-container">
 			<div class="main-container-inner">
-				<div class="sidebar" id="sidebar">	
+				<!--<div class="sidebar" id="sidebar">	
 					<div id="user_info" class="text-center hidden-xs"  >
 						<span >当前用户：{$Think.session.user_name}</span>
 					</div>
@@ -61,12 +61,12 @@
 					</div>
 					{:W('Nav',array('tree'=>$left_menu,'new_count'=>$new_count))}
 				</div>
-				<div class="main-content">
+				--><div class="main-content" style="margin-top: 160px;margin-left: 120px;">
 					<div class="breadcrumbs" id="breadcrumbs">
 						<ul class="breadcrumb">
 							<li>
 								<i class="fa fa-home home-icon"></i>
-								<a href="/">首页</a>
+								<a href="{:U('home/index')}">首页</a>
 							</li>
 
 							<li>
@@ -167,6 +167,9 @@
 <script src="__PUBLIC__/js/uncompressed/ace.js"></script>
 <script src="__PUBLIC__/js/common.js"></script>
 <include file="$js_file" />
+<!-- 新版js -->
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.12.3.min.js"></script>
+<script src="__PUBLIC__/js/new_home/left.js"></script>
 <!-- inline scripts related to this page -->
 </body>
 </html>

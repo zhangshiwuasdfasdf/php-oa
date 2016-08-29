@@ -25,7 +25,7 @@
 		}
 		init_sort("{$home_sort}");
 	});
-
+	
 	function init_sort(sort_string) {
 		if (sort_string == "") {
 			sort_string = "11,12,13|21,22,23";
@@ -182,8 +182,9 @@
 				}else{
 					ui_info(data.info);
 				}
-				$("#i2_bg1").hide();
 			});
+			$("#i2_bg1").hide();
+			return false;
 		})
 	})
 	$("#i2_2").click(function(){
@@ -203,6 +204,7 @@
 				}
 			});
 			$("#i2_bg2").hide();
+			return false;
 		})	
 	})
 	function select_avatar() {
@@ -211,12 +213,40 @@
 	function showBor(obj){
 		obj.css('border-color','#f59942');
 	}
+	//公司新闻与今日头条
+	function news_noti(){
+		window.open("{:U('notice/folder','fid=95')}", "_self");
+	}
+	//工作计划
+	function plan_notc(){
+		window.open("{:U('notice/folder','fid=94')}", "_self");
+	}
 	//跳转到企业公告所有
 	function qiye_all(){
-		window.open("{:U('ftodo/qiye_all')}", "_blank");
+		window.open("{:U('ftodo/qiye_all')}", "_self");
 	}
 	//企业公告_未读
 	function qiye_unread(){
-		window.open("{:U('ftodo/qiye_unread')}", "_blank");
+		window.open("{:U('ftodo/qiye_unread')}", "_self");
+	}
+	//企业公告_制度
+	function zhidu_list(){
+		window.open("{:U('notice/folder','fid=71')}", "_self");
+	}
+	//企业公告_通知
+	function tonzhi_list(){
+		window.open("{:U('notice/folder','fid=72')}", "_self");
+	}
+	//代办事项
+	function daiban_list(){
+		window.open("{:U('ftodo/index')}", "_self");
+	}
+	//企业概况
+	function gaik_list(){
+		window.open("{:U('notice/folder','fid=68')}", "_self");
+	}
+	//企业概况
+	function huodong_list(){
+		window.open("{:U('notice/folder','fid=96')}", "_self");
 	}
 </script>
