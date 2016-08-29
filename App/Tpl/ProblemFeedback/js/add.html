@@ -1,0 +1,118 @@
+<script>
+	$(document).ready(function() {
+		init_seq();		
+		$(".data.data_1").change(function() {
+			calc_score();
+		});
+
+		$("select[name='is_need_help[]']").change(function(){
+			if($(this).val()==1){
+				$parent=$(this).parents("div.work_plan");
+				$subject=$parent.find("input[name='plan_subject[]']").val();
+				$item=$parent.find("input[name='plan_item[]']").val();
+				help($subject,$item);
+			}
+		});		
+	});
+
+	function init_seq() {
+		$key=1;
+		$("#work_content input[name='work_seq[]']").each(function(){
+			$(this).val($key);
+			$key++;
+		});
+		
+		$key=1;
+		$(".work_plan input[name='plan_seq[]']").each(function(){
+			$(this).val($key);
+			$key++;
+		});		
+	}
+
+	function dec_add(num1, num2) {
+		var reg = /\./i;
+		if (!reg.test(num1) && !reg.test(num2)) {
+			return parseInt(num1) + parseInt(num2);
+		}
+	}
+
+	function calc_score() {
+		$total = 0;
+		$(".data.data_1").each(function() {
+			if ($(this).val() !== '') {
+				$total = dec_add($total, $(this).val());
+			}
+		});
+		$(".data_total.data_1").val($total);
+	}
+
+	function init_input_name() {
+		$row_count = 0;
+		$("#work_content div.work_content").each(function() {
+			$("input[name=subject]", this).attr('name', "subject[]");
+
+			$("textarea[name=item]", this).each(function() {
+				$(this).attr('name', "item_" + $row_count + "[]");
+				$(this).val($(this).val().replace(/\n/g,""));
+			});
+
+			$("select[name=start_time]", this).each(function() {
+				$(this).attr('name', "start_time_" + $row_count + "[]");
+			});
+
+			$("select[name=end_time]", this).each(function() {
+				$(this).attr('name', "end_time_" + $row_count + "[]");
+			});
+
+			$("select[name=status]", this).each(function() {
+				$(this).attr('name', "status_" + $row_count + "[]");
+			});
+			$row_count++;
+		});
+	}
+	
+
+	function add_subject() {
+		$html = $("#sample_subject").html();
+		$("#work_content").append($html);
+		init_seq();
+	}
+
+	function add_item($obj) {
+		$html = $("#sample_item").html();
+		$($obj).parents("div.col-sm-8").append($html);
+	}
+
+	function add_plan() {
+		$html = $("#sample_plan").html();
+		$("#plan").append($html);
+		init_seq();
+	}
+	
+	function share($content){
+		winopen("{:U('share')}",700,530);
+	}
+	
+	function help($subject,$item){
+		winopen(fix_url("{:U('popup/help')}?subject="+$subject+"&item="+$item),740,630);
+	}
+
+	function save($submit) {
+		$('#is_submit').val($submit);
+		init_input_name();
+		window.onbeforeunload = null;
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save')}");
+		}
+	}
+	
+	function export_daily_report() {
+		window.open("{:U('export_daily_report')}", "_blank");
+		return false;
+	}
+
+	function import_daily_report() {
+		window.open("{:U('import_daily_report')}", "_self");
+		return false;
+	}
+</script>

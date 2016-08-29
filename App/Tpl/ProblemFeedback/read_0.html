@@ -1,0 +1,191 @@
+<layout name='Layout/ace_layout' />
+{:W('PageHeader',array('name'=>'查看工作日报','search'=>'N'))}
+
+<table class="table table-bordered">
+	<tr>
+		<th colspan="5" class="text-center">{$last_report.work_date}工作日报</th>
+	</tr>
+	<tr>
+		<td class="col-11 text-center">序号</td>
+		<td>主要工作事项</td>
+		<td>工作内容</td>
+		<td class="col-20 text-center">工作时间</td>
+		<td class="col-10 text-center">工作进度</td>
+	</tr>
+	<volist name = "last_report_detail"	id = "vo" >
+		<tr>
+			<volist name="vo.item" id="sub_vo" key="k">
+				<tr>
+					<eq name="k" value="1">
+						<td rowspan="{$vo.item|count}" class="text-center">{$i}</td>
+						<td rowspan="{$vo.item|count}">{$vo.subject}</td>
+					</eq>
+					<td>{$sub_vo}</td>
+					<td>{$vo['start_time'][$k-1]}-{$vo['end_time'][$k-1]}</td>
+					<td>
+						<if condition="$vo['status'][$k-1] eq 1"> 进行中 <else/> 已完成 </if>
+					</td>
+				</tr>
+			</volist>
+	</volist>
+	<tr>
+		<td class="text-center"> 今日工作小结 </td>
+		<td colspan="4"> {$last_report.content} </td>
+	</tr>
+	<!--<tr>
+		<td>今日自我评价：
+		每项1-10分</td>
+		<td colspan="4">
+		<table class="table table-bordered">
+			<tr>
+				<td class="text-center col-7">认真</td>
+				<td class="text-center col-7">效率</td>
+				<td class="text-center col-7">坚守承诺</td>
+				<td class="text-center col-7">保证完成任务</td>
+				<td class="text-center col-7">乐观</td>
+				<td class="text-center col-7">自信</td>
+				<td class="text-center col-7">爱与奉献</td>
+				<td class="text-center col-7">绝不找借口</td>
+				<td class="text-center col-7">合计</td>
+			</tr>
+			<tr>
+				<td class="text-center"> {$last_report.score_1} </td>
+				<td class="text-center"> {$last_report.score_2} </td>
+				<td class="text-center"> {$last_report.score_3} </td>
+				<td class="text-center"> {$last_report.score_4} </td>
+				<td class="text-center"> {$last_report.score_5} </td>
+				<td class="text-center"> {$last_report.score_6} </td>
+				<td class="text-center"> {$last_report.score_7} </td>
+				<td class="text-center"> {$last_report.score_8} </td>
+				<td class="text-center"> {$last_report.score_total} </td>
+			</tr>
+		</table></td>
+	</tr>
+--></table>
+
+<table class="table table-bordered">
+	<tr>
+		<th colspan="6" class="text-center">明日工作计划（A类最重要 B类重要 C类次重要）</th>
+	</tr>
+	<tr>
+		<td class="col-8 text-center">序号</td>
+		<td>主要工作事项</td>
+		<td>计划推荐目标</td>
+		<td class="col-20 text-center">时间安排</td>
+		<td class="col-8 text-center">重要性</td>
+		<td class="col-10 text-center">协助需求</td>
+	</tr>
+	<volist name = "last_report_plan"	id = "vo" >
+		<tr>
+			<td class="text-center">{$i}</td>
+			<td>{$vo.subject}</td>
+			<td>{$vo.item}</td>
+			<td>{$vo.start_time}-{$vo.end_time}</td>
+			<td >{$vo.priority}</td>
+			<td>
+			<if condition="$vo.is_need_help eq 1"> 需要协助 <else/> 不需要协助 </if>
+			</td>
+		</tr>
+	</volist>
+	<tr>
+		<td class="text-center">明日目标:</td>
+		<td colspan="5">{$last_report.plan}</td>
+	</tr>
+	<tr>
+		<td class="text-center">附件:</td>
+		<td colspan="5">{:W('File',array('add_file'=>$last_report['add_file'],'mode'=>'show'))}</td>
+	</tr>
+</table>
+{:W('PageHeader',array('name'=>'查看记录','search'=>'N'))}
+<div class="ul_table border-bottom">
+	<ul>
+		<li class="thead">
+			<volist name="report_look" id="item">
+					{$item.look_name}({$item.create_time|toDate='Y-m-d H:i'});&nbsp;&nbsp;&nbsp;
+			</volist>
+		</li>
+	</ul>
+</div>
+
+{:W('PageHeader',array('name'=>"工作指导",'search'=>'N'))}
+	<foreach name="comment" item="vo_comment">
+	<form method='post' id="form_content" name="form_content" enctype="multipart/form-data"   class="well form-horizontal">
+		<div class="form-group col-sm-6">
+			<label class="col-sm-4 control-label" >指导人：</label>
+			<div class="col-sm-8">
+				<p class="form-control-static">
+					{$vo_comment.user_name}
+				</p>
+			</div>
+		</div>
+		<div class="form-group col-sm-6">
+			<label class="col-sm-4 control-label" >日期：</label>
+			<div class="col-sm-8">
+				<p class="form-control-static">
+					{$vo_comment.create_time|toDate="Y-m-d h:m"}
+				</p>
+			</div>
+		</div>
+		<notempty name="vo_comment.add_file">
+		<div class="form-group">
+			<label class="col-sm-2 control-label" >附件：</label>
+			<div class="col-sm-10">
+				<p class="form-control-static">
+					{:W('File',array('add_file'=>$vo_comment['add_file'],'mode'=>'show'))}
+				</p>
+			</div>
+		</div>
+		</notempty>
+		<div class="form-group">
+			<div class="col-sm-12">
+				<div class="content_wrap">
+					<iframe class="content_iframe"></iframe>
+					<textarea class="content" name="content" style="width:100%;display:none">{$vo_comment.content}</textarea>
+				</div>	
+			</div>			
+		</div>
+		<notempty name="vo_comment.reply">
+		<div class="form-group">
+			<div class="col-sm-12">
+				<div class="content_wrap">
+					<iframe class="content_iframe"></iframe>
+					<textarea class="content" name="reply" style="width:100%;display:none">{$vo_comment.reply}</textarea>
+				</div>	
+			</div>			
+		</div>
+		</notempty>
+		<div class="form-group">
+			<div class="col-sm-12">
+				<div class="pull-right">
+					<a onclick="reply_comment({$vo_comment.id})" class="btn btn-sm btn-primary">回复</a>
+					<if condition="$auth['write']">
+						<a onclick="edit_comment({$vo_comment.id});" class="btn btn-sm btn-primary">修改</a>
+					</if>
+					<if condition="$auth['admin']">
+						<a onclick="del_comment({$vo_comment.id});" class="btn btn-sm btn-danger">删除</a>
+					</if>
+				</div>
+			</div>
+		</div>
+	</form>
+	<div class="space-12"></div>
+	</foreach>
+<hr></hr>
+
+<if condition="$last_report['user_id'] neq $uid">
+	{:W('PageHeader',array('name'=>'工作指导','search'=>'N'))}
+	<a id="reply"></a>
+	<form method="post" action="" id="form_data" name="form_data"   class="well form-horizontal">
+		<input type="hidden" id="ajax" name="ajax" value="0">
+		<input type="hidden" id="doc_id" name="doc_id" value="{$last_report.id}">
+		<input type="hidden" id="add_file" name="add_file" value="">
+		<input type="hidden" id="opmode" name="opmode" value="add">
+		<div class="form-group">
+			<textarea  class="editor" name="content" id="content" style="width:100%;height:220px;"></textarea>
+		</div>
+		<div class="action">
+			<input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save_comment();">
+			<input class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
+		</div>
+	</form>
+</if>
