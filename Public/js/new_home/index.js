@@ -13,6 +13,7 @@ $.fn.toggle = function( fn, fn2 ) {
     }
     return this.click( toggle );
   };
+
   
 //日期
 function getNow(){
@@ -32,10 +33,21 @@ function getNow(){
 getNow();
 
 function he(){
+	
 	//left的高度
 	var h0=$(window).height()
 	var h=h0-200
 	$(".left").css('height',h)
+	var h3=h-40//上下各20边距
+	if($(".menu_ul6,.menu_ul4,.menu_ul14").height()>=h){
+		$(".menu_ul6,.menu_ul4").css({'height':h3,'top':180,'width':180})
+		$(".menu_ul14").css('width',180)
+		$('.menu_ul14').css('height',h3)
+	}
+	var wh=$(".menu_ul6").width()+120
+	$(".menu_ul7_0,.menu_ul7,.menu_ul7_3").css('left',wh)
+	var h4=$('.menu_ul14').height()+40
+	$('.menu_ul14').css('top',h4)
 	var hc=h+160	
 	$(".left_ck").css('top',hc)
 	
@@ -49,6 +61,7 @@ function he(){
     
 	$('.right').css('width',w)
 	$("#right_l1,#right_l2,#right_l3,#right_z1,#right_z2,#right_z3,#right_r1,#right_r2_bg,#right_r3").css({'width':st,'padding':q3})
+
 	
 	/*$("#right_l1,#right_l2,#right_l3").css('padding',q2)
 	
@@ -127,6 +140,12 @@ $("#left_a1").toggle(function(){
 	var w=$(".left").width()
 	$(".ani_ss").css({"top":t,"left":w})
 	$(".ani_ss").animate({opacity:1,width:'210px'})
+	$(window).scroll(function(){
+		var j=$(window).scrollTop()
+		var j1=t-j
+		$(".ani_ss").css({"top":j1,"left":w})
+		
+	})
 },function(){
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	}
@@ -140,6 +159,12 @@ $("#left_a2").click(function(){
 	var t=$(this).offset().top
 	var w=$(".left").width()
 	$(".menu_ul2").css({"top":t,"left":w})
+	$(window).scroll(function(){
+		var j=$(window).scrollTop()
+		var j1=t-j
+		$(".menu_ul2").css({"top":j1,"left":w})
+		
+	})
 	$(".menu_ul2").slideToggle()
 })
 $(".menu_li2_a").click(function(){
@@ -155,6 +180,12 @@ $('#left_a3').click(function(){
 	var t=$(this).offset().top-120
 	var w=$(".left").width()
 	$(".menu_ul4").css({"top":t,"left":w})
+	$(window).scroll(function(){
+		var j=$(window).scrollTop()
+		var j1=t-j
+		$(".menu_ul4").css({"top":j1,"left":w})
+		
+	})
 	$(".menu_ul4").slideToggle()
 })
 
@@ -167,6 +198,12 @@ $('#left_a4').click(function(){
 	var t=$(this).offset().top-220
 	var w=$(".left").width()
 	$(".menu_ul6").css({"top":t,"left":w})
+	$(window).scroll(function(){
+		var j=$(window).scrollTop()
+		var j1=t-j
+		$(".menu_ul6").css({"top":j1,"left":w})
+		
+	})
 	$(".menu_ul6").slideToggle()
 })
 $(".menu_li6_a").click(function(){
@@ -174,6 +211,8 @@ $(".menu_li6_a").click(function(){
 	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li6_a").toggleClass("hover_bg6")
+	var t0=$(".menu_ul6").offset().top
+	$(".menu_ul7").css('top',t0)
 	$(".menu_ul7").slideToggle()	
 })
 $(".menu_li6_a1").click(function(){
@@ -181,6 +220,8 @@ $(".menu_li6_a1").click(function(){
 	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li6_a1").toggleClass("hover_bg6")
+	var t0=$(".menu_ul6").offset().top
+	$(".menu_ul7_0").css('top',t0)
 	$(".menu_ul7_0").slideToggle()	
 })
 $(".menu_li6_a2").click(function(){
@@ -189,6 +230,8 @@ $(".menu_li6_a2").click(function(){
 	$(".menu_li6_a,.menu_li6_a1").removeClass("hover_bg6")
 	$()
 	$(".menu_li6_a2").toggleClass("hover_bg6")
+	var t0=$(".menu_ul6").offset().top
+	$(".menu_ul7_3").css('top',t0)
 	$(".menu_ul7_3").slideToggle()	
 })
 
@@ -215,6 +258,12 @@ $('#left_a5').click(function(){
 	var t=$(this).offset().top
 	var w=$(".left").width()
 	$(".menu_ul8").css({"top":t,"left":w})
+	$(window).scroll(function(){
+		var j=$(window).scrollTop()
+		var j1=t-j
+		$(".menu_ul8").css({"top":j1,"left":w})
+		
+	})
 	$(".menu_ul8").slideToggle()
 })
 
@@ -226,6 +275,12 @@ $('#left_a6').click(function(){
 	var t=$(this).offset().top
 	var w=$(".left").width()
 	$(".menu_ul10").css({"top":t,"left":w})
+	$(window).scroll(function(){
+		var j=$(window).scrollTop()
+		var j1=t-j
+		$(".menu_ul10").css({"top":j1,"left":w})
+		
+	})
 	$(".menu_ul10").slideToggle()
 })
 
@@ -237,6 +292,12 @@ $('#left_a7').click(function(){
 	var t=$(this).offset().top
 	var w=$(".left").width()
 	$(".menu_ul12").css({"top":t,"left":w})
+	$(window).scroll(function(){
+		var j=$(window).scrollTop()
+		var j1=t-j
+		$(".menu_ul12").css({"top":j1,"left":w})
+		
+	})
 	$(".menu_ul12").slideToggle()
 })
 
@@ -249,6 +310,12 @@ $('#left_a8').click(function(){
 	var t=$(this).offset().top-t1+76
 	var w=$(".left").width()
 	$(".menu_ul14").css({"top":t,"left":w})
+	$(window).scroll(function(){
+		var j=$(window).scrollTop()
+		var j1=t-j
+		$(".menu_ul14").css({"top":j1,"left":w})
+		
+	})
 	$(".menu_ul14").slideToggle()
 })
 
@@ -261,6 +328,12 @@ $('#left_a9').click(function(){
 	var t=$(this).offset().top-t1+40
 	var w=$(".left").width()
 	$(".menu_ul16").css({"top":t,"left":w})
+	$(window).scroll(function(){
+		var j=$(window).scrollTop()
+		var j1=t-j
+		$(".menu_ul16").css({"top":j1,"left":w})
+		
+	})
 	$(".menu_ul16").slideToggle()
 })
 $(".menu_li16_a").click(function(){
@@ -426,30 +499,13 @@ $(".grxx_xial").click(function(){
 })
 
 $('.right_ge1').click(function(){
-	var url = $("#url").val();
-	var id = $("#o_id").val();
-	var emp_no = $("#o_emp_no").val();
-	var name = $("#o_name").val();
-	var dept_id = $("#o_dept_id").val();
-	$.ajax({
-		type : "POST",
-		url : url,
-		data : "id="+id+"&emp_no="+emp_no+"&name="+name+"&dept_id="+dept_id+"&ajax=1",
-		dataType : "json",
-		success : function(result){
-			if(result.status=='1'){
-				var m=$(this).children('span').eq(0).html();	
-				var n=$(this).children('span').eq(2).html();
-				var o=$(this).children('span').eq(4).html();
-				$(".right_ge").children('span').eq(0).text(m);
-				$(".right_ge").children('span').eq(2).text(n);
-				$(".right_ge").children('a').text(o);
-				$(".right_ge_x").slideUp();
-				location.reload();
-			}
-			
-		}
-	});
+	var m=$(this).children('span').eq(0).html();	
+	var n=$(this).children('span').eq(2).html();
+	var o=$(this).children('span').eq(4).html();
+	$(".right_ge").children('span').eq(0).text(m);
+	$(".right_ge").children('span').eq(2).text(n);
+	$(".right_ge").children('a').text(o);
+	$(".right_ge_x").slideUp();
 })
 
 //便签
