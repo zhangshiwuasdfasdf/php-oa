@@ -217,7 +217,7 @@ function showflow_leave(){
 		
 		$("#step").val(step);
 		if (check_form("form_data")) {
-			sendForm("form_data", "{:U('save')}");
+			sendForm("form_data", "{:U('save')}","__URL__");
 		}
 	}
 	function sum1(){

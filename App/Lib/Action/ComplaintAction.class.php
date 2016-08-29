@@ -84,4 +84,7 @@ class ComplaintAction extends CommonAction {
 	function upload(){
 		$this->_upload();
 	}
+	function down(){
+		$this->_down();
+	}
 }
