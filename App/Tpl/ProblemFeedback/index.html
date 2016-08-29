@@ -426,7 +426,7 @@
 							<span class="col-10">{$vo.dept_name}&nbsp;</span>
 							<span class="col-10">{$vo.user_name}&nbsp;</span>
 							<span class="col-10">{$vo.pos_id|get_dept_name_by_id}&nbsp;</span>
-							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}">{$vo.work_date}&nbsp;</a></span>
+							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}" target="_blank">{$vo.work_date}&nbsp;</a></span>
 							<span class="col-25">{$daily_report_extension.$key.comment_last}&nbsp;</span>
 							<span class="col-25">{$report.$key.0.look_name} {$report.$key.1.look_name}&nbsp;</span>
 						</div>

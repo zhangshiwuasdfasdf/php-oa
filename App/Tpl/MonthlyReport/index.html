@@ -480,7 +480,7 @@ img{ margin:0; padding:0;}
 							<span class="col-10">&nbsp;{$vo.dept_name}</span>
 							<span class="col-10">&nbsp;{$vo.user_name}</span>
 							<span class="col-10">&nbsp;{$vo.pos_id||get_dept_name_by_id}</span>
-							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}">&nbsp;{$vo.work_date}</a></span>
+							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}" target="_blank">&nbsp;{$vo.work_date}</a></span>
 							<span class="col-25">&nbsp;{$monthly_report_extension.$key.comment_last}</span>
 							<span class="col-25">&nbsp;{$report.$key.0.look_name} {$report.$key.1.look_name}</span>
 						</div>

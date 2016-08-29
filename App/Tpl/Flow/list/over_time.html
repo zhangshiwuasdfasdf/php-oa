@@ -113,13 +113,13 @@
 									无标题
 								</eq>
 							<elseif  condition="($vo.user_id eq $user_id)"/>
-								<a href="{:U('read','id='.$vo['id'].'&fid=submit')}">{$vo.name}
+								<a href="{:U('read','id='.$vo['id'].'&fid=submit')}" target="_blank">{$vo.name}
 								<eq name="vo.name|strlen" value="0">
 									无标题
 								</eq>
 								</a> 
 							<else/>
-								<a href="{:U('read','id='.$vo['id'].'&fid=confirm')}">{$vo.name}
+								<a href="{:U('read','id='.$vo['id'].'&fid=confirm')}" target="_blank">{$vo.name}
 								<eq name="vo.name|strlen" value="0">
 									无标题
 								</eq>
