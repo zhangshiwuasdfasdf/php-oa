@@ -13,14 +13,14 @@
     </div>
     <div class="tuic">
         <a class="tuic_a1">OA问题反馈</a>
-        <a class="qhlb" href="{:U('home/index_old')}">切换老版</a>
+        <!--<a class="qhlb" href="{:U('home/index_old')}">切换老版</a>-->
         <a class="tuic_a2" href="{:U('login/logout')}"><img src="__PUBLIC__/img/new_home/tc.png"/></a>
     </div>
     <div class="top_menu_r">
         <a><img src="__PUBLIC__/img/new_home/sbqr.png"/></a>
         <a><img src="__PUBLIC__/img/new_home/xbqc.png"/></a>
-        <a class="chongz" title="重置拖动"><img src="__PUBLIC__/img/new_home/yijian.png"/></a>
-    </div>  
+        <!--<a class="chongz" title="重置拖动"><img src="__PUBLIC__/img/new_home/yijian.png"/></a>-->
+     </div>  
     <div class="bottom">
         <span id="right_title10"></span>
         <span class="bottom_tj_span">
@@ -74,21 +74,6 @@
         </div>
         
         <ul class="bottom_tc_ul">
-            <li><input id="box1" name="box" type="checkbox" value="我的日报" onClick="check()"/><label for="box1">我的日报</label></li>
-            <li><input id="box2" name="box" type="checkbox" value="我的周报" onClick="check()"/><label for="box2">我的周报</label></li>
-            <li><input id="box3" name="box" type="checkbox" value="我的月报" onClick="check()"/><label for="box3">我的月报</label></li>
-            <li><input id="box4" name="box" type="checkbox" value="组织架构" onClick="check()"/><label for="box4">组织架构</label></li>
-            <li><input id="box5" name="box" type="checkbox" value="今日头条" onClick="check()"/><label for="box5">今日头条</label></li>
-            <li><input id="box6" name="box" type="checkbox" value="工作日志" onClick="check()"/><label for="box6">工作日志</label></li>
-            <li><input id="box7" name="box" type="checkbox" value="工作计划" onClick="check()"/><label for="box7">工作计划</label></li>
-            <li><input id="box8" name="box" type="checkbox" value="部门规定" onClick="check()"/><label for="box8">部门规定</label></li>
-            <li><input id="box9" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box9">公司制度</label></li>
-            <li><input id="box10" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box10">公司制度</label></li>
-            <li><input id="box11" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box11">公司制度</label></li>
-            
-            
-            <li><input id="box12" name="box" type="checkbox" value="公司制度" onClick="check()"/><label for="box12">公司制度</label></li>
-         
         </ul>
     </div>
 </div>
@@ -353,8 +338,22 @@
     </span>
 </div>
 <script type="text/javascript">
+$(function() {
+	var con = "";
+	var bg  = $(".bottom_tc_ul");
+	var i = 1;
+	bg.children("li").remove()
+	for(j=2;j<=16;j+=2){
+		$("ul[class=menu_ul"+j+"] li").each(function(){
+			if(typeof($(this).find("a").attr("href")) != 'undefined'){
+				con = '<li><input id="box'+i+'" name="box'+i+'" type="checkbox" value="我的日报" onClick="check()"/><label for="box'+i+'">'+$(this).find("div").text()+'</label></li>';
+				bg.append(con);
+				i++;
+			}
+		});
+	}
+});
 $(".bottom_tj_span").click(function(){
-	alert("abcd");
 	$(".bottom_ul").children("li").remove()
 	
 	$(".bottom_tc_bg").show();
