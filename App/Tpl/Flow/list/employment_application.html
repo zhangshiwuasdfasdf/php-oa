@@ -1,7 +1,7 @@
 <layout name='Layout/ace_layout' />
 {:W('PageHeader',array('name'=>array($flow_name['name']),'search'=>'M'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
-	<div class="adv_search panel panel-default "  id="adv_search">
+	<div class="adv_search panel panel-default  display-none"  id="adv_search">
 		<div class="panel-heading">
 			<div class="row">
 				<h4 class="col-xs-6">高级搜索</h4>
@@ -97,7 +97,7 @@
 								<eq name="vo.name|strlen" value="0">
 									无标题
 								</eq>
-							<elseif  condition="($vo.user_id eq $user_id)"/>
+							<elseif  condition="($vo.user_id eq $user_id or $auth['admin'] eq true)"/>
 								<a href="{:U('read','id='.$vo['id'].'&fid=submit')}" target="_blank">{$vo.name}
 								<eq name="vo.name|strlen" value="0">
 									无标题

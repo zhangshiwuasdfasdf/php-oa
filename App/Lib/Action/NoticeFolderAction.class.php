@@ -13,6 +13,7 @@
 
 
 class NoticeFolderAction extends SystemFolderAction {
+	protected $config=array('app_type'=>'master');
 	//过滤查询字段
 	function _search_filter(&$map) {
 		$map['name'] = array('like', "%" . $_POST['name'] . "%");
