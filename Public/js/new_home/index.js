@@ -392,7 +392,12 @@ $(".menu_li16_a3").click(function(){
 })
 
 
-
+$('.right,.top').click(function(){
+	$(".ani_ss").animate({opacity:0,width:'0px'})
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".left_a").removeClass("left_aaa")
+});
+e.stopPropagation();
 
 //菜单栏下拉
 var o=0;
