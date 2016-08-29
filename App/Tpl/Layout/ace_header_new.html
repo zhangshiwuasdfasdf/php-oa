@@ -22,33 +22,43 @@
         <a class="chongz" title="重置拖动"><img src="__PUBLIC__/img/new_home/yijian.png"/></a>
     </div>  
     <div class="bottom">
-	<span id="right_title10"></span>
-    <span class="bottom_tj_span">
-        <img class="bottom_tj" src="__PUBLIC__/img/new_home/tj_jh.png"/>
-    </span>
-    <a class="bottom_a" id="bottom_a1">
-        <img src="__PUBLIC__/img/new_home/bottom_rb.png"/>
-        <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>
-    </a>
-    <a class="bottom_a" id="bottom_a2">
-        <img src="__PUBLIC__/img/new_home/bottom_zb.png"/>
-        <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>
-    </a>
-    <a class="bottom_a" id="bottom_a3">
-        <img src="__PUBLIC__/img/new_home/bottom_yb.png"/>
-        <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>
-    </a>
-    <a class="bottom_a" id="bottom_a4" <if condition="$ckfram['id']">href="{:U('notice/read','id='.$ckfram['id'])}"</if>>
-        <img src="__PUBLIC__/img/new_home/bottom_jg.png"/>
-        <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>
-    </a>
-    <a class="bottom_a" id="bottom_a5">
-        <img src="__PUBLIC__/img/new_home/bottom_tt.png"/>
-        <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>
-    </a>
-    <ul class="bottom_ul">
-    </ul>
-</div>  
+        <span id="right_title10"></span>
+        <span class="bottom_tj_span">
+            <img class="bottom_tj" src="__PUBLIC__/img/new_home/tj_jh.png"/>
+        </span>
+        <div class="bottom_div1">
+            <a class="bottom_a" id="bottom_a1">
+                <img src="__PUBLIC__/img/new_home/bottom_rb.png"/>
+            </a>   
+            <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>   
+        </div>
+        <div class="bottom_div1">
+            <a class="bottom_a" id="bottom_a2">
+                <img src="__PUBLIC__/img/new_home/bottom_zb.png"/>
+            </a>    
+            <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>  
+        </div>
+        <div class="bottom_div1">
+            <a class="bottom_a" id="bottom_a3">
+                <img src="__PUBLIC__/img/new_home/bottom_yb.png"/>
+            </a>    
+            <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>
+        </div>
+        <div class="bottom_div1">
+            <a class="bottom_a" id="bottom_a4">
+                <img src="__PUBLIC__/img/new_home/bottom_jg.png"/>
+            </a>   
+            <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>
+        </div>
+        <div class="bottom_div1">
+        	<a class="bottom_a" id="bottom_a5">
+            	<img src="__PUBLIC__/img/new_home/bottom_tt.png"/>
+            </a>
+            <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/> 
+        </div>
+        <ul class="bottom_ul">
+        </ul>
+    </div> 
 </div>
 
 
@@ -64,7 +74,7 @@
         </div>
         
         <ul class="bottom_tc_ul">
-            <li><input id="box1" name="box" type="checkbox" checked="checked" value="我的日报" onClick="check()"/><label for="box1">我的日报</label></li>
+            <li><input id="box1" name="box" type="checkbox" value="我的日报" onClick="check()"/><label for="box1">我的日报</label></li>
             <li><input id="box2" name="box" type="checkbox" value="我的周报" onClick="check()"/><label for="box2">我的周报</label></li>
             <li><input id="box3" name="box" type="checkbox" value="我的月报" onClick="check()"/><label for="box3">我的月报</label></li>
             <li><input id="box4" name="box" type="checkbox" value="组织架构" onClick="check()"/><label for="box4">组织架构</label></li>
@@ -342,3 +352,15 @@
         <img src="__PUBLIC__/img/new_home/left_xia.png"/>
     </span>
 </div>
+<script type="text/javascript">
+$(".bottom_tj_span").click(function(){
+	alert("abcd");
+	$(".bottom_ul").children("li").remove()
+	
+	$(".bottom_tc_bg").show();
+	
+	$(".bottom_span1,.bottom_span2").click(function(){
+		$(".bottom_tc_bg").hide();
+	})
+})
+</script>

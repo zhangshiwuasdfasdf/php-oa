@@ -66,12 +66,6 @@ class HomeAction extends CommonAction {
 		$this -> _plan_work();
 		$this -> _memo_task();
 		$this -> _bbs_info();
-		// 		$this -> _flow_list();
-		// 		$this -> _schedule_list();
-		// 		$this -> _doc_list();
-		// 		$this -> _forum_list();
-		// 		$this -> _news_list();
-		// 		$this -> _slide_list();
 		$this -> _task_list();
 		$this -> _shouxing_list();
 		$this -> _jinianri_list();
@@ -421,7 +415,7 @@ class HomeAction extends CommonAction {
 				$news_notice[] = $v;
 				$ni++;
 			}
-			if($ni >= 8){break;}
+			if($ni >= 9){break;}
 		}
 		header("Content-Type:text/html;charset=utf-8");
 		//工作计划
@@ -436,7 +430,7 @@ class HomeAction extends CommonAction {
 				}
 				$pn++;
 			}
-			if($pn >= 10){break;}
+			if($pn >= 6){break;}
 		}
 		
 		/*echo '<pre>';
@@ -572,7 +566,7 @@ class HomeAction extends CommonAction {
 		$this -> assign('atten_num',$atten_num);
 		
 		/*echo '<pre>';
-		dump($bbs_list);
+		dump($list);
 		echo '</pre>';die;*/
 	}
 	protected function _forum_list() {
