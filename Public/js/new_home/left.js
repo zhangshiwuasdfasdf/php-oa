@@ -274,7 +274,7 @@ $(".menu_li16_a3").click(function(){
 
 //菜单栏下拉
 var o=0;
-var y=$('.left_a').length
+var y=$('.left_a').length+1
 var q=$(".left").height()/$('.left_a').height()
 var k=Math.round(q)
 var h=(y-k)*$('.left_a').height()

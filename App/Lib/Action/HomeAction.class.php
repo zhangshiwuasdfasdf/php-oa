@@ -415,7 +415,7 @@ class HomeAction extends CommonAction {
 				$news_notice[] = $v;
 				$ni++;
 			}
-			if($ni >= 9){break;}
+			if($ni >= 8){break;}
 		}
 		header("Content-Type:text/html;charset=utf-8");
 		//工作计划
@@ -838,6 +838,30 @@ class HomeAction extends CommonAction {
 			}
 		}
 		$this->ajaxReturn('1',array('users'=>$users,'ext'=>$ext),1);
+	}
+	//设置用户自定义信息
+	public function sethomebottom(){
+		$list = $_REQUEST['list'];
+		$data['id'] = get_user_id();
+		$data['home_bottom'] = $list;
+		if(M('UserConfig') -> save($data)){
+			$this -> ajaxReturn('', "设置成功", 1);
+		}else{
+			$this -> ajaxReturn('', "设置失败", 0);
+		}
+	}
+	
+	//默认加载的数据
+	public function gethomebottom(){
+		$bottom = M('UserConfig') -> where('id='.get_user_id()) -> getField('home_bottom');
+		//preg_replace('/\\*/i','&',$bottom);
+		//preg_match_all("/href=[\'|\"](\S+)[\'|\"]/i", $bottom, $match);
+		//dump($match);die;
+		if(!empty($bottom)){
+			$this -> ajaxReturn($bottom, "加载成功", 1);
+		}else{
+			$this -> ajaxReturn('', "加载失败", 0);
+		}
 	}
 }
 ?>
