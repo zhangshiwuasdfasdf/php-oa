@@ -52,39 +52,40 @@ function he(){
 	$(".left_ck").css('top',hc)
 	
 	
-	var l1=$('#right_l1').height()+165+8;
-	var l2=$('#right_l2').height()+8;
-	var l3=$('#right_l3').height();
-	var z1=$('#right_z1').height()+165+20;
-	var z2=$('#right_z2').height()+8;
-	var z3=$('#right_z3').height();
-	var r1=$('#right_r1').height()+165+30;
-	var r2=$('#right_r2_bg').height()+8;
-	var r3=$('#right_r3').height();
-	$('#right_l2').css('top',l1);
-	$('#right_l3').css('top',l1+l2);
-	$('#right_z2').css('top',z1);
-	$('#right_z3').css('top',z1+z2);
-	$('#right_r2_bg').css('top',r1);
-	$('#right_r3').css('top',r1+r2);
+//	var l1=$('#right_l1').height()+165+8;
+//	var l2=$('#right_l2').height()+8;
+//	var l3=$('#right_l3').height();
+//	var z1=$(".right_z1_content1").height()+46+6+165+20;
+//	var z2=$('#right_z2').height()+8;
+//	var z3=$('#right_z3').height();
+//	var r1=$('#right_r1').height()+165+30;
+//	var r2=$('#right_r2_bg').height()+8;
+//	var r3=$('#right_r3').height();
+//	$('#right_l2').css('top',l1);
+//	$('#right_l3').css('top',l1+l2);
+////	$('#right_z2').css('top',z1);
+//	$('#right_z3').css('top',z1+z2);
+//	$('#right_r2_bg').css('top',r1);
+//	$('#right_r3').css('top',r1+r2);
 	
 	var w=$(window).width()-120
 	var q2=w*0.01
     var q4=w*0.002
     var q5=Math.round(q4)
     var q3=Math.round(q2)
-	var s=w-q3*6
+	var s=w
 	var x=s/3
     
     var st=Math.round(x)
     
 	$('.right').css('width',w)
-	$("#right_l1,#right_l2,#right_l3,#right_z1,#right_z2,#right_z3,#right_r1,#right_r2_bg,#right_r3").css({'width':st,'padding-left':q3,'padding-right':q3,'padding-top':q5,'padding-bottom':q5})
-	var stl=st+120+q3
-	$("#right_z1,#right_z2,#right_z3").css('left',stl)
+	$("#right_l1,#right_l2,#right_l3,#right_z2,#right_z3,#right_r1,#right_r2_bg,#right_r3,#right_z1").css({'width':st,'padding-left':q3,'padding-right':q3,'padding-top':q5,'padding-bottom':q5})
 	
-	var stl2=st*2+q3*3+120
-	$("#right_r1,#right_r2_bg,#right_r3").css('left',stl2)
+//	var stl=st+120+q3
+//	$("#right_z1,#right_z2,#right_z3").css('left',stl)
+//	
+//	var stl2=st*2+q3*3+120
+//	$("#right_r1,#right_r2_bg,#right_r3").css('left',stl2)
 
 	
 	/*$("#right_l1,#right_l2,#right_l3").css('padding',q2)
@@ -105,7 +106,7 @@ he();
 	$(".left").css('height',a0)	
 })*/
 
-/*function allowDrop(ev){  
+function allowDrop(ev){  
 	ev.preventDefault();  
 }  
   
@@ -121,7 +122,7 @@ function drop(ev,divdom){
 		srcdiv.innerHTML = divdom.innerHTML;  
 		divdom.innerHTML=ev.dataTransfer.getData("text/html");  
 	}  
-} */
+} 
 
 	
 
@@ -158,7 +159,7 @@ setInterval(up3,6000);}
 //菜单栏
 $("#left_a1").toggle(function(){
 	$("#left_a2,#left_a3,#left_a4,#left_a5,#left_a6,#left_a7,#left_a8,#left_a9").removeClass("left_aaa")
-	$("#left_a1").toggleClass("left_aaa")
+	$("#left_a1").addClass("left_aaa")
 	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
 	var t=$(this).offset().top+12
 	var w=$(".left").width()
@@ -172,6 +173,7 @@ $("#left_a1").toggle(function(){
 	})
 },function(){
 	$(".ani_ss").animate({opacity:0,width:'0px'})
+	$("#left_a1").removeClass("left_aaa")
 	}
 )
 
@@ -420,7 +422,7 @@ var a=$('.left_a').height()
 	})
 
 //添加模块
-function checkbox()
+/*function checkbox()
 	{
 	var str=document.getElementsByName("box");
 	var objarray=str.length;
@@ -435,8 +437,7 @@ function checkbox()
 	if(chestr == "")
 	{
 	 alert("请先选择～！");
-	}
-	else
+	}else
 	{
 		
 		for(var j=0; j<check_num; j++){
@@ -462,7 +463,7 @@ function checkbox()
 		}
 		
 	}
-}
+}*/
 
 var check_num = 0;
 var check_li = $(".bottom_ul li").length
