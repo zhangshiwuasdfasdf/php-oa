@@ -63,7 +63,7 @@ body{ background:#f3f4f8;}
 .left_a img{ display:block; width:46px; height:auto; margin-top:10px;}
 .left_aaa{ background:url(../img/new_home/lefta_bg.png) no-repeat;}
 
-.left_ck{ width:120px; height:40px; background:#3a68a3; position:fixed; overflow:hidden; z-index:301;}
+.left_ck{ width:120px; height:40px; background:#3a68a3; position:absolute; overflow:hidden; z-index:301;bottom: 0px;}
 .left_ck_span1,.left_ck_span2{ display:block; width:50%; height:40px; float:left;}
 .left_ck_span1 img{ display:block; margin:auto; margin-top:13px;}
 .left_ck_span2 img{ display:block; margin:auto; margin-top:13px;}
