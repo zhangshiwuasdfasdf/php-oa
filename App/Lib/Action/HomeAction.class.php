@@ -854,14 +854,33 @@ class HomeAction extends CommonAction {
 	//默认加载的数据
 	public function gethomebottom(){
 		$bottom = M('UserConfig') -> where('id='.get_user_id()) -> getField('home_bottom');
-		//preg_replace('/\\*/i','&',$bottom);
-		//preg_match_all("/href=[\'|\"](\S+)[\'|\"]/i", $bottom, $match);
-		//dump($match);die;
+		$bottom = str_replace('*','&',$bottom);
+		if($bottom == ''){
+			$bottom = "<li><a class='bottom_a' href='/smeoa/index.php?m=daily_report&a=index'><img src='/smeoa/Public/img/new_home/bottom_rb.png'/></a></li><li><a class='bottom_a' href='/smeoa/index.php?m=weekly_report&a=index'><img src='/smeoa/Public/img/new_home/bottom_zb.png'/></a></li><li><a class='bottom_a' href='/smeoa/index.php?m=monthly_report&a=index'><img src='/smeoa/Public/img/new_home/bottom_yb.png'/></a></li><li><a class='bottom_a' href='/smeoa/index.php?m=notice&a=folder&fid=95'><img src='/smeoa/Public/img/new_home/bottom_tt.png'/></a></li><li><a class='bottom_a' href='/smeoa/index.php?m=notice&a=read&id=255'><img src='/smeoa/Public/img/new_home/bottom_jg.png'/></a></li>";
+		}
 		if(!empty($bottom)){
 			$this -> ajaxReturn($bottom, "加载成功", 1);
 		}else{
 			$this -> ajaxReturn('', "加载失败", 0);
 		}
 	}
+	
+	//默认加载的数据
+	public function gethomebottomcheck(){
+		$bottom = M('UserConfig') -> where('id='.get_user_id()) -> getField('home_bottom');
+		$bottom = str_replace('*','&',$bottom);
+		if($bottom == ''){
+			$bottom = "<li><a class='bottom_a' href='/smeoa/index.php?m=daily_report&a=index'><img src='/smeoa/Public/img/new_home/bottom_rb.png'/></a></li><li><a class='bottom_a' href='/smeoa/index.php?m=weekly_report&a=index'><img src='/smeoa/Public/img/new_home/bottom_zb.png'/></a></li><li><a class='bottom_a' href='/smeoa/index.php?m=monthly_report&a=index'><img src='/smeoa/Public/img/new_home/bottom_yb.png'/></a></li><li><a class='bottom_a' href='/smeoa/index.php?m=notice&a=folder&fid=95'><img src='/smeoa/Public/img/new_home/bottom_tt.png'/></a></li><li><a class='bottom_a' href='/smeoa/index.php?m=notice&a=read&id=255'><img src='/smeoa/Public/img/new_home/bottom_jg.png'/></a></li>";
+		}
+		preg_match_all("/href=[\'|\"](\S+)[\'|\"]/i", $bottom, $match);
+		$match1 = str_replace('href=','',$match[0]);
+		$match1 = str_replace("'",'',$match1);
+		if(!empty($match1)){
+			$this -> ajaxReturn($match1, "加载成功", 1);
+		}else{
+			$this -> ajaxReturn('', "加载失败", 0);
+		}
+	}
+	
 }
 ?>

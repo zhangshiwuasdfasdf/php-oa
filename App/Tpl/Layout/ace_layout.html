@@ -51,26 +51,12 @@
 	<include file="Layout:ace_header_new" />
 		<div class="main-container" id="main-container">
 			<div class="main-container-inner">
-				<!--<div class="sidebar" id="sidebar">	
-					<div id="user_info" class="text-center hidden-xs"  >
-						<span >当前用户：{$Think.session.user_name}</span>
-					</div>
-					<div id="nav_head" class="text-center text-title"  onclick="toggle_left_menu()">
-						<span class="menu-text">{$top_menu_name}</span>
-						<b id="left_menu_icon" class="fa fa-angle-down pull-right"></b>
-					</div>
-					{:W('Nav',array('tree'=>$left_menu,'new_count'=>$new_count))}
-				</div>
-				--><div class="main-content" style="margin-top: 160px;margin-left: 120px;">
+				<div class="main-content" style="margin-top: 160px;margin-left: 120px;">
 					<div class="breadcrumbs" id="breadcrumbs">
 						<ul class="breadcrumb">
 							<li>
 								<i class="fa fa-home home-icon"></i>
 								<a href="{:U('home/index')}">首页</a>
-							</li>
-
-							<li>
-								{$top_menu_name}
 							</li>
 						</ul><!-- .breadcrumb -->
 					</div>

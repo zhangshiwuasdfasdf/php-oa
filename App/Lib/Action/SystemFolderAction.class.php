@@ -91,7 +91,7 @@ class SystemFolderAction extends CommonAction {
 		$count=M(str_replace("Folder","",$folder))->where("folder=$fid"." and is_del=0")->count();
 					
 		if ($count>0) {// 读取成功
-			$this -> ajaxReturn("", "只能删除空文件夹".$count,1);
+			$this -> ajaxReturn("", "只能删除空文件夹",1);
 		}else{
 			$result=$model->where("id=$id")->delete();
 			if($result){

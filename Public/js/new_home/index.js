@@ -70,7 +70,7 @@ function he(){
 	
 	var w=$(window).width()-120
 	var q2=w*0.01
-    var q4=w*0.002
+    var q4=w*0.004
     var q5=Math.round(q4)
     var q3=Math.round(q2)
 	var s=w
@@ -399,7 +399,7 @@ $('.right,.top').click(function(){
 	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
 	$(".left_a").removeClass("left_aaa")
 });
-e.stopPropagation();
+//e.stopPropagation();
 
 //菜单栏下拉
 var o=0;

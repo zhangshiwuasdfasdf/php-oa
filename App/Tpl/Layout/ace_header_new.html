@@ -26,37 +26,6 @@
         <span class="bottom_tj_span">
             <img class="bottom_tj" src="__PUBLIC__/img/new_home/tj_jh.png"/>
         </span>
-        <!--<div class="bottom_div1">
-            <a class="bottom_a" id="bottom_a1">
-                <img src="__PUBLIC__/img/new_home/bottom_rb.png"/>
-            </a>   
-            <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>   
-        </div>
-        <div class="bottom_div1">
-            <a class="bottom_a" id="bottom_a2">
-                <img src="__PUBLIC__/img/new_home/bottom_zb.png"/>
-            </a>    
-            <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>  
-        </div>
-        <div class="bottom_div1">
-            <a class="bottom_a" id="bottom_a3">
-                <img src="__PUBLIC__/img/new_home/bottom_yb.png"/>
-            </a>    
-            <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>
-        </div>
-        <div class="bottom_div1">
-            <a class="bottom_a" id="bottom_a4">
-                <img src="__PUBLIC__/img/new_home/bottom_jg.png"/>
-            </a>   
-            <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/>
-        </div>
-        <div class="bottom_div1">
-        	<a class="bottom_a" id="bottom_a5">
-            	<img src="__PUBLIC__/img/new_home/bottom_tt.png"/>
-            </a>
-            <img class="tb_gb1_b1" src="__PUBLIC__/img/new_home/tb_gb1_b1.png"/> 
-        </div>
-        -->
         <ul class="bottom_ul">
         </ul>
     </div> 
@@ -337,17 +306,12 @@
         <img src="__PUBLIC__/img/new_home/left_xia.png"/>
     </span>
 </div>
-<script type="text/javascript"><!--
+<script type="text/javascript">
 $(function() {
 	var con = "";
 	var bg  = $(".bottom_tc_ul");
 	var i = 1;
-	var zq = "";
 	bg.children("li").remove()
-	$.post("{:U('home/gethomebottom')}",'id=id' , function(data) {
-		zd = data.data;
-	});	
-	
 	for(j=2;j<=16;j+=2){
 		$("ul[class=menu_ul"+j+"] li").each(function(){
 			if(typeof($(this).find("a").attr("href")) != 'undefined'){
@@ -360,6 +324,7 @@ $(function() {
 			}
 		});
 	}
+	
 	/* ajax提交*/
 	function sendAjax(url, vars, callback) {
 		return $.ajax({
@@ -384,14 +349,30 @@ $(function() {
 	init_hbtm();
 });
 $(".bottom_tj_span").click(function(){
-	$(".bottom_ul").children("li").remove()
-	
+	$.post("{:U('home/gethomebottomcheck')}",'id=id' , function(data) {
+		showdata(data);
+	});	
 	$(".bottom_tc_bg").show();
 	
 	$(".bottom_span1").click(function(){
 		$(".bottom_tc_bg").hide();
 	})
 });
+
+function showdata(result) {
+	for (s in result.data) {
+		var id = result.data[s];
+		var msg = "";
+		$("ul[class=bottom_tc_ul] li").each(function(){
+			msg = $(this).find("input").attr("msg");
+			if(msg === id){
+				$(this).find("input").attr("checked",true);
+				return false;
+			}
+		});
+	}
+}
+
 function checkbox(){
 	var chestr="";
 	var urls = "";
@@ -403,7 +384,6 @@ function checkbox(){
 		ui_error("请选择您要添加的菜单!~");
 		return false;
 	}else{
-		$(".bottom_ul").empty();
 		chestr = chestr.substring(0,chestr.length-1);
 		urls = urls.substring(0,urls.length-1);
 		var q = chestr.split(';');
@@ -412,30 +392,27 @@ function checkbox(){
 		for(j=0;j<q.length;j++){
 			if(q[j]=='日报'){
 				list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_rb.png'/></a></li>";
-                $(".bottom_ul").append('<li><a class="bottom_a" href="'+h[j]+'"><img src="__PUBLIC__/img/new_home/bottom_rb.png"/></a></li>')	
             }else if(q[j]=='周报'){
             	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_zb.png'/></a></li>";
-                $(".bottom_ul").append('<li><a class="bottom_a" href="'+h[j]+'"><img src="__PUBLIC__/img/new_home/bottom_zb.png"/></a></li>')
             }else if(q[j]=='月报'){
             	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_yb.png'/></a></li>";
-                $(".bottom_ul").append('<li><a class="bottom_a" href="'+h[j]+'"><img src="__PUBLIC__/img/new_home/bottom_yb.png"/></a></li>')
             }else if(q[j]=='组织图'){
-            	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_jp.png'/></a></li>";
-                $(".bottom_ul").append('<li><a class="bottom_a" href="'+h[j]+'"><img src="__PUBLIC__/img/new_home/bottom_jp.png"/></a></li>')
+            	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_jg.png'/></a></li>";
             }else if(q[j]=='公司新闻与今日头条'){
             	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_tt.png'/></a></li>";
-                $(".bottom_ul").append('<li><a class="bottom_a" href="'+h[j]+'"><img src="__PUBLIC__/img/new_home/bottom_tt.png"/></a></li>')
             }else{
             	list += "<li><a class='bottom_a2' href='"+h[j]+"'>"+q[j]+"</a></li>";
-                $(".bottom_ul").append('<li><a class="bottom_a2" href="'+h[j]+'">'+q[j]+'</a></li>')  
             }
 		}
-		
 		if(list != ""){
 			$(".bottom_tc_bg").hide();
 			var reg=new RegExp("&","g");
-			list = list.replace(reg,'*');
-			$.post("{:U('home/sethomebottom')}", 'list='+ list, function(data) {
+			var lists = list.replace(reg,'*');
+			$.post("{:U('home/sethomebottom')}", 'list='+ lists, function(data) {
+				if(data.status){
+					$(".bottom_ul").empty();
+					$(".bottom_ul").append(list);
+				}
 				ui_info(data.info);
 			});	
 		}
@@ -443,11 +420,9 @@ function checkbox(){
 }
 function init_hbtm(){
 	var bu = $(".bottom_ul");
-	var reg=new RegExp("\\*","g");
 	$.post("{:U('home/gethomebottom')}",'id=id' , function(data) {
 		if(data.status){
-			list = data.data.replace(reg,'&')
-			bu.append(list);
+			bu.append(data.data);
 		}else{
 			ui_info(data.info);
 		}
