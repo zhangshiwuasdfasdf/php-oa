@@ -4,16 +4,16 @@
 	a{text-decoration:none;}
 	body{ margin:0px; padding:0;}
 	ul,li{ list-style:none; margin:0; padding:0;}
-	.left{ float:left; width:162px; max-height:700px; border:solid 1px #000; overflow:hidden;}
-	.left img{ display:block; width:162px; height:118px; border-bottom:solid 1px #000;}
-	.left_ul{ width:162px; max-height:580px; overflow:hidden;}
-	.left_ul li{ float:left;}
-	.left_li1{ width:80px; border-right:solid 1px #000;}
-	.left_li2{ width:81px;}
-	.left_li2 a {overflow:hidden; display:block; float:left; text-align:center; width:80px; height:27px; line-height:26px; font-size:14px; border-bottom:1px solid #000;}
-	.left_ul li span{overflow:hidden; display:block; float:left; text-align:center; width:80px; height:27px; line-height:26px; font-size:14px; border-bottom:1px solid #000;}
+	.left2{ float:left; width:162px; max-height:700px; border:solid 1px #000; overflow:hidden;}
+	.left2 img{ display:block; width:162px; height:118px; border-bottom:solid 1px #000;}
+	.left2_ul{ width:162px; max-height:580px; overflow:hidden;}
+	.left2_ul li{ float:left;}
+	.left2_li1{ width:80px; border-right:solid 1px #000;}
+	.left2_li2{ width:81px;}
+	.left2_li2 a {overflow:hidden; display:block; float:left; text-align:center; width:80px; height:27px; line-height:26px; font-size:14px; border-bottom:1px solid #000;}
+	.left2_ul li span{overflow:hidden; display:block; float:left; text-align:center; width:80px; height:27px; line-height:26px; font-size:14px; border-bottom:1px solid #000;}
 	
-	.right{ float:left; max-height:700px; width:80%; border:solid 1px #000; overflow:auto; margin-left:-1px;}
+	.right{ float:left; max-height:700px; width:80%; border:solid 1px #000; overflow:auto;  margin-left:0px !important;margin-top:0px !important;}
 	.right_top{ height:118px;   border-bottom:solid 1px #000; overflow:hidden;}
 	.right_top span{ display:block; width:50px; height:118px;  float:left; border-right:1px solid #000;}
 	.right_top a{word-break:break-all; display:block;width:14px; height:118px; text-align:center;margin-left:18px; overflow:hidden;}
@@ -60,10 +60,10 @@
 </form>
 <div style="width:100%">
 <h1 align="center" style="font-size: 18px;">基地仓库发货日报汇总表</h1>
-<Div class="left"  style="background:#fff;">
+<Div class="left2"  style="background:#fff;">
 	<img src="__PUBLIC__/img/img/bq.png">
-    <ul class="left_ul">
-    	<li class="left_li1">
+    <ul class="left2_ul">
+    	<li class="left2_li1">
     		<span>日期</span>
     		<volist name = "date"	id = "vo" >
     			<volist name = "express"	id = "voo" >
@@ -74,7 +74,7 @@
     		<span>总计</span>
             <div style="height:20px; width:80px; float:left; border-right:solid 1px #000;"></div>
         </li>
-        <li class="left_li2">
+        <li class="left2_li2">
         	<a>快递单位</a>
     		<volist name = "date"	id = "vo" >
     			<volist name = "express"	id = "voo" >
@@ -128,10 +128,10 @@
 </div>
 <script>
 	$(".right_bottom").scroll(function(){
-		$(".left_ul").scrollTop($(".right_bottom").scrollTop())	
+		$(".left2_ul").scrollTop($(".right_bottom").scrollTop())	
 	})
 	$(".right").scroll(function(){
-		$(".left").scrollTop($(".right").scrollTop())	
+		$(".left2").scrollTop($(".right").scrollTop())	
 	})
 </script>
 <div class="pagination">

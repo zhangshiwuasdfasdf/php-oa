@@ -69,7 +69,7 @@ class ProfileAction extends CommonAction {
 		
 		if (false !== $result && false !== $result1) {
 			$this -> assign('jumpUrl', get_return_url());
-			$this -> success("密码修改成功");
+			$this -> success("密码修改成功",U('login/logout'));
 		} else {
 			$this -> error('重置密码失败！');
 		}
