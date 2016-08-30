@@ -514,17 +514,34 @@ $(".tz").click(function(){
 
 //个人信息选择
 $(".grxx_xial").click(function(){
-	$(".right_ge_x").slideToggle();			
+	$(".right_ge_x").slideToggle();		
 })
 
 $('.right_ge1').click(function(){
-	var m=$(this).children('span').eq(0).html();	
-	var n=$(this).children('span').eq(2).html();
-	var o=$(this).children('span').eq(4).html();
-	$(".right_ge").children('span').eq(0).text(m);
-	$(".right_ge").children('span').eq(2).text(n);
-	$(".right_ge").children('a').text(o);
-	$(".right_ge_x").slideUp();
+	var url = $("#url").val();
+	var id = $("#o_id").val();
+	var emp_no = $("#o_emp_no").val();
+	var name = $("#o_name").val();
+	var dept_id = $("#o_dept_id").val();
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : "id="+id+"&emp_no="+emp_no+"&name="+name+"&dept_id="+dept_id+"&ajax=1",
+		dataType : "json",
+		success : function(result){
+			if(result.status=='1'){
+				var m=$(this).children('span').eq(0).html();	
+				var n=$(this).children('span').eq(2).html();
+				var o=$(this).children('span').eq(4).html();
+				$(".right_ge").children('span').eq(0).text(m);
+				$(".right_ge").children('span').eq(2).text(n);
+				$(".right_ge").children('a').text(o);
+				$(".right_ge_x").slideUp();
+				location.reload();
+			}
+			
+		}
+	});
 })
 
 //便签
