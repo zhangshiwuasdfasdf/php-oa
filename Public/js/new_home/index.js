@@ -243,6 +243,9 @@ $('.right_ge1').click(function(){
 		url : url,
 		data : "id="+id+"&emp_no="+emp_no+"&name="+name+"&dept_id="+dept_id+"&ajax=1",
 		dataType : "json",
+		beforeSend:function(){
+			ui_info('loading...');
+		},
 		success : function(result){
 			if(result.status=='1'){
 				var m=$(this).children('span').eq(0).html();	
