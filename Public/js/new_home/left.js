@@ -295,5 +295,3 @@ var a=$('.left_a').height()
 			$('.left_nav').animate({marginTop:-o})
 		}
 	})
-	
-	

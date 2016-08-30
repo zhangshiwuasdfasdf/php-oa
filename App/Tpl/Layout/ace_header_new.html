@@ -18,8 +18,12 @@
         <a class="tuic_a2" href="{:U('login/logout')}"><img src="__PUBLIC__/img/new_home/tc.png"/></a>
     </div>
     <div class="top_menu_r">
-        <a><img src="__PUBLIC__/img/new_home/sbqr.png"/></a>
-        <a><img src="__PUBLIC__/img/new_home/xbqc.png"/></a>
+    	<if condition="($sign_in eq true)">
+    		<a id="in" onclick="sign('in')"><img src="__PUBLIC__/img/new_home/sbqr.png"/></a>
+    	</if>
+        <if condition="($sign_out eq true)">
+        	<a id="out" onclick="sign('out')"><img src="__PUBLIC__/img/new_home/xbqc.png"/></a>
+        </if>
         <!--<a class="chongz" title="重置拖动"><img src="__PUBLIC__/img/new_home/yijian.png"/></a>-->
      </div>  
     <div class="bottom">
@@ -119,6 +123,7 @@
             <li class="menu_li2"><a href="{:U('daily_report/index')}"><span class="cd_span2"></span><div class="cd_div">日报</div></a></li>
             <li class="menu_li2"><a href="{:U('weekly_report/index')}"><span class="cd_span2"></span><div class="cd_div">周报</div></a></li>
             <li class="menu_li2"><a href="{:U('monthly_report/index')}"><span class="cd_span2"></span><div class="cd_div">月报</div></a></li>
+            <li class="menu_li2"><a href="{:U('notice/folder?fid=94')}"><span class="cd_span2"></span><div class="cd_div">工作计划</div></a></li>
         </ul>
   
         <a class="left_a" id="left_a3">
@@ -192,10 +197,10 @@
                     <li class="menu_li7"><a href="{:U('notice/folder?fid=72')}"><span class="cd_span7"></span><div class="cd_div">通知与公告</div></a></li>
                     <li class="menu_li7"><a href="{:U('notice/folder?fid=71')}"><span class="cd_span7"></span><div class="cd_div">公司制度与规定</div></a></li>
                     <li class="menu_li7"><a href="{:U('notice/folder?fid=95')}"><span class="cd_span7"></span><div class="cd_div">公司新闻与今日头条</div></a></li>
-                    <li class="menu_li7"><a href="{:U('notice/folder?fid=94')}"><span class="cd_span7"></span><div class="cd_div">工作计划</div></a></li>
+                    
                     <li class="menu_li7"><a href="{:U('notice/folder?fid=68')}"><span class="cd_span7"></span><div class="cd_div">企业概况</div></a></li>
                     <li class="menu_li7"><a href="{:U('notice/folder?fid=96')}"><span class="cd_span7"></span><div class="cd_div">员工活动</div></a></li>
-                     
+                    <li class="menu_li7"><a href="{:U('notice/read?id=255')}"><span class="cd_span7"></span><div class="cd_div">组织架构</div></a></li> 
                 </ul>
             </li>
         </ul>
@@ -232,7 +237,6 @@
         <ul class="menu_ul14">
             <li class="menu_li14"><a href="{:U('report/delivery')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报导入</div></a></li>
             <li class="menu_li14"><a href="{:U('report/delivery_read_all')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报表</div></a></li>
-            <li class="menu_li14"><a href="{:U('report/crm')}"><span class="cd_span14"></span><div class="cd_div">客户管理报表</div></a></li>
             <li class="menu_li14"><a href="{:U('report/store_problem')}"><span class="cd_span14"></span><div class="cd_div">商家问题受理导入</div></a></li>
             <li class="menu_li14"><a href="{:U('report/store_problem_read_all')}"><span class="cd_span14"></span><div class="cd_div">商家问题受理表</div></a></li>
             <li class="menu_li14"><a href="{:U('attract/index')}"><span class="cd_span14"></span><div class="cd_div">招商进度日报导入</div></a></li>
