@@ -395,7 +395,6 @@ function set_return_url(level,url) {
 
 /*返回到上一页*/
 function go_return_url(level) {
-
 	if (level != undefined) {
 		return_url = get_cookie('return_url_' + level);
 		window.open(return_url, "_self");

@@ -388,7 +388,11 @@ function go_return_url(level) {
 		window.open(return_url, "_self");
 	} else {
 		return_url = get_cookie('return_url');
-		window.open(return_url, "_self");
+		if(return_url == null){
+			history.go(-1);
+		}else{
+			window.open(return_url, "_self");
+		}
 	}
 	return false;
 }

@@ -316,9 +316,29 @@
     </div>
 </div>
 
+<!-- <script src="__PUBLIC__/js/new_home/left.js"></script> -->
 <script type="text/javascript" src="__PUBLIC__/js/new_home/index.js"></script>
 <script>
 function select_avatar() {
 	winopen("{:U('popup/avatar')}?id=" + $("#id").val(), 730, 500);
 }
+//菜单栏下拉
+var o=0;
+var y=$('.left_a').length
+var q=$(".left").height()/$('.left_a').height()
+var k=Math.round(q)
+var h=(y-k)*$('.left_a').height()
+var a=$('.left_a').height()
+$('.left_ck_span2').click(function(){
+	if(o<h){
+		o=o+a
+		$('.left_nav').animate({marginTop:-o})
+	}
+})
+$('.left_ck_span1').click(function(){
+	if(o>0){
+		o=o-a
+		$('.left_nav').animate({marginTop:-o})
+	}
+})
 </script>
