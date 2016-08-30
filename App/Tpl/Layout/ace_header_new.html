@@ -1,4 +1,5 @@
 <link href="__PUBLIC__/css/new_index.css" rel="stylesheet" type="text/css">
+<script src="__PUBLIC__/js/jquery-2.1.0.min.js"></script>
 <!--top-->
 <div class="top">
     <a class="img_a" href="{:U('home/index')}">
@@ -297,8 +298,7 @@
         </ul>
     </nav>
     
-</div>
-<div class="left_ck">
+    <div class="left_ck">
     <span class="left_ck_span1">
         <img class="" src="__PUBLIC__/img/new_home/left_shang.png"/>
     </span>
@@ -306,6 +306,9 @@
         <img src="__PUBLIC__/img/new_home/left_xia.png"/>
     </span>
 </div>
+
+</div>
+
 <script type="text/javascript">
 $(function() {
 	var con = "";
@@ -350,7 +353,7 @@ $(function() {
 });
 $(".bottom_tj_span").click(function(){
 	$.post("{:U('home/gethomebottomcheck')}",'id=id' , function(data) {
-		showdata(data);
+		showdatas(data);
 	});	
 	$(".bottom_tc_bg").show();
 	
@@ -359,7 +362,7 @@ $(".bottom_tj_span").click(function(){
 	})
 });
 
-function showdata(result) {
+function showdatas(result) {
 	for (s in result.data) {
 		var id = result.data[s];
 		var msg = "";
@@ -429,4 +432,3 @@ function init_hbtm(){
 	});	
 }
 </script>
-<script src="__PUBLIC__/js/jquery-2.1.0.min.js"></script>

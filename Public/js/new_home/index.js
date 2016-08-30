@@ -49,7 +49,7 @@ function he(){
 	var h4=$('.menu_ul14').height()+40
 	$('.menu_ul14').css('top',h4)
 	var hc=h+160	
-	$(".left_ck").css('top',hc)
+	//$(".left_ck").css('top',hc)
 	
 	
 //	var l1=$('#right_l1').height()+165+8;
@@ -68,7 +68,7 @@ function he(){
 //	$('#right_r2_bg').css('top',r1);
 //	$('#right_r3').css('top',r1+r2);
 	
-	var w=$(window).width()-120
+	var w=$(window).width()-130
 	var q2=w*0.01
     var q4=w*0.004
     var q5=Math.round(q4)
@@ -394,11 +394,6 @@ $(".menu_li16_a3").click(function(){
 })
 
 
-$('.right,.top').click(function(){
-	$(".ani_ss").animate({opacity:0,width:'0px'})
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
-	$(".left_a").removeClass("left_aaa")
-});
 //e.stopPropagation();
 
 //菜单栏下拉

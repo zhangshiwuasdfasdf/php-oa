@@ -17,7 +17,7 @@ function hel(){
 	
 	//left的高度
 	var h0=$(window).height()
-	var h=h0-200
+	var h=h0-160
 	$(".left").css('height',h)
 	var h3=h-40//上下各20边距
 	if($(".menu_ul6,.menu_ul4,.menu_ul14").height()>=h){
@@ -30,7 +30,7 @@ function hel(){
 	var h4=$('.menu_ul14').height()+40
 	$('.menu_ul14').css('top',h4)
 	var hc=h+160	
-	$(".left_ck").css('top',hc)
+//	$(".left_ck").css('top',hc)
 }
 hel();
 //菜单栏
@@ -269,7 +269,11 @@ $(".menu_li16_a3").click(function(){
 	$(".menu_ul17_3").slideToggle()	
 })
 
-
+$('.right,.top,.main-content').click(function(){
+	$(".ani_ss").animate({opacity:0,width:'0px'})
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".left_a").removeClass("left_aaa")
+});
 
 
 //菜单栏下拉
