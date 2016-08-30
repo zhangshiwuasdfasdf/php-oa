@@ -80,7 +80,7 @@
 		</div>
 	</volist>
 	<if condition = "$ckplan eq '1'">计划时间 :　{$vo.plan_time}<br /></if>
-	{$vo.content}
+	<p>{$vo.content}</p>
 	<volist name="file_list" id="file">
 	{$file.name}
 	</volist>
@@ -97,3 +97,6 @@
 	</div>
     --><!--增加签收-->
 </form>
+<style> 
+      p{text-indent:2em} 
+</style>
