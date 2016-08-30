@@ -387,12 +387,9 @@ function go_return_url(level) {
 		return_url = get_cookie('return_url_' + level);
 		window.open(return_url, "_self");
 	} else {
-		return_url = get_cookie('return_url');
-		if(return_url == null){
-			history.go(-1);
-		}else{
-			window.open(return_url, "_self");
-		}
+//		return_url = get_cookie('return_url');
+		history.go(-1);
+//		window.open(return_url, "_self");
 	}
 	return false;
 }
@@ -666,3 +663,25 @@ $(document).ready(function() {
 	top_menu = get_cookie("top_menu");
 	$(".navbar-nav a.nav-app[node=" + top_menu + "]").addClass("active");
 });
+function sign(type){
+	$.ajax({
+		type:'get', 
+		url: "./index.php?m=Common&a=sign",
+		data:{type:type},
+		dataType: "json",
+		success: function(result){
+			alert(result.msg);
+			if(result.status==1){
+				if(result.code=='in'){
+					$(".top_menu_r #in").attr('style','display:none');
+				}else{
+					$(".top_menu_r #out").attr('style','display:none');
+				}
+			}
+			
+		},
+		error:function(e){
+			alert(result.msg);
+		}
+	});
+}
