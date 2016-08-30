@@ -29,8 +29,7 @@ function hel(){
 	$(".menu_ul7_0,.menu_ul7,.menu_ul7_3").css('left',wh)
 	var h4=$('.menu_ul14').height()+40
 	$('.menu_ul14').css('top',h4)
-	var hc=h+160	
-//	$(".left_ck").css('top',hc)
+		
 }
 hel();
 //菜单栏
@@ -295,3 +294,5 @@ var a=$('.left_a').height()
 			$('.left_nav').animate({marginTop:-o})
 		}
 	})
+	
+	
