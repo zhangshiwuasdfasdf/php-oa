@@ -96,7 +96,7 @@
 						<span class="col-6 pull-right text-center"> {$vo.user_name} </span>
 						<div class="auto">
 							<a href="{:U('read','id='.$vo['id'].'&fid='.$folder_id)}" >{$vo.name}
-							<eq name="vo.is_top" value="1"><i class="fa fa-star">[置顶]</i><else/>&nbsp;</eq>
+							<eq name="vo.is_top" value="1"><i style="color: red;font-style:normal;">【置顶】</i><else/>&nbsp;</eq>
 							<eq name="vo.name|strlen" value="0">
 								无标题
 							</eq></a>
