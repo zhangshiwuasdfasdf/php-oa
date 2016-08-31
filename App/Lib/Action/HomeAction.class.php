@@ -67,16 +67,16 @@ class HomeAction extends CommonAction {
 		$this -> _memo_task();
 		$this -> _bbs_info();
 		$this -> _task_list();
-		$this -> _shouxing_list();
-		$this -> _jinianri_list();
-		$this -> _xinjin_list();
-		$this -> _daily_list();
-		$this -> shuoshuo();
+//		$this -> _shouxing_list();
+//		$this -> _jinianri_list();
+//		$this -> _xinjin_list();
+//		$this -> _daily_list();
+//		$this -> shuoshuo();
 		
-		$menu = array();
-		$menu = M('NodeNew') -> field('id,pid,name,sort,url,remark') -> order('sort asc') -> select();
-		$tree = list_to_tree($menu, 0);
-		$this -> assign("left_menu", $tree);
+//		$menu = array();
+//		$menu = M('NodeNew') -> field('id,pid,name,sort,url,remark') -> order('sort asc') -> select();
+//		$tree = list_to_tree($menu, 0);
+//		$this -> assign("left_menu", $tree);
 // 		dump($tree);
 // 		die;
 		

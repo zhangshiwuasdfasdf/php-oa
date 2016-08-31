@@ -34,7 +34,7 @@
 						<span class="col-10">&nbsp;{$task_extension[$key].status|task_status}</span>
 					</div>
 					<div class="auto autocut">
-						<a href="{:U('Task/read','id='.$vo['id'])}">{$vo.name}</a>
+						<a target="_blank" href="{:U('Task/read','id='.$vo['id'])}">{$vo.name}</a>
 					</div>
 				</li>
 			</foreach>
@@ -86,9 +86,9 @@
 						</div>
 						<div class="autocut auto">
 							<if condition="$vo.flag eq '1'" >
-								<a href="{:U('notice/read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}</a>
+								<a target="_blank" href="{:U('notice/read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}</a>
 								<else/>
-								<a href="{:U('flow/read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}</a>
+								<a target="_blank" href="{:U('flow/read','id='.$vo['id'].'&fid='.$folder)}">{$vo.name}</a>
 							</if>
 							<eq name="vo.name|strlen" value="0">
 								无标题

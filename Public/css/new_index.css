@@ -10,12 +10,13 @@ body{ background:#f3f4f8;}
 /*top*/
 .top{ background:url(../img/new_home/top_bg.jpg); position:fixed; z-index:301; top:0; left:0; width:100%; height:160px;}
 .img_a{ display:block; position:absolute; left:2%; top:30px;}
-.rq_tq{position:absolute; left:50%; top:17px; overflow:hidden;width:30%;}
+.rq_tq{position:absolute; left:45%; top:17px; overflow:hidden;width:30%;}
 #left_span{ display:block; color:#fff; font-size:14px; float:left; margin-top:36px;}
-.iframe{ width:45%; overflow:hidden;}
-@media screen and (max-width: 1024px){
+.iframe{ width:189px; overflow:hidden;}
+@media screen and (max-width: 1135px){
 .iframe{ display:none;}
 }
+
 
 
 .tuic{ position:absolute; right:2%; top:45px; color:#fff; font-size:14px; overflow:hidden; height:37px; line-height:37px;}
@@ -299,7 +300,8 @@ body{ background:#f3f4f8;}
 .right_z1_title1{ width:100%; height:26px; line-height:26px; color:#4b494a; font-size:14px;}
 .right_z1_title1_a{ display:block; float:left; width:65%; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;color: #4b494a}
 .right_z1_title1_a:hover {text-decoration: none;color: #4b494a}
-.right_z1_title1_rq{ float:left;}
+.right_z1_title1_rq{ float:left; font-size:12px; width:67px;}
+.gstt img{ width:36px; height:16px;} 
 .gstt{ float:left;}
 .right_z1_title2{ overflow:hidden;}
 .num1{ display:block; float:left; width:32%; max-height:130px; overflow:hidden; margin-right:2%;}

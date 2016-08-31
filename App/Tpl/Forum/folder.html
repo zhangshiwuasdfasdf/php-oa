@@ -95,7 +95,7 @@
 						<span class="col-9 pull-right text-center"> {$vo.create_time|toDate='Y-m-d'} </span>
 						<span class="col-6 pull-right text-center"> {$vo.user_name} </span>
 						<div class="auto">
-							<a href="{:U('read','id='.$vo['id'].'&fid='.$folder_id)}" >{$vo.name}
+							<a target="_blank" href="{:U('read','id='.$vo['id'].'&fid='.$folder_id)}" >{$vo.name}
 							<eq name="vo.is_top" value="1"><i style="color: red;font-style:normal;">【置顶】</i><else/>&nbsp;</eq>
 							<eq name="vo.name|strlen" value="0">
 								无标题

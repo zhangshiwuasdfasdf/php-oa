@@ -42,8 +42,8 @@
     <div class="bottom_tc">
     
     	<div class="bottom_tc_ss">
-        	<input class="bottom_ss_in" type="search"/>
-            <a class="bottom_ss_a"><img src="__PUBLIC__/img/new_home/ss_top.png"/></a>
+        	<input class="bottom_ss_in" type="text"/>
+            <a class="bottom_ss_a" onclick="ss_menu();"><img src="__PUBLIC__/img/new_home/ss_top.png"/></a>
             <span class="bottom_span2" onClick="checkbox()">确定</span>
             <span class="bottom_span1">取消</span> 
         </div>
@@ -481,7 +481,7 @@ function checkbox(){
             	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_zb.png'/></a></li>";
             }else if(q[j]=='月报'){
             	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_yb.png'/></a></li>";
-            }else if(q[j]=='组织图'){
+            }else if(q[j]=='组织架构'){
             	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_jg.png'/></a></li>";
             }else if(q[j]=='公司新闻与今日头条'){
             	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_tt.png'/></a></li>";
@@ -503,6 +503,7 @@ function checkbox(){
 		}
 	}
 }
+//页面初始化顶部自定义菜单栏
 function init_hbtm(){
 	var bu = $(".bottom_ul");
 	$.post("{:U('home/gethomebottom')}",'id=id' , function(data) {
@@ -513,8 +514,21 @@ function init_hbtm(){
 		}
 	});	
 }
-function b(){
-	$(".ani_ss_ul").slideDown()
+//搜索菜单项
+function ss_menu(){
+	var vl = $(".bottom_ss_in").val();
+	if(vl != "" && vl != null){
+		var tmp,ids,top;
+		$("ul[class=bottom_tc_ul] li").each(function(){
+			$(this).find("label").css("background","#fff");
+			tmp = $(this).find("label").text().trim();
+			if(tmp == vl){
+				ids = $(this).find("input").attr("id");
+				 window.location.hash = "#"+ids;
+				 $(this).find("label").css("background","yellow");
+				 return false;
+			}
+		});
+	}
 }
-
 </script>

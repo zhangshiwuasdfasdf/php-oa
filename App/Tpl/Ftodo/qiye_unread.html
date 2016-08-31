@@ -1,5 +1,5 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'企业公告_全部','search'=>'N'))}
+{:W('PageHeader',array('name'=>'企业公告_未读','search'=>'N'))}
 <div class="ul_table">
 	<ul>
 		<li class="thead" style="padding-left:10px">
@@ -42,7 +42,7 @@
 							</span>
 						</div>
 						<div class="autocut auto">
-							<a href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
+							<a target="_blank" href="{:U('notice/read','id='.$vo['id'])}">{$vo.name}</a>
 						</div>
 					</li>
 				</foreach>

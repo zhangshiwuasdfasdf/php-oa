@@ -1,17 +1,17 @@
-<layout name='Layout/ace_layout' />
+<layout name='Layout/ace_layout_read' />
 <input type="hidden" name="id" id="id" value="{$vo.id}">
 {:W('PageHeader',array('name'=>$forum['name'],'search'=>'N'))}
 <div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-left">
-			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
-			<if condition="($auth['admin']) or ($forum.user_id eq $user_id)">
+			<!--<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>-->
+				<if condition="($auth['admin']) or ($forum.user_id eq $user_id)">
 				<a onclick="del();"  class="btn btn-sm btn-danger">删除</a>
 			</if>
 		</div>
 		<div class="pull-right">
 			<if condition="$auth['write']">
-				<a href="#reply" class="btn btn-sm btn-primary">回复</a>
+				<!--<a href="#reply" class="btn btn-sm btn-primary">回复</a>-->
 			</if>
 		</div>
 	</div>

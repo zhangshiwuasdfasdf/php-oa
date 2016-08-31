@@ -486,7 +486,7 @@ img{ margin:0; padding:0;}
 						</div>
 						<div class="pull-right">
 							<span class="col-10">&nbsp;{$vo.is_submit|is_submit}</span>
-							<if condition="($vo.user_id eq $user_id) && ($now_time elt $end_time[$key])">
+							<if condition="(($vo.user_id eq $user_id) && ($now_time elt $end_time[$key])) || $vo.is_submit eq 0">
 								<span class="col-4"><a href="{:U('edit','id='.$vo['id'])}">修改</a></span>
 								<span class="col-4"><a href="{:U('del','id='.$vo['id'])}">删除</a></span>
 								<else/>

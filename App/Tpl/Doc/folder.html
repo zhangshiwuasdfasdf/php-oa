@@ -98,7 +98,7 @@
 							<span class="col-9">{$vo.create_time|toDate='Y-m-d'}</span>
 							<span class="col-6">{$vo.user_name}</span>
 						</div>
-						<div class="auto autocut"> <a href="{:U('read','id='.$vo['id'])}"> {$vo.name}
+						<div class="auto autocut"> <a target="_blank" href="{:U('read','id='.$vo['id'])}"> {$vo.name}
 							<eq name="vo.name|strlen" value="0">
 								无标题
 							</eq> </a> </div>

@@ -1,0 +1,180 @@
+<link href="__PUBLIC__/css/new_index.css" rel="stylesheet" type="text/css">
+<script src="__PUBLIC__/js/jquery-2.1.0.min.js"></script>
+<!--top-->
+<div class="top">
+    <a class="img_a" href="{:U('home/index')}">
+        <img class="logo_img" src="__PUBLIC__/img/new_home/logo.png"/> 
+    </a>
+    <div class="rq_tq">
+    	<span id="left_span"></span>
+       		<!--<iframe width="420" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=12&color=%23FFFFFF&icon=1&num=1"></iframe>-->
+        <div class="iframe">
+            <iframe allowtransparency="true" frameborder="0" width="185" height="96" scrolling="no" src="http://tianqi.2345.com/plugin/widget/index.htm?s=2&z=1&t=0&v=0&d=1&bd=0&k=&f=ffffff&q=0&e=0&a=1&c=54511&w=185&h=96&align=center"></iframe>
+        </div>
+    </div>
+    <div class="tuic">
+        <a class="tuic_a1">ERP问题反馈</a>
+        <!--<a class="qhlb" href="{:U('home/index_old')}">切换老版</a>-->
+        <a class="tuic_a2" href="{:U('login/logout')}"><img src="__PUBLIC__/img/new_home/tc.png"/></a>
+    </div>
+    <div class="top_menu_r">
+    	<if condition="($sign_in eq true)">
+    		<a id="in" onclick="sign('in')"><img src="__PUBLIC__/img/new_home/sbqr.png"/></a>
+    	</if>
+        <if condition="($sign_out eq true)">
+        	<a id="out" onclick="sign('out')"><img src="__PUBLIC__/img/new_home/xbqc.png"/></a>
+        </if>
+        <!--<a class="chongz" title="重置拖动"><img src="__PUBLIC__/img/new_home/yijian.png"/></a>-->
+     </div>  
+    <div class="bottom">
+        <span id="right_title10"></span>
+        <span class="bottom_tj_span">
+            <img class="bottom_tj" src="__PUBLIC__/img/new_home/tj_jh.png"/>
+        </span>
+        <ul class="bottom_ul">
+        </ul>
+    </div> 
+</div>
+
+
+
+<div class="bottom_tc_bg">
+    <div class="bottom_tc">
+    
+    	<div class="bottom_tc_ss">
+        	<input class="bottom_ss_in" type="search"/>
+            <a class="bottom_ss_a"><img src="__PUBLIC__/img/new_home/ss_top.png"/></a>
+            <span class="bottom_span2" onClick="checkbox()">确定</span>
+            <span class="bottom_span1">取消</span> 
+        </div>
+        
+        <ul class="bottom_tc_ul">
+        </ul>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+$(function() {
+	var con = "";
+	var bg  = $(".bottom_tc_ul");
+	var i = 1;
+	bg.children("li").remove()
+	for(j=2;j<=16;j+=2){
+		$("ul[class=menu_ul"+j+"] li").each(function(){
+			if(typeof($(this).find("a").attr("href")) != 'undefined'){
+				con = "";
+				con = '<li><input msg="'+$(this).find("a").attr("href")+'" id="box'+i+'" name="box" type="checkbox" value="'+$(this).find("div").text().trim()+'" ';
+				con += '';
+				con += ' onClick="check()"/><label for="box'+i+'">'+$(this).find("div").text().trim()+'</label></li>';
+				bg.append(con);
+				i++;
+			}
+		});
+	}
+	
+	/* ajax提交*/
+	function sendAjax(url, vars, callback) {
+		return $.ajax({
+			type : "POST",
+			url : url,
+			data : vars + "&ajax=1",
+			dataType : "json",
+			success : callback
+		});
+	}
+	//友好的消息提示
+	function ui_info(msg) {
+		$.gritter.add({
+			position : 'bottom-right',
+			text : '<h5>' + msg + '</h5>',
+			sticky : false,
+			time : 3000,
+			class_name : 'gritter-light gritter-info'
+		});
+	}
+	//调用用户自定义的图标
+	init_hbtm();
+});
+$(".bottom_tj_span").click(function(){
+	$.post("{:U('home/gethomebottomcheck')}",'id=id' , function(data) {
+		showdatas(data);
+	});	
+	$(".bottom_tc_bg").show();
+	
+	$(".bottom_span1").click(function(){
+		$(".bottom_tc_bg").hide();
+	})
+});
+
+function showdatas(result) {
+	for (s in result.data) {
+		var id = result.data[s];
+		var msg = "";
+		$("ul[class=bottom_tc_ul] li").each(function(){
+			msg = $(this).find("input").attr("msg");
+			if(msg === id){
+				$(this).find("input").attr("checked",true);
+				return false;
+			}
+		});
+	}
+}
+
+function checkbox(){
+	var chestr="";
+	var urls = "";
+	$("input[name=box]:checked").each(function(){
+		urls += $(this).attr("msg")+';';
+		chestr += $(this).val()+';';
+	});
+	if(chestr == ""){
+		ui_error("请选择您要添加的菜单!~");
+		return false;
+	}else{
+		chestr = chestr.substring(0,chestr.length-1);
+		urls = urls.substring(0,urls.length-1);
+		var q = chestr.split(';');
+		var h = urls.split(';');
+		var list = "";
+		for(j=0;j<q.length;j++){
+			if(q[j]=='日报'){
+				list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_rb.png'/></a></li>";
+            }else if(q[j]=='周报'){
+            	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_zb.png'/></a></li>";
+            }else if(q[j]=='月报'){
+            	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_yb.png'/></a></li>";
+            }else if(q[j]=='组织图'){
+            	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_jg.png'/></a></li>";
+            }else if(q[j]=='公司新闻与今日头条'){
+            	list += "<li><a class='bottom_a' href='"+h[j]+"'><img src='__PUBLIC__/img/new_home/bottom_tt.png'/></a></li>";
+            }else{
+            	list += "<li><a class='bottom_a2' href='"+h[j]+"'>"+q[j]+"</a></li>";
+            }
+		}
+		if(list != ""){
+			$(".bottom_tc_bg").hide();
+			var reg=new RegExp("&","g");
+			var lists = list.replace(reg,'*');
+			$.post("{:U('home/sethomebottom')}", 'list='+ lists, function(data) {
+				if(data.status){
+					$(".bottom_ul").empty();
+					$(".bottom_ul").append(list);
+				}
+				ui_info(data.info);
+			});	
+		}
+	}
+}
+function init_hbtm(){
+	var bu = $(".bottom_ul");
+	$.post("{:U('home/gethomebottom')}",'id=id' , function(data) {
+		if(data.status){
+			bu.append(data.data);
+		}else{
+			ui_info(data.info);
+		}
+	});	
+}
+</script>
