@@ -519,7 +519,6 @@ function b(){
 		$(".ani_ss_ul").html('');
 		var i = 1;
 		$("li[class^='menu_li'] a ").each(function(){
-			console.log($(this).find("div").text().trim());
 			if($(this).find("div").text().trim().indexOf(keyword)>=0){
 				con = "";
 				con = '<a href="'+$(this).attr("href")+'"><li>'+$(this).find("div").text().trim()+' ';
