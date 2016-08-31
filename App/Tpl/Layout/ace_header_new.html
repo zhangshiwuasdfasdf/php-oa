@@ -77,9 +77,9 @@
             </div>
             <ul class="ani_ss_ul">
             	<a><li>日报1</li></a>
-                <li>日报1</li>
-                <li>日报1</li>
-                <li>日报1</li>
+                <a><li>日报1</li></a>
+                <a><li>日报1</li></a>
+                <a><li>日报1</li></a>
             </ul>
         </div>
         <!-- <volist name="left_menu" id="menu1" key="k1">
@@ -363,6 +363,15 @@ $(function() {
 	var bg  = $(".bottom_tc_ul");
 	var i = 1;
 	bg.children("li").remove()
+	$("li [class^='menu_li'] a ").each(function(){
+		con = "";
+		con = '<li><input msg="'+$(this).attr("href")+'" id="box'+i+'" name="box" type="checkbox" value="'+$(this).find("div").text().trim()+'" ';
+		con += '';
+		con += ' onClick="check()"/><label for="box'+i+'">'+$(this).find("div").text().trim()+'</label></li>';
+		bg.append(con);
+		i++;
+	})
+	/*
 	for(j=2;j<=16;j+=1){
 		$("ul[class=menu_ul"+j+"] li").each(function(){
 			if(typeof($(this).find("a").attr("href")) != 'undefined'){
@@ -375,7 +384,7 @@ $(function() {
 			}
 		});
 	}
-	
+	*/
 	/* ajax提交*/
 	function sendAjax(url, vars, callback) {
 		return $.ajax({
@@ -401,37 +410,11 @@ $(function() {
 });
 
 $(".ss_in2").click(function(){
-	var keyword = $(".ss_in1").val();
-	var con = "";
-	var bg  = $(".bottom_tc_ul2");
-	var i = 1;
-	bg.children("li").remove()
-	for(j=2;j<=16;j+=1){
-		$("ul[class=menu_ul"+j+"] li").each(function(){
-			if(typeof($(this).find("a").attr("href")) != 'undefined'){
-				if($(this).find("div").text().trim().indexOf(keyword)>=0){
-					con = "";
-					con = '<li><a href="'+$(this).find("a").attr("href")+'"> '+$(this).find("div").text().trim()+' ';
-					con += '';
-					con += ' </a></li>';
-					bg.append(con);
-					i++;
-				}
-			}
-		});
+	var i = $(".ani_ss_ul").is(":hidden");
+	if(i == false && $(".ani_ss_ul a li").eq(0).html()!='找不到搜索结果'){
+		var url = $(".ani_ss_ul a").eq(0).attr('href');
+		window.location.href=url;
 	}
-	if(i==1){
-		con = "";
-		con = '<li><a onclick="$(\'.bottom_tc_bg2\').hide();"> '+'找不到搜索结果，点击返回搜索页面'+' ';
-		con += '';
-		con += ' </a></li>';
-		bg.append(con);
-	}
-	$(".bottom_tc_bg2").show();
-	
-	$(".bottom_span1").click(function(){
-		$(".bottom_tc_bg2").hide();
-	})
 });
 $(".bottom_tj_span").click(function(){
 	$.post("{:U('home/gethomebottomcheck')}",'id=id' , function(data) {
@@ -514,7 +497,54 @@ function init_hbtm(){
 	});	
 }
 function b(){
-	$(".ani_ss_ul").slideDown()
+	var keyword = $(".ss_in1").val();
+	if(keyword==''){
+		$(".ani_ss_ul").html('');
+		$(".ani_ss_ul").slideUp();
+	}else{
+		$(".ani_ss_ul").html('');
+		var i = 1;
+		$("li [class^='menu_li'] a ").each(function(){
+			if($(this).find("div").text().trim().indexOf(keyword)>=0){
+				con = "";
+				con = '<a href="'+$(this).attr("href")+'"><li>'+$(this).find("div").text().trim()+' ';
+				con += ' </li></a>';
+				$(".ani_ss_ul").append(con);
+				i++;
+			}
+		})
+		/*
+		for(j=2;j<=16;j+=1){
+			$("ul[class=menu_ul"+j+"] li").each(function(){
+				if(typeof($(this).find("a").attr("href")) != 'undefined'){
+					if($(this).find("div").text().trim().indexOf(keyword)>=0){
+						con = "";
+						con = '<a href="'+$(this).find("a").attr("href")+'"><li>'+$(this).find("div").text().trim()+' ';
+						con += ' </li></a>';
+						$(".ani_ss_ul").append(con);
+						i++;
+					}
+				}
+			});
+		}
+		*/
+		if(i==1){
+			con = "";
+			con = '<a><li>'+'找不到搜索结果';
+			con += '</li></a>';
+			$(".ani_ss_ul").append(con);
+		}
+		$(".ani_ss_ul").slideDown();
+	}
 }
-
+document.onkeydown=function(event){
+    var e = event || window.event || arguments.callee.caller.arguments[0];          
+    if(e && e.keyCode==13){ // enter 键
+        var i = $(".ani_ss_ul").is(":hidden");
+    	if(i == false && $(".ani_ss_ul a li").eq(0).html()!='找不到搜索结果'){
+    		var url = $(".ani_ss_ul a").eq(0).attr('href');
+    		window.location.href=url;
+    	}
+    }
+};
 </script>

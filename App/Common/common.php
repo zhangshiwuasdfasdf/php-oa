@@ -3126,4 +3126,11 @@ function determineplatform () {
 	if ($browserplatform=='') {$browserplatform = "Unknown"; }
 	return $browserplatform;
 }
+function show_mapping($code,$field='data_name'){
+	$code = explode('_',$code);
+	$data_type = $code[0];
+	$data_code = $code[1];
+	$res = M('SimpleDataMapping')->field($field)->where(array('data_type'=>$data_type,'data_code'=>$data_code,'is_del'=>0))->find();
+	return $res[$field];
+}
 ?>
