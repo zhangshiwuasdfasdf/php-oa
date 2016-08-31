@@ -359,7 +359,7 @@ $(function() {
 	var bg  = $(".bottom_tc_ul");
 	var i = 1;
 	bg.children("li").remove()
-	$("li [class^='menu_li'] a ").each(function(){
+	$("li[class^='menu_li'] a ").each(function(){
 		con = "";
 		con = '<li><input msg="'+$(this).attr("href")+'" id="box'+i+'" name="box" type="checkbox" value="'+$(this).find("div").text().trim()+'" ';
 		con += '';
@@ -518,7 +518,8 @@ function b(){
 	}else{
 		$(".ani_ss_ul").html('');
 		var i = 1;
-		$("li [class^='menu_li'] a ").each(function(){
+		$("li[class^='menu_li'] a ").each(function(){
+			console.log($(this).find("div").text().trim());
 			if($(this).find("div").text().trim().indexOf(keyword)>=0){
 				con = "";
 				con = '<a href="'+$(this).attr("href")+'"><li>'+$(this).find("div").text().trim()+' ';
