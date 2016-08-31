@@ -96,7 +96,7 @@
 		<li class="thead">
 			<div class="pull-left">
 				<span class="col-10">问题编号</span>
-				<span class="col-10">提交时间</span>
+				<span class="col-20">提交时间</span>
 				<span class="col-10">提交人</span>
 				<span class="col-10">部门</span>
 				<span class="col-10">岗位</span>
@@ -119,11 +119,11 @@
 					<li class="tbody">
 						<div class="pull-left">
 							<span class="col-10">{$vo.problem_no}&nbsp;</span>
-							<span class="col-10">{$vo.create_time|toDate='Y-m-d H:i:s',###}&nbsp;</span>
+							<span class="col-20">{$vo.create_time|date='Y-m-d H:i:s',###}&nbsp;</span>
 							<span class="col-10">{$vo.create_user_name}&nbsp;</span>
 							<span class="col-10">{$vo.dept_name}&nbsp;</span>
 							<span class="col-10">{$vo.pos_name}&nbsp;</span>
-							<span class="col-10">{$vo.emergency}&nbsp;</span>
+							<span class="col-10">{$vo.emergency|show_mapping}&nbsp;</span>
 							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}" target="_blank">{$vo.title}&nbsp;</a></span>
 		
 						</div>

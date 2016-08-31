@@ -1,125 +1,127 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'查看工作日报','search'=>'N'))}
-
+<input type="hidden" name="id" id="id" value="{$vo.id}">
+{:W('PageHeader',array('name'=>$forum['name'],'search'=>'N'))}
 <table class="table table-bordered">
 	<tr>
-		<th colspan="5" class="text-center" style="position: relative;">{$last_report.work_date}工作日报<span style="display: block;position: absolute;top: 8px;right: 30px;">填写时间：{$last_report.create_time|toDate='Y.m.d H:i'}</span></th>
+		<td style="width:145px">
+		<div class="pull-left">
+			{$problem_feedback.create_user_name}
+		</div></td>
+		<td style="width:100%">
+		<div  class="pull-left">
+			 {$problem_feedback.create_time|toDate='Y-m-d H:i'}
+		</div>
+		</td>
 	</tr>
-	<tr>
-		<td class="col-10 text-center">工作总结 </td>
-		<td class="col-40 text-center"> {$last_report.content} </td>
-	</tr>
-	<tr>
-		<td class="col-10 text-center">未完成工作 </td>
-		<td class="col-40 text-center"> {$last_report.undoo} </td>
-	</tr>
-	<tr>
-		<td class="col-10 text-center">明日计划 </td>
-		<td class="col-40 text-center"> {$last_report.plan} </td>
-	</tr>
-	<tr>
-		<td class="col-10 text-center">意见/建议 </td>
-		<td class="col-40 text-center"> {$last_report.suggest} </td>
-	</tr>
-	
-</table>
 
+	<tr>
+		<td class="post_left">
+		<div class="face">
+			<img src="{:get_save_url()}{$problem_feedback.create_user_id|get_user_info=###,pic}" width="120" height="120" border="0" >
+		</div></td>
+		<td class="post_right">
+		<div class="post_content">
+			{$problem_feedback.title}
+		</div>
+		<div class="post_content">
+			{$problem_feedback.describe}
+		</div>
+		<gt name="problem_feedback.add_file|strlen" value="2">
+			<hr>
+			<div class="add_file col-sm-12">
+				{$problem_feedback.add_file|show_file}
+			</div>
+		</gt></td>
+	</tr>
+</table>
 <table class="table table-bordered">
-	<tr>
-		<td class="col-10 text-center">附件:</td>
-		<td class="col-40 text-center">{:W('File',array('add_file'=>$last_report['add_file'],'mode'=>'show'))}</td>
-	</tr>
-</table>
-{:W('PageHeader',array('name'=>'查看记录','search'=>'N'))}
-<div class="ul_table border-bottom">
-	<ul>
-		<li class="thead">
-			<volist name="report_look" id="item">
-					{$item.look_name}({$item.create_time|toDate='Y-m-d H:i'});&nbsp;&nbsp;&nbsp;
-			</volist>
-		</li>
-	</ul>
-</div>
-
-{:W('PageHeader',array('name'=>"工作指导",'search'=>'N'))}
-	<foreach name="comment" item="vo_comment">
-	<form method='post' id="form_content" name="form_content" enctype="multipart/form-data"   class="well form-horizontal">
-		<div class="form-group col-sm-6">
-			<label class="col-sm-4 control-label" >指导人：</label>
-			<div class="col-sm-8">
-				<p class="form-control-static">
-					{$vo_comment.user_name}
-				</p>
+	<foreach name="list" item="vo">
+		<tr>
+			<td style="width:145px">
+			<div class="pull-left">
+				{$vo.user_name}
+			</div></td>
+			<td style="width:100%">
+			<div  class="pull-left">
+				 {$vo.create_time|toDate='Y-m-d H:i'}
+				<if condition="($auth['write']) and ($vo.user_id eq $user_id)">
+					<a onclick="edit_post({$vo.id});return false;" class="btn btn-link">编辑</a>
+				</if>
+				<if condition="($auth['admin']) and ($vo.user_id eq $user_id)">
+					<a onclick="del_post({$vo.id});return false;" class="btn btn-link">删除</a>
+				</if>
 			</div>
-		</div>
-		<div class="form-group col-sm-6">
-			<label class="col-sm-4 control-label" >日期：</label>
-			<div class="col-sm-8">
-				<p class="form-control-static">
-					{$vo_comment.create_time|toDate="Y-m-d h:m"}
-				</p>
+			<div class="pull-right">
+				<a class="btn btn-sm btn-primary huifuer" mss="{$vo.id}">回复#{$rows+$key}</a>
+			</div></td>
+		</tr>
+		<td style="width:145px;text-align:center;vertical-align:top;padding:0;margin:0;">
+			<div class="face">
+				<img src="{:get_save_url()}{$vo.user_id|get_user_info=###,pic}" width="120" height="120" border="0" >
 			</div>
-		</div>
-		<notempty name="vo_comment.add_file">
-		<div class="form-group">
-			<label class="col-sm-2 control-label" >附件：</label>
-			<div class="col-sm-10">
-				<p class="form-control-static">
-					{:W('File',array('add_file'=>$vo_comment['add_file'],'mode'=>'show'))}
-				</p>
+		</td>
+		<td class="post_right">
+			<div class="post_content">
+				{$vo.content}
 			</div>
-		</div>
-		</notempty>
-		<div class="form-group">
-			<div class="col-sm-12">
-				<div class="content_wrap">
-					<iframe class="content_iframe"></iframe>
-					<textarea class="content" name="content" style="width:100%;display:none">{$vo_comment.content}</textarea>
-				</div>	
-			</div>			
-		</div>
-		<notempty name="vo_comment.reply">
-		<div class="form-group">
-			<div class="col-sm-12">
-				<div class="content_wrap">
-					<iframe class="content_iframe"></iframe>
-					<textarea class="content" name="reply" style="width:100%;display:none">{$vo_comment.reply}</textarea>
-				</div>	
-			</div>			
-		</div>
-		</notempty>
-		<div class="form-group">
-			<div class="col-sm-12">
-				<div class="pull-right">
-					<a onclick="reply_comment({$vo_comment.id})" class="btn btn-sm btn-primary">回复</a>
-					<if condition="$auth['write']">
-						<a onclick="edit_comment({$vo_comment.id});" class="btn btn-sm btn-primary">修改</a>
-					</if>
-					<if condition="$auth['admin']">
-						<a onclick="del_comment({$vo_comment.id});" class="btn btn-sm btn-danger">删除</a>
-					</if>
+			<gt name="vo.add_file|strlen" value="2">
+				<hr>
+				<div class="add_file">
+					附件：{$vo.add_file|show_file}
 				</div>
-			</div>
-		</div>
-	</form>
-	<div class="space-12"></div>
+			</gt>
+				{$info[$key]['comm_ids']|show_comment}
+			</td>
+		</tr>
 	</foreach>
-<hr></hr>
-
-<if condition="$last_report['user_id'] neq $uid">
-	{:W('PageHeader',array('name'=>'工作指导','search'=>'N'))}
+</table>
+<div class="pagination">
+	{$page}
+</div>
+<if condition="$auth['write']">
+	{:W('PageHeader',array('name'=>'回复','search'=>'N'))}
 	<a id="reply"></a>
-	<form method="post" action="" id="form_data" name="form_data"   class="well form-horizontal">
+	<form method="post" action="" id="form_data" name="form_data">
 		<input type="hidden" id="ajax" name="ajax" value="0">
-		<input type="hidden" id="doc_id" name="doc_id" value="{$last_report.id}">
+		<input type="hidden" id="forum_id" name="forum_id" value="{$forum_id}">
+		<input type="hidden" id="folder_id" name="folder_id" value="{$folder_id}">
 		<input type="hidden" id="add_file" name="add_file" value="">
 		<input type="hidden" id="opmode" name="opmode" value="add">
-		<div class="form-group">
-			<textarea  class="editor" name="content" id="content" style="width:100%;height:220px;"></textarea>
-		</div>
-		<div class="action">
-			<input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save_comment();">
-			<input class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
-		</div>
+		<table class="table table-bordered">
+			<tr>
+			<td style="width:145px;text-align:center;vertical-align:top;">
+			<div class="face">
+				<img src="{:get_save_url()}{$user.user_id|get_user_info=###,pic}" width="120" height="120" border="0" >
+			</div></td>
+			<td style="width:100%;vertical-align:top;">
+			<div >
+				<textarea  class="editor" name="content" id="content" style="width:100%;height:220px;"></textarea>
+			</div></td>
+			</tr>
+			<tr>
+				<td class="text-right">附件：</td>
+				<td>
+				{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'add'))}
+				</td>
+			</tr>
+		</table>
+		<td colspan="2">
 	</form>
+		<div class="operate panel panel-default">
+		<div class="panel-body">
+			<div class="pull-left">
+				<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+			</div>
+			<div class="pull-right">
+				<a onclick="reply();"  class="btn btn-sm btn-primary">提交</a>
+			</div>
+		</div>
+	</div>
 </if>
+</div>
+
+<style type="text/css">
+#erReply{ position: fixed; width: 80%; height: auto; top: 18%; left: 10%; display: none;overflow: auto;background: #ccc;}
+#erReply .form_data{ position: absolute; top: 0; left: 0; width: 92%; height: auto;}
+hr{border-color: #ccc;}
+</style>

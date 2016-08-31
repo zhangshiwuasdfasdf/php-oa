@@ -37,7 +37,7 @@ hel();
 $("#left_a1").toggle(function(){
 	$("#left_a2,#left_a3,#left_a4,#left_a5,#left_a6,#left_a7,#left_a8,#left_a9").removeClass("left_aaa")
 	$("#left_a1").toggleClass("left_aaa")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	var t=$(this).offset().top+12
 	var w=$(".left").width()
 	$(".ani_ss").css({"top":t,"left":w})
@@ -56,7 +56,7 @@ $("#left_a1").toggle(function(){
 $("#left_a2").click(function(){
 	$("#left_a1,#left_a3,#left_a4,#left_a5,#left_a6,#left_a7,#left_a8,#left_a9").removeClass("left_aaa")
 	$("#left_a2").toggleClass("left_aaa")
-	$(".menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	var t=$(this).offset().top
 	var w=$(".left").width()
@@ -76,7 +76,7 @@ $(".menu_li2_a").click(function(){
 
 $('#left_a3').click(function(){
 	$("#left_a1,#left_a2,#left_a4,#left_a5,#left_a6,#left_a7,#left_a8,#left_a9").removeClass("left_aaa")
-	$(".menu_ul2,.menu_ul3,.menu_ul6,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul6,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$('#left_a3').toggleClass("left_aaa")
 	var t=$(this).offset().top-120
@@ -94,7 +94,7 @@ $('#left_a3').click(function(){
 
 $('#left_a4').click(function(){
 	$("#left_a1,#left_a2,#left_a3,#left_a5,#left_a6,#left_a7,#left_a8,#left_a9").removeClass("left_aaa")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$('#left_a4').toggleClass("left_aaa")
 	var t=$(this).offset().top-220
@@ -110,7 +110,7 @@ $('#left_a4').click(function(){
 })
 $(".menu_li6_a").click(function(){
 	$(".menu_li6_a1,.menu_li6_a2").removeClass("hover_bg6")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li6_a").toggleClass("hover_bg6")
 	var t0=$(".menu_ul6").offset().top
@@ -119,7 +119,7 @@ $(".menu_li6_a").click(function(){
 })
 $(".menu_li6_a1").click(function(){
 	$(".menu_li6_a,.menu_li6_a2").removeClass("hover_bg6")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li6_a1").toggleClass("hover_bg6")
 	var t0=$(".menu_ul6").offset().top
@@ -127,7 +127,7 @@ $(".menu_li6_a1").click(function(){
 	$(".menu_ul7_0").slideToggle()	
 })
 $(".menu_li6_a2").click(function(){
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li6_a,.menu_li6_a1").removeClass("hover_bg6")
 	$()
@@ -138,14 +138,14 @@ $(".menu_li6_a2").click(function(){
 })
 
 $(".menu_li7_a1").click(function(){
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li7_a2,.menu_li7_a3").removeClass("hover_bg7")
 	$(".menu_li7_a1").toggleClass("hover_bg7")
 	$(".menu_ul7_1").slideToggle()	
 })
 $(".menu_li7_a2").click(function(){
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_1,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_1,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li7_a1,.menu_li7_a3").removeClass("hover_bg7")
 	$(".menu_li7_a2").toggleClass("hover_bg7")
@@ -155,7 +155,7 @@ $(".menu_li7_a2").click(function(){
 $('#left_a5').click(function(){
 	$("#left_a1,#left_a2,#left_a3,#left_a4,#left_a6,#left_a7,#left_a8,#left_a9").removeClass("left_aaa")
 	$('#left_a5').toggleClass("left_aaa")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul6,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul6,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	var t=$(this).offset().top
 	var w=$(".left").width()
@@ -172,7 +172,7 @@ $('#left_a5').click(function(){
 $('#left_a6').click(function(){
 	$("#left_a1,#left_a2,#left_a3,#left_a5,#left_a4,#left_a7,#left_a8,#left_a9").removeClass("left_aaa")
 	$('#left_a6').toggleClass("left_aaa")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul6,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul6,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	var t=$(this).offset().top
 	var w=$(".left").width()
@@ -189,7 +189,7 @@ $('#left_a6').click(function(){
 $('#left_a7').click(function(){
 	$("#left_a1,#left_a2,#left_a3,#left_a4,#left_a5,#left_a6,#left_a8,#left_a9").removeClass("left_aaa")
 	$('#left_a7').toggleClass("left_aaa")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul6,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul6,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	var t=$(this).offset().top
 	var w=$(".left").width()
@@ -206,7 +206,7 @@ $('#left_a7').click(function(){
 $('#left_a8').click(function(){
 	$("#left_a1,#left_a2,#left_a3,#left_a4,#left_a5,#left_a6,#left_a7,#left_a9").removeClass("left_aaa")
 	$('#left_a8').toggleClass("left_aaa")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul6,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul15,.menu_ul6,.menu_ul16").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	var t1=$(".menu_ul14").height()
 	var t=$(this).offset().top-t1+76
@@ -231,7 +231,7 @@ $(".menu_li14_a").click(function(){
 $('#left_a9').click(function(){
 	$("#left_a1,#left_a2,#left_a3,#left_a4,#left_a5,#left_a6,#left_a7,#left_a8").removeClass("left_aaa")
 	$('#left_a9').toggleClass("left_aaa")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul6,.menu_ul17_0,.menu_ul17_1,.menu_ul17_2").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul6,.menu_ul17_0,.menu_ul17_1,.menu_ul17_2").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	var t1=$(".menu_ul16").height()
 	var t=$(this).offset().top-t1+40
@@ -247,20 +247,20 @@ $('#left_a9').click(function(){
 })
 $(".menu_li16_a").click(function(){
 	$(".menu_li16_a1,.menu_li16_a2").removeClass("hover_bg16")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_1,.menu_ul17_2").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul17_1,.menu_ul17_2").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li16_a").toggleClass("hover_bg16")
 	$(".menu_ul17_0").slideToggle()	
 })
 $(".menu_li16_a1").click(function(){
 	$(".menu_li16_a,.menu_li16_a2,.menu_li16_a3").removeClass("hover_bg16")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_0,.menu_ul17_2,.menu_ul17_3").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul17_0,.menu_ul17_2,.menu_ul17_3").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li16_a1").toggleClass("hover_bg16")
 	$(".menu_ul17_1").slideToggle()	
 })
 $(".menu_li16_a2").click(function(){
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_1,.menu_ul17_0,.menu_ul17_3").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul17_1,.menu_ul17_0,.menu_ul17_3").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li16_a,.menu_li16_a1,.menu_li16_a3").removeClass("hover_bg16")
 	$()
@@ -268,7 +268,7 @@ $(".menu_li16_a2").click(function(){
 	$(".menu_ul17_2").slideToggle()	
 })
 $(".menu_li16_a3").click(function(){
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_1,.menu_ul17_0,.menu_ul17_2").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul17_1,.menu_ul17_0,.menu_ul17_2").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li16_a,.menu_li16_a1,.menu_li16_a2").removeClass("hover_bg16")
 	$()
@@ -278,7 +278,7 @@ $(".menu_li16_a3").click(function(){
 
 $('.right,.top,.main-content').click(function(){
 	$(".ani_ss").animate({opacity:0,width:'0px'})
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul16").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul6,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul15,.menu_ul16").hide()
 	$(".left_a").removeClass("left_aaa")
 });
 

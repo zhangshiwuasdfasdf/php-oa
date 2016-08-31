@@ -68,84 +68,24 @@ class ProblemFeedbackAction extends CommonAction {
 	}
 
 	public function read($id) {
-		if(is_mobile_request()){
-			$id = $_REQUEST['pid'];
-		}
-		$this -> assign('uid',get_user_id());
-		$this -> assign('id', $id);
 		$this -> assign('auth', $this -> config['auth']);
 		$widget['date'] = true;
 		$widget['uploader'] = true;
 		$widget['editor'] = true;
 		$this -> assign("widget", $widget);
 		
+		$problem_feedback = M('ProblemFeedback')->find($id);
+		$this -> assign("problem_feedback", $problem_feedback);
+		
+		$problem_feedback_comment = M('ProblemFeedbackComment')->where(array('pid'=>$id))->select();
+		$this -> assign("problem_feedback_comment", $problem_feedback_comment);
+		
 		$auth = $this -> config['auth'];
 		if (!$auth['admin']) {
-			if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
-				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids_all(get_user_id()));
-				$where_last['user_id'] = array('in',$child_ids);
-			}elseif(D("Role") -> check_duty('SHOW_LOG_LOW')){//允许查看自己及下一级日志
-				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids(get_user_id()));
-				$where_last['user_id'] = array('in',$child_ids);
-			}else{//查看自己的日志
-				$where_last['user_id'] = array('eq',intval(get_user_id()));
-			}
+			
 		}
+		$this -> display();
 		
-		
-		$date_1 = date('Y-m-d', strtotime('0 day'));
-		$date_2 = date('Y-m-d', strtotime('-1 day'));
-		$date_3 = date('Y-m-d', strtotime('-2 day'));
-		$work_date_list = array($date_1 => $date_1, $date_2 => $date_2, $date_3 => $date_3);
-		$this -> assign('work_date_list', $work_date_list);
-
-		$where_last['id'] = array('eq', $id);
-		$last_report = M("DailyReport") -> where($where_last) -> order('id desc') -> find();
-		$this -> assign('last_report', $last_report);
-		
-		if(empty($last_report)){
-			$this->error('权限不足！');
-		}
-		
-		$where_detail['pid'] = $last_report['id'];
-		$where_detail['type'] = array('eq', 1);
-		$last_report_detail = M("DailyReportDetail") -> where($where_detail) -> select();
-
-		foreach ($last_report_detail as $key => $val) {
-			$last_report_detail[$key]['item'] = explode('|||', $val['item']);
-			$last_report_detail[$key]['start_time'] = explode('|||', $val['start_time']);
-			$last_report_detail[$key]['end_time'] = explode('|||', $val['end_time']);
-			$last_report_detail[$key]['status'] = explode('|||', $val['status']);
-		}
-
-		$this -> assign('last_report_detail', $last_report_detail);
-
-		$where_plan['pid'] = $last_report['id'];
-		$where_plan['type'] = array('eq', 2);
-		$last_report_plan = M("DailyReportDetail") -> where($where_plan) -> select();
-		$this -> assign('last_report_plan', $last_report_plan);
-
-		$where_comment['doc_id'] = array('eq', $id);
-		$where_comment['is_del'] = array('eq', 0);
-		$comment = M("DailyReportComment") -> where($where_comment) -> select();
-		$this -> assign('comment', $comment);
-		
-		$model_report_look = M('ReportLook');
-		$report_look = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$id),'look_id'=>get_user_id()))->find();
-		if($last_report['user_id']!=get_user_id()){
-			if($report_look){
-				$result = $model_report_look->where(array('id' => $report_look['id']))->save(array('create_time'=>time()));
-			}else{
-				$result = $model_report_look->add(array('type'=>'daily','pid'=>$id,'look_id'=>get_user_id(),'look_name'=>get_user_name(),'create_time'=>time()));
-			}
-		}
-		$report_look = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$id)))->order('create_time desc')->select();
-		$this -> assign('report_look', $report_look);
-		if($last_report['create_time']<strtotime('2016-08-23 13:00')){
-			$this -> display('read_0');
-		}else{
-			$this -> display();
-		}
 	}
 
 	public function edit($id) {
@@ -223,37 +163,37 @@ class ProblemFeedbackAction extends CommonAction {
 
 	/** 插入新新数据  **/
 	protected function _insert() {
-		dump($_REQUEST);
-		dump(getBrowser());
-		dump(getBrowserVer());
-		dump(determineplatform());
-		die;
-		$model = D("DailyReport");
-		if(!is_mobile_request()){
-			if (false === $model -> create()) {
-				$this -> error($model -> getError());
-			}
+// 		dump($_REQUEST);
+// 		dump(getBrowser());
+// 		dump(getBrowserVer());
+// 		dump(determineplatform());
+// 		die;
+		$model = D("ProblemFeedback");
+		$last = $model->where(array('problem_no'=>array('like',date('ym',time()).'%')))->order('problem_no asc')->limit(1)->find();
+	
+		if($last){
+			$num = intval(substr($last['problem_no'],4));
+			$num_str = formatto4w($num+1);
 		}else{
-			$user = D('UserView')->find($_GET['id']);
-			unset($_GET['id']);
-			if (false === $model -> create($_GET)) {
-				$this -> error($model -> getError());
-			}
+			$num_str = formatto4w(1);
+		}
+		if (false === $model -> create()) {
+			$this -> error($model -> getError());
 		}
 		
-		if (in_array('user_id', $model -> getDbFields())) {
-			$model -> user_id = is_mobile_request()?$user['id']:get_user_id();
-		};
-		if (in_array('user_name', $model -> getDbFields())) {
-			$model -> user_name = is_mobile_request()?$user['name']:get_user_name();
-		};
-		if (in_array('dept_id', $model -> getDbFields())) {
-			$model -> dept_id = is_mobile_request()?$user['dept_id']:get_dept_id();
-		};
-		if (in_array('dept_name', $model -> getDbFields())) {
-			$model -> dept_name = is_mobile_request()?$user['dept_name']:get_dept_name();
-		};
+		$model -> problem_no = date('ym',time()).$num_str;
 		$model -> create_time = time();
+		$model -> create_user_id = get_user_id();
+		$model -> create_user_name = get_user_name();
+		$model -> dept_id = get_dept_id();
+		$model -> dept_name = get_dept_name();
+		$model -> pos_id = get_user_info(get_user_id(), 'pos_id');
+		$pos_name = M('Dept')->field('name')->find($model -> pos_id);
+		$model -> pos_name = $pos_name['name'];
+		$model -> browser = getBrowser().' '.getBrowserVer();
+		$model -> os = determineplatform();
+		$model -> is_del = 0;
+		
 		/*保存当前数据对象 */
 		$list = $model -> add();
 		
