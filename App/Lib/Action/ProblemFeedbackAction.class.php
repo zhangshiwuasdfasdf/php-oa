@@ -52,34 +52,18 @@ class ProblemFeedbackAction extends CommonAction {
 	}
 
 	public function add() {
-
-// 		$data['is_submit'] = 0;
-// 		$id = D("DailyReport") -> add($data);
-// 		$this -> assign('id', $id);
-
 		$widget['date'] = true;
 		$widget['uploader'] = true;
 		$widget['editor'] = true;
 		$this -> assign("widget", $widget);
-
-		$date_1 = date('Y-m-d', strtotime('0 day'));
-		$date_2 = date('Y-m-d', strtotime('-1 day'));
-		$date_3 = date('Y-m-d', strtotime('-2 day'));
-		$work_date_list = array($date_1 => $date_1, $date_2 => $date_2, $date_3 => $date_3);
-		$this -> assign('work_date_list', $work_date_list);
-
-		$where_last['user_id'] = array('eq', get_user_id());
-		$where_last['is_submit'] = array('eq', 1);
-		$last_report = M("DailyReport") -> where($where_last) -> order('id desc') -> find();
-		$this -> assign('last_report', $last_report);
-
-		$where_detail['pid'] = $last_report['id'];
-		$where_detail['type'] = array('eq', 1);
-		$last_report_detail = M("DailyReportDetail") -> where($where_detail) -> select();
-		$this -> assign('last_report_detail', $last_report_detail);
-
-		$time = array('00:00' => '00:00', '00:30' => '00:30', '01:00' => '01:00', '01:30' => '01:30', '02:00' => '02:00', '02:30' => '02:30', '03:00' => '03:00', '03:30' => '03:30', '04:00' => '04:00', '04:30' => '04:30', '05:00' => '05:00', '05:30' => '05:30', '06:00' => '06:00', '06:30' => '06:30', '07:00' => '07:00', '07:30' => '07:30', '08:00' => '08:00', '08:30' => '08:30', '09:00' => '09:00', '09:30' => '09:30', '10:00' => '10:00', '10:30' => '10:30', '11:00' => '11:00', '11:30' => '11:30', '12:00' => '12:00', '13:00' => '13:00', '13:30' => '13:30', '14:00' => '14:00', '14:30' => '14:30', '15:00' => '15:00', '15:30' => '15:30', '16:00' => '16:00', '16:30' => '16:30', '17:00' => '17:00', '17:30' => '17:30', '18:00' => '18:00', '18:30' => '18:30', '19:00' => '19:00', '19:30' => '19:30', '20:00' => '20:00', '20:30' => '20:30', '21:00' => '21:00', '21:30' => '21:30', '22:00' => '22:00', '22:30' => '22:30', '23:00' => '23:00', '23:30' => '23:30', '24:00' => '24:00');
-		$this -> assign('time', $time);
+		
+		$emergency = M('SimpleDataMapping')->field('id,data_type,data_code,data_name')->where(array('data_type'=>'紧急程度','is_del'=>0))->select();
+		foreach ($emergency as $k=>$v){
+			$e['id'] = $v['data_type'].'_'.$v['data_code'];
+			$e['name'] = $v['data_name'];
+			$emergency_list[] = $e;
+		}
+		$this -> assign("emergency_list", $emergency_list);
 		$this -> display();
 	}
 
@@ -239,6 +223,11 @@ class ProblemFeedbackAction extends CommonAction {
 
 	/** 插入新新数据  **/
 	protected function _insert() {
+		dump($_REQUEST);
+		dump(getBrowser());
+		dump(getBrowserVer());
+		dump(determineplatform());
+		die;
 		$model = D("DailyReport");
 		if(!is_mobile_request()){
 			if (false === $model -> create()) {

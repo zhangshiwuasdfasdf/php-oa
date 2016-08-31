@@ -588,9 +588,13 @@ class ProfileAction extends CommonAction {
 		
 		$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
 		// Add some data
-
+		
+		$id = $_GET['id']?$_GET['id']:get_user_id();
+		$user = D('UserView')->field('dept_name,name')->find($id);
+		$dept_name = $user['dept_name'];
+		$user_name = $user['name'];
 		//签入数据
-		$signdata = M('SignInOut')->where(array('user_id'=>get_user_id()))->order('time asc')->select();
+		$signdata = M('SignInOut')->where(array('user_id'=>$id))->order('time asc')->select();
 		foreach ($signdata as $k=>$v){
 			$date = date('Y-m-d',$v['time']);
 			$signdata_new[$date][$v['type']] = date('Y-m-d H:i:s',$v['time']);
@@ -600,8 +604,9 @@ class ProfileAction extends CommonAction {
 		//第一列为用户
 		$q = $q -> setCellValue("A1", '签入时间');
 		$q = $q -> setCellValue("B1", '签出时间');
-		$q = $q -> setCellValue("C1", '部门：'.get_dept_name());
-		$q = $q -> setCellValue("D1", '姓名：'.get_user_name());
+		$q = $q -> setCellValue("C1", '序号：'.$id);
+		$q = $q -> setCellValue("D1", '部门：'.$dept_name);
+		$q = $q -> setCellValue("E1", '姓名：'.$user_name);
 		
 		$i = 2;
 		foreach ($signdata_new as $k=>$v){

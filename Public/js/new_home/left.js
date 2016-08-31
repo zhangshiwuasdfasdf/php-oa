@@ -21,14 +21,15 @@ function hel(){
 	$(".left").css('height',h)
 	var h3=h-40//上下各20边距
 	if($(".menu_ul6,.menu_ul4,.menu_ul14").height()>=h){
-		$(".menu_ul6,.menu_ul4").css({'height':h3,'top':180,'width':180})
+		$(".menu_ul6,.menu_ul4,.menu_ul14").css({'height':h3,'top':180,'width':180})
 		$(".menu_ul14").css('width',180)
 		$('.menu_ul14').css('height',h3)
 	}
 	var wh=$(".menu_ul6").width()+120
 	$(".menu_ul7_0,.menu_ul7,.menu_ul7_3").css('left',wh)
 	var h4=$('.menu_ul14').height()+40
-	$('.menu_ul14').css('top',h4)
+	var h5=$('.menu_ul14').width()+120
+	$('.menu_ul15').css('left',h5)
 		
 }
 hel();
@@ -218,6 +219,13 @@ $('#left_a8').click(function(){
 		
 	})
 	$(".menu_ul14").slideToggle()
+})
+
+$(".menu_li14_a").click(function(){
+	$(".menu_li14_a").toggleClass("hover_bg14")
+	var t0=$(".menu_ul14").offset().top
+	$(".menu_ul15").css('top',t0)
+	$(".menu_ul15").slideToggle()	
 })
 
 $('#left_a9').click(function(){

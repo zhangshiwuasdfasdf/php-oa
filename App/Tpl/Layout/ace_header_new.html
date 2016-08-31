@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="tuic">
-        <a class="tuic_a1">ERP问题反馈</a>
+        <!-- <a class="tuic_a1">ERP问题反馈</a> -->
         <!--<a class="qhlb" href="{:U('home/index_old')}">切换老版</a>-->
         <a class="tuic_a2" href="{:U('login/logout')}"><img src="__PUBLIC__/img/new_home/tc.png"/></a>
     </div>
@@ -53,6 +53,17 @@
     </div>
 </div>
 
+<div class="bottom_tc_bg2">
+    <div class="bottom_tc">
+    	<div class="bottom_tc_ss">
+            <span class="bottom_span1">取消</span> 
+        </div>
+        
+        <ul class="bottom_tc_ul2">
+        </ul>
+    </div>
+</div>
+
 <!--left-->
 <div class="left">
 	<nav class="left_nav">
@@ -60,8 +71,16 @@
         	<img src="__PUBLIC__/img/new_home/left_ss1.png"/>
         </a>
         <div class="ani_ss">
-            <input class="ss_in1" type="search"/>
-            <input class="ss_in2" type="submit" value="搜索"/>
+            <div class="ss_div">
+                <input class="ss_in1" type="search" onKeyUp="b()"/>
+                <input class="ss_in2" type="submit" value="搜索"/>
+            </div>
+            <ul class="ani_ss_ul">
+            	<a><li>日报1</li></a>
+                <li>日报1</li>
+                <li>日报1</li>
+                <li>日报1</li>
+            </ul>
         </div>
         <!-- <volist name="left_menu" id="menu1" key="k1">
 			<a class="left_a" id="left_a{$k1+1}">
@@ -209,7 +228,7 @@
         	<img src="__PUBLIC__/img/new_home/left_xxgl1.png"/>
         </a>
         <ul class="menu_ul8">
-            <li class="menu_li8"><a><span class="cd_span8"></span><div class="cd_div">ERP问题反馈</div></a></li>
+            <li class="menu_li8"><a href="{:U('problem_feedback/index')}"><span class="cd_span8"></span><div class="cd_div">ERP问题反馈</div></a></li>
             <li class="menu_li8"><a><span class="cd_span8"></span><div class="cd_div">软件版本发布申请</div></a></li>
         </ul>
         
@@ -235,7 +254,7 @@
         <a class="left_a" id="left_a8">
         	<img src="__PUBLIC__/img/new_home/left_tjzx1.png"/>
         </a>
-        <ul class="menu_ul14">
+       <!--  <ul class="menu_ul14">
             <li class="menu_li14"><a href="{:U('report/delivery')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报导入</div></a></li>
             <li class="menu_li14"><a href="{:U('report/delivery_read_all')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报表</div></a></li>
             <li class="menu_li14"><a href="{:U('report/store_problem')}"><span class="cd_span14"></span><div class="cd_div">商家问题受理导入</div></a></li>
@@ -246,6 +265,30 @@
             <li class="menu_li14"><a href="{:U('visitor/statistics')}"><span class="cd_span14"></span><div class="cd_div">到访客户池统计</div></a></li>
             <li class="menu_li14"><a href="{:U('signed/index')}"><span class="cd_span14"></span><div class="cd_div">已签约客户明细年进度导入</div></a></li>
             <li class="menu_li14"><a href="{:U('signed/statistics')}"><span class="cd_span14"></span><div class="cd_div">已签约客户明细年进度表</div></a></li>
+        </ul> -->
+        
+        <ul class="menu_ul14">
+            <li class="menu_li14"><a href="{:U('report/delivery_read_all')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报表</div></a></li>
+            <li class="menu_li14"><a href="{:U('report/store_problem_read_all')}"><span class="cd_span14"></span><div class="cd_div">商家问题受理表</div></a></li>
+            <li class="menu_li14"><a href="{:U('attract/statistics')}"><span class="cd_span14"></span><div class="cd_div">招商进度日报表</div></a></li> 
+            <li class="menu_li14"><a href="{:U('visitor/statistics')}"><span class="cd_span14"></span><div class="cd_div">到访客户池统计</div></a></li>
+            <li class="menu_li14"><a href="{:U('signed/statistics')}"><span class="cd_span14"></span><div class="cd_div">已签约客户明细年进度表</div></a></li>
+            <li class="menu_li14">
+                <a class="menu_li14_a">
+                    <span class="cd_span14"></span>
+                    <div class="cd_div">基础数据导入</div>
+                    <img class="cd_ts" src="__PUBLIC__/img/new_home/jian6.png"/>
+                </a>
+            </li>
+        </ul>
+        
+        <ul class="menu_ul15">
+            <li class="menu_li15"><a href="{:U('report/delivery')}"><span class="cd_span15"></span><div class="cd_div">基地发货日报导入</div></a></li>
+            <!-- <li class="menu_li15"><a><span class="cd_span15"></span><div class="cd_div">工作计划导入</div></a></li> -->
+            <li class="menu_li15"><a href="{:U('report/store_problem')}"><span class="cd_span15"></span><div class="cd_div">商家问题受理导入</div></a></li>
+            <li class="menu_li15"><a href="{:U('attract/index')}"><span class="cd_span15"></span><div class="cd_div">招商进度日报导入</div></a></li>
+            <li class="menu_li15"><a href="{:U('visitor/index')}"><span class="cd_span15"></span><div class="cd_div">到访客户池导入</div></a></li>
+            <li class="menu_li15"><a href="{:U('signed/index')}"><span class="cd_span15"></span><div class="cd_div">已签约客户明细年进度导入</div></a></li>
         </ul>
         <a class="left_a" id="left_a9">
         	<img src="__PUBLIC__/img/new_home/left_xtgl1.png"/>
@@ -320,7 +363,7 @@ $(function() {
 	var bg  = $(".bottom_tc_ul");
 	var i = 1;
 	bg.children("li").remove()
-	for(j=2;j<=16;j+=2){
+	for(j=2;j<=16;j+=1){
 		$("ul[class=menu_ul"+j+"] li").each(function(){
 			if(typeof($(this).find("a").attr("href")) != 'undefined'){
 				con = "";
@@ -355,6 +398,40 @@ $(function() {
 	}
 	//调用用户自定义的图标
 	init_hbtm();
+});
+
+$(".ss_in2").click(function(){
+	var keyword = $(".ss_in1").val();
+	var con = "";
+	var bg  = $(".bottom_tc_ul2");
+	var i = 1;
+	bg.children("li").remove()
+	for(j=2;j<=16;j+=1){
+		$("ul[class=menu_ul"+j+"] li").each(function(){
+			if(typeof($(this).find("a").attr("href")) != 'undefined'){
+				if($(this).find("div").text().trim().indexOf(keyword)>=0){
+					con = "";
+					con = '<li><a href="'+$(this).find("a").attr("href")+'"> '+$(this).find("div").text().trim()+' ';
+					con += '';
+					con += ' </a></li>';
+					bg.append(con);
+					i++;
+				}
+			}
+		});
+	}
+	if(i==1){
+		con = "";
+		con = '<li><a onclick="$(\'.bottom_tc_bg2\').hide();"> '+'找不到搜索结果，点击返回搜索页面'+' ';
+		con += '';
+		con += ' </a></li>';
+		bg.append(con);
+	}
+	$(".bottom_tc_bg2").show();
+	
+	$(".bottom_span1").click(function(){
+		$(".bottom_tc_bg2").hide();
+	})
 });
 $(".bottom_tj_span").click(function(){
 	$.post("{:U('home/gethomebottomcheck')}",'id=id' , function(data) {
@@ -436,4 +513,8 @@ function init_hbtm(){
 		}
 	});	
 }
+function b(){
+	$(".ani_ss_ul").slideDown()
+}
+
 </script>

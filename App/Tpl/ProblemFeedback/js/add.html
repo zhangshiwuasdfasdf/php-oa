@@ -97,9 +97,7 @@
 		winopen(fix_url("{:U('popup/help')}?subject="+$subject+"&item="+$item),740,630);
 	}
 
-	function save($submit) {
-		$('#is_submit').val($submit);
-		init_input_name();
+	function save() {
 		window.onbeforeunload = null;
 		if (check_form("form_data")) {
 			sendForm("form_data", "{:U('save')}");

@@ -3018,4 +3018,112 @@ function showsex($sex){
 		return '女';
 	}
 }
+function getBrowser(){
+	$agent=$_SERVER["HTTP_USER_AGENT"];
+	if(strpos($agent,'MSIE')!==false || strpos($agent,'rv:11.0')) //ie11判断
+		return "ie";
+	else if(strpos($agent,'Firefox')!==false)
+		return "firefox";
+	else if(strpos($agent,'Chrome')!==false)
+		return "chrome";
+	else if(strpos($agent,'Opera')!==false)
+		return 'opera';
+	else if((strpos($agent,'Chrome')==false)&&strpos($agent,'Safari')!==false)
+		return 'safari';
+	else
+		return 'unknown';
+}
+
+function getBrowserVer(){
+	if (empty($_SERVER['HTTP_USER_AGENT'])){    //当浏览器没有发送访问者的信息的时候
+		return 'unknow';
+	}
+	$agent= $_SERVER['HTTP_USER_AGENT'];
+	if (preg_match('/MSIE\s(\d+)\..*/i', $agent, $regs))
+		return $regs[1];
+	elseif (preg_match('/FireFox\/(\d+)\..*/i', $agent, $regs))
+	return $regs[1];
+	elseif (preg_match('/Opera[\s|\/](\d+)\..*/i', $agent, $regs))
+	return $regs[1];
+	elseif (preg_match('/Chrome\/(\d+)\..*/i', $agent, $regs))
+	return $regs[1];
+	elseif ((strpos($agent,'Chrome')==false)&&preg_match('/Safari\/(\d+)\..*$/i', $agent, $regs))
+	return $regs[1];
+	else
+		return 'unknow';
+}
+function determineplatform () {
+	$Agent = $_SERVER['HTTP_USER_AGENT'];
+	$browserplatform=='';
+	if (eregi('win',$Agent) && strpos($Agent, '95')) {
+		$browserplatform="Windows 95";
+	}
+	elseif (eregi('win 9x',$Agent) && strpos($Agent, '4.90')) {
+		$browserplatform="Windows ME";
+	}
+	elseif (eregi('win',$Agent) && ereg('98',$Agent)) {
+		$browserplatform="Windows 98";
+	}
+	elseif (eregi('win',$Agent) && eregi('nt 5.0',$Agent)) {
+		$browserplatform="Windows 2000";
+	}
+	elseif (eregi('win',$Agent) && eregi('nt 5.1',$Agent)) {
+		$browserplatform="Windows XP";
+	}
+	elseif (eregi('win',$Agent) && eregi('nt 6.0',$Agent)) {
+		$browserplatform="Windows Vista";
+	}
+	elseif (eregi('win',$Agent) && eregi('nt 6.1',$Agent)) {
+		$browserplatform="Windows 7";
+	}
+	elseif (eregi('win',$Agent) && ereg('32',$Agent)) {
+		$browserplatform="Windows 32";
+	}
+	elseif (eregi('win',$Agent) && eregi('nt',$Agent)) {
+		$browserplatform="Windows NT";
+	}elseif (eregi('Mac OS',$Agent)) {
+		$browserplatform="Mac OS";
+	}
+	elseif (eregi('linux',$Agent)) {
+		$browserplatform="Linux";
+	}
+	elseif (eregi('unix',$Agent)) {
+		$browserplatform="Unix";
+	}
+	elseif (eregi('sun',$Agent) && eregi('os',$Agent)) {
+		$browserplatform="SunOS";
+	}
+	elseif (eregi('ibm',$Agent) && eregi('os',$Agent)) {
+		$browserplatform="IBM OS/2";
+	}
+	elseif (eregi('Mac',$Agent) && eregi('PC',$Agent)) {
+		$browserplatform="Macintosh";
+	}
+	elseif (eregi('PowerPC',$Agent)) {
+		$browserplatform="PowerPC";
+	}
+	elseif (eregi('AIX',$Agent)) {
+		$browserplatform="AIX";
+	}
+	elseif (eregi('HPUX',$Agent)) {
+		$browserplatform="HPUX";
+	}
+	elseif (eregi('NetBSD',$Agent)) {
+		$browserplatform="NetBSD";
+	}
+	elseif (eregi('BSD',$Agent)) {
+		$browserplatform="BSD";
+	}
+	elseif (ereg('OSF1',$Agent)) {
+		$browserplatform="OSF1";
+	}
+	elseif (ereg('IRIX',$Agent)) {
+		$browserplatform="IRIX";
+	}
+	elseif (eregi('FreeBSD',$Agent)) {
+		$browserplatform="FreeBSD";
+	}
+	if ($browserplatform=='') {$browserplatform = "Unknown"; }
+	return $browserplatform;
+}
 ?>
