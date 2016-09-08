@@ -16,26 +16,29 @@ class ProblemFeedbackAction extends CommonAction {
 	//过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
-		if (!empty($_POST['eq_dept_id'])) {
-			$map['dept_id'] = array('eq', $_POST['eq_dept_id']);
-		}
-		if (!empty($_POST['eq_user_id'])) {
-			$map['user_id'] = array('eq', $_POST['eq_user_id']);
-		}
-		if (!empty($_POST['be_create_time']) && !empty($_POST['en_create_time'])) {
-			$map['work_date'] = array('between', array($_POST['be_create_time'],$_POST['en_create_time']));
-		}elseif (!empty($_POST['be_create_time'])) {
-			$map['work_date'] = array('egt', $_POST['be_create_time']);
-		}elseif (!empty($_POST['en_create_time'])) {
-			$map['work_date'] = array('elt', $_POST['en_create_time']);
+		if (!empty($_POST['problem_no'])) {
+			$map['problem_no'] = array('eq', $_POST['problem_no']);
 		}
 		if (!empty($_POST['eq_dept_id_0'])) {
-			$dept_id = $_POST['eq_dept_id_0'];
-			$map['pos_id'] = array('in', get_child_dept_all($dept_id));
+			$map['dept_id'] = array('in', get_child_dept_all($_POST['eq_dept_id_0']));
 		}
-		if (!empty($_POST['eq_dept_id_1'])) {
-			$dept_id = $_POST['eq_dept_id_1'];
-			$map['pos_id'] = array('in', array($dept_id));
+		if (!empty($_POST['user_name'])) {
+			$map['create_user_name'] = array('eq', $_POST['user_name']);
+		}
+		if ($_POST['me'] == '1') {
+			$map['create_user_name'] = array('eq', get_user_name());
+		}
+		if (!empty($_POST['deal_user_name'])) {
+			$map['deal_user_name'] = array('eq', $_POST['deal_user_name']);
+		}
+		if (!empty($_POST['type'])) {
+			$map['type'] = array('eq', $_POST['type']);
+		}
+		if (!empty($_POST['status'])) {
+			$map['status'] = array('eq', $_POST['status']);
+		}
+		if (!empty($_POST['title'])) {
+			$map['title'] = array('like', '%'.$_POST['title'].'%');
 		}
 	}
 	
@@ -43,10 +46,30 @@ class ProblemFeedbackAction extends CommonAction {
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
 		$this -> assign('user_id', get_user_id());
-
+		
+		$dept_list = M('ProblemFeedback')->field('dept_id as id,dept_name as name')->distinct(true)->select();
+		$this -> assign('dept_list', $dept_list);
+		
+		$type_list = M('ProblemFeedback')->field('type as id')->distinct(true)->select();
+		foreach ($type_list as $k=>$v){
+			$type_list[$k]['name'] = show_mapping($v['id']);
+		}
+		$this -> assign('type_list', $type_list);
+		
+		$status_list = M('ProblemFeedback')->field('status as id')->distinct(true)->select();
+		foreach ($status_list as $k=>$v){
+			$status_list[$k]['name'] = show_mapping($v['id']);
+		}
+		$this -> assign('status_list', $status_list);
+		
 		$auth = $this -> config['auth'];
 		$this -> assign('auth', $auth);
-		$this->_list(M('ProblemFeedback'), array('is_del'=>0));
+		
+		$map = $this -> _search();
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($map);
+		}
+		$this->_list(M('ProblemFeedback'), $map);
 		
 		$this -> display();
 	}
@@ -77,10 +100,32 @@ class ProblemFeedbackAction extends CommonAction {
 		$problem_feedback = M('ProblemFeedback')->find($id);
 		$this -> assign("problem_feedback", $problem_feedback);
 		
-		$problem_feedback_comment = M('ProblemFeedbackComment')->where(array('pid'=>$id))->select();
-		$this -> assign("problem_feedback_comment", $problem_feedback_comment);
+//		$problem_feedback_comment = M('ProblemFeedbackComment')->where(array('pid'=>$id))->select();
+//		$this -> assign("problem_feedback_comment", $problem_feedback_comment);
+		$this ->_list(M('ProblemFeedbackComment'), array('pid'=>$id),'id',true);
+		
+		$user_id = get_user_id();
+		$this -> assign("user_id", $user_id);
+		
+		
+		$type = M('SimpleDataMapping')->field('id,data_type,data_code,data_name')->where(array('data_type'=>'oa问题类型','is_del'=>0))->select();
+		foreach ($type as $k=>$v){
+			$e['id'] = $v['data_type'].'_'.$v['data_code'];
+			$e['name'] = $v['data_name'];
+			$type_list[] = $e;
+		}
+		$this -> assign("type_list", $type_list);
+		
+		$status = M('SimpleDataMapping')->field('id,data_type,data_code,data_name')->where(array('data_type'=>'oa处理状态','is_del'=>0))->select();
+		foreach ($status as $k=>$v){
+			$e['id'] = $v['data_type'].'_'.$v['data_code'];
+			$e['name'] = $v['data_name'];
+			$status_list[] = $e;
+		}
+		$this -> assign("status_list", $status_list);
 		
 		$auth = $this -> config['auth'];
+		$this -> assign("auth", $auth);
 		if (!$auth['admin']) {
 			
 		}
@@ -198,6 +243,8 @@ class ProblemFeedbackAction extends CommonAction {
 		$list = $model -> add();
 		
 		if ($list !== false) {//保存成功
+			//发代办给某些人
+//			add_problem_feedback($list);
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('新增成功!');
 		} else {
@@ -274,7 +321,7 @@ class ProblemFeedbackAction extends CommonAction {
 	}
 
 	function save_comment() {
-		$model = D('DailyReportComment');
+		$model = D('ProblemFeedbackComment');
 		if (false === $model -> create()) {
 			$this -> error($model -> getError());
 		}
@@ -285,6 +332,37 @@ class ProblemFeedbackAction extends CommonAction {
 			unset($model -> id);
 			unset($model -> token);
 		}
+		$model -> reply_user_id = get_user_id();
+		$model -> reply_user_name = get_user_name();
+		$model -> reply_time = time();
+		$model -> dept_id = get_dept_id();
+		$model -> dept_name = get_dept_name();
+		$model -> pos_id = get_user_info(get_user_id(), 'pos_id');
+		$pos_name = M('Dept')->field('name')->find($model -> pos_id);
+		$model -> pos_name = $pos_name['name'];
+		
+		$problem_feedback['id'] = $model -> pid;
+		if(!empty($model -> type)){
+			$problem_feedback['type'] = $model -> type;
+		}
+		if(!empty($model -> status)){
+			$problem_feedback['status'] = $model -> status;
+		}
+		if(!empty($model -> type) && !empty($model -> status)){
+			$problem_feedback['deal_user_id'] = $model -> reply_user_id;
+			$problem_feedback['deal_user_name'] = $model -> reply_user_name;
+		}
+		$cc_this = $model -> cc;
+		$cc_this = array_filter(explode('|',$cc_this));
+		
+		$cc_last = M('ProblemFeedback')->field('cc')->find($pid);
+		$cc_last = $cc_last['cc'];
+		$cc_last = array_filter(explode('|',$cc_last));
+		
+		$cc_this = array_unique(array_merge($cc_last,$cc_this));
+		$cc_this = implode('|',$cc_this);
+		$problem_feedback['cc'] = $cc_this;
+		
 		$opmode = $_POST["opmode"];
 		switch($opmode) {
 			case "add" :
@@ -301,6 +379,7 @@ class ProblemFeedbackAction extends CommonAction {
 		}
 
 		if ($list !== false) {//保存成功
+			M('ProblemFeedback')->save($problem_feedback);
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('操作成功!');
 		} else {

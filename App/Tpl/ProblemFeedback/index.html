@@ -23,7 +23,7 @@
 				<div class="col-sm-8">
 					<select class="form-control" name="eq_dept_id_0" id="eq_dept_id_0">
 						<option value="">选择部门</option>
-						{$dept_list}
+						{:fill_option($dept_list)}
 					</select>
 				</div>
 			</div>
@@ -35,7 +35,7 @@
 					</select>
 				</div>
 			</div> -->
-			<div class="form-group col-sm-6">
+			<div class="form-group col-sm-6" id="create_user_name">
 				<label class="col-sm-4 control-label" for="li_user_name">提交人：</label>
 				<div class="col-sm-8">
 					<input  class="form-control" type="text" id="user_name" name="user_name" >
@@ -44,8 +44,8 @@
 			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label" for="eq_me">只显示自己提交的：</label>
 				<div class="col-sm-8">
-					<input type="radio" type="text" id="me" name="me" value="1"/>是
-					<input type="radio" type="text" id="me" name="me" value="0"/>否
+					<input type="radio" type="text" id="me" name="me" value="1" onclick="$('#create_user_name').hide()"/>是
+					<input type="radio" type="text" id="me" name="me" value="0" onclick="$('#create_user_name').show()" checked="checked"/>否
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
@@ -59,8 +59,8 @@
 				<label class="col-sm-4 control-label" for="type">类型：</label>
 				<div class="col-sm-8">
 					<select class="form-control" name="type" id="type">
-						<option value="">选择部门</option>
-						{$type_list}
+						<option value="">选择类型</option>
+						{:fill_option($type_list)}
 					</select>
 				</div>
 			</div>
@@ -69,7 +69,7 @@
 				<div class="col-sm-8">
 					<select class="form-control" name="status" id="status">
 						<option value="">选择状态</option>
-						{$status_list}
+						{:fill_option($status_list)}
 					</select>
 				</div>
 			</div>
@@ -128,8 +128,8 @@
 		
 						</div>
 						<div class="pull-right">
-							<span class="col-10">{$vo.type}&nbsp;</span>
-							<span class="col-10">{$vo.status}&nbsp;</span>
+							<span class="col-10">{$vo.type|show_mapping}&nbsp;</span>
+							<span class="col-10">{$vo.status|show_mapping}&nbsp;</span>
 							<span class="col-10">{$vo.deal_user_name}&nbsp;</span>
 						</div>
 					</li>

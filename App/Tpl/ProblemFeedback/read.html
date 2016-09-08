@@ -5,11 +5,16 @@
 	<tr>
 		<td style="width:145px">
 		<div class="pull-left">
-			{$problem_feedback.create_user_name}
-		</div></td>
+			<a title="{$problem_feedback.dept_name}&#10;{$problem_feedback.pos_name}">{$problem_feedback.create_user_id}_{$problem_feedback.create_user_name}</a>
+		</div>
+		<br>
+		<div class="pull-left">
+			{$problem_feedback.create_time|toDate='Y/m/d H:i'}
+		</div>
+		</td>
 		<td style="width:100%">
 		<div  class="pull-left">
-			 {$problem_feedback.create_time|toDate='Y-m-d H:i'}
+			 #{$problem_feedback.problem_no} {$problem_feedback.title}({$problem_feedback.emergency|show_mapping})&nbsp;&nbsp;&nbsp;&nbsp;操作系统：{$problem_feedback.os}&nbsp;&nbsp;&nbsp;&nbsp;浏览器版本：{$problem_feedback.browser}
 		</div>
 		</td>
 	</tr>
@@ -20,9 +25,6 @@
 			<img src="{:get_save_url()}{$problem_feedback.create_user_id|get_user_info=###,pic}" width="120" height="120" border="0" >
 		</div></td>
 		<td class="post_right">
-		<div class="post_content">
-			{$problem_feedback.title}
-		</div>
 		<div class="post_content">
 			{$problem_feedback.describe}
 		</div>
@@ -39,85 +41,119 @@
 		<tr>
 			<td style="width:145px">
 			<div class="pull-left">
-				{$vo.user_name}
-			</div></td>
+				<a title="{$vo.dept_name}&#10;{$vo.pos_name}">{$vo.reply_user_id}_{$vo.reply_user_name}</a>
+			</div>
+			<br>
+			<div class="pull-left">
+				{$vo.reply_time|toDate='Y/m/d H:i'}
+			</div>
+			</td>
 			<td style="width:100%">
 			<div  class="pull-left">
-				 {$vo.create_time|toDate='Y-m-d H:i'}
-				<if condition="($auth['write']) and ($vo.user_id eq $user_id)">
-					<a onclick="edit_post({$vo.id});return false;" class="btn btn-link">编辑</a>
-				</if>
-				<if condition="($auth['admin']) and ($vo.user_id eq $user_id)">
-					<a onclick="del_post({$vo.id});return false;" class="btn btn-link">删除</a>
+				 {$vo.type|show_mapping}|{$vo.status|show_mapping}
+				<if condition="($vo.cc neq '')">
+					呈送：{$vo.cc|show_cc=###}
 				</if>
 			</div>
-			<div class="pull-right">
-				<a class="btn btn-sm btn-primary huifuer" mss="{$vo.id}">回复#{$rows+$key}</a>
-			</div></td>
+			</td>
 		</tr>
-		<td style="width:145px;text-align:center;vertical-align:top;padding:0;margin:0;">
+		<tr>
+			<td class="post_left">
 			<div class="face">
-				<img src="{:get_save_url()}{$vo.user_id|get_user_info=###,pic}" width="120" height="120" border="0" >
-			</div>
-		</td>
-		<td class="post_right">
+				<img src="{:get_save_url()}{$vo.reply_user_id|get_user_info=###,pic}" width="120" height="120" border="0" >
+			</div></td>
+			<td class="post_right">
 			<div class="post_content">
 				{$vo.content}
 			</div>
 			<gt name="vo.add_file|strlen" value="2">
 				<hr>
-				<div class="add_file">
-					附件：{$vo.add_file|show_file}
+				<div class="add_file col-sm-12">
+					{$vo.add_file|show_file}
 				</div>
-			</gt>
-				{$info[$key]['comm_ids']|show_comment}
-			</td>
+			</gt></td>
 		</tr>
 	</foreach>
 </table>
 <div class="pagination">
 	{$page}
 </div>
-<if condition="$auth['write']">
-	{:W('PageHeader',array('name'=>'回复','search'=>'N'))}
-	<a id="reply"></a>
-	<form method="post" action="" id="form_data" name="form_data">
-		<input type="hidden" id="ajax" name="ajax" value="0">
-		<input type="hidden" id="forum_id" name="forum_id" value="{$forum_id}">
-		<input type="hidden" id="folder_id" name="folder_id" value="{$folder_id}">
-		<input type="hidden" id="add_file" name="add_file" value="">
-		<input type="hidden" id="opmode" name="opmode" value="add">
-		<table class="table table-bordered">
-			<tr>
-			<td style="width:145px;text-align:center;vertical-align:top;">
-			<div class="face">
-				<img src="{:get_save_url()}{$user.user_id|get_user_info=###,pic}" width="120" height="120" border="0" >
-			</div></td>
-			<td style="width:100%;vertical-align:top;">
-			<div >
-				<textarea  class="editor" name="content" id="content" style="width:100%;height:220px;"></textarea>
-			</div></td>
-			</tr>
-			<tr>
-				<td class="text-right">附件：</td>
-				<td>
-				{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'add'))}
-				</td>
-			</tr>
-		</table>
-		<td colspan="2">
-	</form>
-		<div class="operate panel panel-default">
-		<div class="panel-body">
-			<div class="pull-left">
-				<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
-			</div>
-			<div class="pull-right">
-				<a onclick="reply();"  class="btn btn-sm btn-primary">提交</a>
+{:W('PageHeader',array('name'=>'回复','search'=>'N'))}
+<a id="reply"></a>
+<form method="post" action="" id="form_data" name="form_data">
+	<input type="hidden" id="ajax" name="ajax" value="0">
+	<input type="hidden" id="pid" name="pid" value="{$problem_feedback.id}">
+	<input type="hidden" id="add_file" name="add_file" value="">
+	<input type="hidden" id="opmode" name="opmode" value="add">
+	<input type="hidden" id="cc" name="cc">
+	<table class="table table-bordered">
+		<tr>
+		<td style="width:145px;text-align:center;vertical-align:top;">
+		<div class="face">
+			<img src="{:get_save_url()}{$user_id|get_user_info=###,pic}" width="120" height="120" border="0" >
+		</div></td>
+		<td style="width:100%;vertical-align:top;">
+		<if condition="$auth.admin eq true">
+		<div class="form-group col-sm-4">
+			<label class="col-sm-4 control-label" for="type">类型：</label>
+			<div class="col-sm-8">
+				<select class="form-control" name="type" id="type" check="require" msg="请选择类型">
+					<option value="">选择类型</option>
+					{:fill_option($type_list)}
+				</select>
 			</div>
 		</div>
+		<div class="form-group col-sm-4">
+			<label class="col-sm-4 control-label" for="status">状态：</label>
+			<div class="col-sm-8">
+				<select class="form-control" name="status" id="status" check="require" msg="请选择状态">
+					<option value="">选择状态</option>
+					{:fill_option($status_list)}
+				</select>
+			</div>
+		</div>
+		</if>
+		<div class="form-group col-sm-4">
+			<label class="col-sm-4 control-label" for="recever">呈送：</label>
+			<div class="col-sm-8">
+				<div id="recever" class="inputbox">
+					<a class="pull-right btn btn-link text-center" onclick="popup_contact();"> <i class="fa fa-user"></i> </a>
+					<div class="wrap" >
+						<span class="address_list"></span>
+						<span class="text" >
+							<input class="letter" type="text"  >
+						</span>
+					</div>
+					<div class="search dropdown ">
+						<ul class="dropdown-menu"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div >
+			<textarea  class="editor" name="content" id="content" style="width:100%;height:220px;" check="require" msg="请填写评论"></textarea>
+		</div>
+		</td>
+		</tr>
+		<tr>
+			<td class="text-right">附件：</td>
+			<td>
+			{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'add'))}
+			</td>
+		</tr>
+	</table>
+	<td colspan="2">
+</form>
+	<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div class="pull-left">
+			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+		</div>
+		<div class="pull-right">
+			<a onclick="save_comment();"  class="btn btn-sm btn-primary">提交</a>
+		</div>
 	</div>
-</if>
+</div>
 </div>
 
 <style type="text/css">

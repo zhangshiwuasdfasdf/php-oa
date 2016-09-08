@@ -3133,4 +3133,26 @@ function show_mapping($code,$field='data_name'){
 	$res = M('SimpleDataMapping')->field($field)->where(array('data_type'=>$data_type,'data_code'=>$data_code,'is_del'=>0))->find();
 	return $res[$field];
 }
+function show_cc($code,$find='|',$replace="、"){
+	$code = array_filter(explode($find,$code));
+	foreach ($code as $k=>$v){
+		$code[$k] = get_user_info($v, 'name');
+	}
+	$code = implode($replace,$code);
+	return $code;
+}
+function add_problem_feedback($problem_feedback_id){
+	if(!empty($problem_feedback_id)){
+		//找到erp问题反馈管理员
+		$role_erp = M('Role')->where(array('name'=>'erp问题反馈管理员'))->find();
+		$role_user = M('RoleUser')->field('user_id')->where(array('role_id'=>$role_erp['id']))->select();
+		$role_user = rotate($role_user);
+		$erp_admin_user_id = $role_user['user_id'];
+		foreach ($erp_admin_user_id as $k=>$v){
+			$data['user_id'] = $v;
+			$data['problem_feedback_id'] = $problem_feedback_id;
+			M('ProblemFeedbackRemind')->add($data);
+		}
+	}
+}
 ?>

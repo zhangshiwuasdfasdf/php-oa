@@ -510,6 +510,16 @@ class HomeAction extends CommonAction {
 			$this -> assign("lists", $flow_list);
 			$fn = $flow_list ? count($flow_list) : 0 ;
 			$tn = $task_extension ? count($task_extension) : 0 ;
+			
+			//erp问题反馈的代办
+			//找到erp问题反馈管理员
+//			$role_erp = M('Role')->where(array('name'=>'erp问题反馈管理员'))->find();
+//			$role_user = M('RoleUser')->field('user_id')->where(array('role_id'=>$role_erp['id']))->select();
+//			$erp_admin_user_id = $role_user['user_id'];
+//			if(in_array(get_user_id(),$erp_admin_user_id)){
+//				M('ProblemFeedback')->where(array('deal_user_id'=>array('eq',null)))
+//			}
+			
 			$this -> assign('daiban_count',$fn + $tn);
 		}
 	}
