@@ -103,3 +103,52 @@
 		</div>
 	</empty>
 </div>
+{:W('PageHeader',array('name'=>'ERP问题反馈','search'=>'N'))}
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-10">问题编号</span>
+				<span class="col-20">提交时间</span>
+				<span class="col-10">提交人</span>
+				<span class="col-10">部门</span>
+				<span class="col-10">岗位</span>
+				<span class="col-10">紧急程度</span>
+				<span class="col-10">标题</span>
+			</div>
+			<div class="pull-right">
+				<span class="col-10">类型</span>
+				<span class="col-10">状态</span>
+				<span class="col-10">处理人</span>
+			</div>
+		</li>
+		<empty name="problem_feedback_remind">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<foreach name="problem_feedback_remind" item="vo">
+				<li class="tbody">
+					<div class="pull-left">
+						<span class="col-10">{$vo.problem_no}&nbsp;</span>
+						<span class="col-20">{$vo.create_time|date='Y-m-d H:i:s',###}&nbsp;</span>
+						<span class="col-10">{$vo.create_user_name}&nbsp;</span>
+						<span class="col-10">{$vo.dept_name}&nbsp;</span>
+						<span class="col-10">{$vo.pos_name}&nbsp;</span>
+						<span class="col-10">{$vo.emergency|show_mapping}&nbsp;</span>
+						<span class="col-10"><a href="{:U('problem_feedback/read','id='.$vo['id'])}" target="_blank">{$vo.title}&nbsp;</a></span>
+	
+					</div>
+					<div class="pull-right">
+						<span class="col-10">{$vo.type|show_mapping}&nbsp;</span>
+						<span class="col-10" style="color:{$vo.status|show_mapping|show_status_color}">{$vo.status|show_mapping}&nbsp;</span>
+						<span class="col-10">{$vo.deal_user_name}&nbsp;</span>
+					</div>
+				</li>
+			</foreach>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>

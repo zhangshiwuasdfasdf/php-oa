@@ -1,5 +1,5 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'oa问题反馈','search'=>'N'))}
+{:W('PageHeader',array('name'=>'ERP问题反馈','search'=>'N'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default  display-none"  id="adv_search">
 		<div class="panel-heading">
@@ -107,6 +107,7 @@
 				<span class="col-10">类型</span>
 				<span class="col-10">状态</span>
 				<span class="col-10">处理人</span>
+				<span class="col-10">操作</span>
 			</div>
 		</li>
 		<empty name="list">
@@ -129,8 +130,13 @@
 						</div>
 						<div class="pull-right">
 							<span class="col-10">{$vo.type|show_mapping}&nbsp;</span>
-							<span class="col-10">{$vo.status|show_mapping}&nbsp;</span>
+							<span class="col-10" style="color:{$vo.status|show_mapping|show_status_color}">{$vo.status|show_mapping}&nbsp;</span>
 							<span class="col-10">{$vo.deal_user_name}&nbsp;</span>
+							<span class="col-10">
+								<if condition="((get_user_id() eq $vo['create_user_id']) && (($vo['status'] eq 'oa处理状态_01') or ($vo['status'] eq 'oa处理状态_00')))">
+									<a href="{:U('problem_feedback/edit?id='.$vo['id'])}">编辑&nbsp;</a>
+								</if>
+							</span>
 						</div>
 					</li>
 				</foreach>

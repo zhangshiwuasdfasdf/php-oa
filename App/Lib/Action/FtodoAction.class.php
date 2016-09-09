@@ -111,6 +111,11 @@ class FtodoAction extends CommonAction {
 			$this -> assign("pages", $page);
 			$this -> assign("lists", $ress);
 		}
+		//erp问题反馈
+		$problem_feedback_remind = D('ProblemFeedbackRemindView')->where(array('user_id'=>get_user_id()))->select();
+		$this -> assign("problem_feedback_remind", $problem_feedback_remind);
+//		dump($problem_feedback_remind);
+			
 		$this -> display();
 	}
 	

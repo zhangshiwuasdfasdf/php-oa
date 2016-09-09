@@ -151,8 +151,6 @@
 	}
 
 	function save($submit) {
-		$('#is_submit').val($submit);
-		init_input_name();
 		window.onbeforeunload = null;
 		if (check_form("form_data")) {
 			sendForm("form_data", "{:U('save')}");

@@ -50,7 +50,13 @@
 			</td>
 			<td style="width:100%">
 			<div  class="pull-left">
-				 {$vo.type|show_mapping}|{$vo.status|show_mapping}
+				<if condition="($vo.type neq '' && $vo.status neq '')">
+					{$vo.type|show_mapping}|{$vo.status|show_mapping}
+				<elseif condition="($vo.type neq '')"/>
+					{$vo.type|show_mapping}
+				<else/>
+					{$vo.status|show_mapping}
+				</if>
 				<if condition="($vo.cc neq '')">
 					呈送：{$vo.cc|show_cc=###}
 				</if>
@@ -98,7 +104,11 @@
 			<label class="col-sm-4 control-label" for="type">类型：</label>
 			<div class="col-sm-8">
 				<select class="form-control" name="type" id="type" check="require" msg="请选择类型">
-					<option value="">选择类型</option>
+					<if condition="$problem_feedback.type eq ''">
+						<option value="">选择类型</option>
+					<else/>
+						<option value="{$problem_feedback.type}">{$problem_feedback.type|show_mapping}</option>
+					</if>
 					{:fill_option($type_list)}
 				</select>
 			</div>
@@ -107,7 +117,11 @@
 			<label class="col-sm-4 control-label" for="status">状态：</label>
 			<div class="col-sm-8">
 				<select class="form-control" name="status" id="status" check="require" msg="请选择状态">
-					<option value="">选择状态</option>
+					<if condition="$problem_feedback.status eq ''">
+						<option value="">选择状态</option>
+					<else/>
+						<option value="{$problem_feedback.status}">{$problem_feedback.status|show_mapping}</option>
+					</if>
 					{:fill_option($status_list)}
 				</select>
 			</div>
@@ -147,7 +161,7 @@
 	<div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-left">
-			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+			<a onclick="window.close();" class="btn btn-sm btn-primary">关闭</a>
 		</div>
 		<div class="pull-right">
 			<a onclick="save_comment();"  class="btn btn-sm btn-primary">提交</a>

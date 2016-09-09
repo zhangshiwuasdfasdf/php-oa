@@ -512,15 +512,11 @@ class HomeAction extends CommonAction {
 			$tn = $task_extension ? count($task_extension) : 0 ;
 			
 			//erp问题反馈的代办
-			//找到erp问题反馈管理员
-//			$role_erp = M('Role')->where(array('name'=>'erp问题反馈管理员'))->find();
-//			$role_user = M('RoleUser')->field('user_id')->where(array('role_id'=>$role_erp['id']))->select();
-//			$erp_admin_user_id = $role_user['user_id'];
-//			if(in_array(get_user_id(),$erp_admin_user_id)){
-//				M('ProblemFeedback')->where(array('deal_user_id'=>array('eq',null)))
-//			}
+			$problem_feedback_remind = D('ProblemFeedbackRemindView')->where(array('user_id'=>get_user_id()))->select();
+			$this -> assign("problem_feedback_remind", $problem_feedback_remind);
+			$pn = $problem_feedback_remind ? count($problem_feedback_remind) : 0 ;
 			
-			$this -> assign('daiban_count',$fn + $tn);
+			$this -> assign('daiban_count',$fn + $tn +$pn);
 		}
 	}
 	//今日便签和未完成的任务

@@ -3,76 +3,40 @@
 .form-control-static{line-height: 8;font-weight: bold;}
 .ul_table .rr .tbody{background-color:#f1f5fa;}
 </style>
-{:W('PageHeader',array('name'=>'修改工作日报','search'=>'N'))}
-<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="form-horizontal">
+{:W('PageHeader',array('name'=>'编辑ERP问题反馈','search'=>'N'))}
+<form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
-	<input type="hidden" id="id" name="id" value="{$id}">
-	<input type="hidden" id="add_file" name="add_file" value="{$last_report.add_file}">
 	<input type="hidden" id="opmode" name="opmode" value="edit">
-	<input type="hidden" id="is_submit" name="is_submit">
-	<div class="ul_table border-bottom">
-		<ul class="rr">
-			<li class="thead">
-				<div class="col-sm-3"></div>
-				<div class="col-sm-6 text-center">
-					<select name="work_date">
-						{:fill_option($work_date_list)}
-					</select>
-					工作日报
-				</div>
-			</li>
-			<li class="tbody">
-				<span class="col-sm-2">
-					<p class="form-control-static text-center">
-						工作总结：</p></span>
-				<div class="col-sm-10">
-					<textarea name="content" id="content" class="form-control" style="height:120px;" check="require" msg="请填写工作总结">{$last_report.content}</textarea>
-				</div>
-			</li>
-			<li class="tbody">
-				<span class="col-sm-2">
-					<p class="form-control-static text-center">
-						未完成工作：</p></span>
-				<div class="col-sm-10">
-					<textarea name="undoo" id="undoo" class="form-control" style="height:120px;">{$last_report.undoo}</textarea>
-				</div>
-			</li>
-			</ul>
+	<input type="hidden" id="add_file" name="add_file">
+	<input type="hidden" id="id" name="id" value="{$problem_feedback.id}">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="title">标题*：</label>
+		<div class="col-sm-10">
+			<input class="form-control" type="text" id="title" name="title" value="{$problem_feedback.title}" check="require" msg="请输入标题" placeholder="请指明具体表单和概括主要问题，包括但不限于新需求、需求变更、优化、bug等">
+		</div>
 	</div>
-	<div class="ul_table border-bottom">
-		<ul class="rr">
-			<li class="tbody">
-				<span class="col-sm-2">
-					<p class="form-control-static text-center">
-						明日计划:
-					</p></span>
-				<div class="col-sm-10">
-					<textarea name="plan" class="form-control" style="height:120px;" check="require" msg="请填写明日计划">{$last_report.plan}</textarea>
-				</div>
-			</li>
-			<li class="tbody">
-				<span class="col-sm-2">
-					<p class="form-control-static text-center">
-						意见/建议:
-					</p></span>
-				<div class="col-sm-10">
-					<textarea name="suggest" class="form-control" style="height:120px;">{$last_report.suggest}</textarea>
-				</div>
-			</li>
-			<li class="tbody">
-				<span class="col-sm-2">
-					<p class="form-control-static text-center">
-						附件：
-					</p></span>
-				<div class="col-sm-10">
-					{:W('File',array('add_file'=>$last_report['add_file'],'mode'=>'edit'))}
-				</div>
-			</li>
-		</ul>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="emergency">紧急程度*：</label>
+		<div class="col-sm-10">
+			<select name="emergency" id="emergency" class="form-control" check="require" msg="请选择紧急程度">
+				{:fill_option($emergency_list,$problem_feedback['emergency'])}
+			</select>
+		</div>
 	</div>
-	<div class="action text-center">
-		<input class="btn btn-sm btn-primary" type="button" value="临时保存" onclick="save(0);">
-		<input class="btn btn-sm btn-primary" type="button" value="提交日报" onclick="save(1);">
-		<input class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="describe">描述*：</label>
+		<div class="col-sm-10">
+			<textarea class="form-control" type="text" id="describe" name="describe" check="require" msg="请输入描述" placeholder="请对反馈的问题作详细描述，必要时上传附件或截图。如果是系统bug，避免出现“提交不了”、“填写不了”等笼统的说法，应指明具体怎么提交不了，例如没有按钮、点击按钮出现某种提示信息等等，以便得到更快的处理">{$problem_feedback.describe}</textarea>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">附件：</label>
+		<div class="col-sm-10">
+			{:W('File',array('add_file'=>$problem_feedback['add_file'],'mode'=>'edit'))}
+		</div>
+	</div>
+	<div class="action">
+		<input class="btn btn-sm btn-primary" type="button" value="保存" onclick="save();">
+		<input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
 	</div>
 </form>

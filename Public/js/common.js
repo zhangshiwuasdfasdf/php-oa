@@ -670,7 +670,7 @@ function sign(type){
 		data:{type:type},
 		dataType: "json",
 		success: function(result){
-			alert(result.msg);
+			ui_info(result.msg);
 			if(result.status==1){
 				if(result.code=='in'){
 					$(".top_menu_r #in").attr('style','display:none');

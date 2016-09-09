@@ -126,50 +126,30 @@ class ProblemFeedbackAction extends CommonAction {
 		
 		$auth = $this -> config['auth'];
 		$this -> assign("auth", $auth);
-		if (!$auth['admin']) {
-			
-		}
 		$this -> display();
-		
 	}
 
 	public function edit($id) {
-
-		$this -> assign('id', $id);
-
 		$widget['date'] = true;
 		$widget['uploader'] = true;
 		$widget['editor'] = true;
 		$this -> assign("widget", $widget);
-
-		$date_1 = date('Y-m-d', strtotime('0 day'));
-		$date_2 = date('Y-m-d', strtotime('-1 day'));
-		$date_3 = date('Y-m-d', strtotime('-2 day'));
-		$work_date_list = array($date_1 => $date_1, $date_2 => $date_2, $date_3 => $date_3);
-		$this -> assign('work_date_list', $work_date_list);
-
-		$where_last['id'] = array('eq', $id);
-		$last_report = M("DailyReport") -> where($where_last) -> order('id desc') -> find();
-		$this -> assign('last_report', $last_report);
-
-		$where_detail['pid'] = $last_report['id'];
-		$where_detail['type'] = array('eq', 1);
-		$last_report_detail = M("DailyReportDetail") -> where($where_detail) -> select();
-		$this -> assign('last_report_detail', $last_report_detail);
-
-		$where_plan['pid'] = $last_report['id'];
-		$where_plan['type'] = array('eq', 2);
-		$last_report_plan = M("DailyReportDetail") -> where($where_plan) -> select();
-		$this -> assign('last_report_plan', $last_report_plan);
 		
-		$time = array('00:00' => '00:00', '00:30' => '00:30', '01:00' => '01:00', '01:30' => '01:30', '02:00' => '02:00', '02:30' => '02:30', '03:00' => '03:00', '03:30' => '03:30', '04:00' => '04:00', '04:30' => '04:30', '05:00' => '05:00', '05:30' => '05:30', '06:00' => '06:00', '06:30' => '06:30', '07:00' => '07:00', '07:30' => '07:30', '08:00' => '08:00', '08:30' => '08:30', '09:00' => '09:00', '09:30' => '09:30', '10:00' => '10:00', '10:30' => '10:30', '11:00' => '11:00', '11:30' => '11:30', '12:00' => '12:00', '13:00' => '13:00', '13:30' => '13:30', '14:00' => '14:00', '14:30' => '14:30', '15:00' => '15:00', '15:30' => '15:30', '16:00' => '16:00', '16:30' => '16:30', '17:00' => '17:00', '17:30' => '17:30', '18:00' => '18:00', '18:30' => '18:30', '19:00' => '19:00', '19:30' => '19:30', '20:00' => '20:00', '20:30' => '20:30', '21:00' => '21:00', '21:30' => '21:30', '22:00' => '22:00', '22:30' => '22:30', '23:00' => '23:00', '23:30' => '23:30', '24:00' => '24:00');
-		$this -> assign('time', $time);
-
-		if($last_report['create_time']<strtotime('2016-08-23')){
-			$this -> display('edit_0');
-		}else{
-			$this -> display();
+		$problem_feedback = M('ProblemFeedback')->find($id);
+		$this -> assign("problem_feedback", $problem_feedback);
+		
+		$emergency = M('SimpleDataMapping')->field('id,data_type,data_code,data_name')->where(array('data_type'=>'紧急程度','is_del'=>0))->select();
+		foreach ($emergency as $k=>$v){
+			$e['id'] = $v['data_type'].'_'.$v['data_code'];
+			$e['name'] = $v['data_name'];
+			$emergency_list[] = $e;
 		}
+		$this -> assign("emergency_list", $emergency_list);
+		
+		$user_id = get_user_id();
+		$this -> assign("user_id", $user_id);
+		
+		$this -> display();
 	}
 
 	function plan() {
@@ -208,11 +188,6 @@ class ProblemFeedbackAction extends CommonAction {
 
 	/** 插入新新数据  **/
 	protected function _insert() {
-// 		dump($_REQUEST);
-// 		dump(getBrowser());
-// 		dump(getBrowserVer());
-// 		dump(determineplatform());
-// 		die;
 		$model = D("ProblemFeedback");
 		$last = $model->where(array('problem_no'=>array('like',date('ym',time()).'%')))->order('problem_no asc')->limit(1)->find();
 	
@@ -237,6 +212,7 @@ class ProblemFeedbackAction extends CommonAction {
 		$model -> pos_name = $pos_name['name'];
 		$model -> browser = getBrowser().' '.getBrowserVer();
 		$model -> os = determineplatform();
+		$model -> status = 'oa处理状态_01';
 		$model -> is_del = 0;
 		
 		/*保存当前数据对象 */
@@ -244,7 +220,7 @@ class ProblemFeedbackAction extends CommonAction {
 		
 		if ($list !== false) {//保存成功
 			//发代办给某些人
-//			add_problem_feedback($list);
+			add_problem_feedback($list);
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('新增成功!');
 		} else {
@@ -255,49 +231,24 @@ class ProblemFeedbackAction extends CommonAction {
 
 	/** 插入新新数据  **/
 	protected function _update() {
-		$model = D("DailyReport");
+	$model = D("ProblemFeedback");
 		if (false === $model -> create()) {
 			$this -> error($model -> getError());
 		}
-		if (in_array('user_id', $model -> getDbFields())) {
-			$model -> user_id = get_user_id();
-		};
-		if (in_array('user_name', $model -> getDbFields())) {
-			$model -> user_name = get_user_name();
-		};
-		if (in_array('dept_id', $model -> getDbFields())) {
-			$model -> dept_id = get_dept_id();
-		};
-		if (in_array('dept_name', $model -> getDbFields())) {
-			$model -> dept_name = get_dept_name();
-		};
-		$model -> create_time = time();
+		$model -> browser = getBrowser().' '.getBrowserVer();
+		$model -> os = determineplatform();
+		$model -> status = 'oa处理状态_01';
+		
 		/*保存当前数据对象 */
 		$list = $model -> save();
+		
 		if ($list !== false) {//保存成功
-			$model_report_look = M('ReportLook');
-			$report_look = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$_POST['id'])))->order('create_time desc')->select();
-			if(!empty($report_look)){
-				$data['content']= '我刚刚修改了今天的日报,快去看看吧！(系统自动发送,请勿回复.)';
-				$data['sender_id']=get_user_id();
-				$data['sender_name']=get_user_name();
-				$data['create_time']=time();
-				
-				$model = D('Message');
-				foreach ($report_look as $tmp) {
-					$data['receiver_id']=$tmp['look_id'];
-					$data['receiver_name']=$tmp['look_name'];			
-					$data['owner_id']=get_user_id();
-					$list = $model -> add($data);
-					$data['owner_id']=$tmp['look_id'];
-					$list = $model -> add($data);
-					$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$tmp['look_id']);	
-				}			
-			}
+			//发代办给某些人
+			add_problem_feedback($list);
 			$this -> assign('jumpUrl', get_return_url());
-			$this -> success('保存成功!'.$list);
+			$this -> success('新增成功!');
 		} else {
-			$this -> error('保存失败!');
+			$this -> error('新增失败!');
 			//失败提示
 		}
 	}
@@ -354,10 +305,12 @@ class ProblemFeedbackAction extends CommonAction {
 		}
 		$cc_this = $model -> cc;
 		$cc_this = array_filter(explode('|',$cc_this));
+		$cc_this_backup = $cc_this;
 		
-		$cc_last = M('ProblemFeedback')->field('cc')->find($pid);
+		$cc_last = M('ProblemFeedback')->field('cc')->find($problem_feedback['id']);
 		$cc_last = $cc_last['cc'];
 		$cc_last = array_filter(explode('|',$cc_last));
+		$cc_last_backup = $cc_last;
 		
 		$cc_this = array_unique(array_merge($cc_last,$cc_this));
 		$cc_this = implode('|',$cc_this);
@@ -380,6 +333,63 @@ class ProblemFeedbackAction extends CommonAction {
 
 		if ($list !== false) {//保存成功
 			M('ProblemFeedback')->save($problem_feedback);
+			//审核人处理好后取消代办
+			if(!empty($problem_feedback['type']) && !empty($problem_feedback['status'])){
+				del_problem_feedback($problem_feedback['id']);
+				if(!empty($cc_this_backup)){
+					add_problem_feedback($problem_feedback['id'],$cc_this_backup);
+				}else{//解决完成发站内信给发起人
+					$url = U('problem_feedback/read?id='.$problem_feedback['id']);
+					$data['content']='<a href="'.$url.'">OA问题反馈已有回复，问题状态为'.show_mapping($problem_feedback['status']).'</a>';
+					$data['sender_id']=get_user_id();
+					$data['sender_name']=get_user_name();
+					$data['create_time']=time();
+					
+					$model = D('Message');
+					
+					$tmp = M('ProblemFeedback')->find($problem_feedback['id']);
+					$data['receiver_id']=$tmp['create_user_id'];
+					$data['receiver_name']=$tmp['create_user_name'];			
+					$data['owner_id']=get_user_id();
+				
+					$list = $model -> add($data);
+		
+					$data['owner_id']=$tmp['create_user_id'];
+					$list = $model -> add($data);
+					$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$tmp['create_user_id']);
+				}
+			}elseif(in_array(get_user_id(),$cc_last_backup)){//呈送给我
+				//取消自己的代办
+				del_problem_feedback($problem_feedback['id'],$cc_last_backup);
+				//如果这次没有呈送
+				if(empty($cc_this_backup)){
+					//重新给审核人发代办
+					add_problem_feedback($problem_feedback['id']);
+					
+					//解决完成发站内信给发起人
+					$url = U('problem_feedback/read?id='.$problem_feedback['id']);
+					$data['content']='<a href="'.$url.'">OA问题反馈已有回复，问题状态为'.show_mapping($problem_feedback['status']).'</a>';
+					$data['sender_id']=get_user_id();
+					$data['sender_name']=get_user_name();
+					$data['create_time']=time();
+					
+					$model = D('Message');
+					
+					$tmp = M('ProblemFeedback')->find($problem_feedback['id']);
+					$data['receiver_id']=$tmp['create_user_id'];
+					$data['receiver_name']=$tmp['create_user_name'];			
+					$data['owner_id']=get_user_id();
+				
+					$list = $model -> add($data);
+		
+					$data['owner_id']=$tmp['create_user_id'];
+					$list = $model -> add($data);
+					$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$tmp['create_user_id']);
+				}else{
+					add_problem_feedback($problem_feedback['id'],$cc_this_backup);
+				}
+				
+			}
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('操作成功!');
 		} else {

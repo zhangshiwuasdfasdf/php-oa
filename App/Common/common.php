@@ -3141,18 +3141,50 @@ function show_cc($code,$find='|',$replace="、"){
 	$code = implode($replace,$code);
 	return $code;
 }
-function add_problem_feedback($problem_feedback_id){
+//增加erp问题反馈代办
+function add_problem_feedback($problem_feedback_id,$user_id_array=array()){
 	if(!empty($problem_feedback_id)){
-		//找到erp问题反馈管理员
-		$role_erp = M('Role')->where(array('name'=>'erp问题反馈管理员'))->find();
-		$role_user = M('RoleUser')->field('user_id')->where(array('role_id'=>$role_erp['id']))->select();
-		$role_user = rotate($role_user);
-		$erp_admin_user_id = $role_user['user_id'];
-		foreach ($erp_admin_user_id as $k=>$v){
+		if(empty($user_id_array)){
+			//找到erp问题反馈管理员
+			$role_erp = M('Role')->where(array('name'=>'erp问题反馈管理员'))->find();
+			$role_user = M('RoleUser')->field('user_id')->where(array('role_id'=>$role_erp['id']))->select();
+			$role_user = rotate($role_user);
+			$erp_user_id = $role_user['user_id'];
+		}else{
+			$erp_user_id = $user_id_array;
+		}
+		foreach ($erp_user_id as $k=>$v){
 			$data['user_id'] = $v;
 			$data['problem_feedback_id'] = $problem_feedback_id;
 			M('ProblemFeedbackRemind')->add($data);
 		}
+	}
+}
+//删除erp问题反馈代办
+function del_problem_feedback($problem_feedback_id,$user_id_array=array()){
+	if(!empty($problem_feedback_id)){
+		if(empty($user_id_array)){
+			//找到erp问题反馈管理员
+			$role_erp = M('Role')->where(array('name'=>'erp问题反馈管理员'))->find();
+			$role_user = M('RoleUser')->field('user_id')->where(array('role_id'=>$role_erp['id']))->select();
+			$role_user = rotate($role_user);
+			$erp_user_id = $role_user['user_id'];	
+		}else{
+			$erp_user_id = $user_id_array;
+		}
+		$data['user_id'] = array('in',$erp_user_id);
+		$data['problem_feedback_id'] = $problem_feedback_id;
+		M('ProblemFeedbackRemind')->where($data)->delete();
+	}
+}
+function show_status_color($name){
+	switch ($name){
+		case '已退回':return 'orange';
+		case '待处理':return 'red';
+		case '处理中':return 'blue';
+		case '已处理':return 'green';
+		case '无需处理':return 'gray';
+		default:return 'black';
 	}
 }
 ?>
