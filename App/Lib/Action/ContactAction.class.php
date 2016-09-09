@@ -174,7 +174,7 @@ class ContactAction extends CommonAction {
 		$new_tag=$_POST['new_tag'];
 		if (!empty($id)){
 			$model = D("UserTag");
-			$model -> del_data_by_row($id);
+			$model -> del_data_by_row($id);//删除usertagdata表中数据
 			if (!empty($_POST['tag'])) {
 				$result = $model -> set_tag($id,$tag);
 			}

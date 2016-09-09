@@ -76,11 +76,11 @@ class UserTagModel extends CommonModel{
 			$tag_list = explode(",", $tag_list);
 			$tag_list = array_filter($tag_list);
 		}
+		$module = strtolower($module);//将module 转换为小写 负责可能会出现表不存在
 		$tag_list = implode(",", $tag_list);
 		$where = 'a.id in (' . $row_list . ') AND b.id in(' . $tag_list . ')';
 		$sql = 'INSERT INTO ' . $this -> tablePrefix . 'user_tag_data (row_id,module,tag_id) SELECT a.id,b.module,b.id ';
 		$sql .= ' FROM ' . $this -> tablePrefix . $module . ' a, ' . $this -> tablePrefix . 'user_tag b WHERE ' . $where;
-
 		$result = $this -> execute($sql);
 		if ($result === false) {
 			return false;
