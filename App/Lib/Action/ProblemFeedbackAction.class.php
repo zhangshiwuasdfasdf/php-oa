@@ -189,7 +189,7 @@ class ProblemFeedbackAction extends CommonAction {
 	/** 插入新新数据  **/
 	protected function _insert() {
 		$model = D("ProblemFeedback");
-		$last = $model->where(array('problem_no'=>array('like',date('ym',time()).'%')))->order('problem_no asc')->limit(1)->find();
+		$last = $model->where(array('problem_no'=>array('like',date('ym',time()).'%')))->order('problem_no desc')->limit(1)->find();
 	
 		if($last){
 			$num = intval(substr($last['problem_no'],4));
@@ -238,13 +238,13 @@ class ProblemFeedbackAction extends CommonAction {
 		$model -> browser = getBrowser().' '.getBrowserVer();
 		$model -> os = determineplatform();
 		$model -> status = 'oa处理状态_01';
-		
+		$id = $model -> id;
 		/*保存当前数据对象 */
 		$list = $model -> save();
 		
 		if ($list !== false) {//保存成功
 			//发代办给某些人
-			add_problem_feedback($list);
+			add_problem_feedback($id);
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('新增成功!');
 		} else {

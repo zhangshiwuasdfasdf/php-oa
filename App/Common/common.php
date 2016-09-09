@@ -1279,6 +1279,18 @@ function show_file($add_file) {
 		}
 	}
 }
+function show_file2($add_file) {
+	$files = array_filter(explode(';', $add_file));
+	foreach ($files as $file) {
+		if (strlen($file) > 1) {
+			$model = M("File");
+			$where['sid'] = array('eq', $file);
+			$File = $model -> where($where) -> field("id,name,size,extension") -> find();
+			echo '<div class="attach_file" style="background-image:url(__PUBLIC__/ico/ico_' . strtolower($File['extension']) . '.jpg); background-repeat:no-repeat;"><a target="_blank" href="'.U('down?attach_id=') . f_encode($File['id']) . '">' . $File['name'] . ' (' . reunit($File['size']) . ')' . '</a>';
+			echo '</div>';
+		}
+	}
+}
 function show_comment($comm){
 	if(!empty($comm) && is_array($comm)){
 		$post = M('Forum_post');

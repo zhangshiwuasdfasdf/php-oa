@@ -112,7 +112,7 @@ class FtodoAction extends CommonAction {
 			$this -> assign("lists", $ress);
 		}
 		//erp问题反馈
-		$problem_feedback_remind = D('ProblemFeedbackRemindView')->where(array('user_id'=>get_user_id()))->select();
+		$problem_feedback_remind = D('ProblemFeedbackRemindView')->where(array('user_id'=>get_user_id()))->order('create_time desc')->select();
 		$this -> assign("problem_feedback_remind", $problem_feedback_remind);
 //		dump($problem_feedback_remind);
 			

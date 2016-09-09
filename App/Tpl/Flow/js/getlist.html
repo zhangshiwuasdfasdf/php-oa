@@ -17,4 +17,25 @@ $("#eq_dept_id_0").change(function () {
 $(document).ready(function() {
 	set_return_url();
 }); 
+function trim(str){ //删除左右两端的空格
+    return str.replace(/(^\s*)|(\s*$)/g, "");
+}
+function export_excel(){
+	line1 = '';
+	$(".thead .pull-left span").each(function(){
+		line1 += trim($(this).html())+'|';
+	});
+	line1 += trim($(".thead .autocut").html())+'|';
+	
+	$(".thead .pull-right span").each(function(){
+		line1 += trim($(this).html())+'|';
+	});
+	console.log(line1);
+	console.log(trim('  aa  aa  ')+trim('  aa  aa  '));
+	/*
+	$(".tbody:first span").each(function(){
+		console.log($(this).html());
+	});
+	*/
+}
 </script>

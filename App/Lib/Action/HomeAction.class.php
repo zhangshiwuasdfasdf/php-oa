@@ -512,7 +512,7 @@ class HomeAction extends CommonAction {
 			$tn = $task_extension ? count($task_extension) : 0 ;
 			
 			//erp问题反馈的代办
-			$problem_feedback_remind = D('ProblemFeedbackRemindView')->where(array('user_id'=>get_user_id()))->select();
+			$problem_feedback_remind = D('ProblemFeedbackRemindView')->where(array('user_id'=>get_user_id()))->order('create_time desc')->select();
 			$this -> assign("problem_feedback_remind", $problem_feedback_remind);
 			$pn = $problem_feedback_remind ? count($problem_feedback_remind) : 0 ;
 			

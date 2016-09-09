@@ -5,7 +5,7 @@
 	<tr>
 		<td style="width:145px">
 		<div class="pull-left">
-			<a title="{$problem_feedback.dept_name}&#10;{$problem_feedback.pos_name}">{$problem_feedback.create_user_id}_{$problem_feedback.create_user_name}</a>
+			<a title="{$problem_feedback.dept_name}&#10;{$problem_feedback.create_user_id|get_user_info=###,mobile_tel}">{$problem_feedback.create_user_id}_{$problem_feedback.create_user_name}</a>
 		</div>
 		<br>
 		<div class="pull-left">
@@ -31,7 +31,7 @@
 		<gt name="problem_feedback.add_file|strlen" value="2">
 			<hr>
 			<div class="add_file col-sm-12">
-				{$problem_feedback.add_file|show_file}
+				{$problem_feedback.add_file|show_file2}
 			</div>
 		</gt></td>
 	</tr>
@@ -41,7 +41,7 @@
 		<tr>
 			<td style="width:145px">
 			<div class="pull-left">
-				<a title="{$vo.dept_name}&#10;{$vo.pos_name}">{$vo.reply_user_id}_{$vo.reply_user_name}</a>
+				<a title="{$vo.dept_name}&#10;{$vo.reply_user_id|get_user_info=###,mobile_tel}">{$vo.reply_user_id}_{$vo.reply_user_name}</a>
 			</div>
 			<br>
 			<div class="pull-left">
@@ -75,7 +75,7 @@
 			<gt name="vo.add_file|strlen" value="2">
 				<hr>
 				<div class="add_file col-sm-12">
-					{$vo.add_file|show_file}
+					{$vo.add_file|show_file2}
 				</div>
 			</gt></td>
 		</tr>
