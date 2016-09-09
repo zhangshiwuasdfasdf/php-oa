@@ -20,14 +20,11 @@ function hel(){
 	var h=h0-160
 	$(".left").css('height',h)
 	var h3=h-40//上下各20边距
-	if($(".menu_ul6,.menu_ul4,.menu_ul14").height()>=h){
-		$(".menu_ul6,.menu_ul4,.menu_ul14").css({'height':h3,'top':180,'width':180})
-		$(".menu_ul14").css('width',180)
-		$('.menu_ul14').css('height',h3)
+	if($(".menu_ul6,.menu_ul4").height()>=h){
+		$(".menu_ul6,.menu_ul4").css({'height':h3,'top':180,'width':180})
 	}
 	var wh=$(".menu_ul6").width()+120
 	$(".menu_ul7_0,.menu_ul7,.menu_ul7_3").css('left',wh)
-	var h4=$('.menu_ul14').height()+40
 	var h5=$('.menu_ul14').width()+120
 	$('.menu_ul15').css('left',h5)
 		
@@ -285,7 +282,7 @@ $('.right,.top,.main-content').click(function(){
 
 //菜单栏下拉
 var o=0;
-var y=$('.left_a').length+1
+var y=$('.left_a').length+2
 var q=$(".left").height()/$('.left_a').height()
 var k=Math.round(q)
 var h=(y-k)*$('.left_a').height()

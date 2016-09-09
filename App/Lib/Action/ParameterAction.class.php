@@ -1,5 +1,6 @@
 <?php
 class ParameterAction extends CommonAction {
+	protected $config = array('app_type' => 'common');
 	public function index(){
 		$node = M("Room_config");
 		$menu = array();

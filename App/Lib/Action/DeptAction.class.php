@@ -13,7 +13,7 @@
 
 class DeptAction extends CommonAction {
 
-	protected $config = array('app_type' => 'master');
+	protected $config = array('app_type' => 'master', 'action_auth' => array('index' => 'admin', 'winpop4' => 'read'));
 
 	public function index(){
 		

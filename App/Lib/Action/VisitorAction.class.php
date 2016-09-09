@@ -1,6 +1,6 @@
 <?php
 class VisitorAction extends CommonAction {
-	protected $config = array('app_type' => 'personal');
+	protected $config = array('app_type' => 'common');
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
