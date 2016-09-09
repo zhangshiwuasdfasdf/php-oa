@@ -17,17 +17,14 @@ class IndexAction extends CommonAction {
 
 	public function index() {
 		//$this -> redirect("Home/index");die;
-		
-		$resume = M("User_suggest_detail") -> find();
-		$sug = M('User_suggest') ;
-		$max = $sug -> max('now');
-		$where['user_id'] = get_user_id();
-		$info = $sug -> where($where) -> find();
-		if(!empty($resume) && empty($info)){
-			$this -> redirect("Home/suggest");die;
-		}else{
-			$this -> redirect("Home/index");die;
+		$id = get_user_id();
+		$resume = M("User_resume") ->where("user_id=$id") -> find();
+		if(empty($resume)){
+			if($id != '2' && $id != '3' && $id != '4' && $id != '5' && $id != '6' && $id != '7' && $id != '116' && $id != '200' && $id != '201' && $id != '50'){
+				$this -> redirect("profile/resume");die;	
+			}
 		}
+		$this -> redirect("Home/index");die;
 		
 		
 		//$list = M('user_idea')->where(array('user_id'=>get_user_id()))->find();
