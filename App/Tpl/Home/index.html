@@ -175,7 +175,11 @@
             		</li>
             	</volist>
             	<volist name="problem_feedback_remind" id="pfr">
-            		<li><a target="_blank" href="{:U('problem_feedback/read','id='.$pfr['problem_feedback_id'])}">{$pfr.title}</a></li>
+					<if condition="($pfr['type'] eq '1')">
+						<li><a target="_blank" href="{:U('problem_feedback/edit','id='.$pfr['problem_feedback_id'])}">{$pfr.title}</a></li>
+					<else/>
+						<li><a target="_blank" href="{:U('problem_feedback/read','id='.$pfr['problem_feedback_id'])}">{$pfr.title}</a></li>
+					</if>
             	</volist>
             </ul>
         </div>

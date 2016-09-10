@@ -3154,7 +3154,9 @@ function show_cc($code,$find='|',$replace="、"){
 	return $code;
 }
 //增加erp问题反馈代办
-function add_problem_feedback($problem_feedback_id,$user_id_array=array()){
+//type=null表示查看
+//type=1表示编辑
+function add_problem_feedback($problem_feedback_id,$user_id_array=array(),$type=null){
 	if(!empty($problem_feedback_id)){
 		if(empty($user_id_array)){
 			//找到erp问题反馈管理员
@@ -3168,6 +3170,7 @@ function add_problem_feedback($problem_feedback_id,$user_id_array=array()){
 		foreach ($erp_user_id as $k=>$v){
 			$data['user_id'] = $v;
 			$data['problem_feedback_id'] = $problem_feedback_id;
+			$data['type'] = $type;
 			M('ProblemFeedbackRemind')->add($data);
 		}
 	}

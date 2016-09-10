@@ -136,7 +136,12 @@
 						<span class="col-10">{$vo.dept_name}&nbsp;</span>
 						<span class="col-10">{$vo.pos_name}&nbsp;</span>
 						<span class="col-10">{$vo.emergency|show_mapping}&nbsp;</span>
-						<span class="col-10"><a href="{:U('problem_feedback/read','id='.$vo['id'])}" target="_blank">{$vo.title}&nbsp;</a></span>
+						<if condition="($vo['type'] eq '1')">
+							<span class="col-10"><a href="{:U('problem_feedback/edit','id='.$vo['problem_feedback_id'])}" target="_blank">{$vo.title}&nbsp;</a></span>
+						<else/>
+							<span class="col-10"><a href="{:U('problem_feedback/read','id='.$vo['problem_feedback_id'])}" target="_blank">{$vo.title}&nbsp;</a></span>
+						</if>
+						
 	
 					</div>
 					<div class="pull-right">

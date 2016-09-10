@@ -243,6 +243,8 @@ class ProblemFeedbackAction extends CommonAction {
 		$list = $model -> save();
 		
 		if ($list !== false) {//保存成功
+			//自己的代办取消
+			del_problem_feedback($id,array(get_user_id()));
 			//发代办给某些人
 			add_problem_feedback($id);
 			$this -> assign('jumpUrl', get_return_url());
@@ -335,6 +337,11 @@ class ProblemFeedbackAction extends CommonAction {
 			M('ProblemFeedback')->save($problem_feedback);
 			//审核人处理好后取消代办
 			if(!empty($problem_feedback['type']) && !empty($problem_feedback['status'])){
+				//如果状态为已退回时，系统发待办给提交人
+				if($problem_feedback['status'] == 'oa处理状态_00'){
+					$tmp = M('ProblemFeedback')->find($problem_feedback['id']);
+					add_problem_feedback($problem_feedback['id'],array($tmp['create_user_id']),1);
+				}
 				del_problem_feedback($problem_feedback['id']);
 				if(!empty($cc_this_backup)){
 					add_problem_feedback($problem_feedback['id'],$cc_this_backup);
