@@ -390,3 +390,5 @@ body{ background:#f3f4f8;}
 .right_r3_div img{ display:block; width:100%; height:auto;}
 .right_r3_div2 a{ display:block; width:50%; color:#3081c3; font-size:18px;overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
 .right_r3_div2 p{color:#4f4d4e; font-size:14px; width:65%; float:left; height:38px; overflow:hidden;}
+.message_menu {position: relative;}
+.message_count {position: absolute;top: -4px;left: 40px;background-color: red;color: #fff; -moz-border-radius: 15px;-webkit-border-radius: 15px;border-radius:15px;height: 20px;width: 20px;text-align: center;line-height: 20px;}

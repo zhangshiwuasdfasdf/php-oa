@@ -45,7 +45,22 @@
     <div class="left_db">
         <a href="{:U('schedule/index')}"><img src="__PUBLIC__/img/new_home/rcap.png"/></a>
         <a href="{:U('complaint/index','fid=inbox')}"><img src="__PUBLIC__/img/new_home/yjx.png"/></a>
-        <a href="{:U('message/index','fid=about_me')}"><img src="__PUBLIC__/img/new_home/znx.png"/></a>
+        <a href="{:U('message/index','fid=about_me')}" class="message_menu"><img src="__PUBLIC__/img/new_home/znx.png"/>
+     		<php>
+				$module_count=0;
+				$bc_class= 'bc-message';
+				$module_count=array_sum($new_count[$bc_class]);
+				if($module_count>99){
+					$module_count="99+";
+				}
+				if($module_count==0){
+					$module_count=null;
+				}
+			</php>
+       		<notempty name="module_count">
+				<p class="message_count">{$module_count}</p>
+		   </notempty>
+        </a>
     </div>
     <div class="more2"></div>
 </div> 

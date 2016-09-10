@@ -346,7 +346,7 @@ class ProblemFeedbackAction extends CommonAction {
 					add_problem_feedback($problem_feedback['id'],$cc_this_backup);
 				}else{//解决完成发站内信给发起人
 					$url = U('problem_feedback/read?id='.$problem_feedback['id']);
-					$data['content']='<a href="'.$url.'">OA问题反馈已有回复，问题状态为'.show_mapping($problem_feedback['status']).'</a>';
+					$data['content']='<a href="'.$url.'">ERP问题反馈已有回复，问题状态为'.show_mapping($problem_feedback['status']).'</a>';
 					$data['sender_id']=get_user_id();
 					$data['sender_name']=get_user_name();
 					$data['create_time']=time();
@@ -374,7 +374,7 @@ class ProblemFeedbackAction extends CommonAction {
 					
 					//解决完成发站内信给发起人
 					$url = U('problem_feedback/read?id='.$problem_feedback['id']);
-					$data['content']='<a href="'.$url.'">OA问题反馈已有回复，问题状态为'.show_mapping($problem_feedback['status']).'</a>';
+					$data['content']='<a href="'.$url.'">ERP问题反馈已有回复，问题状态为'.show_mapping($problem_feedback['status']).'</a>';
 					$data['sender_id']=get_user_id();
 					$data['sender_name']=get_user_name();
 					$data['create_time']=time();
