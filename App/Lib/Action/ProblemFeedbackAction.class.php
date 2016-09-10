@@ -70,7 +70,6 @@ class ProblemFeedbackAction extends CommonAction {
 			$this -> _search_filter($map);
 		}
 		$this->_list(M('ProblemFeedback'), $map);
-		
 		$this -> display();
 	}
 
