@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class FlowAction extends CommonAction {
-	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'read', 'report' => 'read','ajaxgetflow' =>'read','ajaxgettime' =>'read','editflow' =>'read','export_office_supplies_application'=>'read','import_office_supplies_application'=>'read','export_goods_procurement_allocation'=>'read','import_goods_procurement_allocation'=>'read','del'=>'write','winpop_goods'=>'read','getlist'=>'read','get_dept_child'=>'read'));
+	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'read', 'report' => 'read','ajaxgetflow' =>'read','ajaxgettime' =>'read','editflow' =>'read','export_office_supplies_application'=>'read','import_office_supplies_application'=>'read','export_goods_procurement_allocation'=>'read','import_goods_procurement_allocation'=>'read','del'=>'write','winpop_goods'=>'read','getlist'=>'read','get_dept_child'=>'read','export_excel'=>'read'));
 
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -2948,7 +2948,12 @@ class FlowAction extends CommonAction {
 		$map['is_del'] = 0;
 // 		dump($map);
 // 		dump(array_merge($flow_me,$flow_to_me));
-		$flow_common = $this->_list(M('Flow'), $map);
+		if($_GET['export']=='1'){
+			$flow_common = M('Flow')->where($map)->order('id desc')->select();
+		}else{
+			$flow_common = $this->_list(M('Flow'), $map);
+		}
+		
 		$flow_ext = array();
 		foreach ($flow_common as $k=>$v){
 			$model_name = getModelName($v['id']);
@@ -2961,7 +2966,12 @@ class FlowAction extends CommonAction {
 // 		$flow = M('Flow')->where(array('type'=>$type,'user_id'=>get_user_id()))->select();
 		$this -> assign("flow_ext", $flow_ext);
 		$this -> assign("user_id", get_user_id());
-		$this -> display();
+		
+		if($_GET['export']=='1'){
+			$this->export_excel($flow_common,$flow_ext,$_GET['line1']);
+		}else{
+			$this -> display();
+		}
 	}
 	
 	function _search_provide($ModelName,$field_id,$field_name){
@@ -3005,5 +3015,95 @@ class FlowAction extends CommonAction {
 			}
 		}
 		return false;
+	}
+	function export_excel($flow_common,$flow_ext,$line1){
+		//dump($flow_common);
+		//dump($flow_ext);
+		//$str = 'return date("ym","1473477463");';
+		//$a = eval($str);
+		//echo $a;
+		//die;
+		$line1 = array_map(trim,array_filter(explode('|',$line1)));
+		array_pop($line1);
+		
+		$nametofield = array(
+			'标题'=>'return $v["name"];',
+			'编号'=>'return date("ym",$v["create_time"]).formatto4w($flow_ext[$k]["id"]);',
+			'申请时间'=>'return date("Y-m-d H:i:s",$v["create_time"]);',
+			'部门'=>'return $v["dept_name"];',
+			'岗位'=>'return $flow_ext[$k]["pos_name"];',
+			'申请人'=>'return $v["user_name"];',
+			'时长'=>'return $flow_ext[$k]["day_num"]."天".$flow_ext[$k]["hour_num"]."小时";',
+			'开始时间'=>'return $flow_ext[$k]["start_time"];',
+			'结束时间'=>'return $flow_ext[$k]["end_time"];',
+			'审批状态'=>'return show_step($v["step"]);',
+			'申请岗位'=>'return $flow_ext[$k]["apply_position"];',
+			'请假类型'=>'return $flow_ext[$k]["style"];',
+			'请假时长'=>'return $flow_ext[$k]["day_num"]."天".$flow_ext[$k]["hour_num"]."小时";',
+			'请假开始时间'=>'return $flow_ext[$k]["start_time"];',
+			'请假结束时间'=>'return $flow_ext[$k]["end_time"];',
+			'外勤/出差'=>'return $flow_ext[$k]["outside_type"];',
+			'天数'=>'return $flow_ext[$k]["day_num"]."天".$flow_ext[$k]["hour_num"]."小时";',
+			'出发时间'=>'return $flow_ext[$k]["start_time"];',
+			'结束时间'=>'return $flow_ext[$k]["end_time"];',
+			'加班时长'=>'return $flow_ext[$k]["day_num"]."天".$flow_ext[$k]["hour_num"]."小时";',
+			'加班开始时间'=>'return $flow_ext[$k]["start_time"];',
+			'加班结束时间'=>'return $flow_ext[$k]["end_time"];',
+			'同意转正日期'=>'return $flow_ext[$k]["hr_execute"];',
+			'离职日期'=>'return $flow_ext[$k]["resignation_time"];',
+		);
+		$line_new = array();
+		foreach($line1 as $k=>$v){
+			$line_new[$k] = $nametofield[$v];
+		}
+		
+		//dump($line_new);
+		Vendor('Excel.PHPExcel');
+	
+		$objPHPExcel = new PHPExcel();
+	
+		$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+		// Add some data
+		$i = 1;
+	
+		$q = $objPHPExcel -> setActiveSheetIndex(0);
+		foreach($line1 as $k=>$v){
+			$col = ToNumberSystem26($k+1);
+			$q = $q -> setCellValue($col."1", $v);
+		}
+		foreach($flow_common as $k=>$v){
+			$j = $k+2;
+			foreach($line_new as $kk=>$vv){
+				$col = ToNumberSystem26($kk+1);
+				if($vv){
+					$q = $q -> setCellValue($col.$j, eval($vv));
+				}
+				
+			}
+		}
+	
+		//$start = ord('A');
+		//foreach($comment as $k=>$v){
+			//$q ->getColumnDimension(chr($start+$k))->setWidth(20);
+		//}
+		// Rename worksheet
+		$title = '流程导出';
+		$objPHPExcel -> getActiveSheet() -> setTitle('流程导出');
+	
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel -> setActiveSheetIndex(0);
+		$file_name = $title.".xlsx";
+		// Redirect output to a client’s web browser (Excel2007)
+		header("Content-Type: application/force-download");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header("Content-Disposition:attachment;filename =" . str_ireplace('+', '%20', URLEncode($file_name)));
+		header('Cache-Control: max-age=0');
+	
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		//readfile($filename);
+		$objWriter -> save('php://output');
+		exit ;
+		die;
+		
 	}
 }
