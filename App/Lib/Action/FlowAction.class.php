@@ -2869,25 +2869,25 @@ class FlowAction extends CommonAction {
 		//搜索条件预设结束
 		
 		//搜索条件处理
-		if($_POST['eq_dept_id_0']){
-			$where['dept_id'] = $_POST['eq_dept_id_0'];
+		if($_REQUEST['eq_dept_id_0']){
+			$where['dept_id'] = $_REQUEST['eq_dept_id_0'];
 		}
-		if($_POST['eq_dept_id_1']){
-			$pos_id = $_POST['eq_dept_id_1'];
+		if($_REQUEST['eq_dept_id_1']){
+			$pos_id = $_REQUEST['eq_dept_id_1'];
 			$user_id_in = M('User')->field('id')->where(array('pos_id'=>$pos_id))->select();
 			$user_id_in = rotate($user_id_in);
 			$user_id_in = $user_id_in['id'];
 			$where['user_id'] = array('in',$user_id_in);
 			
 		}
-		if($_POST['eq_user_id']){
-			$where['user_id'] = $_POST['eq_user_id'];
+		if($_REQUEST['eq_user_id']){
+			$where['user_id'] = $_REQUEST['eq_user_id'];
 		}
-		if($_POST['be_create_time']){
-			$where['create_time'][] = array('egt',strtotime($_POST['be_create_time']));
+		if($_REQUEST['be_create_time']){
+			$where['create_time'][] = array('egt',strtotime($_REQUEST['be_create_time']));
 		}
-		if($_POST['en_create_time']){
-			$where['create_time'][] = array('elt',strtotime($_POST['en_create_time'].' 24:00:00'));
+		if($_REQUEST['en_create_time']){
+			$where['create_time'][] = array('elt',strtotime($_REQUEST['en_create_time'].' 24:00:00'));
 		}
 		
 		//特殊条件
@@ -2967,6 +2967,8 @@ class FlowAction extends CommonAction {
 		$this -> assign("flow_ext", $flow_ext);
 		$this -> assign("user_id", get_user_id());
 		
+
+		$this -> assign("post", json_encode($_POST));
 		if($_GET['export']=='1'){
 			$this->export_excel($flow_common,$flow_ext,$_GET['line1']);
 		}else{
@@ -2991,11 +2993,11 @@ class FlowAction extends CommonAction {
 // 		dump(substr($field_name,0));
 		if(substr($field_name,0,3)=='bt_'){
 			$field_name = substr($field_name,3);
-			if($_POST['be_'.$flow_name.'_'.$field_name]){
-				$where[$field_name][] = array('egt',$_POST['be_'.$flow_name.'_'.$field_name]);
+			if($_REQUEST['be_'.$flow_name.'_'.$field_name]){
+				$where[$field_name][] = array('egt',$_REQUEST['be_'.$flow_name.'_'.$field_name]);
 			}
-			if($_POST['en_'.$flow_name.'_'.$field_name]){
-				$where[$field_name][] = array('elt',$_POST['en_'.$flow_name.'_'.$field_name]);
+			if($_REQUEST['en_'.$flow_name.'_'.$field_name]){
+				$where[$field_name][] = array('elt',$_REQUEST['en_'.$flow_name.'_'.$field_name]);
 			}
 			if(!empty($where)){
 				$flow_id_in = M($ModelName)->field('flow_id')->where($where)->select();
@@ -3004,8 +3006,8 @@ class FlowAction extends CommonAction {
 				return $flow_id_in;
 			}
 		}else{
-			if($_POST[$flow_name.'_'.$field_name]){
-				$where[$field_name] = $_POST[$flow_name.'_'.$field_name];
+			if($_REQUEST[$flow_name.'_'.$field_name]){
+				$where[$field_name] = $_REQUEST[$flow_name.'_'.$field_name];
 			}
 			if(!empty($where)){
 				$flow_id_in = M($ModelName)->field('flow_id')->where($where)->select();
@@ -3082,10 +3084,6 @@ class FlowAction extends CommonAction {
 			}
 		}
 	
-		//$start = ord('A');
-		//foreach($comment as $k=>$v){
-			//$q ->getColumnDimension(chr($start+$k))->setWidth(20);
-		//}
 		// Rename worksheet
 		$title = '流程导出';
 		$objPHPExcel -> getActiveSheet() -> setTitle('流程导出');

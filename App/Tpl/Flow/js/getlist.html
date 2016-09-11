@@ -1,3 +1,4 @@
+<script src="__PUBLIC__/js/phpSerializer.js"></script>
 <script type="text/javascript">
 $("#eq_dept_id_0").change(function () {
 	var dept_id_0 = $(this).val();
@@ -29,7 +30,19 @@ function export_excel(){
 		line1 += trim($(this).html())+'|';
 	});
 	var type = {:I('get.type')};
-	window.open("{:U('getlist',array('type'=>'"+type+"','export'=>'1','line1'=>'"+line1+"'))}", "_blank");
+	var post = {$post};
+	var s = "";
+	s += "&type="+type;
+	s += "&export=1";
+	s += "&line1="+line1;
+	for ( var p in post ){
+		if(post[p]!='' && post[p]!='undefined'){
+			s += "&"+p+"="+post[p];
+		}
+	}
+	
+	var xx = './index.php?m=flow&a=getlist'+s;
+	window.open(xx, "_blank");
 	return false;
 }
 </script>
