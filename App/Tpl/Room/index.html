@@ -1,19 +1,18 @@
 <layout name='Layout/ace_layout' />
 <link href="__PUBLIC__/css/meet.css" rel="stylesheet" type="text/css">
-{:W('PageHeader',array('name'=>'会议室管理','search'=>'M'))}
+{:W('PageHeader',array('name'=>'会议室管理','search'=>'N'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
-	<div class="adv_search panel panel-default  display-none"  id="adv_search">
+	<div class="adv_search panel panel-default "  id="adv_search">
 		<div class="panel-heading">
 			<div class="row">
-				<h4 class="col-xs-6">高级搜索</h4>
+				<h4 class="col-xs-6"></h4>
 				<div class="col-xs-6 text-right">
 					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
-					<a  class="btn btn-sm " onclick="close_adv_search();">关闭</a>
 				</div>
 			</div>
 		</div>
 		<div class="panel-body">
-			<div class="form-group col-sm-6">
+			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="li_name">会议室地点：</label>
 				<div class="col-sm-8">
 					<select name="eq_meet_addr" id="meet_addr" class="form-control" check="require" msg="请输入会议室名称">
@@ -21,19 +20,19 @@
 					</select>
 				</div>
 			</div>
-			<div class="form-group col-sm-6">
+			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="li_content">会议室门牌号：</label>
 				<div class="col-sm-8">
 					<input  class="form-control" type="text" id="li_content" name="li_meet_num" >
 				</div>
 			</div>
-			<div class="form-group col-sm-6">
+			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="eq_user_name">会议室名称：</label>
 				<div class="col-sm-8">
 					<input  class="form-control" type="text" id="li_user_name" name="li_meet_name" >
 				</div>
 			</div>
-			<div class="form-group col-sm-6">
+			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="be_create_time">会议室状态：</label>
 				<div class="col-sm-8">
 					<select name="eq_meet_status" id="meet_status" class="form-control" check="require" msg="请输入会议室状态">

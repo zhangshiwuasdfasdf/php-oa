@@ -259,7 +259,7 @@ class DailyReportAction extends CommonAction {
 		$this -> assign("widget", $widget);
 		
 		$auth = $this -> config['auth'];
-		if (!$auth['admin']) {
+		if (!$auth['admin'] && !D("Role") -> check_duty('SHOW_LOG')) {
 			if(D("Role") -> check_duty('SHOW_LOG_LOW_ALL')){//允许查看自己及以下所有日志
 				$child_ids = array_merge(array(intval(get_user_id())),get_child_ids_all(get_user_id()));
 				$where_last['user_id'] = array('in',$child_ids);
@@ -270,7 +270,6 @@ class DailyReportAction extends CommonAction {
 				$where_last['user_id'] = array('eq',intval(get_user_id()));
 			}
 		}
-		
 		
 		$date_1 = date('Y-m-d', strtotime('0 day'));
 		$date_2 = date('Y-m-d', strtotime('-1 day'));

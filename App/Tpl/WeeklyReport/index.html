@@ -88,16 +88,15 @@ img{ margin:0; padding:0;}
 	<div class="adv_search panel panel-default  display-none"  id="adv_search">
 		<div class="panel-heading">
 			<div class="row">
-				<h4 class="col-xs-6">高级搜索</h4>
+				<h4 class="col-xs-6"></h4>
 				<div class="col-xs-6 text-right">
 					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
-					<a  class="btn btn-sm " onclick="close_adv_search();">关闭</a>
 				</div>
 			</div>
 		</div>
 		<div class="panel-body">
 			<eq name="auth.admin" value="true">
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<label class="col-sm-4 control-label" for="dept_id_0">部门：</label>
 					<div class="col-sm-8">
 						<select class="form-control" name="eq_dept_id_0" id="eq_dept_id_0">
@@ -106,7 +105,7 @@ img{ margin:0; padding:0;}
 						</select>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<label class="col-sm-4 control-label" for="dept_id_1">岗位：</label>
 					<div class="col-sm-8">
 						<select class="form-control" name="eq_dept_id_1" id="eq_dept_id_1">
@@ -114,7 +113,7 @@ img{ margin:0; padding:0;}
 						</select>
 					</div>
 				</div>
-				<div class="form-group col-sm-6">
+				<div class="form-group col-sm-3">
 					<label class="col-sm-4 control-label" for="eq_user_id">撰写人：</label>
 					<div class="col-sm-8">
 						<select class="form-control" name="eq_user_id" >
@@ -125,7 +124,7 @@ img{ margin:0; padding:0;}
 				</div>
 			</eq>
 			
-			<div class="form-group col-sm-6">
+			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="be_create_time">日期：</label>
 				<div class="col-sm-8">
 					<div class="input-daterange input-group" >
