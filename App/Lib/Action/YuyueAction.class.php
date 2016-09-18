@@ -7,12 +7,25 @@ class YuyueAction extends CommonAction {
 		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
 			$map['proposer'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
+		if (!empty($_POST['dept_name_multi'])) {
+			$dept_name_mul = $_POST['dept_name_multi'];
+			$dept_name_mul = array_filter(explode(';',$dept_name_mul));
+			$map['dept'] = array('in', $dept_name_mul);
+		}
 	}
 	function index(){
 		$map = $this -> _search("room_order");
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
+		
+		$node = D("Dept");
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		if(!is_mobile_request()){
+			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
+		}
+		
 		$model = M("room_order");
 		if (!empty($model)) {
 			$order = $this -> _list($model, $map);

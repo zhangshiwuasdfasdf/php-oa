@@ -2866,19 +2866,47 @@ class FlowAction extends CommonAction {
 		
 // 		$outside_outside_type = M('FlowOutside') -> field('outside_type as id,outside_type as name') ->distinct(true) -> select();
 // 		$this -> assign('outside_outside_type', $outside_outside_type);
+
+		$node = D("Dept");
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		if(!is_mobile_request()){
+			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
+		}
 		//搜索条件预设结束
 		
 		//搜索条件处理
-		if($_REQUEST['eq_dept_id_0']){
-			$where['dept_id'] = $_REQUEST['eq_dept_id_0'];
+// 		if($_REQUEST['eq_dept_id_0']){
+// 			$where['dept_id'] = $_REQUEST['eq_dept_id_0'];
+// 		}
+// 		if($_REQUEST['eq_dept_id_1']){
+// 			$pos_id = $_REQUEST['eq_dept_id_1'];
+// 			$user_id_in = M('User')->field('id')->where(array('pos_id'=>$pos_id))->select();
+// 			$user_id_in = rotate($user_id_in);
+// 			$user_id_in = $user_id_in['id'];
+// 			$where['user_id'] = array('in',$user_id_in);
+			
+// 		}
+		if (!empty($_REQUEST['dept_name_multi_data'])) {
+			$dept_id_mul = $_REQUEST['dept_name_multi_data'];
+			$dept_id_mul = array_filter(explode('|',$dept_id_mul));
+			$dept_ids = array();
+			foreach ($dept_id_mul as $dept_id){
+				$dept_ids = array_merge($dept_ids,get_child_dept_all($dept_id));
+			}
+			$where['dept_id'] = array('in', $dept_ids);
 		}
-		if($_REQUEST['eq_dept_id_1']){
-			$pos_id = $_REQUEST['eq_dept_id_1'];
-			$user_id_in = M('User')->field('id')->where(array('pos_id'=>$pos_id))->select();
+		if (!empty($_REQUEST['pos_name_multi_data'])) {
+			$pos_id_mul = $_REQUEST['pos_name_multi_data'];
+			$pos_id_mul = array_filter(explode('|',$pos_id_mul));
+			$pos_ids = array();
+			foreach ($pos_id_mul as $pos_id){
+				$pos_ids = array_merge($pos_ids,get_child_dept_all($pos_id));
+			}
+			$user_id_in = M('User')->field('id')->where(array('pos_id'=>array('in',$pos_ids)))->select();
 			$user_id_in = rotate($user_id_in);
 			$user_id_in = $user_id_in['id'];
 			$where['user_id'] = array('in',$user_id_in);
-			
 		}
 		if($_REQUEST['eq_user_id']){
 			$where['user_id'] = $_REQUEST['eq_user_id'];

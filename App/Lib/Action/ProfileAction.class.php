@@ -405,13 +405,23 @@ class ProfileAction extends CommonAction {
 		if (!empty($_POST['is_del'])) {
 			$where['is_del'] = $_POST['is_del'];
 		}
-		if (!empty($_POST['eq_dept_id_0'])) {
-			$dept_id = $_POST['eq_dept_id_0'];
-			$where['pos_id'] = array('in', get_child_dept_all($dept_id));
+		if (!empty($_POST['dept_name_multi_data'])) {
+			$dept_id_mul = $_POST['dept_name_multi_data'];
+			$dept_id_mul = array_filter(explode('|',$dept_id_mul));
+			$dept_ids = array();
+			foreach ($dept_id_mul as $dept_id){
+				$dept_ids = array_merge($dept_ids,get_child_dept_all($dept_id));
+			}
+			$where['pos_id'] = array('in', $dept_ids);
 		}
-		if (!empty($_POST['eq_dept_id_1'])) {
-			$dept_id = $_POST['eq_dept_id_1'];
-			$where['pos_id'] = array('in', array($dept_id));
+		if (!empty($_POST['pos_name_multi_data'])) {
+			$pos_id_mul = $_POST['pos_name_multi_data'];
+			$pos_id_mul = array_filter(explode('|',$pos_id_mul));
+			$pos_ids = array();
+			foreach ($pos_id_mul as $pos_id){
+				$pos_ids = array_merge($pos_ids,get_child_dept_all($pos_id));
+			}
+			$where['pos_id'] = array('in', $pos_ids);
 		}
 		//取出数据
 		$users = $this->_list(D("UserView"), $where,'id',true);
@@ -426,21 +436,11 @@ class ProfileAction extends CommonAction {
 		}
 		$this->assign("users_extension",$users_extension);
 		//选择部门的内容
-		$dept_id = get_dept_id();
-		$dept_name = get_dept_name();
-		$dept_menu = D("Dept") -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
-			
+		$node = D("Dept");
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
 		$dept_tree = list_to_tree($dept_menu);
-		$count = count($dept_tree);
-		$where = array();
-		if (empty($count)) {
-			/*获取部门列表*/
-			$html = '';
-			$html = $html . "<option value='{$dept_id}'>{$dept_name}</option>";
-			$this -> assign('dept_list', $html);
-		} else {
-			/*获取部门列表*/
-			$this -> assign('dept_list', select_tree_menu($dept_tree));
+		if(!is_mobile_request()){
+			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
 		}
 		$this->display();
 	}
