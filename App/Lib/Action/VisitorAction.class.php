@@ -15,6 +15,11 @@ class VisitorAction extends CommonAction {
 		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
 			$map['user_name'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
+		if (!empty($_POST['dept_name_multi'])) {
+			$dept_name_mul = $_POST['dept_name_multi'];
+			$dept_name_mul = array_filter(explode(';',$dept_name_mul));
+			$map['base'] = array('in', $dept_name_mul);
+		}
 	}
 	function index(){
 		$map = $this -> _search();
@@ -26,9 +31,14 @@ class VisitorAction extends CommonAction {
 			$info = $this -> _list($model, $map);
 			$this -> assign('info', $info);
 		}
-		$addr = $model -> where('is_del = 0') -> field('base as id,base as name') ->distinct(true) -> select();
+		$node = D("Dept");
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		if(!is_mobile_request()){
+			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
+		}
+		
 		$user_name = $model -> where('is_del = 0') -> field('user_id as id,user_name as name') ->distinct(true) -> select();
-		$this -> assign('addr_list', $addr);
 		$this -> assign('user_name', $user_name);
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);

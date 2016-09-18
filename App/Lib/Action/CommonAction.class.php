@@ -515,7 +515,7 @@ class CommonAction extends Action {
 				}
 
 				if ($prefix == "li_") {
-					$map[$field] = array('like', '%' . trim($_REQUEST[$val]) . '%');
+					$map[$field] = array('eq', '%' . trim($_REQUEST[$val]) . '%');
 				}
 				if ($prefix == "eq_") {
 					$map[$field] = array('eq', trim($_REQUEST[$val]));
@@ -717,6 +717,33 @@ class CommonAction extends Action {
 		$dept_tree = list_to_tree($dept_menu, $dept_id_0);
 		$tree_menu = select_tree_menu($dept_tree);
 		$this -> ajaxReturn($tree_menu);
+	}
+	public function get_depts_child(){
+		$dept_id_0 = $_GET['dept_id_0'];
+		$dept_ids = array_filter(explode('|',$dept_id_0));
+		$dept_menu = M('dept') -> field('id,pid,name') -> where("is_del=0") -> order('sort asc') -> select();
+		$pos_ids = array();
+		$html = "<ul>\r\n";
+		foreach ($dept_ids as $dept_id){
+			$pos_ids = array_merge($pos_ids,get_child_dept_all($dept_id));
+		}
+		foreach ($pos_ids as $pos_id){
+			$res = M('Dept')->field('id,name')->where(array('id'=>$pos_id,'is_del'=>0,'is_real_dept'=>0))->find();
+			if($res){
+				$id = $res['id'];
+				$name = $res['name'];
+				$html .= "<li>\r\n";
+				$html .= "<input type=\"checkbox\" name=\"pos[]\" id=\"pos_$id\" value=\"$id\" name2=\"$name\">\r\n";
+				$html .= "<label for=\"pos_$id\">$name</label>\r\n";
+				$html .= "</li>\r\n";
+			}
+		}
+		$html .= "</ul>\r\n";
+// 		$html .= "<div class=\"bottom2\">\r\n";
+// 		$html .= "<span class=\"bottom_s1\" id=\"qd2\">确定</span>\r\n";
+// 		$html .= "<span class=\"bottom_s2\" id=\"qx2\">取消</span>\r\n";
+// 		$html .= "</div>\r\n";
+		$this -> ajaxReturn($html);
 	}
 	public function get_real_dept(){
 		$node = D("Dept");

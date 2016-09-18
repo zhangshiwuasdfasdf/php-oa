@@ -692,7 +692,7 @@ function filter_search_field($v1) {
 	if ($v1 == "keyword")
 		return true;
 	$prefix = substr($v1, 0, 3);
-	$arr_key = array("be_", "en_", "eq_", "li_", "lt_", "gt_", "bt_");
+	$arr_key = array("be_", "en_", "eq_", "li_", "lt_", "gt_", "bt_","dep","pos");
 	if (in_array($prefix, $arr_key)) {
 		return true;
 	} else {
@@ -1005,6 +1005,42 @@ function select_tree_menu($tree) {
 		foreach ($list as $val) {
 			$html = $html . "<option value='{$val['id']}'>" . str_pad("", $val['level'] * 3, "│") . "├─" . "{$val['name']}</option>";
 		}
+	}
+	return $html;
+}
+function select_tree_menu_mul($tree,$level=0) {
+	$level++;
+	$html = "";
+	if (is_array($tree)) {
+		if($level == 3){
+			$html = "<ul class=\"ul1\">\r\n";
+		}else{
+			$html = "<ul>\r\n";
+		}
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title = $val["name"];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				if (isset($val['_child'])) {
+					$html = $html . "<li>\r\n";
+					$html = $html . "<img src=\"./Public/img/zk.png\"/>\r\n";
+					$html = $html . "<input type=\"checkbox\" name=\"dept[]\" name2=\"$title\" id=\"dept_$id\" value=\"$id\">\r\n";
+					$html = $html . "<label for=\"dept_$id\">$title</label>\r\n";
+					$html = $html . select_tree_menu_mul($val['_child'],$level);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li>\r\n";
+					$html = $html . "<img src=\"./Public/img/hl.png\"/>\r\n";
+					$html = $html . "<input type=\"checkbox\" name=\"dept[]\" name2=\"".$title."\" id=\"dept_".$id."\" value=\"".$id."\">\r\n";
+					$html = $html . "<label for=\"dept_$id\">$title</label>\r\n";
+					$html = $html . "</li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
 	}
 	return $html;
 }

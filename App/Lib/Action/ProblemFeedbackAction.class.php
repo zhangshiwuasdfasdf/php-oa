@@ -19,8 +19,14 @@ class ProblemFeedbackAction extends CommonAction {
 		if (!empty($_POST['problem_no'])) {
 			$map['problem_no'] = array('eq', $_POST['problem_no']);
 		}
-		if (!empty($_POST['eq_dept_id_0'])) {
-			$map['dept_id'] = array('in', get_child_dept_all($_POST['eq_dept_id_0']));
+		if (!empty($_POST['dept_name_multi_data'])) {
+			$dept_id_mul = $_POST['dept_name_multi_data'];
+			$dept_id_mul = array_filter(explode('|',$dept_id_mul));
+			$dept_ids = array();
+			foreach ($dept_id_mul as $dept_id){
+				$dept_ids = array_merge($dept_ids,get_child_dept_all($dept_id));
+			}
+			$map['pos_id'] = array('in', $dept_ids);
 		}
 		if (!empty($_POST['user_name'])) {
 			$map['create_user_name'] = array('eq', $_POST['user_name']);
@@ -47,8 +53,12 @@ class ProblemFeedbackAction extends CommonAction {
 		$this -> assign("widget", $widget);
 		$this -> assign('user_id', get_user_id());
 		
-		$dept_list = M('ProblemFeedback')->field('dept_id as id,dept_name as name')->distinct(true)->select();
-		$this -> assign('dept_list', $dept_list);
+		$node = D("Dept");
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		if(!is_mobile_request()){
+			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
+		}
 		
 		$type_list = M('ProblemFeedback')->field('type as id')->distinct(true)->select();
 		foreach ($type_list as $k=>$v){

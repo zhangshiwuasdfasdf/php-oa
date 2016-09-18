@@ -97,7 +97,7 @@ class Page {
             $depr     =   C('URL_PATHINFO_DEPR');
             $url        =   rtrim(U('/'.$this->url,'',false),$depr).$depr.'__PAGE__';
         }else{
-			
+
 			$request = array_filter(array_keys(array_filter($_REQUEST)), "filter_search_field");
 			if(!empty($request)){
 				$request=array_combine($request,$request);
@@ -122,7 +122,7 @@ class Page {
 					}
 				}
 			}
-			$html=str_replace("%input%",$input,$html);  
+			$html=str_replace("%input%",$input,$html);
         }
 
         //上下翻页字符串

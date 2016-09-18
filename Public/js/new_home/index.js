@@ -233,11 +233,11 @@ $(".grxx_xial").click(function(){
 })
 
 $('.right_ge1').click(function(){
-	var url = $("#url").val();
-	var id = $("#o_id").val();
-	var emp_no = $("#o_emp_no").val();
-	var name = $("#o_name").val();
-	var dept_id = $("#o_dept_id").val();
+	var url = $(this).children("#url").val();
+	var id = $(this).children("#o_id").val();
+	var emp_no = $(this).children("#o_emp_no").val();
+	var name = $(this).children("#o_name").val();
+	var dept_id = $(this).children("#o_dept_id").val();
 	$.ajax({
 		type : "POST",
 		url : url,

@@ -4,8 +4,10 @@ class AttendanceAction extends CommonAction {
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
-		if (!empty($_POST['eq_dept_name'])) {
-			$map['dept_name'] = $_POST['eq_dept_name'];
+		if (!empty($_POST['dept_name_multi'])) {
+			$dept_name_mul = $_POST['dept_name_multi'];
+			$dept_name_mul = array_filter(explode(';',$dept_name_mul));
+			$map['dept_name'] = array('in', $dept_name_mul);
 		}
 		if (!empty($_POST['eq_user_name'])) {
 			$map['user_name'] = $_POST['eq_user_name'];
@@ -58,6 +60,14 @@ class AttendanceAction extends CommonAction {
 // 		$months = $model -> where('is_del = 0') -> field('months as id,months as name') ->distinct(true) -> select();
 		$this -> assign('dept_name', $dept_name);
 		$this -> assign('user_name', $user_name);
+		
+		$node = D("Dept");
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		if(!is_mobile_request()){
+			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
+		}
+		
 // 		$this -> assign('months', $months);
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
@@ -79,6 +89,14 @@ class AttendanceAction extends CommonAction {
 		// 		$months = $model -> where('is_del = 0') -> field('months as id,months as name') ->distinct(true) -> select();
 		$this -> assign('dept_name', $dept_name);
 		$this -> assign('user_name', $user_name);
+		
+		$node = D("Dept");
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		if(!is_mobile_request()){
+			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
+		}
+		
 		// 		$this -> assign('months', $months);
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
