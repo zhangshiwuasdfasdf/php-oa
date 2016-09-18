@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8" />
+	<title>{$title|default="smeoa"}</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="renderer" content="webkit">
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- basic styles -->
+	<link rel="stylesheet" href="__PUBLIC__/css/bootstrap.min.css"  />
+	<link rel="stylesheet" href="__PUBLIC__/css/font-awesome.min.css" />
+
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="__PUBLIC__/css/font-awesome-ie7.min.css" />
+	<![endif]-->
+
+	<!-- page specific plugin styles -->
+	<link rel="stylesheet" href="__PUBLIC__/css/jquery-ui-1.10.3.full.min.css" />
+	<include file="Widget:css"/>
+
+	<!-- fonts -->
+	<!-- ace styles -->
+
+	<link rel="stylesheet" href="__PUBLIC__/css/uncompressed/ace.css" />
+	<link rel="stylesheet" href="__PUBLIC__/css/uncompressed/ace-rtl.css" />
+	<link rel="stylesheet" href="__PUBLIC__/css/uncompressed/ace-skins.css" />
+	<link rel="shortcut icon" href="__PUBLIC__/img/icon/logo.ico" type="image/x-icon" />
+
+	<!--[if lte IE 8]>
+	<link rel="stylesheet" href="__PUBLIC__/css/uncompressed/ace-ie.css" />
+	<![endif]-->
+
+	<!-- inline styles related to this page -->
+	<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+	<!-- ace settings handler -->
+
+	<script src="__PUBLIC__/js/ace-extra.min.js"></script>
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+	<!--[if lt IE 9]>
+	<script src="__PUBLIC__/js/html5shiv.js"></script>
+	<script src="__PUBLIC__/js/respond.min.js"></script>
+	<![endif]-->
+	<include file="Public:script" />
+
+</head>
+<body>
+	<div class="shade"></div>
+		<div class="main-container" id="main-container">
+			<div class="main-container-inner">
+				<div class="main-content" style="margin-top: 0px;margin-left: 0px;">
+					<div class="page-content  {$Think.MODULE_NAME}">
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
+									{__CONTENT__}
+								<!-- PAGE CONTENT ENDS -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+					    <div class="right_menu">
+    	<div class="ma1">
+        	<span class="span5" id="sp1">最近收件人</span>
+            <span class="span6" id="sp2">更多</span>
+        </div>
+        <ul class="ul1">
+        	<li class="rli1">
+            	<ul>
+            		<volist name="contact" id="vo">
+                		<li id="{$key}" onclick="contact_save(this)">{$vo}</li>
+                    </volist>
+                </ul>
+            </li>
+           		 <li class="rli2">
+                   <?php echo $menu ?>
+                   </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+				</div><!-- /.main-content -->
+				</div><!-- /#ace-settings-container -->
+			</div><!-- /.main-container-inner -->
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse hidden-print">
+				<i class="fa fa-double-angle-up fa-only bigger-110"></i>
+			</a>
+		</div><!-- /.main-container -->
+	<div id="push_msg"></div>
+	<iframe src="{:U('push/client2')}" class="push" id="push"></iframe>
+	<!-- basic scripts -->
+
+	<!--[if !IE]>
+	-->
+	<script type="text/javascript">
+			window.jQuery || document.write("<script src='__PUBLIC__/js/jquery-2.1.0.min.js'>" + "<" + "/script>");</script>
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+		window.jQuery || document.write("<script src='__PUBLIC__/js/jquery-1.11.0.min.js'>"+"<"+"/script>");</script>
+<![endif]-->
+<script type="text/javascript">
+			if ("ontouchend" in document)
+				document.write("<script src='__PUBLIC__/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+			
+			function contact_save(node){
+				email = 'true';//邮箱
+				emp_no = $(node).attr('id');//id
+				name = jQuery.trim($(node).text());//姓名
+				nodes = $("#recever .address_list").children("span");
+				if(nodes.length > 0){
+					fl = true;
+					nodes.each(function(){
+						if($(this).attr("id") == emp_no){
+							fl = false;
+						}
+					});
+					if(fl){
+						html = conv_inputbox_item(emp_no, name,email, email);
+						$("#recever .address_list", parent.document).append(html);
+					}
+				}else{
+					html = conv_inputbox_item(emp_no, name,email, email);
+					$("#recever .address_list", parent.document).append(html);
+				}
+						
+				
+			}
+</script>
+<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/js/typeahead-bs2.min.js"></script>
+<script src="__PUBLIC__/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="__PUBLIC__/js/jquery.ui.touch-punch.min.js"></script>
+<script src="__PUBLIC__/js/jquery.slimscroll.min.js"></script>
+
+<include file="Widget:plugin"/>
+
+<!-- ace scripts -->
+<script src="__PUBLIC__/js/ace-elements.min.js"></script>
+<script src="__PUBLIC__/js/uncompressed/ace.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<include file="$js_file" />
+<!-- 新版js -->
+<script src="__PUBLIC__/js/new_home/left.js"></script>
+<!-- inline scripts related to this page -->
+</body>
+</html>

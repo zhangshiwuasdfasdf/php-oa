@@ -1,0 +1,27 @@
+<script type="text/javascript">
+	function save() {
+		if (check_form("form_data")) {
+			sendForm("form_data", "{:U('save_resume')}", "__URL__");
+		}
+	}
+	
+	function add_subject($i) {
+		$html = $(".sample_"+$i+":last").html();
+		$(".sample_"+$i+":last").after("<tr class=sample_"+ $i+">"+$html+"</tr>");
+	}
+	function add_subject2($i) {
+		$html = $(".sample_"+$i+":last").html();
+		$(".sample_"+$i+":last").after("<tbody class=sample_"+ $i+">"+$html+"</tbody>");
+	}
+	function quit(){
+		ui_confirm('确定要取消吗?',function(){
+			location.href = "{:U('Profile/Index')}";
+		});
+	}
+	function select_avatar() {
+		winopen("{:U('popup/avatar')}?id=" + $("#id").val(), 730, 500);
+	}
+	$(document).ready(function() {
+		
+	}); 
+</script>

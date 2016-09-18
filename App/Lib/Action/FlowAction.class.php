@@ -2512,6 +2512,7 @@ class FlowAction extends CommonAction {
 						}elseif(getModelName($flow_id)=='FlowLeave'){//请假/调休单
 							$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 							$create_time = strtotime($flow['start_time']);
+							$end_time = strtotime($flow['end_time']);
 							if($flow['style']=='调休'){
 								$flow_hour = M('FlowHour')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 								if(!$flow_hour){
@@ -2541,6 +2542,9 @@ class FlowAction extends CommonAction {
 									M('FlowYear')->where('flow_id='.$flow_id)->save($data);
 								}
 							}
+							$this -> addAttendance($flow_id);
+						}elseif (getModelName($flow_id)=='FlowAttendance' || getModelName($flow_id)=='FlowOutside'){
+							$this -> addAttendance($flow_id );
 						}
 					}
 					
@@ -3131,5 +3135,59 @@ class FlowAction extends CommonAction {
 		exit ;
 		die;
 		
+	}
+	
+	private function addAttendance($flow_id){
+		//请假调休结束后,向考勤表中添加一条记录
+		$user_flow = M('Flow')->find($flow_id);//找到请假人的信息
+		$atten = M('Attendance');
+		$info['user_id'] = $user_flow['user_id'];
+		$info['dept_name'] = $user_flow['dept_name'];
+		$info['user_name'] = $user_flow['user_name'];
+		$info['num'] =  $user_flow['id'];
+		$info['machine_no'] = '1';
+		$info['import_time'] = time();
+		$flag = getModelName($flow_id);
+		switch ($flag){
+			case 'FlowLeave' :	//leave; 请假调休
+				$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+				$create_time = strtotime($flow['start_time']);
+				$end_time = strtotime($flow['end_time']);
+				$info['attendance_time'] = $create_time;
+				$info['mark'] = 'in';
+				$info['style'] = '请假调休单_' .$flow['style'];
+				$atten -> add($info);
+				//结束时间
+				$info['attendance_time'] = $end_time;
+				$info['mark'] = 'out';
+				$atten -> add($info);
+				break;
+			case 'FlowAttendance' : //attendance 出勤单
+				$flow = M('FlowAttendance')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+				$create_time = strtotime($flow['start_time']);
+				$end_time = strtotime($flow['end_time']);
+				$info['attendance_time'] = $create_time;
+				$info['mark'] = 'in';
+				$info['style'] = '出勤证明流程';
+				$atten -> add($info);
+				//结束时间
+				$info['attendance_time'] = $end_time;
+				$info['mark'] = 'out';
+				$atten -> add($info);
+				break;
+			case 'FlowOutside' : //outside 外勤单
+				$flow = M('FlowOutside')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+				$create_time = strtotime($flow['start_time']);
+				$end_time = strtotime($flow['end_time']);
+				$info['attendance_time'] = $create_time;
+				$info['mark'] = 'in';
+				$info['style'] = '外勤/出差单';
+				$atten -> add($info);
+				//结束时间
+				$info['attendance_time'] = $end_time;
+				$info['mark'] = 'out';
+				$atten -> add($info);
+				break;
+		}
 	}
 }
