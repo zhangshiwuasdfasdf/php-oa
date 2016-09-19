@@ -515,7 +515,7 @@ class CommonAction extends Action {
 				}
 
 				if ($prefix == "li_") {
-					$map[$field] = array('eq', '%' . trim($_REQUEST[$val]) . '%');
+					$map[$field] = array('like', '%' . trim($_REQUEST[$val]) . '%');
 				}
 				if ($prefix == "eq_") {
 					$map[$field] = array('eq', trim($_REQUEST[$val]));

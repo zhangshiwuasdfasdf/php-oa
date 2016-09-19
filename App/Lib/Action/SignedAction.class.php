@@ -1,6 +1,6 @@
 <?php
 class SignedAction extends CommonAction {
-	protected $config = array('app_type' => 'common');
+	protected $config = array('app_type' => 'common', 'action_auth' => array('statistics' => 'read' , 'import_client' => 'read' ,'export_info' => 'read'));
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');

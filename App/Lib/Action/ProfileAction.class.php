@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class ProfileAction extends CommonAction {
-	protected $config=array('app_type'=>'common', 'action_auth' => array('upload' => 'read','reset_pwd'=>'read','password'=>'read','save'=>'read','resume'=>'read','addResume'=>'read','save_resume'=>'read','add_record'=>'read','save_record'=>'read','userlist'=>'read','user'=>'read','get_dept_child'=>'read','export_sign'=>'read'));
+	protected $config=array('app_type'=>'common', 'action_auth' => array('upload' => 'read','reset_pwd'=>'read','password'=>'read','save'=>'read','resume'=>'read','resume_must'=>'read','addResume'=>'read','save_resume'=>'read','add_record'=>'read','save_record'=>'read','userlist'=>'read','user'=>'read','get_dept_child'=>'read','export_sign'=>'read'));
 	
 	function index(){	
 		$auth = $this -> config['auth'];
@@ -177,6 +177,19 @@ class ProfileAction extends CommonAction {
 			$this->assign('part',$part_time);
 			$this->display();
 		}	
+	}
+	
+	/**
+	 * 强制员工填写个人简历
+	 */
+	public function resume_must(){
+		$id = get_user_id();
+		$widget['uploader'] = true;
+		$widget['editor'] = true;
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		$this -> assign('id', 'jl_'.$id);
+		$this -> display();
 	}
 	/**
 	 * 添加简历页面
