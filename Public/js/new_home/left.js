@@ -304,15 +304,21 @@ var a=$('.left_a').height()
 	
 //以下为多选部门和岗位
 	
-//$(function(){
-//    var M1 = $('.panel-body')
-//    M1.on('click',function(e){e.stopPropagation();})
-//    .find('div').on('click',function(){
-//        M1.find('.content0').show();
-//        M1.find('.content00').show();
-//    });
-//    $(document).on('click',function(){M1.find('.content0').hide();M1.find('.content00').hide()})
-//})
+$(function(){
+    var M1 = $('#dept_name_multi').parent();
+    M1.on('click',function(e){e.stopPropagation();})
+    .find('div[class="ss"]').on('click',function(){
+        M1.find('.content0').show();
+    });
+    $(document).on('click',function(){M1.find('.content0').hide()})
+    
+    var M2 = $('#pos_name_multi').parent();
+    M2.on('click',function(e){e.stopPropagation();})
+    .find('div[class="ss"]').on('click',function(){
+        M2.find('.content00').show();
+    });
+    $(document).on('click',function(){M2.find('.content00').hide()})
+})
 //checkbox
 $("#qk").click(function(){
 	$('div[class="content1"] input[type="checkbox"]').prop({
@@ -323,6 +329,7 @@ $("#gb").click(function(){
 	$('.content0').hide();
 })
 $("#qd").click(function(){
+	
 	var s = '';
 	var data = '';
 	$('div[class="content1"] input[type="checkbox"]:checked').each(function(){
