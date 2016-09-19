@@ -585,7 +585,7 @@ class CommonAction extends Action {
 					$voList = $model -> where($map) -> order($order) -> limit($p -> firstRow . ',' . $p -> listRows) -> select();
 				}
 			}
-			//echo $model->getlastSql();
+			//echo $model->getlastSql();die;
 			$p -> parameter = $this -> _search();
 			//分页显示
 			$page = $p -> show();
