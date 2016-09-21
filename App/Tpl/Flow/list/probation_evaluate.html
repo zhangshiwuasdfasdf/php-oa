@@ -1,15 +1,6 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>array($flow_name['name']),'search'=>'N'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default "  id="adv_search">
-		<div class="panel-heading">
-			<div class="row">
-				<h4 class="col-xs-6"></h4>
-				<div class="col-xs-6 text-right">
-					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
-				</div>
-			</div>
-		</div>
 		<div class="panel-body">
 			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="">部门：</label>
@@ -67,10 +58,7 @@
 			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="eq_user_id">申请人：</label>
 				<div class="col-sm-8">
-					<select class="form-control" name="eq_user_id" >
-						<option value="">选择人员</option>
-						{:fill_option($user_name)};
-					</select>
+					<input  class="form-control" type="text" id="li_user_name" name="li_user_name" >
 				</div>
 			</div>
 			<div class="form-group col-sm-3">
@@ -83,15 +71,19 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-3">
+				<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+			</div>
 		</div>
 	</div>
 </form>
 <div class="operate panel panel-default">
-	<div class="panel-body">
+	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
+		<div class="pull-left">
+			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">{$flow_name['name']}</span>
+		</div>
 		<div class="pull-right">
 			<a class="btn btn-sm btn-primary" href="{:U('add','type='.$flow_name['id'])}" onclick="add()">新建</a>
-		</div>
-		<div class="pull-left">
 			<a class="btn btn-sm btn-primary" onclick="export_excel()">导出</a>
 		</div>
 	</div>

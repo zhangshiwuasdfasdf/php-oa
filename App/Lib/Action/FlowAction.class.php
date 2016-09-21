@@ -2915,6 +2915,9 @@ class FlowAction extends CommonAction {
 		if($_REQUEST['eq_user_id']){
 			$where['user_id'] = $_REQUEST['eq_user_id'];
 		}
+		if($_REQUEST['li_user_name']){
+			$where['user_name'] = array('like', '%'.$_REQUEST['li_user_name'].'%') ;
+		}
 		if($_REQUEST['be_create_time']){
 			$where['create_time'][] = array('egt',strtotime($_REQUEST['be_create_time']));
 		}

@@ -1,18 +1,8 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'到访客户池统计','search'=>'N'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default "  id="adv_search">
-		<div class="panel-heading">
-			<div class="row">
-				<h4 class="col-xs-6"></h4>
-				<div class="col-xs-6 text-right">
-					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
-					<a  class="btn btn-sm btn-primary" onclick="export_info();">导出</a>
-				</div>
-			</div>
-		</div>
 		<div class="panel-body">
-			<div class="form-group col-sm-3">
+			<div class="col-sm-3">
 				<label class="col-sm-4 control-label" for="be_create">月份：</label>
 				<div class="col-sm-8">
 					<div class="input-group" >
@@ -22,7 +12,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group col-sm-3">
+			<div class="col-sm-3">
 				<label class="col-sm-4 control-label" for="li_content">部门：</label>
 				<div class="col-sm-8">
 					<select class="form-control" name="eq_base">
@@ -31,9 +21,22 @@
 					</select>
 				</div>
 			</div>
+			<div class="col-sm-3">
+				<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+			</div>
 		</div>
 	</div>
 </form>
+<div class="operate panel panel-default">
+	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
+		<div class="pull-left">
+			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">到访客户池统计</span>
+		</div>
+		<div class="pull-right">
+			<a  class="btn btn-sm btn-primary" onclick="export_info();">导出</a>
+		</div>
+	</div>
+</div>
 <div style="width: 100%;height: auto;overflow: auto">
 				<ul class="right_ul">
 					<li class="title_li">

@@ -1,15 +1,6 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>$folder_name,'search'=>'N'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default "  id="adv_search">
-		<div class="panel-heading">
-			<div class="row">
-				<h4 class="col-xs-6"></h4>
-				<div class="col-xs-6 text-right">
-					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
-				</div>
-			</div>
-		</div>
 		<div class="panel-body">
 			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="li_name">文件名：</label>
@@ -39,12 +30,15 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-3">
+				<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+			</div>
 		</div>
 	</div>
 </form>
 <div class="space-8"></div>
 <div class="operate panel panel-default">
-	<div class="panel-body">
+	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
 		<div class="pull-left">
 			<ul class="nav nav-pills">
 				<li <eq name="fid" value="about_me">class="active"</eq>>

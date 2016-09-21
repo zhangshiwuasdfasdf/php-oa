@@ -1,16 +1,7 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>$folder_name,'search'=>'N'))}
 
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default "  id="adv_search">
-		<div class="panel-heading">
-			<div class="row">
-				<h4 class="col-xs-6"></h4>
-				<div class="col-xs-6 text-right">
-					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
-				</div>
-			</div>
-		</div>
 		<div class="panel-body">
 			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="eq_type">类型：</label>
@@ -40,7 +31,7 @@
 				</div>
 			</div>
 
-			<div class="form-group col-sm-3">
+			<div class="col-sm-3">
 				<label class="col-sm-4 control-label" for="be_create_time">发布时间：</label>
 				<div class="col-sm-8">
 					<div class="input-daterange input-group" >
@@ -50,13 +41,19 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-3">
+					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+				</div>
 		</div>
 	</div>
 </form>
 
 	<div class="operate panel panel-default">
-		<div class="panel-body">
-			<div class="pull-left">
+		<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
+		<div class="pull-left">
+			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">{$folder_name}</span>
+		</div>
+			<div class="pull-right">
 				<if condition="$auth['admin']">
 					<a class="btn btn-sm btn-danger" onclick="mark('del');">删除</a>
 					<div class="btn-group" id="move_to">
@@ -74,11 +71,8 @@
 						</li>
 					</ul>
 				</div>
-			</div>
 			<if condition="$auth['write']">
-			<div class="pull-right">
 				<a class="btn btn-sm btn-primary" onclick="add()">新建</a>
-			</div>
 			</if>
 		</div>
 	</div>

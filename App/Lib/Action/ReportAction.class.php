@@ -18,8 +18,8 @@ class ReportAction extends CommonAction {
 		if (!empty($_REQUEST['eq_addr'])) {
 			$where_delivery['addr'] = array('eq',$_REQUEST['eq_addr']);
 		}
-		if (!empty($_REQUEST['eq_user'])) {
-			$where_delivery['user_name'] = array('eq',$_REQUEST['eq_user']);
+		if (!empty($_REQUEST['li_user'])) {
+			$where_delivery['user_name'] = array('like', '%'.$_REQUEST['li_user'].'%');
 		}
 		$start_time_0 = $_REQUEST['be_create_time_0'];
 		$end_time_0 = $_REQUEST['en_create_time_0'];
@@ -1100,8 +1100,8 @@ class ReportAction extends CommonAction {
 		if (!empty($_POST['eq_addr'])) {
 			$where['addr'] = array('eq',$_POST['eq_addr']);
 		}
-		if (!empty($_POST['eq_user'])) {
-			$where['user_name'] = array('eq',$_POST['eq_user']);
+		if (!empty($_POST['li_user'])) {
+			$where['user_name'] = array('like', '%'.$_POST['li_user'].'%');
 		}
 		$start_time_0 = $_POST['be_create_time_0'];
 		$end_time_0 = $_POST['en_create_time_0'];
