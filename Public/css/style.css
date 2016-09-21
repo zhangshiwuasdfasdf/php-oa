@@ -614,6 +614,7 @@ ul.tree_menu i {
 .ul_table {
 	position: relative;
 	margin-bottom: 15px;
+	overflow:auto;
 }
 
 .ul_table ul {
@@ -621,6 +622,7 @@ ul.tree_menu i {
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	min-width:1216px;
 }
 
 .ul_table.border-bottom ul {
