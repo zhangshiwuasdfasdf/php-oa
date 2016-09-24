@@ -1635,8 +1635,8 @@ class FlowAction extends CommonAction {
 				$flow = checkFlowNotMe(array($parentid,getParentid($parentid),getHRDeputyGeneralManagerId($uid)),$uid);
 				$confirm_text = getConfirmTextNotMe(array('getParentid','getParentid','getHRDeputyGeneralManagerId'),$array['flow_type_id'],$uid);
 			}else{
-				$flow = checkFlowNotMe(array($dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)),$uid);
-				$confirm_text = getConfirmTextNotMe(array('getDeptManagerId','getHRDeputyGeneralManagerId','getGeneralManagerId'),$array['flow_type_id'],$uid);
+				$flow = checkFlowNotMe(array($parentid,$dept_uid,getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)),$uid);
+				$confirm_text = getConfirmTextNotMe(array('getParentid','getDeptManagerId','getHRDeputyGeneralManagerId','getGeneralManagerId'),$array['flow_type_id'],$uid);
 				
 			}
 		}

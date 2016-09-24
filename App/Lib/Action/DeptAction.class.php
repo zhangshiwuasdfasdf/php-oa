@@ -16,7 +16,6 @@ class DeptAction extends CommonAction {
 	protected $config = array('app_type' => 'master', 'action_auth' => array('index' => 'admin', 'winpop4' => 'read'));
 
 	public function index(){
-		
 		$node = M("Dept");
 		$menu = array();
 		$menu = $node -> where($map) -> field('id,pid,name,is_del') -> order('sort asc') -> select();
