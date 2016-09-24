@@ -3,30 +3,78 @@
     <input data-date-format="yyyy-mm-dd" id="write_time" name="write_time" type="text" class="form-control input-date in1" check="require" msg="请输入填表日期">
     <span class="sp1">填表日期：</span>
 </div> -->
-<table width="100%" border="1" cellspacing="0" cellpadding="0" class="ma1">
+<div style="border-top: solid 1px #000;border-left: solid 1px #000;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="ma1">
   <tr>
-    <td width="18%" height="33" align="center" bgcolor="#fff">申请人</td>
-    <td width="16%" align="center" bgcolor="#fff"><input id="user_name" name="user_name" type="text" value="{$user_info.name}" class="in2" check="require" msg="请输入申请人" readonly></td>
-    <td width="18%" colspan="3" align="center" bgcolor="#fff">所属部门</td>
-    <td width="16%" align="center" bgcolor="#fff"><input id="dept_name" name="dept_name" type="text" value="{$user_info.dept_name}" class="in2" check="require" msg="请输入所属部门" readonly="readonly" ></td>
-    <td width="16%" colspan="2" align="center" bgcolor="#fff">职务</td>
-    <td width="16%" align="center" bgcolor="#fff"><input id="duty" name="duty" type="text" value="{$user_info.duty}" class="in2" readonly></td>
+    <td width="18%" height="33" align="center">
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px;">申请人</div>
+    </td>
+    <td width="16%" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px">
+        <input style="height:27px;background:#ccc;" id="user_name" name="user_name" type="text" value="{$user_info.name}" class="in2" check="require" msg="请输入申请人" readonly="readonly" >
+      </div>
+    </td>
+    <td width="18%" colspan="3" align="center">
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px;">所属部门</div>
+    </td>
+    <td width="16%" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px">
+        <input style="height:27px;background:#ccc;" id="dept_name" name="dept_name" type="text" value="{$user_info.dept_name}" class="in2" check="require" msg="请输入所属部门" readonly="readonly" >
+      </div>
+    </td>
+    <td width="16%" colspan="2" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px;">职务</div>
+    </td>
+    <td width="16%" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px">
+        <input style="height:27px;background:#ccc;" id="duty" name="duty" type="text" value="{$user_info.duty}" class="in2" readonly>
+      </div>
+    </td>
   </tr>
   <tr>
-    <td width="18%" height="33" align="center" bgcolor="#fff">证明人</td>
-    <td width="16%" align="center" bgcolor="#fff"><input id="approve" name="approve" type="text" value="" class="in2"></td>
-    <td width="18%" colspan="3" align="center" bgcolor="#fff">离岗期间代理人</td>
-    <td width="16%" align="center" bgcolor="#fff"><input id="agent" name="agent" type="text" class="in2" value=""></td>
-    <td width="16%" colspan="2" align="center" bgcolor="#fff">联系方式</td>
-    <td width="16%" align="center" bgcolor="#fff"><input id="tel" name="tel" type="text" value="{$user_info.mobile_tel}" class="in2" check="require" msg="请输入联系方式"></td>
+    <td width="18%" height="33" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px;">证明人</div>
+    </td>
+    <td width="16%" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px">
+        <input style="height:27px;" id="approve" name="approve" type="text" value="" class="in2">
+      </div>
+    </td>
+    <td width="18%" colspan="3" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px;">离岗期间代理人</div>
+    </td>
+    <td width="16%" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px">
+        <input style="height:27px;" id="agent" name="agent" type="text" class="in2" value="">
+      </div>
+    </td>
+    <td width="16%" colspan="2" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px;">联系方式</div>
+    </td>
+    <td width="16%" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:33px;line-height:33px">
+        <input style="height:27px;" id="tel" name="tel" type="text" value="{$user_info.mobile_tel}" class="in2" check="require" msg="请输入联系方式">
+      </div>
+    </td>
+  </tr>
+  <!-- <tr>
+    <td width="18%" height="90" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:198px;line-height:198px;">事由</div>
+    </td>
+    <td height="90" colspan="8" align="left" >
+      <textarea id="content" name="content" rows="4" class="editor ma5" check="require" msg="请输入事由"></textarea>
+    </td>
+  </tr> -->
+  <tr style="border-right: solid 1px #000;">
+    <td width="18%" height="90" align="center" style="border-right: solid 1px #000;" >事由</td>
+    <td height="90" colspan="8" align="left"><textarea id="content" name="content" class="editor ma5" style="width:97%; height:70px; padding-left:5px;padding-top:5px;" rows="4" check="require" msg="请输入事由"></textarea></td>
   </tr>
   <tr>
-    <td width="18%" height="90" align="center" bgcolor="#fff">事由</td>
-    <td height="90" colspan="8" align="left" bgcolor="#fff"><textarea id="content" name="content" rows="4" class="editor ma5" check="require" msg="请输入事由"></textarea></td>
-  </tr>
-  <tr>
-    <td height="90" align="center" bgcolor="#fff">类别</td>
-    <td height="90" colspan="8" align="left" bgcolor="#fff">
+    <td height="90" align="center" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000; border-top: solid 1px #000; height:90px;line-height:90px;">类别</div>
+    </td>
+    <td height="90" colspan="8" align="left" >
+      <div style="border-right: solid 1px #000; border-top: solid 1px #000; border-bottom: solid 1px #000;height:90px;line-height:90px;">
     	<ul class="ma7">
         	<li><input type="radio" name="style" value="年假" onclick="$('#available_hour').attr('style','display:none');$('#available_year').attr('style','display:inline');$('#start_time').val('');$('#end_time').val('');" <if condition="($year lt 1)">disabled</if>>年假</li>
             <li><input type="radio" name="style" value="事假" checked="checked" onclick="$('#available_hour').attr('style','display:none');$('#available_year').attr('style','display:none');">事假</li>
@@ -42,34 +90,50 @@
             <li id="available_year" style="display:none">（截止当前，您的可用年假时间为{$user_info.available_year}天）</li>
             <li><input id="available_year_save" type="hidden" value="{$user_info.available_year}"></li>
         </ul>
-        
+       </div> 
   	</td>
   </tr>
+  <!-- <tr>
+    <td width="18%" height="90" align="center" ><div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:90px;line-height:90px;">时间</div></td>
+    <td height="90" colspan="8" align="left" >
+      <div style="border-right: solid 1px #000; border-bottom: solid 1px #000;height:90px;line-height:90px;">
+      <div class="ma6">自
+        <input onchange="cal($('#start_time').val(),$('#end_time').val(),'leave')" data-date-format="yyyy-mm-dd" type="text" id="start_time" name="start_time" class="form-control input-date-time-h" check="require" msg="请输入开始时间" >至
+        <input onchange="cal($('#start_time').val(),$('#end_time').val(),'leave')" data-date-format="yyyy-mm-dd" type="text" id="end_time" name="end_time" class="form-control input-date-time-h" check="require" msg="请输入结束时间">止，共计
+        <input id="day_num" name="day_num" type="number" min="0" class="in4" >天（工作日）
+        <input id="hour_num" name="hour_num" type="number" min="0" class="in4" >时
+        <button onclick="showflow();return false;">查看审批流程</button>
+        <input id="confirm_wrap" style="width:250px;" disabled>
+      </div>
+    </div>
+    </td>
+  </tr> -->
   <tr>
-    <td width="18%" height="90" align="center" bgcolor="#fff">时间</td>
-    <td height="90" colspan="8" align="left" bgcolor="#fff">
-    	<div class="ma6">自
-    		<input onchange="cal($('#start_time').val(),$('#end_time').val(),'leave')" data-date-format="yyyy-mm-dd" type="text" id="start_time" name="start_time" class="form-control input-date-time-h" check="require" msg="请输入开始时间" >至
-    		<input onchange="cal($('#start_time').val(),$('#end_time').val(),'leave')" data-date-format="yyyy-mm-dd" type="text" id="end_time" name="end_time" class="form-control input-date-time-h" check="require" msg="请输入结束时间">止，共计
-    		<input id="day_num" name="day_num" type="number" min="0" class="in4" >天（工作日）
-    		<input id="hour_num" name="hour_num" type="number" min="0" class="in4" >时
-    		<button onclick="showflow();return false;">查看审批流程</button>
-    		<input id="confirm_wrap" style="width:250px;" disabled>
-    	</div>
+    <td width="18%" height="90" align="center" ><div style="border-right: solid 1px #000;height:90px;line-height:90px;">时间</div></td>
+    <td height="90" colspan="8" align="left" style="border-right: solid 1px #000;">
+      <div class="ma6">自
+        <input onchange="cal($('#start_time').val(),$('#end_time').val(),'leave')" data-date-format="yyyy-mm-dd" type="text" id="start_time" name="start_time" class="form-control input-date-time-h" check="require" msg="请输入开始时间" >至
+        <input onchange="cal($('#start_time').val(),$('#end_time').val(),'leave')" data-date-format="yyyy-mm-dd" type="text" id="end_time" name="end_time" class="form-control input-date-time-h" check="require" msg="请输入结束时间">止，共计
+        <input id="day_num" name="day_num" type="number" min="0" class="in4" >天（工作日）
+        <input id="hour_num" name="hour_num" type="number" min="0" class="in4" >时
+        <button onclick="showflow();return false;">查看审批流程</button>
+        <input id="confirm_wrap" style="width:250px;" disabled>
+      </div>
     </td>
   </tr>
   <!-- <tr>
-    <td width="18%" height="90" align="center" bgcolor="#fff">部门领导/总监审批</td>
-    <td height="90" colspan="3" align="center" bgcolor="#fff"><span></span></td>
-    <td height="90" colspan="3" align="center" bgcolor="#fff">行政人事部</td>
-    <td height="90" colspan="2" align="center" bgcolor="#fff"><span></span></td>
+    <td width="18%" height="90" align="center" >部门领导/总监审批</td>
+    <td height="90" colspan="3" align="center" ><span></span></td>
+    <td height="90" colspan="3" align="center" >行政人事部</td>
+    <td height="90" colspan="2" align="center" ><span></span></td>
   </tr>
   <tr>
-    <td width="18%" height="90" align="center" bgcolor="#fff">总经理审批</td>
-    <td height="90" colspan="8" align="left" bgcolor="#fff"><span></span></td>
+    <td width="18%" height="90" align="center" >总经理审批</td>
+    <td height="90" colspan="8" align="left" ><span></span></td>
   </tr> -->
   {$confirm_text}
 </table>
+</div>
 <div class="ma3">
 	<strong>备注：</strong>所有请假/调休单须提前申请,或事后1个工作日内补填写
   <div class="ma4">3天以内（含3天）由部门领导审批，3天以上报行政副总审批，7天以上（含7天）呈总经理审批</div>

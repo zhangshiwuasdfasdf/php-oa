@@ -1357,6 +1357,7 @@ class FlowAction extends CommonAction {
 		$flow_arr['add'] = '0';
 		
 		$flow_message = $this->_getFlowMessageByTypeName($flow_type['name'],$flow_arr);
+		
 		$this -> assign("confirm_text", $flow_message['confirm_text']);
 		// 		echo $flow_message['confirm_text'];
 		
@@ -2546,6 +2547,18 @@ class FlowAction extends CommonAction {
 						}elseif (getModelName($flow_id)=='FlowAttendance' || getModelName($flow_id)=='FlowOutside'){
 							$this -> addAttendance($flow_id );
 						}
+						//当最后一个审批人通过以后发送一条信息给提交人
+						$flow = M('flow') -> find($flow_id);
+						$info['sender_id'] = 1;
+						$info['sender_name'] = '管理员';
+						$info['receiver_id'] = $flow['user_id'];
+						$info['receiver_name'] = $flow['user_name'];
+						$info['owner_id'] = $flow['user_id'];
+						$flow_name = $flow['name'];
+						$info['content'] = $flow_name."已归档";
+						$info['create_time']=time();
+						M('Message') -> add($info);
+						$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$flow['user_id']);
 					}
 					
 					$this -> assign('jumpUrl', U('flow/folder?fid=confirm'));
@@ -2621,7 +2634,20 @@ class FlowAction extends CommonAction {
 					D("Flow") -> where("id=$flow_id") -> setField('step', 0);
 
 					$user_id = M("Flow") -> where("id=$flow_id") -> getField('user_id');
+						//
+						//dump($flow_id);die;
+						$flow = M('flow') -> find($flow_id);
+						$info['sender_id'] = 1;
+						$info['sender_name'] = '管理员';
+						$info['receiver_id'] = $flow['user_id'];
+						$info['receiver_name'] = $flow['user_name'];
+						$info['owner_id'] = $flow['user_id'];
+						$flow_name = $flow['name'];
+						$info['content'] = $flow_name."已驳回";
+						$info['create_time']=time();
+						M('Message') -> add($info);
 					$this -> _pushReturn($new, "您有一个流程被否决", 1, $user_id);
+
 					
 					if(getModelName($flow_id)=='FlowLeave'){//请假/调休单
 						$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();

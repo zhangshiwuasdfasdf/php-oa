@@ -98,7 +98,7 @@ class MessageAction extends CommonAction {
 		$data['create_time']=time();
 		
 		$model = D('Message');
-		
+		//xxx|3;bbb|4;
 		$arr_recever = array_filter(explode(";",$_POST['to']));
 		foreach ($arr_recever as $val) {
 			$tmp=explode("|",$val);
