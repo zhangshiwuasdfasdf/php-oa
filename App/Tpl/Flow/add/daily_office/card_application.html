@@ -1,41 +1,53 @@
 <input type="hidden" id="name" name="name" value="{$flow_type.name}">
 <input type="hidden" id="dept_id" name="dept_id" value="{$user_info.dept_id}">
 <style>
-	input{ border:none; outline:none;}
-	textarea{ border:none; outline:none; resize:none;}
+  input{ border:none; outline:none;}
+  textarea{ border:none; outline:none; resize:none;}
+  table{ margin:auto;}
+  .div1{ width:100%; height:39px; line-height:36px; border-top:solid 1px #000; border-left:solid 1px #000;}
+  .div4{ border-right:solid 1px #000;width:100%; height:39px; line-height:36px; border-top:solid 1px #000;border-left:solid 1px #000;}
+  .div2{ width:100%; height:53px; line-height:50px; border-top:solid 1px #000; border-left:solid 1px #000;}
+  .div3{ border-right:solid 1px #000;width:100%; height:53px; line-height:50px; border-top:solid 1px #000;border-left:solid 1px #000;}
+  .div5{ width:100%; height:54px; line-height:50px; border-top:solid 1px #000; border-left:solid 1px #000; border-bottom:solid 1px #000;}
+  .div6{ border-right:solid 1px #000;width:100%; height:54px; line-height:50px; border-top:solid 1px #000;border-left:solid 1px #000; border-bottom:solid 1px #000;} 
+  .div7{ border-right:solid 1px #000;height:53px;  border-top:solid 1px #000;border-left:solid 0px #000; }
+  .button_clear {filter:chroma(color=#000000);}
 </style>
-<table width="100%" border="1" cellspacing="0" cellpadding="0">
+
+<table width="98%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td width="9%" height="36" align="center">姓名</td>
-    <td width="16%" height="36"><input id="user_name" name="user_name" value="{$user_info.name}" style="width:97%; height:36px; text-align:center;" type="text" check="require" msg="请输入姓名" readonly/></td>
-    <td width="10%" height="36" align="center">部门</td>
-    <td width="16%" height="36"><input id="dept_name" name="dept_name" value="{$user_info.dept_name}" style="width:97%; height:36px;text-align:center;" type="text" check="require" msg="请输入部门" disabled/></td>
-    <td width="10%" height="36" align="center">职务</td>
-    <td width="15%" height="36"><input id="duty" name="duty" value="{$user_info.duty}" style="width:97%; height:36px;text-align:center;" type="text" readonly/></td>
-    <td width="9%" height="36" align="center">申请日期</td>
-    <td width="15%" height="36"><input id="apply_date" name="apply_date" value="{$time|toDate='Y-m-d'}"  data-date-format="yyyy-mm-dd" style="text-align:center" type="text" class="form-control input-date in2" check="require" msg="请输入申请日期"></td>
+    <td width="9%" height="36" align="center"><div class="div1">姓名</div></td>
+    <td width="16%" height="36"><div class="div1"><input id="user_name" name="user_name" value="{$user_info.name}" style="width:97%; height:36px; text-align:center;" type="text" check="require" msg="请输入姓名" readonly/></div></td>
+    <td width="10%" height="36" align="center"><div class="div1">部门</div></td>
+    <td width="16%" height="36"><div class="div1"><input id="dept_name" name="dept_name" value="{$user_info.dept_name}" style="width:97%; height:36px;text-align:center;" type="text" check="require" msg="请输入部门" disabled/></div></td>
+    <td width="10%" height="36" align="center"><div class="div1">职务</div></td>
+    <td width="15%" height="36"><div class="div1"><input id="duty" name="duty" value="{$user_info.duty}" style="width:97%; height:36px;text-align:center;" type="text" readonly/></div></td>
+    <td width="9%" height="36" align="center"><div class="div1">申请日期</div></td>
+    <td width="15%" height="36"><div class="div4"><input id="apply_date" name="apply_date" value="{$time|toDate='Y-m-d'}"  data-date-format="yyyy-mm-dd" style="text-align:center" type="text" class="form-control input-date in2" check="require" msg="请输入申请日期"></div></td>
   </tr>
   <tr>
-    <td height="36" align="center">邮箱</td>
-    <td height="36"><input id="email" name="email" value="{$user_info.email}" style="width:97%; height:36px;text-align:center;" type="text"/></td>
-    <td height="36" align="center">QQ</td>
-    <td height="36"><input id="QQ" name="QQ" style="width:97%; height:36px;text-align:center;" type="text"/></td>
-    <td height="36" align="center">电话</td>
-    <td height="36"><input id="office_tel" name="office_tel" value="{$user_info.office_tel}" style="width:97%; height:36px;text-align:center;" type="text"/></td>
-    <td height="36" align="center">手机号码</td>
-    <td height="36"><input id="mobile_tel" name="mobile_tel" value="{$user_info.mobile_tel}" style="width:97%; height:36px;text-align:center;" type="text" check="require" msg="请输入手机号码"/></td>
+    <td height="36" align="center"><div class="div1">邮箱</div></td>
+    <td height="36"><div class="div1"><input id="email" name="email" value="{$user_info.email}" style="width:97%; height:36px;text-align:center;" type="text"/></div></td>
+    <td height="36" align="center"><div class="div1">QQ</div></td>
+    <td height="36"><div class="div1"><input id="QQ" name="QQ" style="width:97%; height:36px;text-align:center;" type="text"/></div></td>
+    <td height="36" align="center"><div class="div1">电话</div></td>
+    <td height="36"><div class="div1"><input id="office_tel" name="office_tel" value="{$user_info.office_tel}" style="width:97%; height:36px;text-align:center;" type="text"/></div></td>
+    <td height="36" align="center"><div class="div1">手机号码</div></td>
+    <td height="36"><div class="div4"><input id="mobile_tel" name="mobile_tel" value="{$user_info.mobile_tel}" style="width:97%; height:36px;text-align:center;" type="text" check="require" msg="请输入手机号码"/></div></td>
   </tr>
   <tr>
     <!-- <td height="50" align="center">部门领导审批</td>
     <td height="50" colspan="2"><input style="width:97%; height:50px; padding-left:20px;" type="text" disabled/></td> -->
   	{$confirm_text}
   	<td height="50" colspan="5">
-  		<button onclick="showflow();return false;">查看审批流程</button>
+      <div class="div7" style="padding-top:12px">
+  		<button class="button_clear" onclick="showflow();return false;">查看审批流程</button>
 		<input id="confirm_wrap" style="width:250px;" disabled>
+  </div>
   	</td>
   </tr>
   <tr>
-    <td height="50" align="center">备注</td>
-    <td height="50" colspan="7"><input id="mark" name="mark" style="width:97%; height:50px; padding-left:20px;" type="text"/></td>
+    <td height="50" align="center"><div class="div5">备注</div></td>
+    <td height="50" colspan="7"><div class="div6"><input id="mark" name="mark" style="width:97%; height:50px; padding-left:20px;" type="text"/></div></td>
   </tr>
 </table>

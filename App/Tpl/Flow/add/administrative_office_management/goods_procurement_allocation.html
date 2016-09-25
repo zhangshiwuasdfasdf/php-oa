@@ -1,23 +1,26 @@
 <div class="operate panel panel-default">
-		<div class="panel-body">
-			<div class="pull-left">
-				<div class="btn-group">
-					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 管理 <b class="fa fa-caret-down"></b></a>
-					<ul class="dropdown-menu">
-						<li>
-							<a onclick="import_goods_procurement_allocation();">导入</a>
-						</li>
-						<li>
-							<a onclick="export_goods_procurement_allocation();">导出模板</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="panel-body">
+      <div class="pull-left">
+        <div class="btn-group">
+          <a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#"> 管理 <b class="fa fa-caret-down"></b></a>
+          <ul class="dropdown-menu">
+            <li>
+              <a onclick="import_goods_procurement_allocation();">导入</a>
+            </li>
+            <li>
+              <a onclick="export_goods_procurement_allocation();">导出模板</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 <input type="hidden" id="name" name="name" value="{$flow_type.name}">
 <input type="hidden" id="dept_id" name="dept_id" value="{$user_info.dept_id}">
 <input type="hidden" id="row_num" value="1">
+<style>
+#buttom1 {border-bottom:solid 0px #000;}
+</style>
 <table width="100%" border="1" cellspacing="0" cellpadding="0" >
   <tr>
     <td colspan="13">
@@ -40,36 +43,35 @@
     <td width="8%" height="36">支付方式</td>
     <td width="7%" height="36">物品到位时间</td>
     <td width="5%" height="36" align="center" style="font-weight: bold">
-    	<a onclick="add_item(3);">+</a>
-	</td>
-	<td width="5%" height="36" align="center" style="font-weight: bold">
-    	<a onclick="del_item();">-</a>
-	</td>
+      <a onclick="add_item(1);">+</a>
+  </td>
+  <td width="5%" height="36" align="center" style="font-weight: bold">
+      <a onclick="del_item();">-</a>
   </tr>
   <tr id="item" name="item">
-    	<td width="9%" height="36"><input name="goods_name[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"  check="require" msg="请输入物品名称"/></td>
-    	<td width="7%" height="36"><input name="types[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"  check="require" msg="请输入型号/规格"/></td>
-    	<td width="9%" height="36"><input name="usage[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"  check="require" msg="请输入用途"/></td>
-    	<td width="9%" height="36"><input name="use_dept[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"  check="require" msg="请输入使用岗位"/></td>
-    	<td width="7%" height="36"><input name="buy_num[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
-    	<td width="7%" height="36"><input name="add_num[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
-    	<td width="7%" height="36"><input name="recovery_num[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
-    	<td width="7%" height="36"><input name="is_allocation[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
-    	<td width="7%" height="36"><input name="price[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
-    	<td width="7%" height="36"><input name="amount[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
-    	<td width="9%" height="36"><input name="add_num_calculation[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
-    	<td width="8%" height="36"><input name="pay_type[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
-    	<td width="7%" height="36"><input name="in_place_time[]" data-date-format="yyyy-mm-dd" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" class="form-control input-date"/></td>
+      <td width="9%" height="36"><input name="goods_name[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"  check="require" msg="请输入物品名称"/></td>
+      <td width="7%" height="36"><input name="types[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"  check="require" msg="请输入型号/规格"/></td>
+      <td width="9%" height="36"><input name="usage[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"  check="require" msg="请输入用途"/></td>
+      <td width="9%" height="36"><input name="use_dept[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"  check="require" msg="请输入使用岗位"/></td>
+      <td width="7%" height="36"><input name="buy_num[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
+      <td width="7%" height="36"><input name="add_num[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
+      <td width="7%" height="36"><input name="recovery_num[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
+      <td width="7%" height="36"><input name="is_allocation[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
+      <td width="7%" height="36"><input name="price[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
+      <td width="7%" height="36"><input name="amount[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
+      <td width="9%" height="36"><input name="add_num_calculation[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
+      <td width="8%" height="36"><input name="pay_type[]" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text"/></td>
+      <td width="7%" height="36"><input name="in_place_time[]" data-date-format="yyyy-mm-dd" style="outline:none; border:none; width:100%; height:36px; text-align:center;" type="text" class="form-control input-date"/></td>
   </tr>
   
-  <tr id="buttom1">
-    <td height="36" colspan="1">合计总金额：</td>
+  <tr id="buttom1" >
+    <td height="36" colspan="1" >合计总金额：</td>
     <td height="36" colspan="1">
-    	<input id="sum" name="sum"/>
+      <input id="sum" name="sum"/>
     </td>
     <td height="36" colspan="4">
-	    <button onclick="showflow();return false;">查看审批流程</button>
-	    <input id="confirm_wrap" style="width:250px;" disabled>
+      <button onclick="showflow();return false;">查看审批流程</button>
+      <input id="confirm_wrap" style="width:250px;" disabled>
     </td>
   </tr>
   <!-- <tr>
