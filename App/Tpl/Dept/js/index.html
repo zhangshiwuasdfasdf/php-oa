@@ -45,14 +45,14 @@
 
 	$(document).ready(function(){
 		set_val('eq_is_del', "{$eq_is_del}");
-		$(".sub_left_menu .tree_menu a").click(function() {
-			$(".sub_left_menu .tree_menu a.active").removeClass("active");
-			$(this).addClass("active");
+		$(".sub_left_menu .submenu a").click(function() {
+			//$(".sub_left_menu .tree_menu a.active").removeClass("active");
+			//$(this).addClass("active");
 			sendAjax("{:U('read')}", "id=" + $(this).attr("node"), function(data) {
 				showdata(data);
-				console.log(JSON.stringify(data));
+				//console.log(JSON.stringify(data));
 			});
-			return false;
+			//return false;
 		});
 	}); 
 </script>
