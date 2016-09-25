@@ -2009,14 +2009,23 @@ class FlowAction extends CommonAction {
 		$where['_string'] = "result is not null";
 		$flow_log = $model -> where($where) -> order("id") -> select();
 		$this -> assign("flow_log", $flow_log);
-		
 		$this -> assign("isZhaopinDirector", isZhaopinDirector(get_user_id()));
 // 		var_dump(isZhaopinDirector(get_user_id()));
 // 		print_r($flow_log);
 // 		print_r($vo);
 // 		print_r($flow);
-// 		print_r($flow_log_all);
-
+// 		dump($flow_log_all);
+// 		die;
+// 		echo $vo['confirm'];
+		$flow_step_user_id = array();
+		foreach (array_filter(explode('|', $vo['confirm'])) as $v){
+			$u = M('User')->where(array('emp_no'=>$v))->find();
+			$flow_step_user_id[] = $u['id'];
+		}
+// 		dump($flow_step_user_id);
+// 		die;
+		$this->_add_flow_index_log($flow_step_user_id,$flow_log);
+		
 		$where = array();
 		$where['flow_id'] = $id;
 		$where['emp_no'] = get_emp_no();
