@@ -265,7 +265,7 @@ $('#left_a9').click(function(){
 })
 $(".menu_li16_a").click(function(){
 	$(".menu_li16_a1,.menu_li16_a2").removeClass("hover_bg16")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_1,.menu_ul17_2").hide()
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_1,.menu_ul17_2,.menu_ul17_3").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li16_a").toggleClass("hover_bg16")
 	$(".menu_ul17_0").slideToggle()	

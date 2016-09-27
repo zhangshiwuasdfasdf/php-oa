@@ -20,6 +20,7 @@ class DocFolderAction extends SystemFolderAction {
 	}
 
 	function index() {
+		$this -> assign("bread", "<li>知识中心</li><li>文档库管理</li>");
 		$this -> assign("folder_name", "文档库管理");
 		$this ->_index();
 	}

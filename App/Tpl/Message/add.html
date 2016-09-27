@@ -1,5 +1,4 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'写消息','search'=>'N'))}
 <div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-left">
@@ -47,3 +46,9 @@
 	</div>
 </form>
 <link rel="stylesheet" href="__PUBLIC__/css/messages.css" />
+<script type="text/javascript">
+$(function() {
+	var html = "<li>个人中心</li><li><a href='{:U("message/index")}'>消息</a></li><li>写消息</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

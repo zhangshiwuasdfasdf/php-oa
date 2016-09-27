@@ -1,5 +1,4 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'新建资产加减','search'=>'N'))}
 
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data"  class="well form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
@@ -45,3 +44,9 @@
 		<input  class="btn btn-sm btn-primary" type="button" value="取消" onclick="go_return_url();">
 	</div>
 </form>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>行政管理</li><li>资产管理</li><li><a href='{:U("Goods/change")}'>资产加减</a></li><li>新建</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

@@ -20,7 +20,7 @@ class IndexAction extends CommonAction {
 		$id = get_user_id();
 		$resume = M("User_resume") ->where("user_id=$id") -> find();
 		if(empty($resume)){
-			if($id != '2' && $id != '3' && $id != '4' && $id != '5' && $id != '6' && $id != '7' && $id != '116' && $id != '200' && $id != '201' && $id != '50'){
+			if($id != '2' && $id != '3' && $id != '4' && $id != '5' && $id != '6' && $id != '7' && $id != '116' && $id != '200' && $id != '201' && $id != '50' && $id != '202'){
 				$this -> redirect("profile/resume_must");die;	
 			}
 		}

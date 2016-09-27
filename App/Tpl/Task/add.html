@@ -1,5 +1,4 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'发布任务','search'=>'N'))}
 
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data" class="well form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
@@ -56,3 +55,9 @@
 		<input class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
 	</div>
 </form>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>个人中心</li><li><a href='{:U("Task/index")}'>任务</a></li><li>发布任务</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

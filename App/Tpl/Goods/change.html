@@ -69,16 +69,16 @@
 					<li class="tbody">
 						
 						<div class="pull-left">
-							<span class="col-10 ">{$vo.goods_id}</span>
+							<span class="col-10">{$vo.goods_id}</span>
 						</div>
 					<div class="pull-right">
-						<span class="col-10  ">{$vo.cate_name}</span>
-						<span class="col-10  ">{$vo.user_name}</span>
-						<span class="col-6  ">{$vo.num}</span>
-						<span class="col-6 ">{$vo.mark}</span>
+						<span class="col-10">{$vo.cate_name}</span>
+						<span class="col-10">{$vo.user_name}</span>
+						<span class="col-6">{$vo.num}</span>
+						<span class="col-6">{$vo.mark}</span>
 					</div>
 						<div class="auto autocut">
-							<a href="{:U('read','id='.$vo['goods_id'])}"> {$vo.goods_name}
+							<a target="_blank" href="{:U('read','id='.$vo['goods_id'])}"> {$vo.goods_name}
 							<eq name="vo.goods_name|strlen" value="0">
 								无名称
 							</eq> </a>
@@ -92,4 +92,9 @@
 		</empty>
 	</ul>
 </div>
-
+<script type="text/javascript">
+$(function() {
+	var html = "<li>行政管理</li><li>资产管理</li><li>资产加减</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

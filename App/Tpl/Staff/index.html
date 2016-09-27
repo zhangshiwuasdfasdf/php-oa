@@ -28,16 +28,15 @@
 				<volist name="list" id="data">
 					<li class="tbody" email="{$data.email}" duty="{$data.duty}" name="{$data.name}" office_tel="{$data.office_tel}" mobile_tel="{$data.mobile_tel}" >
 					<div class="col-sm-8">
-						<span style="width:10%;" class="text-center id">{$data.id}</span>
-						<span style="width:15%;" class="text-center emp_no">{$data.emp_no}</span>
-						<span style="width:15%;" class="text-center name">{$data.name}</span>
-						<span style="width:10%;" class="text-center sex">{$data.sex|showsex}</span>
-						<!-- <span style="width:20%" class="text-center position">{$data.position_name}</span> -->
-						<span style="width:30%" class="text-center rank">{$data.duty}</span>
+						<span style="width:10%;" class="text-center id">{$data.id}&nbsp;</span>
+						<span style="width:15%;" class="text-center emp_no">{$data.emp_no}&nbsp;</span>
+						<span style="width:15%;" class="text-center name">{$data.name}&nbsp;</span>
+						<span style="width:10%;" class="text-center sex">{$data.sex|showsex}&nbsp;</span>
+						<span style="width:30%" class="text-center rank">{$data.duty}&nbsp;</span>
 					</div>
 					<div class="col-sm-4">
-						<span style="width:50%;" class="email">{$data.email}</span>
-						<span style="width:50%;text-align: center;" class="mobile_tel">{$data.mobile_tel}</span>
+						<span style="width:50%;" class="email">{$data.email}&nbsp;</span>
+						<span style="width:50%;text-align: center;float: right;" class="mobile_tel">{$data.mobile_tel}&nbsp;</span>
 					</div>
 				</li>
 				</volist>
@@ -84,13 +83,17 @@
 			<span style="width:20%;" class="text-center emp_no"></span>
 			<span style="width:20%;" class="text-center name"></span>
 			<span style="width:15%;" class="text-center sex"></span>
-			<!-- <span style="width:20%;height:15px;" class="text-center position"></span> -->
 			<span style="width:30%;" class="text-center rank"></span>
 		</div>
 		<div class="col-sm-4">
-			<span style="width:50%;" class="email text-center"></span>
+			<span style="width:50%;" class="email text-center">&nbsp;</span>
 			<span style="width:50%;" class="mobile_tel text-center"></span>
 		</div>
 	</li>
 </div>
-
+<script type="text/javascript">
+	$(function() {
+		var html = "<li>档案中心</li><li>通讯录</li>";
+		$("#breadcrumbs ul").append(html);
+	});
+</script>

@@ -3,7 +3,6 @@
 .form-control-static{line-height: 8;font-weight: bold;}
 .ul_table .rr .tbody{background-color:#f1f5fa;}
 </style>
-{:W('PageHeader',array('name'=>'修改工作周报','search'=>'N'))}
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
 	<input type="hidden" id="id" name="id" value="{$id}">
@@ -219,3 +218,9 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li><a href='{:U("weekly_report/index")}'>我的周报</a></li><li>编辑</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

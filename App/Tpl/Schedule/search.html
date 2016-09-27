@@ -1,5 +1,4 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'日程搜索','search'=>'M'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default  display-none"  id="adv_search">
 		<div class="panel-heading">
@@ -83,3 +82,9 @@
 			</ul>
 		</empty>
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>个人中心</li><li><a href='{:U("Schedule/index")}'>日程</a></li><li>搜索日程</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

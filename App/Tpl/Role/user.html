@@ -1,7 +1,10 @@
 <layout name='Layout/ace_layout' />
 {:W('PageHeader',array('name'=>'权限分配','search'=>'S'))}
 <div class="operate panel panel-default">
-	<div class="panel-body">
+	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
+		<div class="pull-left">
+			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">权限分配</span>
+		</div>
 		<div class="pull-right">
 			<a onclick="save()" class="btn btn-sm btn-primary">保存</a>
 		</div>
@@ -104,4 +107,9 @@
 		</div>
 	</form>
 </div>
-
+<script type="text/javascript">
+$(function() {
+	var html = "<li>系统管理</li><li>权限管理</li><li>权限分配</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

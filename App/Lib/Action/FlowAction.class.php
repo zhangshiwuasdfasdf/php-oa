@@ -1302,6 +1302,7 @@ class FlowAction extends CommonAction {
 		$model = M("FlowType");
 		$flow_type = $model -> find($type_id);
 		$this -> assign("flow_type", $flow_type);
+		$this -> assign("type_id", $type_id);
 		
 		$model_flow_field = D("FlowField");
 		$field_list = $model_flow_field -> get_field_list($type_id);
@@ -1357,7 +1358,6 @@ class FlowAction extends CommonAction {
 		$flow_arr['add'] = '0';
 		
 		$flow_message = $this->_getFlowMessageByTypeName($flow_type['name'],$flow_arr);
-		
 		$this -> assign("confirm_text", $flow_message['confirm_text']);
 		// 		echo $flow_message['confirm_text'];
 		
@@ -1403,6 +1403,7 @@ class FlowAction extends CommonAction {
 // 		}else{
 			$flow = getFlow($uid,$day);
 // 		}
+
 		if(!empty($flow)){
 			if($this->isAjax()){
 				$this->ajaxReturn(getFlowData($flow),null,1);
@@ -1429,13 +1430,14 @@ class FlowAction extends CommonAction {
 // 		}else{
 			$flow = checkFlowNotMe(array(getParentid($uid),getHRDeputyGeneralManagerId($uid)));
 // 		}
-		
+			
 		if(!empty($flow)){
 			if($this->isAjax()){
 				$this->ajaxReturn(getFlowData($flow),null,1);
 			}
 			$confirm_text = getConfirmTextNotMe(array('getParentid','getHRDeputyGeneralManagerId'),$array['flow_type_id'],$uid);
 			$this->_add_flow_index_log($flow,$flow_log);
+			
 			return array('flow'=>$flow,'confirm_text'=>$this->fetch('',$confirm_text,''));
 		}else{
 			if($this->isAjax()){
@@ -2010,22 +2012,29 @@ class FlowAction extends CommonAction {
 		$where['_string'] = "result is not null";
 		$flow_log = $model -> where($where) -> order("id") -> select();
 		$this -> assign("flow_log", $flow_log);
-		
 		$this -> assign("isZhaopinDirector", isZhaopinDirector(get_user_id()));
 // 		var_dump(isZhaopinDirector(get_user_id()));
 // 		print_r($flow_log);
 // 		print_r($vo);
 // 		print_r($flow);
-// 		print_r($flow_log_all);
-
+// 		dump($flow_log_all);
+// 		die;
+// 		echo $vo['confirm'];
+		$flow_step_user_id = array();
+		foreach (array_filter(explode('|', $vo['confirm'])) as $v){
+			$u = M('User')->where(array('emp_no'=>$v))->find();
+			$flow_step_user_id[] = $u['id'];
+		}
+// 		dump($flow_step_user_id);
+// 		die;
+// 		$this->_add_flow_index_log($flow_step_user_id,$flow_log);
+		
 		$where = array();
 		$where['flow_id'] = $id;
 		$where['emp_no'] = get_emp_no();
 		$where['_string'] = "result is null";
 		$to_confirm = $model -> where($where) -> find();
 		$this -> assign("to_confirm", $to_confirm);
-		
-
 		
 		if (!empty($to_confirm)) {
 			$is_edit = $flow_type['is_edit'];
@@ -2789,7 +2798,9 @@ class FlowAction extends CommonAction {
 		$this -> display();
 	}
 	public function _add_flow_index_log($flow,$flow_log=null){
-		
+		if(!is_array($flow) && !empty($flow)){
+			$flow = array($flow);
+		}
 		$search = array_keys($flow,get_user_id());
 		$flow_index = array();
 		if(!empty($search) && is_array($search)){
@@ -2799,6 +2810,8 @@ class FlowAction extends CommonAction {
 		}
 		
 		$this -> assign("flow_index", $flow_index);
+// 		dump($flow);
+// 		die;
 		// 		if($search !== false){//自己在哪个流程上(审核用，总经理的是否需要参加复试)
 		// 			$this -> assign("flow_index", $search+1);
 		// 			$this -> assign("flow_index_n", count($confirm_array)-$search-1);
@@ -2819,7 +2832,9 @@ class FlowAction extends CommonAction {
 		}
 // 				var_dump($flow_log);
 // 				var_dump($flow_index);
+// 				dump($flow);
 // 				var_dump($flow_log_all);
+// 				die;
 		$this -> assign("flow_log_all", $flow_log_all);
 	}
 	/*
@@ -2828,7 +2843,6 @@ class FlowAction extends CommonAction {
 	 */
 	public function _getFlowMessageByTypeName($flow_type_name,$flow_arr,$flow_log=null){
 		//获取审核流程（加上重复的，加上空的）
-
 		if($flow_type_name=='用人申请流程'){
 			$flow_message = $this->ajaxgetflow_employment($flow_arr,$flow_log);
 		}else if($flow_type_name=='请假/调休单' || $flow_type_name=='外勤/出差单'){
@@ -3165,7 +3179,10 @@ class FlowAction extends CommonAction {
 		die;
 		
 	}
-	
+	/**
+	 * 当审批最后一个人确认的时候就添加一条考勤记录
+	 * @param integer $flow_id
+	 */
 	private function addAttendance($flow_id){
 		//请假调休结束后,向考勤表中添加一条记录
 		$user_flow = M('Flow')->find($flow_id);//找到请假人的信息
@@ -3173,7 +3190,7 @@ class FlowAction extends CommonAction {
 		$info['user_id'] = $user_flow['user_id'];
 		$info['dept_name'] = $user_flow['dept_name'];
 		$info['user_name'] = $user_flow['user_name'];
-		$info['num'] =  $user_flow['id'];
+		$info['num'] =  '';
 		$info['machine_no'] = '1';
 		$info['import_time'] = time();
 		$flag = getModelName($flow_id);
@@ -3182,41 +3199,87 @@ class FlowAction extends CommonAction {
 				$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
-				$info['attendance_time'] = $create_time;
-				$info['mark'] = 'in';
-				$info['style'] = '请假调休单_' .$flow['style'];
-				$atten -> add($info);
-				//结束时间
-				$info['attendance_time'] = $end_time;
-				$info['mark'] = 'out';
-				$atten -> add($info);
+				$remark = '请假调休单_' .$flow['style'];
+				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
 			case 'FlowAttendance' : //attendance 出勤单
 				$flow = M('FlowAttendance')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
 				$info['attendance_time'] = $create_time;
-				$info['mark'] = 'in';
-				$info['style'] = '出勤证明流程';
-				$atten -> add($info);
-				//结束时间
-				$info['attendance_time'] = $end_time;
-				$info['mark'] = 'out';
-				$atten -> add($info);
+				$remark = '出勤证明流程';
+				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
 			case 'FlowOutside' : //outside 外勤单
 				$flow = M('FlowOutside')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
 				$info['attendance_time'] = $create_time;
-				$info['mark'] = 'in';
-				$info['style'] = '外勤/出差单';
-				$atten -> add($info);
-				//结束时间
-				$info['attendance_time'] = $end_time;
-				$info['mark'] = 'out';
-				$atten -> add($info);
+				$remark = '外勤/出差单';
+				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
+		}
+	}
+	/**
+	 * 获取并修改和添加动态考勤记录信息 
+	 */
+	private function getAttendanceInfo($create_time,$finish_time,$info,$remark,$user_id){
+		$atten = M('Attendance');
+		$where['is_del'] = 0;
+		$where['user_id'] = $user_id;
+		$where['mark'] = array('in',array('in','out'));
+		$start_time = strtotime(date('Y-m-d',$create_time));
+		$end_time = strtotime(date('Y-m-d',$create_time)) + (3600*24-1);
+		$where['attendance_time'] = array(array('gt',$start_time),array('lt',$end_time));
+		$listAtten = $atten -> where($where) -> select();
+		if(!empty($listAtten)){
+			$arr = array();
+			foreach ($listAtten as $k => $v){
+				if($v['mark'] == 'in'){
+					if(($v['attendance_time'] > $create_time)){
+						$v['mark'] = '';
+						$arr = $v;
+						$info['mark'] = 'in';
+					} else{
+						$v['mark'] = 'in';
+						$arr = $v;
+						$info['mark'] = '';
+					}
+				}
+			}
+			$flag = $atten -> save($arr);
+			//开始时间
+			$info['attendance_time'] = $create_time;
+			$info['style'] = $remark;
+			$atten -> add($info);
+			$out_arr = array();
+			foreach ($listAtten as $k => $v){
+				if($v['mark'] == 'out'){
+					if(($v['attendance_time'] < $finish_time)){
+						$v['mark'] = '';
+						$out_arr = $v;
+						$info['mark'] = 'out';
+					} else{
+						$v['mark'] = 'out';
+						$out_arr = $v;
+						$info['mark'] = '';
+					}
+				}
+			}
+			$atten -> save($out_arr);
+			//结束时间
+			$info['attendance_time'] = $finish_time;
+			$atten -> add($info);
+		}else{
+			//开始时间
+			$info['mark'] = 'in';
+			$info['style'] = $remark;
+			$info['attendance_time'] = $create_time;
+			$atten -> add($info);
+			//结束时间
+			$info['mark'] = 'out';
+			$info['attendance_time'] = $finish_time;
+			$atten -> add($info);
 		}
 	}
 }

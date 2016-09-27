@@ -14,7 +14,7 @@
 class MonthlyReportViewModel extends ViewModel {
 	public $viewFields=array(
 		'MonthlyReport'=>array('*','_type'=>'LEFT'),
-		'User'=>array('pos_id'=>'pos_id','_on'=>'User.id=MonthlyReport.user_id')
+		'User'=>array('pos_id'=>'pos_id','duty'=>'duty','_on'=>'User.id=MonthlyReport.user_id')
 		);
 }
 ?>

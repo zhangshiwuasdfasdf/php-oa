@@ -3,7 +3,6 @@
 .form-control-static{line-height: 8;font-weight: bold;}
 .ul_table .rr .tbody{background-color:#f1f5fa;}
 </style>
-{:W('PageHeader',array('name'=>'新建工作周报','search'=>'N'))}
 <!-- <div class="operate panel panel-default">
 		<div class="panel-body">
 			<div class="pull-left">
@@ -127,3 +126,9 @@
 		<input class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
 	</div>
 </form>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>个人中心</li><li><a href='{:U("weekly_report/index")}'>我的周报</a></li><li>新建</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

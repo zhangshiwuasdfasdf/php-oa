@@ -191,6 +191,19 @@ class NoticeAction extends CommonAction {
 		if($fid == '95'){
 			$this -> assign('cknews','1');
 		}
+		//子孙树名称区分
+		$url = U('Notice/folder?fid='.$fid);
+		$menu_title = array(
+				'71'=>"<a href='$url'>公司制度与规定</a>",
+				'68'=>"<a href='$url'>企业概况</a>",
+				'95'=>"<a href='$url'>公司新闻与今日头条</a>",
+				'94'=>"<a href='$url'>工作计划</a>",
+				'72'=>"<a href='$url'>通知与公告</a>",
+				'74'=>"<a href='$url'>学习天地</a>",
+				'96'=>"<a href='$url'>员工活动</a>",
+				'97'=>"<a href='$url'>组织架构</a>"
+		);
+		$this -> assign('menu_title',$menu_title);
 		$this -> display();
 	}
 	
@@ -246,6 +259,13 @@ class NoticeAction extends CommonAction {
 		if($folder_id == '95'){
 			$this -> assign('spzt',1);
 		}
+		//子孙树名称区分
+		$menu_title = array(
+				'71'=>'公司制度与规定',
+				'68'=>'企业概况',
+				'95'=>'公司新闻与今日头条'
+		);
+		$this -> assign('menu_title',$menu_title);
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
 
@@ -288,6 +308,15 @@ class NoticeAction extends CommonAction {
 		if($folder_id == '94'){
 			$this -> assign('ckplan', '1');
 		}
+		//子孙树名称区分
+		$menu_title = array(
+				'94'=>'工作计划',
+				'72'=>'通知与公告',
+				'74'=>'学习天地',
+				'96'=>'员工活动',
+				'97'=>'组织架构'
+		);
+		$this -> assign('menu_title',$menu_title);
 		$arr_read = array_filter(explode(",", get_user_config("readed_notice")));
 		$this -> assign("readed_id",$arr_read);
 						
