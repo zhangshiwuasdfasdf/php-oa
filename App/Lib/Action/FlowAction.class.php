@@ -1403,6 +1403,7 @@ class FlowAction extends CommonAction {
 // 		}else{
 			$flow = getFlow($uid,$day);
 // 		}
+
 		if(!empty($flow)){
 			if($this->isAjax()){
 				$this->ajaxReturn(getFlowData($flow),null,1);
@@ -1429,13 +1430,14 @@ class FlowAction extends CommonAction {
 // 		}else{
 			$flow = checkFlowNotMe(array(getParentid($uid),getHRDeputyGeneralManagerId($uid)));
 // 		}
-		
+			
 		if(!empty($flow)){
 			if($this->isAjax()){
 				$this->ajaxReturn(getFlowData($flow),null,1);
 			}
 			$confirm_text = getConfirmTextNotMe(array('getParentid','getHRDeputyGeneralManagerId'),$array['flow_type_id'],$uid);
 			$this->_add_flow_index_log($flow,$flow_log);
+			
 			return array('flow'=>$flow,'confirm_text'=>$this->fetch('',$confirm_text,''));
 		}else{
 			if($this->isAjax()){
@@ -2010,22 +2012,29 @@ class FlowAction extends CommonAction {
 		$where['_string'] = "result is not null";
 		$flow_log = $model -> where($where) -> order("id") -> select();
 		$this -> assign("flow_log", $flow_log);
-		
 		$this -> assign("isZhaopinDirector", isZhaopinDirector(get_user_id()));
 // 		var_dump(isZhaopinDirector(get_user_id()));
 // 		print_r($flow_log);
 // 		print_r($vo);
 // 		print_r($flow);
-// 		print_r($flow_log_all);
-
+// 		dump($flow_log_all);
+// 		die;
+// 		echo $vo['confirm'];
+		$flow_step_user_id = array();
+		foreach (array_filter(explode('|', $vo['confirm'])) as $v){
+			$u = M('User')->where(array('emp_no'=>$v))->find();
+			$flow_step_user_id[] = $u['id'];
+		}
+// 		dump($flow_step_user_id);
+// 		die;
+// 		$this->_add_flow_index_log($flow_step_user_id,$flow_log);
+		
 		$where = array();
 		$where['flow_id'] = $id;
 		$where['emp_no'] = get_emp_no();
 		$where['_string'] = "result is null";
 		$to_confirm = $model -> where($where) -> find();
 		$this -> assign("to_confirm", $to_confirm);
-		
-
 		
 		if (!empty($to_confirm)) {
 			$is_edit = $flow_type['is_edit'];
@@ -2789,7 +2798,9 @@ class FlowAction extends CommonAction {
 		$this -> display();
 	}
 	public function _add_flow_index_log($flow,$flow_log=null){
-		
+		if(!is_array($flow) && !empty($flow)){
+			$flow = array($flow);
+		}
 		$search = array_keys($flow,get_user_id());
 		$flow_index = array();
 		if(!empty($search) && is_array($search)){
@@ -2799,6 +2810,8 @@ class FlowAction extends CommonAction {
 		}
 		
 		$this -> assign("flow_index", $flow_index);
+// 		dump($flow);
+// 		die;
 		// 		if($search !== false){//自己在哪个流程上(审核用，总经理的是否需要参加复试)
 		// 			$this -> assign("flow_index", $search+1);
 		// 			$this -> assign("flow_index_n", count($confirm_array)-$search-1);
@@ -2819,7 +2832,9 @@ class FlowAction extends CommonAction {
 		}
 // 				var_dump($flow_log);
 // 				var_dump($flow_index);
+// 				dump($flow);
 // 				var_dump($flow_log_all);
+// 				die;
 		$this -> assign("flow_log_all", $flow_log_all);
 	}
 	/*
@@ -2828,7 +2843,6 @@ class FlowAction extends CommonAction {
 	 */
 	public function _getFlowMessageByTypeName($flow_type_name,$flow_arr,$flow_log=null){
 		//获取审核流程（加上重复的，加上空的）
-
 		if($flow_type_name=='用人申请流程'){
 			$flow_message = $this->ajaxgetflow_employment($flow_arr,$flow_log);
 		}else if($flow_type_name=='请假/调休单' || $flow_type_name=='外勤/出差单'){
