@@ -172,7 +172,7 @@ body{ background:#f3f4f8;}
 .menu_ul4 a{ display:block; width:160px; height:40px; text-align:center; line-height:40px;}
 .cd_span4{ background:#8fc026; display:none; width:8px; height:40px; position:absolute; left:0;}
 
-.menu_ul6{ position:fixed;width:160px; overflow-x:hidden; overflow-y:auto; height:auto; background:#dbe0e6; color:#333; font-size:12px;left:100%; border:solid 1px #3d6dab; border-radius:5px; display:none; z-index:300;}
+.menu_ul6{ position:fixed;width:160px; height:auto; background:#dbe0e6; color:#333; font-size:12px;left:100%; border:solid 1px #3d6dab; border-radius:5px; display:none; z-index:300;}
 .menu_ul6 a{ display:block; width:160px; height:40px; text-align:center; line-height:40px; position:relative;}
 .cd_span6{ background:#3d6dab; display:none; width:8px; height:40px; position:absolute; left:0;}
 
