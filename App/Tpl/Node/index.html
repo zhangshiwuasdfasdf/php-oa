@@ -1,5 +1,4 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'菜单管理','search'=>'N'))}
 
 <form id="form_search" name="form_search" method="post" action="">
 	<div class="operate panel panel-default">
@@ -93,3 +92,9 @@
 		</form>
 	</div>
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>系统管理</li><li>系统设定</li><li>菜单管理</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

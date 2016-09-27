@@ -73,7 +73,7 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">物品采购调拨申请单</span>
 		</div>
 		<div class="pull-right">
-			<a class="btn btn-sm btn-primary" href="{:U('add','type='.$flow_name['id'])}" onclick="add()">{$flow_name['name']}</a>
+			<a class="btn btn-sm btn-primary" href="{:U('add','type='.$flow_name['id'])}" onclick="add()">新建</a>
 			<a class="btn btn-sm btn-primary" onclick="export_excel()">导出</a>
 		</div>
 	</div>
@@ -148,3 +148,9 @@
 		</div>
 	</empty>
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>行政管理</li><li>{$flow_name['name']}</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

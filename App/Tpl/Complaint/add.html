@@ -1,5 +1,4 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'新建意见','search'=>'N'))}
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data"   class="well form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
 	<input type="hidden" id="add_file" name="add_file">
@@ -64,3 +63,9 @@
 		<input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
 	</div>
 </form>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>个人中心</li><li><a href='{:U("Complaint/index")}'>意见箱</a></li><li>新建</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

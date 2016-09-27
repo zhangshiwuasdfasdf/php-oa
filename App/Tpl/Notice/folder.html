@@ -138,3 +138,9 @@
 		</empty>
 	</ul>
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>行政管理</li><li>公告</li><li>{$menu_title.$folder_id}</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

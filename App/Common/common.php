@@ -654,7 +654,10 @@ function get_dept_name_by_id($val) {
 	$result = M("Dept") -> find($val);
 	return $result['name'];
 }
-
+function get_duty_by_userid($id){
+	$result = M("User") -> find($val);
+	return $result['duty'];
+}
 function get_module($str) {
 	$arr_str = explode("/", $str);
 	return $arr_str[0];

@@ -1,11 +1,11 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'编辑系统参数','search'=>'N'))}
 <div class="operate panel panel-default">
-	<div class="panel-body">
+	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
 		<div class="pull-left">
-			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">编辑系统参数</span>
 		</div>
 		<div class="pull-right">
+			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
 			<a onclick="save();"  class="btn btn-sm btn-primary">保存</a>
 			|
 			<a onclick="del();"  class="btn btn-sm btn-danger">删除</a>
@@ -51,3 +51,9 @@
 			</div>
 		</div>
 </form>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>系统管理</li><li>系统设定</li><li><a href='{:U("SystemConfig/index")}'>系统参数设置</a></li><li>编辑系统参数</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

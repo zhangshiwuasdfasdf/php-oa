@@ -10,7 +10,7 @@
 			</div>
 			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="">提交人部门：</label>
-				<div class="col-sm-8">
+				<div class="col-sm-8" style="width: 60%;">
 					<input class="form-control input-sm" type="text" id="dept_name_multi" name="dept_name_multi" onfocus="$('.content0').show()" readonly>
 					<input type="hidden" id="dept_name_multi_data" name="dept_name_multi_data"/>
 					<div class="content0"> 
@@ -42,10 +42,10 @@
 				</div>
 			</div>
 			<div class="form-group col-sm-3" style="height: 31px;">
-				<label class="col-sm-4 control-label" for="eq_me">只显示自己提交的：</label>
-				<div class="col-sm-8">
-					<input type="radio" type="text" id="me" name="me" value="1" onclick="$('#create_user_name').hide()"/>是
-					<input type="radio" type="text" id="me" name="me" value="0" onclick="$('#create_user_name').show()" checked="checked"/>否
+				<label class="col-sm-4 control-label" for="eq_me">只显示自己：</label>
+				<div class="col-sm-8" style="width: 60%;">
+					<input type="radio" type="text" id="me" name="me" value="1" onclick="$('#user_name').attr('disabled','disabled')"/>是
+					<input type="radio" type="text" id="me" name="me" value="0" onclick="$('#user_name').removeAttr('disabled')" checked="checked"/>否
 				</div>
 			</div>
 			<div class="form-group col-sm-3">
@@ -101,13 +101,13 @@
 	<ul>
 		<li class="thead">
 			<div class="pull-left">
-				<span class="col-10">问题编号</span>
-				<span class="col-20">提交时间</span>
-				<span class="col-10">提交人</span>
-				<span class="col-10">部门</span>
+				<span class="col-8">问题编号</span>
+				<span class="col-15">提交时间</span>
+				<span class="col-8">提交人</span>
+				<span class="col-8">部门</span>
 				<span class="col-10">岗位</span>
-				<span class="col-10">紧急程度</span>
-				<span class="col-10">标题</span>
+				<span class="col-8">紧急程度</span>
+				<span class="col-15">标题</span>
 			</div>
 			<div class="pull-right">
 				<span class="col-10">类型</span>
@@ -125,13 +125,13 @@
 				<foreach name="list" item="vo">
 					<li class="tbody">
 						<div class="pull-left">
-							<span class="col-10">{$vo.problem_no}&nbsp;</span>
-							<span class="col-20">{$vo.create_time|date='Y-m-d H:i:s',###}&nbsp;</span>
-							<span class="col-10">{$vo.create_user_name}&nbsp;</span>
-							<span class="col-10">{$vo.dept_name}&nbsp;</span>
+							<span class="col-8">{$vo.problem_no}&nbsp;</span>
+							<span class="col-15">{$vo.create_time|date='Y-m-d H:i:s',###}&nbsp;</span>
+							<span class="col-8">{$vo.create_user_name}&nbsp;</span>
+							<span class="col-8">{$vo.dept_name}&nbsp;</span>
 							<span class="col-10">{$vo.pos_name}&nbsp;</span>
-							<span class="col-10">{$vo.emergency|show_mapping}&nbsp;</span>
-							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}" target="_blank">{$vo.title}&nbsp;</a></span>
+							<span class="col-8">{$vo.emergency|show_mapping}&nbsp;</span>
+							<span class="col-15"><a href="{:U('read','id='.$vo['id'])}" target="_blank">{$vo.title}&nbsp;</a></span>
 		
 						</div>
 						<div class="pull-right">
@@ -153,3 +153,9 @@
 		</empty>
 	</ul>
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>信息管理</li><li>ERP问题反馈</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

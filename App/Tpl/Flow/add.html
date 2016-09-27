@@ -17,7 +17,6 @@ h1{ text-align:center;}
 .ma7{ width:98%; margin-left:1%; overflow:hidden;}
 .ma7 li{ float:left; margin-right:1%;}
 </style>
-{:W('PageHeader',array('name'=>array($flow_type['name']),'search'=>'N'))}
 <div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-left">
@@ -89,3 +88,9 @@ h1{ text-align:center;}
 </if>
 
 </form>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>人力资源</li><li><a href='{:U("Flow/getlist?type=$type_id")}'>{$flow_type['name']}</a></li><li>新建</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

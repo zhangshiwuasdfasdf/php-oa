@@ -13,7 +13,7 @@
 			</div>
 			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="li_content">会议室门牌号：</label>
-				<div class="col-sm-8">
+				<div class="col-sm-8" style="width: 150px;">
 					<input  class="form-control" type="text" id="li_content" name="li_meet_num" >
 				</div>
 			</div>
@@ -84,3 +84,9 @@
 			{$page}
 		</div>
 	</empty>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>行政管理</li><li>会议室预定</li><li>会议室管理</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

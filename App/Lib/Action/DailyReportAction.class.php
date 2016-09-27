@@ -163,7 +163,7 @@ class DailyReportAction extends CommonAction {
 				foreach ($daily_report_common as $k=>$v){
 					$comment_last = $model_comment->where(array('doc_id'=>array('eq',$v['id']),'is_del'=>array('eq',0)))->order('create_time desc')->find();
 					$daily_report_extension[$k]['comment_last'] = $comment_last['content'];
-					$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id'])))->order('create_time desc')->limit(2)->select();
+					$report_look[$k] = $model_report_look->where(array('type'=>array('eq','daily'),'pid'=>array('eq',$v['id']),'look_id'=>array('neq',1)))->order('create_time desc')->limit(2)->select();
 					$daily_ids[$k] = strtotime(date('Y-m-d',strtotime('+1 day',$v['create_time'])));
 				}
 				$this -> assign('daily_report_extension', $daily_report_extension);
