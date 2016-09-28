@@ -2560,23 +2560,23 @@ function getModelName($flow_id){
 	$model = M('FlowType');
 	$flow_type = $model->find($flow['type']);
 	switch($flow_type['name']){
-		case '请假/调休单' : return 'FlowLeave';
-		case '外勤/出差单' : return 'FlowOutside';
-		case '出勤证明流程' : return 'FlowAttendance';
-		case '加班调休申请' : return 'FlowOverTime';
+		case '员工请假申请' : return 'FlowLeave';
+		case '外勤/出差申请' : return 'FlowOutside';
+		case '出勤异常申请' : return 'FlowAttendance';
+		case '加班申请' : return 'FlowOverTime';
 		case '用人申请流程' : return 'FlowEmploymentApplication';
 		case '内部联络单' : return 'FlowInternal';
-		case '会务证明流程' :return 'FlowMeetingCommunicate';
-		case '名片使用' :return 'FlowCardApplication';
-		case '离职申请流程' : return 'FlowResignationApplication';
-		case '离职交接流程' : return 'FlowResignationList';
+		case '会务申请' :return 'FlowMeetingCommunicate';
+		case '名片申请' :return 'FlowCardApplication';
+		case '员工离职申请' : return 'FlowResignationApplication';
+		case '员工离职交接申请' : return 'FlowResignationList';
 		case '试用期评估表' : return 'FlowProbationEvaluate';
 		case '转正申请' : return 'FlowRegularWorkerApplication';
 		case '员工调岗、调职申请' : return 'FlowPersonnelChanges';
 		case '员工调薪申请' : return 'FlowSalaryChanges';
-		case '办公用品采购' : return 'FlowOfficeSuppliesApplication';
-		case '办公用品领用' : return 'FlowOfficeUseApplication';
-		case '物品采购调拨申请单' : return 'FlowGoodsProcurementAllocation';
+		case '办公用品采购申请' : return 'FlowOfficeSuppliesApplication';
+		case '办公用品领用申请' : return 'FlowOfficeUseApplication';
+		case '物品采购调拨申请' : return 'FlowGoodsProcurementAllocation';
 		case '简历' : return 'UserResume';
 		default :return 'FlowCommon';
 	}

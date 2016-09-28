@@ -17,22 +17,20 @@ h1{ text-align:center;}
 .ma7{ width:98%; margin-left:1%; overflow:hidden;}
 .ma7 li{ float:left; margin-right:1%;}
 </style>
-<div class="operate panel panel-default">
+<!-- <div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-left">
 			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
-			<!-- 
 			<eq name="flow_type.is_lock" value="0">
 				<a onclick="popup_confirm();"  class="btn btn-sm btn-primary">选择审批流程</a>
 			</eq>
-			 -->
 		</div>
 		<div class="pull-right">
 			<a onclick="save(10);"  class="btn btn-sm btn-primary">临时保存</a>
 			<a onclick="save(20);"  class="btn btn-sm btn-primary">提交</a>
 		</div>
 	</div>
-</div>
+</div> -->
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data" class="well form-horizontal">
 	<input type="hidden" id="ajax" name="ajax" value="0">
 	<input type="hidden" id="add_file" name="add_file" >
@@ -48,18 +46,18 @@ h1{ text-align:center;}
 
 <if condition="($flow_type.name eq '内部联络单')">
 <include file="Flow/add/daily_office:internal_contact_list" />
-<elseif condition="($flow_type.name eq '会务证明流程')"/>
+<elseif condition="($flow_type.name eq '会务申请')"/>
 <include file="Flow/add/daily_office:meeting_communicate" />
-<elseif condition="($flow_type.name eq '名片使用')"/>
+<elseif condition="($flow_type.name eq '名片申请')"/>
 <include file="Flow/add/daily_office:card_application" />
 
-<elseif condition="($flow_type.name eq '请假/调休单')"/>
+<elseif condition="($flow_type.name eq '员工请假申请')"/>
 <include file="Flow/add/personnel_management:leave" />
-<elseif condition="($flow_type.name eq '外勤/出差单')"/>
+<elseif condition="($flow_type.name eq '外勤/出差申请')"/>
 <include file="Flow/add/personnel_management:outside" />
-<elseif condition="($flow_type.name eq '出勤证明流程')"/>
+<elseif condition="($flow_type.name eq '出勤异常申请')"/>
 <include file="Flow/add/personnel_management:attendance" />
-<elseif condition="($flow_type.name eq '加班调休申请')"/>
+<elseif condition="($flow_type.name eq '加班申请')"/>
 <include file="Flow/add/personnel_management:over_time" />
 <elseif condition="($flow_type.name eq '用人申请流程')"/>
 <include file="Flow/add/personnel_management:employment_application" />
@@ -67,20 +65,20 @@ h1{ text-align:center;}
 <include file="Flow/add/personnel_management:probation_evaluate" />
 <elseif condition="($flow_type.name eq '转正申请')"/>
 <include file="Flow/add/personnel_management:regular_worker_application" />
-<elseif condition="($flow_type.name eq '离职申请流程')"/>
+<elseif condition="($flow_type.name eq '员工离职申请')"/>
 <include file="Flow/add/personnel_management:resignation_application" />
-<elseif condition="($flow_type.name eq '离职交接流程')"/>
+<elseif condition="($flow_type.name eq '员工离职交接申请')"/>
 <include file="Flow/add/personnel_management:resignation_list" />
 <elseif condition="($flow_type.name eq '员工调岗、调职申请')"/>
 <include file="Flow/add/personnel_management:personnel_changes" />
 <elseif condition="($flow_type.name eq '员工调薪申请')"/>
 <include file="Flow/add/personnel_management:salary_changes" />
 
-<elseif condition="($flow_type.name eq '办公用品领用')"/>
+<elseif condition="($flow_type.name eq '办公用品领用申请')"/>
 <include file="Flow/add/administrative_office_management:office_use_application" />
-<elseif condition="($flow_type.name eq '办公用品采购')"/>
+<elseif condition="($flow_type.name eq '办公用品采购申请')"/>
 <include file="Flow/add/administrative_office_management:office_supplies_application" />
-<elseif condition="($flow_type.name eq '物品采购调拨申请单')"/>
+<elseif condition="($flow_type.name eq '物品采购调拨申请')"/>
 <include file="Flow/add/administrative_office_management:goods_procurement_allocation" />
 <else/>
 <include file="Flow/add/:common" />
@@ -88,6 +86,24 @@ h1{ text-align:center;}
 </if>
 
 </form>
+<div class="operate panel panel-default">
+	<div class="panel-body">
+		<div style="height:35px; float:left;margin-left:763px">
+			<div class="pull-left">
+			<!-- 
+			<eq name="flow_type.is_lock" value="0">
+				<a onclick="popup_confirm();"  class="btn btn-sm btn-primary">选择审批流程</a>
+			</eq>
+			 -->
+	
+			<a onclick="save(10);"  class="btn btn-sm btn-primary">临时保存</a>
+			<a onclick="save(20);"  class="btn btn-sm btn-primary">提交</a>
+			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+			</div>
+		</div>
+		
+	</div>
+</div>
 <script type="text/javascript">
 $(function() {
 	var html = "<li>人力资源</li><li><a href='{:U("Flow/getlist?type=$type_id")}'>{$flow_type['name']}</a></li><li>新建</li>";

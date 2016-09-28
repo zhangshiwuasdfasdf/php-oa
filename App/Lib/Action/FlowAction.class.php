@@ -2845,17 +2845,17 @@ class FlowAction extends CommonAction {
 		//获取审核流程（加上重复的，加上空的）
 		if($flow_type_name=='用人申请流程'){
 			$flow_message = $this->ajaxgetflow_employment($flow_arr,$flow_log);
-		}else if($flow_type_name=='请假/调休单' || $flow_type_name=='外勤/出差单'){
+		}else if($flow_type_name=='员工请假申请' || $flow_type_name=='外勤/出差申请'){
 			$flow_message = $this->ajaxgetflow_leave($flow_arr,$flow_log);
 			
 			if(!is_array($flow_message['flow']) && !empty($flow_message['flow'])){
 				$flow_message['flow'] = array($flow_message['flow']);
 			}
-		}else if($flow_type_name=='出勤证明流程'){
+		}else if($flow_type_name=='出勤异常申请'){
 			$flow_message = $this->ajaxgetflow_attendance($flow_arr,$flow_log);
-		}else if($flow_type_name=='加班调休申请'){
+		}else if($flow_type_name=='加班申请'){
 			$flow_message = $this->ajaxgetflow_over_time($flow_arr,$flow_log);
-		}else if($flow_type_name=='离职申请流程'){
+		}else if($flow_type_name=='员工离职申请'){
 			$flow_message = $this->ajaxgetflow_resignation($flow_arr,$flow_log);
 		}else if($flow_type_name=='试用期评估表'){
 			$flow_message = $this->ajaxgetflow_probation($flow_arr,$flow_log);
@@ -2865,9 +2865,9 @@ class FlowAction extends CommonAction {
 			$flow_message = $this->ajaxgetflow_personnel_changes($flow_arr,$flow_log);
 		}elseif ($flow_type_name=='员工调薪申请'){
 			$flow_message = $this->ajaxgetflow_salary_changes($flow_arr,$flow_log);
-		}elseif ($flow_type_name=='物品采购调拨申请单'){
+		}elseif ($flow_type_name=='物品采购调拨申请'){
 			$flow_message = $this->ajaxgetflow_goods_procurement_allocation($flow_arr,$flow_log);
-		}elseif ($flow_type_name=='名片使用'){
+		}elseif ($flow_type_name=='名片申请'){
 			$flow_message = $this->ajaxgetflow_card_application($flow_arr,$flow_log);
 		}elseif ($flow_type_name=='内部联络单'){
 			$flow_message = $this->ajaxgetflow_internal($flow_arr,$flow_log);

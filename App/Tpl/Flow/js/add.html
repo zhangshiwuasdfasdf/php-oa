@@ -320,15 +320,15 @@
 			}
 		}else if($("#name").val()=='内部联络单'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'internal'))}";
-		}else if($("#name").val()=='会务证明流程'){
+		}else if($("#name").val()=='会务申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'metting_communicate'))}";
 		}else if($("#name").val()=='名片使用'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'card_application'))}";
-		}else if($("#name").val()=='文件审批流程'){
+		}else if($("#name").val()=='文件审批申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'notice_file'))}";
-		}else if($("#name").val()=='人事任免、业务提成通知'){
+		}else if($("#name").val()=='人事任免、业务提成申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'notice_personnel'))}";
-		}else if($("#name").val()=='合同审阅流程'){
+		}else if($("#name").val()=='合同申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'contract'))}";
 		}else if($("#name").val()=='离职申请流程'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'resignation_application'))}";
@@ -340,11 +340,11 @@
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'personnel_changes'))}";
 		}else if($("#name").val()=='员工调薪申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'salary_changes'))}";
-		}else if($("#name").val()=='离职交接流程'){
+		}else if($("#name").val()=='员工离职交接申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'resignation_list'))}";
-		}else if($("#name").val()=='办公用品采购'){
+		}else if($("#name").val()=='办公用品采购申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'office_supplies_application'))}";
-		}else if($("#name").val()=='办公用品领用'){
+		}else if($("#name").val()=='办公用品领用申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'office_use_application'))}";
 		}else if($("#name").val()=='物品采购调拨申请单'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'goods_procurement_allocation'))}";
@@ -352,7 +352,7 @@
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'bus_card_use'))}";
 		}else if($("#name").val()=='用印申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'chops_use'))}";
-		}else if($("#name").val()=='私车公用申请流程'){
+		}else if($("#name").val()=='私车公用申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'car_use'))}";
 		}
 		return url;

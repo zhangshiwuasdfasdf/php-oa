@@ -1,17 +1,17 @@
 <if condition="($flow_name.name eq '内部联络单')">
 <include file="Flow/list:internal_contact_list" />
-<elseif condition="($flow_name.name eq '会务证明流程')"/>
+<elseif condition="($flow_name.name eq '会务申请')"/>
 <include file="Flow/list:meeting_communicate" />
-<elseif condition="($flow_name.name eq '名片使用')"/>
+<elseif condition="($flow_name.name eq '名片申请')"/>
 <include file="Flow/list:card_application" />
 
 <elseif condition="($flow_name.name eq '员工请假申请')"/>
 <include file="Flow/list:leave" />
-<elseif condition="($flow_name.name eq '外勤/出差单')"/>
+<elseif condition="($flow_name.name eq '外勤/出差申请')"/>
 <include file="Flow/list:outside" />
-<elseif condition="($flow_name.name eq '出勤证明流程')"/>
+<elseif condition="($flow_name.name eq '出勤异常申请')"/>
 <include file="Flow/list:attendance" />
-<elseif condition="($flow_name.name eq '加班调休申请')"/>
+<elseif condition="($flow_name.name eq '加班申请')"/>
 <include file="Flow/list:over_time" />
 <elseif condition="($flow_name.name eq '用人申请流程')"/>
 <include file="Flow/list:employment_application" />
@@ -19,20 +19,20 @@
 <include file="Flow/list:probation_evaluate" />
 <elseif condition="($flow_name.name eq '转正申请')"/>
 <include file="Flow/list:regular_worker_application" />
-<elseif condition="($flow_name.name eq '离职申请流程')"/>
+<elseif condition="($flow_name.name eq '员工离职申请')"/>
 <include file="Flow/list:resignation_application" />
-<elseif condition="($flow_name.name eq '离职交接流程')"/>
+<elseif condition="($flow_name.name eq '员工离职交接申请')"/>
 <include file="Flow/list:resignation_list" />
 <elseif condition="($flow_name.name eq '员工调岗、调职申请')"/>
 <include file="Flow/list:personnel_changes" />
 <elseif condition="($flow_name.name eq '员工调薪申请')"/>
 <include file="Flow/list:salary_changes" />
 
-<elseif condition="($flow_name.name eq '办公用品领用')"/>
+<elseif condition="($flow_name.name eq '办公用品领用申请')"/>
 <include file="Flow/list:office_use_application" />
-<elseif condition="($flow_name.name eq '办公用品采购')"/>
+<elseif condition="($flow_name.name eq '办公用品采购申请')"/>
 <include file="Flow/list:office_supplies_application" />
-<elseif condition="($flow_name.name eq '物品采购调拨申请单')"/>
+<elseif condition="($flow_name.name eq '物品采购调拨申请')"/>
 <include file="Flow/list:goods_procurement_allocation" />
 <else/>
 <include file="Flow/list:common" />
