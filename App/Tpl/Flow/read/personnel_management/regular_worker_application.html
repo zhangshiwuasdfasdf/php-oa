@@ -78,22 +78,22 @@
   {$confirm_text}
 </table>
 
-<neq name="is_edit" value="2">
-		<div class="form-group">
-			<div class="col-xs-12">
-				<eq name = "is_edit" value="0">
-					<div class="content_wrap">
-						<iframe class="content_iframe"></iframe>
-						<textarea class="content display-none"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
-					</div>
-				</eq>				
-				<eq name="is_edit" value="1">
-					<textarea class="editor content display-none"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
-					<eq>
-			</div>
-		</div>
+<!-- <neq name="is_edit" value="2">
+    <div class="form-group">
+      <div class="col-xs-12">
+        <eq name = "is_edit" value="0">
+          <div class="content_wrap">
+            <iframe class="content_iframe"></iframe>
+            <textarea class="content display-none"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
+          </div>
+        </eq>        
+        <eq name="is_edit" value="1">
+          <textarea class="editor content display-none"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
+          <eq>
+      </div>
+    </div>
 </neq>
-	
+   -->
 <notempty name="vo.add_file">
 		<div class="form-group">
 			<label class="col-sm-2 control-label" >附件：</label>

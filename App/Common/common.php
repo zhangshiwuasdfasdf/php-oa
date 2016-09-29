@@ -2564,7 +2564,7 @@ function getModelName($flow_id){
 		case '外勤/出差申请' : return 'FlowOutside';
 		case '出勤异常申请' : return 'FlowAttendance';
 		case '加班申请' : return 'FlowOverTime';
-		case '用人申请流程' : return 'FlowEmploymentApplication';
+		case '部门招聘需求申请' : return 'FlowEmploymentApplication';
 		case '内部联络单' : return 'FlowInternal';
 		case '会务申请' :return 'FlowMeetingCommunicate';
 		case '名片申请' :return 'FlowCardApplication';
@@ -2572,7 +2572,7 @@ function getModelName($flow_id){
 		case '员工离职交接申请' : return 'FlowResignationList';
 		case '试用期评估表' : return 'FlowProbationEvaluate';
 		case '转正申请' : return 'FlowRegularWorkerApplication';
-		case '员工调岗、调职申请' : return 'FlowPersonnelChanges';
+		case '员工调动申请' : return 'FlowPersonnelChanges';
 		case '员工调薪申请' : return 'FlowSalaryChanges';
 		case '办公用品采购申请' : return 'FlowOfficeSuppliesApplication';
 		case '办公用品领用申请' : return 'FlowOfficeUseApplication';

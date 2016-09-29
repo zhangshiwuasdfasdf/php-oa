@@ -13,7 +13,7 @@
 <include file="Flow/list:attendance" />
 <elseif condition="($flow_name.name eq '加班申请')"/>
 <include file="Flow/list:over_time" />
-<elseif condition="($flow_name.name eq '用人申请流程')"/>
+<elseif condition="($flow_name.name eq '部门招聘需求申请')"/>
 <include file="Flow/list:employment_application" />
 <elseif condition="($flow_name.name eq '试用期评估表')"/>
 <include file="Flow/list:probation_evaluate" />
@@ -23,7 +23,7 @@
 <include file="Flow/list:resignation_application" />
 <elseif condition="($flow_name.name eq '员工离职交接申请')"/>
 <include file="Flow/list:resignation_list" />
-<elseif condition="($flow_name.name eq '员工调岗、调职申请')"/>
+<elseif condition="($flow_name.name eq '员工调动申请')"/>
 <include file="Flow/list:personnel_changes" />
 <elseif condition="($flow_name.name eq '员工调薪申请')"/>
 <include file="Flow/list:salary_changes" />

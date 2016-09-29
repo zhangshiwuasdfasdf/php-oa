@@ -2843,7 +2843,7 @@ class FlowAction extends CommonAction {
 	 */
 	public function _getFlowMessageByTypeName($flow_type_name,$flow_arr,$flow_log=null){
 		//获取审核流程（加上重复的，加上空的）
-		if($flow_type_name=='用人申请流程'){
+		if($flow_type_name=='部门招聘需求申请'){
 			$flow_message = $this->ajaxgetflow_employment($flow_arr,$flow_log);
 		}else if($flow_type_name=='员工请假申请' || $flow_type_name=='外勤/出差申请'){
 			$flow_message = $this->ajaxgetflow_leave($flow_arr,$flow_log);
@@ -2861,7 +2861,7 @@ class FlowAction extends CommonAction {
 			$flow_message = $this->ajaxgetflow_probation($flow_arr,$flow_log);
 		}else if($flow_type_name=='转正申请'){
 			$flow_message = $this->ajaxgetflow_regular_work_application($flow_arr,$flow_log);
-		}elseif ($flow_type_name=='员工调岗、调职申请'){
+		}elseif ($flow_type_name=='员工调动申请'){
 			$flow_message = $this->ajaxgetflow_personnel_changes($flow_arr,$flow_log);
 		}elseif ($flow_type_name=='员工调薪申请'){
 			$flow_message = $this->ajaxgetflow_salary_changes($flow_arr,$flow_log);
