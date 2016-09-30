@@ -11,6 +11,13 @@
 		if(flag){
 			alert(msg);return false;
 		}
+		if($("#hr_execute").attr('disabled') != 'disabled'){
+			if($("#hr_execute").val() == '' && $("#hr_add_date").val() == '' && $("#hr_dismiss").val() == '' ){
+			alert('请填写日期');
+			return false;
+			}	
+		}
+		
 		sendForm("form_confirm", "{:U('mark','action=approve')}", "{:U('read','id='.$vo['id'])}");
 	}
 
