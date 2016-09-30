@@ -15,22 +15,17 @@
 	}
 
 	function reject() {
+		var flag = false;
+		var msg = '';
 		$("input[check='require']").each(function(){
-			if($(this).val()==''){
-				ui_alert($(this).attr('msg'),function(){
-					return false;
-				});
+			if($(this).val().trim() == ''){
+				msg = $(this).attr('msg');
+				flag = true;return false;
 			}
-			
-		})
-		$("textarea[check='require']").each(function(){
-			if($(this).val()==''){
-				ui_alert($(this).attr('msg'),function(){
-					return false;
-				});
-			}
-		})
-
+		});
+		if(flag){
+			alert(msg);return false;
+		}
 		sendForm("form_confirm", "{:U('mark','action=reject')}", "{:U('read','id='.$vo['id'])}");
 	}
 	

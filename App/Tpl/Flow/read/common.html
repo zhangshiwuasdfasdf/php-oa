@@ -4,6 +4,27 @@
 	input{ border:none; outline:none;}
 	textarea{ border:none; outline:none; resize:none;}
 </style>
+ <php>
+    if($flow_type['name'] == '文件审批申请'){
+      echo '<div style="font-size:24px; text-align:center; color:#2679b5; font-weight:bold; height:60px;">文件审批申请</div>';
+  }elseif($flow_type['name'] == '合同申请'){
+      echo '<div style="font-size:24px; text-align:center; color:#2679b5; font-weight:bold; height:60px;">合同申请</div>';
+  }elseif($flow_type['name'] == '用印申请'){
+      echo '<div style="font-size:24px; text-align:center; color:#2679b5; font-weight:bold; height:60px;">用印申请</div>';
+  }elseif($flow_type['name'] == '人事任免、业务提成申请'){
+      echo '<div style="font-size:24px; text-align:center; color:#2679b5; font-weight:bold; height:60px;">人事任免、业务提成申请</div>';
+  }elseif($flow_type['name'] == '公交卡使用申请'){
+      echo '<div style="font-size:24px; text-align:center; color:#2679b5; font-weight:bold; height:60px;">公交卡使用申请</div>';
+  }elseif($flow_type['name'] == '私车公用申请'){
+      echo '<div style="font-size:24px; text-align:center; color:#2679b5; font-weight:bold; height:60px;">私车公用申请</div>';
+}
+    
+</php> 
+<!--<?php 
+  /*if($flow_type['name'] == '文件审批申请'){
+      echo '<div style="font-size:24px; text-align:center; color:#2679b5; font-weight:bold; height:60px;">文件审批申请</div>';*/
+
+ ?>-->
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
   <tr>
     <td height="50" align="center">标题</td>
