@@ -49,6 +49,8 @@ table div{ padding-left:2%;}
     <td height="100" colspan="5" align="center">
     	<div><textarea id="reason" name="reason" rows="4" class="editor te1" check="require" msg="请输入申请变动理由"></textarea></div>
     	<div><span>申请人签名/日期：</span><span> {$user_info.name}/{$time|toDate='Y-m-d'}</span></div>
+    	<button onclick="showflow();return false;">查看审批流程</button>
+    	<input id="confirm_wrap" style="width:250px;" disabled>
     </td>
   </tr>
   <!-- <tr>

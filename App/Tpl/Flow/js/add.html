@@ -34,7 +34,7 @@
 						if(result.data){
 							$("#day_num").val(result.data.day);
 							$("#hour_num").val(result.data.hour);
-							if($("#name").val()=='请假/调休单'){
+							if($("#name").val()=='员工请假申请'){
 								if($("input[name='style']:checked").val()=='调休'){
 									$("#available_hour").html('（您的可用调休时间为'+result.data.available_hour+'小时）');
 									$("#available_hour_save").val(result.data.available_hour);
@@ -164,7 +164,6 @@
 		var end_time = $("#end_time").val();
 		
 		var url = getUrlByName();
-		
 		$.ajax({
 			type: "post",
 			url: url,    
@@ -294,25 +293,25 @@
 		var dept_id = $("#dept_id").val();
 		var dept_id_from = $("#dept_id_from").val();
 		var dept_id_to = $("#dept_id_to").val();
-		if($("#name").val()=='出勤证明流程'){
+		if($("#name").val()=='出勤异常申请'){
 			if(day_num==0 && hour_num==0){
 				ui_error('请填写共计时间');
 				return;
 			}
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'attendance'))}";
-		}else if($("#name").val()=='外勤/出差单' || $("#name").val()=='请假/调休单'){
+		}else if($("#name").val()=='外勤/出差申请' || $("#name").val()=='员工请假申请'){
 			if(day_num==0 && hour_num==0){
 				ui_error('请填写共计时间');
 				return;
 			}
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'leave'))}";
-		}else if($("#name").val()=='加班调休申请'){
+		}else if($("#name").val()=='加班申请'){
 			if(day_num==0 && hour_num==0){
 				ui_error('请填写共计时间');
 				return;
 			}
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'over_time'))}";
-		}else if($("#name").val()=='用人申请流程'){
+		}else if($("#name").val()=='部门招聘需求申请'){
 			if($("#apply_reason_2").is(':checked')){
 				var url = "{:U('flow/ajaxgetflow',array('type'=>'employment','add'=>'1'))}";
 			}else{
@@ -322,7 +321,7 @@
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'internal'))}";
 		}else if($("#name").val()=='会务申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'metting_communicate'))}";
-		}else if($("#name").val()=='名片使用'){
+		}else if($("#name").val()=='名片申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'card_application'))}";
 		}else if($("#name").val()=='文件审批申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'notice_file'))}";
@@ -330,13 +329,13 @@
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'notice_personnel'))}";
 		}else if($("#name").val()=='合同申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'contract'))}";
-		}else if($("#name").val()=='离职申请流程'){
+		}else if($("#name").val()=='员工离职申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'resignation_application'))}";
 		}else if($("#name").val()=='试用期评估表'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'probation_evaluate'))}";
 		}else if($("#name").val()=='转正申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'regular_work_application'))}";
-		}else if($("#name").val()=='员工调岗、调职申请'){
+		}else if($("#name").val()=='员工调动申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'personnel_changes'))}";
 		}else if($("#name").val()=='员工调薪申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'salary_changes'))}";
@@ -346,7 +345,7 @@
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'office_supplies_application'))}";
 		}else if($("#name").val()=='办公用品领用申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'office_use_application'))}";
-		}else if($("#name").val()=='物品采购调拨申请单'){
+		}else if($("#name").val()=='物品采购调拨申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'goods_procurement_allocation'))}";
 		}else if($("#name").val()=='公交卡使用申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'bus_card_use'))}";

@@ -2229,9 +2229,9 @@ function checkFlowNotMe($array,$uid=null){
 }
 
 function getFlow($uid,$day,$unique=true){
-	if($day<3 && $day>=0){
+	if($day<=3 && $day>=0){
 		return getParentid($uid);
-	}elseif ($day>=3 && $day<=7){
+	}elseif ($day>3 && $day<7){
 		if(getRank($uid) == 3){//主管，助理，员工
 			if($unique){
 				return checkFlowUp(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid))));
@@ -2245,7 +2245,7 @@ function getFlow($uid,$day,$unique=true){
 		}else{
 			return false;
 		}
-	}elseif($day>7){
+	}elseif($day>=7){
 		if(getRank($uid) == 3){//主管，助理，员工
 			if($unique){
 				return checkFlowUp(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));

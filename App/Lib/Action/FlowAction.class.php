@@ -652,11 +652,11 @@ class FlowAction extends CommonAction {
 		$q = $objPHPExcel -> setActiveSheetIndex(0);
 		//第一列为用户
 		if($hui != '1'){
-			if($type=='office_use_application'){//办公用品领用
+			if($type=='office_use_application'){//办公用品领用申请
 				$q = $q -> setCellValue("A$i", '用户');
-			}elseif ($type=='goods_procurement_allocation'){//物品采购调拨申请单
+			}elseif ($type=='goods_procurement_allocation'){//物品采购调拨申请
 				$q = $q -> setCellValue("A$i", '用户');
-			}elseif ($type=='office_supplies_application'){//办公用品采购
+			}elseif ($type=='office_supplies_application'){//办公用品采购申请
 				$q = $q -> setCellValue("A$i", '用户');
 			}else{
 				$q = $q -> setCellValue("A$i", '用户');
@@ -1064,8 +1064,8 @@ class FlowAction extends CommonAction {
 		$q = $q -> setCellValue("G$i", '备注');
 		
 		// Rename worksheet
-		$title = '办公用品采购';
-		$objPHPExcel -> getActiveSheet() -> setTitle('办公用品采购');
+		$title = '办公用品采购申请';
+		$objPHPExcel -> getActiveSheet() -> setTitle('办公用品采购申请');
 		
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel -> setActiveSheetIndex(0);
@@ -1115,8 +1115,8 @@ class FlowAction extends CommonAction {
 				$flow_data['user_id'] = get_user_id();
 				$flow_data['user_name'] = get_user_name();
 				$flow_data['doc_no'] = 1;
-				$flow_data['name'] = '办公用品采购';
-				$type = M('FlowType')->where(array('name'=>array('eq','办公用品采购')))->find();
+				$flow_data['name'] = '办公用品采购申请';
+				$type = M('FlowType')->where(array('name'=>array('eq','办公用品采购申请')))->find();
 				$flow_data['type'] = $type['id'];
 				
 				$uid = get_user_id();
@@ -1192,8 +1192,8 @@ class FlowAction extends CommonAction {
 			$q ->getColumnDimension(chr($start+$k))->setWidth(20);
 		}
 		// Rename worksheet
-		$title = '物品采购调拨申请单';
-		$objPHPExcel -> getActiveSheet() -> setTitle('物品采购调拨申请单');
+		$title = '物品采购调拨申请';
+		$objPHPExcel -> getActiveSheet() -> setTitle('物品采购调拨申请');
 	
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 		$objPHPExcel -> setActiveSheetIndex(0);
@@ -1245,8 +1245,8 @@ class FlowAction extends CommonAction {
 				$flow_data['user_id'] = get_user_id();
 				$flow_data['user_name'] = get_user_name();
 				$flow_data['doc_no'] = 1;
-				$flow_data['name'] = '物品采购调拨申请单';
-				$type = M('FlowType')->where(array('name'=>array('eq','物品采购调拨申请单')))->find();
+				$flow_data['name'] = '物品采购调拨申请';
+				$type = M('FlowType')->where(array('name'=>array('eq','物品采购调拨申请')))->find();
 				$flow_data['type'] = $type['id'];
 	
 				$uid = get_user_id();
@@ -1303,7 +1303,13 @@ class FlowAction extends CommonAction {
 		$flow_type = $model -> find($type_id);
 		$this -> assign("flow_type", $flow_type);
 		$this -> assign("type_id", $type_id);
-		
+		//区分人力资源和行政管理
+		$fn = $flow_type['name'];
+		$menu_first_title = '行政管理';
+		if($fn == '员工请假申请' || $fn == '外勤/出差申请' || $fn == '部门招聘需求申请' || $fn == '员工调动申请' || $fn == '试用期评估表' || $fn == '员工调薪申请' || $fn == '转正申请' || $fn == '员工离职申请' || $fn == '员工离职交接申请' || $fn == '出勤异常申请' || $fn == '加班申请' || $fn == '每月考勤表' || $fn == '每月打卡信息'){
+			$menu_first_title = '人力资源';
+		}
+		$this -> assign('first_title',$menu_first_title);
 		$model_flow_field = D("FlowField");
 		$field_list = $model_flow_field -> get_field_list($type_id);
 		$this -> assign("field_list", $field_list);
@@ -1391,7 +1397,7 @@ class FlowAction extends CommonAction {
 			default :return false;
 		}
 	}
-	public function ajaxgetflow_leave($array=array(),$flow_log){//外勤/出差单,请假/调休单
+	public function ajaxgetflow_leave($array=array(),$flow_log){//外勤/出差申请,员工请假申请
 		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
 		$day = $_POST['day']?$_POST['day']:$array['day'];
 		if(empty($uid) || ($day<0)){
@@ -1876,7 +1882,7 @@ class FlowAction extends CommonAction {
 			}
 			
 			//加减资产
-// 			if(getModelName($list)=='FlowOfficeSuppliesApplication' || getModelName($list)=='FlowOfficeUseApplication'){//办公用品采购或领用
+// 			if(getModelName($list)=='FlowOfficeSuppliesApplication' || getModelName($list)=='FlowOfficeUseApplication'){//办公用品采购申请或领用
 // 				$flag = 1; 
 // 				if(getModelName($list)=='FlowOfficeUseApplication'){
 // 					$flag = -1;
@@ -2323,7 +2329,7 @@ class FlowAction extends CommonAction {
 					$model -> $v = $$v;
 				}
 			}
-// 			if(getModelName($flow_id)=='FlowOfficeSuppliesApplication' || getModelName($flow_id)=='FlowOfficeUseApplication'){//办公用品采购或领用
+// 			if(getModelName($flow_id)=='FlowOfficeSuppliesApplication' || getModelName($flow_id)=='FlowOfficeUseApplication'){//办公用品采购申请或领用
 // 				$flag = 1; 
 // 				if(getModelName($flow_id)=='FlowOfficeUseApplication'){
 // 					$flag = -1;
@@ -2396,7 +2402,7 @@ class FlowAction extends CommonAction {
 		}
 		if($can_cancel==1){
 			$res = M('Flow')->where(array('id'=>$flow_id))->setField('is_del',1);
-			if($res && getModelName($flow_id)=='FlowLeave'){//请假/调休单
+			if($res && getModelName($flow_id)=='FlowLeave'){//员工请假申请
 				$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 				$create_time = strtotime($flow['start_time']);
 				if($flow['style']=='调休'){
@@ -2463,7 +2469,7 @@ class FlowAction extends CommonAction {
 				$flow_id = $model -> flow_id;
 				$step = $model -> step;
 				
-				if(getModelName($flow_id)=='FlowOfficeSuppliesApplication' || getModelName($flow_id)=='FlowOfficeUseApplication'){//办公用品采购或领用
+				if(getModelName($flow_id)=='FlowOfficeSuppliesApplication' || getModelName($flow_id)=='FlowOfficeUseApplication'){//办公用品采购申请或领用
 					if(getModelName($flow_id)=='FlowOfficeUseApplication'){
 						$flag = -1;
 						$flow = M('FlowOfficeUseApplication')->where(array('flow_id'=>array('eq',$flow_id)))->find();
@@ -2519,7 +2525,7 @@ class FlowAction extends CommonAction {
 								$data['status'] = 1;
 								M('FlowHour')->add($data);
 							}
-						}elseif(getModelName($flow_id)=='FlowLeave'){//请假/调休单
+						}elseif(getModelName($flow_id)=='FlowLeave'){//员工请假申请
 							$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 							$create_time = strtotime($flow['start_time']);
 							$end_time = strtotime($flow['end_time']);
@@ -2658,7 +2664,7 @@ class FlowAction extends CommonAction {
 					$this -> _pushReturn($new, "您有一个流程被否决", 1, $user_id);
 
 					
-					if(getModelName($flow_id)=='FlowLeave'){//请假/调休单
+					if(getModelName($flow_id)=='FlowLeave'){//员工请假申请
 						$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 						$create_time = strtotime($flow['start_time']);
 						if($flow['style']=='调休'){
@@ -2789,9 +2795,10 @@ class FlowAction extends CommonAction {
 	
 		$menu2 = array();
 		$menu2 = M("Goods") -> where('is_del=0') -> field('id as goods_id,cate_id as pid,goods_name as name,market_price,spec') -> order('sort asc') -> select();
-		
+		if(empty($menu2)){
+			$menu2 = array();
+		}
 		$tree = list_to_tree(array_merge($menu,$menu2));
-		
 		$this -> assign('menu', popup_tree_menu($tree,0,100,array('goods_id','market_price','spec')));
 		$this -> assign('sid', $_GET['id']);
 		$this -> assign('pid', $pid);
@@ -3207,7 +3214,7 @@ class FlowAction extends CommonAction {
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
 				$info['attendance_time'] = $create_time;
-				$remark = '出勤证明流程';
+				$remark = '出勤异常申请';
 				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
 			case 'FlowOutside' : //outside 外勤单
@@ -3215,7 +3222,7 @@ class FlowAction extends CommonAction {
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
 				$info['attendance_time'] = $create_time;
-				$remark = '外勤/出差单';
+				$remark = '外勤/出差申请';
 				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
 		}
