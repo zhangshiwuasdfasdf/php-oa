@@ -2227,7 +2227,23 @@ function checkFlowNotMe($array,$uid=null){
 		return $array;
 	}
 }
-
+/*
+ * 相邻元素相同则过滤（只留一个）；
+ * 不相邻元素可以相同
+ */
+function array_unique2($array){
+	if(!empty($array) && is_array($array)){
+		$t = '';
+		foreach ($array as $k=>$v){
+			if($v == $t){
+				unset($array[$k]);
+			}else{
+				$t = $v;
+			}
+		}
+	}
+	return $array;
+}
 function getFlow($uid,$day,$unique=true){
 	if($day<3 && $day>=0){
 		return getParentid($uid);
