@@ -3035,7 +3035,6 @@ class FlowAction extends CommonAction {
 		}else{
 			$flow_common = $this->_list(M('Flow'), $map);
 		}
-		
 		$flow_ext = array();
 		foreach ($flow_common as $k=>$v){
 			$model_name = getModelName($v['id']);
