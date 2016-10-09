@@ -124,3 +124,9 @@
 		<b>带*的为必填选项</b>
 	</div>
 	</div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>系统管理</li><li>公司信息管理</li><li><a href='{:U("User/index")}'>员工登记</a></li><li>新建</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

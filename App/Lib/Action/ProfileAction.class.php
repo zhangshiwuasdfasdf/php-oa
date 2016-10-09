@@ -23,7 +23,7 @@ class ProfileAction extends CommonAction {
 	}
 	
 	public function upload() {
-		$this -> _upload();
+		$this -> _upload();	
 	}
 
 	//重置密码

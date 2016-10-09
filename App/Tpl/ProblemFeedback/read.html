@@ -1,6 +1,5 @@
 <layout name='Layout/ace_layout' />
 <input type="hidden" name="id" id="id" value="{$vo.id}">
-{:W('PageHeader',array('name'=>$forum['name'],'search'=>'N'))}
 <table class="table table-bordered">
 	<tr>
 		<td style="width:145px">
@@ -175,3 +174,9 @@
 #erReply .form_data{ position: absolute; top: 0; left: 0; width: 92%; height: auto;}
 hr{border-color: #ccc;}
 </style>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>信息管理</li><li><a href='{:U("problem_feedback/index")}'>ERP问题反馈</a></li><li>查看ERP问题反馈</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

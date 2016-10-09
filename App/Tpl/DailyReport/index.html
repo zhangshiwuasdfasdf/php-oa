@@ -83,7 +83,6 @@ img{ margin:0; padding:0;}
 .zzzy2{position: absolute; display: block; width: 15px; height: 3px; left: -15px; top: 10px;}
 
 </style>
-
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default  display-none"  id="adv_search">
 		<div class="panel-body">
@@ -486,12 +485,13 @@ img{ margin:0; padding:0;}
 	<ul>
 		<li class="thead">
 			<div class="pull-left">
-				<span class="col-10">部门</span>
-				<span class="col-10">撰写人</span>
-				<span class="col-10">岗位</span>
+				<span class="col-8">编号</span>
+				<span class="col-8">部门</span>
+				<span class="col-8">撰写人</span>
+				<span class="col-12">岗位</span>
 				<span class="col-10">日期</span>
 				<span class="col-25">最近评论</span>
-				<span class="col-25">已查看</span>
+				<span class="col-20">已查看</span>
 			</div>
 			<div class="pull-right">
 				<span class="col-10">状态</span>
@@ -507,12 +507,13 @@ img{ margin:0; padding:0;}
 				<foreach name="list" item="vo">
 					<li class="tbody">
 						<div class="pull-left">
-							<span class="col-10">{$vo.dept_name}&nbsp;</span>
-							<span class="col-10">{$vo.user_name}&nbsp;</span>
-							<span class="col-10">{$vo.pos_id|get_dept_name_by_id}&nbsp;</span>
+							<span class="col-8">{$vo.create_time|date='ym',###}{$vo.id|formatto4w}&nbsp;</span>
+							<span class="col-8">{$vo.dept_name}&nbsp;</span>
+							<span class="col-8">{$vo.user_name}&nbsp;</span>
+							<span class="col-12">{$vo.duty}&nbsp;</span>
 							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}" target="_blank">{$vo.work_date}&nbsp;</a></span>
 							<span class="col-25">{$daily_report_extension.$key.comment_last}&nbsp;</span>
-							<span class="col-25">{$report.$key.0.look_name} {$report.$key.1.look_name}&nbsp;</span>
+							<span class="col-20">{$report.$key.0.look_name} {$report.$key.1.look_name}&nbsp;</span>
 						</div>
 						<div class="pull-right">
 							<span class="col-10">{$vo.is_submit|is_submit}&nbsp;</span>
@@ -532,3 +533,9 @@ img{ margin:0; padding:0;}
 		</empty>
 	</ul>
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>个人中心</li><li>我的日报</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

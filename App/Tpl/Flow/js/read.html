@@ -1,9 +1,38 @@
 <script type="text/javascript">
 	function approve() {
+		var flag = false;
+		var msg = '';
+		$("input[check='require']").each(function(){
+			if($(this).val().trim() == ''){
+				msg = $(this).attr('msg');
+				flag = true;return false;
+			}
+		});
+		if(flag){
+			alert(msg);return false;
+		}
+		if($("#hr_execute").attr('disabled') != 'disabled'){
+			if($("#hr_execute").val() == '' && $("#hr_add_date").val() == '' && $("#hr_dismiss").val() == '' ){
+			alert('请填写日期');
+			return false;
+			}	
+		}
+		
 		sendForm("form_confirm", "{:U('mark','action=approve')}", "{:U('read','id='.$vo['id'])}");
 	}
 
 	function reject() {
+		var flag = false;
+		var msg = '';
+		$("input[check='require']").each(function(){
+			if($(this).val().trim() == ''){
+				msg = $(this).attr('msg');
+				flag = true;return false;
+			}
+		});
+		if(flag){
+			alert(msg);return false;
+		}
 		sendForm("form_confirm", "{:U('mark','action=reject')}", "{:U('read','id='.$vo['id'])}");
 	}
 	

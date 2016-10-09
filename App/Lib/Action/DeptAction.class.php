@@ -16,11 +16,17 @@ class DeptAction extends CommonAction {
 	protected $config = array('app_type' => 'master', 'action_auth' => array('index' => 'admin', 'winpop4' => 'read'));
 
 	public function index(){
+		
 		$node = M("Dept");
 		$menu = array();
 		$menu = $node -> where($map) -> field('id,pid,name,is_del') -> order('sort asc') -> select();
 		$tree = list_to_tree($menu);
-		$this -> assign('menu', popup_tree_menu($tree));
+		
+		$a = popup_tree_menu($tree);
+		$a = str_replace('tree_menu','submenu',$a);
+		$a = str_replace('<a class=""','<a class="dropdown-toggle"',$a);
+		$a = preg_replace('/submenu/','nav-list',$a,1);
+		$this -> assign('menu', $a);
 
 		$model = M("Dept");
 		$list = $model -> order('sort asc') -> getField('id,name');

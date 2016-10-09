@@ -3,7 +3,7 @@
 	<div class="operate panel panel-default">
 		<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
 		<div class="pull-left">
-			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">权限组管理</span>
+			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">权限设置</span>
 		</div>
 			<div class="pull-right">
 				<select name="eq_pid" id="eq_pid" class="form-control col-10 pull-left" onchange="submit_search();">
@@ -72,3 +72,9 @@
 		</form>
 	</div>
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>系统管理</li><li>权限管理</li><li>权限设置</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

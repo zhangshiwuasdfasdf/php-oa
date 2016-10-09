@@ -1,5 +1,4 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'个人简历','search'=>'N'))}
 <h1 style="margin:auto; text-align:center; line-height:40px;">员工入职登记表</h1>
 <form id="form_data" name="form_data" method="post" class="form-horizontal">
 <input type="hidden" id="add_file" name="add_file">
@@ -378,3 +377,9 @@
   </tr>
 </table>
 </form>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>个人中心</li><li>用户设置</li><li>个人简历</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

@@ -1302,6 +1302,7 @@ class FlowAction extends CommonAction {
 		$model = M("FlowType");
 		$flow_type = $model -> find($type_id);
 		$this -> assign("flow_type", $flow_type);
+		$this -> assign("type_id", $type_id);
 		
 		$model_flow_field = D("FlowField");
 		$field_list = $model_flow_field -> get_field_list($type_id);
@@ -1357,7 +1358,6 @@ class FlowAction extends CommonAction {
 		$flow_arr['add'] = '0';
 		
 		$flow_message = $this->_getFlowMessageByTypeName($flow_type['name'],$flow_arr);
-		
 		$this -> assign("confirm_text", $flow_message['confirm_text']);
 		// 		echo $flow_message['confirm_text'];
 		
@@ -2843,31 +2843,31 @@ class FlowAction extends CommonAction {
 	 */
 	public function _getFlowMessageByTypeName($flow_type_name,$flow_arr,$flow_log=null){
 		//获取审核流程（加上重复的，加上空的）
-		if($flow_type_name=='用人申请流程'){
+		if($flow_type_name=='部门招聘需求申请'){
 			$flow_message = $this->ajaxgetflow_employment($flow_arr,$flow_log);
-		}else if($flow_type_name=='请假/调休单' || $flow_type_name=='外勤/出差单'){
+		}else if($flow_type_name=='员工请假申请' || $flow_type_name=='外勤/出差申请'){
 			$flow_message = $this->ajaxgetflow_leave($flow_arr,$flow_log);
 			
 			if(!is_array($flow_message['flow']) && !empty($flow_message['flow'])){
 				$flow_message['flow'] = array($flow_message['flow']);
 			}
-		}else if($flow_type_name=='出勤证明流程'){
+		}else if($flow_type_name=='出勤异常申请'){
 			$flow_message = $this->ajaxgetflow_attendance($flow_arr,$flow_log);
-		}else if($flow_type_name=='加班调休申请'){
+		}else if($flow_type_name=='加班申请'){
 			$flow_message = $this->ajaxgetflow_over_time($flow_arr,$flow_log);
-		}else if($flow_type_name=='离职申请流程'){
+		}else if($flow_type_name=='员工离职申请'){
 			$flow_message = $this->ajaxgetflow_resignation($flow_arr,$flow_log);
 		}else if($flow_type_name=='试用期评估表'){
 			$flow_message = $this->ajaxgetflow_probation($flow_arr,$flow_log);
 		}else if($flow_type_name=='转正申请'){
 			$flow_message = $this->ajaxgetflow_regular_work_application($flow_arr,$flow_log);
-		}elseif ($flow_type_name=='员工调岗、调职申请'){
+		}elseif ($flow_type_name=='员工调动申请'){
 			$flow_message = $this->ajaxgetflow_personnel_changes($flow_arr,$flow_log);
 		}elseif ($flow_type_name=='员工调薪申请'){
 			$flow_message = $this->ajaxgetflow_salary_changes($flow_arr,$flow_log);
-		}elseif ($flow_type_name=='物品采购调拨申请单'){
+		}elseif ($flow_type_name=='物品采购调拨申请'){
 			$flow_message = $this->ajaxgetflow_goods_procurement_allocation($flow_arr,$flow_log);
-		}elseif ($flow_type_name=='名片使用'){
+		}elseif ($flow_type_name=='名片申请'){
 			$flow_message = $this->ajaxgetflow_card_application($flow_arr,$flow_log);
 		}elseif ($flow_type_name=='内部联络单'){
 			$flow_message = $this->ajaxgetflow_internal($flow_arr,$flow_log);
@@ -3179,7 +3179,10 @@ class FlowAction extends CommonAction {
 		die;
 		
 	}
-	
+	/**
+	 * 当审批最后一个人确认的时候就添加一条考勤记录
+	 * @param integer $flow_id
+	 */
 	private function addAttendance($flow_id){
 		//请假调休结束后,向考勤表中添加一条记录
 		$user_flow = M('Flow')->find($flow_id);//找到请假人的信息
@@ -3187,7 +3190,7 @@ class FlowAction extends CommonAction {
 		$info['user_id'] = $user_flow['user_id'];
 		$info['dept_name'] = $user_flow['dept_name'];
 		$info['user_name'] = $user_flow['user_name'];
-		$info['num'] =  $user_flow['id'];
+		$info['num'] =  '';
 		$info['machine_no'] = '1';
 		$info['import_time'] = time();
 		$flag = getModelName($flow_id);
@@ -3196,41 +3199,87 @@ class FlowAction extends CommonAction {
 				$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
-				$info['attendance_time'] = $create_time;
-				$info['mark'] = 'in';
-				$info['style'] = '请假调休单_' .$flow['style'];
-				$atten -> add($info);
-				//结束时间
-				$info['attendance_time'] = $end_time;
-				$info['mark'] = 'out';
-				$atten -> add($info);
+				$remark = '请假调休单_' .$flow['style'];
+				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
 			case 'FlowAttendance' : //attendance 出勤单
 				$flow = M('FlowAttendance')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
 				$info['attendance_time'] = $create_time;
-				$info['mark'] = 'in';
-				$info['style'] = '出勤证明流程';
-				$atten -> add($info);
-				//结束时间
-				$info['attendance_time'] = $end_time;
-				$info['mark'] = 'out';
-				$atten -> add($info);
+				$remark = '出勤证明流程';
+				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
 			case 'FlowOutside' : //outside 外勤单
 				$flow = M('FlowOutside')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
 				$info['attendance_time'] = $create_time;
-				$info['mark'] = 'in';
-				$info['style'] = '外勤/出差单';
-				$atten -> add($info);
-				//结束时间
-				$info['attendance_time'] = $end_time;
-				$info['mark'] = 'out';
-				$atten -> add($info);
+				$remark = '外勤/出差单';
+				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
+		}
+	}
+	/**
+	 * 获取并修改和添加动态考勤记录信息 
+	 */
+	private function getAttendanceInfo($create_time,$finish_time,$info,$remark,$user_id){
+		$atten = M('Attendance');
+		$where['is_del'] = 0;
+		$where['user_id'] = $user_id;
+		$where['mark'] = array('in',array('in','out'));
+		$start_time = strtotime(date('Y-m-d',$create_time));
+		$end_time = strtotime(date('Y-m-d',$create_time)) + (3600*24-1);
+		$where['attendance_time'] = array(array('gt',$start_time),array('lt',$end_time));
+		$listAtten = $atten -> where($where) -> select();
+		if(!empty($listAtten)){
+			$arr = array();
+			foreach ($listAtten as $k => $v){
+				if($v['mark'] == 'in'){
+					if(($v['attendance_time'] > $create_time)){
+						$v['mark'] = '';
+						$arr = $v;
+						$info['mark'] = 'in';
+					} else{
+						$v['mark'] = 'in';
+						$arr = $v;
+						$info['mark'] = '';
+					}
+				}
+			}
+			$flag = $atten -> save($arr);
+			//开始时间
+			$info['attendance_time'] = $create_time;
+			$info['style'] = $remark;
+			$atten -> add($info);
+			$out_arr = array();
+			foreach ($listAtten as $k => $v){
+				if($v['mark'] == 'out'){
+					if(($v['attendance_time'] < $finish_time)){
+						$v['mark'] = '';
+						$out_arr = $v;
+						$info['mark'] = 'out';
+					} else{
+						$v['mark'] = 'out';
+						$out_arr = $v;
+						$info['mark'] = '';
+					}
+				}
+			}
+			$atten -> save($out_arr);
+			//结束时间
+			$info['attendance_time'] = $finish_time;
+			$atten -> add($info);
+		}else{
+			//开始时间
+			$info['mark'] = 'in';
+			$info['style'] = $remark;
+			$info['attendance_time'] = $create_time;
+			$atten -> add($info);
+			//结束时间
+			$info['mark'] = 'out';
+			$info['attendance_time'] = $finish_time;
+			$atten -> add($info);
 		}
 	}
 }

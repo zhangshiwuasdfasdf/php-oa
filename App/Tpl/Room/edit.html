@@ -109,3 +109,9 @@
 		<input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
 	</div>
 </form>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>行政管理</li><li>会议室预定</li><li><a href='{:U("room/index")}'>会议室管理</a></li><li>编辑</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

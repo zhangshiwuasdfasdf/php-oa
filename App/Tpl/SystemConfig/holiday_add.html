@@ -1,26 +1,25 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'新建系统参数','search'=>'N'))}
-
 <div class="operate panel panel-default">
-	<div class="panel-body">
+	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
 		<div class="pull-left">
-			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
+			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">新增节假日</span>
 		</div>
 		<div class="pull-right">
+			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
 			<a onclick="save();" class="btn btn-sm btn-primary">保存</a>
 		</div>
 	</div>
 </div>
 <form method='post' id="form_data" action="" name="form_data"  class="well form-horizontal clearfix">
 	<input type="hidden" name="opmode" id="opmode" value="add">
-	<div class="form-group col-xs-12">
-		<label class="col-sm-4 control-label" for="name">日期*：（例如：20160101）</label>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="name">日期*：（例如：20160101）</label>
 		<div class="col-sm-8">
 			<input class="form-control" type="text" id="date" name="date" check="require" msg="请输入日期">
 		</div>
 	</div>
-	<div class="form-group col-xs-12">
-		<label class="col-sm-4 control-label" for="is_del">放假/调休*：</label>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="is_del">放假/调休*：</label>
 		<div class="col-sm-8">
 			<select   name="is_holiday" id="is_holiday" class="form-control">
 				<option value="1">放假</option>
@@ -28,10 +27,16 @@
 			</select>
 		</div>
 	</div>
-	<div class="form-group col-xs-12">
-		<label class="col-sm-4 control-label" for="name">备注</label>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="name">备注</label>
 		<div class="col-sm-8">
 			<input class="form-control" type="text" id="remark" name="remark">
 		</div>
 	</div>
 </form>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>系统管理</li><li>系统设定</li><li><a href='{:U("SystemConfig/holiday")}'>节假日设置</a></li><li>新增</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

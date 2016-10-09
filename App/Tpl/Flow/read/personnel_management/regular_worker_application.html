@@ -1,5 +1,6 @@
 <input type="hidden" id="name" name="name" value="{$flow_type.name}">
 <input type="hidden" id="dept_id" name="dept_id" value="{$vo.dept_id}">
+<div style="font-size:24px; text-align:center; color:#2679b5; font-weight:bold; height:60px;">转正申请</div>
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
   <tr>
     <td width="12%" height="36" align="center">姓名</td>
@@ -12,7 +13,7 @@
     <td width="13%" height="36"><input id="entry_date" name="entry_date" value="{$vo.entry_date}" data-date-format="yyyy-mm-dd" style="outline:none; border:none; width:97%; height:36px; padding-left:5px;" type="text" class="form-control input-date" disabled/></td>
   </tr>
   <tr>
-    <td width="12%" height="36" align="center">近三个月绩效考核</td>
+    <td width="12%" height="36" align="center">近三个月绩效考核{$flow_index.1}</td>
     <td width="13%" height="36"><input id="last1" name="last1" value="{$vo.last1}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
     <td width="12%" height="36"><input id="last2" name="last2" value="{$vo.last2}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
     <td width="13%" height="36"><input id="last3" name="last3" value="{$vo.last3}" style="outline:none; border:none; width:97%; height:36px; text-align:center;" type="text" disabled/></td>
@@ -78,22 +79,22 @@
   {$confirm_text}
 </table>
 
-<neq name="is_edit" value="2">
-		<div class="form-group">
-			<div class="col-xs-12">
-				<eq name = "is_edit" value="0">
-					<div class="content_wrap">
-						<iframe class="content_iframe"></iframe>
-						<textarea class="content display-none"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
-					</div>
-				</eq>				
-				<eq name="is_edit" value="1">
-					<textarea class="editor content display-none"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
-					<eq>
-			</div>
-		</div>
+<!-- <neq name="is_edit" value="2">
+    <div class="form-group">
+      <div class="col-xs-12">
+        <eq name = "is_edit" value="0">
+          <div class="content_wrap">
+            <iframe class="content_iframe"></iframe>
+            <textarea class="content display-none"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
+          </div>
+        </eq>        
+        <eq name="is_edit" value="1">
+          <textarea class="editor content display-none"  name="content" style="width:100%;height:300px;" >{$vo.content}</textarea>
+          <eq>
+      </div>
+    </div>
 </neq>
-	
+   -->
 <notempty name="vo.add_file">
 		<div class="form-group">
 			<label class="col-sm-2 control-label" >附件：</label>

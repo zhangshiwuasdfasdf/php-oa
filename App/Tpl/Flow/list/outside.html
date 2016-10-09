@@ -102,14 +102,14 @@
 	<ul>
 		<li class="thead" style="padding-left:10px">
 			<div class="pull-left">
-				<span class="col-10 ">编号</span>
-				<span class="col-16 ">申请时间</span>	
-				<span class="col-10 ">部门</span>	
-				<span class="col-10 ">岗位</span>	
-				<span class="col-10 ">申请人</span>				
+				<span class="col-8 ">编号</span>
+				<span class="col-15 ">申请时间</span>	
+				<span class="col-8 ">部门</span>	
+				<span class="col-8 ">岗位</span>	
+				<span class="col-8 ">申请人</span>				
 			</div>
 			<div class="pull-right">
-				<span  class="col-9  ">外勤/出差</span>
+				<span  class="col-8  ">外勤/出差</span>
 				<span  class="col-10  "> 天数</span>
 				<span  class="col-10  "> 出发时间</span>
 				<span  class="col-10  "> 结束时间</span>
@@ -133,19 +133,19 @@
 				<foreach name="list" item="vo">
 					<li class="tbody">
 						<div class="pull-left">
-							<span class="col-10 ">&nbsp;{$vo.create_time|date='ym',###}{$flow_ext.$key.id|formatto4w}</span>
-							<span class="col-16  ">&nbsp;{$vo.create_time|date='Y-m-d H:i:s',###}</span>
-							<span class="col-10 ">&nbsp;{$vo.dept_name}</span>	
-							<span class="col-10 ">&nbsp;{$flow_ext.$key.pos_name}</span>
-							<span class="col-10 ">&nbsp;{$vo.user_name}</span>
+							<span class="col-8">&nbsp;{$vo.create_time|date='ym',###}{$flow_ext.$key.id|formatto4w}</span>
+							<span class="col-15">&nbsp;{$vo.create_time|date='Y-m-d H:i:s',###}</span>
+							<span class="col-8">&nbsp;{$vo.dept_name}</span>	
+							<span class="col-8">&nbsp;{$flow_ext.$key.pos_name}</span>
+							<span class="col-8">&nbsp;{$vo.user_name}</span>
 						</div>
 						<div class="pull-right">
-							<span class="col-9" style="height:20px;">&nbsp;{$flow_ext.$key.outside_type}</span>
-							<span  class="col-10  ">&nbsp;{$flow_ext.$key.day_num}天{$flow_ext.$key.hour_num}小时</span>
-							<span  class="col-10  ">&nbsp;{$flow_ext.$key.start_time}</span>
-							<span  class="col-10  ">&nbsp;{$flow_ext.$key.end_time}</span>
-							<span class="col-6  ">&nbsp;{$vo.step|show_step}</span>
-							<span class="col-6  "><if condition="($vo.step eq '10')"><a href="{:U('edit','id='.$vo['id'].'&fid=darft')}">修改</a><a href="{:U('del','id='.$vo['id'])}">删除</a></if></span>
+							<span class="col-8" style="height:20px;">&nbsp;{$flow_ext.$key.outside_type}</span>
+							<span  class="col-10">&nbsp;{$flow_ext.$key.day_num}天{$flow_ext.$key.hour_num}小时</span>
+							<span  class="col-10">&nbsp;{$flow_ext.$key.start_time}</span>
+							<span  class="col-10">&nbsp;{$flow_ext.$key.end_time}</span>
+							<span class="col-6">&nbsp;{$vo.step|show_step}</span>
+							<span class="col-6"><if condition="($vo.step eq '10')"><a href="{:U('edit','id='.$vo['id'].'&fid=darft')}">修改</a><a href="{:U('del','id='.$vo['id'])}">删除</a></if></span>
 						</div>
 						<div class="autocut auto">
 							<if condition="($vo.step eq '10')">
@@ -176,3 +176,9 @@
 		</div>
 	</empty>
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>人力资源</li><li>外勤/出差申请</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

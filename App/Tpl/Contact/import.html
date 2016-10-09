@@ -1,5 +1,4 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'导入联系人','search'=>'N'))}
 <form method='post' id="form_data" enctype="multipart/form-data">
 	<input type="hidden" name="opmode" value="import">
 	<ol>
@@ -19,3 +18,9 @@
 	<input class="btn btn-sm btn-primary" type="button" value="导入" onclick="save();">
 	<input  class="btn btn-sm btn-default" type="button" value="取消" onclick="go_return_url();">
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>个人中心</li><li><a href='{:U("Contact/index")}'>消息</a></li><li>导入联系人</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

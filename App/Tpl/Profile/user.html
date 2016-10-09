@@ -998,3 +998,9 @@
         })
        	$('.ul1 li').eq(profile_user_index).click();
     </script>
+    <script type="text/javascript">
+$(function() {
+	var html = "<li>档案中心</li><li><a href='{:U("profile/userlist")}'>员工档案管理</a></li><li>查看员工档案</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

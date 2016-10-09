@@ -1,5 +1,4 @@
 <layout name='Layout/ace_layout' />
-{:W('PageHeader',array('name'=>'每月打卡信息','search'=>'N'))}
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default "  id="adv_search">
 		<div class="panel-body">
@@ -31,12 +30,9 @@
 				</div>
 			</div>
 			<div class="form-group col-sm-3">
-				<label class="col-sm-4 control-label" for="eq_user_name">姓名：</label>
+				<label class="col-sm-4 control-label" for="li_user_name">姓名：</label>
 				<div class="col-sm-8">
-					<select class="form-control" name="eq_user_name">
-							<option value="">选择姓名</option>
-							{:fill_option($user_name)};
-					</select>
+					<input  class="form-control" type="text" id="li_user_name" name="li_user_name" >
 				</div>
 			</div>
 			<div class="form-group col-sm-3">
@@ -51,9 +47,9 @@
 					<input  class="form-control" type="text" id="eq_num" name="eq_num" >
 				</div>
 			</div>
-			<div class="form-group col-sm-3">
+			<div class="col-sm-3">
 				<label class="col-sm-4 control-label" for="be_attendance_time">考勤时间日期：</label>
-				<div class="col-sm-8">
+				<div class="col-sm-8" style="width: 62%;">
 					<div class="input-daterange input-group" >
 					    <input type="text" class="input-sm form-control text-center" name="be_attendance_time" />
 						<span class="input-group-addon">-</span>
@@ -61,30 +57,33 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group col-sm-3">
+			<div class="col-sm-3">
 					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
 				</div>
 		</div>
 	</div>
 </form>
 <div class="operate panel panel-default">
-	<div class="panel-body">
+	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
 		<div class="pull-left">
-			<a class="btn btn-sm btn-danger" onclick="mark('del');">删除</a>
+			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">每月打卡信息</span>
+		</div>
+		<div class="pull-right">
 			<div class="btn-group">
-					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#">管理<b class="fa fa-caret-down"></b></a>
-					<ul class="dropdown-menu">
-						<li>
-							<a class="link down" onclick="import_attendance();">导入</a>
-						</li>
-						<li>
-							<a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode('2548'))}">模板</a> 
-						</li>
-						<li>
-							<a class="link down" onclick="export_attendance();">导出</a>
-						</li>
-					</ul>
-				</div>
+				<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#">管理<b class="fa fa-caret-down"></b></a>
+				<ul class="dropdown-menu">
+					<li>
+						<a class="link down" onclick="import_attendance();">导入</a>
+					</li>
+					<li>
+						<a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode('2548'))}">模板</a> 
+					</li>
+					<li>
+						<a class="link down" onclick="export_attendance();">导出</a>
+					</li>
+				</ul>
+			</div>
+			<a class="btn btn-sm btn-danger" onclick="mark('del');">删除</a>
 		</div>
 		<div class="pull-right"></div>
 	</div>
@@ -117,9 +116,9 @@
 			<div class="pull-left">
 				<span class="col-15 ">导入时间</span>
 			</div>
-			<!-- <div class="pull-right">
-				<span class="col-5 ">操作</span>
-			</div> -->
+			<div class="pull-left">
+				<span class="col-20 ">备注</span>
+			</div>
 		</li>
 		<empty name="list">
 			<li class="no-data">
@@ -154,10 +153,9 @@
 					<div class="pull-left">
 						<span class="col-15 ">{$vo.import_time|date='Y-m-d H:i:s',###}&nbsp;</span>
 					</div>
-					
-					<!-- <div class="pull-right">
-						<span class="col-5 "><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('del','id='.$vo['id'])}">删除</a></span>
-					</div> -->
+					<div class="pull-left">
+						<span class="col-20 ">{$vo.style}</span>
+					</div>
 				</li>
 			</foreach>
 			</form>
@@ -167,3 +165,9 @@
 		</empty>
 	</ul>
 </div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>人力资源</li><li>每月打卡信息</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

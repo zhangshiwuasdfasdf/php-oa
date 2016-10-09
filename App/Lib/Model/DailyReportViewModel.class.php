@@ -14,7 +14,7 @@
 class DailyReportViewModel extends ViewModel {
 	public $viewFields=array(
 		'DailyReport'=>array('*','_type'=>'LEFT'),
-		'User'=>array('pos_id'=>'pos_id','_on'=>'User.id=DailyReport.user_id')
+		'User'=>array('pos_id'=>'pos_id','duty'=>'duty','_on'=>'User.id=DailyReport.user_id')
 		);
 }
 ?>
