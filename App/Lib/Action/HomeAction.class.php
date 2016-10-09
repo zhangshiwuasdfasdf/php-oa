@@ -485,6 +485,7 @@ class HomeAction extends CommonAction {
 		}elseif (isHeadquarters(get_user_id())==-2){//总经理
 			$map['dept_id'] = array('in',get_child_dept_all(27));
 		}
+		$map['is_del'] = 0;
 		$model = D("FlowView");
 		if(!empty($model)){
 			$flow_list = $model -> where($map) -> select();
@@ -510,7 +511,6 @@ class HomeAction extends CommonAction {
 			$this -> assign("lists", $flow_list);
 			$fn = $flow_list ? count($flow_list) : 0 ;
 			$tn = $task_extension ? count($task_extension) : 0 ;
-			
 			//erp问题反馈的代办
 			$problem_feedback_remind = D('ProblemFeedbackRemindView')->where(array('user_id'=>get_user_id()))->order('create_time desc')->select();
 			$this -> assign("problem_feedback_remind", $problem_feedback_remind);
