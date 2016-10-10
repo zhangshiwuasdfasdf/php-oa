@@ -19,6 +19,7 @@ class StaffAction extends CommonAction {
 	private $dept;
 
 	function _search_filter(&$map) {
+		$map['is_del'] = 0;
 		if (!empty($_POST['keyword'])) {
 			$map['name|emp_no'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
