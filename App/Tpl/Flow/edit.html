@@ -39,7 +39,7 @@ h1{ text-align:center;}
 <include file="Flow/edit/daily_office:internal_contact_list" />
 <elseif condition="($flow_type.name eq '会务申请')"/>
 <include file="Flow/edit/daily_office:meeting_communicate" />
-<elseif condition="($flow_type.name eq '名片使用')"/>
+<elseif condition="($flow_type.name eq '名片申请')"/>
 <include file="Flow/edit/daily_office:card_application" />
 
 <elseif condition="($flow_type.name eq '员工请假申请')"/>
@@ -65,11 +65,11 @@ h1{ text-align:center;}
 <elseif condition="($flow_type.name eq '员工调薪申请')"/>
 <include file="Flow/edit/personnel_management:salary_changes" />
 
-<elseif condition="($flow_type.name eq '办公用品领用')"/>
+<elseif condition="($flow_type.name eq '办公用品领用申请')"/>
 <include file="Flow/edit/administrative_office_management:office_use_application" />
 <elseif condition="($flow_type.name eq '办公用品采购')"/>
 <include file="Flow/edit/administrative_office_management:office_supplies_application" />
-<elseif condition="($flow_type.name eq '物品采购调拨申请单')"/>
+<elseif condition="($flow_type.name eq '物品采购调拨申请')"/>
 <include file="Flow/edit/administrative_office_management:goods_procurement_allocation" />
 <else/>
 <include file="Flow/edit/:common" />

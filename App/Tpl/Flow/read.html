@@ -117,9 +117,9 @@ h1{ text-align:center;}
 <if condition="$Think.get.fid eq 'submit'">
 <div class="operate panel panel-default hidden-print">
  	<div class="panel-body">
- 		<div class="pull-right" style="margin:0 auto;width:960px">
+ 		<div class="center" style="margin:0 auto;width:960px">
  			
- 				<a onclick="winprint();" class="btn btn-sm btn-primary">打印</a>
+ 				<a onclick="prn2_preview();" class="btn btn-sm btn-primary">打印</a>
  			 <eq name="can_cancel" value="1">
  				<a onclick="cancel();" class="btn btn-sm btn-primary">作废</a>
  			</eq>
@@ -142,11 +142,10 @@ h1{ text-align:center;}
 				</div>
 			</div>
 			<div class="panel-heading clearfix">
-				<div style="height:35px; float:left;margin-left:860px">
 				<!-- <div class="pull-left">
 					<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
 				</div> -->
-				<div class="pull-right">
+				<div class="center">
 					<notempty name="is_edit">
 						<div class="btn-group">
 							<a class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" href="#">退回到<span class="fa fa-caret-down"></span> </a>
@@ -170,8 +169,31 @@ h1{ text-align:center;}
 					<a onclick="approve();" class="btn btn-sm btn-primary">同意</a>
 				</div>
 			</div>
-			</div>
 		</div>
 	</form>
-	 
 </notempty>
+<script language="javascript" src="__PUBLIC__/js/LodopFuncs.js"></script>
+<object  id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0> 
+       <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+</object>
+
+<script language="javascript" type="text/javascript">   
+    var LODOP; //声明为全局变量 
+	function prn2_preview() {	
+		CreateTwoFormPage();	
+		LODOP.PREVIEW();	
+	};
+	function prn2_manage() {	
+		CreateTwoFormPage();
+		LODOP.PRINT_SETUP();	
+	};	
+	function CreateTwoFormPage(){
+		LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+		LODOP.PRINT_INIT("使用期评估表");
+		LODOP.SET_PRINT_STYLE("FontSize",12);
+		LODOP.SET_PRINT_MODE("FULL_WIDTH_FOR_OVERFLOW",true);
+		LODOP.SET_PRINT_MODE("FULL_HEIGHT_FOR_OVERFLOW",true);
+		LODOP.SET_SHOW_MODE("HIDE_PAGE_PERCENT",true);
+		LODOP.ADD_PRINT_HTM(0,0,"100%","100%",document.getElementById("form_data").innerHTML);
+	};              
+</script> 

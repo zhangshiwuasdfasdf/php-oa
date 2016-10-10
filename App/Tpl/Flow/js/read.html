@@ -33,6 +33,7 @@
 		if(flag){
 			alert(msg);return false;
 		}
+
 		sendForm("form_confirm", "{:U('mark','action=reject')}", "{:U('read','id='.$vo['id'])}");
 	}
 	

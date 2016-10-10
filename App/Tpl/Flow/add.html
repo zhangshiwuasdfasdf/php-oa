@@ -88,8 +88,7 @@ h1{ text-align:center;}
 </form>
 <div class="operate panel panel-default">
 	<div class="panel-body">
-		<div style="height:35px; float:left;margin-left:763px">
-			<div class="pull-left">
+			<div class="center">
 			<!-- 
 			<eq name="flow_type.is_lock" value="0">
 				<a onclick="popup_confirm();"  class="btn btn-sm btn-primary">选择审批流程</a>
@@ -100,13 +99,11 @@ h1{ text-align:center;}
 			<a onclick="save(20);"  class="btn btn-sm btn-primary">提交</a>
 			<a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
 			</div>
-		</div>
-		
 	</div>
 </div>
 <script type="text/javascript">
 $(function() {
-	var html = "<li>人力资源</li><li><a href='{:U("Flow/getlist?type=$type_id")}'>{$flow_type['name']}</a></li><li>新建</li>";
+	var html = "<li>{$first_title}</li><li><a href='{:U("Flow/getlist?type=$type_id")}'>{$flow_type['name']}</a></li><li>新建</li>";
 	$("#breadcrumbs ul").append(html);
 });
 </script>

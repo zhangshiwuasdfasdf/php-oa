@@ -281,12 +281,45 @@ class FlowModel extends CommonModel {
 
 		$confirm = M("Flow") -> where("id=$flow_id") -> getField("confirm");
 		$last_confirm = array_filter(explode("|", $confirm));
-		$last_confirm_emp_no = end($last_confirm);
+// 		$last_confirm_emp_no = end($last_confirm);
 
-		if (strpos($last_confirm_emp_no, get_emp_no()) !== false) {
-			return true;
+// 		if (strpos($last_confirm_emp_no, get_emp_no()) !== false) {
+// 			return true;
+// 		}
+// 		return false;
+
+		$check_log_id = array();
+		foreach ($last_confirm as $k=>$v){
+			if($k<count($last_confirm)-1){
+				$where = array();
+				$where['flow_id'] = $flow_id;
+				$where['emp_no'] = $v;
+				$where['result'] = array('in',array(0,1));
+				if(!empty($check_log_id)){
+					$where['id'] = array('not in',$check_log_id);
+				}
+				$flow_log = M("FlowLog") -> where($where) -> find();
+				if(!empty($flow_log)){
+					$check_log_id[] = $flow_log['id'];
+				}else{
+					return false;
+				}
+			}else{
+				$where = array();
+				$where['flow_id'] = $flow_id;
+				$where['emp_no'] = $v;
+// 				$where['_string'] = "result is null";
+				if(!empty($check_log_id)){
+					$where['id'] = array('not in',$check_log_id);
+				}
+				$flow_log = M("FlowLog") -> where($where) -> find();
+				if(!empty($flow_log)){
+					return true;
+				}else{
+					return false;
+				}
+			}
 		}
-		return false;
 	}
 
 	function is_last_consult($flow_id) {

@@ -24,3 +24,12 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".tree_menu .disabled span").each(function(){
+		if($(this).text() != ''){
+			$(this).text($(this).text()+"[不可选]");
+		}
+	});
+});
+</script>

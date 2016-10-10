@@ -2227,11 +2227,27 @@ function checkFlowNotMe($array,$uid=null){
 		return $array;
 	}
 }
-
+/*
+ * 相邻元素相同则过滤（只留一个）；
+ * 不相邻元素可以相同
+ */
+function array_unique2($array){
+	if(!empty($array) && is_array($array)){
+		$t = '';
+		foreach ($array as $k=>$v){
+			if($v == $t){
+				unset($array[$k]);
+			}else{
+				$t = $v;
+			}
+		}
+	}
+	return $array;
+}
 function getFlow($uid,$day,$unique=true){
-	if($day<3 && $day>=0){
+	if($day<=3 && $day>=0){
 		return getParentid($uid);
-	}elseif ($day>=3 && $day<=7){
+	}elseif ($day>3 && $day<7){
 		if(getRank($uid) == 3){//主管，助理，员工
 			if($unique){
 				return checkFlowUp(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid))));
@@ -2245,7 +2261,7 @@ function getFlow($uid,$day,$unique=true){
 		}else{
 			return false;
 		}
-	}elseif($day>7){
+	}elseif($day>=7){
 		if(getRank($uid) == 3){//主管，助理，员工
 			if($unique){
 				return checkFlowUp(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
