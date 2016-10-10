@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class WeeklyReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'del' => 'write', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_weekly_report' => 'read','import_weekly_report' => 'read','get_dept_child' => 'read','get_real_dept'=>'read','get_username_by_dept'=>'read','json'=>'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'del' => 'write', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write', 'del_comment' => 'admin','export_weekly_report' => 'read','import_weekly_report' => 'read','get_dept_child' => 'read','get_real_dept'=>'read','get_username_by_dept'=>'read','json'=>'read','showreport'=>'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 	$map['is_del'] = array('eq', '0');
@@ -823,5 +823,11 @@ class WeeklyReportAction extends CommonAction {
 			$list[$k]['work_date_last'] = $month.'-'.$work_date_last;
 		}
 		exit(json_encode($list));
+	}
+	function showreport(){
+		$id = $_REQUEST["id"];
+		$model=M("WeeklyReport");
+		$data=$model->field('done,undoo,achievement,problem,content,plan,suggest')->where(array('id'=>$id))->select();
+		$this->ajaxReturn($data,'success','1');
 	}
 }
