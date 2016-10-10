@@ -12,11 +12,11 @@
  -------------------------------------------------------------------------*/
 
 class DailyReportAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write','del' => 'write', 'del_comment' => 'write','export_daily_report' => 'read','import_daily_report' => 'read','get_dept_child' => 'read','get_depts_child' => 'read','get_real_dept'=>'read','get_username_by_dept'=>'read','json'=>'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('share' => 'read', 'plan' => 'read', 'save_comment' => 'write', 'edit_comment' => 'write', 'reply_comment' => 'write','del' => 'write', 'del_comment' => 'write','export_daily_report' => 'read','import_daily_report' => 'read','get_dept_child' => 'read','get_depts_child' => 'read','get_real_dept'=>'read','get_username_by_dept'=>'read','json'=>'read','showreport'=>'read'));
 	//过滤查询字段
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
-		if (!empty($_POST['eq_dept_id'])) {
+		if (!empty($_POST['eq_dept_ireadd'])) {
 			$map['dept_id'] = array('eq', $_POST['eq_dept_id']);
 		}
 		if (!empty($_POST['li_user_name'])) {
@@ -793,5 +793,11 @@ class DailyReportAction extends CommonAction {
 		$where['work_date'] = array( array('egt', $start_date), array('elt', $end_date));
 		$list = M("DailyReport") -> where($where) -> order('work_date desc') -> select();
 		exit(json_encode($list));
+	}
+	function showreport(){
+		$id = $_REQUEST["id"];
+		$model=M("DailyReport");
+		$data=$model->field('content,undoo,plan,suggest')->where(array('id'=>$id))->select();
+		$this->ajaxReturn($data,'success','1');
 	}
 }

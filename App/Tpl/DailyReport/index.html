@@ -82,6 +82,13 @@ img{ margin:0; padding:0;}
 .gbzz2{ position: absolute; display: block; width: 19px; height: 19px; right: -9px; top: -10px;}
 .zzzy2{position: absolute; display: block; width: 15px; height: 3px; left: -15px; top: 10px;}
 
+#content_list{ width:600px; border: solid 4px #bdd3df; border-radius:20px; position:absolute; top:56px; background: #fff; display: none;}
+
+#content_list span{ font-size: 14px; font-weight: bold; margin: 0 10px; line-height: 30px;}
+#content_list p{ font-size: 14px; margin: 0 20px; line-height: 20px; border:1px solid #eaedf1; padding: 5px; border-radius: 10px;}
+.div1{position: relative; width: 100%; height: 100%;}
+.div2{ background:url(__PUBLIC__/img/rq_bt.png); height:36px; width:400px; border-radius:20px; color:#6b6a6a; font-size:16px; font-weight:bold; text-align:center; line-height:36px; position:absolute; top:-40px; left:-20px;}
+.div3{ width:570px; margin-top:30px; margin-left:18px; overflow:auto;}
 </style>
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default  display-none"  id="adv_search">
@@ -511,7 +518,7 @@ img{ margin:0; padding:0;}
 							<span class="col-8">{$vo.dept_name}&nbsp;</span>
 							<span class="col-8">{$vo.user_name}&nbsp;</span>
 							<span class="col-12">{$vo.duty}&nbsp;</span>
-							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}" target="_blank">{$vo.work_date}&nbsp;</a></span>
+							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}"  target="_blank" onmouseover="showDailyReport({$vo.id})" onmouseout="disappear()">{$vo.work_date}&nbsp;</a></span>
 							<span class="col-25">{$daily_report_extension.$key.comment_last}&nbsp;</span>
 							<span class="col-20">{$report.$key.0.look_name} {$report.$key.1.look_name}&nbsp;</span>
 						</div>
@@ -532,10 +539,58 @@ img{ margin:0; padding:0;}
 			</div>
 		</empty>
 	</ul>
+	<div id="content_list" >
+		<div class="div1">
+			<div class="div2">日&nbsp;报</div>
+		    <div class="div3" ></div>
+		</div>
+	</div>
 </div>
+
 <script type="text/javascript">
 $(function() {
 	var html = "<li>个人中心</li><li>我的日报</li>";
 	$("#breadcrumbs ul").append(html);
 });
+
+function showDailyReport(id){
+	document.getElementById("content_list").style.display="block";
+	var cons = "";
+	$.post("{:U('DailyReport/showreport')}",{'id':id},function(result){
+		$(".div3 span").remove();
+		$(".div3 p").remove();
+		for (var s in result.data) {
+			cons += "<span>工作总结:</span><p>"+ result.data[s].content +"</p>";
+			cons += "<span>未完成工作:</span><p>"+ result.data[s].undoo +"</p>";
+			cons += "<span>明日计划:</span><p>"+ result.data[s].plan +"</p>";
+			cons += "<span>意见/建议:</span><p>"+ result.data[s].suggest +"</p>";
+		}
+	$(".div3").append(cons);
+	});
+
+	return false;
+
+}
+
+function disappear(){
+	document.getElementById("content_list").style.display="none";
+}
+
+$('#content_list').hover(function(){
+	$('#content_list').show();
+},function(){
+	$('#content_list').hide();
+})
+
+function f(){
+	var f=$('.col-10').offset().left-70;
+	$('#content_list').css('left',f);
+	var f1=$('#form_data').height();
+	var f2=$('#form_data').height()-60;
+	$('#content_list').css('height',f1);
+	$('.div3').css('height',f2);
+}
+f();
+
+
 </script>
