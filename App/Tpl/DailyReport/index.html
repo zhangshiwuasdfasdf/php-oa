@@ -88,7 +88,7 @@ img{ margin:0; padding:0;}
 #content_list p{ font-size: 14px; margin: 0 20px; line-height: 20px; border:1px solid #eaedf1; padding: 5px; border-radius: 10px;}
 .div1{position: relative; width: 100%; height: 100%;}
 .div2{ background:url(__PUBLIC__/img/rq_bt.png); height:36px; width:400px; border-radius:20px; color:#6b6a6a; font-size:16px; font-weight:bold; text-align:center; line-height:36px; position:absolute; top:-40px; left:-20px;}
-.div3{ width:570px; height:370px; margin-top:30px; margin-left:18px; overflow:auto;}
+.div3{ width:570px; margin-top:30px; margin-left:18px; overflow:auto;}
 </style>
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default  display-none"  id="adv_search">
@@ -586,7 +586,7 @@ function f(){
 	var f=$('.col-10').offset().left-70;
 	$('#content_list').css('left',f);
 	var f1=$('#form_data').height();
-	var f2=$('#form_data').height()-20;
+	var f2=$('#form_data').height()-60;
 	$('#content_list').css('height',f1);
 	$('.div3').css('height',f2);
 }
