@@ -101,9 +101,17 @@ h1{ text-align:center;}
 			</div>
 	</div>
 </div>
+<input type="hidden" id="name" name="name" value="{$flow_type.name}">
 <script type="text/javascript">
 $(function() {
-	var html = "<li>{$first_title}</li><li><a href='{:U("Flow/getlist?type=$type_id")}'>{$flow_type['name']}</a></li><li>新建</li>";
-	$("#breadcrumbs ul").append(html);
+	//alert($("#name").val());
+	if($("#name").val() == '文件审批申请' || $("#name").val() == '内部联络单' || $("#name").val() == '名片申请' || $("#name").val() == '会务申请' || $("#name").val() == '合同申请' || $("#name").val() == '公章申请'){
+		var html = "<li>{$first_title}</li><li><a href='{:U("Flow/getlist?type=$type_id")}'>{$flow_type['name']}</a></li><li>新建</li>";
+		$("#breadcrumbs ul").append(html);
+	}else{
+		var html = "<li>{$first_title}</li><li>{$second_title}</li><li><a href='{:U("Flow/getlist?type=$type_id")}'>{$flow_type['name']}</a></li><li>新建</li>";
+		$("#breadcrumbs ul").append(html);
+	}
+	
 });
 </script>
