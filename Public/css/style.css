@@ -1042,12 +1042,13 @@ ul.tree_menu i {
 .Staff .user_list {
 	height: 600px;
 	overflow-y: auto;
-	overflow-x: hidden;
 }
 .Staff .user_info th {
 	background: rgb(241, 245, 250);
 }
-
+.Staff .row {
+	overflow:hidden;
+}
 .Forum	 div.read_info {
 	position: relative;
 	display: none;

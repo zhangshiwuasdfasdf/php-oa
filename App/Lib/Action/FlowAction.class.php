@@ -1891,6 +1891,15 @@ class FlowAction extends CommonAction {
 
 		if ($list !== false) {//保存成功
 			$model = M(getModelName($list));
+			
+			$last = $model->where(array('flow_no'=>array('like',date('ym',time()).'%')))->order('flow_no desc')->limit(1)->find();
+			if($last){
+				$num = intval(substr($last['flow_no'],4));
+				$num_str = formatto4w($num+1);
+			}else{
+				$num_str = formatto4w(1);
+			}
+			
 			if(is_mobile_request()){
 				unset($_GET['id']);
 				unset($_GET['token']);
@@ -1949,6 +1958,9 @@ class FlowAction extends CommonAction {
 			$model -> flow_id = $list;
 			$flow_id = $list;
 			$style = $model -> style;
+			
+			$model -> flow_no = date('ym',time()).$num_str;
+			
 			$list = $model -> add();
 			
 			if(getModelName($flow_id)=='FlowLeave'){
