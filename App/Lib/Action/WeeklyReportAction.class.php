@@ -19,8 +19,8 @@ class WeeklyReportAction extends CommonAction {
 		if (!empty($_POST['eq_dept_id'])) {
 			$map['dept_id'] = array('eq', $_POST['eq_dept_id']);
 		}
-		if (!empty($_POST['li_user_name'])) {
-			$map['user_name'] = array('like', '%'.$_POST['li_user_name'].'%');
+		if (!empty($_REQUEST['li_user_name'])) {
+			$map['user_name'] = array('like', '%'.$_REQUEST['li_user_name'].'%');
 		}
 		if (!empty($_POST['be_create_time']) && !empty($_POST['en_create_time'])) {
 			$map['work_date'] = array('between', array($this->_get_week_by_date($_POST['be_create_time']),$this->_get_week_by_date($_POST['en_create_time'])));

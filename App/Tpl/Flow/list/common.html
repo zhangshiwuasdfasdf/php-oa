@@ -148,9 +148,19 @@
 		</div>
 	</empty>
 </div>
+<input type="hidden" id="name" name="name" value="{$flow_name.name}">
+
 <script type="text/javascript">
+
 $(function() {
-	var html = "<li>行政管理</li><li>{$flow_name['name']}</li>";
-	$("#breadcrumbs ul").append(html);
+	//alert($("#name").val());
+	if($("#name").val() == '私车公用申请' || $("#name").val() == '公交卡使用申请'){
+		var html = "<li>行政管理</li><li>物业管理</li><li>{$flow_name['name']}</li>";
+		$("#breadcrumbs ul").append(html);
+	}else{
+		var html = "<li>行政管理</li><li>{$flow_name['name']}</li>";
+		$("#breadcrumbs ul").append(html);
+	}
+	
 });
 </script>

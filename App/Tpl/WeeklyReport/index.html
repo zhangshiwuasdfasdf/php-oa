@@ -82,7 +82,7 @@ img{ margin:0; padding:0;}
 .gbzz2{ position: absolute; display: block; width: 19px; height: 19px; right: -9px; top: -10px;}
 .zzzy2{position: absolute; display: block; width: 15px; height: 3px; left: -15px; top: 10px;}
 
-#content_list{ width:600px; border: solid 4px #bdd3df; border-radius:20px; position:absolute; top:207px; margin-left:20px; background: #fff; display: none;}
+#content_list{ width:600px; min-height: 150px; border: solid 4px #bdd3df; border-radius:20px; position:absolute; top:197px; margin-left:20px; background: #fff; display: none;}
 
 #content_list span{ font-size: 14px; font-weight: bold; margin: 0 10px; line-height: 30px;}
 #content_list p{ font-size: 14px; margin: 0 20px; line-height: 20px; border:1px solid #eaedf1; padding: 5px; border-radius: 10px;}
@@ -163,7 +163,7 @@ img{ margin:0; padding:0;}
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-sm-3" style="float:right; width:10%">
 				<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
 			</div>
 		</div>
@@ -514,7 +514,7 @@ img{ margin:0; padding:0;}
 						<div class="pull-left">
 							<span class="col-8">{$vo.create_time|date='ym',###}{$vo.id|formatto4w}&nbsp;</span>
 							<span class="col-8">&nbsp;{$vo.dept_name}</span>
-							<span class="col-8">&nbsp;{$vo.user_name}</span>
+							<span class="col-8">&nbsp;<a href="{:U('index','li_user_name='.$vo['user_name'])}">{$vo.user_name}</a></span>
 							<span class="col-12">&nbsp;{$vo.duty}</span>
 							<span class="col-10"><a href="{:U('read','id='.$vo['id'])}" target="_blank" onmouseover="showWeeklyReport({$vo.id})" onmouseout="disappear()">&nbsp;{$vo.work_date}</a></span>
 							<span class="col-25">&nbsp;{$weekly_report_extension.$key.comment_last}</span>
@@ -545,7 +545,7 @@ img{ margin:0; padding:0;}
 		    <div class="div3" ></div>
 		</div>
 	</div>
-</div>
+
 
 <script type="text/javascript">
 $(function() {
@@ -576,11 +576,9 @@ function showWeeklyReport(id){
 
 function disappear(){
 	document.getElementById("content_list").style.display="none";
-	/*$('#content_list').slideUp(3000);
-	$('#content_list').mouseover(function(){
-		$('#content_list').show();
-	})*/
+	
 }
+
 $('#content_list').hover(function(){
 	$('#content_list').show();
 },function(){
@@ -591,8 +589,8 @@ function f(){
 	var f=$('.col-10').offset().left-70;
 	$('#content_list').css('left',f);
 	var f1=$('#form_data').height();
-	var f2=$('#form_data').height()-60;
 	$('#content_list').css('height',f1);
+	var f2=$('#content_list').height()-60;
 	$('.div3').css('height',f2);
 }
 f();

@@ -21,7 +21,7 @@ class NoticeFolderAction extends SystemFolderAction {
 	}
 
 	function index() {
-		$this -> assign("bread", "<li>行政管理</li><li>公告</li><li>公告管理</li>");
+		$this -> assign("bread", "<li>行政管理</li><li>公告管理</li><li>公告管理</li>");
 		$this -> assign("folder_name", "公告栏管理");
 		$this ->_index();
 	}
