@@ -2,8 +2,8 @@
 <script src="__PUBLIC__/js/jquery-2.1.0.min.js"></script>
 <!--top-->
 <div class="top">
-    <a class="img_a" href="{:U('home/index')}">
-        <img class="logo_img" src="__PUBLIC__/img/new_home/logo.png"/> 
+    <a class="__PUBLIC__/img_a" href="{:U('home/index')}">
+        <img style="margin: 30px 40px;" class="logo_img" src="__PUBLIC__/img/new_home/logo.png"/> 
     </a>
     <div class="rq_tq">
     	<span id="left_span"></span>
@@ -131,10 +131,10 @@
             </li>
             <!-- <li class="menu_li2"><a href="{:U('shuo/index')}"><span class="cd_span2"></span><div class="cd_div">每日说说</div></a></li> -->
             <li class="menu_li2"><a href="{:U('ftodo/index')}"><span class="cd_span2"></span><div class="cd_div">待办事项</div></a></li>
-            <li class="menu_li2"><a href="{:U('contact/index')}"><span class="cd_span2"></span><div class="cd_div">联系人</div></a></li>
+            <!-- <li class="menu_li2"><a href="{:U('contact/index')}"><span class="cd_span2"></span><div class="cd_div">联系人</div></a></li>
             <li class="menu_li2"><a href="{:U('complaint/index')}"><span class="cd_span2"></span><div class="cd_div">意见箱</div></a></li>
             <li class="menu_li2"><a href="{:U('schedule/index')}"><span class="cd_span2"></span><div class="cd_div">日程</div></a></li>
-            <li class="menu_li2"><a href="{:U('message/index')}"><span class="cd_span2"></span><div class="cd_div">消息</div></a></li>
+            <li class="menu_li2"><a href="{:U('message/index')}"><span class="cd_span2"></span><div class="cd_div">消息</div></a></li> -->
             <li class="menu_li2"><a href="{:U('task/index')}"><span class="cd_span2"></span><div class="cd_div">任务</div></a></li>
             <li class="menu_li2"><a href="{:U('daily_report/index')}"><span class="cd_span2"></span><div class="cd_div">日报</div></a></li>
             <li class="menu_li2"><a href="{:U('weekly_report/index')}"><span class="cd_span2"></span><div class="cd_div">周报</div></a></li>
@@ -146,79 +146,131 @@
         	<img src="__PUBLIC__/img/new_home/left_rlzy1.png"/>
         </a>
         <ul class="menu_ul4">
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=39')}"><span class="cd_span4"></span><div class="cd_div">员工请假申请</div></a></li>
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=46')}"><span class="cd_span4"></span><div class="cd_div">外勤/出差申请</div></a></li>
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=48')}"><span class="cd_span4"></span><div class="cd_div">部门招聘需求申请</div></a></li>
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=52')}"><span class="cd_span4"></span><div class="cd_div">员工调动申请</div></a></li>
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=50')}"><span class="cd_span4"></span><div class="cd_div">试用期评估表</div></a></li>
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=56')}"><span class="cd_span4"></span><div class="cd_div">员工调薪申请</div></a></li>
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=51')}"><span class="cd_span4"></span><div class="cd_div">转正申请</div></a></li>
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=49')}"><span class="cd_span4"></span><div class="cd_div">员工离职申请</div></a></li>
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=40')}"><span class="cd_span4"></span><div class="cd_div">员工离职交接申请</div></a></li>
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=47')}"><span class="cd_span4"></span><div class="cd_div">出勤异常申请</div></a></li>
-            <li class="menu_li4"><a href="{:U('flow/getlist?type=57')}"><span class="cd_span4"></span><div class="cd_div">加班申请</div></a></li>
-            <li class="menu_li4"><a href="{:U('attendance/table')}"><span class="cd_span4"></span><div class="cd_div">每月考勤表</div></a></li>
-            <li class="menu_li4"><a href="{:U('attendance/index')}"><span class="cd_span4"></span><div class="cd_div">每月打卡信息</div></a></li>
+            <li class="menu_li4">
+                <a class="menu_li4_a0">
+                <span class="cd_span4"></span>
+                <div class="cd_div">招聘管理</div>
+                <img class="cd_ts" src="__PUBLIC__/img/jian3.png"/>
+                </a>
+                <ul class="menu_ul5_0">
+                    <li class="menu_li5_0"><a href="{:U('flow/getlist?type=48')}"><span class="cd_span5_0"></span><div class="cd_div">部门招聘需求申请</div></a></li>
+                </ul>
+            </li>
+            <li class="menu_li4">
+                <a class="menu_li4_a1">
+                <span class="cd_span4"></span>
+                <div class="cd_div">考勤管理</div>
+                <img class="cd_ts" src="__PUBLIC__/img/jian3.png"/>
+                </a>
+                <ul class="menu_ul5_1">
+                    <li class="menu_li5"><a href="{:U('flow/getlist?type=57')}"><span class="cd_span5_1"></span><div class="cd_div">加班申请</div></a></li>
+                    <li class="menu_li5"><a href="{:U('flow/getlist?type=39')}"><span class="cd_span5_1"></span><div class="cd_div">员工请假申请</div></a></li>
+                    <li class="menu_li5"><a href="{:U('flow/getlist?type=47')}"><span class="cd_span5_1"></span><div class="cd_div">出勤异常申请</div></a></li>
+                    <li class="menu_li5"><a href="{:U('flow/getlist?type=46')}"><span class="cd_span5_1"></span><div class="cd_div">外勤/出差申请</div></a></li>
+                    <li class="menu_li5"><a href="{:U('attendance/table')}"><span class="cd_span5_1"></span><div class="cd_div">每月考勤表</div></a></li>
+                    <li class="menu_li5"><a href="{:U('attendance/index')}"><span class="cd_span5_1"></span><div class="cd_div">每月打卡信息</div></a></li>
+                    
+                </ul>
+            </li>
+            <li class="menu_li4">
+                <a class="menu_li4_a2">
+                <span class="cd_span4"></span>
+                <div class="cd_div">员工关系管理</div>
+                <img class="cd_ts" src="__PUBLIC__/img/jian3.png"/>
+                </a>
+                <ul class="menu_ul5_2">
+                    <li class="menu_li5"><a href="{:U('flow/getlist?type=52')}"><span class="cd_span5_2"></span><div class="cd_div">员工调动申请</div></a></li>
+                    <li class="menu_li5"><a href="{:U('flow/getlist?type=50')}"><span class="cd_span5_2"></span><div class="cd_div">试用期评估表</div></a></li>
+                    <li class="menu_li5"><a href="{:U('flow/getlist?type=51')}"><span class="cd_span5_2"></span><div class="cd_div">员工转正申请</div></a></li>
+                    <li class="menu_li5"><a href="{:U('flow/getlist?type=49')}"><span class="cd_span5_2"></span><div class="cd_div">员工离职申请</div></a></li>
+                    <li class="menu_li5"><a href="{:U('flow/getlist?type=40')}"><span class="cd_span5_2"></span><div class="cd_div">员工离职交接申请</div></a></li>
+                </ul>
+            </li>
+            <li class="menu_li4">
+                <a class="menu_li4_a3">
+                <span class="cd_span4"></span>
+                <div class="cd_div">薪酬管理</div>
+                <img class="cd_ts" src="__PUBLIC__/img/jian3.png"/>
+                </a>
+                <ul class="menu_ul5_3">
+                    <li class="menu_li5"><a href="{:U('flow/getlist?type=56')}"><span class="cd_span5_3"></span><div class="cd_div">员工调薪申请</div></a></li>
+                </ul>
+            </li>
         </ul>
         <a class="left_a" id="left_a4">
         	<img src="__PUBLIC__/img/new_home/left_xzgl1.png"/>
         </a>
         <ul class="menu_ul6">
+            <li class="menu_li6">
+                <a class="menu_li6_a3">
+                    <span class="cd_span6"></span>
+                    <div class="cd_div">物业管理</div>
+                    <img class="cd_ts" src="__PUBLIC__/img/jian4.png"/>
+                </a>
+            </li>
+            <li class="menu_li6">
+                <a class="menu_li6_a4">
+                    <span class="cd_span6"></span>
+                    <div class="cd_div">物品管理</div>
+                    <img class="cd_ts" src="__PUBLIC__/img/jian4.png"/>
+                </a>
+            </li>
+            <li class="menu_li6">
+                <a class="menu_li6_a2">
+                    <span class="cd_span6"></span>
+                    <div class="cd_div">会议室管理</div>
+                    <img class="cd_ts" src="__PUBLIC__/img/jian4.png"/>
+                </a>
+                
+            </li>
+            <!--<li class="menu_li6">
+                <a class="menu_li6_a1">
+                    <span class="cd_span6"></span>
+                    <div class="cd_div" id="cd_div2">资产管理</div>
+                    <img class="cd_ts" src="__PUBLIC__/img/jian4.png"/>
+                </a>
+                
+            </li>-->
+            <li class="menu_li6">
+                <a class="menu_li6_a">
+                    <span class="cd_span6"></span>
+                    <div class="cd_div">公告管理</div>
+                    <img class="cd_ts" src="__PUBLIC__/img/jian4.png"/>
+                </a>
+            </li>
             <li class="menu_li6"><a href="{:U('flow/getlist?type=60')}"><span class="cd_span6"></span><div class="cd_div">文件审批申请</div></a></li>
             <li class="menu_li6"><a href="{:U('flow/getlist?type=53')}"><span class="cd_span6"></span><div class="cd_div">内部联络单</div></a></li>
             <li class="menu_li6"><a href="{:U('flow/getlist?type=59')}"><span class="cd_span6"></span><div class="cd_div">名片申请</div></a></li>
             <li class="menu_li6"><a href="{:U('flow/getlist?type=62')}"><span class="cd_span6"></span><div class="cd_div">合同申请</div></a></li>
             <li class="menu_li6"><a href="{:U('flow/getlist?type=58')}"><span class="cd_span6"></span><div class="cd_div">会务申请</div></a></li>
-            <li class="menu_li6"><a href="{:U('flow/getlist?type=64')}"><span class="cd_span6"></span><div class="cd_div">用印申请</div></a></li>
-            <li class="menu_li6"><a href="{:U('flow/getlist?type=55')}"><span class="cd_span6"></span><div class="cd_div">物品采购调拨申请</div></a></li>
+            <li class="menu_li6"><a href="{:U('flow/getlist?type=64')}"><span class="cd_span6"></span><div class="cd_div">公章申请</div></a></li>
             <li class="menu_li6"><a href="{:U('flow/getlist?type=61')}"><span class="cd_span6"></span><div class="cd_div">人事任免、业务提成申请</div></a></li>
-            <li class="menu_li6"><a href="{:U('flow/getlist?type=54')}"><span class="cd_span6"></span><div class="cd_div">办公用品采购申请</div></a></li>
-            <li class="menu_li6"><a href="{:U('flow/getlist?type=42')}"><span class="cd_span6"></span><div class="cd_div">办公用品领用申请</div></a></li>
-            <li class="menu_li6"><a href="{:U('flow/getlist?type=63')}"><span class="cd_span6"></span><div class="cd_div">公交卡使用申请</div></a></li>
-            <li class="menu_li6"><a href="{:U('flow/getlist?type=65')}"><span class="cd_span6"></span><div class="cd_div">私车公用申请</div></a></li>
-            <li class="menu_li6">
-                <a class="menu_li6_a2">
-                    <span class="cd_span6"></span>
-                    <div class="cd_div">会议室预定</div>
-                    <img class="cd_ts" src="__PUBLIC__/img/new_home/jian4.png"/>
-                </a>
-                <ul class="menu_ul7_3">
-                    <li class="menu_li7_3"><a href="{:U('room/index')}"><span class="cd_span7_3"></span><div class="cd_div">会议室管理</div></a></li>
-                    <li class="menu_li7_3"><a href="{:U('yuyue/index')}"><span class="cd_span7_3"></span><div class="cd_div">预约列表</div></a></li>
-                    <li class="menu_li7_3"><a href="{:U('parameter/index')}"><span class="cd_span7_3"></span><div class="cd_div">参数配置</div></a></li>
-                </ul>
-            </li>
-            <li class="menu_li6">
-                <a class="menu_li6_a1">
-                    <span class="cd_span6"></span>
-                    <div class="cd_div" id="cd_div2">资产管理</div>
-                    <img class="cd_ts" src="__PUBLIC__/img/new_home/jian4.png"/>
-                </a>
-                <ul class="menu_ul7_0">
-                    <li class="menu_li7_0"><a href="{:U('goods_category/index')}"><span class="cd_span7_0"></span><div class="cd_div">资产目录</div></a></li>
-                    <li class="menu_li7_0"><a href="{:U('goods_category_grade/index')}"><span class="cd_span7_0"></span><div class="cd_div">资产目录级别</div></a></li>
-                    <li class="menu_li7_0"><a href="{:U('goods/index')}"><span class="cd_span7_0"></span><div class="cd_div">资产</div></a></li>
-                    <li class="menu_li7_0"><a href="{:U('goods/change')}"><span class="cd_span7_0"></span><div class="cd_div">资产加减</div></a></li>
-                </ul>
-            </li>
-            <li class="menu_li6">
-                <a class="menu_li6_a">
-                    <span class="cd_span6"></span>
-                    <div class="cd_div">公告</div>
-                    <img class="cd_ts" src="__PUBLIC__/img/new_home/jian4.png"/>
-                </a>
-                <ul class="menu_ul7">
-                    <li class="menu_li7"><a href="{:U('notice/index')}"><span class="cd_span7"></span><div class="cd_div">公告搜索</div></a></li>
-                    <li class="menu_li7"><a href="{:U('notice_folder/index')}"><span class="cd_span7"></span><div class="cd_div">公告管理</div></a></li>
-                    <li class="menu_li7"><a href="{:U('notice/folder?fid=72')}"><span class="cd_span7"></span><div class="cd_div">通知与公告</div></a></li>
-                    <li class="menu_li7"><a href="{:U('notice/folder?fid=71')}"><span class="cd_span7"></span><div class="cd_div">公司制度与规定</div></a></li>
-                    <li class="menu_li7"><a href="{:U('notice/folder?fid=95')}"><span class="cd_span7"></span><div class="cd_div">公司新闻与今日头条</div></a></li>
-                    <li class="menu_li7"><a href="{:U('notice/folder?fid=68')}"><span class="cd_span7"></span><div class="cd_div">企业概况</div></a></li>
-                    <li class="menu_li7"><a href="{:U('notice/folder?fid=96')}"><span class="cd_span7"></span><div class="cd_div">员工活动</div></a></li>
-                    <li class="menu_li7"><a href="{:U('notice/folder?fid=97')}"><span class="cd_span7"></span><div class="cd_div">组织架构</div></a></li> 
-                </ul>
-            </li>
+              
         </ul>
+        <ul class="menu_ul7_4">
+            <li class="menu_li7_4"><a href="{:U('flow/getlist?type=65')}"><span class="cd_span7_4"></span><div class="cd_div">私车公用申请</div></a></li>
+            <li class="menu_li7_4"><a href="{:U('flow/getlist?type=63')}"><span class="cd_span7_4"></span><div class="cd_div">公交卡使用申请</div></a></li>
+        </ul>
+        <ul class="menu_ul7_5">
+            <li class="menu_li7_5"><a href="{:U('flow/getlist?type=55')}"><span class="cd_span7_5"></span><div class="cd_div">物品采购调拨申请</div></a></li>
+            <li class="menu_li7_5"><a href="{:U('flow/getlist?type=54')}"><span class="cd_span7_5"></span><div class="cd_div">办公用品采购申请</div></a></li>
+            <li class="menu_li7_5"><a href="{:U('flow/getlist?type=42')}"><span class="cd_span7_5"></span><div class="cd_div">办公用品领用申请</div></a></li>
+        </ul>
+        <ul class="menu_ul7_3">
+            <li class="menu_li7_3"><a href="{:U('room/index')}"><span class="cd_span7_3"></span><div class="cd_div">会议室管理</div></a></li>
+            <li class="menu_li7_3"><a href="{:U('yuyue/index')}"><span class="cd_span7_3"></span><div class="cd_div">预约列表</div></a></li>
+            <li class="menu_li7_3"><a href="{:U('parameter/index')}"><span class="cd_span7_3"></span><div class="cd_div">参数配置</div></a></li>
+        </ul>
+        <ul class="menu_ul7">
+            <li class="menu_li7"><a href="{:U('notice/index')}"><span class="cd_span7"></span><div class="cd_div">公告搜索</div></a></li>
+            <li class="menu_li7"><a href="{:U('notice_folder/index')}"><span class="cd_span7"></span><div class="cd_div">公告管理</div></a></li>
+            <li class="menu_li7"><a href="{:U('notice/folder?fid=72')}"><span class="cd_span7"></span><div class="cd_div">通知与公告</div></a></li>
+            <li class="menu_li7"><a href="{:U('notice/folder?fid=71')}"><span class="cd_span7"></span><div class="cd_div">公司制度与规定</div></a></li>
+            <li class="menu_li7"><a href="{:U('notice/folder?fid=95')}"><span class="cd_span7"></span><div class="cd_div">公司新闻与今日头条</div></a></li>
+            <li class="menu_li7"><a href="{:U('notice/folder?fid=68')}"><span class="cd_span7"></span><div class="cd_div">企业概况</div></a></li>
+            <li class="menu_li7"><a href="{:U('notice/folder?fid=96')}"><span class="cd_span7"></span><div class="cd_div">员工活动</div></a></li>
+            <li class="menu_li7"><a href="{:U('notice/folder?fid=97')}"><span class="cd_span7"></span><div class="cd_div">组织架构</div></a></li>
+        </ul> 
         <a class="left_a" id="left_a5">
         	<img src="__PUBLIC__/img/new_home/left_xxgl1.png"/>
         </a>
@@ -227,6 +279,47 @@
             <!--<li class="menu_li8"><a><span class="cd_span8"></span><div class="cd_div">软件版本发布申请</div></a></li>-->
             </ul>
         
+        <a class="left_a" id="left_a8">
+            <img src="__PUBLIC__/img/new_home/left_tjzx1.png"/>
+        </a>
+       <!--  <ul class="menu_ul14">
+            <li class="menu_li14"><a href="{:U('report/delivery')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报导入</div></a></li>
+            <li class="menu_li14"><a href="{:U('report/delivery_read_all')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报表</div></a></li>
+            <li class="menu_li14"><a href="{:U('report/store_problem')}"><span class="cd_span14"></span><div class="cd_div">商家问题受理导入</div></a></li>
+            <li class="menu_li14"><a href="{:U('report/store_problem_read_all')}"><span class="cd_span14"></span><div class="cd_div">商家问题受理表</div></a></li>
+            <li class="menu_li14"><a href="{:U('attract/index')}"><span class="cd_span14"></span><div class="cd_div">招商进度日报导入</div></a></li>
+            <li class="menu_li14"><a href="{:U('attract/statistics')}"><span class="cd_span14"></span><div class="cd_div">招商进度日报表</div></a></li>
+            <li class="menu_li14"><a href="{:U('visitor/index')}"><span class="cd_span14"></span><div class="cd_div">到访客户池导入</div></a></li>
+            <li class="menu_li14"><a href="{:U('visitor/statistics')}"><span class="cd_span14"></span><div class="cd_div">到访客户池统计</div></a></li>
+            <li class="menu_li14"><a href="{:U('signed/index')}"><span class="cd_span14"></span><div class="cd_div">已签约客户明细年进度导入</div></a></li>
+            <li class="menu_li14"><a href="{:U('signed/statistics')}"><span class="cd_span14"></span><div class="cd_div">已签约客户明细年进度表</div></a></li>
+        </ul> -->
+        
+        <ul class="menu_ul14">
+            <li class="menu_li14">
+                <a class="menu_li14_a">
+                    <span class="cd_span14"></span>
+                    <div class="cd_div">基础数据导入</div>
+                    <img class="cd_ts" src="__PUBLIC__/img/new_home/jian6.png"/>
+                </a>
+            </li>
+            <li class="menu_li14"><a href="{:U('report/delivery_read_all')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报表</div></a></li>
+            <li class="menu_li14"><a href="{:U('report/store_problem_read_all')}"><span class="cd_span14"></span><div class="cd_div">商家问题受理表</div></a></li>
+            <li class="menu_li14"><a href="{:U('attract/statistics')}"><span class="cd_span14"></span><div class="cd_div">招商进度日报表</div></a></li> 
+            <li class="menu_li14"><a href="{:U('visitor/statistics')}"><span class="cd_span14"></span><div class="cd_div">到访客户池统计</div></a></li>
+            <li class="menu_li14"><a href="{:U('signed/statistics')}"><span class="cd_span14"></span><div class="cd_div">已签约客户明细年进度表</div></a></li>
+            
+        </ul>
+        
+        <ul class="menu_ul15">
+            <li class="menu_li15"><a href="{:U('report/delivery')}"><span class="cd_span15"></span><div class="cd_div">基地发货日报导入</div></a></li>
+            <!-- <li class="menu_li15"><a><span class="cd_span15"></span><div class="cd_div">工作计划导入</div></a></li> -->
+            <li class="menu_li15"><a href="{:U('report/store_problem')}"><span class="cd_span15"></span><div class="cd_div">商家问题受理导入</div></a></li>
+            <li class="menu_li15"><a href="{:U('attract/index')}"><span class="cd_span15"></span><div class="cd_div">招商进度日报导入</div></a></li>
+            <li class="menu_li15"><a href="{:U('visitor/index')}"><span class="cd_span15"></span><div class="cd_div">到访客户池导入</div></a></li>
+            <li class="menu_li15"><a href="{:U('signed/index')}"><span class="cd_span15"></span><div class="cd_div">已签约客户明细年进度导入</div></a></li>
+        </ul>
+
         <a class="left_a" id="left_a6">
         	<img src="__PUBLIC__/img/new_home/left_dazx1.png"/>
         </a>
@@ -246,45 +339,7 @@
             <li class="menu_li12"><a href="{:U('doc/folder?fid=67')}"><span class="cd_span12"></span><div class="cd_div">人事管理</div></a></li>
         </ul>
         
-        <a class="left_a" id="left_a8">
-        	<img src="__PUBLIC__/img/new_home/left_tjzx1.png"/>
-        </a>
-       <!--  <ul class="menu_ul14">
-            <li class="menu_li14"><a href="{:U('report/delivery')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报导入</div></a></li>
-            <li class="menu_li14"><a href="{:U('report/delivery_read_all')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报表</div></a></li>
-            <li class="menu_li14"><a href="{:U('report/store_problem')}"><span class="cd_span14"></span><div class="cd_div">商家问题受理导入</div></a></li>
-            <li class="menu_li14"><a href="{:U('report/store_problem_read_all')}"><span class="cd_span14"></span><div class="cd_div">商家问题受理表</div></a></li>
-            <li class="menu_li14"><a href="{:U('attract/index')}"><span class="cd_span14"></span><div class="cd_div">招商进度日报导入</div></a></li>
-            <li class="menu_li14"><a href="{:U('attract/statistics')}"><span class="cd_span14"></span><div class="cd_div">招商进度日报表</div></a></li>
-            <li class="menu_li14"><a href="{:U('visitor/index')}"><span class="cd_span14"></span><div class="cd_div">到访客户池导入</div></a></li>
-            <li class="menu_li14"><a href="{:U('visitor/statistics')}"><span class="cd_span14"></span><div class="cd_div">到访客户池统计</div></a></li>
-            <li class="menu_li14"><a href="{:U('signed/index')}"><span class="cd_span14"></span><div class="cd_div">已签约客户明细年进度导入</div></a></li>
-            <li class="menu_li14"><a href="{:U('signed/statistics')}"><span class="cd_span14"></span><div class="cd_div">已签约客户明细年进度表</div></a></li>
-        </ul> -->
         
-        <ul class="menu_ul14">
-            <li class="menu_li14"><a href="{:U('report/delivery_read_all')}"><span class="cd_span14"></span><div class="cd_div">基地发货日报表</div></a></li>
-            <li class="menu_li14"><a href="{:U('report/store_problem_read_all')}"><span class="cd_span14"></span><div class="cd_div">商家问题受理表</div></a></li>
-            <li class="menu_li14"><a href="{:U('attract/statistics')}"><span class="cd_span14"></span><div class="cd_div">招商进度日报表</div></a></li> 
-            <li class="menu_li14"><a href="{:U('visitor/statistics')}"><span class="cd_span14"></span><div class="cd_div">到访客户池统计</div></a></li>
-            <li class="menu_li14"><a href="{:U('signed/statistics')}"><span class="cd_span14"></span><div class="cd_div">已签约客户明细年进度表</div></a></li>
-            <li class="menu_li14">
-                <a class="menu_li14_a">
-                    <span class="cd_span14"></span>
-                    <div class="cd_div">基础数据导入</div>
-                    <img class="cd_ts" src="__PUBLIC__/img/new_home/jian6.png"/>
-                </a>
-            </li>
-        </ul>
-        
-        <ul class="menu_ul15">
-            <li class="menu_li15"><a href="{:U('report/delivery')}"><span class="cd_span15"></span><div class="cd_div">基地发货日报导入</div></a></li>
-            <!-- <li class="menu_li15"><a><span class="cd_span15"></span><div class="cd_div">工作计划导入</div></a></li> -->
-            <li class="menu_li15"><a href="{:U('report/store_problem')}"><span class="cd_span15"></span><div class="cd_div">商家问题受理导入</div></a></li>
-            <li class="menu_li15"><a href="{:U('attract/index')}"><span class="cd_span15"></span><div class="cd_div">招商进度日报导入</div></a></li>
-            <li class="menu_li15"><a href="{:U('visitor/index')}"><span class="cd_span15"></span><div class="cd_div">到访客户池导入</div></a></li>
-            <li class="menu_li15"><a href="{:U('signed/index')}"><span class="cd_span15"></span><div class="cd_div">已签约客户明细年进度导入</div></a></li>
-        </ul>
         <a class="left_a" id="left_a9">
         	<img src="__PUBLIC__/img/new_home/left_xtgl1.png"/>
         </a>

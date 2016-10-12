@@ -19,8 +19,8 @@ class DailyReportAction extends CommonAction {
 		if (!empty($_POST['eq_dept_ireadd'])) {
 			$map['dept_id'] = array('eq', $_POST['eq_dept_id']);
 		}
-		if (!empty($_POST['li_user_name'])) {
-			$map['user_name'] = array('like', '%'.$_POST['li_user_name'].'%');
+		if (!empty($_REQUEST['li_user_name'])) {
+			$map['user_name'] = array('like', '%'.$_REQUEST['li_user_name'].'%');
 		}
 		if (!empty($_POST['be_create_time']) && !empty($_POST['en_create_time'])) {
 			$map['work_date'] = array('between', array($_POST['be_create_time'],$_POST['en_create_time']));

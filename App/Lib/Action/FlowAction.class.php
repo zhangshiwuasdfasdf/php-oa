@@ -1318,6 +1318,32 @@ class FlowAction extends CommonAction {
 			$menu_first_title = '人力资源';
 		}
 		$this -> assign('first_title',$menu_first_title);
+
+		if($menu_first_title = '人力资源'){
+			$fn2 = $flow_type['name'];
+			if($fn2 == '部门招聘需求申请'){
+				$menu_second_title = '招聘管理';
+			}elseif ($fn2 == '加班申请' || $fn2 == '员工请假申请' || $fn2 == '出勤异常申请' || $fn2 == '外勤/出差申请' || $fn2 == '每月考勤表' || $fn2 == '每月打卡信息') {
+				$menu_second_title = '考勤管理';
+			}elseif ($fn2 == '员工调动申请' || $fn2 == '试用期评估表' || $fn2 == '转正申请' || $fn2 == '员工离职申请' || $fn2 == '员工离职交接申请') {
+				$menu_second_title = '员工关系管理';
+			}
+			elseif ($fn2 == '员工调薪申请') {
+				$menu_second_title = '薪酬管理';
+			}
+			$this -> assign('second_title',$menu_second_title);
+		}
+		if($menu_first_title = '行政管理') {
+			$fn2 = $flow_type['name'];
+			if($fn2 == '私车公用申请' || $fn2 == '公交卡使用申请'){
+				$menu_second_title = '物业管理';
+			}elseif ($fn2 == '物品采购调拨申请' || $fn2 == '办公用品采购申请' || $fn2 == '办公用品领用申请') {
+				$menu_second_title = '物品管理';
+			}
+			$this -> assign('second_title',$menu_second_title);
+		}
+		
+		
 		$model_flow_field = D("FlowField");
 		$field_list = $model_flow_field -> get_field_list($type_id);
 		$this -> assign("field_list", $field_list);
