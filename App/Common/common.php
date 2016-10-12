@@ -2342,6 +2342,23 @@ function getFlowEmpNo($uid,$day){
 function isZhaopinDirector($uid){
 	return $uid==getZhaopinDirector($uid);
 }
+function isYuanQuCaiWuBu($uid){
+	$dept_ids = M('Dept')->where(array('dept_no'=>'CWB','name'=>'财务部','_logic'=>'or'))->getField('id',true);
+	if(!empty($dept_ids) && is_array($dept_ids)){
+		$child_depts = array();
+		foreach ($dept_ids as $dept_id){
+			$child_depts = array_merge($child_depts,get_child_dept_all($dept_id));
+		}
+		$user = M('User')->where(array('id'=>$uid,'pos_id'=>array('in',$child_depts)))->find();
+		if(!empty($user)){
+			return true;
+		}else{
+			return false;
+		}
+	}else{
+		return false;
+	}
+}
 function getZhaopinDirector($uid){
 	$flag = isHeadquarters($uid);
 	if($flag>0){

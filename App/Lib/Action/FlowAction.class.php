@@ -1439,17 +1439,22 @@ class FlowAction extends CommonAction {
 		if(empty($uid)){
 			return false;
 		}
-// 		if(isHzYuanQu($uid)){
-// 			$flow = HzYuanQuFlowOrigin($uid);
-// 		}else{
+		if(isYuanQuCaiWuBu($uid)){
+			$isYuanQuCaiWuBu = true;
+			$flow = checkFlowNotMe(array(getParentid($uid),getFinancialManagerId(),getHRDeputyGeneralManagerId($uid)));
+		}else{
+			$isYuanQuCaiWuBu = false;
 			$flow = checkFlowNotMe(array(getParentid($uid),getHRDeputyGeneralManagerId($uid)));
-// 		}
-			
+		}
 		if(!empty($flow)){
 			if($this->isAjax()){
 				$this->ajaxReturn(getFlowData($flow),null,1);
 			}
-			$confirm_text = getConfirmTextNotMe(array('getParentid','getHRDeputyGeneralManagerId'),$array['flow_type_id'],$uid);
+			if($isYuanQuCaiWuBu){
+				$confirm_text = getConfirmTextNotMe(array('getParentid','getFinancialManagerId','getHRDeputyGeneralManagerId'),$array['flow_type_id'],$uid);
+			}else{
+				$confirm_text = getConfirmTextNotMe(array('getParentid','getHRDeputyGeneralManagerId'),$array['flow_type_id'],$uid);
+			}
 			$this->_add_flow_index_log($flow,$flow_log);
 			
 			return array('flow'=>$flow,'confirm_text'=>$this->fetch('',$confirm_text,''));
@@ -1749,11 +1754,21 @@ class FlowAction extends CommonAction {
 		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
 		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		$dept_uid = getDeptManagerId($uid,$dept_id);
-		$flow = array($dept_uid,getFrontDesk());
+		if(isYuanQuCaiWuBu($uid)){
+			$isYuanQuCaiWuBu = true;
+			$flow = array($dept_uid,getFinancialManagerId(),getFrontDesk());
+		}else{
+			$isYuanQuCaiWuBu = true;
+			$flow = array($dept_uid,getFrontDesk());
+		}
 		if($this->isAjax()){
 			$this->ajaxReturn(getFlowData(array_unique2($flow)),null,1);
 		}
-		$confirm_text = getConfirmText(array('getDeptManagerId','getFrontDesk'),$array['flow_type_id'],$uid);
+		if($isYuanQuCaiWuBu){
+			$confirm_text = getConfirmText(array('getDeptManagerId','getFinancialManagerId','getFrontDesk'),$array['flow_type_id'],$uid);
+		}else{
+			$confirm_text = getConfirmText(array('getDeptManagerId','getFrontDesk'),$array['flow_type_id'],$uid);
+		}
 		$this->_add_flow_index_log($flow,$flow_log);
 		return array('flow'=>$flow,'confirm_text'=>$this->fetch('',$confirm_text,''));
 	}
