@@ -2586,6 +2586,7 @@ class FlowAction extends CommonAction {
 								$data['hour'] = $add_hour;
 								$data['create_time'] = $create_time;
 								$data['user_id'] = $flow['user_id'];
+								$data['flow_id'] = $flow_id;
 								$data['status'] = 1;
 								M('FlowHour')->add($data);
 							}
