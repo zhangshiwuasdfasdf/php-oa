@@ -2566,6 +2566,9 @@ class FlowAction extends CommonAction {
 				
 				
 				$list = $model -> save();
+				
+				$is_last_confirm = D("Flow") -> is_last_confirm($flow_id);
+				
 				$model = D("FlowLog");
 				$model -> where("step=$step and flow_id=$flow_id and result is null") -> delete();
 
@@ -2573,7 +2576,7 @@ class FlowAction extends CommonAction {
 					D("Flow") -> save();
 					D("Flow") -> next_step($flow_id, $step);
 					
-					if(D("Flow") -> is_last_confirm($flow_id)){
+					if($is_last_confirm){
 						if(getModelName($flow_id)=='FlowOverTime'){//加班单
 							$flow = M('FlowOverTime')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 							$create_time = strtotime($flow['start_time']);
