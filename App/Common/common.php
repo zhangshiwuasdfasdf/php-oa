@@ -2250,12 +2250,26 @@ function getFlow($uid,$day,$unique=true){
 	}elseif ($day>3 && $day<7){
 		if(getRank($uid) == 3){//主管，助理，员工
 			if($unique){
-				return checkFlowUp(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid))));
+				if(isYuanQuCaiWuBu($uid)){
+					return checkFlowUp(array_unique(array(getParentid($uid),getFinancialManagerId($uid),getHRDeputyGeneralManagerId($uid))));
+				}else{
+					return checkFlowUp(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid))));
+				}
 			}else{
-				return checkFlowUp(array(getParentid($uid),getHRDeputyGeneralManagerId($uid)));
+				if(isYuanQuCaiWuBu($uid)){
+					return checkFlowUp(array(getParentid($uid),getFinancialManagerId($uid),getHRDeputyGeneralManagerId($uid)));
+				}else{
+					return checkFlowUp(array(getParentid($uid),getHRDeputyGeneralManagerId($uid)));
+				}
+				
 			}
 		}elseif (getRank($uid) == 2){//经理
-			return getHRDeputyGeneralManagerId($uid);
+		    if(isYuanQuCaiWuBu($uid)){
+		    	return array(getFinancialManagerId($uid),getHRDeputyGeneralManagerId($uid));
+		    }else{
+		    	return getHRDeputyGeneralManagerId($uid);
+		    }
+			
 		}elseif (getRank($uid) == 1){//副总，总监
 			return getGeneralManagerId($uid);
 		}else{
@@ -2264,15 +2278,34 @@ function getFlow($uid,$day,$unique=true){
 	}elseif($day>=7){
 		if(getRank($uid) == 3){//主管，助理，员工
 			if($unique){
-				return checkFlowUp(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
+				if(isYuanQuCaiWuBu($uid)){
+					return checkFlowUp(array_unique(array(getParentid($uid),getFinancialManagerId($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
+				}else{
+					return checkFlowUp(array_unique(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
+				}
 			}else{
-				return checkFlowUp(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
+				if(isYuanQuCaiWuBu($uid)){
+					return checkFlowUp(array(getParentid($uid),getFinancialManagerId($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
+				}else{
+					return checkFlowUp(array(getParentid($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
+				}
+				
 			}
 		}elseif (getRank($uid) == 2){//经理，总监
 			if($unique){
-				return checkFlowUp(array_unique(array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
+				if(isYuanQuCaiWuBu($uid)){
+					return checkFlowUp(array_unique(array(getFinancialManagerId($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
+				}else{
+					return checkFlowUp(array_unique(array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid))));
+				}
+				
 			}else{
-				return checkFlowUp(array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
+				if(isYuanQuCaiWuBu($uid)){
+					return checkFlowUp(array(getFinancialManagerId($uid),getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));	
+				}else{
+					return checkFlowUp(array(getHRDeputyGeneralManagerId($uid),getGeneralManagerId($uid)));
+				}
+				
 			}
 		}elseif (getRank($uid) == 1){//副总
 			return getGeneralManagerId($uid);

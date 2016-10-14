@@ -120,6 +120,13 @@ table div{ padding-left:2%;}
         <div><span class="ma2">签名/日期：</span><span><if condition="($flow_log_all[4])">{$flow_log_all[4].user_name}/{$flow_log_all[4].create_time|toDate='Y-m-d'}</if></span></div>
     </td>
   </tr>
+  <eq name="isYuanQuCaiWuBu" value="1">
+    <tr>
+      <td width="88" height="50" align="center">财务中心审批</td>
+      <td height="50" colspan="5"><input style="width:97%; height:50px; padding-left:20px;" type="text" <if condition="($flow_log_all[0])">value="{$flow_log_all[0].result|show_result}"</if> disabled/></td>
+    </tr>
+  </eq> 
+  
   <tr>
     <td height="100" colspan="6">
     	<div>总经理审核/审批：</div>
