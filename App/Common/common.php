@@ -2796,13 +2796,13 @@ function getAvailableHour($now,$uid){
 	}
 	
 	$three_month_ago = strtotime("-3 months",$now);
-	$res1 = M('FlowHour')->where(array('user_id'=>array('eq',$uid),'create_time'=>array('egt',$three_month_ago),'status'=>array('in','0,1')))->sum('hour');
-// 	$res2 = M('FlowHour')->where(array('user_id'=>array('eq',$uid),'create_time'=>array('egt',$three_month_ago),'status'=>array('eq','2')))->sum('hour');
+	$res1 = M('FlowHour')->where(array('user_id'=>array('eq',$uid),'create_time'=>array('egt',$three_month_ago),'status'=>array('eq','0'),'hour'=>array('lt',0)))->sum('hour');
+	$res2 = M('FlowHour')->where(array('user_id'=>array('eq',$uid),'create_time'=>array('egt',$three_month_ago),'status'=>array('eq','1')))->sum('hour');
 	
-	if(empty($res1)){
+	if(empty($res1) && empty($res2)){
 		$res1 = 0;
 	}
-	return $res1;
+	return $res1+$res2;
 }
 
 function getAvailableYearHour($now,$uid){
