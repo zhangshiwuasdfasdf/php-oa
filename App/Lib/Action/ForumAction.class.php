@@ -186,8 +186,10 @@ class ForumAction extends CommonAction {
 		if (!empty($model)) {
 			$this -> _list($model, $map,$sortby);
 		}
-		
-		$where = array();
+		$model = M("SystemFolder");
+		$bbs = $model -> where($where) -> order("id desc") -> getField('id,name');
+		$this -> assign('folder_bbs', $bbs);//bbs模块
+		$this -> assign('fid',$_GET['fid']);
 		$folder_id = $map['folder'];
 		$where['id'] = array('eq', $folder_id);
 		$folder_name = M("SystemFolder") -> where($where) -> getField("name");
