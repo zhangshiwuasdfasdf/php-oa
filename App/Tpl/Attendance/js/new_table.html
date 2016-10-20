@@ -1,0 +1,33 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	set_return_url();
+});
+function add() {
+	var month = $("#be_date").val();
+	var dept = $("#dept_name_multi_data2").val();
+	if(!month || !dept){
+		ui_alert('请填写考勤月份和部门',function(){
+			location.reload();
+		});	
+	}else{
+		$.ajax({
+			type:'post',
+			url:"{:U('create_attendance')}",
+			data:{month:month,dept:dept},
+			success:function(data){
+				if(data.status == '1'){
+					location.reload();
+				}else{
+					ui_alert('生成失败',function(){
+						location.reload();
+					});	
+				}
+			},
+			error:function(data){
+
+			},
+		})
+	}
+	
+}
+</script>

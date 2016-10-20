@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class ProfileAction extends CommonAction {
-	protected $config=array('app_type'=>'common', 'action_auth' => array('upload' => 'read','reset_pwd'=>'read','password'=>'read','save'=>'read','resume'=>'read','resume_must'=>'read','addResume'=>'read','save_resume'=>'read','add_record'=>'read','save_record'=>'read','userlist'=>'read','user'=>'read','get_dept_child'=>'read','export_sign'=>'read'));
+	protected $config=array('app_type'=>'common', 'action_auth' => array('upload' => 'read','reset_pwd'=>'read','password'=>'read','save'=>'read','resume'=>'read','resume_must'=>'read','addResume'=>'read','save_resume'=>'read','add_record'=>'read','save_record'=>'read','userlist'=>'read','user'=>'read','get_dept_child'=>'read','export_sign'=>'read','update_sign'=>'read'));
 	
 	function index(){	
 		$auth = $this -> config['auth'];
@@ -576,10 +576,16 @@ class ProfileAction extends CommonAction {
 		
 		C('VAR_PAGE','p_attendance_table');//p的名字变一下
 		//考勤统计
-		$attendance_table = M('AttendanceTable')->where(array('user_id'=>$id,'is_del'=>0))->select();
-		$this->_list(M('AttendanceTable'), array('user_id'=>$id,'is_del'=>0),'',false,'attendance_table','page_attendance_table');
-// 		$this->assign('attendance_table',$attendance_table);
+		$attendance_table = M('AttendanceTable')->where(array('user_id'=>$id))->select();
 
+		//dump($month_ids);die;
+		
+		//dump($attendance_table);die;
+		$this->_list(D('AttendanceTableView'), array('user_id'=>$id),'',false,'attendance_table','page_attendance_table');
+// 		$this->assign('attendance_table',$attendance_table);
+		
+
+		//dump(D('AttendanceTableView')->select());die;
 		C('VAR_PAGE','p');//p的名字变回来
 		$this->assign('profile_user_index',cookie('profile_user_index'));
 		
@@ -590,6 +596,7 @@ class ProfileAction extends CommonAction {
 			$signdata_new[$date][$v['type']] = date('Y-m-d H:i:s',$v['time']);
 		}
 		$this->assign('signdata_new',$signdata_new);
+		$this->assign('month',$month);
 		$this->assign('signdata_count',count($signdata_new));
 		$this->display();
 	}
@@ -648,6 +655,12 @@ class ProfileAction extends CommonAction {
 		//readfile($filename);
 		$objWriter -> save('php://output');
 		exit ;
+	}
+
+	function update_sign(){
+		$id = $_POST['id'];
+		$data=M("AttendanceTable")->where(array('id'=>$id))->setField('sign','1');
+		exit(json_encode($data));
 	}
 }
 ?>

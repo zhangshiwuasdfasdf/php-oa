@@ -931,15 +931,16 @@
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">法定</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">成长赞助</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">备注</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">员工签名</span></td>
               </tr>
               <foreach name="attendance_table" item="vo">
               	<tr>
-                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.month|strtotime|date="Y年m月",###}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.month}</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.should_day}</span></td>
                     
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.actually_day}</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.late}</span></td>
-                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.supply_attendance}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.attendance_day}</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.sick_leave}</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.casual_leave}</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.absent}</span></td>
@@ -956,6 +957,7 @@
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.overtime_legal}</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.growth_sponsorship}</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.remark}</span></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><input onclick="confirm({$vo.id})" type="button" value="确认" /></td>
               	</tr>
               </foreach>
             </table>
@@ -997,6 +999,26 @@
             set_cookie('profile_user_index',n);
         })
        	$('.ul1 li').eq(profile_user_index).click();
+
+       	function confirm(id){
+       		$.ajax({
+       			url:"{:U('update_sign')}",
+       			data:{id:id},
+       			type:'post',
+       			success:function(data){
+	       			if(data.status == '1'){
+						location.reload();
+					}else{
+						ui_alert('签名失败',function(){
+							location.reload();
+						});	
+					}
+       			},
+       			error:function(data){
+       				
+       			},
+       		})
+       	}
     </script>
     <script type="text/javascript">
 $(function() {

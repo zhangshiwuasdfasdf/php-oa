@@ -40,6 +40,9 @@ class AttendanceAction extends CommonAction {
 		if(empty($map['month'])){
 			unset($map['month']);
 		}
+		if (!empty($_POST['number'])) {
+			$map['number'] = array('like','%'.$_POST['number'].'%');
+		}
 // 		dump($map);
 // 		dump($_POST['be_attendance_time']);
 // 		dump($_POST['en_attendance_time']);
@@ -103,6 +106,295 @@ class AttendanceAction extends CommonAction {
 		$this -> assign("map", serialize($map));
 		$this -> display();
 	}
+
+	function new_table(){
+		$map = $this -> _search();
+		
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($map);
+		}
+		$model = D('AttendanceMonth');
+		// dump($map);
+		// die;
+		if (!empty($model)) {
+			$info = $this -> _list($model, $map,'number','desc');
+			$this -> assign('info', $info);
+		}
+
+		$node = D("Dept");
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		if(!is_mobile_request()){
+			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
+		}
+		
+		// 		$this -> assign('months', $months);
+		$widget['date'] = true;
+		$this -> assign("widget", $widget);
+		$this -> assign("map", serialize($map));
+		$this -> display();
+	}
+
+	function edit_table(){
+		$id=I('get.id');
+		$model=M("AttendanceMonth");
+		if($model->create()){
+			if(FALSE !== $model->save()){
+				$this->success('编辑成功',U('new_table'));
+			}else{
+				$this->error('编辑失败');
+			}
+		}
+		$data=$model->find($id);
+		$username=$data['create_name'];
+		
+		$dept_ids=$data['attendance_dept'];
+		if (!empty($dept_ids)) {
+
+			$dept_id_mul = array_filter(explode('|',$dept_ids));
+			$dept_ids = array();
+			foreach ($dept_id_mul as $dept_id){
+				$dept_ids = array_merge($dept_ids,get_child_dept_all($dept_id));
+			}
+			$map['pos_id'] = array('in', $dept_ids);
+		}
+		$info = D("UserView")->where($map)->order('dept_name desc')->select();
+		//dump($info);die;
+		
+		//应出勤天数
+		$month = $data['month'];//2016-10
+		$m = date('m',strtotime($month));
+		$y = date('Y',strtotime($month));
+		// $sum = date('d',strtotime($y.'-'.($m+1))-1);
+		$t = date('t',strtotime($month));
+		$should_day = 0;
+		for($i=1;$i<=$t;$i++){
+			if(!is_holiday(strtotime($y.'-'.$m.'-'.$i))){
+				$should_day += 1;
+			};
+		}
+		$attendance_table = M('AttendanceTable')->where(array('attendance_month_id'=>$id))->select();
+		if(empty($attendance_table)){
+			//补勤
+			foreach ($info as $key => $value) {
+				$info[$key]['attendance_day'] = 0;
+				$flow_ids = M('Flow')->where(array('user_id'=>$value['id'],'type'=>47))->getField('id',true);
+				
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					
+					$FlowAttendance = M('FlowAttendance')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'start_time'=>array('between',array($start_date,$end_date))))->select();
+					
+					foreach ($FlowAttendance as $key3 => $value3) {
+						$info[$key]['attendance_day'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//dump($info);die;
+			//病假
+			foreach ($info as $key => $value) {
+				$info[$key]['sick_leave']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'病假','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['sick_leave'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//事假
+			foreach ($info as $key => $value) {
+				$info[$key]['casual_leave']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'事假','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['casual_leave'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//产假
+			foreach ($info as $key => $value) {
+				$info[$key]['maternity_leave']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'产假','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['maternity_leave'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//婚假
+			foreach ($info as $key => $value) {
+				$info[$key]['marriage_leave']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'婚假','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['marriage_leave'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//丧假
+			foreach ($info as $key => $value) {
+				$info[$key]['bereavement_leave']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'丧假','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['bereavement_leave'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//工伤
+			foreach ($info as $key => $value) {
+				$info[$key]['accidents']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'工伤假','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['accidents'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//年假
+			foreach ($info as $key => $value) {
+				$info[$key]['annual_leave']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'年假','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['annual_leave'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//调休
+			foreach ($info as $key => $value) {
+				$info[$key]['leave_in_lieu']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'调休','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['leave_in_lieu'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//实际出勤
+			//平时加班
+			foreach ($info as $key => $value) {
+				$info[$key]['overtime_weekday']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>57))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowOverTime')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'use_type'=>'申请加班费','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['overtime_weekday'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//周末
+			foreach ($info as $key => $value) {
+				$info[$key]['overtime_weekends']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>57))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowOverTime')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'use_type'=>'申请加班费','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['overtime_weekends'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+			//法定
+			foreach ($info as $key => $value) {
+				$info[$key]['overtime_legal']=0;
+				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>57))->getField('id',true);
+				foreach ($flow_ids as $key2 => $flow_id) {
+					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
+					$FlowLeave=M('FlowOverTime')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'use_type'=>'申请加班费','start_time'=>array('between',array($start_date,$end_date))))->select();
+				
+					foreach ($FlowLeave as $key3 => $value3) {
+						$info[$key]['overtime_legal'] += $value3['day_num']+$value3['hour_num']/8;
+					}
+				}
+			}
+		}else{
+			
+			foreach ($attendance_table as $k => $v) {
+				$attendance_table[$k]['name'] = $attendance_table[$k]['user_name'];
+				$attendance_table[$k]['id'] = $attendance_table[$k]['user_id'];
+			}
+			$info = $attendance_table;
+			// foreach ($attendance_table as $k => $v) {
+			// 	foreach ($info as $k2 => $v2) {
+			// 		if($v2['id'] == $v['user_id']){
+			// 			$info[$k2]['attendance_day'] = $v['attendance_day'];
+			// 			$info[$k2]['actually_day'] = $v['actually_day'];
+			// 			$info[$k2]['late'] = $v['late'];
+			// 			$info[$k2]['sick_leave'] = $v['sick_leave'];
+			// 			$info[$k2]['casual_leave'] = $v['casual_leave'];
+			// 			$info[$k2]['absent'] = $v['absent'];
+			// 			$info[$k2]['maternity_leave'] = $v['maternity_leave'];
+			// 			$info[$k2]['marriage_leave'] = $v['marriage_leave'];
+			// 			$info[$k2]['bereavement_leave'] = $v['bereavement_leave'];
+			// 			$info[$k2]['accidents'] = $v['accidents'];
+			// 			$info[$k2]['annual_leave'] = $v['annual_leave'];
+			// 			$info[$k2]['leave_in_lieu'] = $v['leave_in_lieu'];
+			// 			$info[$k2]['overtime_weekday'] = $v['overtime_weekday'];
+			// 			$info[$k2]['overtime_weekends'] = $v['overtime_weekends'];
+			// 			$info[$k2]['overtime_legal'] = $v['overtime_legal'];
+			// 			$info[$k2]['growth_sponsorship'] = $v['growth_sponsorship'];
+			// 			$info[$k2]['remark'] = $v['remark'];
+			// 		}
+					
+			// 	}
+			// }
+		}
+		
+		//dump($info);die;
+		/*//序号连续
+		$rows = get_user_config('list_rows');
+		if(isset($_POST['p'])){
+			$number = $_POST['p']*$rows-$rows+1;
+		}else{
+			$number = 1*$rows-$rows+1;
+		}
+		$this -> assign('rows',$number);*/
+		$this->assign('should_day',$should_day);
+		$this->assign('info',$info);
+		$this->assign('data',$data);
+		$this->display();
+	}
+
 	//下载模板
 	public function down() {
 		$this -> _down();
@@ -773,5 +1065,77 @@ class AttendanceAction extends CommonAction {
 			default :
 				break;
 		}
+	}
+
+	function create_attendance(){
+		$model=M("AttendanceMonth");
+		$info['month'] = $_POST['month'];
+		$info['attendance_dept'] = $_POST['dept'];
+		$info['create_time'] = time();
+		$info['create_name'] = get_user_name();
+		$data=M('User')->where(array('name'=>array('eq',get_user_name())))->find();
+		$info['dept_name']=get_dept_name();
+		$info['duty_name']=$data['duty'];
+		$last = $model->where(array('number'=>array('like',date('ymd',time()).'%')))->order('number desc')->limit(1)->find();
+			if($last){
+				$num = intval(substr($last['number'],4));
+				$num_str = formatto4w($num+1);
+			}else{
+				$num_str = formatto4w(1);
+			}
+		$info['number'] = date('ymd',time()).$num_str;
+		$res = $model->add($info);
+		if($res){
+			$this->ajaxReturn('1','success','1');
+		}else{
+			$this->ajaxReturn('0','failed','0');
+		}
+		
+	}
+	public function create_attendance_detail(){
+		$user_ids = $_POST['user_id'];//3
+		foreach ($user_ids as $k => $user_id) {
+			$data['attendance_month_id'] = $_POST['attendance_month_id'];
+			$data['user_id'] = $user_id;
+			$data['dept_name'] = $_POST['dept_name'][$k];
+			$data['duty'] = $_POST['duty'][$k];
+			$data['user_name'] = $_POST['name'][$k];
+			$data['should_day'] = $_POST['should_day'][$k];
+			$data['actually_day'] = $_POST['actually_day'][$k];
+			$data['late'] = $_POST['late'][$k];
+			$data['attendance_day'] = $_POST['attendance_day'][$k];
+			$data['sick_leave'] = $_POST['sick_leave'][$k];
+			$data['casual_leave'] = $_POST['casual_leave'][$k];
+			$data['absent'] = $_POST['absent'][$k];
+			$data['maternity_leave'] = $_POST['maternity_leave'][$k];
+			$data['marriage_leave'] = $_POST['marriage_leave'][$k];
+			$data['bereavement_leave'] = $_POST['bereavement_leave'][$k];
+			$data['accidents'] = $_POST['accidents'][$k];
+			$data['annual_leave'] = $_POST['annual_leave'][$k];
+			$data['leave_in_lieu'] = $_POST['leave_in_lieu'][$k];
+			$data['overtime_weekday'] = $_POST['overtime_weekday'][$k];
+			$data['overtime_weekends'] = $_POST['overtime_weekends'][$k];
+			$data['overtime_legal'] = $_POST['overtime_legal'][$k];
+			$data['growth_sponsorship'] = $_POST['growth_sponsorship'][$k];
+			$data['remark'] = $_POST['remark'][$k];
+			$data['create_time']=date('Y-m-d H:i:s',time());
+
+			$res = M("AttendanceTable")->where(array('attendance_month_id'=>$data['attendance_month_id'],'user_id'=>$data['user_id']))->find();
+			if(empty($res)){
+				M("AttendanceTable")->add($data);
+			}else{
+				M("AttendanceTable")->where(array('attendance_month_id'=>$data['attendance_month_id'],'user_id'=>$data['user_id']))->save($data);
+			}
+			//删除多余记录
+			M("AttendanceTable")->where(array('attendance_month_id'=>$data['attendance_month_id'],'user_id'=>array('not in',$user_ids)))->delete();
+		}
+		
+		//dump($_POST);die;
+		$this -> success('删除成功',U('new_table'));
+	}
+
+	public function read_attendance_detail(){
+		$this->edit_table();
+		
 	}
 }

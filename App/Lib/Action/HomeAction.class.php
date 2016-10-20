@@ -475,17 +475,19 @@ class HomeAction extends CommonAction {
 		} else {
 			$map['_string'] = '1=2';
 		}
+
 		//$map加上自己园区的
-		if(isHeadquarters(get_user_id())==0){//总部
-			$map['dept_id'] = array('in',get_child_dept_all(1));
-		}elseif (isHeadquarters(get_user_id())>0){//园区
-			$map['dept_id'] = array('in',get_child_dept_all(isHeadquarters(get_user_id())));
-		}elseif (isHeadquarters(get_user_id())==-1){//副总
-			$map['dept_id'] = array('in',get_child_dept_all(86));
-		}elseif (isHeadquarters(get_user_id())==-2){//总经理
-			$map['dept_id'] = array('in',get_child_dept_all(27));
-		}
+		// if(isHeadquarters(get_user_id())==0){//总部
+		// 	$map['dept_id'] = array('in',get_child_dept_all(1));
+		// }elseif (isHeadquarters(get_user_id())>0){//园区
+		// 	$map['dept_id'] = array('in',get_child_dept_all(isHeadquarters(get_user_id())));
+		// }elseif (isHeadquarters(get_user_id())==-1){//副总
+		// 	$map['dept_id'] = array('in',get_child_dept_all(86));
+		// }elseif (isHeadquarters(get_user_id())==-2){//总经理
+		// 	$map['dept_id'] = array('in',get_child_dept_all(27));
+		// }
 		$map['is_del'] = 0;
+		
 		$model = D("FlowView");
 		if(!empty($model)){
 			$flow_list = $model -> where($map) -> select();

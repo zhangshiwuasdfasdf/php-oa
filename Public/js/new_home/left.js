@@ -626,6 +626,14 @@ $(function(){
         M2.find('.content00').show();
     });
     $(document).on('click',function(){M2.find('.content00').hide()})
+
+    var M3 = $('#dept_name_multi2').parent();
+    M3.on('click',function(e){e.stopPropagation();})
+    .find('div[class="ss"]').on('click',function(){
+        M3.find('.content00').show();
+    });
+    $(document).on('click',function(){M3.find('.content00').hide()})
+    
 })
 //checkbox
 $("#qk").click(function(){
@@ -668,6 +676,48 @@ $("#qx").click(function(){
 	$("#dept_name_multi_data").val('');
     $('.content0').hide();
 })
+
+$("#qk1").click(function(){
+	$('div[id="content11"] input[type="checkbox"]').prop({
+        checked: false
+    })
+})
+$("#gb1").click(function(){
+	$('.content00').hide();
+})
+$("#qd1").click(function(){
+	
+	var s = '';
+	var data = '';
+	$('div[id="content11"] input[type="checkbox"]:checked').each(function(){
+		s += $(this).attr('name2')+';';
+		data += $(this).val()+'|';
+    });
+	$("#dept_name_multi2").val(s);
+	$("#dept_name_multi_data2").val(data);
+    $('.content00').hide();
+    
+	$.ajax({
+		type:'get', 
+		url: "./index.php?m=common&a=get_depts_child",
+		data:{dept_id_0:data},
+		dataType: "json",
+		success: function(result){
+			$(".content2").html(result);
+		},
+		error:function(e){
+		}
+	});
+})
+$("#qx1").click(function(){
+	$('div[id="content11"] input[type="checkbox"]').prop({
+        checked: false
+    })
+    $("#dept_name_multi1").val('');
+	$("#dept_name_multi_data1").val('');
+    $('.content00').hide();
+})
+
 $("#qk2").click(function(){
 	$('div[class="content2"] input[type="checkbox"]').prop({
         checked: false
