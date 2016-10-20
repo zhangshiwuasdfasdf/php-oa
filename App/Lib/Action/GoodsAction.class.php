@@ -144,12 +144,18 @@ class GoodsAction extends CommonAction {
 	}
 	public function del() {
 		$id = $_REQUEST['id'];
-		$allow_del = false;
-		
-		if($allow_del){
-			$res = M('Goods') -> delete($id);
-			$this -> assign('jumpUrl', get_return_url());
-			$this -> success("成功删除{$res}条!");
+		$sum = M('GoodsChange')->where(array('goods_id'=>$id))->sum('num');
+		$sum = $sum?$sum:0;
+		if($sum == 0){
+			$res = M('GoodsChange')->where(array('goods_id'=>$id)) -> delete();
+			if(false !== $res){
+				$res2 = M('Goods') -> delete($id);
+				$this -> assign('jumpUrl', get_return_url());
+				$this -> success("成功删除{$res2}条!");
+			}else{
+				$this -> error("删除失败");
+			}
+			
 		}else{
 			$this -> assign('jumpUrl', get_return_url());
 			$this -> error("有库存，不能删除");
