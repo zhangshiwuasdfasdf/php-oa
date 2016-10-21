@@ -16,6 +16,12 @@ h1{ text-align:center;}
 .ma6{ padding-left:2%;}
 .ma7{ width:98%; margin-left:1%; overflow:hidden;}
 .ma7 li{ float:left; margin-right:1%;}
+
+.flow-schedule,.flow-schedule li{ list-style: none; margin: 0; padding: 0;}
+.flow-schedule li{ float:left; font-size:12px; color:#6c706a; height:24px; line-height:24px; padding:0 10px;}
+.flow-schedule .li1{ background:#cbdd9f;}
+.flow-schedule .li2{ background:#f3bd7c;}
+.flow-schedule .li3{ background:#d8dad8;}
 </style>
  <!-- <div class="operate panel panel-default hidden-print">
  	<div class="panel-body">
@@ -90,37 +96,73 @@ h1{ text-align:center;}
 
 </form>
 <a id="flow_status"></a>
-{:W('PageHeader',array('name'=>'审批情况','search'=>'N'))}
-<div class="ul_table border-bottom">
+
+<div class="ul_table border-bottom operate panel panel-default hidden-print">
+	<ul class="flow-schedule" style="margin-bottom: 20px;padding-bottom: 20px;padding-left: 30px;padding-top: 20px;">
+		<li class="li1">开始</li>
+		<volist name="flow_all" id="vo_flow">
+			<if condition="$vo_flow.title eq '申请人'">
+				<li>→</li>
+		    	<li class="{$vo_flow.class}"><a title="{$vo_flow.name}">申请人</a></li>
+		    <else/>
+		    	<li>→</li>
+		    	<li class="{$vo_flow.class}"><a title="{$vo_flow.name}">{$vo_flow.position_name}</a></li>
+			</if>
+	    </volist>
+	    <li>→</li>
+	    <li class="li3">结束</li>
+	</ul>
+					
 	<ul>
-		<li class="thead">
-			<span class="col-9 text-center">类型</span>
-			<span class="col-9 text-center">审批人</span>
-			<span class="col-9 text-center">日期</span>
-			<span class="col-9 text-center">结果</span>
-			<span class="auto">意见</span>
+		<li class="thead" style="background-color:#fff">
+			<span class="col-15 text-center">标题</span>
+			<span class="col-9 text-center">操作</span>
+			<span class="col-9 text-center">意见</span>
+			<span class="col-9 text-center">操作人</span>
+			<span class="auto">操作时间</span>
 		</li>
-		<volist name="flow_log" id="item">
+		<if condition="$voo.is_del eq '1'">
 			<li class="tbody">
-				<span style="width:90px;" class="text-center">{$item.step|show_step_type}</span>
-				<span style="width:90px;" class="text-center">{$item.user_name}</span>
-				<span style="width:90px;" class="text-center">{$item.create_time|toDate='Y-m-d'}</span>
-				<span style="width:90px;" class="text-center">{$item.result|show_result}</span>
+				<span style="width:150px;" class="text-center">申请人作废</span>
+				<span style="width:90px;" class="text-center">作废</span>
+				<span style="width:90px;" class="text-center">&nbsp;</span>
+				<span style="width:90px;" class="text-center">{$vo.user_name}</span>
 				<span class="auto">
 					<div style="overflow:hidden">
-						{$item.comment}
+						{$vo.del_time|toDate='Y-m-d H:i:s'}
+					</div> </span>
+			</li>
+		</if>
+		<volist name="flow_log" id="item">
+			<li class="tbody">
+				<span style="width:150px;" class="text-center">{$item.title}</span>
+				<span style="width:90px;" class="text-center">{$item.result|show_result}</span>
+				<span style="width:90px;" class="text-center">{$item.comment}&nbsp;</span>
+				<span style="width:90px;" class="text-center">{$item.user_name}</span>
+				<span class="auto">
+					<div style="overflow:hidden">
+						{$item.create_time|toDate='Y-m-d H:i:s'}
 					</div> </span>
 			</li>
 		</volist>
+		<li class="tbody">
+			<span style="width:150px;" class="text-center">申请人创建</span>
+			<span style="width:90px;" class="text-center">创建</span>
+			<span style="width:90px;" class="text-center">&nbsp;</span>
+			<span style="width:90px;" class="text-center">{$vo.user_name}</span>
+			<span class="auto">
+				<div style="overflow:hidden">
+					{$vo.create_time|toDate='Y-m-d H:i:s'}
+				</div> </span>
+		</li>
 	</ul>
 </div>
 <if condition="$Think.get.fid eq 'submit'">
-<div class="operate panel panel-default hidden-print">
+<div>
  	<div class="panel-body">
  		<div class="center" style="margin:0 auto;width:960px">
- 			
- 				<a onclick="prn2_preview();" class="btn btn-sm btn-primary">打印</a>
- 			 <eq name="can_cancel" value="1">
+ 			<a onclick="prn2_preview();" class="btn btn-sm btn-primary">打印</a>
+ 			<eq name="can_cancel" value="1">
  				<a onclick="cancel();" class="btn btn-sm btn-primary">作废</a>
  			</eq>
  		</div>

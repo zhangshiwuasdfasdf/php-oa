@@ -2782,6 +2782,133 @@ function ToNumberSystem26($n){
 	}
 	return $s;
 }
+function getHourPlan($user_id,$hour,$timestamp){
+	if($hour>=0){
+		return false;
+	}
+	//如果调休过期计算方式为按月，则把now改为月初
+	if(get_system_config("LEAVE_CALCULATE_TYPE")=='按月'){
+		$d = date('Y-m',$timestamp);
+		$now = strtotime($d.'-1');
+	}else{
+		$now = $timestamp;
+	}
+	$part = array();
+	$flag = false;
+	$three_month_ago = strtotime("-3 months",$now);
+	$over_time_hours = M('FlowHour')->where(array('user_id'=>array('eq',$user_id),'create_time'=>array('egt',$three_month_ago),'status'=>array('eq','1'),'hour'=>array('gt',0)))->select();
+	$leave_hours = M('FlowHour')->where(array('user_id'=>array('eq',$user_id),'create_time'=>array('egt',$three_month_ago),'status'=>array('eq','1'),'hour'=>array('lt',0)))->select();
+	foreach ($over_time_hours as $k=>$v){
+		if($v['use'] !== '0'){//没用完
+			$cur_hour = intval($v['hour']);
+			foreach ($leave_hours as $kk=>$vv){
+				$next_over_time = false;
+				$use = unserialize($vv['use']);
+				foreach ($use as $kkk=>$vvv){
+					if($v['id'] == $kkk){
+						$cur_hour -= $vvv;
+						if($cur_hour == '0'){
+							$next_over_time = true;
+							break;
+						}
+					}
+				}
+				if($next_over_time){
+					break;
+				}
+			}
+// 			return $cur_hour;
+			if($hour*(-1)<=$cur_hour){
+				$flag = true;
+				$part[] = array('id'=>$v['id'],'hour'=>$hour*(-1));
+				
+				if($hour*(-1) == $cur_hour){//加班单设为0，表示用完
+					M('FlowHour')->where(array('id'=>$v['id']))->save(array('use'=>'0'));
+				}
+				break;
+			}elseif ($cur_hour>0){
+				$part[] = array('id'=>$v['id'],'hour'=>$cur_hour);
+				$hour = $hour + $cur_hour;
+				M('FlowHour')->where(array('id'=>$v['id']))->save(array('use'=>'0'));
+			}
+		}
+	}
+	if($flag){//完成了
+		$res = array();
+		foreach ($part as $k=>$v){
+			$res[$v['id']] = $v['hour'];
+		}
+		return $res;
+	}else{
+		return false;
+	}
+// 	return array('70'=>1,'60'=>2);
+}
+
+function getAvailableHour2($now,$uid){
+	if(empty($now)){
+		$now = time();
+	}
+	if(empty($uid)){
+		$uid = get_user_id();
+	}
+	//如果调休过期计算方式为按月，则把now改为月初
+	if(get_system_config("LEAVE_CALCULATE_TYPE")=='按月'){
+		$d = date('Y-m',$now);
+		$now = strtotime($d.'-1');
+	}
+
+	$part = array();
+	$flag = false;
+	$three_month_ago = strtotime("-3 months",$now);
+	$over_time_hours = M('FlowHour')->where(array('user_id'=>array('eq',$uid),'create_time'=>array('egt',$three_month_ago),'status'=>array('eq','1'),'hour'=>array('gt',0),'use'=>array('neq',0)))->select();
+	$leave_hours = M('FlowHour')->where(array('user_id'=>array('eq',$uid),'create_time'=>array('egt',$three_month_ago),'status'=>array('eq','1'),'hour'=>array('lt',0)))->select();
+	foreach ($over_time_hours as $k=>$v){
+		
+			$cur_hour = intval($v['hour']);
+			foreach ($leave_hours as $kk=>$vv){
+				$next_over_time = false;
+				$use = unserialize($vv['use']);
+				foreach ($use as $kkk=>$vvv){
+					if($v['id'] == $kkk){
+						$cur_hour -= $vvv;
+						if($cur_hour == '0'){
+							$next_over_time = true;
+							break;
+						}
+					}
+				}
+				if($next_over_time){
+					break;
+				}
+			}
+// 			return $cur_hour;
+			if($hour*(-1)<=$cur_hour){
+				$flag = true;
+				$part[] = array('id'=>$v['id'],'hour'=>$hour*(-1));
+				
+				if($hour*(-1) == $cur_hour){//加班单设为0，表示用完
+					M('FlowHour')->where(array('id'=>$v['id']))->save(array('use'=>'0'));
+				}
+				break;
+			}elseif ($cur_hour>0){
+				$part[] = array('id'=>$v['id'],'hour'=>$cur_hour);
+				$hour = $hour + $cur_hour;
+				M('FlowHour')->where(array('id'=>$v['id']))->save(array('use'=>'0'));
+			}
+		
+	}
+	if($flag){//完成了
+		$res = array();
+		foreach ($part as $k=>$v){
+			$res[$v['id']] = $v['hour'];
+		}
+		return $res;
+	}else{
+		return false;
+	}
+}
+
 function getAvailableHour($now,$uid){
 	if(empty($now)){
 		$now = time();

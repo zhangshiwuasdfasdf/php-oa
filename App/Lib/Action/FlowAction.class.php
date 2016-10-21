@@ -2096,8 +2096,8 @@ class FlowAction extends CommonAction {
 			$hour_sum = get_leave_seconds(strtotime($start_time),strtotime($end_time))/3600;
 			$day = floor($hour_sum/8);
 			$hour = ceil($hour_sum - $day*8);
-			$available_hour = getAvailableHour(strtotime($start_time));
-			$available_year = getAvailableYearHour(strtotime($start_time))/2;
+			$available_hour = getAvailableHour(strtotime(time()));
+			$available_year = getAvailableYearHour(strtotime(time()))/2;
 			
 			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour,'available_hour'=>$available_hour,'available_year'=>$available_year,'start_time'=>$start_time,'end_time'=>$end_time),null,1);
 		}
@@ -2310,9 +2310,51 @@ class FlowAction extends CommonAction {
 		$where['flow_id'] = $id;
 		$where['step'] = array('lt', 100);
 		$where['_string'] = "result is not null";
-		$flow_log = $model -> where($where) -> order("id") -> select();
+		$flow_log = $model -> where($where) -> order("step desc") -> select();
+		//已走的最后一步
+		$flow_log_last = M('FlowLog')->where(array('flow_id'=>$id))->order('step desc')->limit(1)->find();
+		foreach ($flow_log as $k=>$v){
+			if($k==0 && $v['result'] == '1' && $flow_log_last['id'] == $v['id']){
+				$flow_log[$k]['title'] = D('UserView2')->where(array('id'=>$v['user_id']))->getField('pos_name');
+				$flow_log[$k]['title'] .= '归档';
+			}else{
+				$flow_log[$k]['title'] = D('UserView2')->where(array('id'=>$v['user_id']))->getField('pos_name');
+				$flow_log[$k]['title'] .= '审批';
+			}
+		}
 		$uid = get_user_id();
 		$this -> assign("flow_log", $flow_log);
+		
+		//全部流程
+		$flow_all = array();
+		$flow_log_should = array_filter(explode('|',$vo['confirm']));
+		$flow_log_should_name = array_filter(explode('<>',$vo['confirm_name']));
+		$user_creator = D('UserView2')->where(array('id'=>$vo['user_id']))->find();
+		if($flow_log_last['result'] === '1'){
+			$flow_all[] = array('color'=>'green','class'=>'li1','title'=>'申请人','name'=>$user_creator['name'],'position_name'=>$user_creator['pos_name']);
+			foreach ($flow_log_should as $k=>$v){
+				$user = D('UserView2')->where(array('emp_no'=>$v))->find();
+				$flow_all[] = array('color'=>'green','class'=>'li1','name'=>$flow_log_should_name[$k],'position_name'=>$user['pos_name']);
+			}
+		}elseif($flow_log_last['result'] === '0'){
+			$flow_all[] = array('color'=>'orange','class'=>'li2','title'=>'申请人','name'=>$user_creator['name'],'position_name'=>$user_creator['pos_name']);
+			foreach ($flow_log_should as $k=>$v){
+				$user = D('UserView2')->where(array('emp_no'=>$v))->find();
+				$flow_all[] = array('color'=>'gray','class'=>'li3','name'=>$flow_log_should_name[$k],'position_name'=>$user['pos_name']);
+			}
+		}else{
+			$flow_all[] = array('color'=>'green','class'=>'li1','title'=>'申请人','name'=>$user_creator['name'],'position_name'=>$user_creator['pos_name']);
+			foreach ($flow_log_should as $k=>$v){
+				$user = D('UserView2')->where(array('emp_no'=>$v))->find();
+				if($v == $flow_log_last['emp_no'] && $k == $flow_log_last['step']-21){
+					$flow_all[] = array('color'=>'orange','class'=>'li2','name'=>$flow_log_should_name[$k],'position_name'=>$user['pos_name']);
+				}else{
+					$flow_all[] = array('color'=>'green','class'=>'li1','name'=>$flow_log_should_name[$k],'position_name'=>$user['pos_name']);
+				}
+			}
+		}
+		$this->assign('flow_all',$flow_all);
+		
 		$this -> assign("isZhaopinDirector", isZhaopinDirector(get_user_id()));
 // 		var_dump(isZhaopinDirector(get_user_id()));
 // 		print_r($flow_log);
@@ -2697,7 +2739,7 @@ class FlowAction extends CommonAction {
 			$can_cancel = 1;
 		}
 		if($can_cancel==1){
-			$res = M('Flow')->where(array('id'=>$flow_id))->setField('is_del',1);
+			$res = M('Flow')->where(array('id'=>$flow_id))->setField(array('is_del'=>1,'del_time'=>time()));
 			if($res && getModelName($flow_id)=='FlowLeave'){//员工请假申请
 				$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 				$create_time = strtotime($flow['start_time']);
@@ -2838,9 +2880,17 @@ class FlowAction extends CommonAction {
 									$data['create_time'] = $create_time;
 									$data['user_id'] = $flow['user_id'];
 									$data['status'] = 1;
+									//在调休单中标注用掉的是哪个加班单
+									$use = getHourPlan($data['user_id'],$data['hour'],$flow['create_time']);
+									$data['use'] = serialize($use);
 									M('FlowHour')->add($data);
 								}else{
+									$flow = M('Flow')->find($flow_id);
 									$data['status'] = 1;
+									//在调休单中标注用掉的是哪个加班单
+									$flow_hour = M('FlowHour')->where('flow_id='.$flow_id)->find();
+									$use = getHourPlan($flow_hour['user_id'],$flow_hour['hour'],$flow['create_time']);
+									$data['use'] = serialize($use);
 									M('FlowHour')->where('flow_id='.$flow_id)->save($data);
 								}
 							}else if($flow['style']=='年假'){
