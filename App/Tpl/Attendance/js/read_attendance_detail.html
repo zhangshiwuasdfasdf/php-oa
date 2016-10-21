@@ -1,0 +1,10 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	set_return_url();
+});
+
+function export_attendance_table(id){
+	
+	window.open("{:U('export_attendance_table',array('id'=>'"+id+"'))}", "_self");
+}
+</script>

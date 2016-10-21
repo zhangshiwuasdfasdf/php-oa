@@ -1923,11 +1923,14 @@ function getDeptManagerId($uid,$dept_id){
 	}
 	
 	$parent_list = array();
-	$Parentid = getParentid($uid,$dept_id,true);
+	$Parentid = getParentid($uid,$dept_id);
+	// dump($dept_id);
+	// dump($Parentid);die;
 	while($Parentid){//获取上级数组
 		$parent_list[] = $Parentid;
-		$Parentid = getParentid($Parentid,null,true);
+		$Parentid = getParentid($Parentid,null);
 	}
+	// dump($parent_list);die;
 	//获取部门总监
 	if(count($parent_list) == 1){
 		$dept = M('Dept')->find($dept_id);

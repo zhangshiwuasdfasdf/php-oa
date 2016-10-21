@@ -1006,18 +1006,14 @@
        			data:{id:id},
        			type:'post',
        			success:function(data){
-	       			if(data.status == '1'){
-						location.reload();
-					}else{
-						ui_alert('签名失败',function(){
-							location.reload();
-						});	
-					}
+       			ui_alert("确认成功",function(){
+					});
        			},
-       			error:function(data){
-       				
-       			},
-       		})
+       			error:function(e){
+				ui_alert("系统发生错误",function(){
+					});
+				}
+       		});
        	}
     </script>
     <script type="text/javascript">

@@ -162,16 +162,23 @@ class AttendanceAction extends CommonAction {
 		//dump($info);die;
 		
 		//应出勤天数
-		$month = $data['month'];//2016-10
-		$m = date('m',strtotime($month));
-		$y = date('Y',strtotime($month));
-		// $sum = date('d',strtotime($y.'-'.($m+1))-1);
-		$t = date('t',strtotime($month));
-		$should_day = 0;
-		for($i=1;$i<=$t;$i++){
-			if(!is_holiday(strtotime($y.'-'.$m.'-'.$i))){
-				$should_day += 1;
-			};
+		foreach ($info as $k => $v) {
+			if($v['duty']=='云客服专员'){
+				$info[$k]['should_day']=26;
+			}else{
+				$month = $data['month'];//2016-10
+				$m = date('m',strtotime($month));
+				$y = date('Y',strtotime($month));
+				//$sum = date('d',strtotime($y.'-'.($m+1))-1);
+				$t = date('t',strtotime($month));
+				$should_day = 0;
+				for($i=1;$i<=$t;$i++){
+					if(!is_holiday(strtotime($y.'-'.$m.'-'.$i))){
+						$should_day += 1;
+					};
+				}
+				$info[$k]['should_day']=$should_day;
+			}
 		}
 		$attendance_table = M('AttendanceTable')->where(array('attendance_month_id'=>$id))->select();
 		if(empty($attendance_table)){
@@ -673,16 +680,17 @@ class AttendanceAction extends CommonAction {
 		}
 	}
 	function export_attendance_table(){
-		$map = unserialize($_REQUEST['map']);
+		$id=$_REQUEST['id'];
+		$month=M("AttendanceMonth")->find($id);
+		//dump($id);die;
+		$map['attendance_month_id']=$id;
 		$map_new = $map;
 		unset($map_new['is_del']);
-		if(empty($map_new)){
+		/*if(empty($map_new)){
 			$this->error('请先设置过滤条件，搜索，再导出！');
-		}else{
-			$res = M('AttendanceTable')->where($map)->order('month desc')->select();
-			if(empty($res)){
-				$this->error('搜索结果为空，无法导出！');
-			}else{
+		}else{*/
+			$res = M('AttendanceTable')->where($map)->select();
+			//dump($res);die;
 				//导入thinkphp第三方类库
 				Vendor('Excel.PHPExcel');
 	
@@ -725,6 +733,8 @@ class AttendanceAction extends CommonAction {
 				$q = $q -> mergeCells("V1:V2");
 				$q = $q -> setCellValue("W1", '备注');
 				$q = $q -> mergeCells("W1:W2");
+				$q = $q -> setCellValue("X1", '员工签名');
+				$q = $q -> mergeCells("X1:X2");
 				
 				$q = $q -> setCellValue("M2", '产假');
 				$q = $q -> setCellValue("N2", '婚假');
@@ -738,7 +748,7 @@ class AttendanceAction extends CommonAction {
 	
 				foreach ($res as $k=>$v){
 					$i = $k + 3;
-					$q = $q -> setCellValue("A".$i, date('Y年m月',strtotime($v['month'])));
+					$q = $q -> setCellValue("A".$i, $month['month']);
 					$q = $q -> setCellValue("B".$i, $v['user_id']);
 					$q = $q -> setCellValue("C".$i, $v['dept_name']);
 					$q = $q -> setCellValue("D".$i, $v['duty']);
@@ -747,7 +757,7 @@ class AttendanceAction extends CommonAction {
 					$q = $q -> setCellValue("G".$i, $v['actually_day']);
 					
 					$q = $q -> setCellValue("H".$i, $v['late']);
-					$q = $q -> setCellValue("I".$i, $v['supply_attendance']);
+					$q = $q -> setCellValue("I".$i, $v['attendance_day']);
 					$q = $q -> setCellValue("J".$i, $v['sick_leave']);
 					$q = $q -> setCellValue("K".$i, $v['casual_leave']);
 					$q = $q -> setCellValue("L".$i, $v['absent']);
@@ -764,6 +774,9 @@ class AttendanceAction extends CommonAction {
 					$q = $q -> setCellValue("U".$i, $v['overtime_legal']);
 					$q = $q -> setCellValue("V".$i, $v['growth_sponsorship']);
 					$q = $q -> setCellValue("W".$i, $v['remark']);
+					if($v['sign']==1){
+						$q = $q -> setCellValue("X".$i, $v['user_name']);
+					}
 				}
 	
 // 				$q ->getColumnDimension('A')->setWidth(20);
@@ -790,8 +803,7 @@ class AttendanceAction extends CommonAction {
 				//readfile($filename);
 				$objWriter -> save('php://output');
 				exit ;
-			}
-		}
+		/*}*/
 	}
 	//查看详情
 	function read(){
@@ -1119,17 +1131,27 @@ class AttendanceAction extends CommonAction {
 			$data['growth_sponsorship'] = $_POST['growth_sponsorship'][$k];
 			$data['remark'] = $_POST['remark'][$k];
 			$data['create_time']=date('Y-m-d H:i:s',time());
-
 			$res = M("AttendanceTable")->where(array('attendance_month_id'=>$data['attendance_month_id'],'user_id'=>$data['user_id']))->find();
 			if(empty($res)){
 				M("AttendanceTable")->add($data);
+				//发送站内信
+				$info['sender_id']=1;
+				$info['sender_name']='管理员';
+				$info['receiver_id'] = $data['user_id'];
+				$info['receiver_name'] = $data['user_name'];
+				$info['owner_id'] = $data['user_id'];
+				$info['content'] = "请进入员工档案确认考勤";
+				$info['create_time']=time();
+				M('Message') -> add($info);
+				$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$data['user_id']);
+
 			}else{
 				M("AttendanceTable")->where(array('attendance_month_id'=>$data['attendance_month_id'],'user_id'=>$data['user_id']))->save($data);
 			}
 			//删除多余记录
 			M("AttendanceTable")->where(array('attendance_month_id'=>$data['attendance_month_id'],'user_id'=>array('not in',$user_ids)))->delete();
 		}
-		
+		//dump($data);die;
 		//dump($_POST);die;
 		$this -> success('删除成功',U('new_table'));
 	}
@@ -1137,5 +1159,15 @@ class AttendanceAction extends CommonAction {
 	public function read_attendance_detail(){
 		$this->edit_table();
 		
+	}
+	function del_attendance(){
+		$id = $_REQUEST['id'];
+		$where['id'] = array('in', $id);
+		$result = M("AttendanceMonth")->where($where)->delete();
+			if ($result) {
+				$this -> ajaxReturn('', "删除成功", 1);
+			} else {
+				$this -> ajaxReturn('', "删除失败", 0);
+			}
 	}
 }
