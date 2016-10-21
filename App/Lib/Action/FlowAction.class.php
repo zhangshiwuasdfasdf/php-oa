@@ -2315,10 +2315,10 @@ class FlowAction extends CommonAction {
 		$flow_log_last = M('FlowLog')->where(array('flow_id'=>$id))->order('step desc')->limit(1)->find();
 		foreach ($flow_log as $k=>$v){
 			if($k==0 && $v['result'] == '1' && $flow_log_last['id'] == $v['id']){
-				$flow_log[$k]['title'] = D('UserView2')->where(array('id'=>$v['user_id']))->getField('pos_name');
+				$flow_log[$k]['title'] = D('UserView2')->where(array('id'=>$v['user_id']))->getField('duty');
 				$flow_log[$k]['title'] .= '归档';
 			}else{
-				$flow_log[$k]['title'] = D('UserView2')->where(array('id'=>$v['user_id']))->getField('pos_name');
+				$flow_log[$k]['title'] = D('UserView2')->where(array('id'=>$v['user_id']))->getField('duty');
 				$flow_log[$k]['title'] .= '审批';
 			}
 		}
