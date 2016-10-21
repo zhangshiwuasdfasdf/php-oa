@@ -39,7 +39,9 @@ input[readonly]{background: #fff !important}
    		</div>
 	</div>
 </div>
-<div style="height:10px;"></div>
+<p style="font-size:14px;color:red;">
+注：该月入职和离职员工需要手工核算实际出勤，并备注；迟到、旷工、成长赞助均手工填写
+</p>
 <div class="tb_div">
 	<input type="hidden" name="attendance_month_id" value="{$Think.get.id}">
 	<table border="0" cellspacing="0" cellpadding="0">
@@ -78,7 +80,7 @@ input[readonly]{background: #fff !important}
         <td width="4%"><div>{$vo.dept_name}</div></td>
         <td width="6%"><div>{$vo.duty}</div></td>
         <td width="4%"><div>{$vo.name}</div></td>
-        <td width="6%"><div>{$should_day}</div></td>
+        <td width="6%"><div>{$vo.should_day}</div></td>
         <td width="4%"><div>{$vo.actually_day}</div></td>
         <td width="4%"><div>{$vo.late}</div></td>
         <td width="4%"><div>{$vo.attendance_day}</div></td>
@@ -110,7 +112,7 @@ input[readonly]{background: #fff !important}
                 <a onclick="popup_confirm();"  class="btn btn-sm btn-primary">选择审批流程</a>
             </eq>
              -->
-            <a class="btn btn-sm btn-primary" href="{:U('export_atten')}">导出</a>
+            <a class="btn btn-sm btn-primary" onclick="export_attendance_table({$data.id});">导出</a>
             <a onclick="go_return_url();" class="btn btn-sm btn-primary">返回</a>
             </div>
     </div>

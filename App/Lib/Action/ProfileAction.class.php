@@ -578,9 +578,6 @@ class ProfileAction extends CommonAction {
 		//考勤统计
 		$attendance_table = M('AttendanceTable')->where(array('user_id'=>$id))->select();
 
-		//dump($month_ids);die;
-		
-		//dump($attendance_table);die;
 		$this->_list(D('AttendanceTableView'), array('user_id'=>$id),'',false,'attendance_table','page_attendance_table');
 // 		$this->assign('attendance_table',$attendance_table);
 		

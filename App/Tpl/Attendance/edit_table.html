@@ -39,7 +39,9 @@ input[readonly]{background: #fff !important}
    		</div>
 	</div>
 </div>
-<div style="height:10px;"></div>
+<p style="font-size:14px;color:red;">
+注：该月入职和离职员工需要手工核算实际出勤，并备注；迟到、旷工、成长赞助均手工填写
+</p>
 <div class="tb_div">
 <form id="form1" action="{:U('create_attendance_detail')}" method="POST">
 	<input type="hidden" name="attendance_month_id" value="{$Think.get.id}">
@@ -76,13 +78,13 @@ input[readonly]{background: #fff !important}
       </tr>
     <foreach name="info" item="vo">
       <tr id="{$vo.id}">
-        <td width="2%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="user_id[]" id="user_id_{$vo.id}" value="{$vo.id}" readonly="readonly" /></div></td>
+        <td width="2%"><div><input style="width:35px;border:0px;text-align:center;" type="text" name="user_id[]" id="user_id_{$vo.id}" value="{$vo.id}" readonly="readonly" /></div></td>
         <td width="4%"><div><input style="width:60px;border:0px;text-align:center;" type="text" name="dept_name[]" id="dept_name_{$vo.id}" value="{$vo.dept_name}" readonly="readonly" /></div></td>
         <td width="6%"><div><input style="width:80px;border:0px;text-align:center;" type="text" name="duty[]" id="duty_{$vo.id}" value="{$vo.duty}" readonly="readonly" /></div></td>
         <td width="4%"><div><input style="width:60px;border:0px;text-align:center;" type="text" name="name[]" id="name_{$vo.id}" value="{$vo.name}" readonly="readonly" /></div></td>
-        <td width="6%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="should_day[]" id="should_day_{$vo.id}" value="{$should_day}" readonly="readonly" /></div></td>
+        <td width="6%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="should_day[]" id="should_day_{$vo.id}" value="{$vo.should_day}" readonly="readonly" /></div></td>
         <td width="4%"><div><input style="width:60px;text-align:center;" type="text" name="actually_day[]" id="actually_day_{$vo.id}" <if condition="$vo.actually_day eq ''">value="{$should_day-$vo['sick_leave']-$vo['casual_leave']}" <else/> value="{$vo.actually_day}" </if>onkeyup="change_absent({$vo.id})" /></div></td>
-        <td width="4%"><div><input style="width:60px;text-align:center;" type="text" name="late[]" id="late_{$vo.id}" value="{$vo.late}" /></div></td>
+        <td width="4%"><div><input style="width:60px;text-align:center;" type="text" name="late[]" id="late_{$vo.id}" value="{$vo.late}" placeholder="0" /></div></td>
         <td width="4%"><div><input style="width:35px;border:0px;text-align:center;" type="text" name="attendance_day[]" id="attendance_day_{$vo.id}" value="{$vo.attendance_day}" readonly="readonly" /></div></td>
         <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="sick_leave[]" id="sick_leave_{$vo.id}" value="{$vo.sick_leave}" readonly="readonly" /></div></td>
         <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="casual_leave[]" id="casual_leave_{$vo.id}" value="{$vo.casual_leave}" readonly="readonly" /></div></td>
@@ -137,7 +139,7 @@ function del(user_id){
 }
 function save(){
 	$("#form1").submit();
-	
+
 }
 </script>
 
