@@ -2055,7 +2055,7 @@ function isHeadquarters_by_uid($uid){
 	}
 }
 /*
- * 获取园区的人事行政部老大id
+ * 获取园区的人事行政部负责人id
  */
 function getHRManagerIdByDept_id($dept_id){
 	$dept = M('Dept')->where(array('pid'=>array('eq',$dept_id),'dept_no'=>array('eq','XZDDB')))->find();
@@ -2093,7 +2093,7 @@ function getHRDeputyGeneralManagerId($uid){
 	}
 }
 /*
- * 获取总部的人事行政部老大id
+ * 获取总部的人事行政部负责人id
  */
 function getHeadquartersHRDeputyGeneralManagerId(){
 	$model_dept = M('Dept');
@@ -2131,7 +2131,7 @@ function getLegalManagerId(){//法务部id
 	$user = $model_user->where(array('pos_id'=>array('eq',$dept_id),'is_del'=>array('eq',0)))->order('position_sort')->find();
 	return $user['id'];
 }
-function getRSManagerId(){//人事老大id
+function getRSManagerId(){//人事负责人id
 	$model_dept = M('Dept');
 	$dept = $model_dept->where(array('dept_no'=>array('eq','RSZG')))->find();
 	$dept_id = $dept['id'];
@@ -3023,13 +3023,13 @@ function HzYuanQuFlowOrigin($uid){
 	$user = D('UserView')->find($uid);
 	$p1 = getParentid($user['id']);
 	
-// 	获取本园区老大和园区老大（刘清）
+// 	获取本园区负责人和园区负责人（刘清）
 	$dept_id = isHeadquarters($uid);
 	$YuanQuBoss = M('User')->where(array('pos_id'=>$dept_id))->find();
 	$YuanQuBossBoss_id = getParentid($YuanQuBoss['id']);
 	
-// 	如果一级审批人为本园区老大，且发起人不是副总级别的，就不让往上走
-//  如果一级审批人为园区老大（刘清），就不让往上走
+// 	如果一级审批人为本园区负责人，且发起人不是副总级别的，就不让往上走
+//  如果一级审批人为园区负责人（刘清），就不让往上走
 	if($p1==$YuanQuBoss['id'] && $user['position_name']!='副总' || $p1==$YuanQuBossBoss_id){
 		return array($p1);
 	}else{
