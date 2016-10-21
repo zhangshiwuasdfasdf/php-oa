@@ -236,6 +236,7 @@ h1{ text-align:center;}
 		LODOP.SET_PRINT_MODE("FULL_WIDTH_FOR_OVERFLOW",true);
 		LODOP.SET_PRINT_MODE("FULL_HEIGHT_FOR_OVERFLOW",true);
 		LODOP.SET_SHOW_MODE("HIDE_PAGE_PERCENT",true);
-		LODOP.ADD_PRINT_HTM(0,0,"100%","100%",document.getElementById("form_data").innerHTML);
+		var reg=new RegExp("disabled","g");
+		LODOP.ADD_PRINT_HTM(0,0,"100%","100%",document.getElementById("form_data").innerHTML.replace(reg,""));
 	};              
 </script> 
