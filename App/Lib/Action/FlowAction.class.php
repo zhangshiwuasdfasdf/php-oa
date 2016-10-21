@@ -2331,25 +2331,25 @@ class FlowAction extends CommonAction {
 		$flow_log_should_name = array_filter(explode('<>',$vo['confirm_name']));
 		$user_creator = D('UserView2')->where(array('id'=>$vo['user_id']))->find();
 		if($flow_log_last['result'] === '1'){
-			$flow_all[] = array('color'=>'green','class'=>'li1','title'=>'申请人','name'=>$user_creator['name'],'position_name'=>$user_creator['pos_name']);
+			$flow_all[] = array('color'=>'green','class'=>'li1','title'=>'申请人','name'=>$user_creator['name'],'position_name'=>$user_creator['duty']);
 			foreach ($flow_log_should as $k=>$v){
 				$user = D('UserView2')->where(array('emp_no'=>$v))->find();
-				$flow_all[] = array('color'=>'green','class'=>'li1','name'=>$flow_log_should_name[$k],'position_name'=>$user['pos_name']);
+				$flow_all[] = array('color'=>'green','class'=>'li1','name'=>$flow_log_should_name[$k],'position_name'=>$user['duty']);
 			}
 		}elseif($flow_log_last['result'] === '0'){
-			$flow_all[] = array('color'=>'orange','class'=>'li2','title'=>'申请人','name'=>$user_creator['name'],'position_name'=>$user_creator['pos_name']);
+			$flow_all[] = array('color'=>'orange','class'=>'li2','title'=>'申请人','name'=>$user_creator['name'],'position_name'=>$user_creator['duty']);
 			foreach ($flow_log_should as $k=>$v){
 				$user = D('UserView2')->where(array('emp_no'=>$v))->find();
-				$flow_all[] = array('color'=>'gray','class'=>'li3','name'=>$flow_log_should_name[$k],'position_name'=>$user['pos_name']);
+				$flow_all[] = array('color'=>'gray','class'=>'li3','name'=>$flow_log_should_name[$k],'position_name'=>$user['duty']);
 			}
 		}else{
-			$flow_all[] = array('color'=>'green','class'=>'li1','title'=>'申请人','name'=>$user_creator['name'],'position_name'=>$user_creator['pos_name']);
+			$flow_all[] = array('color'=>'green','class'=>'li1','title'=>'申请人','name'=>$user_creator['name'],'position_name'=>$user_creator['duty']);
 			foreach ($flow_log_should as $k=>$v){
 				$user = D('UserView2')->where(array('emp_no'=>$v))->find();
 				if($v == $flow_log_last['emp_no'] && $k == $flow_log_last['step']-21){
-					$flow_all[] = array('color'=>'orange','class'=>'li2','name'=>$flow_log_should_name[$k],'position_name'=>$user['pos_name']);
+					$flow_all[] = array('color'=>'orange','class'=>'li2','name'=>$flow_log_should_name[$k],'position_name'=>$user['duty']);
 				}else{
-					$flow_all[] = array('color'=>'green','class'=>'li1','name'=>$flow_log_should_name[$k],'position_name'=>$user['pos_name']);
+					$flow_all[] = array('color'=>'green','class'=>'li1','name'=>$flow_log_should_name[$k],'position_name'=>$user['duty']);
 				}
 			}
 		}
