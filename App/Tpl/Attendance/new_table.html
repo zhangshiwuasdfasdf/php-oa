@@ -179,17 +179,17 @@ $(function() {
 });
 
 function del() {
-		var vars = $("#form_data").serialize();
-			ui_confirm('确定要删除吗?',function(){
-				sendAjax("{:U('del_attendance')}", vars, function(data) {
-					if (data.status) {
-						ui_alert(data.info,function(){
-							$("input[name='id[]']:checkbox:checked").each(function() {
-								$(this).parents("li").remove();
-							});
-						});				
-					}
+	var vars = $("#form_data").serialize();
+	ui_confirm('确定要删除吗?',function(){
+	sendAjax("{:U('del_attendance')}", vars, function(data) {
+	if (data.status) {
+		ui_alert(data.info,function(){
+			$("input[name='id[]']:checkbox:checked").each(function() {
+			$(this).parents("li").remove();
 				});
-			});
+			});				
+		}
+	});
+});
 	}
 </script>

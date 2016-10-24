@@ -2577,13 +2577,16 @@ class FlowAction extends CommonAction {
 
 		$model = D("Flow");
 		$id = $_REQUEST['id'];
+
 		$where['id'] = array('eq', $id);
 		$where['_logic'] = 'and';
 		$map['_complex'] = $where;
-		$vo = $model -> where($map) -> find();
+
+		$vo = $model -> where($where) -> find();
 		if (empty($vo)) {
 			$this -> error("系统错误");
 		}
+
 		$flow = M(getModelName($vo['id']))->where(array('flow_id'=>array('eq',$vo['id'])))->find();
 		$vo = array_merge($vo,$flow);
 		
@@ -2609,6 +2612,7 @@ class FlowAction extends CommonAction {
 		$where['flow_id'] = $id;
 		$where['_string'] = "result is not null";
 		$flow_log = $model -> where($where) -> select();
+
 		if ($flow_log) {
 			$this -> error("系统错误");
 		}
