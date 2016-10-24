@@ -2583,7 +2583,6 @@ class FlowAction extends CommonAction {
 		$map['_complex'] = $where;
 
 		$vo = $model -> where($where) -> find();
-		//dump($vo);die;
 		if (empty($vo)) {
 			$this -> error("系统错误");
 		}
