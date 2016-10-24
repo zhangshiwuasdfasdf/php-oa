@@ -13,7 +13,7 @@
 
 class GoodsAction extends CommonAction {
 
-	protected $config = array('app_type' => 'master');
+	protected $config = array('app_type' => 'master','import_goods'=>'read');
 
 	//过滤查询字段
 	function _search_filter(&$map) {
@@ -333,5 +333,85 @@ class GoodsAction extends CommonAction {
 	
 		$this -> assign('pid', $pid);
 		$this -> display();
+	}
+	public function import_goods(){
+		$save_path = get_save_path();
+		$opmode = $_POST["opmode"];
+		if ($opmode == "import") {
+			import("@.ORG.Util.UploadFile");
+			$upload = new UploadFile();
+			$upload -> savePath = $save_path;
+			$upload -> allowExts = array('xlsx');
+			$upload -> saveRule = uniqid;
+			$upload -> autoSub = false;
+			if (!$upload -> upload()) {
+				$this -> error($upload -> getErrorMsg());
+			} else {
+				//取得成功上传的文件信息
+				$uploadList = $upload -> getUploadFileInfo();
+				Vendor('Excel.PHPExcel');
+				//导入thinkphp第三方类库
+	
+				$inputFileName = $save_path . $uploadList[0]["savename"];
+				$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+				$sheetData = $objPHPExcel -> getActiveSheet() -> toArray(null, true, true, true);
+	
+				$y=2;
+				while($sheetData[$y]['A']!=''){
+					$y++;
+				}
+				if($sheetData[1]['A']!='资产货号' || $sheetData[1]['B']!='资产标签' || $sheetData[1]['C']!='名称' || $sheetData[1]['D']!='类别' || $sheetData[1]['E']!='质量' || $sheetData[1]['F']!='市场价' || $sheetData[1]['G']!='关键词' || $sheetData[1]['H']!='规格'){
+					$this -> error('标题不对！');
+					if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName)) {
+						unlink($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName);
+					}
+					exit ;
+				}
+				for($i=2;$i<$y;$i++){
+					$goods = array();
+					$goods['goods_sn'] = $sheetData[$i]['A'];
+					$goods['goods_label'] = $sheetData[$i]['B'];
+					$goods['goods_name'] = $sheetData[$i]['C'];
+					$cate_arr = array_filter(explode('>', $sheetData[$i]['D']));
+					$pid = 0;
+					foreach ($cate_arr as $k=>$v){
+						if($k>0){
+							$where['name'] = $v;
+							if($pid!==false){
+								$where['pid'] = $pid;
+							}
+							$res = M('GoodsCategory')->where($where)->find();
+							$pid = $res['id'];
+						}
+					}
+					
+					$goods['cate_id'] = $pid;
+					$goods['goods_weight'] = $sheetData[$i]['E'];
+					$goods['market_price'] = $sheetData[$i]['F'];
+					$goods['keywords'] = $sheetData[$i]['G'];
+					$goods['spec'] = $sheetData[$i]['H'];
+					
+					$find = M("Goods")->where(array('goods_name'=>$goods['goods_name'],'cate_id'=>$pid))->find();
+					if($find){
+						$res2 = M("Goods")->where(array('goods_name'=>$goods['goods_name'],'cate_id'=>$pid))->save($goods);
+					}else{
+						$res2 = M("Goods")->add($goods);
+					}
+				}
+				if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName)) {
+					unlink($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName);
+				}
+				
+				if($res2){
+					$this -> success('导入成功');
+					exit ;
+				}else{
+					$this -> error('导入失败');
+					exit ;
+				}
+			}
+		} else {
+			$this -> display();
+		}
 	}
 }
