@@ -451,7 +451,7 @@ class GoodsAction extends CommonAction {
 				}
 				for($i=2;$i<$y;$i++){
 					$goods_change = array();
-					$goods_change['num'] = $sheetData[$i]['B'];
+					$goods_change['num'] = $sheetData[$i]['B']?$sheetData[$i]['B']:0;
 					$goods_change['mark'] = $sheetData[$i]['C'];
 					$goods_change['user_id'] = get_user_id();
 					$goods_change['create_time'] = time();
