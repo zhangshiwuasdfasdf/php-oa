@@ -60,6 +60,8 @@ h1{ text-align:center;}
 <include file="Flow/edit/personnel_management:resignation_application" />
 <elseif condition="($flow_type.name eq '员工离职交接申请')"/>
 <include file="Flow/edit/personnel_management:resignation_list" />
+<elseif condition="($flow_type.name eq '员工调动申请')"/>
+<include file="Flow/add/personnel_management:personnel_changes" />
 <elseif condition="($flow_type.name eq '员工调薪申请')"/>
 <include file="Flow/edit/personnel_management:salary_changes" />
 
