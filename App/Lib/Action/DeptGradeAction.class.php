@@ -23,11 +23,11 @@ class DeptGradeAction extends CommonAction {
 
 	public function index() {
 // 		dump(unserialize('a:1:{i:2;i:1;}'));die;
-// 		$all = M('FlowHour')->where(array('hour'=>array('lt',0),'status'=>1))->select();
-// 		foreach ($all as $k=>$v){
-// 			$plan = getHourPlan($v['user_id'],$v['hour'],$v['create_time']);
-// 			M('FlowHour')->where(array('id'=>$v['id']))->save(array('use'=>serialize($plan)));
-// 		}
+		$all = M('FlowHour')->where(array('hour'=>array('lt',0),'status'=>1))->select();
+		foreach ($all as $k=>$v){
+			$plan = getHourPlan($v['user_id'],$v['hour'],$v['create_time']);
+			M('FlowHour')->where(array('id'=>$v['id']))->save(array('use'=>serialize($plan)));
+		}
 // 		die;
 		$model = M("DeptGrade");
 		$list = $model -> order('sort') -> select();
