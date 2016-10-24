@@ -61,13 +61,13 @@ h1{ text-align:center;}
 <elseif condition="($flow_type.name eq '员工离职交接申请')"/>
 <include file="Flow/edit/personnel_management:resignation_list" />
 <elseif condition="($flow_type.name eq '员工调动申请')"/>
-<include file="Flow/edit/personnel_management:personnel_changes" />
+<include file="Flow/add/personnel_management:personnel_changes" />
 <elseif condition="($flow_type.name eq '员工调薪申请')"/>
 <include file="Flow/edit/personnel_management:salary_changes" />
 
 <elseif condition="($flow_type.name eq '办公用品领用申请')"/>
 <include file="Flow/edit/administrative_office_management:office_use_application" />
-<elseif condition="($flow_type.name eq '办公用品采购')"/>
+<elseif condition="($flow_type.name eq '办公用品采购申请')"/>
 <include file="Flow/edit/administrative_office_management:office_supplies_application" />
 <elseif condition="($flow_type.name eq '物品采购调拨申请')"/>
 <include file="Flow/edit/administrative_office_management:goods_procurement_allocation" />
