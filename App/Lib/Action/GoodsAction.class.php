@@ -206,7 +206,7 @@ class GoodsAction extends CommonAction {
 		if($goods_id){
 			$last = M('GoodsChange')->field('id,sum')->where(array('goods_id'=>$goods_id))->order('create_time desc,id desc')->find();
 			$last_sum = $last?$last['sum']:0;
-			if($model ->sum<0 && $last_sum+$model ->num<0){
+			if($model ->num<0 && $last_sum+$model ->num<0){
 				$this -> error('数量不够，新增失败!');
 			}
 			$model ->sum = $last_sum+$model ->num;
@@ -450,14 +450,15 @@ class GoodsAction extends CommonAction {
 					exit ;
 				}
 				for($i=2;$i<$y;$i++){
-					$goods = array();
-					$goods['goods_sn'] = $sheetData[$i]['A'];
-					$goods['goods_label'] = $sheetData[$i]['B'];
-					$goods['goods_name'] = $sheetData[$i]['C'];
-					$cate_arr = array_filter(explode('>', $sheetData[$i]['D']));
+					$goods_change = array();
+					$goods_change['num'] = $sheetData[$i]['B'];
+					$goods_change['mark'] = $sheetData[$i]['C'];
+					$goods_change['user_id'] = get_user_id();
+					$goods_change['create_time'] = time();
+					$cate_arr = array_filter(explode('>', $sheetData[$i]['A']));
 					$pid = 0;
 					foreach ($cate_arr as $k=>$v){
-						if($k>0){
+						if($k>0 && $k<count($cate_arr)-1){
 							$where['name'] = $v;
 							if($pid!==false){
 								$where['pid'] = $pid;
@@ -468,19 +469,19 @@ class GoodsAction extends CommonAction {
 								
 						}
 					}
-					$goods['cate_id'] = $pid;
-					$goods['goods_weight'] = $sheetData[$i]['E'];
-					$goods['market_price'] = $sheetData[$i]['F'];
-					$goods['keywords'] = $sheetData[$i]['G'];
-					$goods['spec'] = $sheetData[$i]['H'];
-					$goods['is_del'] = 0;
-					$find = M("Goods")->where(array('goods_name'=>$goods['goods_name'],'cate_id'=>$pid))->find();
-						
-					if($find){
-						$res2 = M("Goods")->where(array('goods_name'=>$goods['goods_name'],'cate_id'=>$pid))->save($goods);
+					$goods = M('Goods')->where(array('cate_id'=>$pid,'goods_name'=>$cate_arr[count($cate_arr)-1]))->find();
+					$goods_change['goods_id'] = $goods['id'];
+					if($goods['id']){
+						$last = M('GoodsChange')->field('id,sum')->where(array('goods_id'=>$goods['id']))->order('create_time desc,id desc')->find();
+						$last_sum = $last?$last['sum']:0;
+						if($goods_change['num']<0 && $last_sum+$goods_change['num']<0){
+							$this -> error('数量不够，新增失败!');
+						}
+						$goods_change['sum'] = $last_sum+$goods_change['num'];
 					}else{
-						$res2 = M("Goods")->add($goods);
+						$this -> error('未找到此类物品，新增失败!');
 					}
+					$res2 = M("GoodsChange")->add($goods_change);
 				}
 				if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName)) {
 					unlink($_SERVER["DOCUMENT_ROOT"] . "/" . $inputFileName);
