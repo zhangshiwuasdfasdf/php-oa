@@ -934,7 +934,7 @@ class HomeAction extends CommonAction {
 					$data['status'] = '1';
 				}
 			}
-			M('FlowHour')->add($data);
+			M('FlowHourCreate')->add($data);
 		}
 		$this->success('生成flow_hour成功！',U('index'));
 	}
@@ -942,10 +942,10 @@ class HomeAction extends CommonAction {
 	 * 把flow_hour表中的use字段设置一遍
 	 */
 	public function modify_flow_hour_use(){
-		$all = M('FlowHour')->where(array('hour'=>array('lt',0),'status'=>1))->select();
+		$all = M('FlowHourCreate')->where(array('hour'=>array('lt',0),'status'=>1))->select();
 		foreach ($all as $k=>$v){
-			$plan = getHourPlan($v['user_id'],$v['hour'],$v['create_time']);
-			M('FlowHour')->where(array('id'=>$v['id']))->save(array('use'=>serialize($plan)));
+			$plan = getHourPlan($v['user_id'],$v['hour'],$v['create_time'],'Create');
+			M('FlowHourCreate')->where(array('id'=>$v['id']))->save(array('use'=>serialize($plan)));
 		}
 		$this->success('生成use字段成功！',U('index'));
 	}
