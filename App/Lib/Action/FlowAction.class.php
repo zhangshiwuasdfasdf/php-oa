@@ -1357,7 +1357,8 @@ class FlowAction extends CommonAction {
 			}
 			$info['user_id'] = $uid;
 		}
-		$info['available_hour'] = getAvailableHour2();
+		$info['available_hour'] = getAvailableHour();
+		$info['available_hour2'] = getAvailableHour2();
 		$info['available_year'] = getAvailableYearHour()/2;
 		$this -> assign("user_info", $info);
 		$this -> assign("time", time());
@@ -2096,10 +2097,11 @@ class FlowAction extends CommonAction {
 			$hour_sum = get_leave_seconds(strtotime($start_time),strtotime($end_time))/3600;
 			$day = floor($hour_sum/8);
 			$hour = ceil($hour_sum - $day*8);
-			$available_hour = getAvailableHour2(strtotime($start_time));
+			$available_hour = getAvailableHour(strtotime($start_time));
+			$available_hour2 = getAvailableHour2(strtotime($start_time));
 			$available_year = getAvailableYearHour(strtotime($start_time))/2;
 			
-			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour,'available_hour'=>$available_hour,'available_year'=>$available_year,'start_time'=>$start_time,'end_time'=>$end_time),null,1);
+			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour,'available_hour'=>$available_hour,'available_hour2'=>$available_hour2,'available_year'=>$available_year,'start_time'=>$start_time,'end_time'=>$end_time),null,1);
 		}
 		
 	}
@@ -2886,16 +2888,18 @@ class FlowAction extends CommonAction {
 									$data['user_id'] = $flow['user_id'];
 									$data['status'] = 1;
 									//在调休单中标注用掉的是哪个加班单
-									$use = getHourPlan($data['user_id'],$data['hour'],$create_time);
+									$use = getHourPlan($data['user_id'],$data['hour'],$create_time,'Create');
 									$data['use'] = serialize($use);
 									M('FlowHour')->add($data);
+									M('FlowHourCreate')->add($data);
 								}else{
 									$flow = M('Flow')->find($flow_id);
 									$data['status'] = 1;
 									//在调休单中标注用掉的是哪个加班单
-									$use = getHourPlan($flow_hour['user_id'],$flow_hour['hour'],$create_time);
+									$use = getHourPlan($flow_hour['user_id'],$flow_hour['hour'],$create_time,'Create');
 									$data['use'] = serialize($use);
 									M('FlowHour')->where('flow_id='.$flow_id)->save($data);
+									M('FlowHourCreate')->where('flow_id='.$flow_id)->save($data);
 								}
 							}else if($flow['style']=='年假'){
 								$flow_year = M('FlowYear')->where(array('flow_id'=>array('eq',$flow_id)))->find();
