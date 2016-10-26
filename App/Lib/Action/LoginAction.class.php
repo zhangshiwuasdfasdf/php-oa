@@ -93,11 +93,11 @@ class LoginAction extends Action {
 		}
 		if($_REQUEST['remember'] == '1'){//记住密码
 			session('remember_emp_no',$_REQUEST['emp_no']);
-			session('remember_password',$_REQUEST['password']);
+			session('remember',$_REQUEST['password']);
 			session('is_remember_password',true);
 		}else{
 			session('remember_emp_no',null);
-			session('remember_password',null);
+			session('remember',$_REQUEST['password']);
 			session('is_remember_password',false);
 		}
 		if ($_REQUEST['emp_no'] == 'admin'){
