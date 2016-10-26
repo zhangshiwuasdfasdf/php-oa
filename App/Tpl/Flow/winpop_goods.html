@@ -13,20 +13,23 @@
 			<a  onclick="myclose();" class="btn btn-sm btn-primary">关闭</a>
 		</div>
 	</div>
-	<div class="panel-body">
+	<!-- <div class="panel-body">
 		<div class="popup_tree_menu">
 			<ul class="tree_menu">
 				<li>
 					<a node="0"><i class="icon"></i> <span>根节点</span> </a>
-					{$menu}
+					
 				</li>
 			</ul>
 		</div>
-	</div>
+	</div> -->
+</div>
+<div class="popup_tree_menu">
+	{$menu}
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-	$(".tree_menu .disabled span").each(function(){
+	$(".ul1 .disabled span").each(function(){
 		if($(this).text() != ''){
 			$(this).text($(this).text()+"[不可选]");
 		}

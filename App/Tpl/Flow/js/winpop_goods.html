@@ -33,7 +33,7 @@
 
 	$(document).ready(function() {
 		parent_node = $(".sub_left_menu ul.tree_menu a.active", parent.document).attr("node");
-		$("ul.tree_menu a[goods_id='" + "" + "']").addClass("disabled");
+		$("ul.ul1 a[goods_id='" + "" + "']").addClass("disabled");
 		$(".popup_tree_menu a:not('.disabled')").click(function() {
 			$("#goods_id").val($(this).attr("goods_id"));
 			$("#goods_name").val($(this).attr("node"));
@@ -42,6 +42,7 @@
 			
 			$(".tree_menu a.active").removeClass("active");
 			$(this).addClass("active");
+			save(0);
 		});
 		
 		//默认子公司节点收起
@@ -50,5 +51,23 @@
 		$(".tree_menu a").click(function(){
 			$(this).next().slideToggle();
 		});
+
+		$(".li1 .span1").each(function() {
+			var that=$(this);
+		    $(that).mouseenter(function(){
+				$(that).parent().parent().children('.ul2').show();	
+				$(that).parent().parent().children('.ul2').mouseenter(function(){
+					$(that).parent().parent().children('.ul2').show();	
+				})
+			});
+			$(that).mouseleave(function(){
+				$(that).parent().parent().children('.ul2').hide();	
+				$(that).parent().parent().children('.ul2').mouseleave(function(){
+					$(that).parent().parent().children('.ul2').hide();	
+				})
+			});
+		});
 	}); 
+
+
 </script>

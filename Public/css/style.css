@@ -372,6 +372,20 @@ select.form-control {
 	display: none;
 }
 
+a{ text-decoration:none;}
+ul,li{ list-style: none; margin: 0; padding: 0;}
+
+.li1{ background:#fff;}
+.li1 span:hover{color:#2a6496; text-decoration:underline;cursor:default;}
+.span1{ display:block; width:100px; padding:5px 0;}
+.ul2{ width:500px; height:990px; background:#fff; position:absolute; left:98px; top:0; box-shadow:1px 1px 2px #ccc;border: solid 1px #ccc; display:none;}
+.ul2 li{ overflow:hidden;}
+.ul3{ overflow:hidden;}
+.ul3 li{border-left:solid 1px #e0e0e0; display:block; float:left; margin:5px 0; padding:0 8px;}
+.ul3 li:hover{color:#2a6496; text-decoration:underline; cursor:default;}
+.ul2 .span2{ display:block; border:0;margin:5px 0; padding:0 8px; float:left;}
+
+
 ul.tree_menu {
 	margin-left: 0px;
 	padding-left: 0px;
