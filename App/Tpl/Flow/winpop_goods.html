@@ -1,10 +1,26 @@
 <layout name='Layout/ace_popup' />
-{:W('PageHeader',array('name'=>'请选择上级部门','search'=>'N'))}
+<style type="text/css">
+a{ text-decoration:none;}
+ul,li{ list-style: none; margin: 0; padding: 0;}
+.li1{ background:#fff;}
+.li1 span:hover{color:#2a6496; text-decoration:underline;cursor:default;}
+.span1{ display:block; width:100px; padding:5px 0;}
+.ul2{ width:500px; height:900px; background:#fff; position:absolute; left:98px; top:0; box-shadow:1px 1px 2px #ccc;border: solid 1px #ccc; display:none;}
+.ul2 li{ overflow:hidden;}
+.ul3{ overflow:hidden;}
+.ul3 li{border-left:solid 1px #e0e0e0; display:block; float:left; margin:5px 0; padding:0 8px;}
+.ul3 li:hover{color:#2a6496; text-decoration:underline; cursor:default;}
+.ul2 .span2{ display:block; border:0;margin:5px 0; padding:0 8px; float:left;}
+</style>
+<!-- {:W('PageHeader',array('name'=>'请选择上级部门','search'=>'N'))} -->
 <input type="hidden" name="goods_id" id="goods_id">
 <input type="hidden" name="goods_name" id="goods_name">
 <input type="hidden" name="market_price" id="market_price">
 <input type="hidden" name="spec" id="spec">
-<div class="operate panel panel-default">
+<div style="float:right;">
+	<a  onclick="myclose();"><img src="./Public/img/tb_gb1_b1.png"></a>
+</div>
+<!-- <div class="operate panel panel-default">
 	<div class="panel-heading clearfix">
 		<div class="pull-left">
 			<a  onclick="save({$sid});" class="btn btn-sm btn-primary">确定</a>
@@ -18,17 +34,21 @@
 			<ul class="tree_menu">
 				<li>
 					<a node="0"><i class="icon"></i> <span>根节点</span> </a>
-					{$menu}
+					
 				</li>
 			</ul>
 		</div>
 	</div>
+</div> -->
+<div class="popup_tree_menu" style="height:450px;">
+	{$menu}
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-	$(".tree_menu .disabled span").each(function(){
+	$(".ul1 .disabled span").each(function(){
 		if($(this).text() != ''){
-			$(this).text($(this).text()+"[不可选]");
+			//$(this).text($(this).text()+"[不可选]");
+			$(this).css('color','black');
 		}
 	});
 });

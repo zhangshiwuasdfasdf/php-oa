@@ -18,7 +18,7 @@ table,tr,td{ margin:0; padding:0;}
 .top_sp3{ display:block; color:#333;font-size:14px; position:absolute; top:9px; right:2%;}
 
 .tb_div{border-top:solid 1px #999;border-left:solid 1px #999; font-size:12px; margin:auto;}
-.tb_div div{ border-right:solid 1px #797979;border-bottom:solid 1px #999; height:54px; line-height:54px; background:#fff; color:#333; text-align:center;}
+.tb_div div{ border-right:solid 1px #797979;border-bottom:solid 1px #999; height:54px; line-height:54px; background:#fff; color:#333; text-align:center; padding: 0 10px; white-space:nowrap;}
 .tb_div .div0{ height:30px;border-bottom:solid 1px #999;background:#f1f5fa; line-height:30px; font-weight:bold;}
 .tb_div .div1{ height:23px;background:#f1f5fa; line-height:23px;font-weight:bold;}
 .tb_div .div2{background:#f1f5fa;font-weight:bold;}
@@ -42,63 +42,63 @@ input[readonly]{background: #fff !important}
 <p style="font-size:14px;color:red;">
 注：该月入职和离职员工需要手工核算实际出勤，并备注；迟到、旷工、成长赞助均手工填写
 </p>
-<div class="tb_div">
+<div class="tb_div" style="overflow-x:scroll">
 	<input type="hidden" name="attendance_month_id" value="{$Think.get.id}">
 	<table border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td width="2%" rowspan="2"><div class="div2">序号</div></td>
-        <td width="4%" rowspan="2"><div class="div2">部门</div></td>
-        <td width="6%" rowspan="2"><div class="div2">职务</div></td>
-        <td width="4%" rowspan="2"><div class="div2">姓名</div></td>
-        <td width="6%" rowspan="2"><div class="div2">应出勤天数</div></td>
-        <td width="4%" rowspan="2"><div class="div2">实际出勤</div></td>
-        <td width="4%" rowspan="2"><div class="div2">迟到/早退</div></td>
-        <td width="4%" rowspan="2"><div class="div2">补勤</div></td>
-        <td width="4%" rowspan="2"><div class="div2">病假</div></td>
-        <td width="4%" rowspan="2"><div class="div2">事假</div></td>
-        <td width="2%" rowspan="2"><div class="div2">旷工</div></td>
+        <td rowspan="2"><div class="div2">序号</div></td>
+        <td rowspan="2"><div class="div2">部门</div></td>
+        <td rowspan="2"><div class="div2">职务</div></td>
+        <td rowspan="2"><div class="div2">姓名</div></td>
+        <td rowspan="2"><div class="div2">应出勤天数</div></td>
+        <td rowspan="2"><div class="div2">实际出勤</div></td>
+        <td rowspan="2"><div class="div2">迟到/早退</div></td>
+        <td rowspan="2"><div class="div2">补勤</div></td>
+        <td rowspan="2"><div class="div2">病假</div></td>
+        <td rowspan="2"><div class="div2">事假</div></td>
+        <td rowspan="2"><div class="div2">旷工</div></td>
         <td colspan="6"><div class="div0">带薪假</div></td>
         <td colspan="3"><div class="div0">加班</div></td>
-        <td width="4%" rowspan="2"><div class="div2">成长赞助</div></td>
-        <td width="4%" rowspan="2"><div class="div2">备注</div></td>
-        <td width="4%" rowspan="2"><div class="div2">员工签名</div></td>
+        <td rowspan="2"><div class="div2">成长赞助</div></td>
+        <td rowspan="2"><div class="div2">备注</div></td>
+        <td rowspan="2"><div class="div2">员工签名</div></td>
       </tr>
       <tr>
-        <td width="4%"><div class="div1">产假</div></td>
-        <td width="4%"><div class="div1">婚假</div></td>
-        <td width="4%"><div class="div1">丧假</div></td>
-        <td width="4%"><div class="div1">工伤</div></td>
-        <td width="4%"><div class="div1">年假</div></td>
-        <td width="4%"><div class="div1">调休</div></td>
-        <td width="4%"><div class="div1">平时</div></td>
-        <td width="4%"><div class="div1">周末</div></td>
-        <td width="4%"><div class="div1">法定</div></td>
+        <td><div class="div1">产假</div></td>
+        <td><div class="div1">婚假</div></td>
+        <td><div class="div1">丧假</div></td>
+        <td><div class="div1">工伤</div></td>
+        <td><div class="div1">年假</div></td>
+        <td><div class="div1">调休</div></td>
+        <td><div class="div1">平时</div></td>
+        <td><div class="div1">周末</div></td>
+        <td><div class="div1">法定</div></td>
       </tr>
     <foreach name="info" item="vo">
       <tr>
-        <td width="2%"><div>{$vo.id}</div></td>
-        <td width="4%"><div>{$vo.dept_name}</div></td>
-        <td width="6%"><div>{$vo.duty}</div></td>
-        <td width="4%"><div>{$vo.name}</div></td>
-        <td width="6%"><div>{$vo.should_day}</div></td>
-        <td width="4%"><div>{$vo.actually_day}</div></td>
-        <td width="4%"><div>{$vo.late}</div></td>
-        <td width="4%"><div>{$vo.attendance_day}</div></td>
-        <td width="4%"><div>{$vo.sick_leave}</div></td>
-        <td width="4%"><div>{$vo.casual_leave}</div></td>
-        <td width="6%"><div>{$vo.absent}</div></td>
-        <td width="4%"><div>{$vo.maternity_leave}</div></td>
-        <td width="4%"><div>{$vo.marriage_leave}</div></td>
-        <td width="4%"><div>{$vo.bereavement_leave}</div></td>
-        <td width="4%"><div>{$vo.accidents}</div></td>
-        <td width="4%"><div>{$vo.annual_leave}</div></td>
-        <td width="4%"><div>{$vo.leave_in_lieu}</div></td>
-        <td width="4%"><div>{$vo.overtime_weekday}</div></td>
-        <td width="4%"><div>{$vo.overtime_weekends}</div></td>
-        <td width="4%"><div>{$vo.overtime_legal}</div></td>
-        <td width="4%"><div>{$vo.growth_sponsorship}</div></td>
-        <td width="4%"><div>{$vo.remark}</div></td>
-        <td width="4%"><div><if condition="$vo.sign eq '1'">{$vo.name}</if></div></td>
+        <td><div>{$vo.id}</div></td>
+        <td><div>{$vo.dept_name}</div></td>
+        <td><div>{$vo.duty}</div></td>
+        <td><div>{$vo.name}</div></td>
+        <td><div>{$vo.should_day}</div></td>
+        <td><div>{$vo.actually_day}</div></td>
+        <td><div>{$vo.late}</div></td>
+        <td><div>{$vo.attendance_day}</div></td>
+        <td><div>{$vo.sick_leave}</div></td>
+        <td><div>{$vo.casual_leave}</div></td>
+        <td><div>{$vo.absent}</div></td>
+        <td><div>{$vo.maternity_leave}</div></td>
+        <td><div>{$vo.marriage_leave}</div></td>
+        <td><div>{$vo.bereavement_leave}</div></td>
+        <td><div>{$vo.accidents}</div></td>
+        <td><div>{$vo.annual_leave}</div></td>
+        <td><div>{$vo.leave_in_lieu}</div></td>
+        <td><div>{$vo.overtime_weekday}</div></td>
+        <td><div>{$vo.overtime_weekends}</div></td>
+        <td><div>{$vo.overtime_legal}</div></td>
+        <td><div>{$vo.growth_sponsorship}</div></td>
+        <td><div>{$vo.remark}</div></td>
+        <td><div><if condition="$vo.sign eq '1'">{$vo.name}</if></div></td>
       </tr>
     </foreach>  
 </table>

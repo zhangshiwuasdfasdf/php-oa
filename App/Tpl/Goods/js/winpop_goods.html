@@ -16,15 +16,16 @@
 		$(".popup_tree_menu a:not('.disabled')").click(function() {
 			$("#val").val($(this).attr("goods_id"));
 			$("#name").val($(this).attr("node"));
-			$(".tree_menu a.active").removeClass("active");
+			$(".ul1 a.active").removeClass("active");
 			$(this).addClass("active");
 		});
 		
 		//默认子公司节点收起
-		$(".tree_menu a").next().hide();
+		$(".ul1 a").next().hide();
 		//子公司节点的展开和收起
-		$(".tree_menu a").click(function(){
+		$(".ul1 a").click(function(){
 			$(this).next().slideToggle();
 		});
 	}); 
+
 </script>

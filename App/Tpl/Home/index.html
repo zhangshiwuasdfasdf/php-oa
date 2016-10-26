@@ -35,6 +35,7 @@
 	                <input type="hidden" id="o_emp_no" value="{$o_user.emp_no}"/>
 	                <input type="hidden" id="o_name" value="{$o_user.name}"/>
 	                <input type="hidden" id="o_dept_id" value="{$o_user.dept_id}"/>
+	                <input type="hidden" id="o_remember_password" value="{$Think.session.remember_password}"/>
 	                <input type="hidden" id="url" value="{:U('Login/change_user')}"/>
 	                <img class="grxx_xial1" src="__PUBLIC__/img/new_home/grxx_xial.png"/>
 	            </div>
@@ -341,7 +342,6 @@
         <span class="i2_span2" id="i2_span4">确定</span>
     </div>
 </div>
-
 <script type="text/javascript" src="__PUBLIC__/js/new_home/index.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/new_home/pbl.js"></script>
 <script>
@@ -366,5 +366,6 @@ $('.left_ck_span1').click(function(){
 		o=o-a
 		$('.left_nav').animate({marginTop:-o})
 	}
-})
+});
+
 </script>

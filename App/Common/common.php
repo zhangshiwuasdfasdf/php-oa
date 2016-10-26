@@ -1053,6 +1053,49 @@ function popup_tree_menu($tree, $level = 0,$deep=100,$other_nodes=array()) {
 	$deep--;
 	$html = "";
 	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"ul$level\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title = $val["name"];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				if (!empty($val["is_del"])) {
+					$del_class = "is_del";
+				} else {
+					$del_class = "";
+				}
+				$ext = '';
+				if(!empty($other_nodes) && is_array($other_nodes)){
+					foreach ($other_nodes as $k=>$other_node){
+						if(!empty($val[$other_node])){
+							$ext .= ' '.$other_node.'='.$val[$other_node];
+						}else{
+							$ext .= ' '.$other_node.'=""';
+						}
+					}
+				}
+				
+				if (isset($val['_child'])) {
+					$html = $html . "<li class=\"li$level\">\r\n<a node=\"$id\" $ext ><span class=\"span$level\">$title</span></a>\r\n";
+					$html = $html . popup_tree_menu($val['_child'], $level,$deep,$other_nodes);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li class=\"li$level\">\r\n<a node=\"$id\" $ext ><span class=\"span$level\">$title</span></a>\r\n</li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+
+function popup_menu($tree, $level = 0,$deep=100,$other_nodes=array()) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
 		$html = "<ul class=\"tree_menu\">\r\n";
 		foreach ($tree as $val) {
 			if (isset($val["name"])) {

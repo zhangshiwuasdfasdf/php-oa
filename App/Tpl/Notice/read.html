@@ -24,7 +24,7 @@
 	</div>
 </div>
 </if>
-<form method='post' id="frm_content" name="frm_content" enctype="multipart/form-data"  class="form-horizontal">
+<form method='post' id="frm_content" name="frm_content" enctype="multipart/form-data"  class="form-horizontal" style="width: 60%;margin-left: 20%;">
 	<input type="hidden" id="id" name="id" value="{$vo.id}">
 	<!--<div class="form-group col-sm-6">
 		<label class="col-sm-4 control-label">编号：</label>
@@ -62,11 +62,6 @@
 		</div>
 	</div>
 	--><div class="clearfix"></div>
-	<div class="form-group">
-		<div class="col-sm-9" style="margin-left: 20%;">
-			{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'image'))}
-		</div>
-	</div>
 	<volist name="vo.file_list" id="file">
 		<div class="form-group">
 			<div class="col-xs-12" style="height:100%;">
@@ -98,5 +93,5 @@
     --><!--增加签收-->
 </form>
 <style> 
-      p{text-indent:2em} 
+      p{text-indent:2em;}
 </style>
