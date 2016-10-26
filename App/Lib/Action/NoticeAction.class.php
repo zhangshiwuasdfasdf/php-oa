@@ -236,11 +236,13 @@ class NoticeAction extends CommonAction {
 			
 		$signok = $User->where("notice_id=$id and user_id=$user_id and is_sign=1")->select();
 		$this->assign('is_sign',count($signok));
-
+		$notnews = true;
 		//今日头条或公司新闻
 		if($folder_id == '95'){
 			$model -> where("id = $id") -> setInc("views");
+			$notnews = false;
 		}
+		$this -> assign('notnews',$notnews);
 		//工作计划
 		if($folder_id == '94'){
 			$this -> assign('ckplan', '1');
