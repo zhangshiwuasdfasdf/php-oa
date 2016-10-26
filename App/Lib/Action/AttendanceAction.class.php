@@ -117,7 +117,7 @@ class AttendanceAction extends CommonAction {
 		// dump($map);
 		// die;
 		if (!empty($model)) {
-			$info = $this -> _list($model, $map,'number','desc');
+			$info = $this -> _list($model, $map,'month');
 			$this -> assign('info', $info);
 		}
 
@@ -158,9 +158,9 @@ class AttendanceAction extends CommonAction {
 			}
 			$map['pos_id'] = array('in', $dept_ids);
 		}
+		$map['is_del'] = array('eq','0');
 		$info = D("UserView")->where($map)->order('dept_name desc')->select();
 		//dump($info);die;
-		
 		//应出勤天数
 		foreach ($info as $k => $v) {
 			if($v['duty']=='云客服专员'){
@@ -171,6 +171,7 @@ class AttendanceAction extends CommonAction {
 				$y = date('Y',strtotime($month));
 				//$sum = date('d',strtotime($y.'-'.($m+1))-1);
 				$t = date('t',strtotime($month));
+				
 				$should_day = 0;
 				for($i=1;$i<=$t;$i++){
 					if(!is_holiday(strtotime($y.'-'.$m.'-'.$i))){
@@ -189,13 +190,13 @@ class AttendanceAction extends CommonAction {
 				
 				foreach ($flow_ids as $key2 => $flow_id) {
 					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					
-					$FlowAttendance = M('FlowAttendance')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'start_time'=>array('between',array($start_date,$end_date))))->select();
-					
-					foreach ($FlowAttendance as $key3 => $value3) {
-						$info[$key]['attendance_day'] += $value3['day_num']+$value3['hour_num']/8;
-					}
+					$end_date = date('Y-m-d H:i:s',strtotime("$start_date +1 month -1 day"));
+				
+					$FlowAttendance = M('FlowAttendance')->where(array('flow_id'=>$flow_id,'start_time'=>array('between',array($start_date,$end_date))))->count();
+	
+					//foreach ($FlowAttendance as $key3 => $value3) {
+						$info[$key]['attendance_day'] += $FlowAttendance;
+					//}
 				}
 			}
 			//dump($info);die;
@@ -1153,7 +1154,7 @@ class AttendanceAction extends CommonAction {
 		}
 		//dump($data);die;
 		//dump($_POST);die;
-		$this -> success('删除成功',U('new_table'));
+		$this -> success('保存成功',U('new_table'));
 	}
 
 	public function read_attendance_detail(){

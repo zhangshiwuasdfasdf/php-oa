@@ -2,6 +2,8 @@
 tr,td{ margin:0; padding:0; font-family:"微软雅黑";}
 .div_z{ width:98%; height:auto; border-top:solid 1px #000; border-left:solid 1px #000; margin:auto;}
 .div0{width:99%; height:36px; line-height:36px; border-right:solid 0px #000;border-bottom:solid 0px #000; padding-left:1%;}
+
+
 </style>
 
   <div class="operate panel panel-default">
@@ -50,13 +52,13 @@ tr,td{ margin:0; padding:0; font-family:"微软雅黑";}
     </div></td>
 
     <td width="15%" height="36"><div class="div0" style="position:relative;">
-        <input name="goods_name[]" class="form-control" id="goods_name_0" type="text" readonly="readonly" msg="请选择物品名称" check="require"/>
+        <input name="goods_name[]" class="form-control" id="goods_name_0" type="text" readonly="readonly" msg="请选择物品名称" check="require" onclick="select_goods(0)" />
       <input name="goods_id[]" id="goods_id_0" type="hidden" msg="请选择物品名称" check="require" />
-      <span class="input-group-btn" style="position:absolute;top:0px;right:0px;width:21%;">
+      <!-- <span class="input-group-btn" style="position:absolute;top:0px;right:0px;width:21%;">
         <button class="btn btn-sm btn-primary" onclick="select_goods(0)" type="button">
           选择
         </button>
-      </span>
+      </span> -->
       </div>
     </td>
 
