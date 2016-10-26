@@ -36,9 +36,11 @@
 							$("#hour_num").val(result.data.hour);
 							if($("#name").val()=='员工请假申请'){
 								if($("input[name='style']:checked").val()=='调休'){
-									$("#available_hour").html('（您的可用调休时间为'+result.data.available_hour+'小时）');
-									$("#available_hour_save").val(result.data.available_hour);
-									if(result.data.day*8+result.data.hour>result.data.available_hour){
+									$("#available_hour").html('（您的可用调休时间为'+result.data.available_hour2+'小时）');
+									//新的计算方式
+									$("#available_hour2").val(result.data.available_hour2);
+									$("#available_hour_save").val(result.data.available_hour2);
+									if(result.data.day*8+result.data.hour>result.data.available_hour2){
 										ui_alert('您的可用调休时间不足',function(){
 											location.reload();
 										});

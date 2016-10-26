@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class HomeAction extends CommonAction {
-	protected $config = array('app_type' => 'asst');
+	protected $config = array('app_type' => 'asst','repair_over_time'=>'admin','create_flow_hour'=>'admin','modify_flow_hour_use'=>'admin');
 	//过滤查询字段
 
 	function _search_filter(&$map) {
@@ -881,6 +881,73 @@ class HomeAction extends CommonAction {
 			$this -> ajaxReturn('', "加载失败", 0);
 		}
 	}
-	
+	/*
+	 * 把over_time表中start_time字段补充完整（包括时分）
+	 */
+	public function repair_over_time(){
+		$FlowOverTime = M('FlowOverTime')->where(array('_string'=>'from_unixtime(unix_timestamp(start_time),"%H%i%s") ="000000"'))->select();
+		foreach ($FlowOverTime as $k=>$v){
+			$data['start_time'] = date('Y-m-d H:i',strtotime($v['end_time'])-$v['day_num']*24*60*60-$v['hour_num']*60*60);
+			$date_time = explode(' ',$data['start_time']);
+			if($date_time[0] == trim($v['start_time']) || empty($v['start_time'])){
+				$res = M('FlowOverTime')->where(array('id'=>$v['id']))->save($data);
+				if(!$res){
+					$this->error('修改失败！');
+				}
+			}
+		}
+		$this->success('修改成功！',U('index'));
+	}
+	/*
+	 * 把flow_hour表重建一遍（数据从请假单flow_leave和加班单flow_over_time中取）
+	 */
+	public function create_flow_hour(){
+		$flow_leave = D('FlowLeaveView')->where(array('style'=>'调休'))->select();
+		foreach ($flow_leave as $k=>$v){
+			$flow_new[$v['flow_id']] = $v;
+		}
+		$flow_over_time = D('FlowOverTimeView')->where(array('use_type'=>'调休'))->select();
+		foreach ($flow_over_time as $k=>$v){
+			$flow_new[$v['flow_id']] = $v;
+		}
+		ksort($flow_new);
+		foreach ($flow_new as $k=>$v){
+			if($v['type'] == '57'){
+				$flag = 1;//加班
+			}elseif ($v['type'] == '39'){
+				$flag = -1;//请假
+			}
+			$data['hour'] = ($v['day_num']*8+$v['hour_num'])*$flag;
+			$data['create_time'] = strtotime($v['start_time']);
+			$data['user_id'] = $v['user_id'];
+			$data['flow_id'] = $v['flow_id'];
+			if($v['is_del'] == '1'){
+				$data['status'] = '4';
+			}else{
+				if($v['step'] == '0'){
+					$data['status'] = '2';
+				}elseif($v['step'] == '10'){
+					$data['status'] = '3';
+				}elseif($v['step'] == '20'){
+					$data['status'] = '0';
+				}elseif($v['step'] == '40'){
+					$data['status'] = '1';
+				}
+			}
+			M('FlowHourCreate')->add($data);
+		}
+		$this->success('生成flow_hour成功！',U('index'));
+	}
+	/*
+	 * 把flow_hour表中的use字段设置一遍
+	 */
+	public function modify_flow_hour_use(){
+		$all = M('FlowHourCreate')->where(array('hour'=>array('lt',0),'status'=>1))->select();
+		foreach ($all as $k=>$v){
+			$plan = getHourPlan($v['user_id'],$v['hour'],$v['create_time'],'Create');
+			M('FlowHourCreate')->where(array('id'=>$v['id']))->save(array('use'=>serialize($plan)));
+		}
+		$this->success('生成use字段成功！',U('index'));
+	}
 }
 ?>
