@@ -18,7 +18,7 @@ table,tr,td{ margin:0; padding:0;}
 .top_sp3{ display:block; color:#333;font-size:14px; position:absolute; top:9px; right:2%;}
 
 .tb_div{border-top:solid 1px #999;border-left:solid 1px #999; font-size:12px; margin:auto;overflow-x: auto;overflow-y: hidden;}
-.tb_div div{ border-right:solid 1px #797979;border-bottom:solid 1px #999; height:54px; line-height:54px; background:#fff; color:#333; text-align:center;}
+.tb_div div{ border-right:solid 1px #797979;border-bottom:solid 1px #999; height:54px; line-height:54px; background:#fff; color:#333; text-align:center;padding: 0 10px; white-space:nowrap;}
 .tb_div .div0{ height:30px;border-bottom:solid 1px #999;background:#f1f5fa; line-height:30px; font-weight:bold;}
 .tb_div .div1{ height:23px;background:#f1f5fa; line-height:23px;font-weight:bold;}
 .tb_div .div2{background:#f1f5fa;font-weight:bold;}
@@ -47,61 +47,61 @@ input[readonly]{background: #fff !important}
 	<input type="hidden" name="attendance_month_id" value="{$Think.get.id}">
 	<table border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td width="2%" rowspan="2"><div class="div2">序号</div></td>
-        <td width="4%" rowspan="2"><div class="div2">部门</div></td>
+        <td rowspan="2"><div class="div2">序号</div></td>
+        <td rowspan="2"><div class="div2">部门</div></td>
         <td width="6%" rowspan="2"><div class="div2">职务</div></td>
-        <td width="4%" rowspan="2"><div class="div2">姓名</div></td>
-        <td width="6%" rowspan="2"><div class="div2">应出勤天数</div></td>
-        <td width="4%" rowspan="2"><div class="div2">实际出勤</div></td>
-        <td width="4%" rowspan="2"><div class="div2">迟到/早退</div></td>
-        <td width="4%" rowspan="2"><div class="div2">补勤</div></td>
-        <td width="4%" rowspan="2"><div class="div2">病假</div></td>
-        <td width="4%" rowspan="2"><div class="div2">事假</div></td>
-        <td width="2%" rowspan="2"><div class="div2">旷工</div></td>
+        <td rowspan="2"><div class="div2">姓名</div></td>
+        <td rowspan="2"><div class="div2">应出勤天数</div></td>
+        <td rowspan="2"><div class="div2">实际出勤</div></td>
+        <td rowspan="2"><div class="div2">迟到/早退</div></td>
+        <td rowspan="2"><div class="div2">补勤</div></td>
+        <td rowspan="2"><div class="div2">病假</div></td>
+        <td rowspan="2"><div class="div2">事假</div></td>
+        <td rowspan="2"><div class="div2">旷工</div></td>
         <td colspan="6"><div class="div0">带薪假</div></td>
         <td colspan="3"><div class="div0">加班</div></td>
-        <td width="4%" rowspan="2"><div class="div2">成长赞助</div></td>
-        <td width="4%" rowspan="2"><div class="div2">备注</div></td>
-        <td width="4%" rowspan="2"><div class="div2">员工签名</div></td>
-        <td width="4%" rowspan="2"><div class="div2">操作</div></td>
+        <td rowspan="2"><div class="div2">成长赞助</div></td>
+        <td rowspan="2"><div class="div2">备注</div></td>
+        <td rowspan="2"><div class="div2">员工签名</div></td>
+        <td rowspan="2"><div class="div2">操作</div></td>
       </tr>
       <tr>
-        <td width="4%"><div class="div1">产假</div></td>
-        <td width="4%"><div class="div1">婚假</div></td>
-        <td width="4%"><div class="div1">丧假</div></td>
-        <td width="4%"><div class="div1">工伤</div></td>
-        <td width="4%"><div class="div1">年假</div></td>
-        <td width="4%"><div class="div1">调休</div></td>
-        <td width="4%"><div class="div1">平时</div></td>
-        <td width="4%"><div class="div1">周末</div></td>
-        <td width="4%"><div class="div1">法定</div></td>
+        <td><div class="div1">产假</div></td>
+        <td><div class="div1">婚假</div></td>
+        <td><div class="div1">丧假</div></td>
+        <td><div class="div1">工伤</div></td>
+        <td><div class="div1">年假</div></td>
+        <td><div class="div1">调休</div></td>
+        <td><div class="div1">平时</div></td>
+        <td><div class="div1">周末</div></td>
+        <td><div class="div1">法定</div></td>
       </tr>
     <foreach name="info" item="vo">
       <tr id="{$vo.id}">
-        <td width="2%"><div><input style="width:35px;border:0px;text-align:center;" type="text" name="user_id[]" id="user_id_{$vo.id}" value="{$vo.id}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:60px;border:0px;text-align:center;" type="text" name="dept_name[]" id="dept_name_{$vo.id}" value="{$vo.dept_name}" readonly="readonly" /></div></td>
-        <td width="6%"><div><input style="width:80px;border:0px;text-align:center;" type="text" name="duty[]" id="duty_{$vo.id}" value="{$vo.duty}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:60px;border:0px;text-align:center;" type="text" name="name[]" id="name_{$vo.id}" value="{$vo.name}" readonly="readonly" /></div></td>
-        <td width="6%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="should_day[]" id="should_day_{$vo.id}" value="{$vo.should_day}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:60px;text-align:center;" type="text" name="actually_day[]" id="actually_day_{$vo.id}" <if condition="$vo.actually_day eq ''">value="{$should_day-$vo['sick_leave']-$vo['casual_leave']}" <else/> value="{$vo.actually_day}" </if>onkeyup="change_absent({$vo.id})" /></div></td>
-        <td width="4%"><div><input style="width:60px;text-align:center;" type="text" name="late[]" id="late_{$vo.id}" value="{$vo.late}" placeholder="0" /></div></td>
-        <td width="4%"><div><input style="width:35px;border:0px;text-align:center;" type="text" name="attendance_day[]" id="attendance_day_{$vo.id}" value="{$vo.attendance_day}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="sick_leave[]" id="sick_leave_{$vo.id}" value="{$vo.sick_leave}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="casual_leave[]" id="casual_leave_{$vo.id}" value="{$vo.casual_leave}" readonly="readonly" /></div></td>
-        <td width="6%"><div><input style="width:90px;text-align:center;" type="text" name="absent[]" id="absent_{$vo.id}" value="{$vo.absent}" onkeyup="change_actually({$vo.id})" placeholder="0" /></div></td>
-        <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="maternity_leave[]" id="maternity_leave_{$vo.id}" value="{$vo.maternity_leave}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="marriage_leave[]" id="marriage_leave_{$vo.id}" value="{$vo.marriage_leave}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="bereavement_leave[]"  id="bereavement_leave_{$vo.id}" value="{$vo.bereavement_leave}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="accidents[]" id="accidents_{$vo.id}" value="{$vo.accidents}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="annual_leave[]" id="annual_leave_{$vo.id}" value="{$vo.annual_leave}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:60px;text-align:center;" type="text" name="leave_in_lieu[]" id="leave_in_lieu_{$vo.id}" value="{$vo.leave_in_lieu}" /></div></td>
-        <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="overtime_weekday[]" id="overtime_weekday_{$vo.id}" value="{$vo.overtime_weekday}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:31px;border:0px;text-align:center;" type="text" name="overtime_weekends[]" id="overtime_weekends_{$vo.id}" value="{$vo.overtime_weekends}" readonly="readonly" /></div></td>
-        <td width="4%"><div><input style="width:60px;text-align:center;" type="text" name="overtime_legal[]" id="overtime_legal_{$vo.id}" value="{$vo.overtime_legal}" /></div></td>
-        <td width="4%"><div><input style="width:60px;text-align:center;" type="text" name="growth_sponsorship[]" id="growth_sponsorship_{$vo.id}" value="{$vo.growth_sponsorship}" placeholder="0" /></div></td>
-        <td width="4%"><div><input style="width:60px;text-align:center;" type="text" name="remark[]" id="remark_{$vo.id}" value="{$vo.remark}" /></div></td>
-        <td width="4%"><div><input style="width:55px;border:0px;text-align:center;" type="text" name="sign[]" id="sign_{$vo.id}" <if condition="$vo.sign eq '1'"> value="{$vo.name}" </if> readonly="readonly" /></div></td>
-        <td width="4%"><div class="cz"><a onclick="del({$vo.id})">删除</a></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="user_id[]" id="user_id_{$vo.id}" value="{$vo.id}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="dept_name[]" id="dept_name_{$vo.id}" value="{$vo.dept_name}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="duty[]" id="duty_{$vo.id}" value="{$vo.duty}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="name[]" id="name_{$vo.id}" value="{$vo.name}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="should_day[]" id="should_day_{$vo.id}" value="{$vo.should_day}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;text-align:center;" type="text" name="actually_day[]" id="actually_day_{$vo.id}" <if condition="$vo.actually_day eq ''">value="{$should_day-$vo['sick_leave']-$vo['casual_leave']}" <else/> value="{$vo.actually_day}" </if>onkeyup="change_absent({$vo.id})" /></div></td>
+        <td><div><input style="width:100%;text-align:center;" type="text" name="late[]" id="late_{$vo.id}" value="{$vo.late}" placeholder="0" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="attendance_day[]" id="attendance_day_{$vo.id}" value="{$vo.attendance_day}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="sick_leave[]" id="sick_leave_{$vo.id}" value="{$vo.sick_leave}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="casual_leave[]" id="casual_leave_{$vo.id}" value="{$vo.casual_leave}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;text-align:center;" type="text" name="absent[]" id="absent_{$vo.id}" value="{$vo.absent}" onkeyup="change_actually({$vo.id})" placeholder="0" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="maternity_leave[]" id="maternity_leave_{$vo.id}" value="{$vo.maternity_leave}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="marriage_leave[]" id="marriage_leave_{$vo.id}" value="{$vo.marriage_leave}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="bereavement_leave[]"  id="bereavement_leave_{$vo.id}" value="{$vo.bereavement_leave}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="accidents[]" id="accidents_{$vo.id}" value="{$vo.accidents}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="annual_leave[]" id="annual_leave_{$vo.id}" value="{$vo.annual_leave}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;text-align:center;" type="text" name="leave_in_lieu[]" id="leave_in_lieu_{$vo.id}" value="{$vo.leave_in_lieu}" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="overtime_weekday[]" id="overtime_weekday_{$vo.id}" value="{$vo.overtime_weekday}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="overtime_weekends[]" id="overtime_weekends_{$vo.id}" value="{$vo.overtime_weekends}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;text-align:center;" type="text" name="overtime_legal[]" id="overtime_legal_{$vo.id}" value="{$vo.overtime_legal}" /></div></td>
+        <td><div><input style="width:100%;text-align:center;" type="text" name="growth_sponsorship[]" id="growth_sponsorship_{$vo.id}" value="{$vo.growth_sponsorship}" placeholder="0" /></div></td>
+        <td><div><input style="width:100%;text-align:center;" type="text" name="remark[]" id="remark_{$vo.id}" value="{$vo.remark}" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="sign[]" id="sign_{$vo.id}" <if condition="$vo.sign eq '1'"> value="{$vo.name}" </if> readonly="readonly" /></div></td>
+        <td><div class="cz"><a onclick="del({$vo.id})">删除</a></div></td>
       </tr>
     </foreach>  
 </table>

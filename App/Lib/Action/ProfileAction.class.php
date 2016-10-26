@@ -573,9 +573,6 @@ class ProfileAction extends CommonAction {
 		$attendance = M('Attendance')->where(array('user_id'=>$id,'is_del'=>0,'mark'=>array('in',array('in','out'))))->select();
 
 		$this->_list(M('Attendance'), array('user_id'=>$id,'is_del'=>0,'mark'=>array('in',array('in','out'))),'',false,'attendance','page_attendance');
-		/*$w=M('Attendance')->field(max('attendance_time'))->where(array('user_id'=>$id,'is_del'=>0,'mark'=>array('in',array('in','out'))))->select();
-		
-		dump($w);die;*/
 // 		$this->assign('attendance',$attendance);
 		
 		C('VAR_PAGE','p_attendance_table');//p的名字变一下
