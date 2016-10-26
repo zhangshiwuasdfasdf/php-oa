@@ -13,8 +13,10 @@
         </div>
     </div>
     <div class="tuic">
-    	<a class="qhlb" target="_blank" href="http://192.168.1.209/crm">神洲CRM</a>
+    	<a class="qhlb" target="_blank" onclick="ceshi();">神洲CRM</a>
         <a class="tuic_a1" href="{:U('problem_feedback/index')}">ERP问题反馈</a>
+        <input type="hidden" id="user_name" value="{$Think.session.emp_no}"/>
+        <input type="hidden" id="password" value="{$Think.session.remember}"/>
         <!--<a class="qhlb" href="{:U('home/index_old')}">切换老版</a>-->
         <a class="tuic_a2" href="{:U('login/logout')}"><img src="__PUBLIC__/img/new_home/tc.png"/></a>
     </div>
@@ -408,7 +410,6 @@
         <img src="__PUBLIC__/img/new_home/left_xia.png"/>
     </span>
 </div>
-
 </div>
 
 <script type="text/javascript">
@@ -619,4 +620,9 @@ document.onkeydown=function(event){
     	}
     }
 };
+function ceshi(){
+	var user = $("#user_name").val().trim();
+	var password = $("#password").val().trim();
+	window.open("/crm/index.php?m=user&a=login&name="+user+"&password="+password+"&submit=submit");
+}
 </script>
