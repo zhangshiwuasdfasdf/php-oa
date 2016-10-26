@@ -17,7 +17,8 @@ table,tr,td{ margin:0; padding:0;}
 .top_sp2{ display:block; color:#333; font-size:14px; float:left;margin-left:6px; }
 .top_sp3{ display:block; color:#333;font-size:14px; position:absolute; top:9px; right:2%;}
 
-.tb_div{border-top:solid 1px #999;border-left:solid 1px #999; font-size:12px; margin:auto;}
+.tb_div{ font-size:12px; }
+table{border-top:solid 1px #999;border-left:solid 1px #999;min-width: 1700px; margin: auto;}
 .tb_div div{ border-right:solid 1px #797979;border-bottom:solid 1px #999; height:54px; line-height:54px; background:#fff; color:#333; text-align:center; padding: 0 10px; white-space:nowrap;}
 .tb_div .div0{ height:30px;border-bottom:solid 1px #999;background:#f1f5fa; line-height:30px; font-weight:bold;}
 .tb_div .div1{ height:23px;background:#f1f5fa; line-height:23px;font-weight:bold;}
@@ -117,11 +118,5 @@ input[readonly]{background: #fff !important}
             </div>
     </div>
 </div>
-<script>
-function w(){
-	var w=$('table').width();
-	$('.tb_div').css('width',w);		
-}
-w();
-</script>
+
 
