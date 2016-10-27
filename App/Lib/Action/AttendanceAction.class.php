@@ -58,6 +58,7 @@ class AttendanceAction extends CommonAction {
 			$info = $this -> _list($model, $map,'import_time');
 			$this -> assign('info', $info);
 		}
+
 		$dept_name = $model -> where('is_del = 0') -> field('dept_name as id,dept_name as name') ->distinct(true) -> select();
 		$user_name = $model -> where('is_del = 0') -> field('user_name as id,user_name as name') ->distinct(true) -> select();
 // 		$months = $model -> where('is_del = 0') -> field('months as id,months as name') ->distinct(true) -> select();
