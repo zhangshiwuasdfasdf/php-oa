@@ -45,7 +45,7 @@ class StaffAction extends CommonAction {
 			$menu = $node -> field('id,pid,name') ->where($where)-> order('sort asc') -> select();
 		
 			$tree = list_to_tree($menu);
-			$a = popup_tree_menu($tree,0,100,true);
+			$a = popup_menu($tree,0,100,true);
 			
 			$a = str_replace('tree_menu','submenu',$a);
 			$a = str_replace('<a class=""','<a class="dropdown-toggle"',$a);
@@ -109,7 +109,7 @@ class StaffAction extends CommonAction {
 			}
 		}
 		$tree = list_to_tree($menu);
-		$a = popup_tree_menu($tree,0,100,true);
+		$a = popup_menu($tree,0,100,true);
 			
 		$a = str_replace('tree_menu','submenu',$a);
 		$a = str_replace('<a class=""','<a class="dropdown-toggle"',$a);

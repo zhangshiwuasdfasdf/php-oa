@@ -1122,7 +1122,7 @@ function popup_menu($tree, $level = 0,$deep=100,$other_nodes=array()) {
 				
 				if (isset($val['_child'])) {
 					$html = $html . "<li>\r\n<a class=\"$del_class\" node=\"$id\" $ext ><i class=\"fa fa-angle-right level$level\"></i><span>$title</span></a>\r\n";
-					$html = $html . popup_tree_menu($val['_child'], $level,$deep,$other_nodes);
+					$html = $html . popup_menu($val['_child'], $level,$deep,$other_nodes);
 					$html = $html . "</li>\r\n";
 				} else {
 					$html = $html . "<li>\r\n<a class=\"$del_class\" node=\"$id\" $ext ><i class=\"fa fa-angle-right level$level\"></i><span>$title</span></a>\r\n</li>\r\n";

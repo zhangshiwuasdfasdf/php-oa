@@ -957,7 +957,8 @@
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.overtime_legal}</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.growth_sponsorship}</span></td>
                     <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$vo.remark}</span></td>
-                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><input onclick="confirm({$vo.id});this.disabled = true;" type="button" value="确认"  /></td>
+                    <td width="200" height="29" align="center" valign="middle" bgcolor="#fff"><input 
+                    <if condition="$vo.sign eq '1'">disabled="disabled"<else />onclick="confirm({$vo.id});" </if> type="button" value="确认"  /></td>
               	</tr>
               </foreach>
             </table>
@@ -1007,6 +1008,7 @@
        			type:'post',
        			success:function(data){
        			ui_alert("确认成功",function(){
+       				location.reload();
 					});
        			},
        			error:function(e){
