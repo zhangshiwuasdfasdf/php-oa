@@ -3596,19 +3596,18 @@ class FlowAction extends CommonAction {
 		$end_time = strtotime(date('Y-m-d',$create_time)) + (3600*24-1);
 		$where['attendance_time'] = array(array('gt',$start_time),array('lt',$end_time));
 		$listAtten = $atten -> where($where) -> select();
+		//申请人当前时间(申请那天)已经有打卡信息了
 		if(!empty($listAtten)){
 			$arr = array();
 			foreach ($listAtten as $k => $v){
-				if($v['mark'] == 'in'){
-					if(($v['attendance_time'] > $create_time)){
-						$v['mark'] = '';
-						$arr = $v;
-						$info['mark'] = 'in';
-					} else{
-						$v['mark'] = 'in';
-						$arr = $v;
-						$info['mark'] = '';
-					}
+				if(($v['attendance_time'] > $create_time)){
+					$v['mark'] = '';
+					$arr = $v;
+					$info['mark'] = 'in';
+				} else{
+					$v['mark'] = 'in';
+					$arr = $v;
+					$info['mark'] = '';
 				}
 			}
 			$flag = $atten -> save($arr);
@@ -3618,16 +3617,14 @@ class FlowAction extends CommonAction {
 			$atten -> add($info);
 			$out_arr = array();
 			foreach ($listAtten as $k => $v){
-				if($v['mark'] == 'out'){
-					if(($v['attendance_time'] < $finish_time)){
-						$v['mark'] = '';
-						$out_arr = $v;
-						$info['mark'] = 'out';
-					} else{
-						$v['mark'] = 'out';
-						$out_arr = $v;
-						$info['mark'] = '';
-					}
+				if(($v['attendance_time'] < $finish_time)){
+					$v['mark'] = '';
+					$out_arr = $v;
+					$info['mark'] = 'out';
+				} else{
+					$v['mark'] = 'out';
+					$out_arr = $v;
+					$info['mark'] = '';
 				}
 			}
 			$atten -> save($out_arr);

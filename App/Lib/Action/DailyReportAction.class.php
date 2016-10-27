@@ -260,7 +260,6 @@ class DailyReportAction extends CommonAction {
 		$where_last['id'] = array('eq', $id);
 		$last_report = M("DailyReport") -> where($where_last) -> order('id desc') -> find();
 		$this -> assign('last_report', $last_report);
-		
 		if(empty($last_report)){
 			$this->error('权限不足！');
 		}
