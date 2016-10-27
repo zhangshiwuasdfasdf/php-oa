@@ -109,11 +109,11 @@
 				<foreach name="list" item="vo">
 					<li class="tbody">
 						<div class="pull-left">
-							<span class="col-10 ">&nbsp;{$flow_ext.$key.flow_no}</span>
-							<span class="col-16  ">&nbsp;{$vo.create_time|date='Y-m-d H:i:s',###}</span>
-							<span class="col-10 ">&nbsp;{$vo.dept_name}</span>	
-							<span class="col-10 ">&nbsp;{$flow_ext.$key.pos_name}</span>
-							<span class="col-10 ">&nbsp;{$vo.user_name}</span>
+							<span class="col-10">&nbsp;{$flow_ext.$key.flow_no}</span>
+							<span class="col-16">&nbsp;{$vo.create_time|date='Y-m-d H:i:s',###}</span>
+							<span class="col-10">&nbsp;{$vo.dept_name}</span>	
+							<span class="col-10">&nbsp;{$flow_ext.$key.duty}</span>
+							<span class="col-10">&nbsp;{$vo.user_name}</span>
 						</div>
 						<div class="pull-right">
 							<span class="col-6  ">&nbsp;{$vo.step|show_step}</span>
