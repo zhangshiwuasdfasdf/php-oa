@@ -122,9 +122,8 @@ class AttendanceAction extends CommonAction {
 			foreach ($info as $k=> $v) {
 				$dept_ids=$info[$k]['attendance_dept'];
 				$dept_ids=array_filter(explode('|', $dept_ids));
-				$dept_name=M("Dept")->field('name')->where(array('id'=>array('in',$dept_ids)))->select();
-				$names = array_column($dept_name, 'name');
-				$names=implode(',',$names);
+				$dept_name=M("Dept")->where(array('id'=>array('in',$dept_ids)))->getField('name',true);
+				$names=implode(',',$dept_name);
 				$info[$k]['names'] = $names;
 			}
 			$this -> assign('info', $info);
