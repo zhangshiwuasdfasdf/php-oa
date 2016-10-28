@@ -1142,7 +1142,7 @@ class AttendanceAction extends CommonAction {
 				$info['receiver_id'] = $data['user_id'];
 				$info['receiver_name'] = $data['user_name'];
 				$info['owner_id'] = $data['user_id'];
-				$info['content'] = "请进入员工档案确认考勤";
+				$info['content'] = '请进入员工档案确认考勤，<a href="'.U('Profile/user?id='.$data['user_id']).'">点击跳转</a>';
 				$info['create_time']=time();
 				M('Message') -> add($info);
 				$this -> _pushReturn("", "您有新的消息, 请注意查收", 1,$data['user_id']);
