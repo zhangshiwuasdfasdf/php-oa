@@ -128,6 +128,9 @@
 			<div class="pull-left">
 				<span class="col-20 ">考勤月份</span>
 			</div>
+			<div class="pull-left">
+				<span class="col-20 ">考勤部门</span>
+			</div>
 			<div class="pull-right">
 				<span class="col-3 ">操作</span>
 			</div>
@@ -158,6 +161,9 @@
 					</div>
 					<div class="pull-left">
 						<span class="col-20 ">&nbsp;<a href="{:U('read_attendance_detail','id='.$vo['id'].'&dept_ids='.$vo['attendance_dept'])}">{$vo.month}</a></span>
+					</div>
+					<div class="pull-left">
+						<span class="col-20 ">&nbsp;{$info.$key.names}</span>
 					</div>
 					<div class="pull-right">
 						<span class="col-3 "><a href="{:U('edit_table','id='.$vo['id'].'&dept_ids='.$vo['attendance_dept'])}">编辑</a></span>

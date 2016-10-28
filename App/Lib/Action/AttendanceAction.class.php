@@ -119,19 +119,27 @@ class AttendanceAction extends CommonAction {
 		// die;
 		if (!empty($model)) {
 			$info = $this -> _list($model, $map,'month');
+			foreach ($info as $k=> $v) {
+				$dept_ids=$info[$k]['attendance_dept'];
+				$dept_ids=array_filter(explode('|', $dept_ids));
+				$dept_name=M("Dept")->field('name')->where(array('id'=>array('in',$dept_ids)))->select();
+				$names = array_column($dept_name, 'name');
+				$names=implode(',',$names);
+				$info[$k]['names'] = $names;
+			}
 			$this -> assign('info', $info);
 		}
-
+		
 		$node = D("Dept");
 		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
 		$dept_tree = list_to_tree($dept_menu);
 		if(!is_mobile_request()){
 			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
 		}
-		
-		// 		$this -> assign('months', $months);
+
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
+		$this -> assign("names", $names);
 		$this -> assign("map", serialize($map));
 		$this -> display();
 	}

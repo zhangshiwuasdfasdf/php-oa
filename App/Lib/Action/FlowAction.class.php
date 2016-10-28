@@ -3157,7 +3157,7 @@ class FlowAction extends CommonAction {
 			$menu2 = array();
 		}
 		$tree = list_to_tree(array_merge($menu,$menu2));
-		$this -> assign('menu', popup_tree_menu($tree,0,100,array('goods_id','market_price','spec')));
+		$this -> assign('menu', popup_menu($tree,0,100,array('goods_id','market_price','spec')));
 		$this -> assign('sid', $_GET['id']);
 		$this -> assign('pid', $pid);
 		$this -> display();
