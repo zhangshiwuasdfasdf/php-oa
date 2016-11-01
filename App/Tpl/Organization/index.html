@@ -190,14 +190,16 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span1"></span>
                         <span class="span1"></span>
                     </li>
-                    <li class="content_li">
+                    <div class="company_content">
+                    <!-- <li class="content_li">
                     	<span class="span2_0"><input name="box" type="checkbox"/></span>
                         <span class="span2">总部</span>
                         <span class="span2"></span>
                         <span class="span2"><a class="content_a">启用</a></span>
                         <span class="span2"><a class="content_a">禁用</a></span>
                         <span class="span2"><a class="content_a" id="a_gsbj">编辑</a></span>
-                    </li>
+                    </li> -->
+                    </div>
                 </ul>
             </div>
         </div>
@@ -222,7 +224,8 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span1"></span>
                         <span class="span1"></span>
                     </li>
-                    <li class="content_li">
+                    <div class="dept_content">
+                    <!-- <li class="content_li">
                     	<span class="span2_0"><input name="box" type="checkbox"/></span>
                         <span class="span2">总部</span>
                         <span class="span2">技术部</span>
@@ -230,7 +233,8 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span2"><a class="content_a">启用</a></span>
                         <span class="span2"><a class="content_a">禁用</a></span>
                         <span class="span2"><a class="content_a" id="a_bmbj">编辑</a></span>
-                    </li>
+                    </li> -->
+                    </div>
                 </ul>
             </div>
         </div>
@@ -254,7 +258,8 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span1">操作</span>
                         <span class="span1"></span>
                     </li>
-                    <li class="content_li">
+                    <div class="position_content">
+                    <!-- <li class="content_li">
                     	<span class="span2_0"><input name="box" type="checkbox"/></span>
                         <span class="span2"></span>
                         <span class="span2"></span>
@@ -262,7 +267,8 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span2"></span>
                         <span class="span2"><a class="content_a" id="a_gwbj">编辑</a></span>
                         <span class="span2"><a class="content_a" id="a_fp">分配情况</a></span>
-                    </li>
+                    </li> -->
+                    </div>
                 </ul>
             </div>
         </div>
@@ -292,7 +298,8 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span1"></span>
                         <span class="span1"></span>
                     </li>
-                    <li class="content_li">
+                    <div class="user_content">
+                    <!-- <li class="content_li">
                     	<span class="span2_0"><input name="box" type="checkbox"/></span>
                         <span class="span2"></span>
                         <span class="span2"></span>
@@ -306,7 +313,8 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span2"><a class="content_a" id="a_yw">业务管辖部门</a></span>
                         <span class="span2"><a class="content_a" id="a_jd">业务管辖基地</a></span>
                        	<span class="span2"><a class="content_a" id="a_kq">考勤管辖部门</a></span>
-                    </li>
+                    </li> -->
+                    </div>
                 </ul>
             </div>
         </div> 
@@ -319,8 +327,23 @@ input,select{ margin:0; padding:0; outline:none;}
                 </div>
                 
                 <div class="b2">删除</div>
+                <div class="row pagination">
+                	<div class="span2">
+                		<span id="counts">276</span>"条记录"
+                		<span id="ps">2</span>"/"
+                		<span id="total_pages">28</span>"页"
+                	</div>
+                	<div class="span4">
+						<div><ul id="changepages">
+							<li><span class='current'>首页</span></li><li><span>« 上一页</span></li>
+							
+							<li><a class="page" href="javascript:void(0)" rel="2">下一页 »</a></li>
+							
+						</ul></div>
+					</div>
+                </div>
                 
-                <div class="b3">
+                <!-- <div class="b3">
                     <span class="b3_s1">共有</span>
                     <span class="b3_s2">37872</span>
                     <span class="b3_s1">条记录</span>
@@ -332,7 +355,7 @@ input,select{ margin:0; padding:0; outline:none;}
                         <option>20</option>
                     </select>
                 </div>
-                <div class="b5">
+                <div class="b5" id="changepages">
                     <span class="b5_s1">1</span>
                     <span class="b5_s1">2</span>
                     <span class="b5_s1">3</span>
@@ -343,7 +366,7 @@ input,select{ margin:0; padding:0; outline:none;}
                     <span class="b5_s1">下一页</span>
                     <span class="b5_s3"><input type="text"/></span>
                     <span class="b5_s1">go</span>
-                </div>
+                </div> -->
             </div>
         </div>
                     

@@ -1141,8 +1141,8 @@ function popup_menu_organization($tree, $level = 0,$deep=100) {
 	if (is_array($tree) && $deep>0) {
 		$i = $level>2?'2':'';
 		$html = "<ul class=\"zz_ul$i\">\r\n";
-		if($level == '1'){
-			$html = $html . "<li class=\"zz_li1\" onclick=show_leader()>"."公司领导"."</li>\r\n";
+		if($level == '2'){
+			$html = $html . "<li class=\"zz_li1\" onclick=show_list('".$tree[0]['id']."','1')>"."公司领导"."</li>\r\n";
 		}
 		foreach ($tree as $val) {
 			if (isset($val["name"])) {
@@ -1153,11 +1153,11 @@ function popup_menu_organization($tree, $level = 0,$deep=100) {
 				}
 
 				if (isset($val['_child'])) {
-					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"__PUBLIC__/img/xl.png\"/><span onclick=show_list($id)>$title</span>\r\n";
+					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"__PUBLIC__/img/xl.png\"/><span onclick=show_list('$id')>$title</span>\r\n";
 					$html = $html . popup_menu_organization($val['_child'], $level,$deep);
 					$html = $html . "</li>\r\n";
 				} else {
-					$html = $html . "<li class=\"zz_li1\" onclick=show_list($id)>$title</li>\r\n";
+					$html = $html . "<li class=\"zz_li1\" onclick=show_list('$id')>$title</li>\r\n";
 				}
 			}
 		}

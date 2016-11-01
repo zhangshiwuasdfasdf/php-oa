@@ -228,13 +228,13 @@ $('#all').click(function(){
 		$("[name=box]:checkbox").prop("checked",false);  
 	}	
 });
-function show_list(id){
+function show_list(id,show_leader){
 	$("#dept_id").val(id);
 	var type = $("input[name='radio']:checked").val();
 	//sendForm("form_data", "{:U('index')}");
 	$.ajax({
 		type:'post',
-		data:{dept_id:id,type:type},
+		data:{dept_id:id,type:type,show_leader:show_leader},
 		url:"{:U('changeContent')}",
 		async:false,
 		success:function(data){
@@ -243,35 +243,79 @@ function show_list(id){
 			alert(type);
 			temp = '';
 			if(data.data.list != null){
-				$.each(data.data.list, function(k, v){
-					temp += "<tr><td><input name='owner' type='radio' value='"+v.role_id+"' /></td><td>"+v.user_name+"_"+v.true_name+"</td><td rel='"+v.depts+"'>"+v.department_name+"</td><td>"+v.role_name+"</td>";
-					
-					if(v.sex == 1){
-						temp += "<td>{:L('MALE')}</td>";
-					}else if(v.sex == 2){
-						temp += "<td>{:L('FEMALE')}</td>";
-					}else{
-						temp += "<td>&nbsp;</td>";
-					}
-					temp += "<td>"+v.email+"</td>";
-					temp += "<td>"+v.telephone+"</td>";
-					
-					temp += "</tr>";
-				});
+				if(data.data.type == '0'){
+					$.each(data.data.list, function(k, v){
+						temp += '<li class="content_li">';
+						temp += '<span class="span2_0"><input name="box" type="checkbox"/></span>';
+						temp += '<span class="span2">'+v.root_name+'</span>';
+						temp += '<span class="span2"></span>';
+						temp += '<span class="span2"><a class="content_a">启用</a></span>';
+						temp += '<span class="span2"><a class="content_a">禁用</a></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_gsbj">编辑</a></span>';
+						temp += '</li>';
+					});
+					$('.company_content').html(temp);
+				}else if(data.data.type == '1'){
+					$.each(data.data.list, function(k, v){
+						temp += '<li class="content_li">';
+						temp += '<span class="span2_0"><input name="box" type="checkbox"/></span>';
+						temp += '<span class="span2">'+v.root_name+'</span>';
+						temp += '<span class="span2">'+v.name+'</span>';
+						temp += '<span class="span2"></span>';
+						temp += '<span class="span2"><a class="content_a">启用</a></span>';
+						temp += '<span class="span2"><a class="content_a">禁用</a></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_bmbj">编辑</a></span>';
+						temp += '</li>';
+					});
+					$('.dept_content').html(temp);
+				}else if(data.data.type == '2'){
+					$.each(data.data.list, function(k, v){
+						temp += '<li class="content_li">';
+						temp += '<span class="span2_0"><input name="box" type="checkbox"/></span>';
+						temp += '<span class="span2">'+v.dept_name+'</span>';
+						temp += '<span class="span2">'+v.position_name+'</span>';
+						temp += '<span class="span2"></span>';
+						temp += '<span class="span2"></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_gwbj">编辑</a></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_fp">分配情况</a></span>';
+						temp += '</li>';
+					});
+					$('.position_content').html(temp);
+				}else if(data.data.type == '3'){
+					$.each(data.data.list, function(k, v){
+						temp += '<li class="content_li">';
+						temp += '<span class="span2_0"><input name="box" type="checkbox"/></span>';
+						temp += '<span class="span2">'+v.name+'</span>';
+						temp += '<span class="span2">'+v.dept_name+'</span>';
+						temp += '<span class="span2">'+v.position_name+'</span>';
+						temp += '<span class="span2"></span>';
+						temp += '<span class="span2"></span>';
+						temp += '<span class="span2"></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_ygbj">编辑</a></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_js">角色分配</a></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_xz">行政关系范围</a></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_yw">业务管辖部门</a></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_jd">业务管辖基地</a></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_kq">考勤管辖部门</a></span>';
+						temp += '</li>';
+					});
+					$('.user_content').html(temp);
+				}
+				
 				var changepage = "";
 				if(data.data.p == 1){
-					changepage = "<li><span class='current'>{:L('FIRST_PAGE')}</span></li><li><span>« {:L('THE_PREVIOUS_PAGE')}</span></li>";
+					changepage = "<li><span class='current'>首页</span></li><li><span>« 上一页</span></li>";
 					if(data.data.p < data.data.total){
-						changepage += "<li><a class='page' href='javascript:void(0)' rel='"+(data.data.p+1)+"'>{:L('THE_NEXT_PAGE')} »</a></li>";
+						changepage += "<li><a class='page' href='javascript:void(0)' rel='"+(data.data.p+1)+"'>下一页 »</a></li>";
 					}else{
-						changepage += "<li><span>{:L('THE_NEXT_PAGE')} »</span></li>";
+						changepage += "<li><span>下一页 »</span></li>";
 					}
 				}else if(data.data.p == data.data.total){
-					changepage = "<li><a class='page' href='javascript:void(0)' rel='1'>{:L('FIRST_PAGE')}</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p-1)+"'>« {:L('THE_PREVIOUS_PAGE')}</a></li><li><span>{:L('THE_NEXT_PAGE')} »</span></li>";
+					changepage = "<li><a class='page' href='javascript:void(0)' rel='1'>首页</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p-1)+"'>« 上一页</a></li><li><span>下一页 »</span></li>";
 				}else{
-					changepage = "<li><a class='page' href='javascript:void(0)' rel='1'>{:L('FIRST_PAGE')}</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p-1)+"'>« {:L('THE_PREVIOUS_PAGE')}</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p+1)+"'>{:L('THE_NEXT_PAGE')} »</a></li>";
+					changepage = "<li><a class='page' href='javascript:void(0)' rel='1'>首页</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p-1)+"'>« 上一页</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p+1)+"'>下一页 »</a></li>";
 				}
-				$('#d_content').html(temp);
+				
 				$('#ps').html(data.data.p);
 				$('#changepages').html(changepage);
 				$('#counts').html(data.data.count);

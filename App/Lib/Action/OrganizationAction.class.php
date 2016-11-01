@@ -111,32 +111,42 @@ class OrganizationAction extends CommonAction {
 				$list = $this->_getRootDept($list);
 				$count = $model->where($where)->count();
 			}elseif ($type == '1'){//部门
-				$model = M("Dept");
-				$where['is_del'] = 0;
-				if(!empty($_REQUEST['dept_id'])){
-					$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+				if(!$_REQUEST['show_leader']){
+					$model = M("Dept");
+					$where['is_del'] = 0;
+					if(!empty($_REQUEST['dept_id'])){
+						$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+					}
+					$list = $model->where($where)->page($p.',10')->select();
+					$list = $this->_getRootDept($list);
+					$count = $model->where($where)->count();
 				}
-				$list = $model->where($where)->page($p.',10')->select();
-				$count = $model->where($where)->count();
+				
 			}elseif ($type == '2'){//岗位
-				$model = M("Position");
-				$where['is_del'] = 0;
-				if(!empty($_REQUEST['dept_id'])){
-					$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+				if(!$_REQUEST['show_leader']){
+					$model = D("PositionView");
+					$where['is_del'] = 0;
+					if(!empty($_REQUEST['dept_id'])){
+						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+					}
+					$list = $model->where($where)->page($p.',10')->select();
+					$count = $model->where($where)->count();
 				}
-				$list = $model->where($where)->page($p.',10')->select();
-				$count = $model->where($where)->count();
 			}elseif ($type == '3'){//员工
-				$where['is_del'] = 0;
-				if(!empty($_REQUEST['dept_id'])){
-					$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+				if(!$_REQUEST['show_leader']){
+					$where['is_del'] = 0;
+					if(!empty($_REQUEST['dept_id'])){
+						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+					}
+					$position_ids = M("Position")->where($where)->getField('id',true);
+					$user_ids = M('RUserPosition')->where(array('position_id'=>array('in',$position_ids)))->getField('user_id',true);
+					$list = D('UserView3')->field('id,emp_no,name,dept_name,position_name,sex,is_del')->where(array('id'=>array('in',$user_ids)))->page($p.',10')->select();
+					$count = D('UserView3')->where(array('id'=>array('in',$user_ids)))->count();
+				}else{
+					
 				}
-				$position_ids = M("Position")->where($where)->getField('id',true);
-				$user_ids = M('RUserPosition')->where(array('position_id'=>array('in',$position_ids)))->getField('user_id',true);
-				$list = M('User')->field('id,emp_no,name,dept_id,sex,is_del')->where(array('id'=>array('in',$user_ids)))->page($p.',10')->select();
-				$count = M('User')->where(array('id'=>array('in',$user_ids)))->count();
 			}
-			
+			$data['type'] = $type;
 			$data['list'] = $list;
 			
 			$data['p'] = $p;
