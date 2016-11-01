@@ -13,7 +13,7 @@
 
 class OrganizationAction extends CommonAction {
 
-	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read'));
+	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read'));
 
 	public function index(){
 		
@@ -29,8 +29,16 @@ class OrganizationAction extends CommonAction {
 		$this -> assign('menu', $a);
 
 		$model = M("Dept");
-		$list = $model -> order('sort asc') -> getField('id,name');
-		$this -> assign('dept_list', $list);
+		$where['is_del'] = 0;
+		if(!empty($_POST['dept_id'])){
+			$where['id'] = array('in',get_child_dept_all($_POST['dept_id']));
+		}
+		$this->_list($model, $where,'',false,'list','page','p','_getRootDept');
+		
+		$list = $model ->where(array('is_del'=>0)) -> order('sort asc') -> getField('id,pid,name');
+		$tree = list_to_tree($list);
+		$html = popup_menu_organization($tree);
+		$this -> assign('dept_list', $html);
 
 		$model = M("DeptGrade");
 		$list = $model -> where('is_del=0') -> order('sort asc') -> getField('id,name');
@@ -89,6 +97,55 @@ class OrganizationAction extends CommonAction {
 		$this -> assign('pid', $pid);
 		$this -> display('winpop4');
 	}
-	
+	public function changeContent(){
+		if($this->isAjax()){
+			$p = !$_REQUEST['p']||$_REQUEST['p']<=0 ? 1 : intval($_REQUEST['p']);
+			
+			$model = M("Dept");
+			$where['is_del'] = 0;
+			if(!empty($_REQUEST['dept_id'])){
+				$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+			}
+			$this->_list($model, $where,'',false,'list','page','p','_getRootDept');
+			
+			$list = $model->where($where)->page($p.',10')->select();
+			$count = $model->where($where)->count();
+			$data['list'] = $list;
+			
+			$data['p'] = $p;
+			$data['count'] = $count;
+			$data['total'] = $count%10 > 0 ? ceil($count/10) : $count/10;
+			$this->ajaxReturn($data, '', 1);
+		}
+	}
+	function getDept(){
+		$where['is_del'] = '0';
+		if(!empty($_REQUEST['dept_id'])){
+			$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+		}else{
+			$where['pid'] = '0';
+		}
+		$dept = M('Dept')->where($where)->field('id,pid,name')->select();
+		if($_REQUEST['type'] == 'origin'){
+			$this->ajaxReturn($dept, '', 1);
+		}elseif($_REQUEST['type'] == 'option'){
+			$tree = list_to_tree($dept);
+			$options = popup_menu_option($tree);
+			$this->ajaxReturn($options, '', 1);
+		}
+		
+	}
+	function _getRootDept($volist){
+		foreach ($volist as $k=>$v){
+			$pid = $v['pid'];
+			$id = $v['id'];
+			while($pid){
+				$id = $pid;
+				$pid = M('Dept')->where(array('id'=>$pid))->getField('pid');
+			}
+			$volist[$k]['root_name'] = M('Dept')->where(array('id'=>$id))->getField('name');
+		}
+		return $volist;
+	}
 }
 ?>
