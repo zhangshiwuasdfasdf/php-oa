@@ -62,6 +62,13 @@
 		</div>
 	</div>
 	--><div class="clearfix"></div>
+	<if condition="$notnews">
+		<div class="form-group">
+			<div class="col-sm-10" style="margin-left: 15%;">
+				{:W('File',array('add_file'=>$vo['add_file'],'mode'=>'image'))}
+			</div>
+		</div>
+	</if>
 	<volist name="vo.file_list" id="file">
 		<div class="form-group">
 			<div class="col-xs-12" style="height:100%;">

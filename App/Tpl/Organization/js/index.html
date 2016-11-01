@@ -230,15 +230,16 @@ $('#all').click(function(){
 });
 function show_list(id){
 	$("#dept_id").val(id);
+	var type = $("input[name='radio']:checked").val();
 	//sendForm("form_data", "{:U('index')}");
 	$.ajax({
 		type:'post',
-		data:{dept_id:id},
+		data:{dept_id:id,type:type},
 		url:"{:U('changeContent')}",
 		async:false,
 		success:function(data){
 			alert(JSON.stringify(data));
-			var type = $("input[name='radio']").val();
+			var type = $("input[name='radio']:checked").val();
 			alert(type);
 			temp = '';
 			if(data.data.list != null){
