@@ -25,18 +25,17 @@ class PositionSequenceAction extends CommonAction {
 
 	function add(){
 		//dump($_POST);die;
-		if(IS_POST){
-			$model=M("PositionSequence");
-			if($model->create(I('post.'),1)){
-				if($model->add())
-    			{
-    				$this->success('添加成功！', U('index'));
-    			}
-    		}
-    		$this->error($model->getError());
-			}	
-		}
+		$data['sequence_number']=$_POST['sequence_number'];
+		$data['sequence_name']=$_POST['sequence_name'];
+		$data['sequence_degree']=$_POST['sequence_degree'];
+		$result=M('PositionSequence')->add($data);
+		dump($result);die;
+		if ($result) {
+				$this -> ajaxReturn('', "删除成功", 1);
+			} else {
+				$this -> ajaxReturn('', "删除失败", 0);
+			}
+	}
 	
-
 }
 ?>
