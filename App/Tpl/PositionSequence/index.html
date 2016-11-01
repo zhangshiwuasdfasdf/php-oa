@@ -1,0 +1,195 @@
+<layout name='Layout/ace_layout' />
+<form method="post" name="form_adv_search" id="form_adv_search">
+	<div class="adv_search panel panel-default "  id="adv_search">
+		<div class="panel-body">
+			<div class="col-sm-3">
+				<label class="col-sm-4 control-label" for="li_user_name">申请编号：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="number" name="number" >
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<label class="col-sm-4 control-label" for="">申请人部门：</label>
+				<div class="col-sm-8">
+					<input class="form-control input-sm" type="text" id="dept_name_multi" name="dept_name_multi" onfocus="$('.content0').show()" readonly>
+					<input type="hidden" id="dept_name_multi_data" name="dept_name_multi_data"/>
+					<div class="content0"> 
+						<div class="top2">
+					        <span class="top_s1">部门选择</span>
+					        <span class="top_s2" id="gb">【关闭】</span>
+					        <span class="top_s2" id="qk">【清空】</span>
+					    </div>
+					    <div class="ss">
+					        <input class="ss_inp1" type="search"/>
+					        <span class="ss_inp2">
+					            <img src="./Public/img/left1.png"/>
+					        </span>
+					    </div>
+						<div class="content1">
+							{$dept_list_new}
+				    	</div>
+					    <div class="bottom2">
+					    	<span class="bottom_s1" id="qd">确定</span>
+					        <span class="bottom_s2" id="qx">取消</span>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<label class="col-sm-4 control-label" for="be_date">考勤月份：</label>
+				<div class="col-sm-8" style="width: 62%;">
+					<div class="input-group" >
+						<input type="text" class="input-date-m input-sm form-control text-center" name="be_date" />
+						<span class="input-group-addon">-</span>
+						<input type="text" class="input-date-m input-sm form-control text-center" name="en_date" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+			</div>
+		</div>
+	</div>
+</form>
+<div class="operate panel panel-default">
+	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
+		<div class="pull-left">
+			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">每月考勤表</span>
+		</div>
+	<div>
+		<a style="float:right" class="btn btn-sm btn-primary" onclick="add()">生成</a>
+		<div class="col-sm-3" style="float:right;">
+				<label class="col-sm-4 control-label" for="">考勤部门：</label>
+				<div class="col-sm-8">
+					<input class="form-control input-sm" type="text" id="dept_name_multi2" name="dept_name_multi2" onfocus="$('.content00').show()" readonly>
+					<input type="hidden" id="dept_name_multi_data2" name="dept_name_multi_data2"/>
+					<div class="content00"> 
+						<div class="top2">
+					        <span class="top_s1">部门选择</span>
+					        <span class="top_s2" id="gb1">【关闭】</span>
+					        <span class="top_s2" id="qk1">【清空】</span>
+					    </div>
+					    <div class="ss">
+					        <input class="ss_inp1" type="search"/>
+					        <span class="ss_inp2">
+					            <img src="./Public/img/left1.png"/>
+					        </span>
+					    </div>
+						<div class="content1" id="content11">
+							{$dept_list_new}
+				    	</div>
+					    <div class="bottom2">
+					    	<span class="bottom_s1" id="qd1">确定</span>
+					        <span class="bottom_s2" id="qx1">取消</span>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3" style="float:right;">
+				<label class="col-sm-4 control-label" for="be_date">考勤月份：</label>
+				<div class="col-sm-8" style="width: 62%;">
+					<div class="input-group" >
+						<input type="text" class="input-date-m input-sm form-control text-center" name="be_date" id="be_date" />
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="pull-right"></div>
+	</div> 
+		<!-- <form method="GET" action="{:U('attendance/new_table')}">
+				<div style="float:right;">
+					考勤部门：<input type="text" name="dept_name">
+					考勤月份：<input type="text" name="atten_month">
+					<input type="hidden" id="dept_name" name="dept_name" value="{$data.dept_name}">
+					<a class="btn btn-sm btn-info" onclick="submit_adv_search();">生成</a>
+				</div>
+			</form>		 -->	
+</div>
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<label class="inline pull-left col-3">
+					<input class="ace" type="checkbox" name="id-toggle-all" id="id-toggle-all" />
+					<span class="lbl"></span>
+				</label>
+				<span class="col-10 ">申请编号</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-16 ">申请时间</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-10 ">申请人</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-15 ">申请人部门</span>
+			</div>
+			<div class="pull-left">
+				<span class="col-20 ">考勤月份</span>
+			</div>
+			<div class="pull-right">
+				<span class="col-3 ">操作</span>
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<form method="post" action="" name="form_data" id="form_data">
+			<foreach name="list" item="vo">
+				<li class="tbody">
+					<div class="pull-left">
+						<label class="inline pull-left col-3">
+							<input class="ace" type="checkbox" name="id[]" value="{$vo.id}" />
+							<span class="lbl"></span>
+						</label>
+						<span class="col-10 ">&nbsp;{$vo.number}</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-16 ">&nbsp;{$vo.create_time|date='Y-m-d H:i:s',###}</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-10 ">&nbsp;{$vo.create_name}</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-15 ">&nbsp;{$vo.dept_name}</span>
+					</div>
+					<div class="pull-left">
+						<span class="col-20 ">&nbsp;<a href="{:U('read_attendance_detail','id='.$vo['id'].'&dept_ids='.$vo['attendance_dept'])}">{$vo.month}</a></span>
+					</div>
+					<div class="pull-right">
+						<span class="col-3 "><a href="{:U('edit_table','id='.$vo['id'].'&dept_ids='.$vo['attendance_dept'])}">编辑</a></span>
+					</div>
+				</li>
+			</foreach>
+			<a class="btn btn-sm btn-danger" onclick="del();">删除</a>
+			</form>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>人力资源</li><li>考勤管理</li><li>每月考勤表</li>";
+	$("#breadcrumbs ul").append(html);
+});
+
+function del() {
+	var vars = $("#form_data").serialize();
+	ui_confirm('确定要删除吗?',function(){
+	sendAjax("{:U('del_attendance')}", vars, function(data) {
+	if (data.status) {
+		ui_alert(data.info,function(){
+			$("input[name='id[]']:checkbox:checked").each(function() {
+			$(this).parents("li").remove();
+				});
+			});				
+		}
+	});
+});
+	}
+</script>
