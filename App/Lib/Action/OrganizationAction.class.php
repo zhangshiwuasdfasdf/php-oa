@@ -100,16 +100,43 @@ class OrganizationAction extends CommonAction {
 	public function changeContent(){
 		if($this->isAjax()){
 			$p = !$_REQUEST['p']||$_REQUEST['p']<=0 ? 1 : intval($_REQUEST['p']);
-			
-			$model = M("Dept");
-			$where['is_del'] = 0;
-			if(!empty($_REQUEST['dept_id'])){
-				$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+			$type = $_REQUEST['type'];
+			if($type == '0'){//公司
+				$model = M("Dept");
+				$where['is_del'] = 0;
+				if(!empty($_REQUEST['dept_id'])){
+					$where['id'] = array('eq',$_REQUEST['dept_id']);
+				}
+				$list = $model->where($where)->page($p.',10')->select();
+				$list = $this->_getRootDept($list);
+				$count = $model->where($where)->count();
+			}elseif ($type == '1'){//部门
+				$model = M("Dept");
+				$where['is_del'] = 0;
+				if(!empty($_REQUEST['dept_id'])){
+					$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+				}
+				$list = $model->where($where)->page($p.',10')->select();
+				$count = $model->where($where)->count();
+			}elseif ($type == '2'){//岗位
+				$model = M("Position");
+				$where['is_del'] = 0;
+				if(!empty($_REQUEST['dept_id'])){
+					$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+				}
+				$list = $model->where($where)->page($p.',10')->select();
+				$count = $model->where($where)->count();
+			}elseif ($type == '3'){//员工
+				$where['is_del'] = 0;
+				if(!empty($_REQUEST['dept_id'])){
+					$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+				}
+				$position_ids = M("Position")->where($where)->getField('id',true);
+				$user_ids = M('RUserPosition')->where(array('position_id'=>array('in',$position_ids)))->getField('user_id',true);
+				$list = M('User')->field('id,emp_no,name,dept_id,sex,is_del')->where(array('id'=>array('in',$user_ids)))->page($p.',10')->select();
+				$count = M('User')->where(array('id'=>array('in',$user_ids)))->count();
 			}
-			$this->_list($model, $where,'',false,'list','page','p','_getRootDept');
 			
-			$list = $model->where($where)->page($p.',10')->select();
-			$count = $model->where($where)->count();
 			$data['list'] = $list;
 			
 			$data['p'] = $p;
