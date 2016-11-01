@@ -536,8 +536,8 @@ $(".menu_li14_a").click(function(){
 $('#left_a9').click(function(){
 	$("#left_a1,#left_a2,#left_a3,#left_a4,#left_a5,#left_a6,#left_a7,#left_a8").removeClass("left_aaa")
 	$('#left_a9').toggleClass("left_aaa")
-	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul7_4,.menu_ul7_5,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul6,.menu_ul17_0,.menu_ul17_1,.menu_ul17_2,.menu_ul15").hide()
-	$('.menu_li16_a,.menu_li16_a1,.menu_li16_a2,.menu_li16_a3').removeClass('hover_bg16');
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7_0,.menu_ul7,.menu_ul7_1,.menu_ul7_2,.menu_ul7_3,.menu_ul7_4,.menu_ul7_5,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul6,.menu_ul17_0,.menu_ul17_1,.menu_ul17_2,.menu_ul17_3,.menu_ul17_4,.menu_ul17_5,.menu_ul15").hide()
+	$('.menu_li16_a,.menu_li16_a1,.menu_li16_a2,.menu_li16_a3,.menu_li16_a4,.menu_li16_a5').removeClass('hover_bg16');
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	var t1=$(".menu_ul16").height()
 	var t=$(this).offset().top-t1+40
@@ -580,6 +580,21 @@ $(".menu_li16_a3").click(function(){
 	$()
 	$(".menu_li16_a3").toggleClass("hover_bg16")
 	$(".menu_ul17_3").slideToggle()	
+})
+
+$(".menu_li16_a4").click(function(){
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul7_4,.menu_ul7_5,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_1,.menu_ul17_0,.menu_ul17_2,.menu_ul17_3,.menu_ul17_5,.menu_ul15").hide()
+	$(".ani_ss").animate({opacity:0,width:'0px'})
+	$(".menu_li16_a,.menu_li16_a1,.menu_li16_a2,.menu_li16_a3,.menu_li16_a5").removeClass("hover_bg16")
+	$(".menu_li16_a4").toggleClass("hover_bg16")
+	$(".menu_ul17_4").slideToggle()	
+})
+$(".menu_li16_a5").click(function(){
+	$(".menu_ul2,.menu_ul3,.menu_ul4,.menu_ul7,.menu_ul7_0,.menu_ul7_1,.menu_ul7_2,.menu_ul7_4,.menu_ul7_5,.menu_ul8,.menu_ul10,.menu_ul12,.menu_ul14,.menu_ul17_1,.menu_ul17_0,.menu_ul17_2,.menu_ul17_3,.menu_ul17_4,.menu_ul15").hide()
+	$(".ani_ss").animate({opacity:0,width:'0px'})
+	$(".menu_li16_a,.menu_li16_a1,.menu_li16_a2,.menu_li16_a3,.menu_li16_a4").removeClass("hover_bg16")
+	$(".menu_li16_a5").toggleClass("hover_bg16")
+	$(".menu_ul17_5").slideToggle()	
 })
 
 $('.right,.top,.main-content').click(function(){
