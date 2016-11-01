@@ -12,17 +12,15 @@ wli();
 
 
 $("#a_glbj").click(function(){
-	$('#bj1').text('编辑')
 	$("#tc_glbj").show();
 	$(".bottom_sp3,.bottom_sp4").click(function(){
 		$("#tc_glbj").hide();	
 	})	
 })
 $("#a_gltj").click(function(){
-	$('#bj1').text('添加')
-	$("#tc_glbj").show();
+	$("#tc_gltj").show();
 	$(".bottom_sp3,.bottom_sp4").click(function(){
-		$("#tc_glbj").hide();	
+		$("#tc_gltj").hide();	
 	})
 })
 
