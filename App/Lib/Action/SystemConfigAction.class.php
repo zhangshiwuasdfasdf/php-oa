@@ -38,18 +38,15 @@ class SystemConfigAction extends CommonAction {
 			$this -> success('新增成功!');
 		}
 	}
-	public function holiday_edit(){
+	function holiday_edit(){
 		$model = D("Holiday");
 		$where = array('id'=>$_POST['id']);
 		
-		if(false !== $_POST['is_holiday']){
+		if($_POST['is_holiday']){
 			$data['is_holiday'] = $_POST['is_holiday'];
 		}
-		if(false !== $_POST['remark']){
+		if($_POST['remark']){
 			$data['remark'] = $_POST['remark'];
-		}
-		if(false !== $_POST['times']){
-			$data['times'] = $_POST['times'];
 		}
 		$res = $model-> where($where)->setField($data);
 		if($res){

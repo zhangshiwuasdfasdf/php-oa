@@ -1134,6 +1134,60 @@ function popup_tree_menu($tree, $level = 0,$deep=100,$other_nodes=array()) {
 	return $html;
 }
 
+function popup_menu_organization($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$i = $level>2?'2':'';
+		$html = "<ul class=\"zz_ul$i\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title = $val["name"];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+
+				if (isset($val['_child'])) {
+					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"__PUBLIC__/img/xl.png\"/><span onclick=show_list($id)>$title</span>\r\n";
+					$html = $html . popup_menu_organization($val['_child'], $level,$deep);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li class=\"zz_li1\" onclick=show_list($id)>$title</li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+function popup_menu_option($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title = $val["name"];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				
+				if (isset($val['_child'])) {
+					$html = $html . "<option value=\"$id\">".substr('----------',0,$level-1).$title."</option>\r\n";
+					$html = $html . popup_menu_option($val['_child'], $level,$deep);
+				} else {
+					$html = $html . "<option value=\"$id\">".substr('----------',0,$level-1).$title."</option>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+
 function sub_tree_menu($tree, $level = 0) {
 	$level++;
 	$html = "";
@@ -3494,5 +3548,8 @@ function show_status_color($name){
 		case '无需处理':return 'gray';
 		default:return 'black';
 	}
+}
+function test($a='a',$b='b',$c='c'){
+	return $a.$b.$c;
 }
 ?>

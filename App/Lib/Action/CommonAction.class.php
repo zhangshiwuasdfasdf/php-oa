@@ -531,7 +531,7 @@ class CommonAction extends Action {
 		return $map;
 	}
 
-	protected function _list($model, $map, $sortBy = '', $asc = false,$temp='list',$page_temp='page',$p_temp='p') {
+	protected function _list($model, $map, $sortBy = '', $asc = false,$temp='list',$page_temp='page',$p_temp='p',$ext_function='') {
 		//排序字段 默认为主键名
 		if (isset($_REQUEST['_order'])) {
 			$order = $_REQUEST['_order'];
@@ -584,6 +584,9 @@ class CommonAction extends Action {
 				}else{
 					$voList = $model -> where($map) -> order($order) -> limit($p -> firstRow . ',' . $p -> listRows) -> select();
 				}
+			}
+			if(!empty($ext_function)){
+				$voList = $this->$ext_function($voList);
 			}
 			//echo $model->getlastSql();die;
 			$p -> parameter = $this -> _search();

@@ -3157,7 +3157,7 @@ class FlowAction extends CommonAction {
 			$menu2 = array();
 		}
 		$tree = list_to_tree(array_merge($menu,$menu2));
-		$this -> assign('menu', popup_menu($tree,0,100,array('goods_id','market_price','spec')));
+		$this -> assign('menu', popup_tree_menu($tree,0,100,array('goods_id','market_price','spec')));
 		$this -> assign('sid', $_GET['id']);
 		$this -> assign('pid', $pid);
 		$this -> display();
@@ -3563,7 +3563,7 @@ class FlowAction extends CommonAction {
 				$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
-				$remark = '请假调休单_' .$flow['style'];
+				$remark = '请假调休单_' .$flow['style']."(".$flow['day_num'].'天'.$flow['hour_num']."小时)";
 				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
 			case 'FlowAttendance' : //attendance 出勤单
@@ -3571,7 +3571,7 @@ class FlowAction extends CommonAction {
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
 				$info['attendance_time'] = $create_time;
-				$remark = '出勤异常申请';
+				$remark = '出勤异常申请'.'('.$flow['day_num'].'天'.$flow['hour_num'].'小时)';
 				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
 			case 'FlowOutside' : //outside 外勤单
@@ -3579,7 +3579,7 @@ class FlowAction extends CommonAction {
 				$create_time = strtotime($flow['start_time']);
 				$end_time = strtotime($flow['end_time']);
 				$info['attendance_time'] = $create_time;
-				$remark = '外勤/出差申请';
+				$remark = '外勤/出差申请'.'('.$flow['day_num'].'天'.$flow['hour_num'].'小时)';
 				$this -> getAttendanceInfo($create_time,$end_time,$info,$remark,$user_flow['user_id']);
 				break;
 		}

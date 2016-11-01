@@ -1,0 +1,303 @@
+<script type="text/javascript">
+//JavaScript Document
+$.fn.toggle = function( fn, fn2 ) {
+    var args = arguments,guid = fn.guid || $.guid++,i=0,
+    toggle = function( event ) {
+      var lastToggle = ( $._data( this, "lastToggle" + fn.guid ) || 0 ) % i;
+      $._data( this, "lastToggle" + fn.guid, lastToggle + 1 );
+      event.preventDefault();
+      return args[ lastToggle ].apply( this, arguments ) || false;
+    };
+    toggle.guid = guid;
+    while ( i < args.length ) {
+      args[ i++ ].guid = guid;
+    }
+    return this.click( toggle );
+}
+
+function h0(){
+	var h1=$(window).height()-260
+	$(".zz_bg").css('height',h1)
+	var h2=$('#yg_in').offset().left
+	$('.top_ul').css('left',h2)
+	
+	var wsp0_0=0;
+	var wsp0_1=0;
+	var wsp0_2=0;
+	var wsp0_3=0;
+	var wsp0=$('#content_div0 ul li').eq(0).children('span');
+	var wsp1=$('#content_div1 ul li').eq(0).children('span');
+	var wsp2=$('#content_div2 ul li').eq(0).children('span');
+	var wsp3=$('#content_div3 ul li').eq(0).children('span');
+	
+	for( var i=0; i<wsp0.length;i++){
+		wsp0_0+=wsp1.eq(i).width();
+	}
+	$('#content_div0 ul li').css('width',wsp0_0);
+	for( var i=0; i<wsp1.length;i++){
+		wsp0_1+=wsp1.eq(i).width();
+	}
+	$('#content_div1 ul li').css('width',wsp0_1);
+	for( var i=0; i<wsp2.length;i++){
+		wsp0_2+=wsp2.eq(i).width();
+	}
+	$('#content_div2 ul li').css('width',wsp0_2);
+	for( var i=0; i<wsp3.length;i++){
+		wsp0_3+=wsp3.eq(i).width();
+	}
+	$('#content_div3 ul li').css('width',wsp0_3);
+}
+h0();
+
+
+$(function(){
+    var M1 = $('.top_ul_z')
+    M1.on('click',function(e){e.stopPropagation();})
+    .find('#yg_in').on('click',function(){
+        M1.find('.top_ul').show();
+    });
+    $(document).on('click',function(){M1.find('.top_ul').hide()})
+})
+$('#yg_in').toggle(function(){
+	$('.top_ul').show();	
+},function(){
+	$('.top_ul').hide();	
+})
+$('.qx,.qd').click(function(){
+	$('.top_ul').hide();	
+})
+
+
+$("input[type='radio']").click(function(){
+	var v = $(this).val();
+	if (v == "0"){
+		$("#gslb").show();
+		$("#bmlb,#gwlb,#yglb").hide();
+	}
+	if (v =="1"){
+		$("#bmlb").show();
+		$("#gslb,#gwlb,#yglb").hide(); 
+	}
+	if(v=="2"){
+		$("#gwlb").show();
+		$("#gslb,#bmlb,#yglb").hide();
+	}
+	if(v=="3"){
+		$("#yglb").show();
+		$("#gslb,#bmlb,#gwlb").hide();
+	}
+});
+
+//公司列表弹窗
+//编辑
+$("#a_gsbj").click(function(){
+	$("#tc_gsbj").show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_gsbj").hide();	
+	})	
+})
+//添加
+$("#a_gstj").click(function(){
+	$("#tc_gstj").show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_gstj").hide();	
+	})
+})
+
+//部门页面
+//编辑
+$("#a_bmbj").click(function(){
+	$("#tc_bmbj").show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_bmbj").hide();	
+	})	
+})
+//添加
+$("#a_bmtj").click(function(){
+	$.ajax({
+		type:'post',
+		url:"{:U('getDept')}",
+		async:false,
+		data:{type:'origin'},
+		success:function(data){
+			$("#company").html('');
+			var html = '<option>请选择公司</option>';
+			$.each(data.data, function(k, v){
+				html += '<option value="'+v.id+'">'+v.name+'</option>';
+			})
+			$("#company").html(html);
+		}
+	});
+	$('#bj1').text('添加')
+	$("#tc_bmtj").show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_bmtj").hide();	
+	})
+})
+
+//添加
+$("#a_gwtj").click(function(){
+	$("#tc_gwtj").show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_gwtj").hide();	
+	})
+})
+
+$("#a_ygbj").click(function(){
+	$('#bj3').text('编辑')
+	$("#tc_ygbj").show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_ygbj").hide();	
+	})	
+})
+$("#a_ygtj").click(function(){
+	$('#bj3').text('添加')
+	$("#tc_ygbj").show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_ygbj").hide();	
+	})
+})
+
+$("#a_js").click(function(){
+	$("#tc_js").show();
+	$(".bottom_sp1,.bottom_sp2").click(function(){
+		$("#tc_js").hide();	
+	})
+})
+$("#a_xz").click(function(){
+	$("#tc_xz").show();
+	$(".bottom_sp1,.bottom_sp2").click(function(){
+		$("#tc_xz").hide();	
+	})
+})
+$("#a_yw").click(function(){
+	$("#tc_yw").show();
+	$(".bottom_sp1,.bottom_sp2").click(function(){
+		$("#tc_yw").hide();	
+	})
+})
+$("#a_jd").click(function(){
+	$("#tc_jd").show();
+	$(".bottom_sp1,.bottom_sp2").click(function(){
+		$("#tc_jd").hide();	
+	})
+})
+
+$("#a_kq").click(function(){
+	$("#tc_kq").show();
+	$(".bottom_sp1,.bottom_sp2").click(function(){
+		$("#tc_kq").hide();	
+	})
+})
+$("#a_fp").click(function(){
+	$("#tc_fp").show();
+	$(".bottom_sp1,.bottom_sp2").click(function(){
+		$("#tc_fp").hide();	
+	})
+})
+
+//组织架构
+$(".zz_bg img").each(function(){
+	$(this).toggle(function(){
+		$(this).parent('li').children('ul').slideDown()
+	},function(){
+		$(this).parent('li').children('ul').slideUp()
+	})
+})
+
+$(".tc_ul_div img").each(function(){
+	$(this).toggle(function(){
+		$(this).parent('li').children('ul').slideDown()
+	},function(){
+		$(this).parent('li').children('ul').slideUp()
+	})
+})
+
+$("#js_sp4,#js_sp5").click(function() {
+  if(this.checked){                                     
+    $("[name=sp4]:checkbox").prop("checked",true);  
+  }else{
+    $("[name=sp4]:checkbox").prop("checked",false);  
+  }
+});
+
+$('#all').click(function(){
+	if(this.checked){                                     
+		$("[name=box]:checkbox").prop("checked",true);  
+	}else{
+		$("[name=box]:checkbox").prop("checked",false);  
+	}	
+});
+function show_list(id){
+	$("#dept_id").val(id);
+	//sendForm("form_data", "{:U('index')}");
+	$.ajax({
+		type:'post',
+		data:{dept_id:id},
+		url:"{:U('changeContent')}",
+		async:false,
+		success:function(data){
+			alert(JSON.stringify(data));
+			var type = $("input[name='radio']").val();
+			alert(type);
+			temp = '';
+			if(data.data.list != null){
+				$.each(data.data.list, function(k, v){
+					temp += "<tr><td><input name='owner' type='radio' value='"+v.role_id+"' /></td><td>"+v.user_name+"_"+v.true_name+"</td><td rel='"+v.depts+"'>"+v.department_name+"</td><td>"+v.role_name+"</td>";
+					
+					if(v.sex == 1){
+						temp += "<td>{:L('MALE')}</td>";
+					}else if(v.sex == 2){
+						temp += "<td>{:L('FEMALE')}</td>";
+					}else{
+						temp += "<td>&nbsp;</td>";
+					}
+					temp += "<td>"+v.email+"</td>";
+					temp += "<td>"+v.telephone+"</td>";
+					
+					temp += "</tr>";
+				});
+				var changepage = "";
+				if(data.data.p == 1){
+					changepage = "<li><span class='current'>{:L('FIRST_PAGE')}</span></li><li><span>« {:L('THE_PREVIOUS_PAGE')}</span></li>";
+					if(data.data.p < data.data.total){
+						changepage += "<li><a class='page' href='javascript:void(0)' rel='"+(data.data.p+1)+"'>{:L('THE_NEXT_PAGE')} »</a></li>";
+					}else{
+						changepage += "<li><span>{:L('THE_NEXT_PAGE')} »</span></li>";
+					}
+				}else if(data.data.p == data.data.total){
+					changepage = "<li><a class='page' href='javascript:void(0)' rel='1'>{:L('FIRST_PAGE')}</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p-1)+"'>« {:L('THE_PREVIOUS_PAGE')}</a></li><li><span>{:L('THE_NEXT_PAGE')} »</span></li>";
+				}else{
+					changepage = "<li><a class='page' href='javascript:void(0)' rel='1'>{:L('FIRST_PAGE')}</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p-1)+"'>« {:L('THE_PREVIOUS_PAGE')}</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p+1)+"'>{:L('THE_NEXT_PAGE')} »</a></li>";
+				}
+				$('#d_content').html(temp);
+				$('#ps').html(data.data.p);
+				$('#changepages').html(changepage);
+				$('#counts').html(data.data.count);
+				$('#total_pages').html(data.data.total);
+				$('.page').click(function(){
+					var a = $(this).attr('rel');
+					d_changeContent(a);
+				});
+			}else{
+				$('#d_content').html('<tr><td colspan="7">{:L("NOT_FIND_THE_RESULTS_YOU_WANT")}</td></tr>');
+				$('#footers').addClass('hide');
+			}
+		},
+	})
+	//alert(id);
+}
+function getDeptByCompany(){
+	var company_id = $("#company").val();
+	$.ajax({
+		type:'post',
+		data:{dept_id:company_id,type:'option'},
+		url:"{:U('getDept')}",
+		async:false,
+		success:function(data){
+			$("#dept").html(data.data);
+		//	alert(JSON.stringify(data));
+		}
+	});
+}
+</script>

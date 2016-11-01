@@ -1,0 +1,1163 @@
+<layout name='Layout/ace_layout' />
+<style>
+*{ font-family:"微软雅黑";}
+a{ text-decoration:none;}
+ul,li{ margin:0; padding:0; list-style:none;}
+body{ margin:0; padding:0; background:#e5e5e5;}
+input,select{ margin:0; padding:0; outline:none;}
+
+.content_title{ background:#bdd3e0; height:40px; line-height:40px; margin-top:10px; position:relative;}
+.content_sp1{ display:block; position:absolute;width:6px; height:20px; background-color:#20b891; border:solid 1px #3da396;top:10px; border-radius:3px;left:20px;}
+.content_sp2{ display:block; font-size:12px; left:40px; position:absolute;}
+.img_tj{ display:block; float:left; margin-top:14px;}
+.content_sp3{display:block;position:absolute;right:20px;font-size:12px; color:#4c6456; font-weight:bold; cursor:pointer; overflow:hidden;}
+.content_sp3 span{ display:block; float:left;}
+
+.content{ overflow:auto; width:100%;}
+.zz_bg{ background:#fff; width:16%;float:left; overflow:auto;}
+.zz_ul{padding-left:15px; height:auto;}
+.zz_ul1{padding-left:15px; height:auto;}
+.zz_ul2{padding-left:15px; height:auto; display:none;}
+.zz_li{font-size:12px; line-height:28px; white-space:nowrap;}
+.zz_li img{ float:left; margin-top:11px; margin-right:10px; cursor:pointer;}
+.zz_li1{ margin-left:20px; }
+.zz_li1 ul{ display:none;}
+.zz_ul input{ float:left; margin-top:8px; margin-right:5px;}
+
+.in_title{ background:#fff; height:40px; line-height:40px; border-bottom: solid 1px #000;}
+.in_title input{ margin-left:20px;}
+.in_title label{ font-size:14px;}
+
+.top_k{ height:54px; line-height:54px;}
+.top2{ height:54px; background:#fff; line-height:54px; overflow:auto; white-space:nowrap;}
+.top2 span{ display:block; font-size:12px; float:left; margin-left:20px;}
+.top_in{ width:114px; height:24px;border:solid 1px #aaaaaa;}
+.top_select{ width:98px; height:24px; outline:none;}
+.top_button{ overflow:hidden;}
+.top_button img{ float:left; margin-top:8px; margin-left:16px; margin-right:5px;}
+.top_ul_z{width:116px;}
+.top_ul div{ height:30px; overflow:hidden;}
+.top2 .qx{ width:45px; height:20px; font-size:12px; line-height:20px; margin-left:10px; display:block; float:left; text-align:center; background:#475c6f; border-radius:3px; color:#fff; margin-top:3px; cursor:pointer;}
+.top2 .qd{ width:45px; height:20px; font-size:12px; line-height:20px;display:block; float:left; margin-left:4px; text-align:center; background:#1fb992; border-radius:3px; color:#fff; margin-top:3px;cursor:pointer}
+.top_ul{width:114px; border: 1px solid #999; position:absolute; z-index:10; background:#fff; top:130px;display:none;}
+.top_ul li{ height:20px; line-height:20px; font-size:14px; padding-left:25px;}
+.top_ul li:hover{ background:#1e90ff; color:#fff;}
+
+.content_t{overflow:auto; float:left; margin-left:1%; width:83%;}
+.content_ul_w{ overflow:auto; height:270px;}
+.content_li{border-bottom:1px solid #eaedf1; background:#fff; overflow:hidden; height:28px;}
+.content_li span{ display:block; float:left; white-space:nowrap;color:#323232; font-size:12px; height:28px;line-height:28px; text-align:center;}
+.span1_0{ width:30px; font-weight:bold;}
+.span1{ font-weight:bold; width:150px;}
+.span2_0{ width:30px;}
+.span2{ width:150px;}
+.content_a{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+
+#bmlb,#gwlb,#yglb{ display:none;}
+
+.content_bottom1{ background:#fff; height:30px; margin-top:10px;}
+.content_bottom2{ background:#fff; height:42px; margin-top:2px; line-height:42px; position:relative;}
+.b1{ margin-left:10px; position:absolute; overflow:hidden;}
+.b1 input{ float:left; margin-top:15px;}
+.b1 span{ display:block; font-size:12px; color:#323232; float:left; margin-left:2px;}
+.b2{ width:32px; height:20px; line-height:20px; border:solid 1px #ced3d7; background:#d0e0e7; color:#323232; float:left; font-size:12px; text-align:center; position:absolute; left:60px; top:11px; cursor:pointer;}
+.b3{ height:20px; line-height:20px; position:absolute; right:360px; top:11px; border: solid 1px #13b58e;}
+.b3_s1{ font-size:12px; color:#13b58e;}
+.b3_s2{ font-size:12px; color:#323232;}
+
+.b4{ height:20px; line-height:20px; position:absolute; right:280px; top:11px; color:#323232; font-size:12px;}
+.b5{ height:20px; line-height:20px; position:absolute; right:15px; top:11px;}
+.b5_s1{ color:#13b58e; font-size:12px; border: solid 1px #13b58e; padding:0 3px; cursor:pointer;}
+.b5_s3 input{ color:#323232; width:25px; font-size:12px; border: solid 1px #13b58e;}
+.b5_s2{ color:#fff; background:#13b58e;}
+
+
+
+.tc{ width:100%; height:100%; position:fixed; top:0; left:0; background:rgba(0,0,0,0.5); display:none; z-index:800;}
+.tc_div{background:#f1f5fa; width:800px; height:400px; position:absolute; left:50%; margin-left:-400px; top:50%; margin-top:-200px; border-radius:5px;}
+.tc_title{ width:100%; height:50px; line-height:50px; overflow:hidden; border-bottom:solid 1px #bdd3e0;}
+.js_sp1{ float:left; display:block; font-size:18px; font-weight:bold; color:#22bd9b; margin-left:50px;}
+.js_sp2{ float:right; display:block; overflow:hidden;font-size:14px;margin-right:50px; margin-top:12px;}
+.js_sp3{float:left; display:block; font-size:14px;color:#000; margin-left:220px;}
+.js_sp4{float:left; display:block; font-size:14px;color:#000; margin-left:20px;}
+.js_inp{ float:left; width:160px; height:26px; margin-right:10px;}
+.js_inp1{width:50px; height:22px;}
+.left1{ display:block; width:28px; height:26px; line-height:26px; background:#20b891; float:left;}
+.left1 img{ margin-left:4px; margin-top:3px;}
+
+.tc_ul_div{width:700px; height:260px;margin-top:20px; margin-left:50px; overflow:auto;}
+.tc_div_jt{ font-size:14px; font-weight:bold; float:left; color:#333;}
+.tc_ul{ margin-bottom:10px; height:auto;}
+.tc_ul li{ overflow:hidden; height:30px; width:100%; line-height:30px;}
+.tc_ul span{ display:block; float:left; height:30px; width:170px; font-size:14px; text-align:center;}
+
+.bottom2{ width:100%; height:70px; line-height:70px; overflow:hidden;}
+.bottom_sp1{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:290px; margin-right:40px; cursor:pointer;}
+.bottom_sp2{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}         
+
+.tc_div1{background:#f1f5fa; width:400px; height:550px; position:absolute; left:50%; margin-left:-200px; top:50%; margin-top:-300px; border-radius:5px;}
+.tc_ul_div1{ width:300px; height:400px;margin-top:20px; margin-left:50px; overflow:auto;}
+.tc_ul_s{ height:auto;}
+.tc_ul_s li{ overflow:hidden; height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
+.tc_ul_s label{ position:absolute; left:0;}
+.tc_ul_s select{ width:195px;position:absolute; left:85px; top:15px;}
+.tc_inp{ width:190px;position:absolute; left:85px; top:15px;}
+
+.bottom_sp3{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:100px; margin-right:40px; cursor:pointer;}
+.bottom_sp4{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}
+
+</style>
+
+<div class="content">
+    <div class="content_title">
+        <span class="content_sp1"></span>
+        <span class="content_sp2">组织架构</span> 
+    </div>
+    <div class="zz_bg">
+    	{$dept_list}
+    </div>
+    
+    <div class="content_t">
+    	<div class="in_title">
+        	<input type="radio" name="radio" id="in_gs" value="0"/>
+            <label for="in_gs">公司</label>
+        	<input type="radio" name="radio" id="in_bm" value="1"/>
+            <label for="in_bm">部门</label>
+            <input type="radio" name="radio" id="in_gw" value="2"/>
+            <label for="in_gw">岗位</label>
+            <input type="radio" name="radio" id="in_yg" value="3" checked="checked"/>
+            <label for="in_yg">员工</label>
+        </div>
+        <div class="top2">
+            <span>姓名/档案号：<input class="top_in" type="text"/></span>
+            <span>员工状态：<input class="top_in" id="yg_in" type="text" readonly/></span>
+            <span>有无兼职：
+                <select class="top_select">
+                    <option selected="selected">请选择</option>
+                    <option>无</option>
+                    <option>有</option>
+                </select>
+            </span>
+            <div class="top_button">
+                <img src="__PUBLIC__/img/cx.png"/>
+            </div>
+            <div class="top_ul_z">
+                <ul class="top_ul">
+                    <li>
+                        <input type="checkbox" checked="checked"/>
+                        <label>实习生</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="checked"/>
+                        <label>试用期</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="checked"/>
+                        <label>已转正</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="checked"/>
+                        <label>拟离职</label>
+                    </li>
+                    <li>
+                        <input type="checkbox"/>
+                        <label>离职</label>
+                    </li>
+                    <div>
+                    	<span class="qx">取消</span>
+                        <span class="qd">确定</span>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <!--公司列表-->
+        <div id="gslb">
+            <div class="content_title">
+                <span class="content_sp1"></span>
+                <span class="content_sp2">公司列表</span>
+                <a class="content_sp3" id="a_gstj">
+                    <img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+                </a>  
+            </div>
+            <div class="content_ul_w" id="content_div0">
+            	<ul class="content_ul">
+                	<li class="content_li">
+                    	<span class="span1_0"></span>
+                        <span class="span1">公司</span>
+                        <span class="span1">数据状态</span>
+                        <span class="span1">操作</span>
+                        <span class="span1"></span>
+                        <span class="span1"></span>
+                        <span class="span1"></span>
+                    </li>
+                    <li class="content_li">
+                    	<span class="span2_0"><input name="box" type="checkbox"/></span>
+                        <span class="span2">总部</span>
+                        <span class="span2"></span>
+                        <span class="span2"><a class="content_a">启用</a></span>
+                        <span class="span2"><a class="content_a">禁用</a></span>
+                        <span class="span2"><a class="content_a" id="a_gsbj">编辑</a></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--部门列表-->
+        <div id="bmlb">
+            <div class="content_title">
+                <span class="content_sp1"></span>
+                <span class="content_sp2">部门列表</span>
+                <a class="content_sp3" id="a_bmtj">
+                    <img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+                </a>  
+            </div>
+            <div class="content_ul_w" id="content_div1">
+            	<ul class="content_ul">
+                	<li class="content_li">
+                    	<span class="span1_0"></span>
+                        <span class="span1">公司</span>
+                        <span class="span1">部门</span>
+                        <span class="span1">数据状态</span>
+                        <span class="span1">操作</span>
+                        <span class="span1"></span>
+                        <span class="span1"></span>
+                        <span class="span1"></span>
+                    </li>
+                    <li class="content_li">
+                    	<span class="span2_0"><input name="box" type="checkbox"/></span>
+                        <span class="span2">总部</span>
+                        <span class="span2">技术部</span>
+                        <span class="span2"></span>
+                        <span class="span2"><a class="content_a">启用</a></span>
+                        <span class="span2"><a class="content_a">禁用</a></span>
+                        <span class="span2"><a class="content_a" id="a_bmbj">编辑</a></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--岗位列表-->
+        <div id="gwlb">
+            <div class="content_title">
+                <span class="content_sp1"></span>
+                <span class="content_sp2">岗位列表</span>
+                <a class="content_sp3" id="a_gwtj">
+                    <img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+                </a>  
+            </div>
+            <div class="content_ul_w" id="content_div2">
+            	<ul class="content_ul">
+                	<li class="content_li">
+                    	<span class="span1_0"></span>
+                        <span class="span1">部门名称</span>
+                        <span class="span1">岗位名称</span>
+                        <span class="span1">在岗人数</span>
+                        <span class="span1">默认角色</span>
+                        <span class="span1">操作</span>
+                        <span class="span1"></span>
+                    </li>
+                    <li class="content_li">
+                    	<span class="span2_0"><input name="box" type="checkbox"/></span>
+                        <span class="span2"></span>
+                        <span class="span2"></span>
+                        <span class="span2"></span>
+                        <span class="span2"></span>
+                        <span class="span2"><a class="content_a" id="a_gwbj">编辑</a></span>
+                        <span class="span2"><a class="content_a" id="a_fp">分配情况</a></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--员工列表-->
+        <div id="yglb">
+            <div class="content_title">
+                <span class="content_sp1"></span>
+                <span class="content_sp2">员工列表</span>
+                <a class="content_sp3" id="a_ygtj">
+                    <img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+                </a>  
+            </div>
+            <div class="content_ul_w" id="content_div3">
+            	<ul class="content_ul">
+                	<li class="content_li">
+                    	<span class="span1_0"></span>
+                        <span class="span1">姓名</span>
+                        <span class="span1">部门</span>
+                        <span class="span1">岗位</span>
+                        <span class="span1">主要</span>
+                        <span class="span1">员工状态</span>
+                        <span class="span1">序列名称</span>
+                        <span class="span1">操作</span>
+                        <span class="span1"></span>
+                        <span class="span1"></span>
+                        <span class="span1"></span>
+                        <span class="span1"></span>
+                        <span class="span1"></span>
+                    </li>
+                    <li class="content_li">
+                    	<span class="span2_0"><input name="box" type="checkbox"/></span>
+                        <span class="span2"></span>
+                        <span class="span2"></span>
+                        <span class="span2"></span>
+                        <span class="span2"></span>
+                        <span class="span2"></span>
+                        <span class="span2"></span>
+                        <span class="span2"><a class="content_a" id="a_ygbj">编辑</a></span>
+                        <span class="span2"><a class="content_a" id="a_js">角色分配</a></span>
+                       	<span class="span2"><a class="content_a" id="a_xz">行政关系范围</a></span>
+                        <span class="span2"><a class="content_a" id="a_yw">业务管辖部门</a></span>
+                        <span class="span2"><a class="content_a" id="a_jd">业务管辖基地</a></span>
+                       	<span class="span2"><a class="content_a" id="a_kq">考勤管辖部门</a></span>
+                    </li>
+                </ul>
+            </div>
+        </div> 
+        <div class="content_bottom">
+            <div class="content_bottom1"></div>
+            <div class="content_bottom2">
+                <div class="b1">
+                    <input id="all" type="checkbox"/>
+                    <span>全选</span>
+                </div>
+                
+                <div class="b2">删除</div>
+                
+                <div class="b3">
+                    <span class="b3_s1">共有</span>
+                    <span class="b3_s2">37872</span>
+                    <span class="b3_s1">条记录</span>
+                </div>
+                <div class="b4">
+                    <span>每页:</span>
+                    <select>
+                        <option>10</option>
+                        <option>20</option>
+                    </select>
+                </div>
+                <div class="b5">
+                    <span class="b5_s1">1</span>
+                    <span class="b5_s1">2</span>
+                    <span class="b5_s1">3</span>
+                    <span class="b5_s1">4</span>
+                    <span class="b5_s1">5</span>
+                    <span>...</span>
+                    <span class="b5_s1">3788</span>
+                    <span class="b5_s1">下一页</span>
+                    <span class="b5_s3"><input type="text"/></span>
+                    <span class="b5_s1">go</span>
+                </div>
+            </div>
+        </div>
+                    
+    </div>          
+</div>
+<!--公司-->
+<div class="tc" id="tc_gsbj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj0">编辑</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+                <li>
+                    <label>公司：</label>
+                    <input class="tc_inp"/>
+                </li>
+                <li>
+                    <label>数据状态：</label>
+                    <select>
+                        <option>启用</option>
+                        <option>禁用</option>
+                    </select>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom2">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4">确定</span>
+        </div>
+    </div>
+</div>
+<div class="tc" id="tc_gstj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="tj0">添加</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+                <li>
+                    <label>公司：</label>
+                    <input class="tc_inp"/>
+                </li>
+                <li>
+                    <label>数据状态：</label>
+                    <select>
+                        <option>启用</option>
+                        <option>禁用</option>
+                    </select>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4">确定</span>
+        </div>
+    </div>
+</div>
+<!--部门-->
+<div class="tc" id="tc_bmbj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj1">编辑</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+                <li>
+                    <label>公司：</label> <input class="tc_inp"/>
+                    <select>
+                        <option>集团总部</option>
+                        <option>杭州基地</option>
+                        <option>宁波基地</option>
+                        <option>金华基地</option>
+                        <option>嘉兴基地</option>
+                    </select>
+                </li>
+                <li>
+                    <label>部门：</label>
+                    <select>
+                        <option>|&nbsp;仓配中心</option>
+                        <option>&nbsp;||&nbsp;入库组</option>
+                        <option>&nbsp;||&nbsp;内仓组</option>
+                        <option>&nbsp;||&nbsp;单据组</option>
+                        <option>|&nbsp;运营中心</option>
+                        <option>&nbsp;||&nbsp;招商业务组</option>
+                        <option>&nbsp;||&nbsp;运营服务组</option>
+                        <option>&nbsp;||&nbsp;系统服务组</option>
+                    </select>
+                </li>
+                <li>
+                    <label>数据状态：</label>
+                    <select>
+                        <option>启用</option>
+                        <option>禁用</option>
+                    </select>
+                </li>
+                <li>
+                    <label>部门层级：</label>
+                    <select>
+                        <option>一级部门</option>
+                        <option>二级部门</option>
+                    </select>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4">确定</span>
+        </div>
+    </div>
+</div>
+<div class="tc" id="tc_bmtj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="tj1">添加</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+                <li>
+                    <label>公司：</label>
+                    <select>
+                        <option>集团总部</option>
+                        <option>杭州基地</option>
+                        <option>宁波基地</option>
+                        <option>金华基地</option>
+                        <option>嘉兴基地</option>
+                    </select>
+                </li>
+                <li>
+                    <label>部门：</label>
+                    <input class="tc_inp"/>
+                </li>
+                <li>
+                    <label>数据状态：</label>
+                    <select>
+                        <option>启用</option>
+                        <option>禁用</option>
+                    </select>
+                </li>
+                <li>
+                    <label>部门层级：</label>
+                    <select>
+                        <option>一级部门</option>
+                        <option>二级部门</option>
+                    </select>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4">确定</span>
+        </div>
+    </div>
+</div>
+
+<!--岗位-->
+<div class="tc" id="tc_gwbj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj2">编辑</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>公司名称：</label>
+                    <select>
+                        <option>集团总部</option>
+                        <option>杭州基地</option>
+                        <option>宁波基地</option>
+                        <option>金华基地</option>
+                        <option>嘉兴基地</option>
+                    </select>
+                </li>
+                <li>
+                    <label>部门名称：</label>
+                    <select>
+                        <option>|&nbsp;仓配中心</option>
+                        <option>&nbsp;||&nbsp;入库组</option>
+                        <option>&nbsp;||&nbsp;内仓组</option>
+                        <option>&nbsp;||&nbsp;单据组</option>
+                        <option>|&nbsp;运营中心</option>
+                        <option>&nbsp;||&nbsp;招商业务组</option>
+                        <option>&nbsp;||&nbsp;运营服务组</option>
+                        <option>&nbsp;||&nbsp;系统服务组</option>
+                    </select>
+                </li>
+                <li>
+                    <label>岗位名称：</label>
+                    <select>
+                        <option>产品经理</option>
+                    </select>
+                </li>
+                 
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4">确定</span>
+        </div>
+    </div>
+</div>
+<div class="tc" id="tc_gwtj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="tj2">添加</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>公司名称：</label>
+                    <select>
+                        <option>集团总部</option>
+                        <option>杭州基地</option>
+                        <option>宁波基地</option>
+                        <option>金华基地</option>
+                        <option>嘉兴基地</option>
+                    </select>
+                </li>
+                <li>
+                    <label>部门名称：</label>
+                    <select>
+                        <option>|&nbsp;仓配中心</option>
+                        <option>&nbsp;||&nbsp;入库组</option>
+                        <option>&nbsp;||&nbsp;内仓组</option>
+                        <option>&nbsp;||&nbsp;单据组</option>
+                        <option>|&nbsp;运营中心</option>
+                        <option>&nbsp;||&nbsp;招商业务组</option>
+                        <option>&nbsp;||&nbsp;运营服务组</option>
+                        <option>&nbsp;||&nbsp;系统服务组</option>
+                    </select>
+                </li>
+                <li>
+                    <label>岗位名称：</label>
+                    <select>
+                        <option>产品经理</option>
+                        <option>总经理助理</option>
+                    </select>
+                </li>
+                 
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4">确定</span>
+        </div>
+    </div>
+</div>
+<!--角色分配-->
+<div class="tc" id="tc_fp">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">分配情况</span>
+            <span class="js_sp4">
+                <input type="checkbox" id="js_sp5"/>
+                <label for="js_sp4">全选</label>
+            </span>
+            <span class="js_sp3">
+            	<span>岗位编制人数：</span>
+                <input class="js_inp1" type="text"/>
+            </span>
+            <span class="js_sp2">
+            	<input class="js_inp" type="search"/>
+                <a class="left1">
+                	<img src="__PUBLIC__/img/left1.png"/>
+                </a>       
+            </span>
+        </div>
+        <div class="tc_ul_div">
+        	<div class="tc_div_jt">集团总部：</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <input type="checkbox" id="js1" name="sp4"/>
+                        <label for="js1">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js2" name="sp4"/>
+                        <label for="js2">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js3" name="sp4"/>
+                        <label for="js3">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js4" name="sp4"/>
+                        <label for="js4">产品专员</label>
+                    </span>
+                </li>  
+            </ul>
+            <div class="tc_div_jt">金华园区:</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <input type="checkbox" id="js1" name="sp4"/>
+                        <label for="js1">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js2" name="sp4"/>
+                        <label for="js2">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js3" name="sp4"/>
+                        <label for="js3">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js4" name="sp4"/>
+                        <label for="js4">产品专员</label>
+                    </span>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+    </div>
+</div>
+
+<!--员工-->
+<div class="tc" id="tc_ygbj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj3">编辑</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+                <li>
+                    <label>姓名：</label>
+                    <input class="tc_inp" type="text"/>
+                </li>
+                <li>
+                    <label>公司：</label>
+                    <select>
+                        <option>集团总部</option>
+                        <option>杭州基地</option>
+                        <option>宁波基地</option>
+                        <option>金华基地</option>
+                        <option>嘉兴基地</option>
+                    </select>
+                </li>
+                <li>
+                    <label>部门：</label>
+                    <select>
+                        <option>|&nbsp;仓配中心</option>
+                        <option>&nbsp;||&nbsp;入库组</option>
+                        <option>&nbsp;||&nbsp;内仓组</option>
+                        <option>&nbsp;||&nbsp;单据组</option>
+                        <option>|&nbsp;运营中心</option>
+                        <option>&nbsp;||&nbsp;招商业务组</option>
+                        <option>&nbsp;||&nbsp;运营服务组</option>
+                        <option>&nbsp;||&nbsp;系统服务组</option>
+                    </select>
+                </li>
+                <li>
+                    <label>岗位：</label>
+                    <select>
+                        <option>产品经理</option>
+                        <option>总经理助理</option>
+                    </select>
+                </li>
+                <li>
+                    <label>主要：</label>
+                    <select>
+                        <option>主要</option>
+                        <option>兼职</option>
+                    </select>
+                </li>
+                <li>
+                    <label>员工状态：</label>
+					<select>
+                        <option>已转正</option>
+                        <option>已转正</option>
+                    </select>
+                </li>
+                <li>
+                    <label>序列名称：</label>
+                    <select>
+                        <option>员工</option>
+                        <option>总经理助理</option>
+                    </select>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4">确定</span>
+        </div>
+    </div>
+</div>
+<!--员工角色分配-->
+<div class="tc" id="tc_js">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">角色</span>
+            
+            <span class="js_sp2">
+            	<input class="js_inp" type="search"/>
+                <a class="left1">
+                	<img src="__PUBLIC__/img/left1.png"/>
+                </a>       
+            </span>
+            <span class="js_sp4">
+                <input type="checkbox" id="js_sp4"/>
+                <label for="js_sp4">全选</label>
+            </span>
+        </div>
+        <div class="tc_ul_div">
+            <div class="tc_div_jt">集团总部：</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <input type="checkbox" id="js1" name="sp4"/>
+                        <label for="js1">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js2" name="sp4"/>
+                        <label for="js2">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js3" name="sp4"/>
+                        <label for="js3">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js4" name="sp4"/>
+                        <label for="js4">产品专员</label>
+                    </span>
+                </li>  
+            </ul>
+            <div class="tc_div_jt">金华园区:</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <input type="checkbox" id="js1" name="sp4"/>
+                        <label for="js1">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js2" name="sp4"/>
+                        <label for="js2">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js3" name="sp4"/>
+                        <label for="js3">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js4" name="sp4"/>
+                        <label for="js4">产品专员</label>
+                    </span>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+    </div>
+</div>
+<div class="tc" id="tc_xz">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">行政关系范围</span>
+        </div>
+        <div class="tc_ul_div">
+            <ul class="zz_ul">
+                <li class="zz_li">
+                    <img src="__PUBLIC__/img/xl.png"/>
+                    <span>集团总部</span>
+                    <ul class="zz_ul">
+                        <li class="zz_li1"> 
+                            <input type="checkbox" id="gsld"/>
+                        	<label for="gsld">公司领导</label>
+                        </li>
+                        <li class="zz_li1">
+                            <input type="checkbox" id="gjb"/>
+                        	<label for="gjb">总经办</label>
+                        </li>
+                        <li class="zz_li1"> 
+                            <input type="checkbox" id="cwzx"/>
+                        	<label for="cwzx">财务中心</label>
+                        </li>
+                        <li class="zz_li1">
+                            <input type="checkbox" id="sjzx"/>
+                        	<label for="sjzx">大数据中心</label>
+                        </li>
+                    </ul>
+                </li>
+                <li class="zz_li">
+                    <img src="__PUBLIC__/img/xl.png"/>
+                    <span>杭州基地</span>
+                    <ul class="zz_ul">
+                        <li class="zz_li1"> 
+                            <input type="checkbox" id="jdld"/>
+                        	<label for="jdld">基地领导</label>
+                        </li>
+                        <li class="zz_li1">
+                            <img src="__PUBLIC__/img/xl.png"/>
+                    		<span>仓配中心</span>
+                            <ul>
+                            	<li class="zz_li1"> 
+                                    <input type="checkbox" id="rkz"/>
+                                    <label for="rkz">入库组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="ncz"/>
+                                    <label for="ncz">内仓组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="djz"/>
+                                    <label for="djz">单据组</label>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="zz_li1">
+                            <img src="__PUBLIC__/img/xl.png"/>
+                    		<span>运营中心</span>
+                            <ul>
+                            	<li class="zz_li1"> 
+                                    <input type="checkbox" id="rkz1"/>
+                                    <label for="rkz1">入库组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="ncz1"/>
+                                    <label for="ncz1">内仓组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="djz1"/>
+                                    <label for="djz1">单据组</label>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="zz_li1">
+                            <img src="__PUBLIC__/img/xl.png"/>
+                    		<span>行政督导部</span>
+                            <ul>
+                            	<li class="zz_li1"> 
+                                    <input type="checkbox" id="rkz2"/>
+                                    <label for="rkz2">入库组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="ncz2"/>
+                                    <label for="ncz2">内仓组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="djz2"/>
+                                    <label for="djz2">单据组</label>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="tc" id="tc_yw">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">业务管辖部门</span>
+        </div>
+        <div class="tc_ul_div">
+            <ul class="zz_ul">
+                <li class="zz_li">
+                    <img src="__PUBLIC__/img/xl.png"/>
+                    <span>集团总部</span>
+                    <ul class="zz_ul">
+                        <li class="zz_li1"> 
+                            <input type="checkbox" id="gsld"/>
+                        	<label for="gsld">公司领导</label>
+                        </li>
+                        <li class="zz_li1">
+                            <input type="checkbox" id="gjb"/>
+                        	<label for="gjb">总经办</label>
+                        </li>
+                        <li class="zz_li1"> 
+                            <input type="checkbox" id="cwzx"/>
+                        	<label for="cwzx">财务中心</label>
+                        </li>
+                        <li class="zz_li1">
+                            <input type="checkbox" id="sjzx"/>
+                        	<label for="sjzx">大数据中心</label>
+                        </li>
+                    </ul>
+                </li>
+                <li class="zz_li">
+                    <img src="__PUBLIC__/img/xl.png"/>
+                    <span>杭州基地</span>
+                    <ul class="zz_ul">
+                        <li class="zz_li1"> 
+                            <input type="checkbox" id="jdld"/>
+                        	<label for="jdld">基地领导</label>
+                        </li>
+                        <li class="zz_li1">
+                            <img src="__PUBLIC__/img/xl.png"/>
+                    		<span>仓配中心</span>
+                            <ul>
+                            	<li class="zz_li1"> 
+                                    <input type="checkbox" id="rkz"/>
+                                    <label for="rkz">入库组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="ncz"/>
+                                    <label for="ncz">内仓组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="djz"/>
+                                    <label for="djz">单据组</label>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="zz_li1">
+                            <img src="__PUBLIC__/img/xl.png"/>
+                    		<span>运营中心</span>
+                            <ul>
+                            	<li class="zz_li1"> 
+                                    <input type="checkbox" id="rkz1"/>
+                                    <label for="rkz1">入库组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="ncz1"/>
+                                    <label for="ncz1">内仓组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="djz1"/>
+                                    <label for="djz1">单据组</label>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="zz_li1">
+                            <img src="__PUBLIC__/img/xl.png"/>
+                    		<span>行政督导部</span>
+                            <ul>
+                            	<li class="zz_li1"> 
+                                    <input type="checkbox" id="rkz2"/>
+                                    <label for="rkz2">入库组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="ncz2"/>
+                                    <label for="ncz2">内仓组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="djz2"/>
+                                    <label for="djz2">单据组</label>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_jd">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">业务管辖基地</span>
+        </div>
+        <div class="tc_ul_div">
+            <ul class="zz_ul">
+                <li class="zz_li">
+                    <input type="checkbox" id="zb"/>
+                    <label for="zb">集团总部</label>
+                </li>
+                <li class="zz_li">
+                    <input type="checkbox" id="hz"/>
+                    <label for="hz">杭州基地</label>
+                </li>
+                <li class="zz_li">
+                    <input type="checkbox" id="jh"/>
+                    <label for="jh">金华基地</label>
+                </li>
+                <li class="zz_li">
+                    <input type="checkbox" id="nb"/>
+                    <label for="nb">宁波基地</label>
+                </li>
+                <li class="zz_li">
+                    <input type="checkbox" id="jx"/>
+                    <label for="jx">嘉兴基地</label>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_kq">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">考勤管辖部门</span>
+        </div>
+        <div class="tc_ul_div">
+            <ul class="zz_ul">
+                <li class="zz_li">
+                    <img src="__PUBLIC__/img/xl.png"/>
+                    <span>集团总部</span>
+                    <ul class="zz_ul">
+                        <li class="zz_li1"> 
+                            <input type="checkbox" id="gsld"/>
+                        	<label for="gsld">公司领导</label>
+                        </li>
+                        <li class="zz_li1">
+                            <input type="checkbox" id="gjb"/>
+                        	<label for="gjb">总经办</label>
+                        </li>
+                        <li class="zz_li1"> 
+                            <input type="checkbox" id="cwzx"/>
+                        	<label for="cwzx">财务中心</label>
+                        </li>
+                        <li class="zz_li1">
+                            <input type="checkbox" id="sjzx"/>
+                        	<label for="sjzx">大数据中心</label>
+                        </li>
+                    </ul>
+                </li>
+                <li class="zz_li">
+                    <img src="__PUBLIC__/img/xl.png"/>
+                    <span>杭州基地</span>
+                    <ul class="zz_ul">
+                        <li class="zz_li1"> 
+                            <input type="checkbox" id="jdld"/>
+                        	<label for="jdld">基地领导</label>
+                        </li>
+                        <li class="zz_li1">
+                            <img src="__PUBLIC__/img/xl.png"/>
+                    		<span>仓配中心</span>
+                            <ul>
+                            	<li class="zz_li1"> 
+                                    <input type="checkbox" id="rkz"/>
+                                    <label for="rkz">入库组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="ncz"/>
+                                    <label for="ncz">内仓组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="djz"/>
+                                    <label for="djz">单据组</label>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="zz_li1">
+                            <img src="__PUBLIC__/img/xl.png"/>
+                    		<span>运营中心</span>
+                            <ul>
+                            	<li class="zz_li1"> 
+                                    <input type="checkbox" id="rkz1"/>
+                                    <label for="rkz1">入库组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="ncz1"/>
+                                    <label for="ncz1">内仓组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="djz1"/>
+                                    <label for="djz1">单据组</label>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="zz_li1">
+                            <img src="__PUBLIC__/img/xl.png"/>
+                    		<span>行政督导部</span>
+                            <ul>
+                            	<li class="zz_li1"> 
+                                    <input type="checkbox" id="rkz2"/>
+                                    <label for="rkz2">入库组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="ncz2"/>
+                                    <label for="ncz2">内仓组</label>
+                                </li>
+                                <li class="zz_li1"> 
+                                    <input type="checkbox" id="djz2"/>
+                                    <label for="djz2">单据组</label>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>系统管理</li><li>公司信息管理</li><li>组织架构</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

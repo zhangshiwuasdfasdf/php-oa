@@ -123,14 +123,18 @@ input[readonly]{background: #fff !important}
 	</div>
 </div>
 <script>
-
-/*function change_actually(user_id){
+function w(){
+	var w=$('table').width();
+	$('.tb_div').css('width',w);		
+}
+w();
+function change_actually(user_id){
 	$("#actually_day_"+user_id).val($("#should_day_"+user_id).val()-$("#sick_leave_"+user_id).val()-$("#casual_leave_"+user_id).val()-$("#absent_"+user_id).val());
 }
 
 function change_absent(user_id){
 	$("#absent_"+user_id).val($("#should_day_"+user_id).val()-$("#sick_leave_"+user_id).val()-$("#casual_leave_"+user_id).val()-$("#actually_day_"+user_id).val());
-}*/
+}
 function del(user_id){
 	$("#"+user_id).remove();
 }

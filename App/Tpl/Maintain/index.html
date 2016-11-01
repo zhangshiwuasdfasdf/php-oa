@@ -1,0 +1,418 @@
+<layout name='Layout/ace_layout' />
+<form method="post" name="form_adv_search" id="form_adv_search">
+	<div class="adv_search panel panel-default "  id="adv_search">
+		<div class="panel-body">
+			<div class="form-group col-sm-3">
+				<label class="col-sm-4 control-label" for="li_name">文件名：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="li_name" name="li_name" >
+				</div>
+			</div>
+			<div class="form-group col-sm-3">
+				<label class="col-sm-4 control-label" for="li_content">内容：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="li_content" name="li_content" >
+				</div>
+			</div>
+
+			<div class="form-group col-sm-3">
+				<label class="col-sm-4 control-label" for="eq_user_name">登录人：</label>
+				<div class="col-sm-8">
+					<input  class="form-control" type="text" id="eq_user_name" name="eq_user_name" >
+				</div>
+			</div>
+			<div class="form-group col-sm-3">
+				<label class="col-sm-4 control-label" for="be_create_time">登录时间：</label>
+				<div class="col-sm-8">
+					<div class="input-daterange input-group" >
+					    <input type="text" class="input-sm form-control text-center" name="be_create_time" />
+						<span class="input-group-addon">-</span>
+						<input type="text" class="input-sm form-control text-center" name="en_create_time" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+					<a class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+				</div>
+		</div>
+	</div>
+</form>
+<div class="zong">
+    <div class="top_k">
+        <div class="top">
+            <span>菜单名称：<input class="top_in" type="text"/></span>
+            <div class="top_button">
+                <img src="img/cx.png"/>
+            </div>
+        </div>
+    </div>
+    
+    <div class="content">
+    	<div class="content_title">
+            <span class="content_sp1"></span>
+            <span class="content_sp2">菜单维护</span>
+            <a class="content_sp3" id="a_yjtj">
+            	<img class="img_tj" src="img/tj3.png"/>
+            </a>  
+        </div>
+        <div class="content_div">
+            <div class="content_div1">
+            	<span class="li_sp3"></span>
+                <span class="li_sp1">菜单名称</span>
+                <span class="li_sp1">菜单地址</span>
+                <span class="li_sp2">菜单状态</span>
+                <span class="li_sp2">操作</span>
+                <span class="li_sp2"></span>
+                <span class="li_sp2"></span>
+                <span class="li_sp2"></span>
+                <span class="li_sp2"></span>
+                <span class="li_sp1"></span>
+            </div>
+            <div class="content_div2">
+                <ul class="content_ul">
+                    <li>
+                    	<span class="li_sp3"><input name="box" type="checkbox"/></span>
+                        <span class="li_sp0_1">
+                            <img src="img/add.png"/>
+                            <span>档案中心</span>
+                        </span>
+                        <span class="li_sp1">#</span>
+                        <span class="li_sp2">启用</span>
+                        <span class="li_sp2"><a class="content_a" id="a1_0">添加</a></span>
+                        <span class="li_sp2"><a class="content_a" id="a1_1">修改</a></span>
+                        <span class="li_sp2"><a class="content_a" id="a1_2">禁用</a></span>
+                        <span class="li_sp2"><a class="content_a" id="a1_3">关联角色</a></span>
+                        <span class="li_sp2"><a class="content_a" id="a1_5">关联角色复制</a></span>
+                        <span class="li_sp1" id="after0"><a class="content_a" id="a1_4">关联数据控制策略</a></span>
+                        <ul class="content_ul1">
+                            <li>
+                            	<span class="li_sp3"><input name="box" type="checkbox"/></span>
+                                <span class="li_sp0_2">
+                                    <img src="img/add.png"/>
+                                    <span>员工档案</span>
+                                </span>
+                                <span class="li_sp1">#</span>
+                                <span class="li_sp2">启用</span>
+                                <span class="li_sp2"><a class="content_a" id="a2_0">添加</a></span>
+                                <span class="li_sp2"><a class="content_a" id="a2_1">修改</a></span>
+                                <span class="li_sp2"><a class="content_a" id="a2_2">禁用</a></span>
+                                <span class="li_sp2"><a class="content_a" id="a2_3">关联角色</a></span>
+                                <span class="li_sp2"><a class="content_a" id="a2_5">关联角色复制</a></span>
+                                <span class="li_sp1"><a class="content_a" id="a2_4">关联数据控制策略</a></span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+         </div>  
+         
+         <div class="content_bottom">
+            <div class="content_bottom1"></div>
+            <div class="content_bottom2">
+                <div class="b1">
+                    <input id="all" type="checkbox"/>
+                    <span>全选</span>
+                </div>
+                
+                <div class="b2">删除</div>
+                
+                <div class="b3">
+                    <span class="b3_s1">共有</span>
+                    <span class="b3_s2">37872</span>
+                    <span class="b3_s1">条记录</span>
+                </div>
+                <div class="b4">
+                    <span>每页:</span>
+                    <select>
+                        <option>10</option>
+                        <option>20</option>
+                    </select>
+                </div>
+                <div class="b5">
+                    <span class="b5_s1">1</span>
+                    <span class="b5_s1">2</span>
+                    <span class="b5_s1">3</span>
+                    <span class="b5_s1">4</span>
+                    <span class="b5_s1">5</span>
+                    <span>...</span>
+                    <span class="b5_s1">3788</span>
+                    <span class="b5_s1">下一页</span>
+                    <span class="b5_s3"><input type="text"/></span>
+                    <span class="b5_s1">go</span>
+                </div>
+            </div>
+        </div> 
+    </div>     
+</div>
+
+<div class="tc" id="tc_js">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">角色</span>
+            <span class="js_sp4">
+                <input type="checkbox" id="js_sp4"/>
+                <label for="js_sp4">全选</label>
+            </span>
+            <span class="js_sp2">
+            	<input class="js_inp" type="search"/>
+                <a class="left1">
+                	<img src="img/left1.png"/>
+                </a>       
+            </span>
+        </div>
+        <div class="tc_ul_div">
+        	<div class="tc_div_jt">集团总部：</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <input type="checkbox" id="js1" name="sp4"/>
+                        <label for="js1">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js2" name="sp4"/>
+                        <label for="js2">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js3" name="sp4"/>
+                        <label for="js3">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js4" name="sp4"/>
+                        <label for="js4">产品专员</label>
+                    </span>
+                </li>  
+            </ul>
+            <div class="tc_div_jt">金华园区:</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <input type="checkbox" id="js1" name="sp4"/>
+                        <label for="js1">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js2" name="sp4"/>
+                        <label for="js2">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js3" name="sp4"/>
+                        <label for="js3">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js4" name="sp4"/>
+                        <label for="js4">产品专员</label>
+                    </span>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_sj">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">数据控制策略</span>
+            <span class="js_sp2">
+            	<input class="js_inp" type="search"/>
+                <a class="left1">
+                	<img src="img/left1.png"/>
+                </a>       
+            </span>
+        </div>
+        <div class="tc_ul_div">
+        	<div class="tc_div_jt">集团总部：</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <label for="js1">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                    <span>
+                        <label for="js2">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                    <span>
+                        <label for="js3">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                </li>  
+            </ul>
+            <div class="tc_div_jt">金华园区：</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <label for="js1">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                    <span>
+                        <label for="js2">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                    <span>
+                        <label for="js3">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_yjtj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj2">添加</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>菜单名称：</label>
+                    <input class="tc_inp" type="text"/>
+                </li>
+                <li>
+                    <label>菜单地址：</label>
+                    <input class="tc_inp" type="text"/>
+                </li>
+                <li>
+                    <label>菜单状态：</label>
+                    <select>
+                        <option>启用</option>
+                        <option>禁用</option>
+                    </select>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4" id="bottom_sp5">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_ejtj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj3">添加</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>菜单编码：</label>
+                    <input class="tc_inp" type="text"/>
+                </li>
+                <li>
+                    <label>父类名称：</label>
+                    <select>
+                        <option>|-个人中心</option>
+                        <option>|-个人中心</option>
+                    </select>
+                </li>
+                <li>
+                    <label>菜单名称：</label>
+                    <input class="tc_inp" type="text"/>
+                </li> 
+                <li>
+                    <label>数据库名称：</label>
+                    <input class="tc_inp" type="text"/>
+                </li>
+                <li>
+                    <label>链接路径：</label>
+                    <input class="tc_inp" type="text"/>
+                </li>
+                <li>
+                    <label>所属模块：</label>
+                    <select>
+                        <option></option>
+                        <option></option>
+                    </select>
+                </li>
+                <li>
+                    <label>所属分类：</label>
+                    <select>
+                        <option></option>
+                        <option></option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4" id="bottom_sp5">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_jsfz">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj1">关联角色复制</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>当前菜单：</label>
+                    <span>ARNS</span>
+                </li>
+                <li>
+                    <label>复制菜单源：</label>
+                    <select>
+                        <option>一级菜单</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4">确定</span>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/cdwh.js"></script>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>个人中心</li><li>消息</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>
