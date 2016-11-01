@@ -3591,44 +3591,29 @@ class FlowAction extends CommonAction {
 		$atten = M('Attendance');
 		$where['is_del'] = 0;
 		$where['user_id'] = $user_id;
-		$where['mark'] = array('in',array('in','out'));
+		//$where['mark'] = array('in',array('in','out'));
 		$start_time = strtotime(date('Y-m-d',$create_time));
 		$end_time = strtotime(date('Y-m-d',$create_time)) + (3600*24-1);
-		$where['attendance_time'] = array(array('gt',$start_time),array('lt',$end_time));
-		$listAtten = $atten -> where($where) -> select();
+		$where['attendance_time'] = array('between',array($start_time,$end_time));
+		$res1 = $atten -> where($where)->order('attendance_time asc') -> select();
 		//申请人当前时间(申请那天)已经有打卡信息了
-		if(!empty($listAtten)){
-			$arr = array();
-			foreach ($listAtten as $k => $v){
-				if(($v['attendance_time'] > $create_time)){
-					$v['mark'] = '';
-					$arr = $v;
-					$info['mark'] = 'in';
-				} else{
-					$v['mark'] = 'in';
-					$arr = $v;
-					$info['mark'] = '';
-				}
+		if(!empty($res1)){
+			$count = count($res1);
+			$d_start = $res1[0]['attendance_time'];
+			$d_start_id = $res1[0]['id'];
+			$d_end = $res1[$count-1]['attendance_time'];
+			$d_end_id = $res1[$count-1]['id'];
+			if($create_time<$d_start){
+				$atten->where(array('id'=>$d_start_id,'mark'=>'in','is_del'=>0))->setField('mark','');
+				$info['mark'] = 'in';
 			}
-			$flag = $atten -> save($arr);
-			//开始时间
-			$info['attendance_time'] = $create_time;
 			$info['style'] = $remark;
+			$info['attendance_time'] = $create_time;
 			$atten -> add($info);
-			$out_arr = array();
-			foreach ($listAtten as $k => $v){
-				if(($v['attendance_time'] < $finish_time)){
-					$v['mark'] = '';
-					$out_arr = $v;
-					$info['mark'] = 'out';
-				} else{
-					$v['mark'] = 'out';
-					$out_arr = $v;
-					$info['mark'] = '';
-				}
+			if($finish_time>$d_end){
+				$atten->where(array('id'=>$d_end_id,'mark'=>'out','is_del'=>0))->setField('mark','');
+				$info['mark'] = 'out';
 			}
-			$atten -> save($out_arr);
-			//结束时间
 			$info['attendance_time'] = $finish_time;
 			$atten -> add($info);
 		}else{

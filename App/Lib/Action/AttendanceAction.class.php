@@ -840,7 +840,7 @@ class AttendanceAction extends CommonAction {
 				
 				$objPHPExcel = new PHPExcel();
 				
-				$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+				$objPHPExcel -> getProperties() -> setCreator("神洲酷奇ERP") -> setLastModifiedBy("神洲酷奇ERP") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
 		
 				//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
 				$q = $objPHPExcel -> setActiveSheetIndex(0);
@@ -852,6 +852,7 @@ class AttendanceAction extends CommonAction {
 				$q = $q -> setCellValue("E1", '考勤日期时间');
 				$q = $q -> setCellValue("F1", '机器号');
 				$q = $q -> setCellValue("G1", '签入/签出');
+				$q = $q -> setCellValue("H1", '备注');
 				
 				foreach ($res as $k=>$v){
 					$i = $k + 2;
@@ -862,6 +863,7 @@ class AttendanceAction extends CommonAction {
 					$q = $q -> setCellValue("E".$i, date('Y-m-d H:i:s',$v['attendance_time']));
 					$q = $q -> setCellValue("F".$i, $v['machine_no']);
 					$q = $q -> setCellValue("G".$i, $v['mark']=='in'?'签入':'签出');
+					$q = $q -> setCellValue("H".$i, $v['style']);
 				}
 				
 				$q ->getColumnDimension('A')->setWidth(20);
@@ -871,6 +873,7 @@ class AttendanceAction extends CommonAction {
 				$q ->getColumnDimension('E')->setWidth(20);
 				$q ->getColumnDimension('F')->setWidth(20);
 				$q ->getColumnDimension('G')->setWidth(20);
+				$q ->getColumnDimension('H')->setWidth(20);
 				// Rename worksheet
 				$title = '打卡信息';
 				$objPHPExcel -> getActiveSheet() -> setTitle('打卡信息');
