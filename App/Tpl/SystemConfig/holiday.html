@@ -25,6 +25,10 @@
 		</nobr></th>
 		<th >
 		<nobr>
+			倍数
+		</nobr></th>
+		<th >
+		<nobr>
 			操作
 		</nobr></th>
 	</tr>
@@ -47,6 +51,14 @@
 			<nobr>
 			<input onchange="remark({$vo.id},this.value)" value="{$vo.remark}"/>
 			
+			</nobr></td>
+			<td>
+			<nobr>
+			<select onchange="times({$vo.id},this.value)" name="times" id="times" class="form-control">
+				<option value="1"  <if condition="$vo.times eq 1"> selected ="selected "</if>>1</option>
+				<option value="2"  <if condition="$vo.times eq 2"> selected ="selected "</if>>2</option>
+				<option value="3"  <if condition="$vo.times eq 3"> selected ="selected "</if>>3</option>
+			</select>
 			</nobr></td>
 			<td>
 			<nobr>

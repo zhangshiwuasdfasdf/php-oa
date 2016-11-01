@@ -109,6 +109,10 @@ class AttendanceAction extends CommonAction {
 	}
 
 	function new_table(){
+		// dump(1);die;
+		/*$sec = get_leave_seconds_weekend(strtotime('2016-10-2 13:00'),strtotime('2016-10-3 18:00'));
+
+		dump($sec);die;*/
 		$map = $this -> _search();
 		
 		if (method_exists($this, '_search_filter')) {
@@ -180,6 +184,9 @@ class AttendanceAction extends CommonAction {
 				//$sum = date('d',strtotime($y.'-'.($m+1))-1);
 				$t = date('t',strtotime($month));
 				
+				$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
+				$end_date = $y.'-'.$m.'-'.$t.' 24:00:00';
+
 				$should_day = 0;
 				for($i=1;$i<=$t;$i++){
 					if(!is_holiday(strtotime($y.'-'.$m.'-'.$i))){
@@ -197,11 +204,15 @@ class AttendanceAction extends CommonAction {
 				$flow_ids = M('Flow')->where(array('user_id'=>$value['id'],'type'=>47))->getField('id',true);
 				
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime("$start_date +1 month -1 day"));
-				
 					$FlowAttendance = M('FlowAttendance')->where(array('flow_id'=>$flow_id,'start_time'=>array('between',array($start_date,$end_date))))->count();
-	
+
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowAttendance')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowAttendance')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+					if($start_time < $start_date){
+						$FlowAttendance = M('FlowAttendance')->where(array('flow_id'=>$flow_id,'end_time'=>array('between',array($start_date,$end_date))))->count();
+					}
+					//dump($start_date > $start_time);die;
+					
 					//foreach ($FlowAttendance as $key3 => $value3) {
 						$info[$key]['attendance_day'] += $FlowAttendance;
 					//}
@@ -213,13 +224,30 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['sick_leave']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'病假','start_time'=>array('between',array($start_date,$end_date))))->select();
-				
-					foreach ($FlowLeave as $key3 => $value3) {
+					
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+		
+				if(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('style') == '病假'){
+						if($start_time >= $start_date && $end_time <= $end_date){//1
+						$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'病假','start_time'=>array('between',array($start_date,$end_date))))->select();
+						foreach ($FlowLeave as $key3 => $value3) {
 						$info[$key]['sick_leave'] += $value3['day_num']+$value3['hour_num']/8;
+						}
+					}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_time));
+						$info[$key]['sick_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time > $start_date && $end_time > $end_date) {//3
+						$FlowLeave=get_leave_seconds(strtotime($start_time),strtotime($end_date));
+						$info[$key]['sick_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_date));
+						$info[$key]['sick_leave'] += $FlowLeave/3600/8;
 					}
+					}
+					
 				}
 			}
 			//事假
@@ -227,13 +255,29 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['casual_leave']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'事假','start_time'=>array('between',array($start_date,$end_date))))->select();
-				
-					foreach ($FlowLeave as $key3 => $value3) {
-						$info[$key]['casual_leave'] += $value3['day_num']+$value3['hour_num']/8;
+					
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+				if(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('style') == '事假'){
+					if($start_time >= $start_date && $end_time <= $end_date){
+						$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'事假','start_time'=>array('between',array($start_date,$end_date))))->select();
+						foreach ($FlowLeave as $key3 => $value3) {
+							$info[$key]['casual_leave'] += $value3['day_num']+$value3['hour_num']/8;
+						}
+					}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_time));
+						$info[$key]['casual_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time > $start_date && $end_time > $end_date) {//3
+						$FlowLeave=get_leave_seconds(strtotime($start_time),strtotime($end_date));
+						$info[$key]['casual_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_date));
+						$info[$key]['casual_leave'] += $FlowLeave/3600/8;
 					}
+				}
+					
 				}
 			}
 			//产假
@@ -241,13 +285,30 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['maternity_leave']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'产假','start_time'=>array('between',array($start_date,$end_date))))->select();
+					
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+					if(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('style') == '产假'){
+						if($start_time >= $start_date && $end_time <= $end_date){
+						$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'产假','start_time'=>array('between',array($start_date,$end_date))))->select();
 				
-					foreach ($FlowLeave as $key3 => $value3) {
-						$info[$key]['maternity_leave'] += $value3['day_num']+$value3['hour_num']/8;
+						foreach ($FlowLeave as $key3 => $value3) {
+							$info[$key]['maternity_leave'] += $value3['day_num']+$value3['hour_num']/8;
+						}
+					}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_time));
+						$info[$key]['maternity_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time > $start_date && $end_time > $end_date) {//3
+						$FlowLeave=get_leave_seconds(strtotime($start_time),strtotime($end_date));
+						$info[$key]['maternity_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_date));
+						$info[$key]['maternity_leave'] += $FlowLeave/3600/8;
 					}
+					}
+					
 				}
 			}
 			//婚假
@@ -255,13 +316,30 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['marriage_leave']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'婚假','start_time'=>array('between',array($start_date,$end_date))))->select();
+					
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+					if(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('style') == '婚假'){
+						if($start_time >= $start_date && $end_time <= $end_date){
+						$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'婚假','start_time'=>array('between',array($start_date,$end_date))))->select();
 				
-					foreach ($FlowLeave as $key3 => $value3) {
-						$info[$key]['marriage_leave'] += $value3['day_num']+$value3['hour_num']/8;
+						foreach ($FlowLeave as $key3 => $value3) {
+							$info[$key]['marriage_leave'] += $value3['day_num']+$value3['hour_num']/8;
+						}
+					}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_time));
+						$info[$key]['marriage_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time > $start_date && $end_time > $end_date) {//3
+						$FlowLeave=get_leave_seconds(strtotime($start_time),strtotime($end_date));
+						$info[$key]['marriage_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_date));
+						$info[$key]['marriage_leave'] += $FlowLeave/3600/8;
 					}
+					}
+					
 				}
 			}
 			//丧假
@@ -269,13 +347,30 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['bereavement_leave']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'丧假','start_time'=>array('between',array($start_date,$end_date))))->select();
+					
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+					if(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('style') == '丧假'){
+						if($start_time >= $start_date && $end_time <= $end_date){
+						$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'丧假','start_time'=>array('between',array($start_date,$end_date))))->select();
 				
-					foreach ($FlowLeave as $key3 => $value3) {
-						$info[$key]['bereavement_leave'] += $value3['day_num']+$value3['hour_num']/8;
+						foreach ($FlowLeave as $key3 => $value3) {
+							$info[$key]['bereavement_leave'] += $value3['day_num']+$value3['hour_num']/8;
+						}
+					}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_time));
+						$info[$key]['bereavement_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time > $start_date && $end_time > $end_date) {//3
+						$FlowLeave=get_leave_seconds(strtotime($start_time),strtotime($end_date));
+						$info[$key]['bereavement_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_date));
+						$info[$key]['bereavement_leave'] += $FlowLeave/3600/8;
 					}
+					}
+					
 				}
 			}
 			//工伤
@@ -283,13 +378,32 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['accidents']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'工伤假','start_time'=>array('between',array($start_date,$end_date))))->select();
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+					if(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('style') == '工伤假'){
+						if($start_time >= $start_date && $end_time <= $end_date){
+						$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'工伤假','start_time'=>array('between',array($start_date,$end_date))))->select();
 				
-					foreach ($FlowLeave as $key3 => $value3) {
-						$info[$key]['accidents'] += $value3['day_num']+$value3['hour_num']/8;
+						foreach ($FlowLeave as $key3 => $value3) {
+							$info[$key]['accidents'] += $value3['day_num']+$value3['hour_num']/8;
+						}
+					}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_time));
+						/*dump($start_date);
+						dump($end_time);
+						dump($FlowLeave/3600/8);die;*/
+						$info[$key]['accidents'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time > $start_date && $end_time > $end_date && $start_time < $end_date) {//3
+						$FlowLeave=get_leave_seconds(strtotime($start_time),strtotime($end_date));
+						$info[$key]['accidents'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_date));
+						$info[$key]['accidents'] += $FlowLeave/3600/8;
 					}
+					}
+					
 				}
 			}
 			//年假
@@ -297,13 +411,30 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['annual_leave']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'年假','start_time'=>array('between',array($start_date,$end_date))))->select();
+					
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+					if(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('style') == '年假'){
+						if($start_time >= $start_date && $end_time <= $end_date){
+						$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'年假','start_time'=>array('between',array($start_date,$end_date))))->select();
 				
-					foreach ($FlowLeave as $key3 => $value3) {
-						$info[$key]['annual_leave'] += $value3['day_num']+$value3['hour_num']/8;
+						foreach ($FlowLeave as $key3 => $value3) {
+							$info[$key]['annual_leave'] += $value3['day_num']+$value3['hour_num']/8;
+						}
+					}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_time));
+						$info[$key]['annual_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time > $start_date && $end_time > $end_date) {//3
+						$FlowLeave=get_leave_seconds(strtotime($start_time),strtotime($end_date));
+						$info[$key]['annual_leave'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_date));
+						$info[$key]['annual_leave'] += $FlowLeave/3600/8;
 					}
+					}
+					
 				}
 			}
 			//调休
@@ -311,13 +442,30 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['leave_in_lieu']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>39))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'调休','start_time'=>array('between',array($start_date,$end_date))))->select();
+					
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+					if(M('FlowLeave')->where(array('flow_id'=>$flow_id))->getField('style') == '调休'){
+						if($start_time >= $start_date && $end_time <= $end_date){
+						$FlowLeave=M('FlowLeave')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'style'=>'调休','start_time'=>array('between',array($start_date,$end_date))))->select();
 				
-					foreach ($FlowLeave as $key3 => $value3) {
-						$info[$key]['leave_in_lieu'] += $value3['day_num']+$value3['hour_num']/8;
+						foreach ($FlowLeave as $key3 => $value3) {
+							$info[$key]['leave_in_lieu'] += $value3['day_num']+$value3['hour_num']/8;
+						}
+					}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_time));
+						$info[$key]['leave_in_lieu'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time > $start_date && $end_time > $end_date) {//3
+						$FlowLeave=get_leave_seconds(strtotime($start_time),strtotime($end_date));
+						$info[$key]['leave_in_lieu'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+						$FlowLeave=get_leave_seconds(strtotime($start_date),strtotime($end_date));
+						$info[$key]['leave_in_lieu'] += $FlowLeave/3600/8;
 					}
+					}
+					
 				}
 			}
 			//实际出勤
@@ -326,13 +474,30 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['overtime_weekday']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>57))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowOverTime')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'use_type'=>'申请加班费','start_time'=>array('between',array($start_date,$end_date))))->select();
+					
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowOverTime')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowOverTime')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+					if(M('FlowOverTime')->where(array('flow_id'=>$flow_id))->getField('use_type') == '申请加班费'){
+						if($start_time >= $start_date && $end_time <= $end_date){
+						$FlowLeave=M('FlowOverTime')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'use_type'=>'申请加班费','start_time'=>array('between',array($start_date,$end_date))))->select();
 				
-					foreach ($FlowLeave as $key3 => $value3) {
-						$info[$key]['overtime_weekday'] += $value3['day_num']+$value3['hour_num']/8;
+						foreach ($FlowLeave as $key3 => $value3) {
+							$info[$key]['overtime_weekday'] += $value3['day_num']+$value3['hour_num']/8;
+						}
+					}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+						$FlowLeave=strtotime($end_time)-strtotime($start_date);
+						$info[$key]['overtime_weekday'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time > $start_date && $end_time > $end_date) {//3
+						$FlowLeave=strtotime($end_date)-strtotime($start_time);
+						$info[$key]['overtime_weekday'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+						$FlowLeave=strtotime($end_date)-strtotime($start_date);
+						$info[$key]['overtime_weekday'] += $FlowLeave/3600/8;
+						}
 					}
+					
 				}
 			}
 			//周末
@@ -340,13 +505,32 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['overtime_weekends']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>57))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowOverTime')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'use_type'=>'申请加班费','start_time'=>array('between',array($start_date,$end_date))))->select();
+					
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowOverTime')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowOverTime')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+					if(M('FlowOverTime')->where(array('flow_id'=>$flow_id))->getField('use_type') == '申请加班费'){
+						if($start_time >= $start_date && $end_time <= $end_date){
+						/*$FlowLeave=M('FlowOverTime')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'use_type'=>'申请加班费','start_time'=>array('between',array($start_date,$end_date))))->select();
 				
-					foreach ($FlowLeave as $key3 => $value3) {
-						$info[$key]['overtime_weekends'] += $value3['day_num']+$value3['hour_num']/8;
+						foreach ($FlowLeave as $key3 => $value3) {
+							$info[$key]['overtime_weekends'] += $value3['day_num']+$value3['hour_num']/8;
+						}*/
+						$FlowLeave=get_leave_seconds_weekend(strtotime($start_time),strtotime($end_time));
+						$info[$key]['overtime_weekends'] += $FlowLeave/3600/8;
+					}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+						$FlowLeave=get_leave_seconds_weekend(strtotime($start_date),strtotime($end_time));
+						$info[$key]['overtime_weekends'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time > $start_date && $end_time > $end_date) {//3
+						$FlowLeave=get_leave_seconds_weekend(strtotime($start_time),strtotime($end_date));
+						$info[$key]['overtime_weekends'] += $FlowLeave/3600/8;
+
+					}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+						$FlowLeave=get_leave_seconds_weekend(strtotime($start_date),strtotime($end_date));
+						$info[$key]['overtime_weekends'] += $FlowLeave/3600/8;
 					}
+					}
+					
 				}
 			}
 			//法定
@@ -354,13 +538,32 @@ class AttendanceAction extends CommonAction {
 				$info[$key]['overtime_legal']=0;
 				$flow_ids=M('Flow')->where(array('user_id'=>$value['id'],'type'=>57))->getField('id',true);
 				foreach ($flow_ids as $key2 => $flow_id) {
-					$start_date = date('Y-m-d H:i:s',strtotime($y.'-'.$m));
-					$end_date = date('Y-m-d H:i:s',strtotime($y.'-'.($m+1))-1);
-					$FlowLeave=M('FlowOverTime')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'use_type'=>'申请加班费','start_time'=>array('between',array($start_date,$end_date))))->select();
-				
-					foreach ($FlowLeave as $key3 => $value3) {
-						$info[$key]['overtime_legal'] += $value3['day_num']+$value3['hour_num']/8;
+					
+					$start_time=date('Y-m-d H:i:s',strtotime(M('FlowOverTime')->where(array('flow_id'=>$flow_id))->getField('start_time')));
+					$end_time=date('Y-m-d H:i:s',strtotime(M('FlowOverTime')->where(array('flow_id'=>$flow_id))->getField('end_time')));
+					if(M('FlowOverTime')->where(array('flow_id'=>$flow_id))->getField('use_type') == '申请加班费'){
+						if($start_time >= $start_date && $end_time <= $end_date){
+						// $FlowLeave=M('FlowOverTime')->field('day_num,hour_num')->where(array('flow_id'=>$flow_id,'use_type'=>'申请加班费','start_time'=>array('between',array($start_date,$end_date))))->select();
+						
+						$FlowLeave=get_leave_seconds_fading_holidy(strtotime($start_time),strtotime($end_time));
+						$info[$key]['overtime_legal'] += $FlowLeave/3600/8;
+						/*foreach ($FlowLeave as $key3 => $value3) {
+							$info[$key]['overtime_legal'] += $value3['day_num']+$value3['hour_num']/8;
+						}*/
+						}elseif ($start_time < $start_date && $end_time < $end_date && $end_time > $start_date) {//2
+							$FlowLeave=get_leave_seconds_fading_holidy(strtotime($start_date),strtotime($end_time));
+							$info[$key]['overtime_legal'] += $FlowLeave/3600/8;
+
+						}elseif ($start_time > $start_date && $end_time > $end_date) {//3
+							$FlowLeave=get_leave_seconds_fading_holidy(strtotime($start_time),strtotime($end_date));
+							$info[$key]['overtime_legal'] += $FlowLeave/3600/8;
+
+						}elseif ($start_time < $start_date && $end_time > $end_date) {//4
+							$FlowLeave=get_leave_seconds_fading_holidy(strtotime($start_date),strtotime($end_date));
+							$info[$key]['overtime_legal'] += $FlowLeave/3600/8;
+						}
 					}
+					
 				}
 			}
 		}else{

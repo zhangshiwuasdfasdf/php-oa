@@ -96,7 +96,7 @@ input[readonly]{background: #fff !important}
         <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="accidents[]" id="accidents_{$vo.id}" value="{$vo.accidents}" readonly="readonly" /></div></td>
         <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="annual_leave[]" id="annual_leave_{$vo.id}" value="{$vo.annual_leave}" readonly="readonly" /></div></td>
         <td><div><input style="width:100%;text-align:center;" type="text" name="leave_in_lieu[]" id="leave_in_lieu_{$vo.id}" value="{$vo.leave_in_lieu}" /></div></td>
-        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="overtime_weekday[]" id="overtime_weekday_{$vo.id}" value="{$vo.overtime_weekday}" readonly="readonly" /></div></td>
+        <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="overtime_weekday[]" id="overtime_weekday_{$vo.id}" value="{$vo['overtime_weekday']-$vo['overtime_weekends']-$vo['overtime_legal']}" readonly="readonly" /></div></td>
         <td><div><input style="width:100%;border:0px;text-align:center;" type="text" name="overtime_weekends[]" id="overtime_weekends_{$vo.id}" value="{$vo.overtime_weekends}" readonly="readonly" /></div></td>
         <td><div><input style="width:100%;text-align:center;" type="text" name="overtime_legal[]" id="overtime_legal_{$vo.id}" value="{$vo.overtime_legal}" /></div></td>
         <td><div><input style="width:100%;text-align:center;" type="text" name="growth_sponsorship[]" id="growth_sponsorship_{$vo.id}" value="{$vo.growth_sponsorship}" placeholder="0" /></div></td>
