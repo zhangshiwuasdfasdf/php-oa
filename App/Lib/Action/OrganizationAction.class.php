@@ -125,23 +125,22 @@ class OrganizationAction extends CommonAction {
 			}elseif ($type == '2'){//岗位
 				if(!$_REQUEST['show_leader']){
 					$model = D("PositionView");
-					$where['is_del'] = 0;
 					if(!empty($_REQUEST['dept_id'])){
 						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+						$position_ids = M('RDeptPosition')->where($where)->getField('position_id',true);
+						$list = M('Position')->where(array('id'=>array('in',$position_ids),'is_del'=>'0'))->page($p.',10')->select();
+						$count = M('Position')->where(array('id'=>array('in',$position_ids),'is_del'=>'0'))->count();
 					}
-					$list = $model->where($where)->page($p.',10')->select();
-					$count = $model->where($where)->count();
 				}
 			}elseif ($type == '3'){//员工
 				if(!$_REQUEST['show_leader']){
-					$where['is_del'] = 0;
+// 					$where['is_del'] = 0;
 					if(!empty($_REQUEST['dept_id'])){
 						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
 					}
-					$position_ids = M("Position")->where($where)->getField('id',true);
-					$user_ids = M('RUserPosition')->where(array('position_id'=>array('in',$position_ids)))->getField('user_id',true);
-					$list = D('UserView3')->field('id,emp_no,name,dept_name,position_name,sex,is_del')->where(array('id'=>array('in',$user_ids)))->page($p.',10')->select();
-					$count = D('UserView3')->where(array('id'=>array('in',$user_ids)))->count();
+					$user_ids = M("RDeptUser")->where($where)->getField('user_id',true);
+					$list = M('User')->field('id,emp_no,name,dept_name,position_name,sex,is_del')->where(array('id'=>array('in',$user_ids)))->page($p.',10')->select();
+					$count = M('User')->where(array('id'=>array('in',$user_ids)))->count();
 				}else{
 					
 				}
@@ -150,8 +149,9 @@ class OrganizationAction extends CommonAction {
 			$data['list'] = $list;
 			
 			$data['p'] = $p;
-			$data['count'] = $count;
+			$data['count'] = $count?$count:0;
 			$data['total'] = $count%10 > 0 ? ceil($count/10) : $count/10;
+			$data['total'] = $data['total']?$data['total']:1;
 			$this->ajaxReturn($data, '', 1);
 		}
 	}

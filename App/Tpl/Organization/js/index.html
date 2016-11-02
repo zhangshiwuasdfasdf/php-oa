@@ -150,6 +150,13 @@ $("#a_ygbj").click(function(){
 		$("#tc_ygbj").hide();	
 	})	
 })
+function edit_user(id){
+	$('#bj3').text('编辑')
+	$("#tc_ygbj").show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_ygbj").hide();	
+	})	
+}
 $("#a_ygtj").click(function(){
 	$('#bj3').text('添加')
 	$("#tc_ygbj").show();
@@ -228,19 +235,18 @@ $('#all').click(function(){
 		$("[name=box]:checkbox").prop("checked",false);  
 	}	
 });
-function show_list(id,show_leader){
+function show_list(id,show_leader,p){
 	$("#dept_id").val(id);
+	$("#show_leader").val(show_leader);
 	var type = $("input[name='radio']:checked").val();
 	//sendForm("form_data", "{:U('index')}");
 	$.ajax({
 		type:'post',
-		data:{dept_id:id,type:type,show_leader:show_leader},
+		data:{dept_id:id,type:type,show_leader:show_leader,p:p},
 		url:"{:U('changeContent')}",
 		async:false,
 		success:function(data){
-			alert(JSON.stringify(data));
 			var type = $("input[name='radio']:checked").val();
-			alert(type);
 			temp = '';
 			if(data.data.list != null){
 				if(data.data.type == '0'){
@@ -255,6 +261,7 @@ function show_list(id,show_leader){
 						temp += '</li>';
 					});
 					$('.company_content').html(temp);
+					h0();
 				}else if(data.data.type == '1'){
 					$.each(data.data.list, function(k, v){
 						temp += '<li class="content_li">';
@@ -268,6 +275,7 @@ function show_list(id,show_leader){
 						temp += '</li>';
 					});
 					$('.dept_content').html(temp);
+					h0();
 				}else if(data.data.type == '2'){
 					$.each(data.data.list, function(k, v){
 						temp += '<li class="content_li">';
@@ -281,6 +289,7 @@ function show_list(id,show_leader){
 						temp += '</li>';
 					});
 					$('.position_content').html(temp);
+					h0();
 				}else if(data.data.type == '3'){
 					$.each(data.data.list, function(k, v){
 						temp += '<li class="content_li">';
@@ -289,9 +298,9 @@ function show_list(id,show_leader){
 						temp += '<span class="span2">'+v.dept_name+'</span>';
 						temp += '<span class="span2">'+v.position_name+'</span>';
 						temp += '<span class="span2"></span>';
+						temp += '<span class="span2">'+v.is_del+'</span>';
 						temp += '<span class="span2"></span>';
-						temp += '<span class="span2"></span>';
-						temp += '<span class="span2"><a class="content_a" id="a_ygbj">编辑</a></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_ygbj" onclick="edit_user(\''+v.id+'\',\''+v.name+'\',\''+v.company+'\')">编辑</a></span>';
 						temp += '<span class="span2"><a class="content_a" id="a_js">角色分配</a></span>';
 						temp += '<span class="span2"><a class="content_a" id="a_xz">行政关系范围</a></span>';
 						temp += '<span class="span2"><a class="content_a" id="a_yw">业务管辖部门</a></span>';
@@ -300,6 +309,7 @@ function show_list(id,show_leader){
 						temp += '</li>';
 					});
 					$('.user_content').html(temp);
+					h0();
 				}
 				
 				var changepage = "";
@@ -316,13 +326,15 @@ function show_list(id,show_leader){
 					changepage = "<li><a class='page' href='javascript:void(0)' rel='1'>首页</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p-1)+"'>« 上一页</a></li><li><a class='page' href='javascript:void(0)' rel='"+(data.data.p+1)+"'>下一页 »</a></li>";
 				}
 				
-				$('#ps').html(data.data.p);
+				$('#ps').html(data.data.p+"/");
 				$('#changepages').html(changepage);
-				$('#counts').html(data.data.count);
-				$('#total_pages').html(data.data.total);
+				$('#counts').html(data.data.count+"条记录");
+				$('#total_pages').html(data.data.total+"页");
 				$('.page').click(function(){
 					var a = $(this).attr('rel');
-					d_changeContent(a);
+					var id = $("#dept_id").val();
+					var show_leader = $("#show_leader").val();
+					show_list(id,show_leader,a);
 				});
 			}else{
 				$('#d_content').html('<tr><td colspan="7">{:L("NOT_FIND_THE_RESULTS_YOU_WANT")}</td></tr>');
