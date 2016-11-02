@@ -173,7 +173,7 @@ input,select{ margin:0; padding:0; outline:none;}
     </div>
 </div>
 </form>
-<form name="main_formtj" method="POST" action="{:U('add')}" enctype="multipart/form-data">
+<form name="main_form" method="POST" action="{:U('add')}" enctype="multipart/form-data">
 <div class="tc" id="tc_gltj">
 	<div class="tc_div1">
     	<div class="tc_title">
@@ -198,7 +198,7 @@ input,select{ margin:0; padding:0; outline:none;}
         
         <div class="bottom" style="position:initial">
         	<span class="bottom_sp3">取消</span>
-            <span ><input type="submit" class="bottom_sp4" value="确定" /></span>
+            <span class="bottom_sp4"><a onclick="">确定</a></span>
         </div>
     </div>
 </div>
@@ -211,9 +211,13 @@ $("form[name=main_formtj]").submit(function(){
 		url:"{:U('add')}",
 		data:$(this).serialize(),
 		dataType:"json",
-		success:function(data){
+		success:function(data)
+		{
 			if(data.status == '1'){
 				location.reload();
+			}
 		}
 	});
+	return false;
 });
+</script>
