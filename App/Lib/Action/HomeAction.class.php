@@ -991,7 +991,7 @@ class HomeAction extends CommonAction {
 		$time = time();
 		$j = 1;
 		foreach ($user as $k=>$v){
-			if(isHeadquarters($v['id'])<=0){
+			if(isHeadquarters($v['id'])<=0 || isHeadquarters($v['id']) == '31'){
 				$j++;
 				$q = $q -> setCellValue("A$j", $v['id']);
 				$q = $q -> setCellValue("B$j", $v['name']);

@@ -138,8 +138,20 @@ class OrganizationAction extends CommonAction {
 					if(!empty($_REQUEST['dept_id'])){
 						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
 					}
+					$r_dept_user = M("RDeptUser")->where($where)->getField('user_id,dept_id');
 					$user_ids = M("RDeptUser")->where($where)->getField('user_id',true);
-					$list = M('User')->field('id,emp_no,name,dept_name,position_name,sex,is_del')->where(array('id'=>array('in',$user_ids)))->page($p.',10')->select();
+					$list = M('User')->field('id,emp_no,name,sex,is_del')->where(array('id'=>array('in',$user_ids)))->page($p.',10')->select();
+					foreach ($list as $k=>$v){
+						$list[$k]['dept_id'] = $r_dept_user[$v['id']];
+						$list[$k]['dept_name'] = M('Dept')->where(array('id'=>$list[$k]['dept_id']))->getField('name');
+						$r_user_position = M('RUserPosition')->where(array('user_id'=>$v['id'],'dept_id'=>$list[$k]['dept_id']))->find();
+						$list[$k]['position_id'] = $r_user_position['position_id'];
+						$position_view = D('PositionView')->field('position_name,sequence_name')->where(array('id'=>$list[$k]['position_id']))->find();
+						$list[$k]['position_name'] = $position_view['position_name'];
+						$list[$k]['position_sequence'] = $position_view['sequence_name'];
+						$list[$k]['major'] = $r_user_position['is_major']==1?'主要':'兼职';
+						$list[$k]['is_del'] = $list[$k]['is_del']==1?'离职':'在职';
+					}
 					$count = M('User')->where(array('id'=>array('in',$user_ids)))->count();
 				}else{
 					

@@ -14,7 +14,7 @@
 class PositionViewModel extends ViewModel {
 	public $viewFields = array(
 			'position'=>array('*'),
-			'dept'=>array('name'=>'dept_name','_on'=>'position.dept_id=dept.id', '_type'=>'LEFT'),
+			'position_sequence'=>array('sequence_number','sequence_name','sequence_degree','_on'=>'position.position_sequence_id=position_sequence.id', '_type'=>'LEFT'),
 	);
 }
 ?>
