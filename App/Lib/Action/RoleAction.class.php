@@ -179,6 +179,11 @@ $model = M("RoleNode");
 			$this -> success('操作成功！');
 		}
 	}
+	
+	public function role_lst(){
+		$this->display();
+	}
+	
 
 }
 ?>

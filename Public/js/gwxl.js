@@ -11,7 +11,7 @@ function wli(){
 wli();
 
 
-$("#a_glbj").click(function(){
+$(".content_a").click(function(){
 	$("#tc_glbj").show();
 	$(".bottom_sp3,.bottom_sp4").click(function(){
 		$("#tc_glbj").hide();	
@@ -26,8 +26,8 @@ $("#a_gltj").click(function(){
 
 $('#all').click(function(){
 	if(this.checked){                                     
-		$("[name=box]:checkbox").prop("checked",true);  
+		$("[name='id[]']:checkbox").prop("checked",true);  
 	}else{
-		$("[name=box]:checkbox").prop("checked",false);  
+		$("[name='id[]']:checkbox").prop("checked",false);  
 	}	
 });

@@ -7,7 +7,7 @@ body{ margin:0; padding:0; background:#e5e5e5;}
 input,select{ margin:0; padding:0; outline:none;}
 
 
-.zong{ overflow:auto;margin-top:50px;}
+.zong{ overflow:auto;}
 .top_k{ height:54px; line-height:54px;}
 .top1{ height:54px; background:#fff; line-height:54px; overflow:auto; white-space:nowrap;}
 .top1 span{ display:block; font-size:12px; float:left; margin-left:20px;}
@@ -32,13 +32,13 @@ input,select{ margin:0; padding:0; outline:none;}
 .content_a{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
 
 
-.content_bottom1{ background:#fff; height:30px; margin-top:10px;}
-.content_bottom2{ background:#fff; height:42px; margin-top:2px; line-height:42px; position:relative;}
+.content_bottom1{ background:#fff; height:30px;}
+.content_bottom2{ background:#fff; height:95px; margin-top:2px; line-height:42px; position:relative;}
 .b1{ margin-left:10px; position:absolute; overflow:hidden;}
 .b1 input{ float:left; margin-top:15px;}
 .b1 span{ display:block; font-size:12px; color:#323232; float:left; margin-left:2px;}
 .b2{ width:32px; height:20px; line-height:20px; border:solid 1px #ced3d7; background:#d0e0e7; color:#323232; float:left; font-size:12px; text-align:center; position:absolute; left:60px; top:11px; cursor:default;}
-.b3{ height:20px; line-height:20px; position:absolute; right:360px; top:11px; border: solid 1px #13b58e;}
+.b3{ height:26px; line-height:20px; position:absolute; right:360px; top:11px; border: solid 1px #13b58e;}
 .b3_s1{ font-size:12px; color:#13b58e;}
 .b3_s2{ font-size:12px; color:#323232;}
 
@@ -67,15 +67,19 @@ input,select{ margin:0; padding:0; outline:none;}
 </style>
 <div class="zong">
     <div class="top_k">
+    <form method="post" name="form_adv_search" id="form_adv_search">
         <div class="top1">
-            <span>序列代码：<input class="top_in" type="text"/></span>
-            <span>序列名称：<input class="top_in" type="text"/></span>
-            <div class="top_button">
-                <img src="__PUBLIC__/img/cx.png"/>
+            <span>序列代码：<input class="top_in" type="text" name="sequence_number"/></span>
+            <span>序列名称：<input class="top_in" type="text" name="sequence_name"/></span>
+            <!-- <div class="col-sm-3">
+				<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+			</div> -->
+			<div class="top_button">
+                <a onclick="submit_adv_search();"><img src="__PUBLIC__/img/cx.png"/></a>
             </div>
         </div>
-    </div>
-    
+    </form>
+    </div>   
    	<div class="content">
     	<div class="content_title">
             <span class="content_sp1"></span>
@@ -87,41 +91,51 @@ input,select{ margin:0; padding:0; outline:none;}
         <div class="content_ul_w" id="content_div2">
             <ul class="content_ul">
                 <li class="content_li">
-                    <span class="span1_0"></span>
+                    <span class="span1_0">
+                    
+                    </span>
                     <span class="span1">序列代码</span>
                     <span class="span1">序列名称</span>
                     <span class="span1">级别</span>
                     <span class="span1">操作</span>
                 </li>
+            <empty name="list">
+				<li style="border: 1px solid #eaedf1;border-top: 0px;line-height: 120px;text-align: center;font-size: 24px;">
+					没找到数据
+				</li>
+				<else/>
+				<form method="post" action="" name="form_data_sc" id="form_data_sc">
                 <foreach name="list" item="vo">
                 <li class="content_li">
-                    <span class="span2_0"><input name="box" type="checkbox"/></span>
+                    <span class="span2_0"><input name="id[]" type="checkbox" value="{$vo.id}"/></span>
                     <span class="span2">{$vo.sequence_number}</span>
                     <span class="span2">{$vo.sequence_name}</span>
                     <span class="span2">{$vo.sequence_degree}</span>
-                    <span class="span2"><a class="content_a" id="a_glbj">编辑</a></span>
+                    <span class="span2">
+                    <a class="content_a" id="a_glbj" onclick="show({$vo.id});"><input id="bj_{$vo.id}" type="hidden" value="{$vo.id}">编辑</a>
+                    </span>
                 </li>
                 </foreach>
+                 
+                </form>
+            </empty>
             </ul>
-        </div>     
+        </div>    
     </div>
     
     <div class="content_bottom">
-        <div class="content_bottom1"></div>
+    	<!-- <div class="content_bottom1">
+        </div> -->
         <div class="content_bottom2">
-            <div class="b1">
+        	<div class="b1">
                 <input id="all" type="checkbox"/>
                 <span>全选</span>
             </div>
-            
-            <div class="b2">删除</div>
-            
-            <div class="b3">
-                <span class="b3_s1">共有</span>
-                <span class="b3_s2">37872</span>
-                <span class="b3_s1">条记录</span>
-            </div>
-            <div class="b4">
+         <div class="b2"><a onclick="del();">删除</a> </div>
+          <div class="pagination" style="float:right;line-height:25px;">
+                {$page}
+          </div>
+            <!-- <div class="b4">
                 <span>每页:</span>
                 <select>
                     <option>10</option>
@@ -139,46 +153,50 @@ input,select{ margin:0; padding:0; outline:none;}
                 <span class="b5_s1">下一页</span>
                 <span class="b5_s3"><input type="text"/></span>
                 <span class="b5_s1">go</span>
-            </div>
-        </div>
+            </div> -->  
     </div> 
 </div> 
-<form name="main_form" method="POST" action="" enctype="multipart/form-data">
+
 <div class="tc" id="tc_glbj">
 	<div class="tc_div1">
     	<div class="tc_title">
         	<span class="js_sp1" id="bj1">编辑</span>
         </div>
+        <form method="post" action="" name="form_data_bj" id="form_data_bj">
+        
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
+            	<input type="hidden" id="sequence_id">
                 <li>
                     <label>序列代码：</label>
-                    <input class="tc_inp" type="text"/>
+                    <input class="tc_inp" type="text" id="sequence_number" name="sequence_number"/>
                 </li>
                 <li>
                     <label>序列名称：</label>
-                    <input class="tc_inp" type="text"/>
+                    <input class="tc_inp" type="text" id="sequence_name" name="sequence_name"/>
                 </li> 
                 <li>
                     <label>级别：</label>
-                    <input class="tc_inp" type="text"/>
+                    <input class="tc_inp" type="text" id="sequence_degree" name="sequence_degree"/>
                 </li>
             </ul>
         </div>
         
-        <div class="bottom" style="position:initial">
+        <div class="bottom" style="position:static">
         	<span class="bottom_sp3">取消</span>
-            <span class="bottom_sp4">确定</span>
+            <span ><a class="bottom_sp4" onclick="edit();">确定</a>
+            <!-- <input type="submit" value="确定"> -->
+            </span>
         </div>
+        </form>
     </div>
 </div>
-</form>
-<form name="main_form" method="POST" action="{:U('add')}" enctype="multipart/form-data">
 <div class="tc" id="tc_gltj">
 	<div class="tc_div1">
     	<div class="tc_title">
         	<span class="js_sp1" id="bj1">添加</span>
         </div>
+        <form name="main_form" method="POST" action="{:U('add')}" enctype="multipart/form-data">
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
                 <li>
@@ -196,28 +214,19 @@ input,select{ margin:0; padding:0; outline:none;}
             </ul>
         </div>
         
-        <div class="bottom" style="position:initial">
+        <div class="bottom" style="position:static">
         	<span class="bottom_sp3">取消</span>
-            <span class="bottom_sp4"><a onclick="">确定</a></span>
+            <span ><input class="bottom_sp4" type="submit" value="确定"></span>
         </div>
+        </form>
     </div>
 </div>
 </form>
 <script type="text/javascript" src="__PUBLIC__/js/gwxl.js"></script>
 <script>
-$("form[name=main_formtj]").submit(function(){
-	$.ajax({
-		type:"POST",
-		url:"{:U('add')}",
-		data:$(this).serialize(),
-		dataType:"json",
-		success:function(data)
-		{
-			if(data.status == '1'){
-				location.reload();
-			}
-		}
+	$(function() {
+		var html = "<li>系统管理</li><li>组织结构管理</li><li>岗位序列</li>";
+		$("#breadcrumbs ul").append(html);
 	});
-	return false;
-});
 </script>
+
