@@ -1358,7 +1358,7 @@ class FlowAction extends CommonAction {
 			$info['user_id'] = $uid;
 		}
 		$info['available_hour'] = getAvailableHour();
-		$info['available_hour2'] = getAvailableHour2(time(),$uid,'Create');
+		$info['available_hour2'] = getAvailableHour3(time(),$uid,'Create');
 		$info['available_year'] = getAvailableYearHour()/2;
 		$this -> assign("user_info", $info);
 		$this -> assign("time", time());
@@ -2098,7 +2098,7 @@ class FlowAction extends CommonAction {
 			$day = floor($hour_sum/8);
 			$hour = ceil($hour_sum - $day*8);
 			$available_hour = getAvailableHour(strtotime($start_time));
-			$available_hour2 = getAvailableHour2(strtotime($start_time),get_user_id(),'Create');
+			$available_hour2 = getAvailableHour3(strtotime($start_time),get_user_id(),'Create');
 			$available_year = getAvailableYearHour(strtotime($start_time))/2;
 			
 			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour,'available_hour'=>$available_hour,'available_hour2'=>$available_hour2,'available_year'=>$available_year,'start_time'=>$start_time,'end_time'=>$end_time),null,1);
@@ -2889,7 +2889,7 @@ class FlowAction extends CommonAction {
 									$data['status'] = 1;
 									//在调休单中标注用掉的是哪个加班单
 									$use = getHourPlan($data['user_id'],$data['hour'],$create_time,'Create');
-									$data['use'] = serialize($use);
+									$data['is_use'] = serialize($use);
 									M('FlowHour')->add($data);
 									M('FlowHourCreate')->add($data);
 								}else{
@@ -2897,7 +2897,7 @@ class FlowAction extends CommonAction {
 									$data['status'] = 1;
 									//在调休单中标注用掉的是哪个加班单
 									$use = getHourPlan($flow_hour['user_id'],$flow_hour['hour'],$create_time,'Create');
-									$data['use'] = serialize($use);
+									$data['is_use'] = serialize($use);
 									M('FlowHour')->where('flow_id='.$flow_id)->save($data);
 									M('FlowHourCreate')->where('flow_id='.$flow_id)->save($data);
 								}
