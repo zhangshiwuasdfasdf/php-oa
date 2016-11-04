@@ -99,13 +99,16 @@ input,select{ margin:0; padding:0; outline:none;}
 .tc_div1{background:#f1f5fa; width:400px; height:550px; position:absolute; left:50%; margin-left:-200px; top:50%; margin-top:-300px; border-radius:5px;}
 .tc_ul_div1{ width:300px; height:400px;margin-top:20px; margin-left:50px; overflow:auto;}
 .tc_ul_s{ height:auto;}
-.tc_ul_s li{ overflow:hidden; height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
+.tc_ul_s>li{  height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
 .tc_ul_s label{ position:absolute; left:0;}
 .tc_ul_s select{ width:195px;position:absolute; left:85px; top:15px;}
 .tc_inp{ width:190px;position:absolute; left:85px; top:15px;}
 
 .bottom_sp3{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:100px; margin-right:40px; cursor:pointer;}
 .bottom_sp4{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}
+
+.user_name_search{position:absolute;left:67px;background:#fff;border:1px solid #d5d5d5;width:190px;top:43px;height:auto;z-index:100;display:none;}
+.user_name_search_li{text-align:left;padding:5px 4px;line-height:1.2;height:28px;}
 
 </style>
 <input type="hidden" id="dept_id"/>
@@ -570,6 +573,7 @@ input,select{ margin:0; padding:0; outline:none;}
     </div>
 </div>
 <div class="tc" id="tc_gwtj">
+	<form method='post' id="form_data_r_dept_position_add" name="form_data_r_dept_position_add" enctype="multipart/form-data">
 	<div class="tc_div1">
     	<div class="tc_title">
         	<span class="js_sp1" id="tj2">添加</span>
@@ -578,32 +582,17 @@ input,select{ margin:0; padding:0; outline:none;}
             <ul class="tc_ul_s">
             	<li>
                     <label>公司名称：</label>
-                    <select>
-                        <option>集团总部</option>
-                        <option>杭州基地</option>
-                        <option>宁波基地</option>
-                        <option>金华基地</option>
-                        <option>嘉兴基地</option>
+                    <select id="position_company" name="position_company" onChange="change_dept($(this).val(),'position')">
                     </select>
                 </li>
                 <li>
                     <label>部门名称：</label>
-                    <select>
-                        <option>|&nbsp;仓配中心</option>
-                        <option>&nbsp;||&nbsp;入库组</option>
-                        <option>&nbsp;||&nbsp;内仓组</option>
-                        <option>&nbsp;||&nbsp;单据组</option>
-                        <option>|&nbsp;运营中心</option>
-                        <option>&nbsp;||&nbsp;招商业务组</option>
-                        <option>&nbsp;||&nbsp;运营服务组</option>
-                        <option>&nbsp;||&nbsp;系统服务组</option>
+                    <select id="position_dept" name="position_dept">
                     </select>
                 </li>
                 <li>
                     <label>岗位名称：</label>
-                    <select>
-                        <option>产品经理</option>
-                        <option>总经理助理</option>
+                    <select id="position_position" name="position_position">
                     </select>
                 </li>
                  
@@ -615,6 +604,7 @@ input,select{ margin:0; padding:0; outline:none;}
             <span class="bottom_sp4">确定</span>
         </div>
     </div>
+    </form>
 </div>
 <!--角色分配-->
 <div class="tc" id="tc_fp">
@@ -690,66 +680,59 @@ input,select{ margin:0; padding:0; outline:none;}
 
 <!--员工-->
 <div class="tc" id="tc_ygbj">
+	<form method='post' id="form_data_user_edit" name="form_data_user_edit" enctype="multipart/form-data">
 	<div class="tc_div1">
     	<div class="tc_title">
         	<span class="js_sp1" id="bj3">编辑</span>
         </div>
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
-                <li>
+                <li class="user_name">
                     <label>姓名：</label>
-                    <input class="tc_inp" type="text"/>
+                    <input id="user_user_id" name="user_user_id" type="hidden"/>
+                    <input class="tc_inp" id="user_user_name" name="user_user_name" type="text"/>
+                    <ul class="user_name_search">
+                    	<li class="user_name_search_li" onclick="alert()">11</li>
+                    	<li class="user_name_search_li" onclick="alert()">22</li>
+                    </ul>
                 </li>
                 <li>
                     <label>公司：</label>
-                    <select>
-                        <option>集团总部</option>
-                        <option>杭州基地</option>
-                        <option>宁波基地</option>
-                        <option>金华基地</option>
-                        <option>嘉兴基地</option>
+                    <select id="user_company" name="user_company" onChange="change_dept($(this).val(),'user')">
                     </select>
                 </li>
                 <li>
                     <label>部门：</label>
-                    <select>
-                        <option>|&nbsp;仓配中心</option>
-                        <option>&nbsp;||&nbsp;入库组</option>
-                        <option>&nbsp;||&nbsp;内仓组</option>
-                        <option>&nbsp;||&nbsp;单据组</option>
-                        <option>|&nbsp;运营中心</option>
-                        <option>&nbsp;||&nbsp;招商业务组</option>
-                        <option>&nbsp;||&nbsp;运营服务组</option>
-                        <option>&nbsp;||&nbsp;系统服务组</option>
+                    <input id="user_origin_dept_id" name="user_origin_dept_id" type="hidden"/>
+                    <select id="user_dept" name="user_dept" onChange="change_position($(this).val(),'user')">
                     </select>
                 </li>
                 <li>
                     <label>岗位：</label>
-                    <select>
-                        <option>产品经理</option>
-                        <option>总经理助理</option>
+                    <input id="user_origin_position_id" name="user_origin_position_id" type="hidden"/>
+                    <select id="user_position" name="user_position" onChange="change_position_sequence($(this).val())">
                     </select>
                 </li>
                 <li>
                     <label>主要：</label>
-                    <select>
-                        <option>主要</option>
-                        <option>兼职</option>
+                    <select id="user_major" name="user_major">
                     </select>
                 </li>
                 <li>
                     <label>员工状态：</label>
-					<select>
+					<select id="user_status" name="user_status">
                         <option>已转正</option>
                         <option>已转正</option>
                     </select>
                 </li>
                 <li>
                     <label>序列名称：</label>
-                    <select>
+                    <input class="tc_inp" id="user_position_sequence_id" name="user_position_sequence_id" type="hidden"/>
+                    <input class="tc_inp" id="user_position_sequence" name="user_position_sequence" type="text" readonly check="require" msg="请选择一个已设置序列的岗位"/>
+                    <!-- <select id="user_position_sequence" name="user_position_sequence">
                         <option>员工</option>
                         <option>总经理助理</option>
-                    </select>
+                    </select> -->
                 </li>  
             </ul>
         </div>
@@ -759,6 +742,7 @@ input,select{ margin:0; padding:0; outline:none;}
             <span class="bottom_sp4">确定</span>
         </div>
     </div>
+    </form>
 </div>
 <!--员工角色分配-->
 <div class="tc" id="tc_js">

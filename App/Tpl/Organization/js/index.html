@@ -137,8 +137,42 @@ $("#a_bmtj").click(function(){
 
 //添加
 $("#a_gwtj").click(function(){
+	$.ajax({
+		type:'post',
+		url:"{:U('getDept')}",
+		async:false,
+		data:{type:'origin'},
+		success:function(data){
+			$("#position_company").html('');
+			var html = '<option>请选择公司</option>';
+			$.each(data.data, function(k, v){
+				html += '<option value="'+v.id+'">'+v.name+'</option>';
+			})
+			$("#position_company").html(html);
+		}
+	});
+	$.ajax({
+		type:'post',
+		url:"{:U('get_all_position')}",
+		async:false,
+		success:function(data){
+			$("#position_position").html('');
+			var html = '<option>请选择岗位</option>';
+			$.each(data.data, function(k, v){
+				html += '<option value="'+v.id+'">'+v.position_name+'</option>';
+			})
+			$("#position_position").html(html);
+		}
+	});
+	
 	$("#tc_gwtj").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
+	$(".bottom_sp4").click(function(){
+		window.onbeforeunload = null;
+		if (check_form("form_data_r_dept_position_add")) {
+			sendForm("form_data_r_dept_position_add", "{:U('r_dept_position_add')}");
+		}	
+	})
+	$(".bottom_sp3").click(function(){
 		$("#tc_gwtj").hide();	
 	})
 })
@@ -150,21 +184,154 @@ $("#a_ygbj").click(function(){
 		$("#tc_ygbj").hide();	
 	})	
 })
-function edit_user(id){
+function change_dept(company_id,sheet){
+	$.ajax({
+		type:'post',
+		url:"{:U('change_dept_html')}",
+		data:{company_id:company_id},
+		success:function(result){
+			$("#"+sheet+"_dept").html(result.data.dept);
+			if(sheet == 'user'){
+				$("#"+sheet+"_position").html('');
+			}
+			$("#"+sheet+"_position_sequence_id").val('');
+			$("#"+sheet+"_position_sequence").val('');
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
+}
+function change_position(dept_id,sheet){
+	$.ajax({
+		type:'post',
+		url:"{:U('change_position_html')}",
+		data:{dept_id:dept_id},
+		success:function(result){
+			$("#"+sheet+"_position").html(result.data.position);
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
+}
+function change_position_sequence(position_id){
+	$.ajax({
+		type:'post',
+		url:"{:U('change_sequence_html')}",
+		data:{position_id:position_id},
+		success:function(result){
+			$("#user_position_sequence_id").val(result.data.sequence_id);
+			$("#user_position_sequence").val(result.data.sequence_name);
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
+}
+function edit_user(user_id,user_name,dept_id,position_id,is_del,position_sequence){
 	$('#bj3').text('编辑')
+	$("#user_user_id").val(user_id);
+	$("#user_user_name").val(user_name);
+	$("#user_position_sequence").val(position_sequence);
+	$("#user_origin_dept_id").val(dept_id);
+	$("#user_origin_position_id").val(position_id);
+	$.ajax({
+		type:'post',
+		url:"{:U('get_edit_user_html')}",
+		data:{user_id:user_id,dept_id:dept_id,position_id:position_id},
+		success:function(result){
+			//alert(JSON.stringify(result));
+			$("#user_company").html(result.data.company);
+			$("#user_dept").html(result.data.dept);
+			$("#user_position").html(result.data.position);
+			$("#user_major").html(result.data.major);
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
 	$("#tc_ygbj").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
-		$("#tc_ygbj").hide();	
+	$(".bottom_sp4").click(function(){
+		window.onbeforeunload = null;
+		if (check_form("form_data_user_edit")) {
+			sendForm("form_data_user_edit", "{:U('user_edit')}");
+		}
+	})	
+	$(".bottom_sp3").click(function(){
+		$("#tc_ygbj").hide();
 	})	
 }
+
 $("#a_ygtj").click(function(){
 	$('#bj3').text('添加')
+	$("#user_user_id").val('');
+	$("#user_user_name").val('');
+	$("#user_position_sequence").val('');
+	$("#user_origin_dept_id").val('');
+	$("#user_origin_position_id").val('');
+	$("#user_dept").html('');
+	$("#user_position").html('');
+	$.ajax({
+		type:'post',
+		url:"{:U('get_edit_user_html')}",
+		data:{},
+		success:function(result){
+			//alert(JSON.stringify(result));
+			$("#user_company").html(result.data.company);
+			//$("#user_dept").html(result.data.dept);
+			//$("#user_position").html(result.data.position);
+			$("#user_major").html(result.data.major);
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
 	$("#tc_ygbj").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
+	$("#user_user_name").keyup(function(){
+		$.ajax({
+			type:'post',
+			url:"{:U('search_user')}",
+			data:{keywords:$(this).val()},
+			success:function(result){
+				var html = '';
+				if(result.data != null){
+					$.each(result.data, function(k, v){
+						html += '<li class="user_name_search_li" onclick="put_on(\''+v.id+'\',\''+v.name+'\')">'+v.emp_no+'_'+v.name+'</li>'
+					})
+				}else{
+					html += '<li class="user_name_search_li">没有找到数据</li>';
+				}
+				$(".user_name_search").html(html);
+			},
+			error:function(){
+				alert('数据错误');
+			}
+		})
+		$(".user_name_search").show();
+	});
+	var M1 = $('.user_name')
+    M1.on('click',function(e){e.stopPropagation();})
+    $(document).on('click',function(){M1.find('.user_name_search').hide()})
+    
+	$("#user_user_name").focus(function(){
+		$(".user_name_search").show();
+	});
+	$(".bottom_sp4").click(function(){
+		window.onbeforeunload = null;
+		if (check_form("form_data_user_edit")) {
+			sendForm("form_data_user_edit", "{:U('user_dept_position_set')}");
+		}
+	})
+	$(".bottom_sp3").click(function(){
 		$("#tc_ygbj").hide();	
 	})
 })
-
+function put_on(id,name){
+	$("#user_user_id").val(id);
+	$("#user_user_name").val(name);
+	$(".user_name_search").hide();
+}
 $("#a_js").click(function(){
 	$("#tc_js").show();
 	$(".bottom_sp1,.bottom_sp2").click(function(){
@@ -300,7 +467,7 @@ function show_list(id,show_leader,p){
 						temp += '<span class="span2">'+v.major+'</span>';
 						temp += '<span class="span2">'+v.is_del+'</span>';
 						temp += '<span class="span2">'+v.position_sequence+'</span>';
-						temp += '<span class="span2"><a class="content_a" id="a_ygbj" onclick="edit_user(\''+v.id+'\',\''+v.name+'\',\''+v.company+'\')">编辑</a></span>';
+						temp += '<span class="span2"><a class="content_a" id="a_ygbj" onclick="edit_user(\''+v.id+'\',\''+v.name+'\',\''+v.dept_id+'\',\''+v.position_id+'\',\''+v.is_del+'\',\''+v.position_sequence+'\')">编辑</a></span>';
 						temp += '<span class="span2"><a class="content_a" id="a_js">角色分配</a></span>';
 						temp += '<span class="span2"><a class="content_a" id="a_xz">行政关系范围</a></span>';
 						temp += '<span class="span2"><a class="content_a" id="a_yw">业务管辖部门</a></span>';
