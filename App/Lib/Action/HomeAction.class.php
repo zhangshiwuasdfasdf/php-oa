@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class HomeAction extends CommonAction {
-	protected $config = array('app_type' => 'asst','repair_over_time'=>'admin','create_flow_hour'=>'admin','modify_flow_hour_use'=>'admin','create_station'=>'admin');
+	protected $config = array('app_type' => 'asst','repair_over_time'=>'admin','create_flow_hour'=>'admin','modify_flow_hour_use'=>'admin','create_station'=>'admin','export_available_hour'=>'admin');
 	//过滤查询字段
 
 	function _search_filter(&$map) {
@@ -969,5 +969,53 @@ class HomeAction extends CommonAction {
 // 			M('Station')->add($data);
 // 		}
 // 	}
+	public function export_available_hour(){
+		//导入thinkphp第三方类库
+		Vendor('Excel.PHPExcel');
+		
+		$objPHPExcel = new PHPExcel();
+		
+		$objPHPExcel -> getProperties() -> setCreator("小微OA") -> setLastModifiedBy("小微OA") -> setTitle("Office 2007 XLSX Test Document") -> setSubject("Office 2007 XLSX Test Document") -> setDescription("Test document for Office 2007 XLSX, generated using PHP classes.") -> setKeywords("office 2007 openxml php") -> setCategory("Test result file");
+		// Add some data
+		$i = 1;
+		//dump($list);
+		
+		//编号，类型，标题，登录时间，部门，登录人，状态，审批，协商，抄送，审批情况，自定义字段
+		$q = $objPHPExcel -> setActiveSheetIndex(0);
+		//第一列为用户
+		$q = $q -> setCellValue("A$i", '序号');
+		$q = $q -> setCellValue("B$i", '姓名');
+		$q = $q -> setCellValue("C$i", '剩余小时数');
+		
+		$user = M('User')->field('id,name')->where(array('is_del'=>0))->select();
+		$time = time();
+		$j = 1;
+		foreach ($user as $k=>$v){
+			if(isHeadquarters($v['id'])<=0 || isHeadquarters($v['id']) == '31'){
+				$j++;
+				$q = $q -> setCellValue("A$j", $v['id']);
+				$q = $q -> setCellValue("B$j", $v['name']);
+				$q = $q -> setCellValue("C$j", getAvailableHour2($time,$v['id'],'Create'));
+			}
+		}
+		
+		// Rename worksheet
+		$title = '调休剩余小时';
+		$objPHPExcel -> getActiveSheet() -> setTitle('调休剩余小时');
+		
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$objPHPExcel -> setActiveSheetIndex(0);
+		$file_name = $title.".xlsx";
+		// Redirect output to a client’s web browser (Excel2007)
+		header("Content-Type: application/force-download");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header("Content-Disposition:attachment;filename =" . str_ireplace('+', '%20', URLEncode($file_name)));
+		header('Cache-Control: max-age=0');
+		
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		//readfile($filename);
+		$objWriter -> save('php://output');
+		exit ;
+	}
 }
 ?>

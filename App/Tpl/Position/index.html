@@ -1,83 +1,247 @@
 <layout name='Layout/ace_layout' />
-<div class="operate panel panel-default">
-	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
-		<div class="pull-left">
-			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">职位管理</span>
-		</div>
-		<div class="pull-right">
-			<a onclick="add()" class="btn btn-sm btn-primary">新增</a>
-			<a onclick="save()"  class="btn btn-sm btn-primary">保存</a>
-			|
-			<a onclick="del()"  class="btn btn-sm btn-danger">删除</a>
-		</div>
-	</div>
-</div>
-<div class="row">
-	<div class="col-sm-4 sub_left_menu">
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>编号</th>
-					<th>名称</th>
-					<th>状态</th>
-				</tr>
-			</thead>
-			<tbody>
-				<volist name="list" id="data">
-					<tr id="{$data.id}">
-						<td>{$data.position_no}</td>
-						<td>{$data.name}</td>
-						<td>{$data.is_del|status}</td>
-					</tr>
-				</volist>
-			</tbody>
-		</table>
-		<div class="pagination">
-			{$page}
-		</div>
-	</div>
+<style>
+.zong{ overflow:auto;margin-top:50px;}
+.top_k{ height:54px; line-height:54px;}
+.top2{ height:54px; background:#fff; line-height:54px; overflow:auto; white-space:nowrap;}
+.top2 span{ display:block; font-size:12px; float:left; margin-left:20px;}
+.top_in{ width:114px; height:24px;border:solid 1px #aaaaaa;}
+.top_select{ width:98px; height:24px; outline:none;}
+.top_button{ overflow:hidden;}
+.top_button img{ float:left; margin-top:8px; margin-left:16px; margin-right:5px;}
 
-	<div class="col-sm-8 sub_content">
-		<form id="form_data" name="form_data"method="post" class="well form-horizontal clearfix">
-			<input type="hidden" name="id" id="id">
-			<input type="hidden" name="ajax" id="ajax" value="0">
-			<input type="hidden" name="opmode" id="opmode" value="">
-			<div class="form-group col-xs-12">
-				<label class="col-sm-4 control-label" for="position_no">编码*：</label>
+.content_title{ background:#bdd3e0; height:40px; line-height:40px; margin-top:10px; position:relative;}
+.content_sp1{ display:block; position:absolute;width:6px; height:20px; background-color:#20b891; border:solid 1px #3da396;top:10px; border-radius:3px;left:20px;}
+.content_sp2{ display:block; font-size:12px; left:40px; position:absolute;}
+.img_tj{ display:block; float:left; margin-top:14px;}
+.content_sp3{display:block;position:absolute;right:20px;font-size:12px; color:#4c6456; font-weight:bold; cursor:pointer; overflow:hidden;}
+.content_sp3 span{ display:block; float:left;}
+
+.content_div{ overflow:auto;}
+.content_ul{border-left:1px solid #eaedf1; background:#fff; float:left;}
+.content_ul li{ border-bottom:1px solid #eaedf1; height:28px; line-height:28px; padding:0 40px; text-align:center;}
+.content_li1{ border-top:1px solid #eaedf1; color:#323232; font-size:12px; font-weight:bold;}
+
+.content_ul1{ background:#fff; float:left;}
+.content_ul1 li{ border-bottom:1px solid #eaedf1; height:28px; line-height:28px; padding:0 40px;color:#323232; font-size:12px;text-align:center;}
+.content_a{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+
+.content_ul2{border-right:1px solid #eaedf1; background:#fff; float:left;}
+.content_ul2 li{ border-bottom:solid 1px #eaedf1; height:28px; line-height:28px; padding:0 40px;color:#323232; font-size:12px;text-align:center;}
+
+.tc{ width:100%; height:100%; position:fixed; top:0; left:0; background:rgba(0,0,0,0.5); display:none; z-index:800;}
+.tc_div{background:#f1f5fa; width:800px; height:400px; position:absolute; left:50%; margin-left:-400px; top:50%; margin-top:-200px; border-radius:5px;}
+.tc_title{ width:100%; height:50px; line-height:50px; overflow:hidden; border-bottom:solid 1px #bdd3e0;}
+.js_sp1{ float:left; display:block; font-size:18px; font-weight:bold; color:#22bd9b; margin-left:50px;}
+
+.tc_div1{background:#f1f5fa; width:400px; height:550px; position:absolute; left:50%; margin-left:-200px; top:50%; margin-top:-300px; border-radius:5px;}
+.tc_ul_div1{ width:300px; height:400px;margin-top:20px; margin-left:50px; overflow:auto;}
+.tc_ul_s{ height:auto;}
+.tc_ul_s li{ overflow:hidden; height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
+.tc_ul_s label{ position:absolute; left:0;}
+.tc_ul_s select{ width:195px;position:absolute; left:85px; top:15px;}
+.tc_inp{ width:190px;position:absolute; left:85px; top:15px;}
+
+.bottom_sp3{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:100px; margin-right:40px; cursor:pointer;}
+.bottom_sp4{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}
+
+.js_sp2{ float:right; display:block; overflow:hidden;font-size:14px;margin-right:50px; margin-top:12px;}
+.js_sp3{float:left; display:block; font-size:14px;color:#000; margin-left:220px;}
+.js_inp{ float:left; width:160px; height:26px; margin-right:10px;}
+.js_inp1{width:50px; height:22px;}
+.left1{ display:block; width:28px; height:26px; line-height:26px; background:#20b891; float:left;}
+.left1 img{ margin-left:4px; margin-top:3px;}
+
+.tc_ul_div{width:700px; height:260px;margin-top:20px; margin-left:50px; overflow:auto;}
+.tc_ul{ height:auto;}
+.tc_ul li{ overflow:hidden; height:30px; width:100%; line-height:30px;}
+.tc_ul span{ display:block; float:left; height:30px; width:170px; font-size:14px; text-align:center;}
+
+.bottom2{ width:100%; height:70px; line-height:70px; overflow:hidden;}
+.bottom_sp1{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:290px; margin-right:40px; cursor:pointer;}
+.bottom_sp2{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}
+
+.zz_ul{padding-left:20px; height:auto;}
+.zz_ul1{padding-left:20px; height:auto;display:none;}
+.zz_li{ overflow:hidden;font-size:12px; line-height:28px; }
+.zz_li img{ float:left; margin-top:11px; margin-right:10px;}
+.zz_li1{ margin-left:20px;}
+.zz_ul input{ float:left; margin-top:8px; margin-right:5px;}
+
+</style>
+<form method="post" name="form_adv_search" id="form_adv_search">
+	<div class="adv_search panel panel-default "  id="adv_search">
+		<div class="panel-body">
+			<div class="form-group col-sm-3">
+				<label class="col-sm-4 control-label" for="eq_code">岗位代码：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" id="position_no" name="position_no" check="require" msg="请输入编码">
+					<input  class="form-control" type="text" id="code" name="code" >
 				</div>
 			</div>
-
-			<div class="form-group col-xs-12">
-				<label class="col-sm-4 control-label" for="name">名称*：</label>
+			
+			<div class="form-group col-sm-3" id="create_user_name">
+				<label class="col-sm-4 control-label" for="li_position_name">岗位名称：</label>
 				<div class="col-sm-8">
-					<input class="form-control"  type="text" id="name" name="name" check="require" msg="请输入名称">
+					<input  class="form-control" type="text" id="li_position_name" name="li_position_name" >
 				</div>
 			</div>
-
-			<div class="form-group col-xs-12">
-				<label class="col-sm-4 control-label" for="sort">排序：</label>
+			<div class="form-group col-sm-3">
+				<label class="col-sm-4 control-label" for="eq_is_del">数据状态：</label>
 				<div class="col-sm-8">
-					<input class="form-control"  type="text" id="sort" name="sort" >
-				</div>
-			</div>
-
-			<div class="form-group col-xs-12">
-				<label class="col-sm-4 control-label" for="is_del">状态：</label>
-				<div class="col-sm-8">
-					<select  class="form-control" name="is_del" id="is_del">
-						<option  value="0">启用</option>
+					<select class="form-control" name="eq_is_del" id="eq_is_del">
+						<option value="">选择类型</option>
+						<option value="0">启用</option>
 						<option value="1">禁用</option>
 					</select>
 				</div>
 			</div>
-		</form>
+			<div class="col-sm-3">
+				<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+			</div>
+		</div>
 	</div>
+</form>
+<div class="operate panel panel-default">
+	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
+		<div class="pull-left">
+			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">岗位列表</span>
+		</div>
+		<div class="pull-right">
+			<a class="btn btn-sm btn-primary" id="a_lbtj">新建</a>
+		</div>
+	</div>
+</div>
+
+
+<div class="ul_table">
+	<ul>
+		<li class="thead">
+			<div class="pull-left">
+				<span class="col-8">岗位代码</span>
+				<span class="col-15">岗位名称</span>
+				<span class="col-10">添加人</span>
+				<span class="col-15">添加时间</span>
+				<span class="col-15">修改时间</span>
+				<span class="col-10">修改人</span>
+				<span class="col-4">状态</span>
+			</div>
+			<div class="pull-right">
+				<span class="col-10">操作</span>
+				<span class="col-10">&nbsp;</span>
+			</div>
+		</li>
+		<empty name="list">
+			<li class="no-data">
+				没找到数据
+			</li>
+			<else/>
+			<foreach name="list" item="vo">
+				<li class="tbody">
+					<div class="pull-left">
+						<span class="col-8">{$vo.code}&nbsp;</span>
+						<span class="col-15">{$vo.position_name}&nbsp;</span>
+						<span class="col-10">{$vo.create_user_name}&nbsp;</span>
+						<span class="col-15"><if condition="$vo.create_time neq ''">{$vo.create_time|date='Y-m-d H:i:s',###}</if>&nbsp;</span>
+						<span class="col-15"><if condition="$vo.update_time neq ''">{$vo.update_time|date='Y-m-d H:i:s',###}</if>&nbsp;</span>
+						<span class="col-10">{$vo.update_user_name}&nbsp;</span>
+						<span class="col-4">{$vo.is_del|user_status}</span>
+	
+					</div>
+					<div class="pull-right">
+						<span class="col-10">
+							<input type="hidden"  value="{$vo.position_name}">
+							<input type="hidden"  value="{$vo.is_del}">
+							<a onclick="show_edit_dialog('{$vo.id}','{$vo.position_name}','{$vo.is_del}')">编辑&nbsp;</a>
+						</span>
+						<span class="col-10">
+							<a onclick="distribute('{$vo.id}')">分配到部门&nbsp;</a>
+						</span>
+					</div>
+				</li>
+			</foreach>
+			<div class="pagination">
+				{$page}
+			</div>
+		</empty>
+	</ul>
+</div>
+
+<div class="tc" id="tc_lbbj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj1">编辑</span>
+        </div>
+        <form method='post' id="form_data" name="form_data" enctype="multipart/form-data">
+	        <div class="tc_ul_div1">
+	            <ul class="tc_ul_s">
+	            	<input type=hidden name="id" id="id">
+	                <li>
+	                    <label>岗位名称：</label>
+	                    <input class="tc_inp" id="position_name" name="position_name" type="text"/>
+	                </li> 
+	                <li>
+	                    <label>状态：</label>
+	                    <select name="is_del" id="is_del">
+	                        <option value="0">启用</option>
+	                        <option value="1">禁用</option>
+	                    </select>
+	                </li>
+	            </ul>
+	        </div>
+        
+	        <div class="bottom2">
+	        	<span class="bottom_sp3">取消</span>
+	            <span class="bottom_sp4">确定</span>
+	        </div>
+        </form>
+    </div>
+</div>
+
+<div class="tc" id="tc_fpbm">
+	<form method='post' id="form_data2" name="form_data2" enctype="multipart/form-data">
+		<input type="hidden" name="position_id" id="position_id"/>
+		<div class="tc_div">
+	    	<div class="tc_title">
+	        	<span class="js_sp1">分配到部门</span>
+	        </div>
+	        <div class="tc_ul_div">
+	            <ul class="zz_ul">
+	                <li class="zz_li">
+	                    <img src="__PUBLIC__/img/xl.png"/>
+	                    <span>神洲酷奇</span>
+	                    <ul class="zz_ul1">
+	                        <li class="zz_li1"> 
+	                            <input type="checkbox" id="dept_1" name="dept[]" value="1"/>
+	                        	<label for="dept_1">公司领导</label>
+	                        </li>
+	                        <li class="zz_li1">
+	                            <input type="checkbox" id="dept_2" name="dept[]" value="2"/>
+	                        	<label for="dept_2">总经办</label>
+	                        </li>
+	                        <li class="zz_li">
+	                            <img src="__PUBLIC__/img/xl.png"/>
+	                            <span>杭州园区</span>
+	                            <ul class="zz_ul1">
+	                            	<li class="zz_li1">
+	                                    <input type="checkbox" id="dept_3" name="dept[]" value="3"/>
+	                                    <label for="dept_3">财务部</label>
+	                                </li>
+	                            </ul>
+	                        </li>
+	                    </ul>
+	                </li>
+	            </ul>
+	        </div>
+	        
+	        <div class="bottom2">
+	        	<span class="bottom_sp1">取消</span>
+	            <span class="bottom_sp2">确定</span>
+	        </div>
+	    </div>
+    </form>
 </div>
 <script type="text/javascript">
 $(function() {
-	var html = "<li>系统管理</li><li>公司信息管理</li><li>职位</li>";
+	var html = "<li>组织结构管理</li><li>岗位列表</li>";
 	$("#breadcrumbs ul").append(html);
 });
 </script>

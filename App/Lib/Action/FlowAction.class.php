@@ -2223,7 +2223,7 @@ class FlowAction extends CommonAction {
 					$data['user_id'] = get_user_id();
 					$data['flow_id'] = $flow_id;
 					$data['status'] = $step==10?3:0;
-					M('FlowHour')->add($data);
+					M('FlowHourCreate')->add($data);
 				}
 				if($style=='年假'){
 					$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
@@ -2709,7 +2709,7 @@ class FlowAction extends CommonAction {
 			if(getModelName($flow_id)=='FlowLeave'){
 				if($style=='调休'){
 					$data['status'] = $step==10?3:0;
-					M('FlowHour')->where('flow_id='.$flow_id)->save($data);
+					M('FlowHourCreate')->where('flow_id='.$flow_id)->save($data);
 				}
 				if($style=='年假'){
 					$data['status'] = $step==10?3:0;
@@ -2751,7 +2751,7 @@ class FlowAction extends CommonAction {
 				$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 				$create_time = strtotime($flow['start_time']);
 				if($flow['style']=='调休'){
-					$flow_hour = M('FlowHour')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+					$flow_hour = M('FlowHourCreate')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 					if(!$flow_hour){
 						$del_hour = $flow['day_num']*8+$flow['hour_num'];
 						$flow = M('Flow')->find($flow_id);
@@ -2759,10 +2759,10 @@ class FlowAction extends CommonAction {
 						$data['create_time'] = $create_time;
 						$data['user_id'] = $flow['user_id'];
 						$data['status'] = 4;
-						M('FlowHour')->add($data);
+						M('FlowHourCreate')->add($data);
 					}else{
 						$data['status'] = 4;
-						M('FlowHour')->where('flow_id='.$flow_id)->save($data);
+						M('FlowHourCreate')->where('flow_id='.$flow_id)->save($data);
 					}
 				}else if($flow['style']=='年假'){
 					$flow_year = M('FlowYear')->where(array('flow_id'=>array('eq',$flow_id)))->find();
@@ -2872,14 +2872,14 @@ class FlowAction extends CommonAction {
 								$data['user_id'] = $flow['user_id'];
 								$data['flow_id'] = $flow_id;
 								$data['status'] = 1;
-								M('FlowHour')->add($data);
+								M('FlowHourCreate')->add($data);
 							}
 						}elseif(getModelName($flow_id)=='FlowLeave'){//员工请假申请
 							$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 							$create_time = strtotime($flow['start_time']);
 							$end_time = strtotime($flow['end_time']);
 							if($flow['style']=='调休'){
-								$flow_hour = M('FlowHour')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+								$flow_hour = M('FlowHourCreate')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 								if(!$flow_hour){
 									$del_hour = $flow['day_num']*8+$flow['hour_num'];
 									$flow = M('Flow')->find($flow_id);
@@ -3026,7 +3026,7 @@ class FlowAction extends CommonAction {
 						$flow = M('FlowLeave')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 						$create_time = strtotime($flow['start_time']);
 						if($flow['style']=='调休'){
-							$flow_hour = M('FlowHour')->where(array('flow_id'=>array('eq',$flow_id)))->find();
+							$flow_hour = M('FlowHourCreate')->where(array('flow_id'=>array('eq',$flow_id)))->find();
 							if(!$flow_hour){
 								$del_hour = $flow['day_num']*8+$flow['hour_num'];
 								$flow = M('Flow')->find($flow_id);
@@ -3034,10 +3034,10 @@ class FlowAction extends CommonAction {
 								$data['create_time'] = $create_time;
 								$data['user_id'] = $flow['user_id'];
 								$data['status'] = 2;
-								M('FlowHour')->add($data);
+								M('FlowHourCreate')->add($data);
 							}else{
 								$data['status'] = 2;
-								M('FlowHour')->where('flow_id='.$flow_id)->save($data);
+								M('FlowHourCreate')->where('flow_id='.$flow_id)->save($data);
 							}
 						}else if($flow['style']=='年假'){
 							$flow_year = M('FlowYear')->where(array('flow_id'=>array('eq',$flow_id)))->find();

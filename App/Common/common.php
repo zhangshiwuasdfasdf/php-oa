@@ -1141,6 +1141,9 @@ function popup_menu_organization($tree, $level = 0,$deep=100) {
 	if (is_array($tree) && $deep>0) {
 		$i = $level>2?'2':'';
 		$html = "<ul class=\"zz_ul$i\">\r\n";
+		if($level == '2'){
+			$html = $html . "<li class=\"zz_li1\" onclick=show_list('".$tree[0]['id']."','1')>"."公司领导"."</li>\r\n";
+		}
 		foreach ($tree as $val) {
 			if (isset($val["name"])) {
 				$title = $val["name"];
@@ -1150,11 +1153,11 @@ function popup_menu_organization($tree, $level = 0,$deep=100) {
 				}
 
 				if (isset($val['_child'])) {
-					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"__PUBLIC__/img/xl.png\"/><span onclick=show_list($id)>$title</span>\r\n";
+					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"__PUBLIC__/img/xl.png\"/><span onclick=show_list('$id')>$title</span>\r\n";
 					$html = $html . popup_menu_organization($val['_child'], $level,$deep);
 					$html = $html . "</li>\r\n";
 				} else {
-					$html = $html . "<li class=\"zz_li1\" onclick=show_list($id)>$title</li>\r\n";
+					$html = $html . "<li class=\"zz_li1\" onclick=show_list('$id')>$title</li>\r\n";
 				}
 			}
 		}
@@ -1162,11 +1165,13 @@ function popup_menu_organization($tree, $level = 0,$deep=100) {
 	}
 	return $html;
 }
-function popup_menu_option($tree, $level = 0,$deep=100) {
+function popup_menu_organization_checkbox($tree, $level = 0,$deep=100) {
 	$level++;
 	$deep--;
 	$html = "";
 	if (is_array($tree) && $deep>0) {
+		$i = $level>1?'1':'';
+		$html = "<ul class=\"zz_ul$i\">\r\n";
 		foreach ($tree as $val) {
 			if (isset($val["name"])) {
 				$title = $val["name"];
@@ -1174,12 +1179,41 @@ function popup_menu_option($tree, $level = 0,$deep=100) {
 				if (empty($val["id"])) {
 					$id = $val["name"];
 				}
-				
+
 				if (isset($val['_child'])) {
-					$html = $html . "<option value=\"$id\">".substr('----------',0,$level-1).$title."</option>\r\n";
-					$html = $html . popup_menu_option($val['_child'], $level,$deep);
+					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"".__ROOT__."/Public/img/xl.png\"/><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"/><label for=\"dept_$id\">$title</label>\r\n";
+					$html = $html . popup_menu_organization_checkbox($val['_child'], $level,$deep);
+					$html = $html . "</li>\r\n";
 				} else {
-					$html = $html . "<option value=\"$id\">".substr('----------',0,$level-1).$title."</option>\r\n";
+					$html = $html . "<li class=\"zz_li1\"><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"/><label for=\"dept_$id\">$title</label></li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+function popup_menu_option($tree, $level = 0,$default='') {
+	$level++;
+	$html = "";
+	if (is_array($tree)) {
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title = $val["name"];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				if($id == $default){
+					$ext = "selected=\"selected\"";
+				}else{
+					$ext = "";
+				}
+				if (isset($val['_child'])) {
+					$html = $html . "<option ".$ext." value=\"$id\">".substr('----------',0,$level-1).$title."</option>\r\n";
+					$html = $html . popup_menu_option($val['_child'], $level,$default);
+				} else {
+					$html = $html . "<option ".$ext." value=\"$id\">".substr('----------',0,$level-1).$title."</option>\r\n";
 				}
 			}
 		}
@@ -3509,5 +3543,13 @@ function show_status_color($name){
 }
 function test($a='a',$b='b',$c='c'){
 	return $a.$b.$c;
+}
+function getRootDept($dept_id){
+	while($dept_id){
+		$id = $dept_id;
+		$dept_id = M('Dept')->where(array('id'=>$dept_id))->getField('pid');
+	}
+	$dept = M('Dept')->where(array('id'=>$id))->find();
+	return $dept;
 }
 ?>

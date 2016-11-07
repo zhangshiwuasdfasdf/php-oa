@@ -812,5 +812,13 @@ class CommonAction extends Action {
 			$this -> ajaxReturn(array('msg'=>$type_name.'失败','code'=>$type,'status'=>0));
 		}
 	}
+	public function edit_is_use(){
+		$res = M($_POST['model'])->where(array($_POST['field']=>$_POST['id']))->save(array('is_use'=>$_POST['type']));
+		if(false !== $res){
+			$this -> ajaxReturn($_POST['id'],1,1);
+		}else{
+			$this -> ajaxReturn($_POST['id'],0,0);
+		}
+	}
 }
 ?>
