@@ -180,10 +180,6 @@ $model = M("RoleNode");
 		}
 	}
 	
-	public function role_lst(){
-		$this->display();
-	}
 	
-
 }
 ?>
