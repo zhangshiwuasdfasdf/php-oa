@@ -13,7 +13,7 @@
 
 class OrganizationAction extends CommonAction {
 
-	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read','get_all_position'=>'read','get_edit_user_html'=>'read','change_dept_html'=>'read','change_position_html'=>'read','user_edit'=>'read','user_dept_position_set'=>'read','search_user'=>'read','r_dept_position_add'=>'read'));
+	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read','get_all_position'=>'read','get_edit_user_html'=>'read','change_dept_html'=>'read','change_position_html'=>'read','user_edit'=>'read','user_dept_position_set'=>'read','search_user'=>'read','r_dept_position_add'=>'read','r_dept_position_edit'=>'read','delete'=>'read','edit_is_use'=>'read','dept_add'=>'read'));
 
 	public function index(){
 		
@@ -99,74 +99,105 @@ class OrganizationAction extends CommonAction {
 	}
 	public function changeContent(){
 		if($this->isAjax()){
-			$p = !$_REQUEST['p']||$_REQUEST['p']<=0 ? 1 : intval($_REQUEST['p']);
+// 			$p_dept = !$_REQUEST['p_dept']||$_REQUEST['p_dept']<=0 ? 1 : intval($_REQUEST['p_dept']);
+// 			$p_position = !$_REQUEST['p_position']||$_REQUEST['p_position']<=0 ? 1 : intval($_REQUEST['p_position']);
+// 			$p_user = !$_REQUEST['p_user']||$_REQUEST['p_user']<=0 ? 1 : intval($_REQUEST['p_user']);
 			$type = $_REQUEST['type'];
-			if($type == '0'){//公司
+			
+			$p = !$_REQUEST['p']||$_REQUEST['p']<=0 ? 1 : intval($_REQUEST['p']);
+			
+			if(empty($type) || $type == 'company'){
 				$model = M("Dept");
+				$where = array();
 				$where['is_del'] = 0;
 				if(!empty($_REQUEST['dept_id'])){
 					$where['id'] = array('eq',$_REQUEST['dept_id']);
 				}
-				$list = $model->where($where)->page($p.',10')->select();
-				$list = $this->_getRootDept($list);
-				$count = $model->where($where)->count();
-			}elseif ($type == '1'){//部门
+				$list_company = $model->where($where)->page($p.',10')->select();
+				$list_company = $this->_getRootDept($list_company);
+				$count_company = $model->where($where)->count();
+			}
+			if(empty($type) || $type == 'dept'){
 				if(!$_REQUEST['show_leader']){
 					$model = M("Dept");
+					$where = array();
 					$where['is_del'] = 0;
 					if(!empty($_REQUEST['dept_id'])){
 						$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
 					}
-					$list = $model->where($where)->page($p.',10')->select();
-					$list = $this->_getRootDept($list);
-					$count = $model->where($where)->count();
+					$list_dept = $model->where($where)->page($p.',10')->select();
+					$list_dept = $this->_getRootDept($list_dept);
+					$count_dept = $model->where($where)->count();
 				}
-				
-			}elseif ($type == '2'){//岗位
+			}
+			if(empty($type) || $type == 'position'){
 				if(!$_REQUEST['show_leader']){
 					$model = D("PositionView");
+					$where = array();
 					if(!empty($_REQUEST['dept_id'])){
 						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
 						$position_ids = M('RDeptPosition')->where($where)->getField('position_id',true);
-						$list = M('Position')->where(array('id'=>array('in',$position_ids),'is_del'=>'0'))->page($p.',10')->select();
-						$count = M('Position')->where(array('id'=>array('in',$position_ids),'is_del'=>'0'))->count();
+						$position_dept = M('RDeptPosition')->where($where)->getField('position_id,dept_id');
+						$list_position = M('Position')->where(array('id'=>array('in',$position_ids),'is_del'=>'0'))->page($p.',10')->select();
+						foreach ($list_position as $k=>$v){
+							$list_position[$k]['dept_id'] = $position_dept[$v['id']];
+							$list_position[$k]['dept_name'] = M('Dept')->where(array('id'=>$list_position[$k]['dept_id']))->getField('name');
+						}
+						$count_position = M('Position')->where(array('id'=>array('in',$position_ids),'is_del'=>'0'))->count();
 					}
 				}
-			}elseif ($type == '3'){//员工
+			}
+			if(empty($type) || $type == 'user'){
 				if(!$_REQUEST['show_leader']){
+					$where = array();
 // 					$where['is_del'] = 0;
 					if(!empty($_REQUEST['dept_id'])){
 						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
 					}
 					$r_dept_user = M("RDeptUser")->where($where)->getField('user_id,dept_id');
 					$user_ids = M("RDeptUser")->where($where)->getField('user_id',true);
-					$list = M('User')->field('id,emp_no,name,sex,is_del')->where(array('id'=>array('in',$user_ids)))->page($p.',10')->select();
-					foreach ($list as $k=>$v){
-						$list[$k]['dept_id'] = $r_dept_user[$v['id']];
-						$list[$k]['dept_name'] = M('Dept')->where(array('id'=>$list[$k]['dept_id']))->getField('name');
-						$r_user_position = M('RUserPosition')->where(array('user_id'=>$v['id'],'dept_id'=>$list[$k]['dept_id']))->find();
-						$list[$k]['position_id'] = $r_user_position['position_id'];
-						$position_view = D('PositionView')->field('position_name,sequence_name')->where(array('id'=>$list[$k]['position_id']))->find();
-						$list[$k]['position_name'] = $position_view['position_name'];
-						$list[$k]['position_sequence'] = $position_view['sequence_name'];
-						$list[$k]['major'] = $r_user_position['is_major']==1?'主要':'兼职';
-						$list[$k]['is_del'] = $list[$k]['is_del']==1?'离职':'在职';
-// 						$list[$k]['company_name'] = getRootDept($list[$k]['dept_id'])['name'];
-// 						$list[$k]['company_id'] = getRootDept($list[$k]['dept_id'])['id'];
-// 						$list[$k]['all_company'] = $this->_get_all_company_html($list[$k]['company_id']);
+					$list_user = M('User')->field('id,emp_no,name,sex,is_del')->where(array('id'=>array('in',$user_ids)))->page($p.',10')->select();
+					foreach ($list_user as $k=>$v){
+						$list_user[$k]['dept_id'] = $r_dept_user[$v['id']];
+						$list_user[$k]['dept_name'] = M('Dept')->where(array('id'=>$list_user[$k]['dept_id']))->getField('name');
+						$r_user_position = M('RUserPosition')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
+						$list_user[$k]['position_id'] = $r_user_position['position_id'];
+						$position_view = D('PositionView')->field('position_name,sequence_name')->where(array('id'=>$list_user[$k]['position_id']))->find();
+						$list_user[$k]['position_name'] = $position_view['position_name'];
+						$list_user[$k]['position_sequence'] = $position_view['sequence_name'];
+						$list_user[$k]['major'] = $r_user_position['is_major']==1?'主要':'兼职';
+						$list_user[$k]['is_del'] = $list_user[$k]['is_del']==1?'离职':'在职';
+// 						$list_user[$k]['company_name'] = getRootDept($list[$k]['dept_id'])['name'];
+// 						$list_user[$k]['company_id'] = getRootDept($list[$k]['dept_id'])['id'];
+// 						$list_user[$k]['all_company'] = $this->_get_all_company_html($list[$k]['company_id']);
 					}
-					$count = M('User')->where(array('id'=>array('in',$user_ids)))->count();
+					$count_user = M('User')->where(array('id'=>array('in',$user_ids)))->count();
 				}else{
 					
 				}
-			}
+			}	
 			$data['type'] = $type;
-			$data['list'] = $list;
+			$data['list_dept'] = $list_dept;
+			$data['list_position'] = $list_position;
+			$data['list_user'] = $list_user;
 			
-			$data['p'] = $p;
-			$data['count'] = $count?$count:0;
-			$data['total'] = $count%10 > 0 ? ceil($count/10) : $count/10;
-			$data['total'] = $data['total']?$data['total']:1;
+			//以下的当前页只有一个对，但是前端不采用，所以无影响
+			$data['p_dept'] = $p;
+			$data['p_position'] = $p;
+			$data['p_user'] = $p;
+			
+			$data['count_dept'] = $count_dept?$count_dept:0;
+			$data['count_position'] = $count_position?$count_position:0;
+			$data['count_user'] = $count_user?$count_user:0;
+			
+			$data['total_dept'] = $count_dept%10 > 0 ? ceil($count_dept/10) : $count_dept/10;
+			$data['total_dept'] = $data['total_dept']?$data['total_dept']:1;
+			
+			$data['total_position'] = $count_position%10 > 0 ? ceil($count_position/10) : $count_position/10;
+			$data['total_position'] = $data['total_position']?$data['total_position']:1;
+			
+			$data['total_user'] = $count_user%10 > 0 ? ceil($count_user/10) : $count_user/10;
+			$data['total_user'] = $data['total_user']?$data['total_user']:1;
 			$this->ajaxReturn($data, '', 1);
 		}
 	}
@@ -311,8 +342,59 @@ class OrganizationAction extends CommonAction {
 		$this->ajaxReturn($res,1,1);
 	}
 	function r_dept_position_add(){
-		$find = M('RDeptPosition')->where(array('dept_id'=>$_POST['position_dept'],'position_id'=>$_POST['position_position']));
-		dump($_POST);die;
+		$find = M('RDeptPosition')->where(array('dept_id'=>$_POST['position_dept'],'position_id'=>$_POST['position_position']))->find();
+		if(false != $find){
+			$this->error('此部门下已有此岗位！');
+		}else{
+			$res = M('RDeptPosition')->add(array('dept_id'=>$_POST['position_dept'],'position_id'=>$_POST['position_position']));
+			if($res){
+				$this->success('添加成功');
+			}else{
+				$this->error('添加失败');
+			}
+		}
+	}
+	function r_dept_position_edit(){
+		if(empty($_GET['origin_dept_id']) || empty($_GET['origin_position_id'])){
+			$this->error('修改失败');
+		}
+		$res = M('RDeptPosition')->where(array('dept_id'=>$_GET['origin_dept_id'],'position_id'=>$_GET['origin_position_id']))->save(array('dept_id'=>$_POST['position_dept'],'position_id'=>$_POST['position_position']));
+		if(false !== $res){
+			$this->success('修改成功');
+		}else{
+			$this->error('修改失败');
+		}
+	}
+	function delete(){
+		if($_GET['type'] == '1'){
+			$res = M('Dept')->where(array('id'=>array('in',$_POST['box_dept'])))->save(array('is_del'=>'1'));
+		}elseif($_GET['type'] == '2'){
+			$res = M('Position')->where(array('id'=>array('in',$_POST['box_position'])))->save(array('is_del'=>'1'));
+		}elseif($_GET['type'] == '3'){
+			$res = M('User')->where(array('id'=>array('in',$_POST['box_user'])))->save(array('is_del'=>'1'));
+		}
+		if(false !== $res){
+			$this->success('删除成功');;
+		}else{
+			$this->error('删除失败');
+		}
+	}
+	function dept_add(){
+		if(!empty($_POST['dept_dept_parent']) && !empty($_POST['dept_dept'])){
+			$data['pid'] = $_POST['dept_dept_parent'];
+			$data['dept_grade_id'] = $_POST['dept_dept_degree'];
+			$data['name'] = $_POST['dept_dept'];
+			$data['is_del'] = '0';
+			$data['is_use'] = $_POST['dept_dept_is_use'];
+			$res = M('Dept')->add($data);
+			if(false !== $res){
+				$this->success('新增成功');
+			}else{
+				$this->error('新增失败');
+			}
+		}else{
+			$this->error('新增失败');
+		}
 	}
 }
 ?>

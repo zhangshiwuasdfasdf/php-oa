@@ -29,7 +29,7 @@ input,select{ margin:0; padding:0; outline:none;}
 .in_title label{ font-size:14px;}
 
 .top_k{ height:54px; line-height:54px;}
-.top2{ height:54px; background:#fff; line-height:54px; overflow:auto; white-space:nowrap;}
+.top2{ height:54px; background:#fff; line-height:54px; white-space:nowrap;}
 .top2 span{ display:block; font-size:12px; float:left; margin-left:20px;}
 .top_in{ width:114px; height:24px;border:solid 1px #aaaaaa;}
 .top_select{ width:98px; height:24px; outline:none;}
@@ -124,48 +124,47 @@ input,select{ margin:0; padding:0; outline:none;}
     
     <div class="content_t">
     	<div class="in_title">
-        	<input type="radio" name="radio" id="in_gs" value="0" checked="checked"/>
-            <label for="in_gs">公司</label>
         	<input type="radio" name="radio" id="in_bm" value="1"/>
             <label for="in_bm">部门</label>
             <input type="radio" name="radio" id="in_gw" value="2"/>
             <label for="in_gw">岗位</label>
-            <input type="radio" name="radio" id="in_yg" value="3"/>
+            <input type="radio" name="radio" id="in_yg" value="3" checked="checked"/>
             <label for="in_yg">员工</label>
         </div>
         <div class="top2">
-            <span>姓名/档案号：<input class="top_in" type="text"/></span>
+            <span>姓名/档案号：<input class="top_in" id="name_no" type="text"/></span>
             <span>员工状态：<input class="top_in" id="yg_in" type="text" readonly/></span>
+            <input id="yg_in_val" type="hidden"/>
             <span>有无兼职：
-                <select class="top_select">
+                <select class="top_select" id="part_time_job">
                     <option selected="selected">请选择</option>
-                    <option>无</option>
-                    <option>有</option>
+                    <option value="0">无</option>
+                    <option value="1">有</option>
                 </select>
             </span>
-            <div class="top_button">
+            <div class="top_button" onclick="search()">
                 <img src="__PUBLIC__/img/cx.png"/>
             </div>
             <div class="top_ul_z">
                 <ul class="top_ul">
                     <li>
-                        <input type="checkbox" checked="checked"/>
+                        <input type="checkbox" checked="checked" class="status" value="0"/>
                         <label>实习生</label>
                     </li>
                     <li>
-                        <input type="checkbox" checked="checked"/>
+                        <input type="checkbox" checked="checked" class="status" value="1"/>
                         <label>试用期</label>
                     </li>
                     <li>
-                        <input type="checkbox" checked="checked"/>
+                        <input type="checkbox" checked="checked" class="status" value="2"/>
                         <label>已转正</label>
                     </li>
                     <li>
-                        <input type="checkbox" checked="checked"/>
+                        <input type="checkbox" checked="checked" class="status" value="3"/>
                         <label>拟离职</label>
                     </li>
                     <li>
-                        <input type="checkbox"/>
+                        <input type="checkbox" class="status" value="4"/>
                         <label>离职</label>
                     </li>
                     <div>
@@ -176,7 +175,7 @@ input,select{ margin:0; padding:0; outline:none;}
             </div>
         </div>
         <!--公司列表-->
-        <div id="gslb">
+        <!-- <div id="gslb">
             <div class="content_title">
                 <span class="content_sp1"></span>
                 <span class="content_sp2">公司列表</span>
@@ -196,19 +195,12 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span1"></span>
                     </li>
                     <div class="company_content">
-                    <!-- <li class="content_li">
-                    	<span class="span2_0"><input name="box" type="checkbox"/></span>
-                        <span class="span2">总部</span>
-                        <span class="span2"></span>
-                        <span class="span2"><a class="content_a">启用</a></span>
-                        <span class="span2"><a class="content_a">禁用</a></span>
-                        <span class="span2"><a class="content_a" id="a_gsbj">编辑</a></span>
-                    </li> -->
                     </div>
                 </ul>
             </div>
-        </div>
+        </div> -->
         <!--部门列表-->
+        <form method='post' id="dept_data" name="dept_data" enctype="multipart/form-data">
         <div id="bmlb">
             <div class="content_title">
                 <span class="content_sp1"></span>
@@ -230,20 +222,31 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span1"></span>
                     </li>
                     <div class="dept_content">
-                    <!-- <li class="content_li">
-                    	<span class="span2_0"><input name="box" type="checkbox"/></span>
-                        <span class="span2">总部</span>
-                        <span class="span2">技术部</span>
-                        <span class="span2"></span>
-                        <span class="span2"><a class="content_a">启用</a></span>
-                        <span class="span2"><a class="content_a">禁用</a></span>
-                        <span class="span2"><a class="content_a" id="a_bmbj">编辑</a></span>
-                    </li> -->
                     </div>
                 </ul>
             </div>
+            <div class="content_bottom">
+	            <div class="content_bottom1"></div>
+	            <div class="content_bottom2">
+	                <div class="b1">
+	                    <input id="all_dept" type="checkbox"/>
+	                    <span>全选</span>
+	                </div>
+	                <div class="b2" id="delete_dept">删除</div>
+	                
+	                <div class="b3">
+	                    <span id="counts_dept" class="b3_s1"></span>
+	                    <span id="ps_dept" class="b3_s2"></span>
+	                    <span id="total_pages_dept" class="b3_s1"></span>
+	                </div>
+	                <ul id="changepage_dept" class="b5">
+	                </ul>
+	            </div>
+	        </div>
         </div>
+        </form>
         <!--岗位列表-->
+        <form method='post' id="position_data" name="position_data" enctype="multipart/form-data">
         <div id="gwlb">
             <div class="content_title">
                 <span class="content_sp1"></span>
@@ -264,20 +267,31 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span1"></span>
                     </li>
                     <div class="position_content">
-                    <!-- <li class="content_li">
-                    	<span class="span2_0"><input name="box" type="checkbox"/></span>
-                        <span class="span2"></span>
-                        <span class="span2"></span>
-                        <span class="span2"></span>
-                        <span class="span2"></span>
-                        <span class="span2"><a class="content_a" id="a_gwbj">编辑</a></span>
-                        <span class="span2"><a class="content_a" id="a_fp">分配情况</a></span>
-                    </li> -->
                     </div>
                 </ul>
             </div>
+            <div class="content_bottom">
+	            <div class="content_bottom1"></div>
+	            <div class="content_bottom2">
+	                <div class="b1">
+	                    <input id="all_position" type="checkbox"/>
+	                    <span>全选</span>
+	                </div>
+	                <div class="b2" id="delete_position">删除</div>
+	                
+	                <div class="b3">
+	                    <span id="counts_position" class="b3_s1"></span>
+	                    <span id="ps_position" class="b3_s2"></span>
+	                    <span id="total_pages_position" class="b3_s1"></span>
+	                </div>
+	                <ul id="changepage_position" class="b5">
+	                </ul>
+	            </div>
+	        </div>
         </div>
+        </form>
         <!--员工列表-->
+        <form method='post' id="user_data" name="user_data" enctype="multipart/form-data">
         <div id="yglb">
             <div class="content_title">
                 <span class="content_sp1"></span>
@@ -322,53 +336,26 @@ input,select{ margin:0; padding:0; outline:none;}
                     </div>
                 </ul>
             </div>
+            <div class="content_bottom">
+	            <div class="content_bottom1"></div>
+	            <div class="content_bottom2">
+	                <div class="b1">
+	                    <input id="all_user" type="checkbox"/>
+	                    <span>全选</span>
+	                </div>
+	                <div class="b2" id="delete_user">删除</div>
+	                
+	                <div class="b3">
+	                    <span id="counts_user" class="b3_s1"></span>
+	                    <span id="ps_user" class="b3_s2"></span>
+	                    <span id="total_pages_user" class="b3_s1"></span>
+	                </div>
+	                <ul id="changepage_user" class="b5">
+	                </ul>
+	            </div>
+	        </div>
         </div> 
-        <div class="content_bottom">
-            <div class="content_bottom1"></div>
-            <div class="content_bottom2">
-                <div class="b1">
-                    <input id="all" type="checkbox"/>
-                    <span>全选</span>
-                </div>
-                <div class="b2">删除</div>
-                
-                <!-- <div class="row pagination">
-                	<div class="span2">
-                		<span id="counts"></span>
-                		<span id="ps"></span>
-                		<span id="total_pages"></span>
-                	</div>
-                	<div class="span4">
-						<div>
-						<ul id="changepages">
-							
-						</ul>
-						</div>
-					</div>
-                </div> -->
-                
-                <div class="b3">
-                    <span id="counts" class="b3_s1"></span>
-                    <span id="ps" class="b3_s2"></span>
-                    <span id="total_pages" class="b3_s1"></span>
-                </div>
-                <ul id="changepages" class="b5">
-                </ul>
-                <!-- <div class="b5" id="changepages">
-                    <span class="b5_s1">1</span>
-                    <span class="b5_s1">2</span>
-                    <span class="b5_s1">3</span>
-                    <span class="b5_s1">4</span>
-                    <span class="b5_s1">5</span>
-                    <span>...</span>
-                    <span class="b5_s1">3788</span>
-                    <span class="b5_s1">下一页</span>
-                    <span class="b5_s3"><input type="text"/></span>
-                    <span class="b5_s1">go</span>
-                </div> -->
-            </div>
-        </div>
-                    
+        </form>  
     </div>          
 </div>
 <!--公司-->
@@ -481,6 +468,7 @@ input,select{ margin:0; padding:0; outline:none;}
     </div>
 </div>
 <div class="tc" id="tc_bmtj">
+	<form method='post' id="form_data_dept_add" name="form_data_dept_add" enctype="multipart/form-data">
 	<div class="tc_div1">
     	<div class="tc_title">
         	<span class="js_sp1" id="tj1">添加</span>
@@ -489,30 +477,32 @@ input,select{ margin:0; padding:0; outline:none;}
             <ul class="tc_ul_s">
                 <li>
                     <label>公司：</label>
-                    <select>
-                        <option>集团总部</option>
-                        <option>杭州基地</option>
-                        <option>宁波基地</option>
-                        <option>金华基地</option>
-                        <option>嘉兴基地</option>
+                    <select id="dept_company" name="dept_company" onChange="change_dept($(this).val(),'dept')">
+                    </select>
+                </li>
+                <li>
+                    <label>上级部门：</label>
+                    <select id="dept_dept" name="dept_dept_parent">
                     </select>
                 </li>
                 <li>
                     <label>部门：</label>
-                    <input class="tc_inp"/>
+					<input class="tc_inp" name="dept_dept" type="text">
                 </li>
                 <li>
                     <label>数据状态：</label>
-                    <select>
-                        <option>启用</option>
-                        <option>禁用</option>
+                    <select id="dept_dept_is_use" name="dept_dept_is_use">
+                        <option value="1">启用</option>
+                        <option value="0">禁用</option>
                     </select>
                 </li>
                 <li>
                     <label>部门层级：</label>
-                    <select>
-                        <option>一级部门</option>
-                        <option>二级部门</option>
+                    <select id="dept_dept_degree" name="dept_dept_degree">
+                        <option value="1">一级部门</option>
+                        <option value="2">二级部门</option>
+                        <option value="3">三级部门</option>
+                        <option value="4">四级部门</option>
                     </select>
                 </li>  
             </ul>
@@ -523,6 +513,7 @@ input,select{ margin:0; padding:0; outline:none;}
             <span class="bottom_sp4">确定</span>
         </div>
     </div>
+    </form>
 </div>
 
 <!--岗位-->
@@ -536,11 +527,6 @@ input,select{ margin:0; padding:0; outline:none;}
             	<li>
                     <label>公司名称：</label>
                     <select>
-                        <option>集团总部</option>
-                        <option>杭州基地</option>
-                        <option>宁波基地</option>
-                        <option>金华基地</option>
-                        <option>嘉兴基地</option>
                     </select>
                 </li>
                 <li>
