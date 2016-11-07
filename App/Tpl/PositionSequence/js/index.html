@@ -1,0 +1,73 @@
+<script>
+function del() {
+	var vars = $("#form_data_sc").serialize();
+	ui_confirm('确定要删除吗?',function(){
+		//alert(vars);
+	sendAjax("{:U('del_sequence')}", vars, function(data) {
+	if (data.status) {
+		ui_alert(data.info,function(){
+			$("input[name='id[]']:checkbox:checked").each(function() {
+			$(this).parents("li").remove();
+					});
+				});				
+			}
+		});
+	});
+}
+
+function show(id){
+	var id=$("#bj_" + id).val();
+	//alert(id);
+	$.ajax({
+			type:'post',
+			url:"{:U('showsequence')}",
+			data:{id:id},
+			success:function(data){
+				//alert(data);
+				if(data.status == '1'){
+					//location.reload();
+					for (var s in data.data) {
+						$("#sequence_id").attr('value',data.data[s].id);
+						$("#sequence_number").attr('value',data.data[s].sequence_number);
+						$("#sequence_name").attr('value',data.data[s].sequence_name);
+						$("#sequence_degree").attr('value',data.data[s].sequence_degree);
+					}
+				}
+			},
+			
+		})
+	
+}
+ 
+function edit(){
+	var id=$("#sequence_id").val();
+	var no=$("#sequence_number").val();
+	var name=$("#sequence_name").val();
+	var degree=$("#sequence_degree").val();
+	//alert(id);
+	$.ajax({
+		type: "post",
+		url: "{:U('edit_sequence')}",    
+		data:{id:id,sequence_number:no,sequence_name:name,sequence_degree:degree},
+		dataType: "json",
+		success:function(result){
+			if(result.data){
+				ui_alert("编辑成功",function(){
+					location.reload();
+				});
+			}else{
+				ui_alert('编辑失败',function(){
+					location.reload();
+				});	
+			}
+		},
+		error:function(e){
+			ui_alert("系统发生错误",function(){
+				location.reload();
+			});
+		}
+	});
+} 
+
+
+</script>

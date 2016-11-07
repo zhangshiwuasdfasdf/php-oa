@@ -1,0 +1,213 @@
+<script>
+function del() {
+	var vars = $("#form_data_scqx").serialize();
+	ui_confirm('确定要删除吗?',function(){
+		//alert(vars);
+	sendAjax("{:U('pri_del')}", vars, function(data) {
+	if (data.status) {
+		ui_alert(data.info,function(){
+			$("input[name='id[]']:checkbox:checked").each(function() {
+			$(this).parents("li").remove();
+					});
+			
+				});				
+			}
+		});
+	});
+}
+
+function show(id){
+	var id=$("#a_qxbj_" + id).attr('value');
+	//alert(id);
+	$.ajax({
+		type:'post',
+		url:"{:U('showprivilege')}",
+		data:{id:id},
+		success:function(data){
+			//alert(data);
+			if(data.status == '1'){
+				
+				for (var s in data.data) {
+					$("#pri_id").attr('value',data.data[s].id);
+					$("#pri_name").attr('value',data.data[s].pri_name);
+					$("#menu_new_id option").each(function(){
+						if($(this).val() == data.data[s].menu_new_id){
+							$(this).attr('selected','true');
+						}
+					})
+					/* $("#menu_new_id").attr('value',data.data[s].menu_new_id); */
+					$("#pri_act option").each(function(){
+						//alert($("#pri_act option").attr('value'));
+						//alert($(this).val());
+						if($(this).val() == "自定义"){
+							$(this).attr('selected','true');
+							$("#pri_act_zdy").attr('value',data.data[s].pri_act);
+						}
+						if($(this).val() == data.data[s].pri_act){
+							$(this).attr('selected','true');
+							$("#pri_act_zdy").attr('value','');
+						}
+					})
+					
+					/* $("#pri_act").attr('value',data.data[s].pri_act); */
+					$("#sort").attr('value',data.data[s].sort);
+				} 
+			}
+		},
+	})
+}
+
+function edit(){
+	var pri_id=$("#pri_id").val();
+	var pri_name=$("#pri_name").val();
+	var menu_new_id=$("#menu_new_id").val();
+	
+	if($("#pri_act").val() == "自定义"){
+		var pri_act=$("#pri_act_zdy").val();
+	}else{
+		var pri_act=$("#pri_act").val();
+	}
+	var sort=$("#sort").val();
+	//alert(id);
+	$.ajax({
+		type: "post",
+		url: "{:U('edit_pri')}",    
+		data:{pri_id:pri_id,pri_name:pri_name,menu_new_id:menu_new_id,pri_act:pri_act,sort:sort},
+		dataType: "json",
+		success:function(result){
+			if(result.data){
+				ui_alert("编辑成功",function(){
+					location.reload();
+				});
+			}else{
+				ui_alert('编辑失败',function(){
+					location.reload();
+				});	
+			}
+		},
+		error:function(e){
+			ui_alert("系统发生错误",function(){
+				location.reload();
+			});
+		}
+	});
+}
+
+function show_rel(id){
+	var id=$("#a_jsfz_" + id).attr('value');
+	//alert(id);
+	$.ajax({
+		type:'post',
+		url:"{:U('showprivilege')}",
+		data:{id:id},
+		success:function(data){
+			if(data.status == '1'){
+				for (var s in data.data) {
+					$("#pri_id_jsfz").attr('value',data.data[s].id);
+					$("#caidan").text(data.data[s].menu_name);
+					$("#quanxian").text(data.data[s].pri_act);
+					$("#pri_name").attr('value',data.data[s].pri_name);
+				}
+			}
+			
+		}
+	})
+}
+
+$("#copy_menu").change(function(){
+	var menu_new_id = $("#copy_menu").val();
+	$.ajax({
+		type:'post',
+		url:"{:U('get_pri_act')}",
+		data:{menu_new_id:menu_new_id},
+		success:function(data){
+			//alert(data);
+			if(data.status == '1'){
+					var html='';
+					html += "<option value=''>请选择</option>";
+				for (var s in data.data) {
+					$("#copy_pri option").remove();
+					html += "<option value='"+data.data[s].pri_act+"'>"+data.data[s].pri_act+"</option>";
+					
+				}
+				$("#copy_pri").append(html);
+			} 
+			
+		}
+	})
+});
+
+function contains(arr, obj) {
+    var i = arr.length;
+    while (i--) {
+        if (arr[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function get_role(id){
+	var id=$("#a_js_" + id).attr('value');
+	$.ajax({
+		type:'post',
+		url:"{:U('show_role')}",
+		data:{id:id},
+		success:function(data){
+			//alert(data);
+			if(data.status == '1'){
+				var span='';
+				for (var s in data.data) {
+					$(".tc_ul_div #span span").remove();
+					$("#pri_id_gljs").attr('value',id);
+
+					span += '<span><input type="checkbox" id="js1_role_id'+data.data[s].id+'" name="role_id[]" value="'+data.data[s].id+'"/><label for="js1_role_id'+data.data[s].id+'">'+data.data[s].name +'</label></span>';
+				}
+				//alert(span);
+				$(".tc_ul_div #span").append(span);
+				$("input[name='role_id[]']").each(function(){
+					var role_id=$(this).val();
+					//alert(contains(data.data['role_id'],role_id));
+					if(contains(data.data['role_id'],role_id)){
+						$(this).attr("checked",true);
+					}
+					$(".tc_ul_div #span #js1_role_idundefined").remove();
+					$(".tc_ul_div #span label[for='js1_role_idundefined']").remove();
+				});	
+			}
+		}
+	})
+}
+
+$("#search_role").click(function(){
+	var id=$("#pri_id_gljs").attr('value');
+	var name=$("#role_name").val();
+	$.ajax({
+		type:'post',
+		url:"{:U('show_role')}",
+		data:{id:id,name:name},
+		success:function(data){
+			//alert(data);
+			if(data.status == '1'){
+				var span='';
+				for (var s in data.data) {
+					$(".tc_ul_div #span span").remove();
+					$("#pri_id_gljs").attr('value',id);
+
+					span += '<span><input type="checkbox" id="js1_role_id'+data.data[s].id+'" name="role_id[]" value="'+data.data[s].id+'"/><label for="js1_role_id'+data.data[s].id+'">'+data.data[s].name +'</label></span>';
+				}
+				$(".tc_ul_div #span").append(span);
+				$("input[name='role_id[]']").each(function(){
+					var role_id=$(this).val();
+					//alert(contains(data.data['role_id'],role_id));
+					if(contains(data.data['role_id'],role_id)){
+						$(this).attr("checked",true);
+					}
+					$(".tc_ul_div #span #js1_role_idundefined").remove();
+					$(".tc_ul_div #span label[for='js1_role_idundefined']").remove();
+				});	
+			}
+		}
+	})
+});
+</script>

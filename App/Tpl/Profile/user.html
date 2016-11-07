@@ -51,6 +51,7 @@
         <li>员工在职履历</li>
         <li>考勤动态</li>
         <li>签入数据</li>
+        <li>状态管理</li>
     </ul>
     <ul class="ul2" style="overflow: auto;height: 460px;">
         <li>
@@ -984,6 +985,70 @@
               </foreach>
             </table>
 
+      </li>
+       <li>
+            <div class="nav_1">
+                <span class="block"></span>
+                <h1>状态管理</h1>
+            </div>
+            <form method="post" action="{:U('status_manage')}">
+            <table width="100%" border="0" cellspacing="1" cellpadding="0" class="ta1">
+            <input type="hidden" name="user_id" value="{$user_id}">
+            <tr>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">账号状态</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff">
+                <span class="sp2" style="text-align:center;">
+                	<select name="no_status" id="no_status" style="width:200px;height:25px">
+                    <option value="">请选择</option>
+                    <foreach name="noStatus" item="vo">
+                        <option value="{$vo.data_name}">{$vo.data_name}</option>
+                    </foreach>
+                    </select>
+                </span>
+                </td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">员工状态</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff">
+                <span class="sp2" style="text-align:center;">
+                	<select name="stuff_status" id="stuff_status" style="width:200px;height:25px">
+                    <option value="">请选择</option>
+                    <foreach name="stufStatus" item="vo">
+                        <option value="{$vo.data_name}">{$vo.data_name}</option>
+                    </foreach>
+                    </select>
+                </span>
+                </td>
+            </tr>
+            <tr>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">入职日期</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">
+                	<input style="width:200px;height:25px;" data-date-format="yyyy-mm-dd" id="entry_time" name="entry_time" type="text" class="form-control input-date"  <if condition="($StatusManage.entry_time eq '')">value="{$information[0]}"<else />value="{$StatusManage['entry_time']}"</if> />
+                </span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">转正日期</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">
+                	<input style="width:200px;height:25px;" data-date-format="yyyy-mm-dd" id="regular_time" name="regular_time" type="text" class="form-control input-date"  value="{$information[1]}"/>
+                </span></td>
+            </tr>
+            <tr>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">离职时间</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">
+                	<input style="width:200px;height:25px;" data-date-format="yyyy-mm-dd" id="leave_time" name="leave_time" type="text" class="form-control input-date"  value=""/>
+                </span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">更新人</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$StatusManage['create_name']}</span></td>
+            </tr>
+            <tr>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">更新时间</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$StatusManage[0]['create_time']|date="Y/m/d H:i:s",###}</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">备注</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">
+                	<input type="text" style="width:200px;height:25px;" name="remark" value="{$StatusManage[0].remark}"/>
+                </span></td>
+            </tr>
+            <tr>
+			    <td colspan="9" bgcolor="#FFFFFF" align="center"><input class="btn btn-sm btn-primary" type="submit" value="保存"><a onclick="quit()"  class="btn btn-sm btn-danger" style="margin: 5px;">取消</a></td>
+			</tr>
+        </table>
+        </form>
       </li>
     </ul>
     <script>

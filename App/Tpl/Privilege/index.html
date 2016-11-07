@@ -1,0 +1,417 @@
+<layout name='Layout/ace_layout' />
+<style>
+@charset "utf-8";
+/* CSS Document */
+*{ font-family:"微软雅黑";}
+a{ text-decoration:none;}
+ul,li{ margin:0; padding:0; list-style:none;}
+body{ margin:0; padding:0; background:#e5e5e5;}
+input{ margin:0; padding:0; outline:none;}
+
+.zong{ overflow:auto;}
+.top_k{ height:54px; line-height:54px;}
+.top1{ height:54px; background:#fff; line-height:54px; overflow:auto; white-space:nowrap;}
+.top1 span{ display:block; font-size:12px; float:left; margin-left:20px;}
+.top_in{ width:114px; height:24px;border:solid 1px #aaaaaa;}
+.top_button{ overflow:hidden;}
+.top_button img{ float:left; margin-top:8px; margin-left:16px; margin-right:5px;}
+
+.content_title{ background:#bdd3e0; height:40px; line-height:40px; margin-top:10px; position:relative;}
+.content_sp1{ display:block; position:absolute;width:6px; height:20px; background-color:#20b891; border:solid 1px #3da396;top:10px; border-radius:3px;left:20px;}
+.content_sp2{ display:block; font-size:12px; left:40px; position:absolute;}
+.img_tj{ display:block; float:left; margin-top:14px;}
+.content_sp3{display:block;position:absolute;right:20px;font-size:12px; color:#4c6456; font-weight:bold; cursor:pointer; overflow:hidden;}
+.content_sp3 span{ display:block; float:left;}
+
+.content_t{overflow:auto; float:left; margin-left:1%; width:83%;}
+.content_ul_w{ overflow:auto; height:270px;}
+.content_li{border-bottom:1px solid #eaedf1; background:#fff; overflow:hidden; height:28px;}
+.content_li span{ display:block; float:left; white-space:nowrap;color:#323232; font-size:12px; height:28px;line-height:28px; text-align:center;}
+.span1_0{ width:30px; font-weight:bold;}
+.span1{ font-weight:bold; width:230px;}
+.span2_0{ width:30px;}
+.span2{ width:230px;}
+.content_a{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+.content_bj{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+.content_afz{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+.content_ajs{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+
+.content_bottom1{ background:#fff; height:30px; margin-top:10px;}
+.content_bottom2{ background:#fff; height:95px; margin-top:2px; line-height:42px; position:relative;}
+.b1{ margin-left:10px; position:absolute; overflow:hidden;}
+.b1 input{ float:left; margin-top:15px;}
+.b1 span{ display:block; font-size:12px; color:#323232; float:left; margin-left:2px;}
+.b2{ width:32px; height:20px; line-height:20px; border:solid 1px #ced3d7; background:#d0e0e7; color:#323232; float:left; font-size:12px; text-align:center; position:absolute; left:60px; top:11px; cursor:default;}
+.b3{ height:20px; line-height:20px; position:absolute; right:360px; top:11px; border: solid 1px #13b58e;}
+.b3_s1{ font-size:12px; color:#13b58e;}
+.b3_s2{ font-size:12px; color:#323232;}
+
+.b4{ height:20px; line-height:20px; position:absolute; right:280px; top:11px; color:#323232; font-size:12px;}
+.b5{ height:20px; line-height:20px; position:absolute; right:15px; top:11px;}
+.b5_s1{ color:#13b58e; font-size:12px; border: solid 1px #13b58e; padding:0 3px; cursor:pointer;}
+.b5_s3 input{ color:#323232; width:25px; font-size:12px; border: solid 1px #13b58e;}
+.b5_s2{ color:#fff; background:#13b58e;}
+
+
+.tc{ width:100%; height:100%; position:fixed; top:0; left:0; background:rgba(0,0,0,0.5); display:none; z-index:800;}
+.tc_div{background:#f1f5fa; width:800px; height:400px; position:absolute; left:50%; margin-left:-400px; top:50%; margin-top:-200px; border-radius:5px;}
+.tc_title{ width:100%; height:50px; line-height:50px; overflow:hidden; border-bottom:solid 1px #bdd3e0;}
+.js_sp1{ float:left; display:block; font-size:18px; font-weight:bold; color:#22bd9b; margin-left:50px;}
+.js_sp2{ float:right; display:block; overflow:hidden;font-size:14px;margin-right:50px; margin-top:12px;}
+.js_sp4{float:left; display:block; font-size:14px;color:#000; margin-left:20px;}
+.js_inp{ float:left; width:160px; height:26px; margin-right:10px;}
+.js_inp1{width:50px; height:22px;}
+.left1{ display:block; width:28px; height:26px; line-height:26px; background:#20b891; float:left;}
+.left1 img{ margin-left:4px; margin-top:3px;}
+
+.tc_ul_div{width:700px; height:260px;margin-top:20px; margin-left:50px; overflow:auto;}
+.tc_div_jt{ font-size:14px; font-weight:bold; float:left; color:#333;}
+.tc_ul{ height:auto; margin-bottom:10px;}
+.tc_ul li{ overflow:hidden; height:30px; width:100%; line-height:30px;}
+.tc_ul span{ display:block; float:left; height:30px; width:170px; font-size:14px; text-align:center;}
+
+.bottom{ width:100%; height:70px; line-height:70px; overflow:hidden;}
+.bottom_sp1{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:290px; margin-right:40px; cursor:pointer;}
+.bottom_sp2{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}
+
+.tc_div1{background:#f1f5fa; width:400px; height:550px; position:absolute; left:50%; margin-left:-200px; top:50%; margin-top:-300px; border-radius:5px;}
+.tc_ul_div1{ width:300px; height:400px;margin-top:20px; margin-left:50px; overflow:auto;}
+.tc_ul_s{ height:auto;}
+.tc_li1{ overflow:hidden; height:100px;width:100%;font-size:14px; position:relative;}
+.tc_li2{ overflow:hidden; height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
+.tc_li3{ overflow:hidden; height:100px; width:100%; line-height:100px;font-size:14px; text-align:center; position:relative;}
+.la1{ position:absolute; left:0;}
+.tc_ul_s select{ width:195px;position:absolute; left:85px; top:15px;}
+.tc_ul_s .sel1{ width:62px;height:28px;}
+.tc_ul_s .tc_inp1{ width:126px; position:absolute; top:15px; left:149px;}
+.tc_inp{ width:190px;position:absolute; left:85px; top:15px;}
+.tc_ul_s span{ display:block; position:absolute; left:85px;}
+
+.bottom_sp3{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:100px; margin-right:40px; cursor:pointer;}
+.bottom_sp4{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}
+
+.tc_ul_div2{width:190px; height:100px;overflow:auto; position:absolute; left:85px;}
+.zz_ul{padding-left:20px; height:auto;}
+.zz_ul1{padding-left:20px; height:auto;display:none;}
+.zz_li{ overflow:hidden;font-size:12px; line-height:28px; }
+.zz_li img{ float:left; margin-top:9px; margin-right:10px;}
+.zz_ul input{ float:left; margin-top:8px; margin-right:5px;}
+</style>
+<div class="zong">
+    <div class="top_k">
+    <form method="post" name="form_adv_search" id="form_adv_search">
+        <div class="top1">
+            <span>菜单名称：<input class="top_in" type="text"/ name="menu_name"></span>
+            <span>权限编码：<input class="top_in" type="text"/ name="pri_no"></span>
+            <span>权限名称：<input class="top_in" type="text"/ name="pri_name"></span>
+            <div class="top_button">
+                <a onclick="submit_adv_search();"><img src="__PUBLIC__/img/cx.png"/></a>
+            </div>
+        </div>
+    </form>
+    </div>
+    <div class="content">
+    	<div class="content_title">
+            <span class="content_sp1"></span>
+            <span class="content_sp2">权限列表</span>
+            <a class="content_sp3" id="a_qxtj">
+            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+            </a>  
+        </div>
+        <div class="content_ul_w">
+            <ul class="content_ul">
+                <li class="content_li">
+                    <span class="span1_0"></span>
+                    <span class="span1">菜单名称</span>
+                    <span class="span1">权限编码</span>
+                    <span class="span1">权限名称</span>
+                    <span class="span1">权限类型</span>
+                    <span class="span1">操作</span>
+                    <span class="span1"></span>
+                    <span class="span1"></span>
+                </li>
+                <empty name="list">
+				<li style="border: 1px solid #eaedf1;border-top: 0px;line-height: 120px;text-align: center;font-size: 24px;">
+					没找到数据
+				</li>
+				<else/>
+                <form method="post" action="" name="form_data_scqx" id="form_data_scqx">
+                <foreach name="list" item="vo">
+                <li class="content_li">
+                    <span class="span2_0"><input name="id[]" type="checkbox" value="{$vo.id}"/></span>
+                    <span class="span2">{$vo.menu_name}</span>
+                    <span class="span2">{$vo.pri_no}</span>
+                    <span class="span2">{$vo.pri_name}</span>
+                    <span class="span2">{$vo.pri_act}</span>
+                    <span class="span2"><a class="content_bj" id="a_qxbj_{$vo.id}" value="{$vo.id}" onclick="show({$vo.id});")>编辑</a></span>
+                    <span class="span2"><a class="content_ajs" id="a_js_{$vo.id}" value="{$vo.id}" onclick="get_role({$vo.id});">关联角色</a></span>
+                    <span class="span2"><a class="content_afz" id="a_jsfz_{$vo.id}" value="{$vo.id}" onclick="show_rel({$vo.id});">关联角色复制</a></span>
+                </li>
+                </foreach>
+                </form>
+                </empty>
+            </ul>
+        </div>  
+    </div>  
+    
+    <div class="content_bottom">
+        <!-- <div class="content_bottom1"></div> -->
+        <div class="content_bottom2">
+            <div class="b1">
+                <input id="all" type="checkbox"/>
+                <span>全选</span>
+            </div>
+            
+            <div class="b2"><a onclick="del();">删除</a></div>
+                <div class="pagination" style="float:right;line-height:25px;">
+                {$page}
+          		</div>
+            
+            <!-- <div class="b4">
+                <span>每页:</span>
+                <select>
+                    <option>10</option>
+                    <option>20</option>
+                </select>
+            </div>
+            <div class="b5">
+                <span class="b5_s1">1</span>
+                <span class="b5_s1">2</span>
+                <span class="b5_s1">3</span>
+                <span class="b5_s1">4</span>
+                <span class="b5_s1">5</span>
+                <span>...</span>
+                <span class="b5_s1">3788</span>
+                <span class="b5_s1">下一页</span>
+                <span class="b5_s3"><input type="text"/></span>
+                <span class="b5_s1">go</span>
+            </div> -->
+        </div>
+    </div>   
+</div>
+
+<!--编辑-->
+<div class="tc" id="tc_qxbj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj1">编辑</span>
+        </div>
+        <form name="main_form" method="POST" action="" enctype="multipart/form-data" id="form_bj">
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<input class="tc_inp" type="hidden" name="pri_id" id="pri_id"/>
+                <li class="tc_li2">
+                    <label class="la1">权限名称：</label>
+                    <input class="tc_inp" type="text" name="pri_name" id="pri_name"/>
+                </li>
+                <li class="tc_li2">
+                    <label class="la1">菜单：</label>
+                    <select name="menu_new_id" id="menu_new_id">
+                    <option value="">请选择</option>
+                    <foreach name="menuData" item="vo">
+                        <option value="{$vo.id}"><?php echo str_repeat('&nbsp;', $vo['level']).str_repeat('|', $vo['level']+1).'-'.$vo['menu_name']; ?></option>
+                    </foreach>
+                        <!-- <option>|-个人中心</option>
+                        <option>&nbsp;||-日报</option>
+                        <option>&nbsp;||-周报</option> -->
+                    </select>
+                </li>
+                <li class="tc_li2">
+                    <label class="la1">权限动作：</label>
+                    <select class="sel1" name="pri_act" id="pri_act">
+                        <option value="自定义">自定义</option>
+                        <option value="添加">添加</option>
+                        <option value="删除">删除</option>
+                        <option value="导入">导入</option>
+                        <option value="导出">导出</option>
+                       	<option value="编辑">编辑</option>
+                        <option value="查看">查看</option>
+                    </select>
+                    <input class="tc_inp1" type="text" name="pri_act_zdy" id="pri_act_zdy"/>
+                </li> 
+                <li class="tc_li2">
+                    <label class="la1">排序：</label>
+                    <input class="tc_inp" type="text" name="sort" id="sort"/>
+                </li> 
+            </ul>
+        </div>
+        
+        <div class="bottom" style="position:static">
+        	<span class="bottom_sp3">取消</span>
+            <span ><a class="bottom_sp4" onclick="edit();">确定</a></span>
+        </div>
+        </form>
+    </div>
+</div>
+
+<!--添加-->
+<div class="tc" id="tc_qxtj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj1">添加</span>
+        </div>
+    <form name="main_form" method="POST" action="{:U('add')}" enctype="multipart/form-data">    
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+                <li class="tc_li2">
+                    <label class="la1">权限名称：</label>
+                    <input class="tc_inp" type="text" name="pri_name"/>
+                </li>
+                <li class="tc_li2">
+                    <label class="la1">菜单：</label>
+                    <select name="menu_new_id">
+                    <option value="">请选择</option>
+                    <foreach name="menuData" item="vo">
+                        <option value="{$vo.id}"><?php echo str_repeat('&nbsp;', $vo['level']).str_repeat('|', $vo['level']+1).'-'.$vo['menu_name']; ?></option>
+                    </foreach>
+                        <!-- <option>&nbsp;||-日报</option>
+                        <option>&nbsp;||-周报</option> -->
+                    </select>
+                </li>
+                <li class="tc_li2">
+                    <label class="la1">权限动作：</label>
+                    <select class="sel1" name="pri_act">
+                        <option value="自定义">自定义</option>
+                        <option value="添加">添加</option>
+                        <option value="删除">删除</option>
+                        <option value="导入">导入</option>
+                        <option value="导出">导出</option>
+                       	<option value="编辑">编辑</option>
+                        <option value="查看">查看</option>
+                    </select>
+                    <input class="tc_inp1" type="text" name="pri_act_zdy"/>
+                </li> 
+                <li class="tc_li2">
+                    <label class="la1">排序：</label>
+                    <input class="tc_inp" type="text" name="sort"/>
+                </li> 
+            </ul>
+        </div>
+        
+        <div class="bottom" style="position:static">
+        	<span class="bottom_sp3">取消</span>
+            <span><input class="bottom_sp4" type="submit" value="确定"></span>
+        </div>
+    </form>
+    </div>
+</div>
+
+<div class="tc" id="tc_js">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">关联角色</span>
+            <span class="js_sp4">
+                <input type="checkbox" id="js_sp4"/>
+                <label for="js_sp4">全选</label>
+            </span>
+            <span class="js_sp2">
+            	<input class="js_inp" type="text" name="name" id="role_name"/>
+                <div class="left1" id="search_role">
+                	<img src="__PUBLIC__/img/left1.png"/>
+                </div>       
+            </span>
+        </div>
+        <form action="{:U(add_role)}" method="post" >
+        <input type="hidden" name="id" id="pri_id_gljs">
+        
+        <div class="tc_ul_div">
+        	<ul class="tc_ul" id="span"></ul>
+            <!-- <div class="tc_div_jt">集团总部：</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <input type="checkbox" id="js1" name="sp4"/>
+                        <label for="js1">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js2" name="sp4"/>
+                        <label for="js2">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js3" name="sp4"/>
+                        <label for="js3">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js4" name="sp4"/>
+                        <label for="js4">产品专员</label>
+                    </span>
+                </li>  
+            </ul>
+            <div class="tc_div_jt">金华园区:</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <input type="checkbox" id="js1" name="sp4"/>
+                        <label for="js1">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js2" name="sp4"/>
+                        <label for="js2">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js3" name="sp4"/>
+                        <label for="js3">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js4" name="sp4"/>
+                        <label for="js4">产品专员</label>
+                    </span>
+                </li>  
+            </ul> -->
+        </div>
+        
+        <div class="bottom" style="position:static">
+        	<span class="bottom_sp1">取消</span>
+            <span><input class="bottom_sp2" type="submit" value="确定"></span>
+        </div>
+        </form>
+    </div>
+</div>
+
+<!--关联角色复制-->
+<div class="tc" id="tc_jsfz">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj1">关联角色复制</span>
+        </div>
+        <form name="main_form" method="POST" action="{:U('copy_role')}" enctype="multipart/form-data">
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            <input class="tc_inp" type="hidden" name="pri_id" id="pri_id_jsfz"/>
+                <li class="tc_li2">
+                    <label class="la1">当前菜单:</label>
+                    <span id="caidan"></span>
+                </li>
+                <li class="tc_li2">
+                    <label class="la1">当前权限：</label>
+                    <span id="quanxian"></span>
+                </li>
+                <li class="tc_li2">
+                    <label class="la1">复制菜单源：</label>
+                    <input type="hidden" id="change_menu" />
+                    <select name="menu_new_id" id="copy_menu">
+                    <option value="">请选择</option>
+                    <foreach name="menuData" item="vo">
+                        <option value="{$vo.id}"><?php echo str_repeat('&nbsp;', $vo['level']).str_repeat('|', $vo['level']+1).'-'.$vo['menu_name']; ?></option>
+                    </foreach>
+                        <!-- <option>&nbsp;||-日报</option>
+                        <option>&nbsp;||-周报</option> -->
+                    </select>
+                </li> 
+                <li class="tc_li2">
+                    <label class="la1">复制权限源：</label>
+                    <select name="pri_act" id="copy_pri">
+                        
+                    </select>
+                </li> 
+            </ul>
+        </div>
+        
+        <div class="bottom" style="position:static">
+        	<span class="bottom_sp3">取消</span>
+            <span><input class="bottom_sp4" type="submit" value="确定"></span>
+        </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/qxlb.js"></script>
