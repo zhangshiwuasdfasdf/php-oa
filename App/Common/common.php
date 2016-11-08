@@ -1133,6 +1133,56 @@ function popup_menu($tree, $level = 0,$deep=100,$other_nodes=array()) {
 	}
 	return $html;
 }
+//菜单维护列表
+function new_tree_menu($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"content_ul\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["menu_name"])) {
+				$title = $val["menu_name"];
+				$id = $val["id"];
+				$pid = $val["pid"];
+				$menu_no = $val["menu_no"];
+				if (empty($val["id"])) {
+					$id = $val["menu_name"];
+				}
+				$status = $val['menu_status'] ? "启用" : "禁用" ;
+				$activate = $val['menu_status'] ? "禁用" : "启用" ;
+				if (isset($val['_child'])) {
+					$html = $html . "<li>\r\n<span class=\"li_sp3\"><input name=\"box\" type=\"checkbox\"/><input name=\"sid\" type=\"hidden\" value=\"{$id}\"/><input name=\"pid\" type=\"hidden\" value=\"{$pid}\"/><input name=\"menu_no\" type=\"hidden\" value=\"{$menu_no}\"/></span>\r\n";
+					$html = $html . "<span class=\"li_sp0_2\"><img src=\"__PUBLIC__/img/new_versions/add.png\"/><span>{$title}</span></span>\r\n";
+					$html = $html . "<span class=\"li_sp1\">{$val['menu_addr']}</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\">$status</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\">修改</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\">关联角色</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\">关联角色复制</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp$level isChild\"><a class=\"content_a a1_4\">关联数据控制策略</a></span>\r\n";
+					$html = $html . new_tree_menu($val['_child'], $level,$deep);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li>\r\n<span class=\"li_sp3\"><input name=\"box\" type=\"checkbox\"/><input name=\"sid\" type=\"hidden\" value=\"{$id}\"/><input name=\"pid\" type=\"hidden\" value=\"{$pid}\"/><input name=\"menu_no\" type=\"hidden\" value=\"{$menu_no}\"/></span>\r\n";
+					$html = $html . "<span class=\"li_sp0_2\"><img src=\"__PUBLIC__/img/new_versions/add.png\"/><span>{$title}</span></span>\r\n";
+					$html = $html . "<span class=\"li_sp1\">{$val['menu_addr']}</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\">$status</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\">修改</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\">关联角色</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\">关联角色复制</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp$level isParent\"><a class=\"content_a a1_4\">关联数据控制策略</a></span>\r\n";
+					$html = $html . "</li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
 
 function popup_menu_organization($tree, $level = 0,$deep=100) {
 	$level++;
