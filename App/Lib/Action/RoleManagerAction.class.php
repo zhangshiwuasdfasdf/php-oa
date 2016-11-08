@@ -1,11 +1,14 @@
 <?php
-class MaintainAction extends CommonAction {
+class RoleManagerAction extends CommonAction {
 	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read'));
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
 		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
-			$map['menu_name'] = array('like', "%" . $_POST['keyword'] . "%");
+			$map['role_name'] = array('like', "%" . $_POST['keyword'] . "%");
+		}
+		if ($_POST['eq_status'] !== "") {
+			$map['status'] = array('eq',$_POST['eq_status'] ? "1" : "0") ;
 		}
 	}
 	//列表页
@@ -14,24 +17,21 @@ class MaintainAction extends CommonAction {
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
-		$name = isset($_POST['li_menu_name']) ? " AND `menu_name` LIKE '%".$_POST['li_menu_name']."%' AND `pid` = 0 " : "" ;
-		$sql = "SELECT * FROM `smeoa_menu_new` WHERE ( `is_del` = '0' $name ) ORDER BY `id` asc ";
-		$list = M()->query($sql);
-		$this -> assign('menu',new_tree_menu(list_to_tree($list),4));
-		$this -> assign('menuList',popup_menu_option(list_to_tree($list)));
+		$model = M('RoleManager');
+		if($model){
+			$list = $this -> _list($model, $map);
+		}
 		$this -> display();	
 		
 	}
 	
-	//添加数据(一级菜单)
+	//添加角色
 	function add(){
 		if($this -> isAjax()){
-			$model = M('MenuNew');
-			$data['pid'] = empty(I('post.pid')) ? "0" : I('post.pid');
-			$data['menu_no'] = empty(I('post.menu_no')) ? "" : I('post.menu_no');
-			$data['menu_name'] = I('post.name');
-			$data['menu_addr'] = I('post.addr');
-			$data['menu_status'] = empty($_POST['menu_status']) ? "1" : I('post.menu_status');
+			$model = M('RoleManager');
+			$data['company'] = I('post.company');
+			$data['role_name'] = I('post.role_name');
+			$data['status'] = I('post.status');
 			$data['create_time'] =  time();
 			/*保存当前数据对象 */
 			$list = $model -> add($data);
@@ -46,13 +46,11 @@ class MaintainAction extends CommonAction {
 	//添加数据(一级菜单)
 	function save(){
 		if($this -> isAjax()){
-			$model = M('MenuNew');
+			$model = M('RoleManager');
 			$data['id'] = I('post.id');
-			$data['pid'] = empty(I('post.pid')) ? "0" : I('post.pid');
-			$data['menu_no'] = empty(I('post.menu_no')) ? "" : I('post.menu_no');
-			$data['menu_name'] = I('post.name');
-			$data['menu_addr'] = I('post.addr');
-			$data['create_time'] =  time();
+			$data['company'] = I('post.company');
+			$data['role_name'] = I('post.role_name');
+			$data['status'] = I('post.status');
 			/*保存当前数据对象 */
 			$list = $model -> save($data);
 			if ($list !== false) {//保存成功

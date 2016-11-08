@@ -179,7 +179,6 @@ $model = M("RoleNode");
 			$this -> success('操作成功！');
 		}
 	}
-	
-	
+
 }
 ?>

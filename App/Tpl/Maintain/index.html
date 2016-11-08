@@ -1,108 +1,322 @@
 <layout name='Layout/ace_layout' />
+<link type="text/css" href="__PUBLIC__/css/new_versions/cdwh.css" rel="stylesheet"/>
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default "  id="adv_search">
 		<div class="panel-body">
 			<div class="form-group col-sm-3">
-				<label class="col-sm-4 control-label" for="li_name">文件名：</label>
+				<label class="col-sm-4 control-label" for="li_menu_name">菜单名称：</label>
 				<div class="col-sm-8">
-					<input  class="form-control" type="text" id="li_name" name="li_name" >
-				</div>
-			</div>
-			<div class="form-group col-sm-3">
-				<label class="col-sm-4 control-label" for="li_content">内容：</label>
-				<div class="col-sm-8">
-					<input  class="form-control" type="text" id="li_content" name="li_content" >
-				</div>
-			</div>
-
-			<div class="form-group col-sm-3">
-				<label class="col-sm-4 control-label" for="eq_user_name">登录人：</label>
-				<div class="col-sm-8">
-					<input  class="form-control" type="text" id="eq_user_name" name="eq_user_name" >
-				</div>
-			</div>
-			<div class="form-group col-sm-3">
-				<label class="col-sm-4 control-label" for="be_create_time">登录时间：</label>
-				<div class="col-sm-8">
-					<div class="input-daterange input-group" >
-					    <input type="text" class="input-sm form-control text-center" name="be_create_time" />
-						<span class="input-group-addon">-</span>
-						<input type="text" class="input-sm form-control text-center" name="en_create_time" />
-					</div>
+					<input  class="form-control" type="text" id="li_menu_name" name="li_menu_name" >
 				</div>
 			</div>
 			<div class="col-sm-3">
-					<a class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
-				</div>
+				<a class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
+			</div>
 		</div>
 	</div>
 </form>
-<div class="ul_table">
-	<ul>
-		<empty name="list">
-			<li class="no-data">
-				没找到数据
-			</li>
-			<else/>
-			<foreach name="list" item="vo">
-				<div class="dialogs">
-					<div class="itemdiv dialogdiv">
-						<div class="user">
-						<eq name="vo.sender_id" value="$owner_id">
-							<img  src="{:get_save_url()}/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'" />
-						</eq>
-						<eq name="vo.receiver_id" value="$owner_id">
-							<img  src="{:get_save_url()}/{$vo.pic}" onerror="javascript:this.src='./Data/Files/emp_pic/no_avatar.jpg'" />
-						</eq>
-						</div>
-						<div class="body">
-							<div class="time">
-								<i class="fa fa-time"></i>
-								<span>{$vo.create_time|toDate='Y-m-d h:m:d'}</span>
-							</div>
-							<div class="name">
-								<eq name="vo.sender_id" value="$owner_id">
-									发给 {$vo.receiver_name}
-								</eq>
-								<eq name="vo.receiver_id" value="$owner_id">
-									 {$vo.sender_name}
-								</eq>
-							</div>
-							<div class="row">
-								<div class="text-left col-sm-9 col-xs-12">
-									<eq name="vo.sender_id" value="$owner_id">
-										<a href="{:U('read','reply_id='.$vo['receiver_id'])}">{$vo.content}</a>
-									</eq>
-									<eq name="vo.receiver_id" value="$owner_id">
-										<eq name="vo.is_read" value="0"><b></eq>
-										<a href="{:U('read','reply_id='.$vo['sender_id'])}">{$vo.content}</a>
-										<eq name="vo.is_read" value="0"></b></eq>
-									</eq>
-									<span class="badge">{$vo.count}</span>
-								</div>
-								<div class="text-right pull-right col-sm-3 col-xs-12">
-									<eq name="vo.sender_id" value="$user_id">
-										<a class="btn-sm btn-primary" href="{:U('read','reply_id='.$vo['receiver_id'])}"><i class="fa fa-only fa-share-alt"></i>回复</a>
-										<a class="btn-sm btn-danger" href="#" onclick="del_dialogue({$vo.receiver_id})">
-										<i class="fa fa-only fa-remove" ></i>删除</a>
-									</eq>
-									<eq name="vo.receiver_id" value="$user_id">
-										<a class="btn-sm btn-primary" href="{:U('read','reply_id='.$vo['sender_id'])}"><i class="fa fa-only fa-share-alt"></i>回复</a>
-										<a class="btn-sm btn-danger" href="#" onclick="del_dialogue({$vo.sender_id})">
-										<i class="fa fa-only fa-remove" ></i>删除</a>
-									</eq>									
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</foreach>
-		</empty>
-	</ul>
+<div class="zong">
+    <div class="content">
+    	<div class="content_title">
+            <span class="content_sp1"></span>
+            <span class="content_sp2">菜单维护</span>
+            <a class="content_sp3" id="a_yjtj">
+            	<img class="img_tj" src="__PUBLIC__/img/new_versions/tj3.png"/>
+            </a>  
+        </div>
+        <div class="content_div">
+            <div class="content_div1">
+            	<span class="li_sp3"></span>
+                <span class="li_sp1">菜单名称</span>
+                <span class="li_sp1">菜单地址</span>
+                <span class="li_sp2">菜单状态</span>
+                <span class="li_sp2">操作</span>
+                <span class="li_sp2"></span>
+                <span class="li_sp2"></span>
+                <span class="li_sp2"></span>
+                <span class="li_sp2"></span>
+                <span class="li_sp4"></span>
+            </div>
+            <div class="content_div2">
+                <?php echo $menu ?>
+            </div>
+         </div>  
+         
+         <!-- <div class="content_bottom">
+            <div class="content_bottom1"></div>
+        </div>  -->
+    </div>     
 </div>
+
+<div class="tc" id="tc_js">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">角色</span>
+            <span class="js_sp4">
+                <input type="checkbox" id="js_sp4"/>
+                <label for="js_sp4">全选</label>
+            </span>
+            <span class="js_sp2">
+            	<input class="js_inp" type="search"/>
+                <a class="left1">
+                	<img src="__PUBLIC__/img/new_versions/left1.png"/>
+                </a>       
+            </span>
+        </div>
+        <div class="tc_ul_div">
+        	<div class="tc_div_jt">集团总部：</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <input type="checkbox" id="js1" name="sp4"/>
+                        <label for="js1">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js2" name="sp4"/>
+                        <label for="js2">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js3" name="sp4"/>
+                        <label for="js3">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js4" name="sp4"/>
+                        <label for="js4">产品专员</label>
+                    </span>
+                </li>  
+            </ul>
+            <div class="tc_div_jt">金华园区:</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <input type="checkbox" id="js1" name="sp4"/>
+                        <label for="js1">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js2" name="sp4"/>
+                        <label for="js2">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js3" name="sp4"/>
+                        <label for="js3">产品专员</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" id="js4" name="sp4"/>
+                        <label for="js4">产品专员</label>
+                    </span>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom_cdwh">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_sj">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">数据控制策略</span>
+            <span class="js_sp2">
+            	<input class="js_inp" type="search"/>
+                <a class="left1">
+                	<img src="__PUBLIC__/img/new_versions/left1.png"/>
+                </a>       
+            </span>
+        </div>
+        <div class="tc_ul_div">
+        	<div class="tc_div_jt">集团总部：</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <label for="js1">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                    <span>
+                        <label for="js2">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                    <span>
+                        <label for="js3">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                </li>  
+            </ul>
+            <div class="tc_div_jt">金华园区：</div>
+            <ul class="tc_ul">
+                <li>
+                    <span>
+                        <label for="js1">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                    <span>
+                        <label for="js2">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                    <span>
+                        <label for="js3">产品专员</label>
+                        <select>
+                        	<option>全局范围</option>
+                            <option>行政管辖范围</option>
+                            <option>仅自己</option>
+                            <option>业务管辖部门</option>
+                        </select>
+                    </span>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom_cdwh">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_yjtj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj2">添加</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>菜单名称：</label>
+                    <input class="tc_inp" type="text" name="menu_name" id="menu_name"/>
+                </li>
+                <li>
+                    <label>菜单地址：</label>
+                    <input class="tc_inp" type="text" name="menu_addr" id="menu_addr"/>
+                </li>
+                <li>
+                    <label>菜单状态：</label>
+                    <select name="menu_status" id="menu_status">
+                        <option value="1">启用</option>
+                        <option value="0">禁用</option>
+                    </select>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom_cdwh">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4" id="bottom_sp50" onclick="save(1,this);">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_ejtj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj3">添加</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>菜单编码：</label>
+                    <input class="tc_inp" type="text" name="menu_no"/>
+                    <input class="tc_inp" type="hidden" name="id" id="menuId"/>
+                </li>
+                <li>
+                    <label>父类名称：</label>
+                    <select name="pid">
+						<?php echo $menuList; ?>                        
+                        
+                    </select>
+                </li>
+                <li>
+                    <label>菜单名称：</label>
+                    <input class="tc_inp" type="text" name="menu_name"/>
+                </li> 
+                <li>
+                    <label>数据库名称：</label>
+                    <input class="tc_inp" type="text"/>
+                </li>
+                <li>
+                    <label>链接路径：</label>
+                    <input class="tc_inp" type="text" name="menu_addr"/>
+                </li>
+                <li>
+                    <label>所属模块：</label>
+                    <select>
+                        <option></option>
+                        <option></option>
+                    </select>
+                </li>
+                <li>
+                    <label>所属分类：</label>
+                    <select>
+                        <option></option>
+                        <option></option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bottom_cdwh">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4" id="bottom_sp5" onclick="save(2,this);">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_jsfz">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj1">关联角色复制</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>当前菜单：</label>
+                    <span>ARNS</span>
+                </li>
+                <li>
+                    <label>复制菜单源：</label>
+                    <select>
+                        <option>一级菜单</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bottom_cdwh">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4">确定</span>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/new_versions/cdwh.js"></script>
 <script type="text/javascript">
 $(function() {
-	var html = "<li>个人中心</li><li>消息</li>";
+	var html = "<li>系统管理</li><li>权限管理</li><li>菜单维护</li>";
 	$("#breadcrumbs ul").append(html);
 });
 </script>
