@@ -681,15 +681,17 @@ class ProfileAction extends CommonAction {
 		//dump($_POST);die;
 		$has=M("StatusManage")->where(array("user_id"=>$user_id))->select();
 		if($has){
-			
-			if(M("StatusManage")->create(I('post.'), 2))
-    		{
-    			if(M("StatusManage")->save() !== FALSE)
-    			{
-    				$this->success('修改成功！', U('lst', array('p' => I('get.p', 1))));
-    				exit;
-    			}
-    		}
+			M("StatusManage")->where(array("user_id"=>$user_id))->delete();
+			$data['user_id']=$user_id;
+			$data['no_status']=$_POST['no_status'];
+			$data['stuff_status']=$_POST['stuff_status'];
+			$data['entry_time']=$_POST['entry_time'];
+			$data['regular_time']=$_POST['regular_time'];
+			$data['leave_time']=$_POST['leave_time'];
+			$data['create_name']=get_user_name();
+			$data['create_time']=time();
+			$data['remark']=$_POST['remark'];
+			$res=M("StatusManage")->add($data);
 		}else{
 			$data['user_id']=$user_id;
 			$data['no_status']=$_POST['no_status'];
@@ -698,13 +700,16 @@ class ProfileAction extends CommonAction {
 			$data['regular_time']=$_POST['regular_time'];
 			$data['leave_time']=$_POST['leave_time'];
 			$data['create_name']=get_user_name();
-			$data['create_time']=date('Y-m-d H:i:s',time());
+			$data['create_time']=time();
 			$data['remark']=$_POST['remark'];
 			$res=M("StatusManage")->add($data);
 		}
+		
 		$StatusManage=M("StatusManage")->where(array("user_id"=>$user_id))->select();
-		//dump($StatusManage);die;
-		$this->assign('StatusManage',$StatusManage);	
+		foreach($StatusManage as $k=>$value){
+			$this->assign('value',$value);
+		}
+		//dump($value);die;
 	}
 }
 ?>

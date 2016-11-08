@@ -1011,9 +1011,14 @@
                 <span class="sp2" style="text-align:center;">
                 	<select name="stuff_status" id="stuff_status" style="width:200px;height:25px">
                     <option value="">请选择</option>
-                    <foreach name="stufStatus" item="vo">
-                        <option value="{$vo.data_name}">{$vo.data_name}</option>
-                    </foreach>
+                    <?php foreach ($stufStatus as $k => $v): 
+	                    			if($v['data_name'] ==$StatusManage['0']['stuff_status'])
+	                    				$select = 'selected="selected"';
+	                    			else 
+	                    				$select = '';
+	                    	?>
+	                    	<option {$select} value="{$v.data_name}">{$v.data_name}</option>
+	                    	<?php endforeach; ?>
                     </select>
                 </span>
                 </td>
@@ -1021,7 +1026,7 @@
             <tr>
                 <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">入职日期</span></td>
                 <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">
-                	<input style="width:200px;height:25px;" data-date-format="yyyy-mm-dd" id="entry_time" name="entry_time" type="text" class="form-control input-date"  <if condition="($StatusManage.entry_time eq '')">value="{$information[0]}"<else />value="{$StatusManage['entry_time']}"</if> />
+                	<input style="width:200px;height:25px;" data-date-format="yyyy-mm-dd" id="entry_time" name="entry_time" type="text" class="form-control input-date"  <if condition="($StatusManage[0].entry_time eq '')">value="{$information[0]}"<else />value="{$StatusManage[0].entry_time}"</if> />
                 </span></td>
                 <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">转正日期</span></td>
                 <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">
@@ -1031,17 +1036,17 @@
             <tr>
                 <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">离职时间</span></td>
                 <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">
-                	<input style="width:200px;height:25px;" data-date-format="yyyy-mm-dd" id="leave_time" name="leave_time" type="text" class="form-control input-date"  value=""/>
+                	<input style="width:200px;height:25px;" data-date-format="yyyy-mm-dd" id="leave_time" name="leave_time" type="text" class="form-control input-date"  value="{$value.entry_time}"/>
                 </span></td>
                 <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">更新人</span></td>
-                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$StatusManage['create_name']}</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$value.create_name}</span></td>
             </tr>
             <tr>
                 <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">更新时间</span></td>
-                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$StatusManage[0]['create_time']}</span></td>
+                <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">{$value.create_time|date="Y-m-d H:i:s",###}</span></td>
                 <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp1">备注</span></td>
                 <td width="25%" height="29" align="center" valign="middle" bgcolor="#fff"><span class="sp2">
-                	<input type="text" style="width:200px;height:25px;" name="remark" value="{$StatusManage[0].remark}"/>
+                	<input type="text" style="width:200px;height:25px;" name="remark" value="{$value.remark}"/>
                 </span></td>
             </tr>
             <tr>
