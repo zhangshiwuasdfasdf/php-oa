@@ -1,114 +1,232 @@
 <layout name='Layout/ace_layout' />
-<input type="hidden" name="ajax" id="ajax" value="1">
-<select name="dept_list" id="dept_list" class="display-none">
-	{:fill_option($dept_list)}
-</select>
-<form id="form_search" name="form_search" method="post">
-	<div class="operate panel panel-default">
-		<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
-		<div class="pull-left">
-			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">部门管理</span>
-		</div>
-			<div class="pull-right">
-				<a onclick="add()" class="btn btn-sm btn-primary">新增</a>
-				<a onclick="save()"  class="btn btn-sm btn-primary">保存</a>
-				|
-				<a onclick="del()"  class="btn btn-sm btn-danger">删除</a>
-			</div>
-		</div>
-	</div>
-</form>
-<!-- 功能操作区域结束 -->
-<!-- 列表显示区域  -->
-<div class="row">
-	<div class="col-sm-4 sub_left_menu " style="height: 555px;overflow: auto;">
-		<div class="well">
-			<?php echo $menu ?>
-		</div>
-	</div>
-	<div class="col-sm-8 sub_content">
-		<form id="form_data" name="form_data" method="post" class="well form-horizontal clearfix">
-			<input type="hidden" name="id" id="id">
-			<input type="hidden" name="opmode" id="opmode" value="">
-			<div class="form-group col-xs-12">
-				<label class="col-sm-2 control-label" for="dept_no">编码*：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" id="dept_no" name="dept_no" check="require" msg="请输入编码">
-				</div>
-			</div>
-			<div class="form-group col-xs-12">
-				<label class="col-sm-2 control-label" for="name">名称*：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" id="name" name="name" check="require" msg="请输入名称">
-				</div>
-			</div>
-			<div class="form-group col-xs-12">
-				<label class="col-sm-2 control-label" for="short">简称*：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" id="short" name="short" check="require" msg="请输入简称">
-				</div>
-			</div>
+<style>
+img{ margin: 0; padding: 0;}
+input,select,textarea{ margin: 0; padding: 0; outline:none;}
 
-			<div class="form-group col-xs-12">
-				<label class="col-sm-2 control-label" for="dept_grade_id">部门级别*：</label>
-				<div class="col-sm-8">
-					<select name="dept_grade_id" id="dept_grade_id" class="form-control" msg="请选择职级" check="require">
-						<option>选择部门级别</option>
-						{:fill_option($dept_grade_list)}
-					</select>
-				</div>
-			</div>
+.zong{ overflow:auto;margin-top:50px;}
+.top_k{ height:54px; line-height:54px;}
+.top2{ height:54px; background:#fff; line-height:54px; overflow:auto; white-space:nowrap;}
+.top2 span{ display:block; font-size:12px; float:left; margin-left:20px;}
+.top_in{ width:114px; height:24px;border:solid 1px #aaaaaa;}
+.top_select{ width:98px; height:24px; outline:none;}
+.top_button{ overflow:hidden;}
+.top_button img{ float:left; margin-top:8px; margin-left:16px; margin-right:5px;}
 
-			<div class="form-group col-xs-12">
-				<label class="col-sm-2 control-label" for="dept_name">上级部门*：</label>
-				<div class="col-sm-8">
-					<div class="input-group">
-						<input name="dept_name" class="form-control" id="dept_name" type="text" readonly="readonly" msg="请选择上级部门" check="require"/>
-						<input name="pid" id="pid" type="hidden" msg="请选择上级部门" check="require" />
-						<span class="input-group-btn">
-							<button class="btn btn-sm btn-primary" onclick="select_pid()" type="button">
-								选择
-							</button> </span>
-					</div>
-				</div>
-			</div>
-			<div class="form-group col-xs-12">
-				<label class="col-sm-2 control-label" for="sort">排序：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" id="sort" name="sort" >
-				</div>
-			</div>
+.content_title{ background:#bdd3e0; height:40px; line-height:40px; margin-top:10px; position:relative;}
+.content_sp1{ display:block; position:absolute;width:6px; height:20px; background-color:#20b891; border:solid 1px #3da396;top:10px; border-radius:3px;left:20px;}
+.content_sp2{ display:block; font-size:12px; left:40px; position:absolute;}
+.img_tj{ display:block; float:left; margin-top:14px;}
+.content_sp3{display:block;position:absolute;right:20px;font-size:12px; color:#4c6456; font-weight:bold; cursor:pointer; overflow:hidden;}
+.content_sp3 span{ display:block; float:left;}
 
-			<div class="form-group col-xs-12">
-				<label class="col-sm-2 control-label" for="is_del">状态*：</label>
-				<div class="col-sm-8">
-					<select   name="is_del" id="is_del" class="form-control">
-						<option  value="0">启用</option>
-						<option value="1">禁用</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group col-xs-12">
-				<label class="col-sm-2 control-label" for="is_real_dept">是否是真正部门*：</label>
-				<div class="col-sm-8">
-					<select   name="is_real_dept" id="is_real_dept" class="form-control">
-						<option value="0">否</option>
-						<option value="1">是</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group col-xs-12">
-				<label class="col-sm-2 control-label" for="remark" >其他：</label>
-				<div class="col-sm-8" >
-					<textarea class="form-control" name="remark" id="remark" rows="5" class="col-xs-12" ></textarea>
-				</div>
-			</div>
-		</form>
-	</div>
+.content_a{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer; float:left; padding-right:5px;}
+
+.content_div{ overflow:auto;}
+.content_div1{ width:100%; overflow:hidden; border-bottom:1px solid #eaedf1; line-height:28px; font-weight:bold; background:#fff;}
+.content_div1 span{display:block; float:left;font-size:12px; height:28px; line-height:28px;padding-left:10px;}
+.content_div2{ overflow:auto; background:#fff; height:270px;}
+.content_div2 span{display:block; float:left;font-size:12px; height:28px; line-height:28px;}
+/*.content_ul1{ display:none;}*/
+.content_li{ width:100%; overflow:hidden; border-bottom:1px solid #eaedf1; line-height:28px; font-weight:bold;}
+.content_li2{ width:100%; overflow:hidden; border-bottom:1px solid #eaedf1; line-height:28px;}
+.li_sp3{ width:300px;}
+.li_sp1{width:300px; padding-left:20px;}
+.li_sp2{width:400px;padding-left:10px;}
+.li_sp0_1{ width:295px; font-size:12px; padding-left:5px;}
+.li_sp0_1 img{ float:left; padding:9px 3px;}
+.li_sp0_1 a{display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+.li_sp0_2{width:285px; font-size:12px; padding-left:15px;}
+.li_sp0_2 img{ float:left; padding:9px 3px;}
+.li_sp0_2 a{display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+.li_sp0_3{width:275px; font-size:12px; padding-left:25px;}
+.li_sp0_3 img{ float:left; padding:9px 3px;}
+.li_sp0_3 a{display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+.li_sp0_4{width:265px; font-size:12px; padding-left:35px;}
+.li_sp0_4 img{ float:left; padding:9px 3px;}
+.li_sp0_4 a{display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+
+/*添加*/
+.tc{ width:100%; height:100%; position:fixed; top:0; left:0; background:rgba(0,0,0,0.5); display:none;}
+.tc_title{ width:100%; height:50px; line-height:50px; overflow:hidden; border-bottom:solid 1px #bdd3e0;}
+.js_sp1{ float:left; display:block; font-size:18px; font-weight:bold; color:#22bd9b; margin-left:50px;}
+.tc_div1{background:#f1f5fa; width:400px; height:550px; position:absolute; left:50%; margin-left:-200px; top:50%; margin-top:-300px; border-radius:5px;}
+.tc_ul_div1{ width:300px; height:400px;margin-top:20px; margin-left:50px; overflow:auto;}
+.tc_ul_s{ height:auto;}
+.tc_ul_s li{ overflow:hidden; height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
+.tc_ul_s label{ position:absolute; left:0;}
+.tc_ul_s span{ display:block; position:absolute; left:85px;}
+.tc_ul_s select{ width:195px;position:absolute; left:85px; top:15px;}
+.tc_inp{ width:190px;position:absolute; left:85px; top:15px;}
+
+.bottom_sp3{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:100px; margin-right:40px; cursor:pointer;}
+.bottom_sp4{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}
+
+</style>
+<div class="zong">
+	<div class="top_k">
+        <div class="top2">
+            <span>部门编号：<input class="top_in" type="text"/></span>
+            <span>部门名称：<input class="top_in" type="text"/></span>
+            <span>数据状态：
+                <select class="top_select">
+                    <option selected="selected">请选择</option>
+                    <option>启用</option>
+                    <option>禁用</option>
+                </select>
+            </span>
+            <div class="top_button">
+                <img src="__PUBLIC__/img/cx.png"/>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+    	<div class="content_title">
+            <span class="content_sp1"></span>
+            <span class="content_sp2">部门档案管理</span>
+            <a class="content_sp3" id="a_yjtj">
+            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+            </a>  
+        </div>
+        <div class="content_div">
+            <div class="content_div1">
+                <span class="li_sp1">部门编号</span>
+                <span class="li_sp1">部门名称</span>
+                <span class="li_sp2">数据状态</span>
+                <span class="li_sp3">操作</span>
+                <!--<span class="li_sp2">禁用</span>
+                <span class="li_sp2">编辑</span>
+                <span class="li_sp2">新增子部门</span>-->
+            </div>
+        </div>
+        <div class="content_div2">
+            <ul class="content_ul">
+                <li>
+                    <!--<span class="li_sp3"><input name="box" type="checkbox"/></span>-->
+                    <span class="li_sp0_1">
+                        <img src="__PUBLIC__/img/ajj.png"/>
+                        <span>公司总部</span>
+                    </span>
+                    <span class="li_sp1">技术部</span>
+                    <span class="li_sp2">启用</span>
+                    <span class="li_sp3">
+                        <a class="content_a" id="a1_0">禁用</a>
+                       <!-- <a class="content_a" id="a1_1">删除</a-->
+                        <a class="content_a" id="a1_2" href="bmdagl_bj.html">编辑</a>
+                        <a class="content_a" id="a1_3">新增子部门</a>
+                    </span>
+                    <ul class="content_ul1">
+                        <li>
+                            <!--<span class="li_sp3"><input name="box" type="checkbox"/></span>-->
+                            <span class="li_sp0_2">
+                                <img src="__PUBLIC__/img/ajj.png"/>
+                                <a href="bmdagl_ck.html">DOO75</a>
+                            </span>
+                            <span class="li_sp1">技术部</span>
+                            <span class="li_sp2">新增</span>
+                            <span class="li_sp3">
+                                <a class="content_a" id="a2_0">禁用</a>
+                                <a class="content_a" id="a2_1">删除</a>
+                                <a class="content_a" id="a2_2">编辑</a>
+                                <a class="content_a" id="a2_3">新增子部门</a>
+                            </span>
+                            <ul class="content_ul1">
+                                <li>
+                                    <!--<span class="li_sp3"><input name="box" type="checkbox"/></span>-->
+                                    <span class="li_sp0_3">
+                                        <img src="__PUBLIC__/img/ajj.png"/>
+                                        <a>DOO75</a>
+                                    </span>
+                                    <span class="li_sp1">技术部</span>
+                                    <span class="li_sp2">新增</span>
+                                    <span class="li_sp3">
+                                        <a class="content_a" id="a2_0">禁用</a>
+                                        <a class="content_a" id="a2_1">删除</a>
+                                        <a class="content_a" id="a2_2">编辑</a>
+                                        <a class="content_a" id="a2_3">新增子部门</a>
+                                    </span>
+                                    <ul class="content_ul1">
+                                        <li>
+                                            <!--<span class="li_sp3"><input name="box" type="checkbox"/></span>-->
+                                            <span class="li_sp0_4">
+                                                <img src="__PUBLIC__/img/ajj.png"/>
+                                                <a>DOO75</a>
+                                            </span>
+                                            <span class="li_sp1">技术部</span>
+                                            <span class="li_sp2">新增</span>
+                                            <span class="li_sp3">
+                                                <a class="content_a" id="a2_0">禁用</a>
+                                                <a class="content_a" id="a2_1">删除</a>
+                                                <a class="content_a" id="a2_2">编辑</a>
+                                                <a class="content_a" id="a2_3">新增子部门</a>
+                                            </span>
+                                            
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
-<script type="text/javascript">
-$(function() {
-	var html = "<li>系统管理</li><li>公司信息管理</li><li>部门管理</li>";
-	$("#breadcrumbs ul").append(html);
-});
-</script>
+
+<!--添加-->
+<div class="tc" id="tc_tj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj2">部门档案管理</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>所在公司：</label>
+                    <select>
+                        <option>公司总部</option>
+                        <option>金华园区</option>
+                    </select>
+                </li>
+                <li>
+                    <label>部门名称：</label>
+                    <input class="tc_inp" type="text"/>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4" id="bottom_sp5">确定</span>
+        </div>
+    </div>
+</div>
+
+<!--新增子部门-->
+<div class="tc" id="tc_xzz">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj2">部门档案管理</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>所在公司：</label>
+                    <span>公司总部</span>
+                </li>
+                <li>
+                    <label>所在部门：</label>
+                    <span>市场部</span>
+                </li>
+                <li>
+                    <label>部门名称：</label>
+                    <input class="tc_inp" type="text"/>
+                </li>  
+            </ul>
+        </div>
+        
+        <div class="bottom">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4" id="bottom_sp5">确定</span>
+        </div>
+    </div>
+</div>
