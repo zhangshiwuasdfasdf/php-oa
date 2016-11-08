@@ -113,7 +113,6 @@ class AuthCheckBehavior extends Behavior {
 				$auth = $this -> get_auth();
 				break;
 		}
-		//die;
 		// 当前访问Action中配置的权限是否存在
 		if ($auth[$action_auth[ACTION_NAME]]) {
 			$this -> config['auth'] = $auth;
@@ -143,7 +142,7 @@ class AuthCheckBehavior extends Behavior {
 		$access_list_admin = array_filter(array_combine($module_list, $access_list['admin']));
 		$access_list_write = array_filter(array_combine($module_list, $access_list['write']));
 		$access_list_read = array_filter(array_combine($module_list, $access_list['read']));
-
+		
 		$module_name = strtolower(MODULE_NAME);
 		$auth['admin'] = array_key_exists($module_name, $access_list_admin) || array_key_exists("##" . $module_name, $access_list_admin);
 

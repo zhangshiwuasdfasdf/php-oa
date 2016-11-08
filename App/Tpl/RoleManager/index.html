@@ -1,0 +1,204 @@
+<layout name='Layout/ace_layout' />
+<link type="text/css" href="__PUBLIC__/css/new_versions/qxgl.css" rel="stylesheet"/>
+<form method="post" name="form_adv_search" id="form_adv_search">
+	<div class="adv_search panel panel-default "  id="adv_search">
+		<div class="panel-body">
+			<div class="top_qxql">
+            <span>岗位代码：<input class="top_in" type="text" name="li_role_no"/></span>
+            <span>岗位名称：<input class="top_in" type="text" name="li_role_name"/></span>
+            <span>数据状态：
+                <select class="top_select" name="eq_status">
+					<option selected value="">请选择</option>
+                    <option value="1">启用</option>
+                    <option value="0">禁用</option>
+                </select>
+            </span>
+	            <div class="top_button">
+	                <img src="__PUBLIC__/img/new_versions/cx.png" onclick="submit_adv_search();"/>
+	            </div>
+       		</div>
+		</div>
+	</div>
+</form>
+<div class="zong">
+   	<div class="content">
+    	<div class="content_title">
+            <span class="content_sp1"></span>
+            <span class="content_sp2">岗位列表</span>
+            <a class="content_sp3" id="a_gltj">
+            	<img class="img_tj" src="__PUBLIC__/img/new_versions/tj3.png"/>
+            </a>  
+        </div>
+        
+        <div class="content_ul_w">
+            <ul class="content_ul">
+                <li class="content_li">
+                    <span class="span1_0"></span>
+                    <span class="span1">公司</span>
+                    <span class="span1">角色名称</span>
+                    <span class="span1">状态</span>
+                    <span class="span1">操作</span>
+                    <span class="span1"></span>
+                    <span class="span1"></span>
+                    <span class="span1"></span>
+                </li>
+                <volist name="list" id="vo">
+	                <li class="content_li">
+	                    <span class="span2_0"><input name="box" type="checkbox"/><input type="hidden" name="id" value="{$vo.id}"/></span>
+	                    <span class="span2">{$vo.company}</span>
+	                    <span class="span2">{$vo.role_name}</span>
+	                    <span class="span2" msg="{$vo.status}"><eq name="vo.status" value="1">启用<else/>禁用</eq></span>
+	                    <span class="span2"><a class="content_a a_glbj">编辑</a></span>
+	                    <span class="span2"><a class="content_a" id="a_cd">分配菜单</a></span>
+	                    <span class="span2"><a class="content_a" id="a_qx" href="qxgl_sz.html" target="_blank">分配权限</a></span>
+	                    <span class="span2"><a class="content_a">复制</a></span>
+	                </li>
+                </volist>
+            </ul>
+        </div>      
+    </div>
+    
+    <div class="content_bottom">
+        <div class="content_bottom1"></div>
+        <div class="content_bottom2">
+            <div class="b1">
+                <input id="all" type="checkbox"/>
+                <span>全选</span>
+            </div>
+            
+            <div class="b2">删除</div>
+            
+            <div class="pagination b3">
+			{$page}
+			</div>
+        </div>
+    </div>
+</div> 
+<div class="tc" id="tc_glbj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj1">编辑</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>公司：</label>
+                    <select name="company">
+                    	<volist name="list" id="vv">
+                        	<option value="{$vv.company}">{$vv.company}</option>
+                        </volist>
+                    </select>
+                </li> 
+                <li>
+                    <label>角色名称：</label>
+                    <input type="hidden" name="id" value=""/>
+                    <input class="tc_inp" type="text" name="role_name"/>
+                </li>
+                <li>
+                    <label>状态：</label>
+                    <select name="status">
+                        <option value="1">启用</option>
+                        <option value="0">禁用</option>
+                    </select>
+                </li> 
+            </ul>
+        </div>
+        
+        <div class="bottom_qxql">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4" onclick="save();">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_gltj">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="tj1">添加</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            	<li>
+                    <label>公司：</label>
+                    <input class="tc_inp" type="text" name="company"/>
+                </li> 
+                <li>
+                    <label>角色名称：</label>
+                    <input class="tc_inp" type="text" name="role_name"/>
+                </li>
+                <li>
+                    <label>状态：</label>
+                    <select name="status">
+                        <option value="1">启用</option>
+                        <option value="0">禁用</option>
+                    </select>
+                </li> 
+            </ul>
+        </div>
+        
+        <div class="bottom_qxql">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4" onclick="addRole();">确定</span>
+        </div>
+    </div>
+</div>
+
+<div class="tc" id="tc_cd">
+	<div class="tc_div">
+    	<div class="tc_title">
+        	<span class="js_sp1">菜单名称</span>
+        </div>
+        <div class="tc_ul_div">
+        	<ul class="zz_ul">
+            	<li class="zz_li">
+                	<img src="__PUBLIC__/img/new_versions/add.png"/>
+                	<input type="checkbox" id="sp"/>
+                    <label for="sp">审批</label>
+                    <ul class="zz_ul1">
+                    	<li class="zz_li">
+                        	<img src="__PUBLIC__/img/new_versions/ajj.png"/>
+                            <input type="checkbox" id="qj0"/>
+                    		<label for="qj0">员工请假申请</label>
+                        </li>
+                        <li class="zz_li">
+                        	<img src="__PUBLIC__/img/new_versions/ajj.png"/>
+                            <input type="checkbox" id="qj1"/>
+                    		<label for="qj1">员工请假申请</label>
+                        </li>
+                        <li class="zz_li">
+                        	<img src="__PUBLIC__/img/new_versions/ajj.png"/>
+                            <input type="checkbox" id="qj2"/>
+                    		<label for="qj2">员工请假申请</label>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="zz_ul">
+            	<li class="zz_li">
+                	<img src="__PUBLIC__/img/new_versions/add.png"/>
+                	<input type="checkbox" id="gg"/>
+                    <label for="gg">公告</label>
+                    <ul class="zz_ul1">
+                    	<li class="zz_li">
+                        	<img src="__PUBLIC__/img/new_versions/ajj.png"/>
+                            <input type="checkbox" id="gs"/>
+                    		<label for="gs">公司公告</label>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bottom_qxql">
+        	<span class="bottom_sp1">取消</span>
+            <span class="bottom_sp2">确定</span>
+        </div>
+	</div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/new_versions/qxgl.js"></script>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>系统设置</li><li>权限管理</li><li>角色管理</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

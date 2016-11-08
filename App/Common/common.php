@@ -1198,8 +1198,8 @@ function popup_menu_option($tree, $level = 0,$default='') {
 	$html = "";
 	if (is_array($tree)) {
 		foreach ($tree as $val) {
-			if (isset($val["name"])) {
-				$title = $val["name"];
+			if (isset($val["name"]) || isset($val['menu_name'])) {
+				$title = isset($val["name"]) ? $val['name'] : $val['menu_name'];
 				$id = $val["id"];
 				if (empty($val["id"])) {
 					$id = $val["name"];
@@ -1217,7 +1217,7 @@ function popup_menu_option($tree, $level = 0,$default='') {
 				}
 			}
 		}
-		$html = $html . "</ul>\r\n";
+		$html = $html . "\r\n";
 	}
 	return $html;
 }
@@ -2562,6 +2562,45 @@ function is_holiday($unix_timestamp){
 		}
 	}
 }
+function get_leave_seconds_weekend($start,$end){
+	$start_date = date('Y-m-d',$start);
+	$start_date_w = date('w',$start);
+	$start_date2 = date('Ymd',$start);
+	$start_date_1 = strtotime($start_date.' 00:00')+86400;
+	//判断是否是法定节假日
+	$times = M('Holiday')->where(array('is_holiday'=>'1','date'=>$start_date2))->getField('times');
+	if(is_holiday($start) && ($start_date_w=='0' || $start_date_w == '6' )&& ($times=='1' || empty($times))){
+		
+		if($end<$start_date_1){
+			return get_leave_day_seconds($start,$end,true);
+		}else{
+			return get_leave_day_seconds($start,$start_date_1,true)+get_leave_seconds_weekend($start_date_1,$end);
+		}
+	}else{
+		return 0;
+	}
+}
+
+function get_leave_seconds_fading_holidy($start,$end){
+	$start_date = date('Y-m-d',$start);
+	$start_date2 = date('Ymd',$start);
+	$start_date_1 = strtotime($start_date.' 00:00')+86400;
+	$times = M('Holiday')->where(array('is_holiday'=>'1','date'=>$start_date2))->getField('times');
+	if($end<$start_date_1){
+		if($times){
+			return $times*get_leave_day_seconds($start,$end,true);
+		}else{
+			return 0;
+		}
+		
+	}else{
+		if($times){
+			return $times*get_leave_day_seconds($start,$start_date_1,true)+get_leave_seconds_fading_holidy($start_date_1,$end);
+		}else{
+			return get_leave_seconds_fading_holidy($start_date_1,$end);
+		}
+	}
+}
 function get_leave_seconds($start,$end){//获取start和end之间经过的秒数（工作时间）
 	$start_date = date('Y-m-d',$start);
 	$start_date_1 = strtotime($start_date.' 00:00')+86400;
@@ -2587,10 +2626,13 @@ function get_leave_seconds($start,$end){//获取start和end之间经过的秒数
 // 	}
 // 	return $seconds;
 // }
-function get_leave_day_seconds($start,$end){//获取一天之中start和end之间经过的秒数（工作时间）
-	if(is_holiday($start)=='1'){
-		return 0;
+function get_leave_day_seconds($start,$end,$is_holidy=false){//获取一天之中start和end之间经过的秒数（工作时间）
+	if(!$is_holidy){
+		if(is_holiday($start)=='1'){
+				return 0;
+		}
 	}
+	
 	$start_date = date('Y-m-d',$start);
 	$start_morning = strtotime($start_date.' '.get_system_config("MORNING_START"));
 	$end_morning = strtotime($start_date.' '.get_system_config("MORNING_END"));

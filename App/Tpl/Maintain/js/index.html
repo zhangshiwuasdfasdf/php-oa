@@ -1,0 +1,58 @@
+<script type="text/javascript">
+	function add() {
+		window.open("{:U('add')}", "_self");
+	};
+
+	function del(id) {
+		ui_confirm('确定要删除吗?',function(){
+			window.open(fix_url("{:U('del')}?id=" + id), "_self");
+		});
+	};
+
+	$(document).ready(function() {
+		set_return_url();
+		$(".content_a.a1_2").click(function(){
+			var id = $(this).parent().parent().find(".li_sp3 input:eq(1)").val();
+			var con = $(this).text().trim();
+			$.post("{:U('changestatus')}",{"id":id,"status":con},function(data){
+				location.reload();
+			},'json');
+		});
+	});
+	function save(flag,obj){
+		window.onbeforeunload=null;
+		var status,menu_no,pid,id;
+		var url = "{:U('add')}";
+		if(flag == 1){
+			var name = $("#tc_yjtj input[name='menu_name']").val().trim();
+			var addr = $("#tc_yjtj input[name='menu_addr']").val().trim();
+			status = $("#tc_yjtj select[name='menu_status']").val().trim();
+			if(name == ""){ui_error("请输入菜单名称！");return false;}
+			if(addr == ""){ui_error("请输入菜单地址！");return false;}
+			if(status == ""){ui_error("请输入菜单状态！");return false;}
+		}else{
+			var name = $("#tc_ejtj input[name='menu_name']").val().trim();
+			var addr = $("#tc_ejtj input[name='menu_addr']").val().trim();
+			menu_no = $("#tc_ejtj input[name='menu_no']").val().trim();
+			if($("select[name='pid']").prop("disabled")){
+				pid = "0";
+			}else{
+				pid = $("#tc_ejtj select[name='pid']").find("option:selected").val().trim();
+			}
+			if(menu_no == ""){ui_error("请输入菜单编码！");return false;}
+			if(name == ""){ui_error("请输入菜单名称！");return false;}
+			if(addr == ""){ui_error("请输入菜单地址！");return false;}
+			if($(obj).text() == "修改"){
+				url = "{:U('save')}";
+				id = $("#menuId").val();
+			}
+		}
+		$.post(url,{"id":id,"name":name,"addr":addr,"status":status,"menu_no":menu_no,"pid":pid},function(data){
+			if (data.status) {
+				ui_alert(data.info,function(){
+					location.reload();
+				});				
+			}
+		},'json');
+	}
+</script>
