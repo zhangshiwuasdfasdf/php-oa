@@ -16,7 +16,7 @@ $.fn.toggle = function( fn, fn2 ) {
 
 function wli(){
 	var wsp0=0;
-	var wsp=$('.content_div1').children('span');
+	var wsp=$('.content_div,.content_div1').children('span');
 	for( var i=0; i<wsp.length;i++){
 		wsp0+=wsp.eq(i).outerWidth();
 	}
@@ -27,31 +27,86 @@ wli();
 $(".content_div2 img").each(function(){
 	$(this).toggle(function(){
 		$(this).parent().parent().children('ul').show()
-		$(this).attr('src','img/ajj.png');
+		$(this).attr('src','__PUBLIC__/img/ajj.png');
 	},function(){
 		$(this).parent().parent().children('ul').hide()
-		$(this).attr('src','img/add.png');
+		$(this).attr('src','__PUBLIC__/img/add.png');
 	})
 })
 //添加
 $('.img_tj').click(function(){
+	$.ajax({
+		type:'post',
+		url:"{:U('get_company_candidate')}",
+		success:function(data){
+			$("#company").html(data);
+		}
+	})
+	
 	$('#tc_tj').show();	
 	$('.bottom_sp3').click(function(){
 		$('#tc_tj').hide();	
 	})
 	$('.bottom_sp4').click(function(){
-		$('#tc_tj').hide();	
+		window.onbeforeunload = null;
+		if (check_form("form_data_company_add")) {
+			sendForm("form_data_company_add", "{:U('company_add')}");
+		}
 	})
 })
 
 //新增子部门
-$('#a1_3').click(function(){
+function add_child_dept(dept_id){
+	$.ajax({
+		type:'post',
+		data:{dept_id:dept_id},
+		url:"{:U('ajax_get_dept_info')}",
+		success:function(data){
+			//alert(JSON.stringify(data));
+			$("#belong_company").html(data.info.company_name);
+			$("#belong_dept").html(data.info.name);
+			$("#belong_dept_id").val(data.info.id);
+		}
+	})
 	$('#tc_xzz').show();	
 	$('.bottom_sp3').click(function(){
 		$('#tc_xzz').hide();	
 	})
 	$('.bottom_sp4').click(function(){
-		$('#tc_xzz').hide();	
+		window.onbeforeunload = null;
+		if (check_form("form_data_dept_add")) {
+			sendForm("form_data_dept_add", "{:U('dept_add')}");
+		}
 	})
-})
+}
+/* $('#a1_3').click(function(){
+	
+}) */
+function set_use(dept_id,is_use){
+	$.ajax({
+		type:'post',
+		data:{id:dept_id,is_use:is_use},
+		url:"{:U('set_dept')}",
+		success:function(data){
+			//alert(JSON.stringify(data));
+			//alert(data.res);
+			if(data.res == '1'){
+			//	alert(data.is_use);
+				if(data.is_use == '1'){
+					$("#a0_"+dept_id).html('启用');
+					$("#a1_"+dept_id).html('禁用');
+					$("#a1_"+dept_id).attr('onclick','set_use("'+data.dept_id+'","0")');
+				}else{
+					$("#a0_"+dept_id).html('禁用');
+					$("#a1_"+dept_id).html('启用');
+					$("#a1_"+dept_id).attr('onclick','set_use("'+data.dept_id+'","1")');
+				}
+				
+			}
+		},
+		error:function(){
+			alert('操作失败');
+		}
+	})
+}
 </script>

@@ -120,12 +120,9 @@ $("#a_gstj").click(function(){
 
 //部门页面
 //编辑
-$("#a_bmbj").click(function(){
-	$("#tc_bmbj").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
-		$("#tc_bmbj").hide();	
-	})	
-})
+/* $("#a_bmbj").click(function(){
+	
+}) */
 //添加
 $("#a_bmtj").click(function(){
 	$.ajax({
@@ -325,6 +322,48 @@ function edit_user(user_id,user_name,dept_id,position_id,is_del,position_sequenc
 	})	
 }
 
+//以下为模拟数据
+/* var startTime = "2016-11-09 14:23:00";
+var timestamp2 = Date.parse(new Date(startTime));
+
+window.setInterval(cal,1000);
+function cal(){
+	var timestamp = Date.parse(new Date());
+	if(timestamp>timestamp2){
+		console.log(Math.round(392*Math.sqrt((timestamp-timestamp2)/1000)));
+	}
+} */
+
+function edit_dept(dept_id,dept_no){
+	$("#edit_dept_id").val(dept_id);
+	$("#dept_no").val(dept_no);
+	$.ajax({
+		type:'post',
+		url:"{:U('get_edit_dept_html')}",
+		data:{dept_id:dept_id},
+		success:function(result){
+			$("#company").html(result.data.company);
+			$("#edit_dept_dept").html(result.data.dept_parent);
+			$("#dept_name").val(result.data.dept_name);
+			$("#dept_is_use").html(result.data.is_use);
+			$("#dept_grade_id").html(result.data.dept_grade);
+			$("#dept_sort").val(result.data.sort);
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
+	$("#tc_bmbj").show();
+	$(".bottom_sp4").click(function(){
+		window.onbeforeunload = null;
+		if (check_form("edit_dept_data")) {
+			sendForm("edit_dept_data", "{:U('dept_edit')}");
+		}
+	})	
+	$(".bottom_sp3").click(function(){
+		$("#tc_bmbj").hide();	
+	})	
+}
 $("#a_ygtj").click(function(){
 	$('#bj3').text('添加')
 	$("#user_user_id").val('');
@@ -569,7 +608,7 @@ function show_list(id,show_leader,p,type){
 							dept_temp += '禁用';
 						}
 						dept_temp += '</a></span>';
-						dept_temp += '<span class="span2"><a class="content_a" id="a_bmbj">编辑</a></span>';
+						dept_temp += '<span class="span2"><a class="content_a" id="a_bmbj" onclick="edit_dept(\''+v.id+'\',\''+v.dept_no+'\')">编辑</a></span>';
 						dept_temp += '</li>';
 					});
 					$('.dept_content').html(dept_temp);

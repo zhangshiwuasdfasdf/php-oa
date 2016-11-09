@@ -13,28 +13,47 @@
 
 class DeptAction extends CommonAction {
 
-	protected $config = array('app_type' => 'master', 'action_auth' => array('index' => 'admin', 'winpop4' => 'read'));
+	protected $config = array('app_type' => 'master', 'action_auth' => array('index' => 'admin', 'winpop4' => 'read','get_company_candidate'=>'read','company_add'=>'read','dept_add'=>'read','edit_company'=>'read','edit_dept'=>'read','update_dept'=>'read','get_dept_by_company_id'=>'read','set_dept'=>'read','ajax_get_dept_info'=>'read','view'=>'read'));
 
 	public function index(){
 		
 		$node = M("Dept");
 		$menu = array();
-		$menu = $node -> where($map) -> field('id,pid,name,is_del') -> order('sort asc') -> select();
+		$where['is_del'] = '0';
+		
+		if(!empty($_POST['dept_no'])){
+			$where['dept_no'] = array('like','%'.$_POST['dept_no'].'%');
+		}
+		if(!empty($_POST['name'])){
+			$where['name'] = array('like','%'.$_POST['name'].'%');
+		}
+		if(!empty($_POST['is_use']) && $_POST['is_use']>-1){
+			$where['is_use'] = array('eq',$_POST['is_use']);
+		}
+		
+		
+		
+		$menu = $node -> where($where) -> field('id,pid,name,dept_no,is_use') -> order('sort asc') -> select();
 		$tree = list_to_tree($menu);
 		
-		$a = popup_tree_menu($tree);
-		$a = str_replace('tree_menu','submenu',$a);
-		$a = str_replace('<a class=""','<a class="dropdown-toggle"',$a);
-		$a = preg_replace('/submenu/','nav-list',$a,1);
+		$a = popup_tree_menu_dept($tree);
+// 		dump($a);die;
 		$this -> assign('menu', $a);
 
-		$model = M("Dept");
-		$list = $model -> order('sort asc') -> getField('id,name');
-		$this -> assign('dept_list', $list);
+// 		$open=fopen("C:\log.txt","a" );
+// 		fwrite($open,json_encode($where)."\r\n");
+// 		fwrite($open,json_encode($menu)."\r\n");
+// 		fwrite($open,json_encode($tree)."\r\n");
+// 		fclose($open);
+		
+		
+// 		$model = M("Dept");
+// 		$list = $model -> order('sort asc') -> getField('id,name');
+// 		$this -> assign('dept_list', $list);
 
-		$model = M("DeptGrade");
-		$list = $model -> where('is_del=0') -> order('sort asc') -> getField('id,name');
-		$this -> assign('dept_grade_list',$list);
+// 		$model = M("DeptGrade");
+// 		$list = $model -> where('is_del=0') -> order('sort asc') -> getField('id,name');
+// 		$this -> assign('dept_grade_list',$list);
 
 		$this -> display();
 	}
@@ -89,6 +108,155 @@ class DeptAction extends CommonAction {
 		$this -> assign('pid', $pid);
 		$this -> display('winpop4');
 	}
+	public function get_company_candidate(){
+		$company_name = M('SimpleDataMapping')->field('data_name')->where(array('data_type'=>array('like','%人事公司%')))->select();
+		$html = '';
+		foreach ($company_name as $k=>$v){
+			$html .= '<option>'.$v['data_name'].'</option>';
+		}
+		$this->ajaxReturn($html);
+	}
+	public function company_add(){
+		$data['pid'] = 0;
+		$data['name'] = $_POST['company'];
+		$data['is_del'] = 0;
+		$data['is_use'] = 1;
+		$res = M('Dept')->add($data);
+		if(false !== $res){
+			$this->success('新增成功');
+		}else{
+			$this->error('新增失败');
+		}
+	}
+	public function dept_add(){
+		if(!empty($_POST['belong_dept_id']) && !empty($_POST['dept_name'])){
+			$data['pid'] = $_POST['belong_dept_id'];
+			$data['name'] = $_POST['dept_name'];
+			$data['dept_no'] = $_POST['dept_no'];
+			$data['is_del'] = '0';
+			$data['is_use'] = '1';
+			$res = M('Dept')->add($data);
+			if(false !== $res){
+				$this->success('新增成功');
+			}else{
+				$this->error('新增失败');
+			}
+		}else{
+			$this->error('请填写部门相关信息');
+		}
+	}
+	public function edit_dept(){
+		$dept_id = $_GET['id'];
+		
+		$dept_info = M('Dept')->find($dept_id);
+		$this->assign('dept_info',$dept_info);
+		
+		$pid = $dept_id;
+		while($pid){
+			$id = $pid;
+			$pid = M('Dept')->where(array('id'=>$id))->getField('pid');
+		}
+		$company_id = $id;
+		$company = M('Dept')->where(array('pid'=>'0','is_del'=>'0'))->select();
+		$company_html = '';
+		foreach ($company as $k=>$v){
+			if($v['id'] == $company_id){
+				$company_html .= '<option value="'.$v['id'].'" selected="selected">'.$v['name'].'</option>';
+			}else{
+				$company_html .= '<option value="'.$v['id'].'">'.$v['name'].'</option>';
+			}
+		}
+		$this->assign('company',$company_html);
+		
+		$dept = M('Dept')->field('id,pid,name')->where(array('id'=>array('in',get_child_dept_all($company_id)),'is_del'=>'0'))->select();
+		$tree = list_to_tree($dept);
+		$dept_html = popup_menu_option($tree,0,$dept_info['pid']);
+		$this->assign('dept',$dept_html);
+		
+		if($dept_info['is_use'] == '1'){
+			$status_html = '<option value="1" selected="selected">启用</option><option value="0" >禁用</option>';
+		}else{
+			$status_html = '<option value="1">启用</option><option value="0" selected="selected">禁用</option>';
+		}
+		$this->assign('status',$status_html);
+		$this->display();
+	}
+	public function edit_company(){
+		$dept_id = $_GET['id'];
 	
+		$dept_info = M('Dept')->find($dept_id);
+		$this->assign('dept_info',$dept_info);
+	
+		
+		if($dept_info['is_use'] == '1'){
+			$status_html = '<option value="1" selected="selected">启用</option><option value="0" >禁用</option>';
+		}else{
+			$status_html = '<option value="1">启用</option><option value="0" selected="selected">禁用</option>';
+		}
+		$this->assign('status',$status_html);
+		$this->display();
+	}
+	public function get_dept_by_company_id(){
+		$dept = M('Dept')->field('id,pid,name')->where(array('id'=>array('in',get_child_dept_all($_POST['company_id'])),'is_del'=>'0'))->select();
+		$tree = list_to_tree($dept);
+		$dept_html = '<option>请选择部门</option>'.popup_menu_option($tree);
+		$this->ajaxReturn($dept_html);
+	}
+	public function update_dept(){
+		if(!empty($_POST['pid'])){
+			$data['pid'] = $_POST['pid'];
+		}
+		$data['dept_no'] = $_POST['dept_no'];
+		$data['name'] = $_POST['name'];
+		$data['is_use'] = $_POST['is_use'];
+		$res = M('Dept')->where(array('id'=>$_POST['id']))->save($data);
+		if(false !== $res){
+			$this->success('修改成功',U('index'));
+		}else{
+			$this->success('修改失败');
+		}
+	}
+	public function set_dept(){
+		$res = M('Dept')->where(array('id'=>$_POST['id']))->save(array('is_use'=>$_POST['is_use']));
+		if(false !== $res){
+			$data['dept_id'] = $_POST['id'];
+			$data['res'] = 1;
+			$data['is_use'] = $_POST['is_use'];
+			$this->ajaxReturn($data);
+		}else{
+			$data['dept_id'] = $_POST['id'];
+			$data['res'] = 0;
+			$data['is_use'] = $_POST['is_use'];
+			$this->ajaxReturn($data);
+		}
+	}
+	public function ajax_get_dept_info(){
+		$data['info'] = M('Dept')->find($_POST['dept_id']);
+		
+		$pid = $_POST['dept_id'];
+		while($pid){
+			$id = $pid;
+			$pid = M('Dept')->where(array('id'=>$id))->getField('pid');
+		}
+		$data['info']['company_name'] = M('Dept')->where(array('id'=>$id))->getField('name');
+		$this->ajaxReturn($data);
+	}
+	public function view(){
+		$dept_id = $_GET['id'];
+		
+		$dept_info = M('Dept')->find($dept_id);
+		$dept_info['pid_name'] = M('Dept')->where(array('id'=>$dept_info['pid']))->getField('name');
+		$dept_info['is_use'] = $dept_info['is_use']=='1'?'启用':'禁用';
+		$pid = $dept_id;
+		while($pid){
+			$id = $pid;
+			$pid = M('Dept')->where(array('id'=>$id))->getField('pid');
+		}
+		$company_id = $id;
+		$dept_info['company_name'] = M('Dept')->where(array('id'=>$company_id))->getField('name');
+		
+		$this->assign('dept_info',$dept_info);
+		$this->display();
+	}
 }
 ?>

@@ -1183,7 +1183,64 @@ function new_tree_menu($tree, $level = 0,$deep=100) {
 	}
 	return $html;
 }
-
+//部门档案管理列表
+function popup_tree_menu_dept($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	if($level == 1){
+		$width = 283;
+		$class = "content_ul";
+	}else{
+		$width = 283-($level-1)*18;
+		$class = "content_ul1";
+	}
+	
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"$class\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title =  $level == '1'?'':$val["name"];
+				$id = $val["id"];
+				$pid = $val["pid"];
+				$code = $level == '1'?$val["name"]:$val["dept_no"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				$status = ($val['is_use'] == '1' ? "启用" : "禁用");
+				$activate = ($val['is_use'] == '1' ? "禁用" : "启用");
+				$set_use = $val['is_use'] == '1' ? "0" : "1";
+				$edit = '编辑';
+				if($level == 1){
+					$edit_url = U('edit_company?id='.$id);
+				}else{
+					$edit_url = U('edit_dept?id='.$id);
+				}
+				$html = $html . "<li>\r\n<span class=\"li_sp0_1\" style=\"width:".$width."px;\"><img src=\"__PUBLIC__/img/ajj.png\"/>";
+				if($level == '1'){
+					$html = $html . "<span>$code</span>";
+				}else{
+					$html = $html . "<a href=".U('view?id='.$id).">$code</a>";
+				}
+				$html = $html . "\r\n</span>\r\n";
+				$html = $html . "<span class=\"li_sp1\">$title</span>\r\n";
+				$html = $html . "<span class=\"li_sp2\" id=\"a0_$id\">$status</span>\r\n";
+				$html = $html . "<span class=\"li_sp3\">";
+				$html = $html . "<a class=\"content_a\" id=\"a1_$id\" onclick=\"set_use('$id','$set_use')\">$activate</a>";
+// 				$html = $html . "<a class=\"content_a\" id=\"a1_0\">$activate</a>";
+				$html = $html . "<a class=\"content_a\" id=\"a2_$id\" href=\"$edit_url\">$edit</a>";
+				$html = $html . "<a class=\"content_a\" id=\"a3_$id\" onclick=\"add_child_dept('$id')\">新增子部门</a>";
+				$html = $html . "</span>\r\n";
+				if (isset($val['_child'])) {
+					$html = $html . popup_tree_menu_dept($val['_child'], $level,$deep);
+				}
+				$html = $html . "</li>\r\n";
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
 function popup_menu_organization($tree, $level = 0,$deep=100) {
 	$level++;
 	$deep--;

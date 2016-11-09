@@ -415,6 +415,7 @@ input,select{ margin:0; padding:0; outline:none;}
 </div>
 <!--部门-->
 <div class="tc" id="tc_bmbj">
+	<form method='post' id="edit_dept_data" name="edit_dept_data" enctype="multipart/form-data">
 	<div class="tc_div1">
     	<div class="tc_title">
         	<span class="js_sp1" id="bj1">编辑</span>
@@ -422,42 +423,38 @@ input,select{ margin:0; padding:0; outline:none;}
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
                 <li>
-                    <label>公司：</label> <input class="tc_inp"/>
-                    <select>
-                        <option>集团总部</option>
-                        <option>杭州基地</option>
-                        <option>宁波基地</option>
-                        <option>金华基地</option>
-                        <option>嘉兴基地</option>
+                    <label>公司：</label>
+                    <select id="company" onChange="change_dept($(this).val(),'edit_dept')">
                     </select>
                 </li>
                 <li>
-                    <label>部门：</label>
-                    <select>
-                        <option>|&nbsp;仓配中心</option>
-                        <option>&nbsp;||&nbsp;入库组</option>
-                        <option>&nbsp;||&nbsp;内仓组</option>
-                        <option>&nbsp;||&nbsp;单据组</option>
-                        <option>|&nbsp;运营中心</option>
-                        <option>&nbsp;||&nbsp;招商业务组</option>
-                        <option>&nbsp;||&nbsp;运营服务组</option>
-                        <option>&nbsp;||&nbsp;系统服务组</option>
+                    <label>上级部门：</label>
+                    <select name="pid" id="edit_dept_dept">
                     </select>
+                </li>
+                <li>
+                    <label>部门名称：</label>
+                    <input class="tc_inp" type="text" name="dept_name" id="dept_name"/>
+                    <input type="hidden" name="edit_dept_id" id="edit_dept_id"/>
+                </li>
+                <li>
+                    <label>部门编号：</label>
+                    <input class="tc_inp" type="text" name="dept_no" id="dept_no"/>
                 </li>
                 <li>
                     <label>数据状态：</label>
-                    <select>
-                        <option>启用</option>
-                        <option>禁用</option>
+                    <select name="dept_is_use" id="dept_is_use">
                     </select>
                 </li>
                 <li>
                     <label>部门层级：</label>
-                    <select>
-                        <option>一级部门</option>
-                        <option>二级部门</option>
+                    <select name="dept_grade_id" id="dept_grade_id">
                     </select>
-                </li>  
+                </li>
+                <li>
+                    <label>顺序：</label>
+                    <input class="tc_inp" type="text" name="dept_sort" id="dept_sort"/>
+                </li>
             </ul>
         </div>
         
@@ -466,6 +463,7 @@ input,select{ margin:0; padding:0; outline:none;}
             <span class="bottom_sp4">确定</span>
         </div>
     </div>
+    </form>
 </div>
 <div class="tc" id="tc_bmtj">
 	<form method='post' id="form_data_dept_add" name="form_data_dept_add" enctype="multipart/form-data">
@@ -503,8 +501,14 @@ input,select{ margin:0; padding:0; outline:none;}
                         <option value="2">二级部门</option>
                         <option value="3">三级部门</option>
                         <option value="4">四级部门</option>
+                        <option value="5">五级部门</option>
+                        <option value="6">六级部门</option>
                     </select>
-                </li>  
+                </li> 
+                <li>
+                    <label>顺序：</label>
+					<input class="tc_inp" name="dept_sort_add" type="text">
+                </li> 
             </ul>
         </div>
         

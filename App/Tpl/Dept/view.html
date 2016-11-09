@@ -1,0 +1,97 @@
+<layout name='Layout/ace_layout' />
+<style>
+.nav2 .b{ background:#22bd9b; color:#fff;}
+.nav2{ overflow:hidden; background:#fff; height:54px; width:100%; line-height:54px; margin-bottom:10px; margin-top:50px;}
+.nav2 a{ display:block; float:left; width:120px; height:26px; line-height:26px; text-align:center; font-size:12px; font-weight:bold; background:#d9dbda; color:#22bd9b; margin-right:10px; margin-top:14px; cursor:pointer;}
+/*main*/
+.main_m{ width:100%;}
+.ma_title{ width:99%; height:28px; line-height:28px; padding-left:1%; font-size:12px; background:#bdd3e0;}
+.main_ul{ overflow:hidden; font-size:12px; border-left:solid 1px #e5e5e5;}
+.li1{ float:left; background:#fff; height:30px; line-height:30px; text-align:right; color:#666; border-bottom: solid 2px #e5e5e5;border-right: solid 2px #e5e5e5; overflow:hidden; white-space:nowrap;}
+.li2{ float:left; background:#fff; height:30px; line-height:30px; text-align:left;border-bottom: solid 2px #e5e5e5; color:#666;overflow:hidden; white-space:nowrap;border-right: solid 2px #e5e5e5;}
+.li2 input{ width:150px; height:18px; border:solid 1px #ccc; margin-left:5px;}
+.li2 span{margin-left:5px;}
+/*岗位定编明细*/
+.ma_content1{ font-size:12px; font-weight:bold; background:#fff; overflow:hidden; height:28px; line-height:28px; border-bottom:1px solid #eaedf1;}
+.ma_content1 span{ display:block; float:left; padding-left:10px;}
+.ma_content2{font-size:12px; background:#fff; overflow:hidden;height:28px; line-height:28px;}
+.ma_content2 span{ display:block; float:left;padding-left:10px;}
+.content_bottom1{ background:#fff; height:30px; margin-top:10px;}
+.content_bottom2{ background:#fff; height:42px; margin-top:2px; line-height:42px; position:relative;}
+.b3{ height:20px; line-height:20px; position:absolute; right:280px; top:11px; border: solid 1px #13b58e;}
+.b3_s1{ font-size:12px; color:#13b58e;}
+.b3_s2{ font-size:12px; color:#323232;}
+
+.b5{ height:20px; line-height:20px; position:absolute; right:15px; top:11px;}
+.b5_s1{ color:#13b58e; font-size:12px; border: solid 1px #13b58e; padding:0 3px; cursor:pointer;}
+.b5_s3 input{ color:#323232; width:25px; font-size:12px; border: solid 1px #13b58e;}
+.b5_s2{ color:#fff; background:#13b58e;}
+
+/*返回，提交*/
+.but_span{ display:block; margin:auto; overflow:hidden; width:180px; margin-top:50px;}
+.but{ display:block; float:left; width:80px; height:26px; color:#fff; line-height:26px; text-align:center; font-size:12px; background:#22bd9b; margin-right:10px;}
+
+</style>
+<div class="nav2">
+        <a class="b">部门档案管理</a>
+        <a>岗位定编明细</a>
+    </div>
+    <div class="main_m">
+    	<form method='post' id="form_data_dept_edit" name="form_data_dept_edit" enctype="multipart/form-data">
+    	<input name="id" value="{$dept_info.id}" type="hidden"/>
+    	<div class="ma_ta">
+        	<div class="ma_title">基本信息</div>
+        	<ul class="main_ul">
+            	<li class="li1">所在公司：</li>
+                <li class="li2"><span>{$dept_info.company_name}</span></li>
+                <li class="li1">所在部门：</li>
+                <li class="li2"><span>{$dept_info.pid_name}</span></li>
+                <li class="li1">部门编号：</li>
+                <li class="li2"><span>{$dept_info.dept_no}</span></li>
+                <li class="li1">部门名称：</li>
+                <li class="li2"><span>{$dept_info.name}</span></li>
+                <li class="li1">部门状态：</li>
+                <li class="li2"><span>{$dept_info.is_use}</span></li>
+            </ul>
+            <span class="but_span">
+                <a class="but" href="{:U('index')}">返回</a>
+            </span>
+        </div>
+        </form>
+        <div class="ma_ta">
+        	<div class="ma_title">岗位定编明细</div>
+        	<div class="ma_content1">
+            	<span>部门</span>
+                <span>岗位</span>
+                <span>定编人数</span>
+            </div>
+            <div class="ma_content2">
+            	<span>办事处</span>
+                <span>保洁</span>
+                <span>1</span>
+            </div>
+            <div class="content_bottom">
+                <div class="content_bottom1"></div>
+                <div class="content_bottom2"> 
+                    <div class="b3">
+                        <span class="b3_s1">共有</span>
+                        <span class="b3_s2">37872</span>
+                        <span class="b3_s1">条记录</span>
+                    </div>
+                    <div class="b5">
+                        <span class="b5_s1">1</span>
+                        <span class="b5_s1">2</span>
+                        <span class="b5_s1">3</span>
+                        <span class="b5_s1">4</span>
+                        <span class="b5_s1">5</span>
+                        <span>...</span>
+                        <span class="b5_s1">3788</span>
+                        <span class="b5_s1">下一页</span>
+                        <span class="b5_s3"><input type="text"/></span>
+                        <span class="b5_s1">go</span>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        
+    </div>

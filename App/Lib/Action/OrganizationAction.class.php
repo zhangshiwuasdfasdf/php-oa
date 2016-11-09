@@ -13,7 +13,7 @@
 
 class OrganizationAction extends CommonAction {
 
-	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read','get_all_position'=>'read','get_edit_user_html'=>'read','change_dept_html'=>'read','change_position_html'=>'read','user_edit'=>'read','user_dept_position_set'=>'read','search_user'=>'read','r_dept_position_add'=>'read','r_dept_position_edit'=>'read','delete'=>'read','edit_is_use'=>'read','dept_add'=>'read'));
+	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read','get_all_position'=>'read','get_edit_user_html'=>'read','get_edit_dept_html'=>'read','change_dept_html'=>'read','change_position_html'=>'read','user_edit'=>'read','user_dept_position_set'=>'read','search_user'=>'read','r_dept_position_add'=>'read','r_dept_position_edit'=>'read','delete'=>'read','edit_is_use'=>'read','dept_add'=>'read','dept_edit'=>'read'));
 
 	public function index(){
 		
@@ -125,7 +125,7 @@ class OrganizationAction extends CommonAction {
 					if(!empty($_REQUEST['dept_id'])){
 						$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
 					}
-					$list_dept = $model->where($where)->page($p.',10')->select();
+					$list_dept = $model->where($where)->page($p.',10')-> order('sort asc')->select();
 					$list_dept = $this->_getRootDept($list_dept);
 					$count_dept = $model->where($where)->count();
 				}
@@ -288,6 +288,33 @@ class OrganizationAction extends CommonAction {
 		$data['major'] = $this->_get_major_html($_POST['user_id'],$_POST['position_id']);
 		$this->ajaxReturn($data,1,1);
 	}
+	function get_edit_dept_html(){
+		$company_id = getRootDept($_POST['dept_id'])['id'];
+		$data['company'] = $this->_get_all_company_html($company_id);
+		$dept = M('Dept')->find($_POST['dept_id']);
+		$pid = $dept['pid'];
+		$data['dept_name'] = $dept['name'];
+		$data['sort'] = $dept['sort'];
+		$num_to_zh_cn = array('无','一级部门','二级部门','三级部门','四级部门','五级部门','六级部门');
+		$dept_grade_html = '';
+		foreach ($num_to_zh_cn as $k=>$v){
+			if($dept['dept_grade_id'] == $k){
+				$dept_grade_html .= '<option value="'.$k.'" selected="selected">'.$v.'</option>';
+			}else{
+				$dept_grade_html .= '<option value="'.$k.'">'.$v.'</option>';
+			}
+		}
+		if($dept['is_use'] == '1'){
+			$is_use_html .= '<option value="1" selected="selected">启用</option><option value="0">禁用</option>';
+		}else{
+			$is_use_html .= '<option value="1">启用</option><option value="0" selected="selected">禁用</option>';
+		}
+		$data['dept_grade'] = $dept_grade_html;
+		$data['is_use'] = $is_use_html;
+		$data['dept_parent'] = $this->_get_dept_html($company_id,$pid);
+		
+		$this->ajaxReturn($data,1,1);
+	}
 	function change_dept_html(){
 		$data['dept'] = $this->_get_dept_html($_POST['company_id']);
 		$this->ajaxReturn($data,1,1);
@@ -386,6 +413,7 @@ class OrganizationAction extends CommonAction {
 			$data['name'] = $_POST['dept_dept'];
 			$data['is_del'] = '0';
 			$data['is_use'] = $_POST['dept_dept_is_use'];
+			$data['sort'] = $_POST['dept_sort_add'];
 			$res = M('Dept')->add($data);
 			if(false !== $res){
 				$this->success('新增成功');
@@ -394,6 +422,27 @@ class OrganizationAction extends CommonAction {
 			}
 		}else{
 			$this->error('新增失败');
+		}
+	}
+	function dept_edit(){
+		if($_POST['pid'] == $_POST['edit_dept_id']){
+			$this->error('上级部门不能是自己');
+		}else if(!empty($_POST['pid']) && !empty($_POST['dept_name']) && !empty($_POST['edit_dept_id'])){
+			$data['pid'] = $_POST['pid'];
+			$data['dept_no'] = $_POST['dept_no'];
+			$data['dept_grade_id'] = $_POST['dept_grade_id'];
+			$data['name'] = $_POST['dept_name'];
+			$data['is_del'] = '0';
+			$data['is_use'] = $_POST['dept_is_use'];
+			$data['sort'] = $_POST['dept_sort'];
+			$res = M('Dept')->where(array('id'=>$_POST['edit_dept_id']))->save($data);
+			if(false !== $res){
+				$this->success('修改成功');
+			}else{
+				$this->error('修改失败');
+			}
+		}else{
+			$this->error('请填写部门相关信息');
 		}
 	}
 }
