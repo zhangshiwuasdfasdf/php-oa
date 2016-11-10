@@ -27,7 +27,7 @@ wli();
 $(".a_glbj").click(function(){
 	var obj = $(this).parent().parent();
 	var id = obj.find("span input:eq(1)").val().trim();
-	var company = obj.find("span:eq(1)").text().trim();
+	var company = obj.find("span input:eq(2)").val().trim();
 	var name = obj.find("span:eq(2)").text().trim();
 	var status = obj.find("span:eq(3)").attr("msg").trim();
 	$("#tc_glbj input[name='id']").val(id);
@@ -48,20 +48,11 @@ $("#a_gltj").click(function(){
 })
 
 
-$('#a_cd').click(function(){
+$('.a_cd').click(function(){
 	$("#tc_cd").show();
 	$(".bottom_sp1,.bottom_sp2").click(function(){
 		$("#tc_cd").hide();	
 	})	
-})
-
-
-$(".tc_ul_div img").each(function(){
-	$(this).toggle(function(){
-		$(this).parent('li').children('ul').slideDown()
-	},function(){
-		$(this).parent('li').children('ul').slideUp()
-	})
 })
 
 $('input[type="checkbox"]').change(function(e) {

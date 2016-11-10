@@ -1,14 +1,14 @@
 <?php
 class RoleManagerAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('ass_menu' => 'read' , 'import_client' => 'read' ,'export_info' => 'read'));
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
 		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
 			$map['role_name'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
-		if ($_POST['eq_status'] !== "") {
-			$map['status'] = array('eq',$_POST['eq_status'] ? "1" : "0") ;
+		if($_REQUEST['status'] !== "-1" && !empty($_REQUEST['status'])){
+			$map['status'] = array('eq',$_REQUEST['status']);
 		}
 	}
 	//列表页
@@ -21,6 +21,8 @@ class RoleManagerAction extends CommonAction {
 		if($model){
 			$list = $this -> _list($model, $map);
 		}
+		$dept = M('dept')->where(array('pid'=>'0','is_del'=>'0','is_use'=>'1'))->select();
+		$this -> assign('dept',$dept);
 		$this -> display();	
 		
 	}
@@ -29,6 +31,7 @@ class RoleManagerAction extends CommonAction {
 	function add(){
 		if($this -> isAjax()){
 			$model = M('RoleManager');
+			$data['company_id'] = I('post.company_id');
 			$data['company'] = I('post.company');
 			$data['role_name'] = I('post.role_name');
 			$data['status'] = I('post.status');
@@ -48,6 +51,7 @@ class RoleManagerAction extends CommonAction {
 		if($this -> isAjax()){
 			$model = M('RoleManager');
 			$data['id'] = I('post.id');
+			$data['company_id'] = I('post.company_id');
 			$data['company'] = I('post.company');
 			$data['role_name'] = I('post.role_name');
 			$data['status'] = I('post.status');
@@ -61,39 +65,19 @@ class RoleManagerAction extends CommonAction {
 			}
 		}
 	}
-	//更改菜单状态
-	function changestatus(){
-		$model = M('MenuNew');
+	//分配菜单
+	function ass_menu(){
+		$model = M('RoleManager');
 		$data['id'] = I('post.id');
-		$data['menu_status'] = (I('post.status') == "禁用") ? '0' : '1' ;
 		/*保存当前数据对象 */
-		$list = $model -> save($data);
-		if ($list !== false) {//保存成功
-			$this -> ajaxReturn($data, "修改成功", 1);
+		$sql = "SELECT * FROM `smeoa_menu_new` WHERE ( `is_del` = '0' AND `menu_status` = '1' ) ORDER BY `id` asc ";
+		$list = M()->query($sql);
+		if (!empty($list)) {//保存成功
+			$list = assi_tree_menu(list_to_tree($list));
+			$this -> ajaxReturn($list, "获取菜单成功", 1);
 		} else {
 			//失败提示
-			$this -> ajaxReturn($data, "修改失败", 0);
+			$this -> ajaxReturn($list, "获取菜单失败", 0);
 		}
-	}
-	//下载模板
-	public function down() {
-		$this -> _down();
-	}
-	//查看详情
-	function read(){
-		$pid = $_REQUEST['id'];
-		$model = D('Attract_detail');
-		$map['pid'] = $pid;
-		if (!empty($model)) {
-			$info = $this -> _list($model, $map);
-			$this -> assign('info', $info);
-		}
-		$data = M('Attract') -> find($pid);
-		$this -> assign('data',$data);
-		$this -> display();
-	}
-	
-	function del(){
-		$this -> _del();
 	}
 }
