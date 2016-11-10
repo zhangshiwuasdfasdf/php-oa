@@ -112,7 +112,7 @@ input,select{ margin:0; padding:0; outline:none;}
                     <span class="span2">{$vo.sequence_name}</span>
                     <span class="span2">{$vo.sequence_degree}</span>
                     <span class="span2">
-                    <a class="content_a" id="a_glbj" onclick="show({$vo.id});"><input id="bj_{$vo.id}" type="hidden" value="{$vo.id}">编辑</a>
+                    <a class="content_a" id="a_glbj" onclick="show('{$vo.id}','{$vo.sequence_number}','{$vo.sequence_name}','{$vo.sequence_degree}');"><input id="bj_{$vo.id}" type="hidden" value="{$vo.id}">编辑</a>
                     </span>
                 </li>
                 </foreach> 

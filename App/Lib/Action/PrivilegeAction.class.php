@@ -86,13 +86,6 @@ class PrivilegeAction extends CommonAction {
 				$this -> ajaxReturn('', "删除失败", 0);
 			}
 	}
-	
-	//关联角色复制的权限表单
-	public function showprivilege(){
-		$id=$_REQUEST['id'];
-		$res=D("PrivilegeView")->where(array('id'=>array('eq',$id)))->select();
-		$this->ajaxReturn($res,'success','1');
-	}
 	//编辑权限
 	public function edit_pri(){
 		$model=M("Privilege");

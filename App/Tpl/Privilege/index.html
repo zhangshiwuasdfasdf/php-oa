@@ -143,9 +143,9 @@ input{ margin:0; padding:0; outline:none;}
                     <span class="span2">{$vo.pri_no}</span>
                     <span class="span2">{$vo.pri_name}</span>
                     <span class="span2">{$vo.pri_act}</span>
-                    <span class="span2"><a class="content_bj" id="a_qxbj_{$vo.id}" value="{$vo.id}" onclick="show({$vo.id});")>编辑</a></span>
+                    <span class="span2"><a class="content_bj" id="a_qxbj_{$vo.id}" value="{$vo.id}" onclick="show('{$vo.id}','{$vo.pri_name}','{$vo.menu_name}','{$vo.pri_act}','{$vo.sort}');")>编辑</a></span>
                     <span class="span2"><a class="content_ajs" id="a_js_{$vo.id}" value="{$vo.id}" onclick="get_role({$vo.id});">关联角色</a></span>
-                    <span class="span2"><a class="content_afz" id="a_jsfz_{$vo.id}" value="{$vo.id}" onclick="show_rel({$vo.id});">关联角色复制</a></span>
+                    <span class="span2"><a class="content_afz" id="a_jsfz_{$vo.id}" value="{$vo.id}" onclick="show_rel('{$vo.id}','{$vo.menu_name}','{$vo.pri_act}');">关联角色复制</a></span>
                 </li>
                 </foreach>
                 </form>
@@ -262,7 +262,7 @@ input{ margin:0; padding:0; outline:none;}
                     <select name="menu_new_id">
                     <option value="">请选择</option>
                     <foreach name="menuData" item="vo">
-                        <option value="{$vo.id}"><?php echo str_repeat('&nbsp;', $vo['level']).str_repeat('|', $vo['level']+1).'-'.$vo['menu_name']; ?></option>
+                        <option value="{$vo.id}"><?php echo str_repeat('-', 4*$vo['level']).$vo['menu_name']; ?></option>
                     </foreach>
                         <!-- <option>&nbsp;||-日报</option>
                         <option>&nbsp;||-周报</option> -->

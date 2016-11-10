@@ -16,10 +16,15 @@ function del() {
 	});
 }
 
-function show(id){
-	var id=$("#a_qxbj_" + id).attr('value');
+function show(id,pri_name,menu_name,pri_act,sort){
+	//var id=$("#a_qxbj_" + id).attr('value');
+	$("#pri_id").val(id);
+	$("#pri_name").val(pri_name);
+	$("#menu_new_id").val(menu_name;
+	$("#pri_act").val(act);
+	$("#sort").val(sort);
 	//alert(id);
-	$.ajax({
+	/* $.ajax({
 		type:'post',
 		url:"{:U('showprivilege')}",
 		data:{id:id},
@@ -29,7 +34,8 @@ function show(id){
 				
 				for (var s in data.data) {
 					$("#pri_id").attr('value',data.data[s].id);
-					$("#pri_name").attr('value',data.data[s].pri_name);
+					$("#pri_name").val(data.data[s].pri_name);
+					//$("#pri_name").attr('value',data.data[s].pri_name);
 					$("#menu_new_id option").each(function(){
 						if($(this).val() == data.data[s].menu_new_id){
 							$(this).attr('selected','true');
@@ -54,7 +60,7 @@ function show(id){
 				} 
 			}
 		},
-	})
+	}) */
 }
 
 function edit(){
@@ -93,25 +99,11 @@ function edit(){
 	});
 }
 
-function show_rel(id){
-	var id=$("#a_jsfz_" + id).attr('value');
-	//alert(id);
-	$.ajax({
-		type:'post',
-		url:"{:U('showprivilege')}",
-		data:{id:id},
-		success:function(data){
-			if(data.status == '1'){
-				for (var s in data.data) {
-					$("#pri_id_jsfz").attr('value',data.data[s].id);
-					$("#caidan").text(data.data[s].menu_name);
-					$("#quanxian").text(data.data[s].pri_act);
-					$("#pri_name").attr('value',data.data[s].pri_name);
-				}
-			}
-			
-		}
-	})
+function show_rel(id,name,act){
+	//var id=$("#a_jsfz_" + id).attr('value');
+	$("#pri_id_jsfz").attr('value',id);
+	$("#caidan").html(name);
+	$("#quanxian").html(act);
 }
 
 $("#copy_menu").change(function(){
@@ -172,5 +164,53 @@ function get_role(id){
 		}
 	})
 }
-
+$("#search_role").click(function(){
+	var id=$("#pri_id_gljs").attr('value');
+	var name=$("#role_name").val();
+	$.ajax({
+		type:'post',
+		url:"{:U('show_role')}",
+		data:{id:id,name:name},
+		success:function(data){
+			if(data.status == '1'){
+			
+				var span='';
+				for (var s in data.data) {
+					var company=data.data[s].company + ":";
+					for (var a in data.data[s].role_name){
+						var role=data.data[s].role_name[a];
+						$(".tc_ul li span").remove();
+						$(".tc_ul li ").append(role);
+					}	
+					
+				}
+				if(company !== "undefined:"){
+					$(".tc_div_jt").append(company);
+					
+				} 
+				
+				
+				
+					/* $(".tc_div_jt").remove();
+					$(".tc_ul_div span").remove();
+					$("#pri_id_gljs").attr('value',id);
+					
+					span += '<span><input type="checkbox" id="js1_role_id'+data.data[s].id+'" name="role_id[]" value="'+data.data[s].id+'"/><label for="js1_role_id'+data.data[s].id+'">'+data.data[s].role_name +'</label></span>';
+				}
+				alert(data.data[s].status);
+				$(".tc_div_jt").append(data.data[s].company);
+				$(".tc_ul_div #span").append(span);
+				$("input[name='role_id[]']").each(function(){
+					var role_id=$(this).val();
+					//alert(contains(data.data['role_id'],role_id));
+					if(contains(data.data['role_id'],role_id)){
+						$(this).prop("checked",true);
+					}
+				});	
+				$(".tc_ul_div #span #js1_role_idundefined").remove();
+				$(".tc_ul_div #span label[for='js1_role_idundefined']").remove(); */
+			}
+		}
+	})
+}); 
 </script>
