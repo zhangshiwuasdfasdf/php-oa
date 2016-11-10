@@ -70,7 +70,7 @@ input{ margin:0; padding:0; outline:none;}
 .tc_ul li{ overflow:hidden; height:30px; width:100%; line-height:30px;}
 .tc_ul span{ display:block; float:left; height:30px; width:170px; font-size:14px; text-align:center;}
 
-.bottom{ width:100%; height:70px; line-height:70px; overflow:hidden;}
+.bottom_qx{ width:100%; height:70px; line-height:70px; overflow:hidden;}
 .bottom_sp1{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:290px; margin-right:40px; cursor:pointer;}
 .bottom_sp2{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}
 
@@ -236,7 +236,7 @@ input{ margin:0; padding:0; outline:none;}
             </ul>
         </div>
         
-        <div class="bottom" style="position:static">
+        <div class="bottom_qx" style="position:static">
         	<span class="bottom_sp3">取消</span>
             <span ><a class="bottom_sp4" onclick="edit();">确定</a></span>
         </div>
@@ -288,7 +288,7 @@ input{ margin:0; padding:0; outline:none;}
             </ul>
         </div>
         
-        <div class="bottom" style="position:static">
+        <div class="bottom_qx" style="position:static">
         	<span class="bottom_sp3">取消</span>
             <span><input class="bottom_sp4" type="submit" value="确定"></span>
         </div>
@@ -314,53 +314,24 @@ input{ margin:0; padding:0; outline:none;}
         <form action="{:U(add_role)}" method="post" >
         <input type="hidden" name="id" id="pri_id_gljs">
         
-        <div class="tc_ul_div">
-        	<ul class="tc_ul" id="span"></ul>
-            <!-- <div class="tc_div_jt">集团总部：</div>
+        <div class="tc_ul_div"><!-- 
+        	<ul class="tc_ul" id="span"></ul>  -->
+            <foreach name="role['_company']" item="vo">
+            <div class="tc_div_jt"><span>{$key}:</span></div>
             <ul class="tc_ul">
                 <li>
-                    <span>
-                        <input type="checkbox" id="js1" name="sp4"/>
-                        <label for="js1">产品专员</label>
+                	<foreach name="vo" item="vo1">
+                	<span>
+                        <input {$check} type="checkbox" id="js1_role_id{$key}" name="role_id[]" value="{$key}"/>
+                        <label for="js1_role_id{$key}">{$vo1}</label>
                     </span>
-                    <span>
-                        <input type="checkbox" id="js2" name="sp4"/>
-                        <label for="js2">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js3" name="sp4"/>
-                        <label for="js3">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js4" name="sp4"/>
-                        <label for="js4">产品专员</label>
-                    </span>
+                    </foreach>
                 </li>  
             </ul>
-            <div class="tc_div_jt">金华园区:</div>
-            <ul class="tc_ul">
-                <li>
-                    <span>
-                        <input type="checkbox" id="js1" name="sp4"/>
-                        <label for="js1">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js2" name="sp4"/>
-                        <label for="js2">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js3" name="sp4"/>
-                        <label for="js3">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js4" name="sp4"/>
-                        <label for="js4">产品专员</label>
-                    </span>
-                </li>  
-            </ul> -->
+            </foreach>
         </div>
         
-        <div class="bottom" style="position:static">
+        <div class="bottom_qx" style="position:static">
         	<span class="bottom_sp1">取消</span>
             <span><input class="bottom_sp2" type="submit" value="确定"></span>
         </div>
@@ -407,7 +378,7 @@ input{ margin:0; padding:0; outline:none;}
             </ul>
         </div>
         
-        <div class="bottom" style="position:static">
+        <div class="bottom_qx" style="position:static">
         	<span class="bottom_sp3">取消</span>
             <span><input class="bottom_sp4" type="submit" value="确定"></span>
         </div>

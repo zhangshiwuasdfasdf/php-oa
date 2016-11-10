@@ -603,6 +603,10 @@ class ProfileAction extends CommonAction {
 		$this->assign('noStatus',$noStatus);
 		
 		$user_id=$_GET['id'];
+		$StatusManage=M("StatusManage")->where(array("user_id"=>$user_id))->select();
+		foreach($StatusManage as $k=>$value){
+			$this->assign('value',$value);
+		}
 		$informations=M("UserRecord")->where(array('user_id'=>$user_id))->getField("information");
 		$information = explode('|',$informations);
 		$this->assign('user_id',$user_id);
@@ -675,41 +679,27 @@ class ProfileAction extends CommonAction {
 		exit(json_encode($data));
 	}
 	
+	//保存员工档案管理状态
 	function status_manage(){
-		//保存员工档案管理状态
 		$user_id=$_POST['user_id'];
-		//dump($_POST);die;
+		
 		$has=M("StatusManage")->where(array("user_id"=>$user_id))->select();
 		if($has){
 			M("StatusManage")->where(array("user_id"=>$user_id))->delete();
-			$data['user_id']=$user_id;
-			$data['no_status']=$_POST['no_status'];
-			$data['stuff_status']=$_POST['stuff_status'];
-			$data['entry_time']=$_POST['entry_time'];
-			$data['regular_time']=$_POST['regular_time'];
-			$data['leave_time']=$_POST['leave_time'];
-			$data['create_name']=get_user_name();
-			$data['create_time']=time();
-			$data['remark']=$_POST['remark'];
-			$res=M("StatusManage")->add($data);
-		}else{
-			$data['user_id']=$user_id;
-			$data['no_status']=$_POST['no_status'];
-			$data['stuff_status']=$_POST['stuff_status'];
-			$data['entry_time']=$_POST['entry_time'];
-			$data['regular_time']=$_POST['regular_time'];
-			$data['leave_time']=$_POST['leave_time'];
-			$data['create_name']=get_user_name();
-			$data['create_time']=time();
-			$data['remark']=$_POST['remark'];
-			$res=M("StatusManage")->add($data);
 		}
-		
-		$StatusManage=M("StatusManage")->where(array("user_id"=>$user_id))->select();
-		foreach($StatusManage as $k=>$value){
-			$this->assign('value',$value);
+		$data['user_id']=$user_id;
+		$data['no_status']=$_POST['no_status'];
+		$data['stuff_status']=$_POST['stuff_status'];
+		$data['entry_time']=$_POST['entry_time'];
+		$data['regular_time']=$_POST['regular_time'];
+		$data['leave_time']=$_POST['leave_time'];
+		$data['create_name']=get_user_name();
+		$data['create_time']=date('Y/m/d H:i:s',time());
+		$data['remark']=$_POST['remark'];
+		$res=M("StatusManage")->add($data);
+		if($res){
+			$this->success('保存成功',U('userlist'));
 		}
-		//dump($value);die;
 	}
 }
 ?>

@@ -26,7 +26,11 @@ wli();
 
 $(".content_ajs").click(function(){
 	$("#tc_js").show();
-	$(".bottom_sp1,.bottom_sp2").click(function(){
+	$(".bottom_sp1").click(function(){
+		$("#tc_js").hide();	
+		location.reload();
+	})
+	$(".bottom_sp2").click(function(){
 		$("#tc_js").hide();	
 	})
 })

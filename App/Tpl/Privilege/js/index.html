@@ -154,60 +154,23 @@ function get_role(id){
 		url:"{:U('show_role')}",
 		data:{id:id},
 		success:function(data){
-			//alert(data);
 			if(data.status == '1'){
 				var span='';
 				for (var s in data.data) {
 					$(".tc_ul_div #span span").remove();
 					$("#pri_id_gljs").attr('value',id);
-
-					span += '<span><input type="checkbox" id="js1_role_id'+data.data[s].id+'" name="role_id[]" value="'+data.data[s].id+'"/><label for="js1_role_id'+data.data[s].id+'">'+data.data[s].name +'</label></span>';
 				}
-				//alert(span);
-				$(".tc_ul_div #span").append(span);
 				$("input[name='role_id[]']").each(function(){
 					var role_id=$(this).val();
-					//alert(contains(data.data['role_id'],role_id));
-					if(contains(data.data['role_id'],role_id)){
-						$(this).attr("checked",true);
+					if(data.data['role_id']){
+						if(contains(data.data['role_id'],role_id)){
+							$(this).prop("checked",true);
+						}
 					}
-					$(".tc_ul_div #span #js1_role_idundefined").remove();
-					$(".tc_ul_div #span label[for='js1_role_idundefined']").remove();
 				});	
 			}
 		}
 	})
 }
 
-$("#search_role").click(function(){
-	var id=$("#pri_id_gljs").attr('value');
-	var name=$("#role_name").val();
-	$.ajax({
-		type:'post',
-		url:"{:U('show_role')}",
-		data:{id:id,name:name},
-		success:function(data){
-			//alert(data);
-			if(data.status == '1'){
-				var span='';
-				for (var s in data.data) {
-					$(".tc_ul_div #span span").remove();
-					$("#pri_id_gljs").attr('value',id);
-
-					span += '<span><input type="checkbox" id="js1_role_id'+data.data[s].id+'" name="role_id[]" value="'+data.data[s].id+'"/><label for="js1_role_id'+data.data[s].id+'">'+data.data[s].name +'</label></span>';
-				}
-				$(".tc_ul_div #span").append(span);
-				$("input[name='role_id[]']").each(function(){
-					var role_id=$(this).val();
-					//alert(contains(data.data['role_id'],role_id));
-					if(contains(data.data['role_id'],role_id)){
-						$(this).attr("checked",true);
-					}
-					$(".tc_ul_div #span #js1_role_idundefined").remove();
-					$(".tc_ul_div #span label[for='js1_role_idundefined']").remove();
-				});	
-			}
-		}
-	})
-});
 </script>
