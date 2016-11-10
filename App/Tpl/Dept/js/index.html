@@ -1,58 +1,112 @@
 <script type="text/javascript">
-	function add() {
-		$("#opmode").val("add");
-		$("#id").val("");
-		if (check_form("form_data")){
-			sendForm("form_data", "{:U('save')}", "__URL__");
-		}
-	};
+$.fn.toggle = function( fn, fn2 ) {
+    var args = arguments,guid = fn.guid || $.guid++,i=0,
+    toggle = function( event ) {
+      var lastToggle = ( $._data( this, "lastToggle" + fn.guid ) || 0 ) % i;
+      $._data( this, "lastToggle" + fn.guid, lastToggle + 1 );
+      event.preventDefault();
+      return args[ lastToggle ].apply( this, arguments ) || false;
+    };
+    toggle.guid = guid;
+    while ( i < args.length ) {
+      args[ i++ ].guid = guid;
+    }
+    return this.click( toggle );
+} 
 
-	function save(){
-		if (check_form("form_data")) {
-			sendForm("form_data", "{:U('save')}", "__URL__");
-		}
+function wli(){
+	var wsp0=0;
+	var wsp=$('.content_div,.content_div1').children('span');
+	for( var i=0; i<wsp.length;i++){
+		wsp0+=wsp.eq(i).outerWidth();
 	}
+	$('.content_div1,.content_div2').css('width',wsp0);	
+}
+wli();
 
-	function del(){
-		var vars = $("#form_data").serialize();		
-		if($(".sub_left_menu a.active").parent().find(".tree_menu").html()!=undefined){
-			ui_error("有子目录不能删除");
-			return false;
+$(".content_div2 img").each(function(){
+	$(this).toggle(function(){
+		$(this).parent().parent().children('ul').show()
+		$(this).attr('src','__PUBLIC__/img/ajj.png');
+	},function(){
+		$(this).parent().parent().children('ul').hide()
+		$(this).attr('src','__PUBLIC__/img/add.png');
+	})
+})
+//添加
+$('.img_tj').click(function(){
+	$.ajax({
+		type:'post',
+		url:"{:U('get_company_candidate')}",
+		success:function(data){
+			$("#company").html(data);
 		}
-		ui_confirm('确定要删除吗?',function(){
-			sendAjax("{:U('del')}",vars, function(data) {
-				if (data.status) {
-					ui_alert(data.info,function(){
-						location.reload();
-					});
+	})
+	
+	$('#tc_tj').show();	
+	$('.bottom_sp3').click(function(){
+		$('#tc_tj').hide();	
+	})
+	$('.bottom_sp4').click(function(){
+		window.onbeforeunload = null;
+		if (check_form("form_data_company_add")) {
+			sendForm("form_data_company_add", "{:U('company_add')}");
+		}
+	})
+})
+
+//新增子部门
+function add_child_dept(dept_id){
+	$.ajax({
+		type:'post',
+		data:{dept_id:dept_id},
+		url:"{:U('ajax_get_dept_info')}",
+		success:function(data){
+			//alert(JSON.stringify(data));
+			$("#belong_company").html(data.info.company_name);
+			$("#belong_dept").html(data.info.name);
+			$("#belong_dept_id").val(data.info.id);
+		}
+	})
+	$('#tc_xzz').show();	
+	$('.bottom_sp3').click(function(){
+		$('#tc_xzz').hide();	
+	})
+	$('.bottom_sp4').click(function(){
+		window.onbeforeunload = null;
+		if (check_form("form_data_dept_add")) {
+			sendForm("form_data_dept_add", "{:U('dept_add')}");
+		}
+	})
+}
+/* $('#a1_3').click(function(){
+	
+}) */
+function set_use(dept_id,is_use){
+	$.ajax({
+		type:'post',
+		data:{id:dept_id,is_use:is_use},
+		url:"{:U('set_dept')}",
+		success:function(data){
+			//alert(JSON.stringify(data));
+			//alert(data.res);
+			if(data.res == '1'){
+			//	alert(data.is_use);
+				if(data.is_use == '1'){
+					$("#a0_"+dept_id).html('启用');
+					$("#a1_"+dept_id).html('禁用');
+					$("#a1_"+dept_id).attr('onclick','set_use("'+data.dept_id+'","0")');
+				}else{
+					$("#a0_"+dept_id).html('禁用');
+					$("#a1_"+dept_id).html('启用');
+					$("#a1_"+dept_id).attr('onclick','set_use("'+data.dept_id+'","1")');
 				}
-			});
-		});
-	}
-
-	function select_pid() {
-		winopen("{:U('winpop')}", 730, 500);
-	}
-
-	function showdata(result) {
-		for (var s in result.data) {
-			set_val(s, result.data[s]);
+				
+			}
+		},
+		error:function(){
+			alert('操作失败');
 		}
-		$("#dept_name").val($("#dept_list option[value='" + $("#pid").val() + "']").text());
-		$("#opmode").val("edit");
-	}
-
-
-	$(document).ready(function(){
-		set_val('eq_is_del', "{$eq_is_del}");
-		$(".sub_left_menu .submenu a").click(function() {
-			//$(".sub_left_menu .tree_menu a.active").removeClass("active");
-			//$(this).addClass("active");
-			sendAjax("{:U('read')}", "id=" + $(this).attr("node"), function(data) {
-				showdata(data);
-				//console.log(JSON.stringify(data));
-			});
-			//return false;
-		});
-	}); 
+	})
+}
 </script>

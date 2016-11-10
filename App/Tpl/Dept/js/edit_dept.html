@@ -1,0 +1,34 @@
+<script type="text/javascript">
+$("div[class='ma_ta']").hide()
+$("div[class='ma_ta']").eq(0).show()
+$(".nav2 a").click(function(){
+	var n=$(".nav2 a").index(this)
+	$(".nav2 a").removeClass("b")
+	$(this).addClass("b")	
+	$("div[class='ma_ta']").hide()
+	$("div[class='ma_ta']").eq(n).show()
+})
+function wi(){
+	var wi=($(window).width()-150)/4;
+	$('.li1,.li2').css('width',wi);
+	var wi2=($(window).width())/3;
+	$('.ma_content1 span,.ma_content2 span').css('width',wi);
+}
+wi();
+function submit(){
+	window.onbeforeunload = null;
+	if (check_form("form_data_dept_edit")) {
+		sendForm("form_data_dept_edit", "{:U('update_dept')}");
+	}
+}
+function change_dept(company_id){
+	$.ajax({
+		type:'post',
+		data:{company_id:company_id},
+		url:"{:U('get_dept_by_company_id')}",
+		success:function(data){
+			$("#pid").html(data);
+		}
+	})
+}
+</script>

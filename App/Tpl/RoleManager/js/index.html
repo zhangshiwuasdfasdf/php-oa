@@ -1,0 +1,64 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	set_return_url();
+});
+function add() {
+	window.open("{:U('add')}", "_self");
+}
+function addRole(){
+	var company_id = $("#tc_gltj select[name='company']").val().trim();
+	var company = $("#tc_gltj select[name='company']").find("option:selected").text().trim();
+	var role_name = $("#tc_gltj input[name='role_name']").val().trim();
+	var status = $("#tc_gltj select[name='status']").val().trim();
+	if(company == ""){ui_error("请输入公司名称");return false;}
+	if(role_name == ""){ui_error("请输入角色名称");return false;}
+	if(status == ""){ui_error("请输入状态");return false;}
+	$.post("{:U('add')}",{"company_id":company_id,"company":company,"role_name":role_name,"status":status},function(data){
+		if (data.status) {
+			ui_alert(data.info,function(){
+				location.reload();
+			});				
+		}
+	},'json');
+}
+function save(){
+	var id = $("#tc_glbj input[name='id']").val().trim();
+	var company_id = $("#tc_glbj select[name='company']").val().trim();
+	var company = $("#tc_glbj select[name='company']").find("option:selected").text().trim();
+	var role_name = $("#tc_glbj input[name='role_name']").val().trim();
+	var status = $("#tc_glbj select[name='status']").val().trim();
+	if(company == ""){ui_error("请输入公司名称");return false;}
+	if(role_name == ""){ui_error("请输入角色名称");return false;}
+	if(status == ""){ui_error("请输入状态");return false;}
+	$.post("{:U('save')}",{"id":id,"company_id":company_id,"company":company,"role_name":role_name,"status":status},function(data){
+		if (data.status) {
+			ui_alert(data.info,function(){
+				location.reload();
+			});				
+		}
+	},'json');
+	
+}
+//分配菜单
+$(".a_cd").on("click",function (){
+	var id = $(this).parent().parent().find("span input:eq(1)").val().trim();
+	$.post("{:U('ass_menu')}",{"id":id},function(data){
+		if(data.status){
+			$(".tc_ul_div").html("").append(data.data);
+		}else{
+			ui_error(data.info);
+		}
+	},'json');
+});
+
+$(".tc_ul_div").on("click","img",function(){
+	$(this).toggle(function(){
+		$(this).parent('li').children('ul').slideDown()
+		$(this).attr('src',"./Public/img/new_versions/ajj.png");
+	},function(){
+		$(this).parent('li').children('ul').slideUp()
+		$(this).attr('src','./Public/img/new_versions/add.png');
+	})
+});
+
+</script>

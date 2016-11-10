@@ -1133,7 +1133,114 @@ function popup_menu($tree, $level = 0,$deep=100,$other_nodes=array()) {
 	}
 	return $html;
 }
-
+//菜单维护列表
+function new_tree_menu($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"content_ul\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["menu_name"])) {
+				$title = $val["menu_name"];
+				$id = $val["id"];
+				$pid = $val["pid"];
+				$menu_no = $val["menu_no"];
+				if (empty($val["id"])) {
+					$id = $val["menu_name"];
+				}
+				$status = $val['menu_status'] ? "启用" : "禁用" ;
+				$activate = $val['menu_status'] ? "禁用" : "启用" ;
+				if (isset($val['_child'])) {
+					$html = $html . "<li>\r\n<span class=\"li_sp3\"><input name=\"box\" type=\"checkbox\"/><input name=\"sid\" type=\"hidden\" value=\"{$id}\"/><input name=\"pid\" type=\"hidden\" value=\"{$pid}\"/><input name=\"menu_no\" type=\"hidden\" value=\"{$menu_no}\"/></span>\r\n";
+					$html = $html . "<span class=\"li_sp0_2\"><img src=\"__PUBLIC__/img/new_versions/add.png\"/><span>{$title}</span></span>\r\n";
+					$html = $html . "<span class=\"li_sp1\">{$val['menu_addr']}</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\">$status</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\">修改</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\">关联角色</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\">关联角色复制</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp$level isChild\"><a class=\"content_a a1_4\">关联数据控制策略</a></span>\r\n";
+					$html = $html . new_tree_menu($val['_child'], $level,$deep);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li>\r\n<span class=\"li_sp3\"><input name=\"box\" type=\"checkbox\"/><input name=\"sid\" type=\"hidden\" value=\"{$id}\"/><input name=\"pid\" type=\"hidden\" value=\"{$pid}\"/><input name=\"menu_no\" type=\"hidden\" value=\"{$menu_no}\"/></span>\r\n";
+					$html = $html . "<span class=\"li_sp0_2\"><img src=\"__PUBLIC__/img/new_versions/add.png\"/><span>{$title}</span></span>\r\n";
+					$html = $html . "<span class=\"li_sp1\">{$val['menu_addr']}</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\">$status</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\">修改</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\">关联角色</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\">关联角色复制</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp$level isParent\"><a class=\"content_a a1_4\">关联数据控制策略</a></span>\r\n";
+					$html = $html . "</li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+//部门档案管理列表
+function popup_tree_menu_dept($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	if($level == 1){
+		$width = 283;
+		$class = "content_ul";
+	}else{
+		$width = 283-($level-1)*18;
+		$class = "content_ul1";
+	}
+	
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"$class\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title =  $level == '1'?'':$val["name"];
+				$id = $val["id"];
+				$pid = $val["pid"];
+				$code = $level == '1'?$val["name"]:$val["dept_no"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				$status = ($val['is_use'] == '1' ? "启用" : "禁用");
+				$activate = ($val['is_use'] == '1' ? "禁用" : "启用");
+				$set_use = $val['is_use'] == '1' ? "0" : "1";
+				$edit = '编辑';
+				if($level == 1){
+					$edit_url = U('edit_company?id='.$id);
+				}else{
+					$edit_url = U('edit_dept?id='.$id);
+				}
+				$html = $html . "<li>\r\n<span class=\"li_sp0_1\" style=\"width:".$width."px;\"><img src=\"__PUBLIC__/img/ajj.png\"/>";
+				if($level == '1'){
+					$html = $html . "<span>$code</span>";
+				}else{
+					$html = $html . "<a href=".U('view?id='.$id).">$code</a>";
+				}
+				$html = $html . "\r\n</span>\r\n";
+				$html = $html . "<span class=\"li_sp1\">$title</span>\r\n";
+				$html = $html . "<span class=\"li_sp2\" id=\"a0_$id\">$status</span>\r\n";
+				$html = $html . "<span class=\"li_sp3\">";
+				$html = $html . "<a class=\"content_a\" id=\"a1_$id\" onclick=\"set_use('$id','$set_use')\">$activate</a>";
+// 				$html = $html . "<a class=\"content_a\" id=\"a1_0\">$activate</a>";
+				$html = $html . "<a class=\"content_a\" id=\"a2_$id\" href=\"$edit_url\">$edit</a>";
+				$html = $html . "<a class=\"content_a\" id=\"a3_$id\" onclick=\"add_child_dept('$id')\">新增子部门</a>";
+				$html = $html . "</span>\r\n";
+				if (isset($val['_child'])) {
+					$html = $html . popup_tree_menu_dept($val['_child'], $level,$deep);
+				}
+				$html = $html . "</li>\r\n";
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
 function popup_menu_organization($tree, $level = 0,$deep=100) {
 	$level++;
 	$deep--;
@@ -1141,9 +1248,9 @@ function popup_menu_organization($tree, $level = 0,$deep=100) {
 	if (is_array($tree) && $deep>0) {
 		$i = $level>2?'2':'';
 		$html = "<ul class=\"zz_ul$i\">\r\n";
-		if($level == '2'){
-			$html = $html . "<li class=\"zz_li1\" onclick=show_list('".$tree[0]['id']."','1')>"."公司领导"."</li>\r\n";
-		}
+// 		if($level == '2'){
+// 			$html = $html . "<li class=\"zz_li1\" onclick=show_list('".$tree[0]['id']."','1')>"."公司领导"."</li>\r\n";
+// 		}
 		foreach ($tree as $val) {
 			if (isset($val["name"])) {
 				$title = $val["name"];
@@ -1198,8 +1305,8 @@ function popup_menu_option($tree, $level = 0,$default='') {
 	$html = "";
 	if (is_array($tree)) {
 		foreach ($tree as $val) {
-			if (isset($val["name"])) {
-				$title = $val["name"];
+			if (isset($val["name"]) || isset($val['menu_name'])) {
+				$title = isset($val["name"]) ? $val['name'] : $val['menu_name'];
 				$id = $val["id"];
 				if (empty($val["id"])) {
 					$id = $val["name"];
@@ -1217,7 +1324,7 @@ function popup_menu_option($tree, $level = 0,$default='') {
 				}
 			}
 		}
-		$html = $html . "</ul>\r\n";
+		$html = $html . "\r\n";
 	}
 	return $html;
 }
@@ -2562,6 +2669,45 @@ function is_holiday($unix_timestamp){
 		}
 	}
 }
+function get_leave_seconds_weekend($start,$end){
+	$start_date = date('Y-m-d',$start);
+	$start_date_w = date('w',$start);
+	$start_date2 = date('Ymd',$start);
+	$start_date_1 = strtotime($start_date.' 00:00')+86400;
+	//判断是否是法定节假日
+	$times = M('Holiday')->where(array('is_holiday'=>'1','date'=>$start_date2))->getField('times');
+	if(is_holiday($start) && ($start_date_w=='0' || $start_date_w == '6' )&& ($times=='1' || empty($times))){
+		
+		if($end<$start_date_1){
+			return get_leave_day_seconds($start,$end,true);
+		}else{
+			return get_leave_day_seconds($start,$start_date_1,true)+get_leave_seconds_weekend($start_date_1,$end);
+		}
+	}else{
+		return 0;
+	}
+}
+
+function get_leave_seconds_fading_holidy($start,$end){
+	$start_date = date('Y-m-d',$start);
+	$start_date2 = date('Ymd',$start);
+	$start_date_1 = strtotime($start_date.' 00:00')+86400;
+	$times = M('Holiday')->where(array('is_holiday'=>'1','date'=>$start_date2))->getField('times');
+	if($end<$start_date_1){
+		if($times){
+			return $times*get_leave_day_seconds($start,$end,true);
+		}else{
+			return 0;
+		}
+		
+	}else{
+		if($times){
+			return $times*get_leave_day_seconds($start,$start_date_1,true)+get_leave_seconds_fading_holidy($start_date_1,$end);
+		}else{
+			return get_leave_seconds_fading_holidy($start_date_1,$end);
+		}
+	}
+}
 function get_leave_seconds($start,$end){//获取start和end之间经过的秒数（工作时间）
 	$start_date = date('Y-m-d',$start);
 	$start_date_1 = strtotime($start_date.' 00:00')+86400;
@@ -2587,10 +2733,13 @@ function get_leave_seconds($start,$end){//获取start和end之间经过的秒数
 // 	}
 // 	return $seconds;
 // }
-function get_leave_day_seconds($start,$end){//获取一天之中start和end之间经过的秒数（工作时间）
-	if(is_holiday($start)=='1'){
-		return 0;
+function get_leave_day_seconds($start,$end,$is_holidy=false){//获取一天之中start和end之间经过的秒数（工作时间）
+	if(!$is_holidy){
+		if(is_holiday($start)=='1'){
+				return 0;
+		}
 	}
+	
 	$start_date = date('Y-m-d',$start);
 	$start_morning = strtotime($start_date.' '.get_system_config("MORNING_START"));
 	$end_morning = strtotime($start_date.' '.get_system_config("MORNING_END"));

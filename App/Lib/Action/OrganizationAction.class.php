@@ -13,7 +13,7 @@
 
 class OrganizationAction extends CommonAction {
 
-	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read','get_all_position'=>'read','get_edit_user_html'=>'read','change_dept_html'=>'read','change_position_html'=>'read','user_edit'=>'read','user_dept_position_set'=>'read','search_user'=>'read','r_dept_position_add'=>'read','r_dept_position_edit'=>'read','delete'=>'read','edit_is_use'=>'read','dept_add'=>'read'));
+	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read','get_all_position'=>'read','get_edit_user_html'=>'read','get_edit_dept_html'=>'read','change_dept_html'=>'read','change_position_html'=>'read','user_edit'=>'read','user_dept_position_set'=>'read','search_user'=>'read','r_dept_position_add'=>'read','r_dept_position_edit'=>'read','delete'=>'read','edit_is_use'=>'read','dept_add'=>'read','dept_edit'=>'read'));
 
 	public function index(){
 		
@@ -125,7 +125,7 @@ class OrganizationAction extends CommonAction {
 					if(!empty($_REQUEST['dept_id'])){
 						$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
 					}
-					$list_dept = $model->where($where)->page($p.',10')->select();
+					$list_dept = $model->where($where)->page($p.',10')-> order('sort asc')->select();
 					$list_dept = $this->_getRootDept($list_dept);
 					$count_dept = $model->where($where)->count();
 				}
@@ -160,12 +160,12 @@ class OrganizationAction extends CommonAction {
 					foreach ($list_user as $k=>$v){
 						$list_user[$k]['dept_id'] = $r_dept_user[$v['id']];
 						$list_user[$k]['dept_name'] = M('Dept')->where(array('id'=>$list_user[$k]['dept_id']))->getField('name');
-						$r_user_position = M('RUserPosition')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
-						$list_user[$k]['position_id'] = $r_user_position['position_id'];
-						$position_view = D('PositionView')->field('position_name,sequence_name')->where(array('id'=>$list_user[$k]['position_id']))->find();
+// 						$r_user_position = M('RUserPosition')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
+						$position_view = D('UserPositionView')->field('position_id,position_name,sequence_name')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
+						$list_user[$k]['position_id'] = $position_view['position_id'];
 						$list_user[$k]['position_name'] = $position_view['position_name'];
 						$list_user[$k]['position_sequence'] = $position_view['sequence_name'];
-						$list_user[$k]['major'] = $r_user_position['is_major']==1?'主要':'兼职';
+						$list_user[$k]['major'] = $position_view['is_major']==1?'主要':'兼职';
 						$list_user[$k]['is_del'] = $list_user[$k]['is_del']==1?'离职':'在职';
 // 						$list_user[$k]['company_name'] = getRootDept($list[$k]['dept_id'])['name'];
 // 						$list_user[$k]['company_id'] = getRootDept($list[$k]['dept_id'])['id'];
@@ -280,12 +280,53 @@ class OrganizationAction extends CommonAction {
 		}
 		return $html;
 	}
+	function _get_sequence_html($user_id,$position_id){
+		$position_sequence_id = M('RUserPosition')->where(array('user_id'=>$user_id,'position_id'=>$position_id))->getField('position_sequence_id');
+		$all_sequence = M('PositionSequence')->select();
+		$html = '';
+		foreach ($all_sequence as $k=>$v){
+			if($position_sequence_id == $v['id']){
+				$html .= '<option selected="selected" value="'.$v['id'].'">'.$v['sequence_name'].'</option>';
+			}else{
+				$html .= '<option value="'.$v['id'].'">'.$v['sequence_name'].'</option>';
+			}
+		}
+		return $html;
+	}
 	function get_edit_user_html(){
 		$company_id = getRootDept($_POST['dept_id'])['id'];
 		$data['company'] = $this->_get_all_company_html($company_id);
 		$data['dept'] = $this->_get_dept_html($company_id,$_POST['dept_id']);
 		$data['position'] = $this->_get_position_html($_POST['dept_id'],$_POST['position_id']);
 		$data['major'] = $this->_get_major_html($_POST['user_id'],$_POST['position_id']);
+		$data['sequence'] = $this->_get_sequence_html($_POST['user_id'],$_POST['position_id']);
+		$this->ajaxReturn($data,1,1);
+	}
+	function get_edit_dept_html(){
+		$company_id = getRootDept($_POST['dept_id'])['id'];
+		$data['company'] = $this->_get_all_company_html($company_id);
+		$dept = M('Dept')->find($_POST['dept_id']);
+		$pid = $dept['pid'];
+		$data['dept_name'] = $dept['name'];
+		$data['sort'] = $dept['sort'];
+		$num_to_zh_cn = array('无','一级部门','二级部门','三级部门','四级部门','五级部门','六级部门');
+		$dept_grade_html = '';
+		foreach ($num_to_zh_cn as $k=>$v){
+			if($dept['dept_grade_id'] == $k){
+				$dept_grade_html .= '<option value="'.$k.'" selected="selected">'.$v.'</option>';
+			}else{
+				$dept_grade_html .= '<option value="'.$k.'">'.$v.'</option>';
+			}
+		}
+		if($dept['is_use'] == '1'){
+			$is_use_html .= '<option value="1" selected="selected">启用</option><option value="0">禁用</option>';
+		}else{
+			$is_use_html .= '<option value="1">启用</option><option value="0" selected="selected">禁用</option>';
+		}
+		$data['dept_grade'] = $dept_grade_html;
+		$data['is_use'] = $is_use_html;
+		$data['dept_parent'] = $this->_get_dept_html($company_id,$pid);
+		
 		$this->ajaxReturn($data,1,1);
 	}
 	function change_dept_html(){
@@ -306,7 +347,7 @@ class OrganizationAction extends CommonAction {
 	function user_edit(){
 		$res_user = M('User')->where(array('id'=>$_POST['user_user_id']))->save(array('name'=>$_POST['user_user_name']));
 		$res_r_dept_user = M('RDeptUser')->where(array('dept_id'=>$_POST['user_origin_dept_id'],'user_id'=>$_POST['user_user_id']))->save(array('dept_id'=>$_POST['user_dept']));
-		$res_r_user_position = M('RUserPosition')->where(array('position_id'=>$_POST['user_origin_position_id'],'user_id'=>$_POST['user_user_id']))->save(array('position_id'=>$_POST['user_position'],'is_major'=>$_POST['user_major'],'dept_id'=>$_POST['user_dept']));
+		$res_r_user_position = M('RUserPosition')->where(array('position_id'=>$_POST['user_origin_position_id'],'user_id'=>$_POST['user_user_id']))->save(array('position_id'=>$_POST['user_position'],'is_major'=>$_POST['user_major'],'dept_id'=>$_POST['user_dept'],'position_sequence_id'=>$_POST['user_position_sequence_id']));
 		if(false !== $res_user && false !== $res_r_dept_user && false !== $res_r_user_position){
 			$this->success('修改成功');
 		}else{
@@ -318,6 +359,7 @@ class OrganizationAction extends CommonAction {
 		$user_id = $_POST['user_user_id'];
 		$position_id = $_POST['user_position'];
 		$is_major = $_POST['user_major'];
+		$sequence_id = $_POST['user_position_sequence_id'];
 		$find = M('RDeptUser')->where(array('dept_id'=>$dept_id,'user_id'=>$user_id))->find();
 		if(false != $find){
 			$this->error('此部门下已有此人！');
@@ -327,7 +369,7 @@ class OrganizationAction extends CommonAction {
 				$this->error('此岗位下已有此人！');
 			}else{
 				$res1 = M('RDeptUser')->add(array('dept_id'=>$dept_id,'user_id'=>$user_id));
-				$res2 = M('RUserPosition')->add(array('position_id'=>$position_id,'user_id'=>$user_id,'is_major'=>$is_major,'dept_id'=>$dept_id));
+				$res2 = M('RUserPosition')->add(array('position_id'=>$position_id,'user_id'=>$user_id,'is_major'=>$is_major,'dept_id'=>$dept_id,'position_sequence_id'=>$sequence_id));
 				if(false !== $res1 && false !== $res2){
 					$this->success('添加成功');
 				}else{
@@ -384,8 +426,10 @@ class OrganizationAction extends CommonAction {
 			$data['pid'] = $_POST['dept_dept_parent'];
 			$data['dept_grade_id'] = $_POST['dept_dept_degree'];
 			$data['name'] = $_POST['dept_dept'];
+			$data['dept_no'] = $_POST['dept_no'];
 			$data['is_del'] = '0';
 			$data['is_use'] = $_POST['dept_dept_is_use'];
+			$data['sort'] = $_POST['dept_sort_add'];
 			$res = M('Dept')->add($data);
 			if(false !== $res){
 				$this->success('新增成功');
@@ -394,6 +438,27 @@ class OrganizationAction extends CommonAction {
 			}
 		}else{
 			$this->error('新增失败');
+		}
+	}
+	function dept_edit(){
+		if($_POST['pid'] == $_POST['edit_dept_id']){
+			$this->error('上级部门不能是自己');
+		}else if(!empty($_POST['pid']) && !empty($_POST['dept_name']) && !empty($_POST['edit_dept_id'])){
+			$data['pid'] = $_POST['pid'];
+			$data['dept_no'] = $_POST['dept_no'];
+			$data['dept_grade_id'] = $_POST['dept_grade_id'];
+			$data['name'] = $_POST['dept_name'];
+			$data['is_del'] = '0';
+			$data['is_use'] = $_POST['dept_is_use'];
+			$data['sort'] = $_POST['dept_sort'];
+			$res = M('Dept')->where(array('id'=>$_POST['edit_dept_id']))->save($data);
+			if(false !== $res){
+				$this->success('修改成功');
+			}else{
+				$this->error('修改失败');
+			}
+		}else{
+			$this->error('请填写部门相关信息');
 		}
 	}
 }

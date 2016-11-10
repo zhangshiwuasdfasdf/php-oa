@@ -58,6 +58,34 @@
 			}
 		});
 	}
+	function times(id,val){
+		$.ajax({
+			type: "post",
+			url: "{:U('holiday_edit')}",    
+			data:{id:id,times:val},
+			dataType: "json",
+			success: function(result){
+				if(result){
+					if(result.data){
+					}else{
+						ui_alert("修改失败",function(){
+							location.reload();
+						});
+					}
+				}else{
+					ui_alert("修改失败",function(){
+						location.reload();
+					});
+				}
+				
+			},
+			error:function(e){
+				ui_alert("系统发生错误",function(){
+					location.reload();
+				});
+			}
+		});
+	}
 	function del(id) {
 		ui_confirm('确定要删除吗?',function(){
 			$.ajax({
