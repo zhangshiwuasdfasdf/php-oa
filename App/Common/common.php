@@ -2944,11 +2944,11 @@ function getHourPlan($user_id,$hour,$timestamp,$create=''){
 	$over_time_hours = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$user_id),'create_time'=>array('between',array($three_month_ago,$timestamp-1)),'status'=>array('eq','1'),'hour'=>array('gt',0)))->order('create_time asc')->select();
 	$leave_hours = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$user_id),'create_time'=>array('between',array($three_month_ago,strtotime("+4 months",$timestamp))),'status'=>array('eq','1'),'hour'=>array('lt',0)))->order('create_time asc')->select();
 	foreach ($over_time_hours as $k=>$v){
-		if($v['use'] !== '1'){//没用完
+		if($v['is_use'] !== '1'){//没用完
 			$cur_hour = intval($v['hour']);
 			foreach ($leave_hours as $kk=>$vv){
 				$next_over_time = false;
-				$use = unserialize($vv['use']);
+				$use = unserialize($vv['is_use']);
 				foreach ($use as $kkk=>$vvv){
 					if($v['id'] == $kkk){
 						$cur_hour -= $vvv;
@@ -2969,13 +2969,13 @@ function getHourPlan($user_id,$hour,$timestamp,$create=''){
 				$part[] = array('id'=>$v['id'],'hour'=>$hour*(-1));
 				
 				if($hour*(-1) == $cur_hour){//加班单设为1，表示用完
-					M('FlowHour'.$create)->where(array('id'=>$v['id']))->save(array('use'=>'1'));
+					M('FlowHour'.$create)->where(array('id'=>$v['id']))->save(array('is_use'=>'1'));
 				}
 				break;
 			}elseif ($cur_hour>0){
 				$part[] = array('id'=>$v['id'],'hour'=>$cur_hour);
 				$hour = $hour + $cur_hour;
-				M('FlowHour'.$create)->where(array('id'=>$v['id']))->save(array('use'=>'1'));
+				M('FlowHour'.$create)->where(array('id'=>$v['id']))->save(array('is_use'=>'1'));
 			}
 		}
 	}
@@ -2990,7 +2990,41 @@ function getHourPlan($user_id,$hour,$timestamp,$create=''){
 	}
 // 	return array('70'=>1,'60'=>2);
 }
+function getAvailableHour3($timestamp,$uid,$create=''){
+	if(empty($timestamp)){
+		$timestamp = time();
+	}
+	if(empty($uid)){
+		$uid = get_user_id();
+	}
+	//如果调休过期计算方式为按月，则把now改为月初
+	if(get_system_config("LEAVE_CALCULATE_TYPE")=='按月'){
+		$d = date('Y-m',$timestamp);
+		$now = strtotime($d.'-1');
+	}else{
+		$now = $timestamp;
+	}
 
+	$use_sum = 0;
+	$three_month_ago = strtotime("-3 months",$now);
+	$over_time_hours_ids = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$uid),'create_time'=>array('between',array($three_month_ago,$timestamp)),'status'=>array('eq','1'),'hour'=>array('gt',0),'is_use'=>array('neq','1')))->getField('id',true);
+	$over_time_hours_sum = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$uid),'create_time'=>array('between',array($three_month_ago,$timestamp)),'status'=>array('eq','1'),'hour'=>array('gt',0),'is_use'=>array('neq','1')))->sum('hour');
+	$leave_hours = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$uid),'create_time'=>array('between',array($three_month_ago,strtotime("+4 months",$timestamp))),'status'=>array('eq','1'),'hour'=>array('lt',0)))->select();
+	$leave_hours_wait = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$uid),'create_time'=>array('between',array($three_month_ago,strtotime("+4 months",$timestamp))),'status'=>array('eq','0'),'hour'=>array('lt',0)))->sum('hour');
+	foreach ($leave_hours as $k=>$v){
+		$use = unserialize($v['is_use']);
+		foreach ($use as $kk=>$vv){
+			if(in_array($kk, $over_time_hours_ids)){
+				$use_sum += $vv;
+			}
+		}
+	}
+	if($over_time_hours_sum>=$use_sum-$leave_hours_wait){
+		return $over_time_hours_sum-$use_sum+$leave_hours_wait;
+	}else{
+		return false;
+	}
+}
 function getAvailableHour2($timestamp,$uid,$create=''){
 	if(empty($timestamp)){
 		$timestamp = time();
