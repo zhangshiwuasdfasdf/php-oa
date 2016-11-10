@@ -172,6 +172,11 @@ class PrivilegeAction extends CommonAction {
 		
 	}
 	
+	public function showprivilege(){
+		$id=$_REQUEST['id'];
+		$res=D("PrivilegeView")->where(array('id'=>array('eq',$id)))->select();
+		$this->ajaxReturn($res,'success','1');
+	}
 	//关联角色复制
 	public function copy_role(){
 		$pri_id=I('post.pri_id');
