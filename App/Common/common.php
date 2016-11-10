@@ -1248,9 +1248,9 @@ function popup_menu_organization($tree, $level = 0,$deep=100) {
 	if (is_array($tree) && $deep>0) {
 		$i = $level>2?'2':'';
 		$html = "<ul class=\"zz_ul$i\">\r\n";
-		if($level == '2'){
-			$html = $html . "<li class=\"zz_li1\" onclick=show_list('".$tree[0]['id']."','1')>"."公司领导"."</li>\r\n";
-		}
+// 		if($level == '2'){
+// 			$html = $html . "<li class=\"zz_li1\" onclick=show_list('".$tree[0]['id']."','1')>"."公司领导"."</li>\r\n";
+// 		}
 		foreach ($tree as $val) {
 			if (isset($val["name"])) {
 				$title = $val["name"];

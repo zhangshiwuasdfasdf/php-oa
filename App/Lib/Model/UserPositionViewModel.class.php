@@ -11,10 +11,11 @@
   Support: https://git.oschina.net/smeoa/smeoa               
  -------------------------------------------------------------------------*/
 
-class PositionViewModel extends ViewModel {
+class UserPositionViewModel extends ViewModel {
 	public $viewFields = array(
-			'position'=>array('*'),
-			'position_sequence'=>array('sequence_number','sequence_name','sequence_degree','_on'=>'position.position_sequence_id=position_sequence.id', '_type'=>'LEFT'),
+			'RUserPosition'=>array('*', '_type'=>'LEFT'),
+			'PositionSequence'=>array('sequence_number','sequence_name','sequence_degree','_on'=>'RUserPosition.position_sequence_id=PositionSequence.id', '_type'=>'LEFT'),
+			'Position'=>array('position_name','_on'=>'RUserPosition.position_id=Position.id'),
 	);
 }
 ?>

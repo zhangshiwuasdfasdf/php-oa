@@ -488,6 +488,10 @@ input,select{ margin:0; padding:0; outline:none;}
 					<input class="tc_inp" name="dept_dept" type="text">
                 </li>
                 <li>
+                    <label>部门编号：</label>
+					<input class="tc_inp" name="dept_no" type="text">
+                </li>
+                <li>
                     <label>数据状态：</label>
                     <select id="dept_dept_is_use" name="dept_dept_is_use">
                         <option value="1">启用</option>
@@ -536,20 +540,11 @@ input,select{ margin:0; padding:0; outline:none;}
                 <li>
                     <label>部门名称：</label>
                     <select>
-                        <option>|&nbsp;仓配中心</option>
-                        <option>&nbsp;||&nbsp;入库组</option>
-                        <option>&nbsp;||&nbsp;内仓组</option>
-                        <option>&nbsp;||&nbsp;单据组</option>
-                        <option>|&nbsp;运营中心</option>
-                        <option>&nbsp;||&nbsp;招商业务组</option>
-                        <option>&nbsp;||&nbsp;运营服务组</option>
-                        <option>&nbsp;||&nbsp;系统服务组</option>
                     </select>
                 </li>
                 <li>
                     <label>岗位名称：</label>
                     <select>
-                        <option>产品经理</option>
                     </select>
                 </li>
                  
@@ -700,7 +695,7 @@ input,select{ margin:0; padding:0; outline:none;}
                 <li>
                     <label>岗位：</label>
                     <input id="user_origin_position_id" name="user_origin_position_id" type="hidden"/>
-                    <select id="user_position" name="user_position" onChange="change_position_sequence($(this).val())">
+                    <select id="user_position" name="user_position">
                     </select>
                 </li>
                 <li>
@@ -717,12 +712,10 @@ input,select{ margin:0; padding:0; outline:none;}
                 </li>
                 <li>
                     <label>序列名称：</label>
-                    <input class="tc_inp" id="user_position_sequence_id" name="user_position_sequence_id" type="hidden"/>
-                    <input class="tc_inp" id="user_position_sequence" name="user_position_sequence" type="text" readonly check="require" msg="请选择一个已设置序列的岗位"/>
-                    <!-- <select id="user_position_sequence" name="user_position_sequence">
-                        <option>员工</option>
-                        <option>总经理助理</option>
-                    </select> -->
+                    <!-- <input class="tc_inp" id="user_position_sequence_id" name="user_position_sequence_id" type="hidden"/>
+                    <input class="tc_inp" id="user_position_sequence" name="user_position_sequence" type="text" readonly check="require" msg="请选择一个已设置序列的岗位"/> -->
+                    <select id="user_position_sequence_id" name="user_position_sequence_id">
+                    </select>
                 </li>  
             </ul>
         </div>

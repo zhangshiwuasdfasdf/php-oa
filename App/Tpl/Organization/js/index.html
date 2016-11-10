@@ -238,8 +238,10 @@ function change_position_sequence(position_id){
 		url:"{:U('change_sequence_html')}",
 		data:{position_id:position_id},
 		success:function(result){
-			$("#user_position_sequence_id").val(result.data.sequence_id);
-			$("#user_position_sequence").val(result.data.sequence_name);
+			if(result.data.sequence_name != null){
+				$("#user_position_sequence_id").val(result.data.sequence_id);
+				$("#user_position_sequence").val(result.data.sequence_name);
+			}
 		},
 		error:function(){
 			alert('数据错误');
@@ -305,6 +307,7 @@ function edit_user(user_id,user_name,dept_id,position_id,is_del,position_sequenc
 			$("#user_dept").html(result.data.dept);
 			$("#user_position").html(result.data.position);
 			$("#user_major").html(result.data.major);
+			$("#user_position_sequence_id").html(result.data.sequence);
 		},
 		error:function(){
 			alert('数据错误');
@@ -383,6 +386,7 @@ $("#a_ygtj").click(function(){
 			//$("#user_dept").html(result.data.dept);
 			//$("#user_position").html(result.data.position);
 			$("#user_major").html(result.data.major);
+			$("#user_position_sequence_id").html(result.data.sequence);
 		},
 		error:function(){
 			alert('数据错误');
@@ -525,14 +529,14 @@ $("#delete_dept").click(function(){
 })
 $("#delete_position").click(function(){
 	window.onbeforeunload = null;
-	if (check_form("dept_data")) {
-		sendForm("dept_data", "{:U('delete?type=2')}");
+	if (check_form("position_data")) {
+		sendForm("position_data", "{:U('delete?type=2')}");
 	}
 })
 $("#delete_user").click(function(){
 	window.onbeforeunload = null;
-	if (check_form("dept_data")) {
-		sendForm("dept_data", "{:U('delete?type=3')}");
+	if (check_form("user_data")) {
+		sendForm("user_data", "{:U('delete?type=3')}");
 	}
 })
 function start_use_dept(dept_id){

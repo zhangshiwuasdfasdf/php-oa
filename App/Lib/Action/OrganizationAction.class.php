@@ -160,12 +160,12 @@ class OrganizationAction extends CommonAction {
 					foreach ($list_user as $k=>$v){
 						$list_user[$k]['dept_id'] = $r_dept_user[$v['id']];
 						$list_user[$k]['dept_name'] = M('Dept')->where(array('id'=>$list_user[$k]['dept_id']))->getField('name');
-						$r_user_position = M('RUserPosition')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
-						$list_user[$k]['position_id'] = $r_user_position['position_id'];
-						$position_view = D('PositionView')->field('position_name,sequence_name')->where(array('id'=>$list_user[$k]['position_id']))->find();
+// 						$r_user_position = M('RUserPosition')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
+						$position_view = D('UserPositionView')->field('position_id,position_name,sequence_name')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
+						$list_user[$k]['position_id'] = $position_view['position_id'];
 						$list_user[$k]['position_name'] = $position_view['position_name'];
 						$list_user[$k]['position_sequence'] = $position_view['sequence_name'];
-						$list_user[$k]['major'] = $r_user_position['is_major']==1?'主要':'兼职';
+						$list_user[$k]['major'] = $position_view['is_major']==1?'主要':'兼职';
 						$list_user[$k]['is_del'] = $list_user[$k]['is_del']==1?'离职':'在职';
 // 						$list_user[$k]['company_name'] = getRootDept($list[$k]['dept_id'])['name'];
 // 						$list_user[$k]['company_id'] = getRootDept($list[$k]['dept_id'])['id'];
@@ -280,12 +280,26 @@ class OrganizationAction extends CommonAction {
 		}
 		return $html;
 	}
+	function _get_sequence_html($user_id,$position_id){
+		$position_sequence_id = M('RUserPosition')->where(array('user_id'=>$user_id,'position_id'=>$position_id))->getField('position_sequence_id');
+		$all_sequence = M('PositionSequence')->select();
+		$html = '';
+		foreach ($all_sequence as $k=>$v){
+			if($position_sequence_id == $v['id']){
+				$html .= '<option selected="selected" value="'.$v['id'].'">'.$v['sequence_name'].'</option>';
+			}else{
+				$html .= '<option value="'.$v['id'].'">'.$v['sequence_name'].'</option>';
+			}
+		}
+		return $html;
+	}
 	function get_edit_user_html(){
 		$company_id = getRootDept($_POST['dept_id'])['id'];
 		$data['company'] = $this->_get_all_company_html($company_id);
 		$data['dept'] = $this->_get_dept_html($company_id,$_POST['dept_id']);
 		$data['position'] = $this->_get_position_html($_POST['dept_id'],$_POST['position_id']);
 		$data['major'] = $this->_get_major_html($_POST['user_id'],$_POST['position_id']);
+		$data['sequence'] = $this->_get_sequence_html($_POST['user_id'],$_POST['position_id']);
 		$this->ajaxReturn($data,1,1);
 	}
 	function get_edit_dept_html(){
@@ -333,7 +347,7 @@ class OrganizationAction extends CommonAction {
 	function user_edit(){
 		$res_user = M('User')->where(array('id'=>$_POST['user_user_id']))->save(array('name'=>$_POST['user_user_name']));
 		$res_r_dept_user = M('RDeptUser')->where(array('dept_id'=>$_POST['user_origin_dept_id'],'user_id'=>$_POST['user_user_id']))->save(array('dept_id'=>$_POST['user_dept']));
-		$res_r_user_position = M('RUserPosition')->where(array('position_id'=>$_POST['user_origin_position_id'],'user_id'=>$_POST['user_user_id']))->save(array('position_id'=>$_POST['user_position'],'is_major'=>$_POST['user_major'],'dept_id'=>$_POST['user_dept']));
+		$res_r_user_position = M('RUserPosition')->where(array('position_id'=>$_POST['user_origin_position_id'],'user_id'=>$_POST['user_user_id']))->save(array('position_id'=>$_POST['user_position'],'is_major'=>$_POST['user_major'],'dept_id'=>$_POST['user_dept'],'position_sequence_id'=>$_POST['user_position_sequence_id']));
 		if(false !== $res_user && false !== $res_r_dept_user && false !== $res_r_user_position){
 			$this->success('修改成功');
 		}else{
@@ -345,6 +359,7 @@ class OrganizationAction extends CommonAction {
 		$user_id = $_POST['user_user_id'];
 		$position_id = $_POST['user_position'];
 		$is_major = $_POST['user_major'];
+		$sequence_id = $_POST['user_position_sequence_id'];
 		$find = M('RDeptUser')->where(array('dept_id'=>$dept_id,'user_id'=>$user_id))->find();
 		if(false != $find){
 			$this->error('此部门下已有此人！');
@@ -354,7 +369,7 @@ class OrganizationAction extends CommonAction {
 				$this->error('此岗位下已有此人！');
 			}else{
 				$res1 = M('RDeptUser')->add(array('dept_id'=>$dept_id,'user_id'=>$user_id));
-				$res2 = M('RUserPosition')->add(array('position_id'=>$position_id,'user_id'=>$user_id,'is_major'=>$is_major,'dept_id'=>$dept_id));
+				$res2 = M('RUserPosition')->add(array('position_id'=>$position_id,'user_id'=>$user_id,'is_major'=>$is_major,'dept_id'=>$dept_id,'position_sequence_id'=>$sequence_id));
 				if(false !== $res1 && false !== $res2){
 					$this->success('添加成功');
 				}else{
@@ -411,6 +426,7 @@ class OrganizationAction extends CommonAction {
 			$data['pid'] = $_POST['dept_dept_parent'];
 			$data['dept_grade_id'] = $_POST['dept_dept_degree'];
 			$data['name'] = $_POST['dept_dept'];
+			$data['dept_no'] = $_POST['dept_no'];
 			$data['is_del'] = '0';
 			$data['is_use'] = $_POST['dept_dept_is_use'];
 			$data['sort'] = $_POST['dept_sort_add'];
