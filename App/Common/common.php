@@ -1047,6 +1047,9 @@ function select_tree_menu_mul($tree,$level=0) {
 	}
 	return $html;
 }
+/*
+ * 物品选择
+ */
 
 function popup_menu($tree, $level = 0,$deep=100,$other_nodes=array()) {
 	$level++;
