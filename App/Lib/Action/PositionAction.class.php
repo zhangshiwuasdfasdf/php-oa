@@ -19,25 +19,30 @@ class PositionAction extends CommonAction {
 
 	function _search_filter(&$map) {
 		if (!empty($_POST['code'])) {
-			$map['code'] = array('eq',$_POST['code']);
+			$map['code'] = array('like','%'.$_POST['code'].'%');
 		}
 		if (!empty($_POST['li_position_name'])) {
 			$map['position_name'] = array('like','%'.$_POST['li_position_name'].'%');
 		}
-		if (false !== $_POST['eq_is_del'] && '' != $_POST['eq_is_del']) {
-			$map['is_del'] = array('eq',$_POST['eq_is_del']);
+		if (false !== $_POST['eq_is_use'] && '' != $_POST['eq_is_use']) {
+			$map['is_use'] = array('eq',$_POST['eq_is_use']);
 		}
 		
 	}
 	
 	function del(){
-		$id=$_POST['id'];
-		$this->_destory($id);		
+		$id=$_REQUEST['id'];
+		$res = M('Position')->where(array('id'=>array('in',$id)))->save(array('is_del'=>'1'));
+		if(false !== $res){
+			$this -> ajaxReturn('', "删除成功", 1);
+		}else{
+			$this -> ajaxReturn('', "删除失败", 0);
+		}
 	}
 	function index(){
-		$map = array();
+		$map['is_del'] = '0';
 		$this->_search_filter($map);
-		$this->_list(M('Position'), $map,'code',true);
+		$this->_list(M('Position'), $map,'code',false);
 		$this->display();
 	}
 	function insert(){
@@ -110,8 +115,31 @@ class PositionAction extends CommonAction {
 	function list_dept_checkbox(){
 		$list = M('Dept') ->where(array('is_del'=>0)) -> order('sort asc') -> getField('id,pid,name');
 		$tree = list_to_tree($list);
-		$html = popup_menu_organization_checkbox($tree);
+		$html = popup_menu_organization_checkbox($tree,0,100,$_POST['position_id']);
 		$this->ajaxReturn($html,1,0);
+	}
+	function validate(){
+		if($this->isAjax()){
+			if(!$this->_request('clientid','trim') || !$this->_request($this->_request('clientid','trim'),'trim')){
+				$this->ajaxReturn("","",3);
+			}
+		
+			$where[$this->_request('clientid','trim')] = array('eq',$this->_request($this->_request('clientid','trim'),'trim'));
+			//针对编辑的情况
+			if($this->_request('id','intval',0)){
+				$where[M('Position')->getpk()] = array('neq',$this->_request('id','intval',0));
+			}
+		
+			if($this->_request('clientid','trim')) {
+				if (M('Position')->where($where)->find()) {
+					$this->ajaxReturn("","",1);
+				} else {
+					$this->ajaxReturn("","",0);
+				}
+			}else{
+				$this->ajaxReturn("","",0);
+			}
+		}
 	}
 }
 ?>

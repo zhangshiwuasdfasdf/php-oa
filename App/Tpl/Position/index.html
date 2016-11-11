@@ -1,4 +1,6 @@
 <layout name='Layout/ace_layout' />
+<script type="text/javascript" src="__PUBLIC__/js/formValidator-4.0.1.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js" charset="UTF-8"></script>
 <style>
 .zong{ overflow:auto;margin-top:50px;}
 .top_k{ height:54px; line-height:54px;}
@@ -36,10 +38,10 @@
 .tc_div1{background:#f1f5fa; width:400px; height:550px; position:absolute; left:50%; margin-left:-200px; top:50%; margin-top:-300px; border-radius:5px;}
 .tc_ul_div1{ width:300px; height:400px;margin-top:20px; margin-left:50px; overflow:auto;}
 .tc_ul_s{ height:auto;}
-.tc_ul_s li{ overflow:hidden; height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
+.tc_ul_s li{  height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
 .tc_ul_s label{ position:absolute; left:0;}
 .tc_ul_s select{ width:195px;position:absolute; left:85px; top:15px;}
-.tc_inp{ width:190px;position:absolute; left:85px; top:15px;}
+.tc_inp{ width:190px;position:absolute; left:85px; top:15px; height:26px;}
 
 .bottom_sp3{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:100px; margin-right:40px; cursor:pointer;}
 .bottom_sp4{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}
@@ -87,10 +89,10 @@
 			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="eq_is_del">数据状态：</label>
 				<div class="col-sm-8">
-					<select class="form-control" name="eq_is_del" id="eq_is_del">
+					<select class="form-control" name="eq_is_use" id="eq_is_use">
 						<option value="">选择类型</option>
-						<option value="0">启用</option>
-						<option value="1">禁用</option>
+						<option value="1">启用</option>
+						<option value="0">禁用</option>
 					</select>
 				</div>
 			</div>
@@ -106,6 +108,7 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">岗位列表</span>
 		</div>
 		<div class="pull-right">
+			<a class="btn btn-sm btn-danger" onclick="del();">删除</a>
 			<a class="btn btn-sm btn-primary" id="a_lbtj">新建</a>
 		</div>
 	</div>
@@ -116,6 +119,10 @@
 	<ul>
 		<li class="thead">
 			<div class="pull-left">
+				<label class="inline pull-left col-3">
+					<input class="ace" type="checkbox" name="id-toggle-all" id="id-toggle-all" />
+					<span class="lbl"></span>
+				</label>
 				<span class="col-8">岗位代码</span>
 				<span class="col-15">岗位名称</span>
 				<span class="col-10">添加人</span>
@@ -134,23 +141,28 @@
 				没找到数据
 			</li>
 			<else/>
+			<form method="post" action="" id="form_data2">
 			<foreach name="list" item="vo">
 				<li class="tbody">
 					<div class="pull-left">
+						<label class="inline pull-left col-3">
+								<input class="ace" type="checkbox" name="id[]" value="{$vo.id}" />
+								<span class="lbl"></span>
+						</label>
 						<span class="col-8">{$vo.code}&nbsp;</span>
 						<span class="col-15">{$vo.position_name}&nbsp;</span>
 						<span class="col-10">{$vo.create_user_name}&nbsp;</span>
 						<span class="col-15"><if condition="$vo.create_time neq ''">{$vo.create_time|date='Y-m-d H:i:s',###}</if>&nbsp;</span>
 						<span class="col-15"><if condition="$vo.update_time neq ''">{$vo.update_time|date='Y-m-d H:i:s',###}</if>&nbsp;</span>
 						<span class="col-10">{$vo.update_user_name}&nbsp;</span>
-						<span class="col-4">{$vo.is_del|user_status}</span>
+						<span class="col-4">{$vo.is_use|is_use}</span>
 	
 					</div>
 					<div class="pull-right">
 						<span class="col-10">
 							<input type="hidden"  value="{$vo.position_name}">
-							<input type="hidden"  value="{$vo.is_del}">
-							<a onclick="show_edit_dialog('{$vo.id}','{$vo.position_name}','{$vo.is_del}')">编辑&nbsp;</a>
+							<input type="hidden"  value="{$vo.is_use}">
+							<a onclick="show_edit_dialog('{$vo.id}','{$vo.position_name}','{$vo.is_use}')">编辑&nbsp;</a>
 						</span>
 						<span class="col-10">
 							<a onclick="distribute('{$vo.id}')">分配到部门&nbsp;</a>
@@ -158,6 +170,7 @@
 					</div>
 				</li>
 			</foreach>
+			</form>
 			<div class="pagination">
 				{$page}
 			</div>
@@ -176,13 +189,14 @@
 	            	<input type=hidden name="id" id="id">
 	                <li>
 	                    <label>岗位名称：</label>
-	                    <input class="tc_inp" id="position_name" name="position_name" type="text"/>
+	                    <input class="tc_inp" id="position_name" name="position_name" type="text" />
+	                    <span id="position_nameTip" style="color:red;position:absolute;top:44px;left:85px;line-height:14px;"></span>
 	                </li> 
 	                <li>
 	                    <label>状态：</label>
-	                    <select name="is_del" id="is_del">
-	                        <option value="0">启用</option>
-	                        <option value="1">禁用</option>
+	                    <select name="is_use" id="is_use">
+	                        <option value="1">启用</option>
+	                        <option value="0">禁用</option>
 	                    </select>
 	                </li>
 	            </ul>

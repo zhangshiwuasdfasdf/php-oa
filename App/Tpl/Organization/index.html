@@ -593,12 +593,14 @@ input,select{ margin:0; padding:0; outline:none;}
 </div>
 <!--角色分配-->
 <div class="tc" id="tc_fp">
+	<form method='post' id="form_data_distribution_position" name="form_data_distribution_position" enctype="multipart/form-data">
+	<input type="hidden" name="position_id" id="position_id">
 	<div class="tc_div">
     	<div class="tc_title">
         	<span class="js_sp1">分配情况</span>
             <span class="js_sp4">
                 <input type="checkbox" id="js_sp5"/>
-                <label for="js_sp4">全选</label>
+                <label for="js_sp5">全选</label>
             </span>
             <span class="js_sp3">
             	<span>岗位编制人数：</span>
@@ -611,56 +613,14 @@ input,select{ margin:0; padding:0; outline:none;}
                 </a>       
             </span>
         </div>
-        <div class="tc_ul_div">
-        	<div class="tc_div_jt">集团总部：</div>
-            <ul class="tc_ul">
-                <li>
-                    <span>
-                        <input type="checkbox" id="js1" name="sp4"/>
-                        <label for="js1">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js2" name="sp4"/>
-                        <label for="js2">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js3" name="sp4"/>
-                        <label for="js3">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js4" name="sp4"/>
-                        <label for="js4">产品专员</label>
-                    </span>
-                </li>  
-            </ul>
-            <div class="tc_div_jt">金华园区:</div>
-            <ul class="tc_ul">
-                <li>
-                    <span>
-                        <input type="checkbox" id="js1" name="sp4"/>
-                        <label for="js1">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js2" name="sp4"/>
-                        <label for="js2">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js3" name="sp4"/>
-                        <label for="js3">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js4" name="sp4"/>
-                        <label for="js4">产品专员</label>
-                    </span>
-                </li>  
-            </ul>
+        <div class="tc_ul_div" id="distribution_position">
         </div>
-        
         <div class="bottom2">
         	<span class="bottom_sp1">取消</span>
             <span class="bottom_sp2">确定</span>
         </div>
     </div>
+    </form>
 </div>
 
 <!--员工-->
