@@ -52,6 +52,7 @@ class PrivilegeAction extends CommonAction {
 		$model=M("Privilege");
 		if(IS_POST){
 			$info['pri_name']=I('post.pri_name');
+			$info['pri_no']=I('post.pri_no');
 			$info['menu_new_id']=I('post.menu_new_id');
 			if(I('post.pri_act') == '自定义'){
 				$info['pri_act']=I('post.pri_act_zdy');
@@ -59,14 +60,7 @@ class PrivilegeAction extends CommonAction {
 				$info['pri_act']=I('post.pri_act');
 			}
 			$info['sort']=I('post.sort');
-			$last = $model->where(array('pri_no'=>array('like',date('ymd',time()).'%')))->order('pri_no desc')->limit(1)->find();
-			if($last){
-				$num = intval(substr($last['pri_no'],4));
-				$num_str = formatto4w($num+1);
-			}else{
-				$num_str = formatto4w(1);
-			}
-			$info['pri_no'] = date('ymd',time()).$num_str;
+			$info['url']=I('post.url');
 		}
 		
 		if($model->add($info))
@@ -78,27 +72,17 @@ class PrivilegeAction extends CommonAction {
 	
 	public function pri_del(){
 		$id = $_REQUEST['id'];
-		$where['id'] = array('in', $id);
-		$result = M("Privilege")->where($where)->delete();
-			if ($result) {
-				$this -> ajaxReturn('', "删除成功", 1);
-			} else {
-				$this -> ajaxReturn('', "删除失败", 0);
-			}
+		M("PrivilegeRole")->where(array('privilege_id'=>array('in',$id)))->delete();
+		$this -> _del();
 	}
 	
-	//关联角色复制的权限表单
-	public function showprivilege(){
-		$id=$_REQUEST['id'];
-		$res=D("PrivilegeView")->where(array('id'=>array('eq',$id)))->select();
-		$this->ajaxReturn($res,'success','1');
-	}
 	//编辑权限
 	public function edit_pri(){
 		$model=M("Privilege");
 		$id = $_REQUEST['pri_id'];
 		$where = array('id'=>$id);
 		$info['pri_name']=I('post.pri_name');
+		$info['pri_no']=I('post.pri_no');
 		$info['menu_new_id']=I('post.menu_new_id');
 		if(I('post.pri_act') == '自定义'){
 			$info['pri_act']=I('post.pri_act_zdy');
@@ -106,7 +90,7 @@ class PrivilegeAction extends CommonAction {
 			$info['pri_act']=I('post.pri_act');
 		}
 		$info['sort']=I('post.sort');
-		
+		$info['url']=I('post.url');
 		$res = $model-> where($where)->setField($info);
 		
 		if($res){
@@ -119,7 +103,9 @@ class PrivilegeAction extends CommonAction {
 	//权限类型
 	function get_pri_act(){
 		$menu_new_id=$_REQUEST['menu_new_id'];
-		$res=M("Privilege")->field("pri_act")->where(array("menu_new_id"=>$menu_new_id))->select();
+		$where['menu_new_id']=array('eq',$menu_new_id);
+		$where['is_del']=array('eq',0);
+		$res=M("Privilege")->field("pri_act")->where($where)->select();
 		$this->ajaxReturn($res,'success','1');
 	}
 	
@@ -132,19 +118,7 @@ class PrivilegeAction extends CommonAction {
 		}
 		
 		$role=M("RoleManager")->where($where)->select();
-		$company=array();
-		foreach($role as $k=>$v){
-			$company[$v['company']][$v['id']]=$v['role_name'];
-			$role['_company']=$company;
-		}
-		/*$role=M("RoleManager")->field("group_concat(id) id,role_no,company,group_concat(role_name) role_name,status,is_del")->where($where)->group('company')->select();
-        
-        foreach($role as $k=>$v){
-            $role[$k]['id']=array_filter(explode(",", $v['id']));
-            $role[$k]['role_name']=array_filter(explode(",", $v['role_name']));
-            $role[$k]['role_name']=array_combine($role[$k]['id'],$role[$k]['role_name']);
-        }*/
-		$data=M("PrivilegeRole")->where(array('privilege_id' => $pri_id ))->select();
+		$data=M("PrivilegeRole")->where(array('privilege_id' => $pri_id ))->distinct(true)->select();
 		if($data){
 			foreach ($data as $k => $v) {
 			$role["role_id"][]=$v['role_id'];
@@ -162,7 +136,7 @@ class PrivilegeAction extends CommonAction {
 		$model=M("PrivilegeRole");
 		$has=$model->where(array('privilege_id'=>$pri_id))->count();
 		if($has){
-			$model->where(array('privilege_id'=>$pri_id))->delete();
+			M("PrivilegeRole")->where(array('privilege_id'=>$pri_id))->delete();
 		}
 		foreach ($role_id as $k => $v) {
 			$res=$model->add(array(
@@ -175,8 +149,6 @@ class PrivilegeAction extends CommonAction {
 		}else{
 			$this->error("关联角色失败！");
 		}
-
-		
 	}
 	
 	//关联角色复制

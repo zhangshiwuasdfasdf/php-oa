@@ -15,28 +15,11 @@ function del() {
 	});
 }
 
-function show(id){
-	var id=$("#bj_" + id).val();
-	//alert(id);
-	$.ajax({
-			type:'post',
-			url:"{:U('showsequence')}",
-			data:{id:id},
-			success:function(data){
-				//alert(data);
-				if(data.status == '1'){
-					//location.reload();
-					for (var s in data.data) {
-						$("#sequence_id").attr('value',data.data[s].id);
-						$("#sequence_number").attr('value',data.data[s].sequence_number);
-						$("#sequence_name").attr('value',data.data[s].sequence_name);
-						$("#sequence_degree").attr('value',data.data[s].sequence_degree);
-					}
-				}
-			},
-			
-		})
-	
+function show(id,no,name,degree){
+	$("#sequence_id").val(id);
+	$("#sequence_number").val(no);
+	$("#sequence_name").val(name);
+	$("#sequence_degree").val(degree);
 }
  
 function edit(){

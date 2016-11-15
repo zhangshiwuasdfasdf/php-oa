@@ -682,12 +682,13 @@ class ProfileAction extends CommonAction {
 	//保存员工档案管理状态
 	function status_manage(){
 		$user_id=$_POST['user_id'];
-		
+		/*
 		$has=M("StatusManage")->where(array("user_id"=>$user_id))->select();
 		if($has){
 			M("StatusManage")->where(array("user_id"=>$user_id))->delete();
-		}
-		$data['user_id']=$user_id;
+		}*/
+		$model=M("StatusManage");
+		$where = array('user_id'=>$user_id);
 		$data['no_status']=$_POST['no_status'];
 		$data['stuff_status']=$_POST['stuff_status'];
 		$data['entry_time']=$_POST['entry_time'];
@@ -696,7 +697,7 @@ class ProfileAction extends CommonAction {
 		$data['create_name']=get_user_name();
 		$data['create_time']=date('Y/m/d H:i:s',time());
 		$data['remark']=$_POST['remark'];
-		$res=M("StatusManage")->add($data);
+		$res=$model-> where($where)->setField($data);
 		if($res){
 			$this->success('保存成功',U('userlist'));
 		}

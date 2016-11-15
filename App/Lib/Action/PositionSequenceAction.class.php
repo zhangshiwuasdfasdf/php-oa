@@ -40,13 +40,6 @@ class PositionSequenceAction extends CommonAction {
 
 	}
 	
-	function showsequence(){
-		$id = $_REQUEST["id"];
-		$model=M("PositionSequence");
-		$data=$model->where(array('id'=>$id))->select();
-		$this->ajaxReturn($data,'success','1');
-	}
-	
 	function edit_sequence(){
 		$id = $_REQUEST['id'];
 		$model = M('PositionSequence');

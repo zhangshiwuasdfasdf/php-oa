@@ -36,11 +36,12 @@ $(".content_ajs").click(function(){
 })
 
 $(".content_bj").click(function(){
+	
 	/*$('#bj1').text('编辑')*/
 	$("#tc_qxbj").show();
 	$(".bottom_sp3").click(function(){
 		$("#tc_qxbj").hide();
-		location.reload();
+		//location.reload();
 	})
 	$(".bottom_sp4").click(function(){
 		$("#tc_qxbj").hide();
