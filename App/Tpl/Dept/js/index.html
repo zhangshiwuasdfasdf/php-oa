@@ -25,13 +25,22 @@ function wli(){
 wli();
 
 $(".content_div2 img").each(function(){
-	$(this).toggle(function(){
+	$(this).click(function(){
+		if($(this).parent().parent().children('ul').is(":hidden")){
+			$(this).parent().parent().children('ul').show()
+			$(this).attr('src','__PUBLIC__/img/ajj.png');
+		}else{
+			$(this).parent().parent().children('ul').hide()
+			$(this).attr('src','__PUBLIC__/img/add.png');
+		}
+	})
+	/* $(this).toggle(function(){
 		$(this).parent().parent().children('ul').show()
 		$(this).attr('src','__PUBLIC__/img/ajj.png');
 	},function(){
 		$(this).parent().parent().children('ul').hide()
 		$(this).attr('src','__PUBLIC__/img/add.png');
-	})
+	}) */
 })
 //添加
 $('.img_tj').click(function(){

@@ -17,11 +17,12 @@
 	function add() {
 		window.open("{:U('add')}", "_self");
 	}
-	function show_edit_dialog(id,name,is_del){
+	function show_edit_dialog(id,name,is_use){
 		$("#tc_lbbj").show();
 		$("#id").val(id);
 		$("#position_name").val(name);
-		$("#is_del").val(is_del);
+		$("#is_use").val(is_use);
+		validate();
 		$(".bottom_sp3").click(function(){
 			$("#tc_lbbj").hide();	
 		})	
@@ -51,6 +52,7 @@
 	$("#a_lbtj").click(function(){
 		$('#bj1').text('添加');
 		$("#tc_lbbj").show();
+		validate();
 		$(".bottom_sp3").click(function(){
 			$("#tc_lbbj").hide();	
 		})
@@ -94,5 +96,53 @@
 				sendForm("form_data2", "{:U('distribute')}");
 			}
 		})
+	}
+	function del(){
+		var vars = $("#form_data2").serialize();
+		ui_confirm('确定要删除吗?',function(){
+			sendAjax("{:U('del')}", vars, function(data) {
+				if (data.status) {
+					ui_alert(data.info,function(){
+						location.reload();
+					});
+				}
+			});
+		});
+	}
+	function validate(){
+	    $.formValidator.initConfig({formID:"form_data",debug:false,submitOnce:true,
+	        onError:function(msg,obj,errorlist){
+	       		alert(msg);
+	    	},
+	    	submitAfterAjaxPrompt : "正在进行校验，请稍候"
+		});
+	    $("#position_name").formValidator({
+	        tipID:"position_nameTip",
+	        empty:false,
+	        onShow:" ",
+	        onFocus:" ",
+	        onCorrect:"<span style='color:green;'>√</span>"
+	    }).inputValidator({
+	        min:1,max:255,
+	        onErrorMin:"岗位名称不能为空",
+	        onErrorMax:"岗位名称超过最大长度"
+	    });
+	    var id = $("#id").val();
+	    $("#position_name").ajaxValidator({
+	    	dataType : "json",
+            type : "GET",
+			isValid : true,
+            async : false,
+            data:{id:id},
+            url : "{:U('validate')}",
+            success : function(data){
+                if( data.status == 1 ) return false;
+                if( data.status == 0 ) return true;
+                return false;
+            },
+            error: function(jqXHR, textStatus, errorThrown){alert("服务器没有返回数据，可能服务器忙，请重试"+errorThrown);},
+            onError : "已存在该岗位名称",
+            onWait : "正在对岗位名称进行合法性校验，请稍候"
+	    });
 	}
 </script>

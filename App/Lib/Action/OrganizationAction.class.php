@@ -13,7 +13,7 @@
 
 class OrganizationAction extends CommonAction {
 
-	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read','get_all_position'=>'read','get_edit_user_html'=>'read','get_edit_dept_html'=>'read','change_dept_html'=>'read','change_position_html'=>'read','user_edit'=>'read','user_dept_position_set'=>'read','search_user'=>'read','r_dept_position_add'=>'read','r_dept_position_edit'=>'read','delete'=>'read','edit_is_use'=>'read','dept_add'=>'read','dept_edit'=>'read'));
+	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read','get_all_position'=>'read','get_edit_user_html'=>'read','get_edit_dept_html'=>'read','change_dept_html'=>'read','change_position_html'=>'read','user_edit'=>'read','user_dept_position_set'=>'read','search_user'=>'read','r_dept_position_add'=>'read','r_dept_position_edit'=>'read','delete'=>'read','edit_is_use'=>'read','dept_add'=>'read','dept_edit'=>'read','get_role_groupby_company'=>'read','distribution_position_to_role'=>'read'));
 
 	public function index(){
 		
@@ -460,6 +460,46 @@ class OrganizationAction extends CommonAction {
 		}else{
 			$this->error('请填写部门相关信息');
 		}
+	}
+	function get_role_groupby_company(){
+		$position_id = $_POST['position_id'];
+		$where['is_del'] = '0';
+		$role = M('RoleManager')->where($where)->select();
+		$new_role = array();
+		foreach ($role as $k=>$v){
+			$new_role[$v['company']][] = $v;
+		}
+		$role_html = '';
+		foreach ($new_role as $k=>$v){
+			$role_html .='<div class="tc_div_jt">'.$k.'：</div><ul class="tc_ul"><li>';
+			foreach($new_role[$k] as $kk=>$vv){
+				$res = M('RPositionRole')->where(array('position_id'=>$position_id,'role_id'=>$vv['id']))->find();
+				$is_check = $res?'checked="checked"':'';
+				$role_html .= '<span>';
+				$role_html .= '<input type="checkbox" id="role_'.$vv['id'].'" name="role[]" value="'.$vv['id'].'" '.$is_check.'/>';
+				$role_html .= '<label for="role_'.$vv['id'].'">'.$vv['role_name'].'</label>';
+				$role_html .= '</span>';
+			}
+			$role_html .='</li></ul>';
+		}
+		
+// 		$role=M("RoleManager")->field("group_concat(id) id,role_no,company,group_concat(role_name) role_name,status,is_del")->where($where)->group('company_id')->select();
+		$this->ajaxReturn($role_html);
+	}
+	function distribution_position_to_role(){
+		$position_id = $_POST['position_id'];
+		$role_ids = $_POST['role']?$_POST['role']:'';
+		M('RPositionRole')->where(array('position_id'=>$position_id,'role_id'=>array('not in',$role_ids)))->delete();
+		foreach ($role_ids as $k=>$role_id){
+			$res = M('RPositionRole')->where(array('position_id'=>$position_id,'role_id'=>array('eq',$role_id)))->find();
+			if(empty($res)){
+				$res1 = M('RPositionRole')->add(array('position_id'=>$position_id,'role_id'=>$role_id));
+				if(false === $res1){
+					$this->error('分配失败');
+				}
+			}
+		}
+		$this->success('分配成功');
 	}
 }
 ?>

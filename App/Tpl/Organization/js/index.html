@@ -468,20 +468,38 @@ $("#a_kq").click(function(){
 		$("#tc_kq").hide();	
 	})
 })
-$("#a_fp").click(function(){
+function distribution_position(position_id){
+	$("#position_id").val(position_id);
+	$.ajax({
+		data:{position_id:position_id},
+		type:'post',
+		url:"{:U(get_role_groupby_company)}",
+		success:function(data){
+			$("#distribution_position").html(data);
+			//alert(JSON.stringify(data));
+		}
+	})
 	$("#tc_fp").show();
-	$(".bottom_sp1,.bottom_sp2").click(function(){
+	$(".bottom_sp2").click(function(){
+		window.onbeforeunload = null;
+		if (check_form("form_data_distribution_position")) {
+			sendForm("form_data_distribution_position", "{:U('distribution_position_to_role')}");
+		}	
+	})
+	$(".bottom_sp1").click(function(){
 		$("#tc_fp").hide();	
 	})
-})
+}
 
 //组织架构
 $(".zz_bg img").each(function(){
-	$(this).toggle(function(){
-		$(this).parent('li').children('ul').slideDown()
-	},function(){
-		$(this).parent('li').children('ul').slideUp()
-	})
+	$(this).click(function() {
+	  if($(this).parent('li').children('ul').is(":hidden")){                                     
+		$(this).parent('li').children('ul').slideDown();
+	  }else{
+		$(this).parent('li').children('ul').slideUp() 
+	  }
+	});
 })
 
 $(".tc_ul_div img").each(function(){
@@ -492,11 +510,11 @@ $(".tc_ul_div img").each(function(){
 	})
 })
 
-$("#js_sp4,#js_sp5").click(function() {
+$("#js_sp5").click(function() {
   if(this.checked){                                     
-    $("[name=sp4]:checkbox").prop("checked",true);  
+    $("[name='role[]']:checkbox").prop("checked",true);  
   }else{
-    $("[name=sp4]:checkbox").prop("checked",false);  
+    $("[name='role[]']:checkbox").prop("checked",false);  
   }
 });
 
@@ -601,7 +619,14 @@ function show_list(id,show_leader,p,type){
 						dept_temp += '<span class="span2_0"><input name="box_dept[]" class="box_dept" type="checkbox" value="'+v.id+'"/></span>';
 						dept_temp += '<span class="span2">'+v.root_name+'</span>';
 						dept_temp += '<span class="span2">'+v.name+'</span>';
-						dept_temp += '<span class="span2"></span>';
+						dept_temp += '<span class="span2">';
+						if(v.is_use == '0'){
+							dept_temp += '禁用';
+						}else{
+							dept_temp += '启用';
+						}
+						dept_temp += '</span>';
+						
 						dept_temp += '<span class="span2"><a class="content_a" id="start_use_dept_'+v.id+'" onclick="start_use_dept(\''+v.id+'\')">';
 						if(v.is_use == '0'){
 							dept_temp += '启用';
@@ -646,7 +671,7 @@ function show_list(id,show_leader,p,type){
 						position_temp += '<span class="span2"></span>';
 						position_temp += '<span class="span2"></span>';
 						position_temp += '<span class="span2"><a class="content_a" id="a_gwbj" onclick="edit_r_dept_position(\''+v.dept_id+'\',\''+v.id+'\')">编辑</a></span>';
-						position_temp += '<span class="span2"><a class="content_a" id="a_fp">分配情况</a></span>';
+						position_temp += '<span class="span2"><a class="content_a" id="a_fp" onclick="distribution_position(\''+v.id+'\')">分配情况</a></span>';
 						position_temp += '</li>';
 					});
 					$('.position_content').html(position_temp);
