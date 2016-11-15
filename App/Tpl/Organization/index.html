@@ -1,4 +1,6 @@
 <layout name='Layout/ace_layout' />
+<script type="text/javascript" src="__PUBLIC__/js/formValidator-4.0.1.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js" charset="UTF-8"></script>
 <style>
 *{ font-family:"微软雅黑";}
 a{ text-decoration:none;}
@@ -107,7 +109,7 @@ input,select{ margin:0; padding:0; outline:none;}
 .bottom_sp3{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:100px; margin-right:40px; cursor:pointer;}
 .bottom_sp4{ display:block; width:80px; height:36px; float:left; background:#1fb992;color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px;cursor:pointer;}
 
-.user_name_search{position:absolute;left:67px;background:#fff;border:1px solid #d5d5d5;width:190px;top:43px;height:auto;z-index:100;display:none;}
+.user_name_search{position:absolute;left:67px;background:#fff;border:1px solid #d5d5d5;width:190px;top:43px;height:306px;z-index:100;display:none;overflow:auto;}
 .user_name_search_li{text-align:left;padding:5px 4px;line-height:1.2;height:28px;}
 
 </style>
@@ -429,17 +431,14 @@ input,select{ margin:0; padding:0; outline:none;}
                 </li>
                 <li>
                     <label>上级部门：</label>
-                    <select name="pid" id="edit_dept_dept">
+                    <select name="pid" id="edit_dept_dept" onChange="validate2();$('#dept_name').focus()">
                     </select>
                 </li>
                 <li>
                     <label>部门名称：</label>
                     <input class="tc_inp" type="text" name="dept_name" id="dept_name"/>
+                    <span id="dept_nameTip" style="color:red;position:absolute;top:44px;left:85px;line-height:14px;"></span>
                     <input type="hidden" name="edit_dept_id" id="edit_dept_id"/>
-                </li>
-                <li>
-                    <label>部门编号：</label>
-                    <input class="tc_inp" type="text" name="dept_no" id="dept_no"/>
                 </li>
                 <li>
                     <label>数据状态：</label>
@@ -475,21 +474,18 @@ input,select{ margin:0; padding:0; outline:none;}
             <ul class="tc_ul_s">
                 <li>
                     <label>公司：</label>
-                    <select id="dept_company" name="dept_company" onChange="change_dept($(this).val(),'dept')">
+                    <select id="dept_company" name="dept_company" onChange="change_dept($(this).val(),'parent_dept')">
                     </select>
                 </li>
                 <li>
                     <label>上级部门：</label>
-                    <select id="dept_dept" name="dept_dept_parent">
+                    <select id="parent_dept_dept" name="dept_dept_parent" onChange="validate();$('#dept_dept').focus()">
                     </select>
                 </li>
                 <li>
                     <label>部门：</label>
-					<input class="tc_inp" name="dept_dept" type="text">
-                </li>
-                <li>
-                    <label>部门编号：</label>
-					<input class="tc_inp" name="dept_no" type="text">
+					<input class="tc_inp" name="dept_dept" id="dept_dept" type="text">
+					<span id="dept_deptTip" style="color:red;position:absolute;top:44px;left:85px;line-height:14px;"></span>
                 </li>
                 <li>
                     <label>数据状态：</label>
@@ -636,9 +632,8 @@ input,select{ margin:0; padding:0; outline:none;}
                     <label>姓名：</label>
                     <input id="user_user_id" name="user_user_id" type="hidden"/>
                     <input class="tc_inp" id="user_user_name" name="user_user_name" type="text"/>
+                    <span id="user_user_idTip" style="color:red;position:absolute;top:44px;left:85px;line-height:14px;"></span>
                     <ul class="user_name_search">
-                    	<li class="user_name_search_li" onclick="alert()">11</li>
-                    	<li class="user_name_search_li" onclick="alert()">22</li>
                     </ul>
                 </li>
                 <li>
@@ -689,6 +684,8 @@ input,select{ margin:0; padding:0; outline:none;}
 </div>
 <!--员工角色分配-->
 <div class="tc" id="tc_js">
+	<form method='post' id="form_data_distribution_user_role" name="form_data_distribution_user_role" enctype="multipart/form-data">
+	<input type="hidden" name="user_role_user_id" id="user_role_user_id">
 	<div class="tc_div">
     	<div class="tc_title">
         	<span class="js_sp1">角色</span>
@@ -704,7 +701,7 @@ input,select{ margin:0; padding:0; outline:none;}
                 <label for="js_sp4">全选</label>
             </span>
         </div>
-        <div class="tc_ul_div">
+        <div class="tc_ul_div" id="distribution_user">
             <div class="tc_div_jt">集团总部：</div>
             <ul class="tc_ul">
                 <li>
@@ -754,101 +751,16 @@ input,select{ margin:0; padding:0; outline:none;}
             <span class="bottom_sp2">确定</span>
         </div>
     </div>
+    </form>
 </div>
 <div class="tc" id="tc_xz">
+	<form method='post' id="form_data_admin_jurisdiction" name="form_data_admin_jurisdiction" enctype="multipart/form-data">
+	<input type="hidden" name="admin_jurisdiction_upid" id="admin_jurisdiction_upid">
 	<div class="tc_div">
     	<div class="tc_title">
         	<span class="js_sp1">行政关系范围</span>
         </div>
-        <div class="tc_ul_div">
-            <ul class="zz_ul">
-                <li class="zz_li">
-                    <img src="__PUBLIC__/img/xl.png"/>
-                    <span>集团总部</span>
-                    <ul class="zz_ul">
-                        <li class="zz_li1"> 
-                            <input type="checkbox" id="gsld"/>
-                        	<label for="gsld">公司领导</label>
-                        </li>
-                        <li class="zz_li1">
-                            <input type="checkbox" id="gjb"/>
-                        	<label for="gjb">总经办</label>
-                        </li>
-                        <li class="zz_li1"> 
-                            <input type="checkbox" id="cwzx"/>
-                        	<label for="cwzx">财务中心</label>
-                        </li>
-                        <li class="zz_li1">
-                            <input type="checkbox" id="sjzx"/>
-                        	<label for="sjzx">大数据中心</label>
-                        </li>
-                    </ul>
-                </li>
-                <li class="zz_li">
-                    <img src="__PUBLIC__/img/xl.png"/>
-                    <span>杭州基地</span>
-                    <ul class="zz_ul">
-                        <li class="zz_li1"> 
-                            <input type="checkbox" id="jdld"/>
-                        	<label for="jdld">基地领导</label>
-                        </li>
-                        <li class="zz_li1">
-                            <img src="__PUBLIC__/img/xl.png"/>
-                    		<span>仓配中心</span>
-                            <ul>
-                            	<li class="zz_li1"> 
-                                    <input type="checkbox" id="rkz"/>
-                                    <label for="rkz">入库组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="ncz"/>
-                                    <label for="ncz">内仓组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="djz"/>
-                                    <label for="djz">单据组</label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="zz_li1">
-                            <img src="__PUBLIC__/img/xl.png"/>
-                    		<span>运营中心</span>
-                            <ul>
-                            	<li class="zz_li1"> 
-                                    <input type="checkbox" id="rkz1"/>
-                                    <label for="rkz1">入库组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="ncz1"/>
-                                    <label for="ncz1">内仓组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="djz1"/>
-                                    <label for="djz1">单据组</label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="zz_li1">
-                            <img src="__PUBLIC__/img/xl.png"/>
-                    		<span>行政督导部</span>
-                            <ul>
-                            	<li class="zz_li1"> 
-                                    <input type="checkbox" id="rkz2"/>
-                                    <label for="rkz2">入库组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="ncz2"/>
-                                    <label for="ncz2">内仓组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="djz2"/>
-                                    <label for="djz2">单据组</label>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+        <div class="tc_ul_div" id="admin_jurisdiction">
         </div>
         
         <div class="bottom2">
@@ -856,6 +768,7 @@ input,select{ margin:0; padding:0; outline:none;}
             <span class="bottom_sp2">确定</span>
         </div>
     </div>
+    </form>
 </div>
 
 

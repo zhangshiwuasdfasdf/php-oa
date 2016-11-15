@@ -1,4 +1,6 @@
 <layout name='Layout/ace_layout' />
+<script type="text/javascript" src="__PUBLIC__/js/formValidator-4.0.1.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js" charset="UTF-8"></script>
 <style>
 .nav2 .b{ background:#22bd9b; color:#fff;}
 .nav2{ overflow:hidden; background:#fff; height:54px; width:100%; line-height:54px; margin-bottom:10px; margin-top:50px;}
@@ -38,7 +40,7 @@
     </div>
     <div class="main_m">
     	<form method='post' id="form_data_dept_edit" name="form_data_dept_edit" enctype="multipart/form-data">
-    	<input name="id" value="{$dept_info.id}" type="hidden"/>
+    	<input name="id" id="id" value="{$dept_info.id}" type="hidden"/>
     	<div class="ma_ta">
         	<div class="ma_title">基本信息</div>
         	<ul class="main_ul">
@@ -50,19 +52,22 @@
                 </li>
                 <li class="li1">所在部门：</li>
                 <li class="li2">
-                	<select id="pid" name="pid">
+                	<select id="pid" name="pid" onChange="validate()">
                 		{$dept}
                 	</select>
 				</li>
                 <li class="li1">部门编号：</li>
-                <li class="li2"><input type="text" name="dept_no" value="{$dept_info.dept_no}"/></li>
+                <li class="li2"><input type="text" name="dept_no" value="{$dept_info.dept_no}" readonly/></li>
                 <li class="li1">部门名称：</li>
-                <li class="li2"><input type="text" name="name" value="{$dept_info.name}"/></li>
+                <li class="li2"><input type="text" name="name" id="name" value="{$dept_info.name}"/></li>
                 <li class="li1">部门状态：</li>
                 <li class="li2">
                 	<select id="is_use" name="is_use">
                 		{$status}
                 	</select>
+				</li>
+				<li class="li1">
+					<span id="nameTip" style="color:red;"></span>
 				</li>
             </ul>
             <span class="but_span">

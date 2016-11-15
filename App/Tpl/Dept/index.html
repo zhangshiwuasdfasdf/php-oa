@@ -1,4 +1,6 @@
 <layout name='Layout/ace_layout' />
+<script type="text/javascript" src="__PUBLIC__/js/formValidator-4.0.1.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js" charset="UTF-8"></script>
 <style>
 img{ margin: 0; padding: 0;}
 input,select,textarea{ margin: 0; padding: 0; outline:none;}
@@ -24,7 +26,7 @@ input,select,textarea{ margin: 0; padding: 0; outline:none;}
 .content_div{ overflow:auto;}
 .content_div1{ width:100%; overflow:hidden; border-bottom:1px solid #eaedf1; line-height:28px; font-weight:bold; background:#fff;}
 .content_div1 span{display:block; float:left;font-size:12px; height:28px; line-height:28px;padding-left:10px;}
-.content_div2{ overflow:auto; background:#fff; height:270px;}
+.content_div2{ background:#fff;}
 .content_div2 span{display:block; float:left;font-size:12px; height:28px; line-height:28px;}
 /*.content_ul1{ display:none;}*/
 .content_li{ width:100%; overflow:hidden; border-bottom:1px solid #eaedf1; line-height:28px; font-weight:bold;}
@@ -52,7 +54,7 @@ input,select,textarea{ margin: 0; padding: 0; outline:none;}
 .tc_div1{background:#f1f5fa; width:400px; height:550px; position:absolute; left:50%; margin-left:-200px; top:60%; margin-top:-300px; border-radius:5px;}
 .tc_ul_div1{ width:300px; height:400px;margin-top:20px; margin-left:50px; overflow:auto;}
 .tc_ul_s{ height:auto;}
-.tc_ul_s li{ overflow:hidden; height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
+.tc_ul_s li{ height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
 .tc_ul_s label{ position:absolute; left:0;}
 .tc_ul_s span{ display:block; position:absolute; left:85px;}
 .tc_ul_s select{ width:195px;position:absolute; left:85px; top:15px;}
@@ -219,12 +221,10 @@ input,select,textarea{ margin: 0; padding: 0; outline:none;}
                 </li>
                 <li>
                     <label>部门名称：</label>
-                    <input class="tc_inp" name="dept_name" type="text"/>
+                    <input class="tc_inp" name="dept_name" id="dept_name" type="text"/>
+                    <span id="dept_nameTip" style="color:red;position:absolute;top:44px;left:85px;line-height:14px;"></span>
                 </li>  
-                <li>
-                    <label>部门编号：</label>
-                    <input class="tc_inp" name="dept_no" type="text"/>
-                </li>  
+                 
             </ul>
         </div>
         

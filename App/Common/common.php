@@ -1306,6 +1306,55 @@ function popup_menu_organization_checkbox($tree, $level = 0,$deep=100,$position_
 	}
 	return $html;
 }
+function popup_menu_dept_position_checkbox($tree, $level = 0,$deep=100,$child_depts,$child_positions) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$i = $level>1?'1':'';
+		$html = "<ul class=\"zz_ul$i\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title = $val["name"];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				if(substr($id, 0,1) == 'p'){
+					//岗位
+					if(in_array(substr($id, 2), $child_positions)){
+						$is_checked = ' checked="checked"';
+					}else{
+						$is_checked = ' ';
+					}
+				}else{
+					//部门
+					if(in_array($id, $child_depts)){
+						$is_checked = ' checked="checked"';
+					}else{
+						$is_checked = ' ';
+					}
+				}
+// 				if(!empty($position_id)){
+// 					$res = M('RDeptPosition')->where(array('position_id'=>$position_id,'dept_id'=>$id))->find();
+// 					$is_checked = $res?' checked="checked"':'';
+// 				}else{
+// 					$is_checked = '';
+// 				}
+
+				if (isset($val['_child'])) {
+					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"".__ROOT__."/Public/img/xl.png\"/><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label>\r\n";
+					$html = $html . popup_menu_dept_position_checkbox($val['_child'], $level,$deep,$child_depts,$child_positions);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li class=\"zz_li1\"><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label></li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
 function popup_menu_option($tree, $level = 0,$default='') {
 	$level++;
 	$html = "";
