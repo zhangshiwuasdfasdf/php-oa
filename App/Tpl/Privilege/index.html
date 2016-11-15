@@ -69,6 +69,8 @@ input{ margin:0; padding:0; outline:none;}
 .tc_ul{ height:auto; margin-bottom:10px;}
 .tc_ul li{ overflow:hidden; height:30px; width:100%; line-height:30px;}
 .tc_ul span{ display:block; float:left; height:30px; width:170px; font-size:14px; text-align:center;}
+.sousuo{ height:auto; margin-bottom:10px;}
+.sousuo span{ display:block; float:left; height:30px; width:170px; font-size:14px; text-align:center;}
 
 .bottom_qx{ width:100%; height:70px; line-height:70px; overflow:hidden;}
 .bottom_sp1{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:290px; margin-right:40px; cursor:pointer;}
@@ -143,7 +145,7 @@ input{ margin:0; padding:0; outline:none;}
                     <span class="span2">{$vo.pri_no}</span>
                     <span class="span2">{$vo.pri_name}</span>
                     <span class="span2">{$vo.pri_act}</span>
-                    <span class="span2"><a class="content_bj" id="a_qxbj_{$vo.id}" value="{$vo.id}" onclick="show('{$vo.id}','{$vo.pri_name}');">编辑</a></span>
+                    <span class="span2"><a class="content_bj" id="a_qxbj_{$vo.id}" value="{$vo.id}" onclick="show('{$vo.id}','{$vo.pri_name}','{$vo.pri_no}','{$vo.sort}','{$vo.url}','{$vo.pri_act}','{$vo.menu_new_id}');">编辑</a></span>
                     <span class="span2"><a class="content_ajs" id="a_js_{$vo.id}" value="{$vo.id}" onclick="get_role({$vo.id});">关联角色</a></span>
                     <span class="span2"><a class="content_afz" id="a_jsfz_{$vo.id}" value="{$vo.id}" onclick="show_rel('{$vo.id}','{$vo.menu_name}','{$vo.pri_act}');">关联角色复制</a></span>
                 </li>
@@ -205,11 +207,15 @@ input{ margin:0; padding:0; outline:none;}
                     <input class="tc_inp" type="text" name="pri_name" id="pri_name"/>
                 </li>
                 <li class="tc_li2">
+                    <label class="la1">权限编码：</label>
+                    <input class="tc_inp" type="text" name="pri_no" id="pri_no"/>
+                </li>
+                <li class="tc_li2">
                     <label class="la1">菜单：</label>
                     <select name="menu_new_id" id="menu_new_id">
                     <option value="">请选择</option>
                     <foreach name="menuData" item="vo">
-                        <option value="{$vo.id}"><?php echo str_repeat('&nbsp;', $vo['level']).str_repeat('|', $vo['level']+1).'-'.$vo['menu_name']; ?></option>
+                        <option value="{$vo.id}"><?php echo str_repeat('-', $vo['level']).$vo['menu_name']; ?></option>
                     </foreach>
                         <!-- <option>|-个人中心</option>
                         <option>&nbsp;||-日报</option>
@@ -228,6 +234,10 @@ input{ margin:0; padding:0; outline:none;}
                         <option value="查看">查看</option>
                     </select>
                     <input class="tc_inp1" type="text" name="pri_act_zdy" id="pri_act_zdy"/>
+                </li>
+                <li class="tc_li2">
+                    <label class="la1">url：</label>
+                    <input class="tc_inp" type="text" name="url" id="url"/>
                 </li> 
                 <li class="tc_li2">
                     <label class="la1">排序：</label>
@@ -255,14 +265,18 @@ input{ margin:0; padding:0; outline:none;}
             <ul class="tc_ul_s">
                 <li class="tc_li2">
                     <label class="la1">权限名称：</label>
-                    <input class="tc_inp" type="text" name="pri_name"/>
+                    <input class="tc_inp" type="text" name="pri_name" />
+                </li>
+                <li class="tc_li2">
+                    <label class="la1">权限编码：</label>
+                    <input class="tc_inp" type="text" name="pri_no" />
                 </li>
                 <li class="tc_li2">
                     <label class="la1">菜单：</label>
                     <select name="menu_new_id">
                     <option value="">请选择</option>
                     <foreach name="menuData" item="vo">
-                        <option value="{$vo.id}"><?php echo str_repeat('-', 4*$vo['level']).$vo['menu_name']; ?></option>
+                        <option value="{$vo.id}"><?php echo str_repeat('-', $vo['level']).$vo['menu_name']; ?></option>
                     </foreach>
                         <!-- <option>&nbsp;||-日报</option>
                         <option>&nbsp;||-周报</option> -->
@@ -281,6 +295,10 @@ input{ margin:0; padding:0; outline:none;}
                     </select>
                     <input class="tc_inp1" type="text" name="pri_act_zdy"/>
                 </li> 
+                <li class="tc_li2">
+                    <label class="la1">url：</label>
+                    <input class="tc_inp" type="text" name="url"/>
+                </li>
                 <li class="tc_li2">
                     <label class="la1">排序：</label>
                     <input class="tc_inp" type="text" name="sort"/>
@@ -314,15 +332,15 @@ input{ margin:0; padding:0; outline:none;}
         <form action="{:U(add_role)}" method="post" >
         <input type="hidden" name="id" id="pri_id_gljs">
         
-        <div class="tc_ul_div"><!-- 
-        	<ul class="tc_ul" id="span"></ul>  -->
+        <div class="tc_ul_div">
+        	<ul class="sousuo" id="span"></ul>
             <foreach name="role['_company']" item="vo">
             <div class="tc_div_jt"><span>{$key}:</span></div>
             <ul class="tc_ul">
                 <li>
                 	<foreach name="vo" item="vo1">
                 	<span>
-                        <input {$check} type="checkbox" id="js1_role_id{$key}" name="role_id[]" value="{$key}"/>
+                        <input type="checkbox" id="js1_role_id{$key}" name="role_id[]" value="{$key}"/>
                         <label for="js1_role_id{$key}">{$vo1}</label>
                     </span>
                     </foreach>
@@ -363,7 +381,7 @@ input{ margin:0; padding:0; outline:none;}
                     <select name="menu_new_id" id="copy_menu">
                     <option value="">请选择</option>
                     <foreach name="menuData" item="vo">
-                        <option value="{$vo.id}"><?php echo str_repeat('&nbsp;', $vo['level']).str_repeat('|', $vo['level']+1).'-'.$vo['menu_name']; ?></option>
+                        <option value="{$vo.id}"><?php echo str_repeat('-', $vo['level']).$vo['menu_name']; ?></option>
                     </foreach>
                         <!-- <option>&nbsp;||-日报</option>
                         <option>&nbsp;||-周报</option> -->
@@ -386,3 +404,9 @@ input{ margin:0; padding:0; outline:none;}
     </div>
 </div>
 <script type="text/javascript" src="__PUBLIC__/js/qxlb.js"></script>
+<script>
+	$(function() {
+		var html = "<li>系统管理</li><li>权限管理</li><li>权限列表</li>";
+		$("#breadcrumbs ul").append(html);
+	});
+</script>
