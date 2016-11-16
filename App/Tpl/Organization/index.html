@@ -702,48 +702,6 @@ input,select{ margin:0; padding:0; outline:none;}
             </span>
         </div>
         <div class="tc_ul_div" id="distribution_user">
-            <div class="tc_div_jt">集团总部：</div>
-            <ul class="tc_ul">
-                <li>
-                    <span>
-                        <input type="checkbox" id="js1" name="sp4"/>
-                        <label for="js1">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js2" name="sp4"/>
-                        <label for="js2">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js3" name="sp4"/>
-                        <label for="js3">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js4" name="sp4"/>
-                        <label for="js4">产品专员</label>
-                    </span>
-                </li>  
-            </ul>
-            <div class="tc_div_jt">金华园区:</div>
-            <ul class="tc_ul">
-                <li>
-                    <span>
-                        <input type="checkbox" id="js1" name="sp4"/>
-                        <label for="js1">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js2" name="sp4"/>
-                        <label for="js2">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js3" name="sp4"/>
-                        <label for="js3">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js4" name="sp4"/>
-                        <label for="js4">产品专员</label>
-                    </span>
-                </li>  
-            </ul>
         </div>
         
         <div class="bottom2">
@@ -773,99 +731,14 @@ input,select{ margin:0; padding:0; outline:none;}
 
 
 <div class="tc" id="tc_yw">
+	<form method='post' id="form_data_business_jurisdiction" name="form_data_business_jurisdiction" enctype="multipart/form-data">
+	<input type="hidden" name="business_jurisdiction_upid" id="business_jurisdiction_upid">
 	<div class="tc_div">
     	<div class="tc_title">
         	<span class="js_sp1">业务管辖部门</span>
         </div>
-        <div class="tc_ul_div">
-            <ul class="zz_ul">
-                <li class="zz_li">
-                    <img src="__PUBLIC__/img/xl.png"/>
-                    <span>集团总部</span>
-                    <ul class="zz_ul">
-                        <li class="zz_li1"> 
-                            <input type="checkbox" id="gsld"/>
-                        	<label for="gsld">公司领导</label>
-                        </li>
-                        <li class="zz_li1">
-                            <input type="checkbox" id="gjb"/>
-                        	<label for="gjb">总经办</label>
-                        </li>
-                        <li class="zz_li1"> 
-                            <input type="checkbox" id="cwzx"/>
-                        	<label for="cwzx">财务中心</label>
-                        </li>
-                        <li class="zz_li1">
-                            <input type="checkbox" id="sjzx"/>
-                        	<label for="sjzx">大数据中心</label>
-                        </li>
-                    </ul>
-                </li>
-                <li class="zz_li">
-                    <img src="__PUBLIC__/img/xl.png"/>
-                    <span>杭州基地</span>
-                    <ul class="zz_ul">
-                        <li class="zz_li1"> 
-                            <input type="checkbox" id="jdld"/>
-                        	<label for="jdld">基地领导</label>
-                        </li>
-                        <li class="zz_li1">
-                            <img src="__PUBLIC__/img/xl.png"/>
-                    		<span>仓配中心</span>
-                            <ul>
-                            	<li class="zz_li1"> 
-                                    <input type="checkbox" id="rkz"/>
-                                    <label for="rkz">入库组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="ncz"/>
-                                    <label for="ncz">内仓组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="djz"/>
-                                    <label for="djz">单据组</label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="zz_li1">
-                            <img src="__PUBLIC__/img/xl.png"/>
-                    		<span>运营中心</span>
-                            <ul>
-                            	<li class="zz_li1"> 
-                                    <input type="checkbox" id="rkz1"/>
-                                    <label for="rkz1">入库组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="ncz1"/>
-                                    <label for="ncz1">内仓组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="djz1"/>
-                                    <label for="djz1">单据组</label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="zz_li1">
-                            <img src="__PUBLIC__/img/xl.png"/>
-                    		<span>行政督导部</span>
-                            <ul>
-                            	<li class="zz_li1"> 
-                                    <input type="checkbox" id="rkz2"/>
-                                    <label for="rkz2">入库组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="ncz2"/>
-                                    <label for="ncz2">内仓组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="djz2"/>
-                                    <label for="djz2">单据组</label>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+        <div class="tc_ul_div" id="business_jurisdiction">
+            
         </div>
         
         <div class="bottom2">
@@ -873,36 +746,17 @@ input,select{ margin:0; padding:0; outline:none;}
             <span class="bottom_sp2">确定</span>
         </div>
     </div>
+    </form>
 </div>
 
 <div class="tc" id="tc_jd">
+	<form method='post' id="form_data_business_base" name="form_data_business_base" enctype="multipart/form-data">
+	<input type="hidden" name="business_base_upid" id="business_base_upid">
 	<div class="tc_div">
     	<div class="tc_title">
         	<span class="js_sp1">业务管辖基地</span>
         </div>
-        <div class="tc_ul_div">
-            <ul class="zz_ul">
-                <li class="zz_li">
-                    <input type="checkbox" id="zb"/>
-                    <label for="zb">集团总部</label>
-                </li>
-                <li class="zz_li">
-                    <input type="checkbox" id="hz"/>
-                    <label for="hz">杭州基地</label>
-                </li>
-                <li class="zz_li">
-                    <input type="checkbox" id="jh"/>
-                    <label for="jh">金华基地</label>
-                </li>
-                <li class="zz_li">
-                    <input type="checkbox" id="nb"/>
-                    <label for="nb">宁波基地</label>
-                </li>
-                <li class="zz_li">
-                    <input type="checkbox" id="jx"/>
-                    <label for="jx">嘉兴基地</label>
-                </li>
-            </ul>
+        <div class="tc_ul_div" id="business_base">
         </div>
         
         <div class="bottom2">
@@ -910,102 +764,17 @@ input,select{ margin:0; padding:0; outline:none;}
             <span class="bottom_sp2">确定</span>
         </div>
     </div>
+    </form>
 </div>
 
 <div class="tc" id="tc_kq">
+	<form method='post' id="form_data_attendance_dept" name="form_data_attendance_dept" enctype="multipart/form-data">
+	<input type="hidden" name="attendance_dept_upid" id="attendance_dept_upid">
 	<div class="tc_div">
     	<div class="tc_title">
         	<span class="js_sp1">考勤管辖部门</span>
         </div>
-        <div class="tc_ul_div">
-            <ul class="zz_ul">
-                <li class="zz_li">
-                    <img src="__PUBLIC__/img/xl.png"/>
-                    <span>集团总部</span>
-                    <ul class="zz_ul">
-                        <li class="zz_li1"> 
-                            <input type="checkbox" id="gsld"/>
-                        	<label for="gsld">公司领导</label>
-                        </li>
-                        <li class="zz_li1">
-                            <input type="checkbox" id="gjb"/>
-                        	<label for="gjb">总经办</label>
-                        </li>
-                        <li class="zz_li1"> 
-                            <input type="checkbox" id="cwzx"/>
-                        	<label for="cwzx">财务中心</label>
-                        </li>
-                        <li class="zz_li1">
-                            <input type="checkbox" id="sjzx"/>
-                        	<label for="sjzx">大数据中心</label>
-                        </li>
-                    </ul>
-                </li>
-                <li class="zz_li">
-                    <img src="__PUBLIC__/img/xl.png"/>
-                    <span>杭州基地</span>
-                    <ul class="zz_ul">
-                        <li class="zz_li1"> 
-                            <input type="checkbox" id="jdld"/>
-                        	<label for="jdld">基地领导</label>
-                        </li>
-                        <li class="zz_li1">
-                            <img src="__PUBLIC__/img/xl.png"/>
-                    		<span>仓配中心</span>
-                            <ul>
-                            	<li class="zz_li1"> 
-                                    <input type="checkbox" id="rkz"/>
-                                    <label for="rkz">入库组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="ncz"/>
-                                    <label for="ncz">内仓组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="djz"/>
-                                    <label for="djz">单据组</label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="zz_li1">
-                            <img src="__PUBLIC__/img/xl.png"/>
-                    		<span>运营中心</span>
-                            <ul>
-                            	<li class="zz_li1"> 
-                                    <input type="checkbox" id="rkz1"/>
-                                    <label for="rkz1">入库组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="ncz1"/>
-                                    <label for="ncz1">内仓组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="djz1"/>
-                                    <label for="djz1">单据组</label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="zz_li1">
-                            <img src="__PUBLIC__/img/xl.png"/>
-                    		<span>行政督导部</span>
-                            <ul>
-                            	<li class="zz_li1"> 
-                                    <input type="checkbox" id="rkz2"/>
-                                    <label for="rkz2">入库组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="ncz2"/>
-                                    <label for="ncz2">内仓组</label>
-                                </li>
-                                <li class="zz_li1"> 
-                                    <input type="checkbox" id="djz2"/>
-                                    <label for="djz2">单据组</label>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+        <div class="tc_ul_div" id="attendance_dept">
         </div>
         
         <div class="bottom2">
@@ -1013,6 +782,7 @@ input,select{ margin:0; padding:0; outline:none;}
             <span class="bottom_sp2">确定</span>
         </div>
     </div>
+    </form>
 </div>
 <script type="text/javascript">
 $(function() {

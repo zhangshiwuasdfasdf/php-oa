@@ -500,25 +500,110 @@ function admin_jurisdiction(upid){
 		$("#tc_xz").hide();	
 	})
 }
-$("#a_yw").click(function(){
+function business_jurisdiction(upid){
+	$("#business_jurisdiction_upid").val(upid);
+	$.ajax({
+		data:{upid:upid},
+		type:'post',
+		url:"{:U('get_business_jurisdiction_html')}",
+		success:function(data){
+			$("#business_jurisdiction").html(data);
+			$(".tc_ul_div img").each(function(){
+				$(this).toggle(function(){
+					$(this).parent('li').children('ul').slideDown()
+				},function(){
+					$(this).parent('li').children('ul').slideUp()
+				})
+				
+				$("[name='dept[]']").click(function(){
+					if(this.checked){                                     
+						$(this).parent().find("[name='dept[]']:checkbox").prop("checked",true);  
+					}else{
+						$(this).parent().find("[name='dept[]']:checkbox").prop("checked",false); 
+					}	
+				});
+			})
+			//alert(JSON.stringify(data));
+		}
+	})
 	$("#tc_yw").show();
-	$(".bottom_sp1,.bottom_sp2").click(function(){
+	$(".bottom_sp2").click(function(){
+		window.onbeforeunload = null;
+		if (check_form("form_data_business_jurisdiction")) {
+			sendForm("form_data_business_jurisdiction", "{:U('distribution_business_jurisdiction')}");
+		}
+	})
+	$(".bottom_sp1").click(function(){
 		$("#tc_yw").hide();	
 	})
-})
-$("#a_jd").click(function(){
+}
+function business_base(upid){
+	$("#business_base_upid").val(upid);
+	$.ajax({
+		data:{upid:upid},
+		type:'post',
+		url:"{:U('get_business_base_html')}",
+		success:function(data){
+			$("#business_base").html(data);
+			$(".tc_ul_div img").each(function(){
+				$(this).toggle(function(){
+					$(this).parent('li').children('ul').slideDown()
+				},function(){
+					$(this).parent('li').children('ul').slideUp()
+				})
+				
+			})
+			//alert(JSON.stringify(data));
+		}
+	})
 	$("#tc_jd").show();
-	$(".bottom_sp1,.bottom_sp2").click(function(){
+	$(".bottom_sp2").click(function(){
+		window.onbeforeunload = null;
+		if (check_form("form_data_business_base")) {
+			sendForm("form_data_business_base", "{:U('distribution_business_base')}");
+		}
+	})
+	$(".bottom_sp1").click(function(){
 		$("#tc_jd").hide();	
 	})
-})
-
-$("#a_kq").click(function(){
-	$("#tc_kq").show();
-	$(".bottom_sp1,.bottom_sp2").click(function(){
-		$("#tc_kq").hide();	
+}
+function attendance_dept(upid){
+	$("#attendance_dept_upid").val(upid);
+	$.ajax({
+		data:{upid:upid},
+		type:'post',
+		url:"{:U('get_attendance_dept_html')}",
+		success:function(data){
+			$("#attendance_dept").html(data);
+			$(".tc_ul_div img").each(function(){
+				$(this).toggle(function(){
+					$(this).parent('li').children('ul').slideDown()
+				},function(){
+					$(this).parent('li').children('ul').slideUp()
+				})
+				
+				$("[name='dept[]']").click(function(){
+					if(this.checked){                                     
+						$(this).parent().find("[name='dept[]']:checkbox").prop("checked",true);  
+					}else{
+						$(this).parent().find("[name='dept[]']:checkbox").prop("checked",false); 
+					}	
+				});
+			})
+		}
 	})
-})
+	
+	$("#tc_kq").show();
+	$(".bottom_sp2").click(function(){
+		window.onbeforeunload = null;
+		if (check_form("form_data_attendance_dept")) {
+			sendForm("form_data_attendance_dept", "{:U('distribution_attendance_dept')}");
+		}
+	})
+	$(".bottom_sp1").click(function(){
+		$("#tc_kq").hide();
+	})
+}
 function distribution_position(position_id){
 	$("#position_id").val(position_id);
 	$.ajax({
@@ -756,7 +841,8 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 					$.each(data.data.list_user, function(k, v){
 						user_temp += '<li class="content_li">';
 						user_temp += '<span class="span2_0"><input name="box_user[]" class="box_user" type="checkbox" value="'+v.id+'"/></span>';
-						user_temp += '<span class="span2">'+v.name+'</span>';
+						var url = "{:U('profile/user',array('id'=>'"+v.id+"'))}";
+						user_temp += '<span class="span2"><a class="content_a" href="'+url+'">'+v.name+'</a></span>';
 						user_temp += '<span class="span2">'+v.dept_name+'</span>';
 						user_temp += '<span class="span2">'+v.position_name+'</span>';
 						user_temp += '<span class="span2">'+v.major+'</span>';
@@ -765,9 +851,9 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 						user_temp += '<span class="span2"><a class="content_a" id="a_ygbj" onclick="edit_user(\''+v.id+'\',\''+v.name+'\',\''+v.dept_id+'\',\''+v.position_id+'\',\''+v.is_del+'\',\''+v.position_sequence+'\')">编辑</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_js" onclick="distribution_user_role(\''+v.id+'\')">角色分配</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_xz" onclick="admin_jurisdiction(\''+v.upid+'\')">行政关系范围</a></span>';
-						user_temp += '<span class="span2"><a class="content_a" id="a_yw">业务管辖部门</a></span>';
-						user_temp += '<span class="span2"><a class="content_a" id="a_jd">业务管辖基地</a></span>';
-						user_temp += '<span class="span2"><a class="content_a" id="a_kq">考勤管辖部门</a></span>';
+						user_temp += '<span class="span2"><a class="content_a" id="a_yw" onclick="business_jurisdiction(\''+v.upid+'\')">业务管辖部门</a></span>';
+						user_temp += '<span class="span2"><a class="content_a" id="a_jd" onclick="business_base(\''+v.upid+'\')">业务管辖基地</a></span>';
+						user_temp += '<span class="span2"><a class="content_a" id="a_kq" onclick="attendance_dept(\''+v.upid+'\')">考勤管辖部门</a></span>';
 						user_temp += '</li>';
 					});
 					$('.user_content').html(user_temp);

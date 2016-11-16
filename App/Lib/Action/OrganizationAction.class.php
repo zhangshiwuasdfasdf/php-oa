@@ -13,7 +13,7 @@
 
 class OrganizationAction extends CommonAction {
 
-	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read','get_all_position'=>'read','get_edit_user_html'=>'read','get_edit_dept_html'=>'read','change_dept_html'=>'read','change_position_html'=>'read','user_edit'=>'read','user_dept_position_set'=>'read','search_user'=>'read','r_dept_position_add'=>'read','r_dept_position_edit'=>'read','delete'=>'read','edit_is_use'=>'read','dept_add'=>'read','dept_edit'=>'read','get_role_groupby_company'=>'read','get_user_role_html'=>'read','get_admin_jurisdiction_html'=>'read','distribution_position_to_role'=>'read','distribution_admin_jurisdiction'=>'read','validate'=>'read'));
+	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'read', 'winpop4' => 'read','changeContent'=>'read','getDept'=>'read','get_all_position'=>'read','get_edit_user_html'=>'read','get_edit_dept_html'=>'read','change_dept_html'=>'read','change_position_html'=>'read','user_edit'=>'read','user_dept_position_set'=>'read','search_user'=>'read','r_dept_position_add'=>'read','r_dept_position_edit'=>'read','delete'=>'read','edit_is_use'=>'read','dept_add'=>'read','dept_edit'=>'read','get_role_groupby_company'=>'read','get_user_role_html'=>'read','get_admin_jurisdiction_html'=>'read','get_business_jurisdiction_html'=>'read','get_business_base_html'=>'read','get_attendance_dept_html'=>'read','distribution_position_to_role'=>'read','distribution_admin_jurisdiction'=>'read','distribution_business_jurisdiction'=>'read','distribution_attendance_dept'=>'read','validate'=>'read'));
 
 	public function index(){
 		
@@ -35,7 +35,7 @@ class OrganizationAction extends CommonAction {
 		}
 		$this->_list($model, $where,'',false,'list','page','p','_getRootDept');
 		
-		$list = $model ->where(array('is_del'=>0)) -> order('sort asc') -> getField('id,pid,name');
+		$list = $model ->where(array('is_del'=>0,'is_use'=>'1')) -> order('sort asc') -> getField('id,pid,name');
 		$tree = list_to_tree($list);
 		$html = popup_menu_organization($tree);
 		$this -> assign('dept_list', $html);
@@ -584,8 +584,30 @@ class OrganizationAction extends CommonAction {
 		}
 		$tree = list_to_tree(array_merge($list,$list2));
 		$html = popup_menu_dept_position_checkbox($tree,0,100,$child_depts,$child_positions);
-// 		$this->ajaxReturn($html,1,0);
-		
+		$this->ajaxReturn($html);
+	}
+	function get_business_jurisdiction_html(){
+		$upid = $_POST['upid'];
+		$child_depts = M('RUserPositionDept')->where(array('upid'=>$upid))->getField('dept_id',true);
+		$list = M('Dept')->field('id,pid,name') ->where(array('is_del'=>0)) -> order('sort asc') -> select();
+		$tree = list_to_tree($list);
+		$html = popup_menu_dept_position_checkbox($tree,0,100,$child_depts);
+		$this->ajaxReturn($html);
+	}
+	function get_business_base_html(){
+		$upid = $_POST['upid'];
+		$child_depts = M('RUserPositionBase')->where(array('upid'=>$upid))->getField('dept_id',true);
+		$list = M('Dept')->field('id,pid,name') ->where(array('is_del'=>'0','pid'=>'0')) -> order('sort asc') -> select();
+		$tree = list_to_tree($list);
+		$html = popup_menu_dept_position_checkbox($tree,0,100,$child_depts);
+		$this->ajaxReturn($html);
+	}
+	function get_attendance_dept_html(){
+		$upid = $_POST['upid'];
+		$child_depts = M('RUserPositionAttendanceDept')->where(array('upid'=>$upid))->getField('dept_id',true);
+		$list = M('Dept')->field('id,pid,name') ->where(array('is_del'=>0)) -> order('sort asc') -> select();
+		$tree = list_to_tree($list);
+		$html = popup_menu_dept_position_checkbox($tree,0,100,$child_depts);
 		$this->ajaxReturn($html);
 	}
 	function distribution_position_to_role(){
@@ -647,6 +669,57 @@ class OrganizationAction extends CommonAction {
 				$find = M('RUserPositionDeptPosition')->where(array('upid'=>$upid,'position_id'=>$v,'_string'=>'dept_id is null'))->find();
 				if(!$find){
 					$res = M('RUserPositionDeptPosition')->add(array('upid'=>$upid,'position_id'=>$v));
+					if(!$res){
+						$this->error('分配失败');
+					}
+				}
+			}
+		}
+		$this->success('分配成功');
+	}
+	function distribution_business_jurisdiction(){
+		$upid = $_POST['business_jurisdiction_upid'];
+		$dept_id = $_POST['dept']?$_POST['dept']:array('');
+		M('RUserPositionDept')->where(array('upid'=>$upid,'dept_id'=>array('not in',$dept_id)))->delete();
+		foreach ($dept_id as $k=>$v){
+			if($v != ''){
+				$find = M('RUserPositionDept')->where(array('upid'=>$upid,'dept_id'=>$v))->find();
+				if(!$find){
+					$res = M('RUserPositionDept')->add(array('upid'=>$upid,'dept_id'=>$v));
+					if(!$res){
+						$this->error('分配失败');
+					}
+				}
+			}
+		}
+		$this->success('分配成功');
+	}
+	function distribution_business_base(){
+		$upid = $_POST['business_base_upid'];
+		$dept_id = $_POST['dept']?$_POST['dept']:array('');
+		M('RUserPositionBase')->where(array('upid'=>$upid,'dept_id'=>array('not in',$dept_id)))->delete();
+		foreach ($dept_id as $k=>$v){
+			if($v != ''){
+				$find = M('RUserPositionBase')->where(array('upid'=>$upid,'dept_id'=>$v))->find();
+				if(!$find){
+					$res = M('RUserPositionBase')->add(array('upid'=>$upid,'dept_id'=>$v));
+					if(!$res){
+						$this->error('分配失败');
+					}
+				}
+			}
+		}
+		$this->success('分配成功');
+	}
+	function distribution_attendance_dept(){
+		$upid = $_POST['attendance_dept_upid'];
+		$dept_id = $_POST['dept']?$_POST['dept']:array('');
+		M('RUserPositionAttendanceDept')->where(array('upid'=>$upid,'dept_id'=>array('not in',$dept_id)))->delete();
+		foreach ($dept_id as $k=>$v){
+			if($v != ''){
+				$find = M('RUserPositionAttendanceDept')->where(array('upid'=>$upid,'dept_id'=>$v))->find();
+				if(!$find){
+					$res = M('RUserPositionAttendanceDept')->add(array('upid'=>$upid,'dept_id'=>$v));
 					if(!$res){
 						$this->error('分配失败');
 					}
