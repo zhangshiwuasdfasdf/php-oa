@@ -1148,6 +1148,7 @@ function new_tree_menu($tree, $level = 0,$deep=100) {
 				$id = $val["id"];
 				$pid = $val["pid"];
 				$menu_no = $val["menu_no"];
+				$sort = $val['sort'];
 				if (empty($val["id"])) {
 					$id = $val["menu_name"];
 				}
@@ -1159,7 +1160,7 @@ function new_tree_menu($tree, $level = 0,$deep=100) {
 					$html = $html . "<span class=\"li_sp1\">{$val['menu_addr']}</span>\r\n";
 					$html = $html . "<span class=\"li_sp2\">$status</span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
-					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\">修改</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\" msg=\"$sort\">修改</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\">关联角色</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\">关联角色复制</a></span>\r\n";
@@ -1172,12 +1173,39 @@ function new_tree_menu($tree, $level = 0,$deep=100) {
 					$html = $html . "<span class=\"li_sp1\">{$val['menu_addr']}</span>\r\n";
 					$html = $html . "<span class=\"li_sp2\">$status</span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
-					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\">修改</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\" msg=\"$sort\">修改</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\">关联角色</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\">关联角色复制</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp$level isParent\"><a class=\"content_a a1_4\">关联数据控制策略</a></span>\r\n";
 					$html = $html . "</li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+//分配菜单页面
+function assi_tree_menu($tree, $level = 0,$deep=100,$other_nodes="",$info) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"zz_ul$level\" $other_nodes>\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["menu_name"])) {
+				$title = $val["menu_name"];
+				$id = $val["id"];
+				$chd = in_array($id, $info['menu_id']) ? "checked" : "";   
+				if (isset($val['_child'])) {
+					$other_nodes = "style=\"display:none;\"";
+					$html = $html . "<li class=\"zz_li\">\r\n<img src=\"Public/img/new_versions/add.png\"/><input $chd name=\"box\" type=\"checkbox\"/><input type=\"hidden\" name=\"sid\" value=\"$id\"/><label>$title</label>\r\n";
+					$html = $html . assi_tree_menu($val['_child'], $level,$deep,$other_nodes,$info);
+					$html = $html . "</li>\r\n";
+				} else {
+					$other_nodes="";
+					$html = $html . "<li class=\"zz_li\">\r\n<img src=\"Public/img/new_versions/add.png\"/><input $chd name=\"box\" type=\"checkbox\"/><input type=\"hidden\" name=\"sid\" value=\"$id\"/><label>$title</label>\r\n</li>\r\n";
 				}
 			}
 		}

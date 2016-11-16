@@ -15,7 +15,7 @@ class MaintainAction extends CommonAction {
 			$this -> _search_filter($map);
 		}
 		$name = isset($_POST['li_menu_name']) ? " AND `menu_name` LIKE '%".$_POST['li_menu_name']."%' AND `pid` = 0 " : "" ;
-		$sql = "SELECT * FROM `smeoa_menu_new` WHERE ( `is_del` = '0' $name ) ORDER BY `id` asc ";
+		$sql = "SELECT * FROM `smeoa_menu_new` WHERE ( `is_del` = '0' $name ) ORDER BY `sort` asc ";
 		$list = M()->query($sql);
 		$this -> assign('menu',new_tree_menu(list_to_tree($list),4));
 		$this -> assign('menuList',popup_menu_option(list_to_tree($list)));
@@ -31,6 +31,7 @@ class MaintainAction extends CommonAction {
 			$data['menu_no'] = empty(I('post.menu_no')) ? "" : I('post.menu_no');
 			$data['menu_name'] = I('post.name');
 			$data['menu_addr'] = I('post.addr');
+			$data['sort'] = I('post.sort');
 			$data['menu_status'] = empty($_POST['menu_status']) ? "1" : I('post.menu_status');
 			$data['create_time'] =  time();
 			/*保存当前数据对象 */
@@ -52,6 +53,7 @@ class MaintainAction extends CommonAction {
 			$data['menu_no'] = empty(I('post.menu_no')) ? "" : I('post.menu_no');
 			$data['menu_name'] = I('post.name');
 			$data['menu_addr'] = I('post.addr');
+			$data['sort'] = I('post.sort');
 			$data['create_time'] =  time();
 			/*保存当前数据对象 */
 			$list = $model -> save($data);
