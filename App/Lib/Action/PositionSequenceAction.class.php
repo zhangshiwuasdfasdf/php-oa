@@ -18,7 +18,7 @@ class PositionSequenceAction extends CommonAction {
 		}
 		$model = D('PositionSequence');
 		if (!empty($model)) {
-			$info = $this -> _list($model, $map);
+			$info = $this -> _list($model, $map,'sequence_degree');
 		}
 		$this->display();
 	}

@@ -24,12 +24,12 @@ input{ margin:0; padding:0; outline:none;}
 .content_sp3 span{ display:block; float:left;}
 
 .content_t{overflow:auto; float:left; margin-left:1%; width:83%;}
-.content_ul_w{ overflow:auto; height:270px;}
+.content_ul_w{ overflow:auto; min-height:270px; height:100%;}
 .content_li{border-bottom:1px solid #eaedf1; background:#fff; overflow:hidden; height:28px;}
 .content_li span{ display:block; float:left; white-space:nowrap;color:#323232; font-size:12px; height:28px;line-height:28px; text-align:center;}
-.span1_0{ width:30px; font-weight:bold;}
+.span1_0{ width:50px; font-weight:bold;}
 .span1{ font-weight:bold; width:230px;}
-.span2_0{ width:30px;}
+.span2_0{ width:50px;}
 .span2{ width:230px;}
 .content_a{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
 .content_bj{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
@@ -124,7 +124,7 @@ input{ margin:0; padding:0; outline:none;}
             <ul class="content_ul">
                 <li class="content_li">
                     <span class="span1_0"></span>
-                    <span class="span1">菜单名称</span>
+                    <span class="span1" style="text-align:left">菜单名称</span>
                     <span class="span1">权限编码</span>
                     <span class="span1">权限名称</span>
                     <span class="span1">权限类型</span>
@@ -141,7 +141,7 @@ input{ margin:0; padding:0; outline:none;}
                 <foreach name="list" item="vo">
                 <li class="content_li">
                     <span class="span2_0"><input name="id[]" type="checkbox" value="{$vo.id}"/></span>
-                    <span class="span2">{$vo.menu_name}</span>
+                    <span class="span2" style="text-align:left">{$vo.menu_name}</span>
                     <span class="span2">{$vo.pri_no}</span>
                     <span class="span2">{$vo.pri_name}</span>
                     <span class="span2">{$vo.pri_act}</span>
