@@ -3789,4 +3789,7 @@ function getRootDept($dept_id){
 	$dept = M('Dept')->where(array('id'=>$id))->find();
 	return $dept;
 }
+function showPriName($id){
+	return M('Privilege')->where(array('menu_new_id'=>$id))->getField('pri_name');
+}
 ?>

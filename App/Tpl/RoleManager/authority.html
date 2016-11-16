@@ -6,62 +6,30 @@
         <span class="content_sp1"></span>
         <span class="content_sp2">权限设置</span> 
     </div>
-    <div class="qx_div">
-         <div class="qx_div_l">
-            <span class="qx_sp1">每月考勤表</span>
-            <select class="qx_select">
-                <option>1_全局范围</option>
-                <option>2_行政管辖范围</option>
-                <option>3_仅自己</option>
-                <option>4_业务管辖公司</option>
-                <option>5_业务管辖部门</option>
-                <option>6_考勤管辖部门</option>
-            </select>
-            <input class="qx_inp" id="kq_inp" type="checkbox"/>
-         </div>
-         <ul class="qx_ul">
-        	<li>
-            	<input type="checkbox" id="kq1" name="check_kq"/>
-                <label for="kq1">每月考勤删除</label>
-            </li>
-            <li>
-            	<input type="checkbox" id="kq2" name="check_kq"/>
-                <label for="kq2">每月考勤删除</label>
-            </li>
-            <li>
-            	<input type="checkbox" id="kq3" name="check_kq"/>
-                <label for="kq3">每月考勤删除</label>
-            </li>
-         </ul>
-    </div>
-    <div class="qx_div">
-         <div class="qx_div_l">
-            <span class="qx_sp1">员工请假申请</span>
-            <select class="qx_select">
-                <option>1_全局范围</option>
-                <option>2_行政管辖范围</option>
-                <option>3_仅自己</option>
-                <option>4_业务管辖公司</option>
-                <option>5_业务管辖部门</option>
-                <option>6_考勤管辖部门</option>
-            </select>
-            <input class="qx_inp" id="qj_inp" type="checkbox"/>
-         </div>
-         <ul class="qx_ul">
-        	<li>
-            	<input type="checkbox" id="qj1" name="check_qj"/>
-                <label for="qj1">请假申请删除</label>
-            </li>
-            <li>
-            	<input type="checkbox" id="qj2" name="check_qj"/>
-                <label for="qj2">请假申请删除</label>
-            </li>
-            <li>
-            	<input type="checkbox" id="qj3" name="check_qj"/>
-                <label for="qj3">请假申请删除</label>
-            </li>
-         </ul>
-    </div>
+    <volist name="menuList" id="vo"> 
+	    <div class="qx_div">
+	         <div class="qx_div_l">
+	            <span class="qx_sp1">{$key|showPriName}</span>
+	            <select class="qx_select">
+	                <option>1_全局范围</option>
+	                <option>2_行政管辖范围</option>
+	                <option>3_仅自己</option>
+	                <option>4_业务管辖公司</option>
+	                <option>5_业务管辖部门</option>
+	                <option>6_考勤管辖部门</option>
+	            </select>
+	            <input class="qx_inp kq_inp" type="checkbox"/>
+	         </div>
+	         <ul class="qx_ul">
+	        	 <foreach name="vo" item="vv" key="k">
+		        	<li>
+		            	<input type="checkbox" id="kq1" name="check_kq" {$vv.check}/>
+		                <label for="kq1">{$key|showPriName}{$vv.pri_act}</label>
+		            </li>
+	            </foreach>
+	         </ul>
+	    </div>
+    </volist>
 </div>
 <script type="text/javascript" src="__PUBLIC__/js/new_versions/qxgl_sz.js"></script>
 <script type="text/javascript">

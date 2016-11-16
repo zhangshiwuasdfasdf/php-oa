@@ -102,8 +102,9 @@ class MaintainAction extends CommonAction {
 		$pid = I('post.pid');
 		$name = I('post.name');
 		if(!empty($name)){
-			$where['pid '] = $pid;
+			$where['pid'] = $pid;
 			$where['menu_name'] = $name;
+			$where['is_del'] = '0';
 			if($id){//如果是修改
 				$where['id'] = array('neq',$id);
 			}
