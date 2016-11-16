@@ -154,7 +154,30 @@ $("#a_bmtj").click(function(){
 
 //添加
 $("#a_gwtj").click(function(){
+	var function_name = $(".active").attr('onclick');
+	if(function_name){
+		var arr = function_name.split("'");
+		var dept_id = arr[1];
+	}
 	$.ajax({
+		type:'post',
+		url:"{:U('get_edit_user_html')}",
+		data:{dept_id:dept_id},
+		success:function(result){
+			//alert(JSON.stringify(result));
+			$("#position_company").html(result.data.company);
+			$("#position_dept").html(result.data.dept);
+			//$("#user_position").html(result.data.position);
+			//$("#user_major").html(result.data.major);
+			//$("#user_position_sequence_id").html(result.data.sequence);
+			//validate3();
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
+	
+	/* $.ajax({
 		type:'post',
 		url:"{:U('getDept')}",
 		async:false,
@@ -167,7 +190,7 @@ $("#a_gwtj").click(function(){
 			})
 			$("#position_company").html(html);
 		}
-	});
+	}); */
 	$.ajax({
 		type:'post',
 		url:"{:U('get_all_position')}",
