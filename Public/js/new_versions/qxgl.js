@@ -24,18 +24,28 @@ function wli(){
 }
 wli();
 
-$(".a_glbj").click(function(){
+$(".a_glbj,.a_copy").click(function(){
+	if($(this).text() == "复制"){
+		$("#tc_glbj select[name='company']").prop("disabled",true);
+	}else{
+		$("#tc_glbj .bottom_sp4").attr('msg',1);
+		var sort = $(this).attr("msg").trim();
+	}
 	var obj = $(this).parent().parent();
 	var id = obj.find("span input:eq(1)").val().trim();
 	var company = obj.find("span input:eq(2)").val().trim();
 	var name = obj.find("span:eq(2)").text().trim();
 	var status = obj.find("span:eq(3)").attr("msg").trim();
+	
 	$("#tc_glbj input[name='id']").val(id);
 	$("#tc_glbj select[name='company']").find("option[value='"+company+"']").prop("selected",true);
 	$("#tc_glbj input[name='role_name']").val(name);
 	$("#tc_glbj select[name='status']").find("option[value='"+status+"']").prop("selected",true);
+	$("#tc_glbj input[name='sort']").val(sort);
 	$("#tc_glbj").show();
 	$(".bottom_sp3").click(function(){
+		$("#tc_glbj select[name='company']").prop("disabled",false);
+		$("#tc_glbj .bottom_sp4").attr('msg',"");
 		$("#tc_glbj").hide();	
 	})	
 })

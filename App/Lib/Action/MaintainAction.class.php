@@ -1,6 +1,6 @@
 <?php
 class MaintainAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'avliname' => 'read' ,'export_info' => 'read'));
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -96,7 +96,26 @@ class MaintainAction extends CommonAction {
 		$this -> assign('data',$data);
 		$this -> display();
 	}
-	
+	//验证同级菜单名称是否存在
+	public function avliName(){
+		$id = I('post.id');
+		$pid = I('post.pid');
+		$name = I('post.name');
+		if(!empty($name)){
+			$where['pid '] = $pid;
+			$where['menu_name'] = $name;
+			if($id){//如果是修改
+				$where['id'] = array('neq',$id);
+			}
+			$flag = M('MenuNew') -> where($where) -> find();
+			if(!empty($flag)){
+				$this -> ajaxReturn($flag,'菜单名称已经存在!',0);
+			}else{
+				$this -> ajaxReturn($where,'菜单名称不存在!',1);
+			}
+			
+		}
+	}
 	function del(){
 		$this -> _del();
 	}
