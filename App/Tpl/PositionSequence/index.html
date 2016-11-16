@@ -22,7 +22,7 @@ input,select{ margin:0; padding:0; outline:none;}
 .content_sp3 span{ display:block; float:left;}
 
 .content_t{overflow:auto; float:left; margin-left:1%; width:83%;}
-.content_ul_w{ overflow:auto; height:270px;}
+.content_ul_w{ overflow:auto; min-height:270px; height:100%;}
 .content_li{border-bottom:1px solid #eaedf1; background:#fff; overflow:hidden; height:28px;}
 .content_li span{ display:block; float:left; white-space:nowrap;color:#323232; font-size:12px; height:28px;line-height:28px; text-align:center;}
 .span1_0{ width:30px; font-weight:bold;}
@@ -95,7 +95,7 @@ input,select{ margin:0; padding:0; outline:none;}
                     
                     </span>
                     <span class="span1">序列代码</span>
-                    <span class="span1">序列名称</span>
+                    <span class="span1" style="text-align:left">序列名称</span>
                     <span class="span1">级别</span>
                     <span class="span1">操作</span>
                 </li>
@@ -109,7 +109,7 @@ input,select{ margin:0; padding:0; outline:none;}
                 <li class="content_li">
                     <span class="span2_0"><input name="id[]" type="checkbox" value="{$vo.id}"/></span>
                     <span class="span2">{$vo.sequence_number}</span>
-                    <span class="span2">{$vo.sequence_name}</span>
+                    <span class="span2" style="text-align:left">{$vo.sequence_name}</span>
                     <span class="span2">{$vo.sequence_degree}</span>
                     <span class="span2">
                     <a class="content_a" id="a_glbj" onclick="show('{$vo.id}','{$vo.sequence_number}','{$vo.sequence_name}','{$vo.sequence_degree}');"><input id="bj_{$vo.id}" type="hidden" value="{$vo.id}">编辑</a>

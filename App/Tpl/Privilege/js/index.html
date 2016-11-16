@@ -93,7 +93,6 @@ $("#copy_menu").change(function(){
 		url:"{:U('get_pri_act')}",
 		data:{menu_new_id:menu_new_id},
 		success:function(data){
-			//alert(data);
 			if(data.status == '1'){
 					var html='';
 					html += "<option value=''>请选择</option>";
