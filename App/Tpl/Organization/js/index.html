@@ -723,10 +723,13 @@ function end_use_dept(dept_id){
 	});
 }
 function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
+	$(".zz_li1").removeClass("active");
+	$(".zz_li>span").removeClass("active");
+	if(id){
+		$("[onclick='show_list('"+id+"')']").addClass("active");
+	}
 	$("#dept_id").val(id);
 	$("#show_leader").val(show_leader);
-	//var type = $("input[name='radio']:checked").val();
-	//sendForm("form_data", "{:U('index')}");
 	$.ajax({
 		type:'post',
 		data:{dept_id:id,type:type,show_leader:show_leader,p:p,name_no:name_no,status:status,is_part_time_job:is_part_time_job},

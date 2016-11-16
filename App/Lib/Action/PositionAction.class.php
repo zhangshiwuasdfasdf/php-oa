@@ -50,13 +50,13 @@ class PositionAction extends CommonAction {
 		if (false === $model -> create()) {
 			$this -> error($model -> getError());
 		}
-		$last_code = M('Position')->where(array('code'=>array('like',date('ym').'%')))->order('code desc')->limit(1)->getField('code');
+		$last_code = M('Position')->where(array('code'=>array('like','P'.'%')))->order('code desc')->limit(1)->getField('code');
 		if($last_code){
-			$num = intval(substr($last_code,-4));
+			$num = intval(substr($last_code,1));
 			$new_num = formatto4w($num+1);
-			$model -> code = date('ym').$new_num;
+			$model -> code = 'P'.$new_num;
 		}else{
-			$model -> code = date('ym').formatto4w(1);
+			$model -> code = 'P'.formatto4w(1);
 		}
 		if(false !== $model -> id){
 			unset($model -> id);
