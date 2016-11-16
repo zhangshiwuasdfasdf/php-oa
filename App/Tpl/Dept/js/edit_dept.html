@@ -1,6 +1,7 @@
 <script type="text/javascript">
 $("div[class='ma_ta']").hide()
 $("div[class='ma_ta']").eq(0).show()
+validate();
 $(".nav2 a").click(function(){
 	var n=$(".nav2 a").index(this)
 	$(".nav2 a").removeClass("b")
@@ -30,5 +31,67 @@ function change_dept(company_id){
 			$("#pid").html(data);
 		}
 	})
+}
+function validate(){
+    $.formValidator.initConfig({formID:"form_data_dept_edit",debug:false,submitOnce:true,
+        onError:function(msg,obj,errorlist){
+       		alert(msg);
+    	},
+    	submitAfterAjaxPrompt : "正在进行校验，请稍候"
+	});
+    var id = $("#id").val();
+    var pid = $("#pid").val();
+    console.log(pid);
+    $("#name").formValidator({
+        tipID:"nameTip",
+        empty:false,
+        onShow:" ",
+        onFocus:" ",
+        onCorrect:"<span style='color:green;'>√</span>"
+    }).inputValidator({
+        min:1,max:255,
+        onErrorMin:"部门名称不能为空",
+        onErrorMax:"部门名称超过最大长度"
+    });
+    $("#name").ajaxValidator({
+    	dataType : "json",
+        type : "GET",
+		isValid : true,
+        async : false,
+        data:{id:id,pid:$("#pid").val()},
+        url : "{:U('validate')}",
+        success : function(data){
+            if( data.status == 1 ) return false;
+            if( data.status == 0 ) return true;
+            return false;
+        },
+        error: function(jqXHR, textStatus, errorThrown){alert("服务器没有返回数据，可能服务器忙，请重试"+errorThrown);},
+        onError : "已存在该部门名称",
+        onWait : "正在对部门名称进行合法性校验，请稍候"
+    });
+    
+    /* $("#pid").formValidator({
+        tipID:"nameTip",
+        empty:false,
+        onShow:" ",
+        onFocus:" ",
+        onCorrect:"<span style='color:green;'>√</span>"
+    });
+    $("#pid").ajaxValidator({
+    	dataType : "json",
+        type : "GET",
+		isValid : true,
+        async : false,
+        data:{id:id,name:$("#name").val(),'aa':'aa'},
+        url : "{:U('validate')}",
+        success : function(data){
+            if( data.status == 1 ) return false;
+            if( data.status == 0 ) return true;
+            return false;
+        },
+        error: function(jqXHR, textStatus, errorThrown){alert("服务器没有返回数据，可能服务器忙，请重试"+errorThrown);},
+        onError : "已存在该部门名称",
+        onWait : "正在对部门名称进行合法性校验，请稍候"
+    }); */
 }
 </script>

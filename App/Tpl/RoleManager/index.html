@@ -50,7 +50,7 @@
 	                    <span class="span2" msg="{$vo.status}"><eq name="vo.status" value="1">启用<else/>禁用</eq></span>
 	                    <span class="span2"><a class="content_a a_glbj">编辑</a></span>
 	                    <span class="span2"><a class="content_a a_cd">分配菜单</a></span>
-	                    <span class="span2"><a class="content_a" id="a_qx" href="qxgl_sz.html" target="_blank">分配权限</a></span>
+	                    <span class="span2"><a class="content_a" id="a_qx" href="{:U('authority','id='.$vo['id'])}" target="_blank">分配权限</a></span>
 	                    <span class="span2"><a class="content_a">复制</a></span>
 	                </li>
                 </volist>
@@ -65,9 +65,7 @@
                 <input id="all" type="checkbox"/>
                 <span>全选</span>
             </div>
-            
             <div class="b2">删除</div>
-            
             <div class="pagination b3">
 			{$page}
 			</div>
@@ -133,7 +131,11 @@
                         <option value="1">启用</option>
                         <option value="0">禁用</option>
                     </select>
-                </li> 
+                </li>
+                <li>
+                    <label>排序：</label>
+                    <input class="tc_inp" type="text" name="sort"/>
+                </li>
             </ul>
         </div>
         

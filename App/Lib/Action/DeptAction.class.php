@@ -13,7 +13,7 @@
 
 class DeptAction extends CommonAction {
 
-	protected $config = array('app_type' => 'master', 'action_auth' => array('index' => 'admin', 'winpop4' => 'read','get_company_candidate'=>'read','company_add'=>'read','dept_add'=>'read','edit_company'=>'read','edit_dept'=>'read','update_dept'=>'read','get_dept_by_company_id'=>'read','set_dept'=>'read','ajax_get_dept_info'=>'read','view'=>'read'));
+	protected $config = array('app_type' => 'master', 'action_auth' => array('index' => 'admin', 'winpop4' => 'read','get_company_candidate'=>'read','company_add'=>'read','dept_add'=>'read','edit_company'=>'read','edit_dept'=>'read','update_dept'=>'read','get_dept_by_company_id'=>'read','set_dept'=>'read','ajax_get_dept_info'=>'read','view'=>'read','validate'=>'read'));
 
 	public function index(){
 		
@@ -119,6 +119,7 @@ class DeptAction extends CommonAction {
 	public function company_add(){
 		$data['pid'] = 0;
 		$data['name'] = $_POST['company'];
+		$data['sort'] = $_POST['sort'];
 		$data['is_del'] = 0;
 		$data['is_use'] = 1;
 		$res = M('Dept')->add($data);
@@ -132,7 +133,10 @@ class DeptAction extends CommonAction {
 		if(!empty($_POST['belong_dept_id']) && !empty($_POST['dept_name'])){
 			$data['pid'] = $_POST['belong_dept_id'];
 			$data['name'] = $_POST['dept_name'];
-			$data['dept_no'] = $_POST['dept_no'];
+			
+			$last_dept_no = M('Dept')->where(array('dept_no'=>array('like','D%')))->order('dept_no desc')->limit(1)->getField('dept_no');
+			$data['dept_no'] = 'D'.formatto4w(intval(substr($last_dept_no, 1))+1);
+			$data['sort'] = $_POST['sort'];
 			$data['is_del'] = '0';
 			$data['is_use'] = '1';
 			$res = M('Dept')->add($data);
@@ -206,7 +210,7 @@ class DeptAction extends CommonAction {
 		if(!empty($_POST['pid'])){
 			$data['pid'] = $_POST['pid'];
 		}
-		$data['dept_no'] = $_POST['dept_no'];
+		$data['sort'] = $_POST['sort'];
 		$data['name'] = $_POST['name'];
 		$data['is_use'] = $_POST['is_use'];
 		$res = M('Dept')->where(array('id'=>$_POST['id']))->save($data);
@@ -257,6 +261,52 @@ class DeptAction extends CommonAction {
 		
 		$this->assign('dept_info',$dept_info);
 		$this->display();
+	}
+	public function validate($model=''){
+		
+		if($this->isAjax()){
+			if(!$this->_request('clientid','trim') || !$this->_request($this->_request('clientid','trim'),'trim')){
+				$this->ajaxReturn("","",3);
+			}
+			$where[$this->_request('clientid','trim')] = array('eq',$this->_request($this->_request('clientid','trim'),'trim'));
+			if($where['dept_name']){
+				$where['name'] = $where['dept_name'];
+				unset($where['dept_name']);
+				if($_REQUEST['belong_dept_id']){
+					$where['pid'] = $_REQUEST['belong_dept_id'];
+				}
+			}
+			if($where['belong_dept_id']){
+				$where['pid'] = $where['belong_dept_id'];
+				unset($where['belong_dept_id']);
+			}
+			if(!$where['name'] && $this->_request('name','trim')){
+				$where['name'] = $this->_request('name','trim');
+			}
+			if(!$where['pid'] && $this->_request('pid','trim')){
+				$where['pid'] = $this->_request('pid','trim');
+			}
+			//针对编辑的情况
+			if($this->_request('id','intval',0)){
+				$where[M('Position')->getpk()] = array('neq',$this->_request('id','intval',0));
+			}
+			
+			if($this->_request('clientid','trim')) {
+				$model = $model?$model:MODULE_NAME;
+				$open=fopen("C:\log.txt","a" );
+				fwrite($open,json_encode($_REQUEST)."\r\n");
+				fwrite($open,json_encode($where)."\r\n");
+				fclose($open);
+				
+				if (M($model)->where($where)->find()) {
+					$this->ajaxReturn("","",1);
+				} else {
+					$this->ajaxReturn("","",0);
+				}
+			}else{
+				$this->ajaxReturn("","",0);
+			}
+		}
 	}
 }
 ?>

@@ -10,11 +10,13 @@ function addRole(){
 	var company = $("#tc_gltj select[name='company']").find("option:selected").text().trim();
 	var role_name = $("#tc_gltj input[name='role_name']").val().trim();
 	var status = $("#tc_gltj select[name='status']").val().trim();
+	var sort = $("#tc_gltj select[name='sort']").val().trim();
 	if(company == ""){ui_error("请输入公司名称");return false;}
 	if(role_name == ""){ui_error("请输入角色名称");return false;}
 	if(status == ""){ui_error("请输入状态");return false;}
-	$.post("{:U('add')}",{"company_id":company_id,"company":company,"role_name":role_name,"status":status},function(data){
+	$.post("{:U('add')}",{"company_id":company_id,"company":company,"role_name":role_name,"status":status,"sort":sort},function(data){
 		if (data.status) {
+			$("#tc_gltj").hide();
 			ui_alert(data.info,function(){
 				location.reload();
 			});				
@@ -32,6 +34,7 @@ function save(){
 	if(status == ""){ui_error("请输入状态");return false;}
 	$.post("{:U('save')}",{"id":id,"company_id":company_id,"company":company,"role_name":role_name,"status":status},function(data){
 		if (data.status) {
+			$("#tc_glbj").hide();
 			ui_alert(data.info,function(){
 				location.reload();
 			});				
@@ -50,15 +53,42 @@ $(".a_cd").on("click",function (){
 		}
 	},'json');
 });
-
+//菜单展开
 $(".tc_ul_div").on("click","img",function(){
-	$(this).toggle(function(){
-		$(this).parent('li').children('ul').slideDown()
+	if($(this).parent('li').children('ul').is(":hidden")){
+		$(this).parent('li').children('ul').slideDown();
 		$(this).attr('src',"./Public/img/new_versions/ajj.png");
-	},function(){
-		$(this).parent('li').children('ul').slideUp()
+	}else{
+		$(this).parent('li').children('ul').slideUp();
 		$(this).attr('src','./Public/img/new_versions/add.png');
-	})
+	}
+});
+//删除
+$(".b2").on("click",function(){
+	var ids = "";
+	$(".content_ul input:checkbox[name='box']:checked").each(function(){
+		ids += $(this).next().val() + ",";
+	});
+	if(ids != ""){
+		ui_confirm('确定要删除吗?',function(){
+			window.open(fix_url("{:U('del')}?id=" + ids), "_self");
+		});
+	}
+});
+//分配菜单
+$(".bottom_sp2").on("click",function(){
+	var ids = "",rid;
+	$("#tc_cd input:checkbox[name='box']:checked").each(function(){
+		ids += $(this).next().val().trim() + ",";
+	});
+	rid = $(this).attr('rid').trim();
+	if(ids != ""){
+		$.post("{:U('assi_menu_save')}",{"ids":ids,"rid":rid},function(data){
+			$("#tc_cd").hide();	
+			ui_info(data.info);
+			location.reload();
+		},'json');
+	}
 });
 
 </script>

@@ -1148,6 +1148,7 @@ function new_tree_menu($tree, $level = 0,$deep=100) {
 				$id = $val["id"];
 				$pid = $val["pid"];
 				$menu_no = $val["menu_no"];
+				$sort = $val['sort'];
 				if (empty($val["id"])) {
 					$id = $val["menu_name"];
 				}
@@ -1159,7 +1160,7 @@ function new_tree_menu($tree, $level = 0,$deep=100) {
 					$html = $html . "<span class=\"li_sp1\">{$val['menu_addr']}</span>\r\n";
 					$html = $html . "<span class=\"li_sp2\">$status</span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
-					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\">修改</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\" msg=\"$sort\">修改</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\">关联角色</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\">关联角色复制</a></span>\r\n";
@@ -1172,12 +1173,39 @@ function new_tree_menu($tree, $level = 0,$deep=100) {
 					$html = $html . "<span class=\"li_sp1\">{$val['menu_addr']}</span>\r\n";
 					$html = $html . "<span class=\"li_sp2\">$status</span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
-					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\">修改</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\" msg=\"$sort\">修改</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\">关联角色</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\">关联角色复制</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp$level isParent\"><a class=\"content_a a1_4\">关联数据控制策略</a></span>\r\n";
 					$html = $html . "</li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+//分配菜单页面
+function assi_tree_menu($tree, $level = 0,$deep=100,$other_nodes="",$info) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"zz_ul$level\" $other_nodes>\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["menu_name"])) {
+				$title = $val["menu_name"];
+				$id = $val["id"];
+				$chd = in_array($id, $info['menu_id']) ? "checked" : "";   
+				if (isset($val['_child'])) {
+					$other_nodes = "style=\"display:none;\"";
+					$html = $html . "<li class=\"zz_li\">\r\n<img src=\"Public/img/new_versions/add.png\"/><input $chd name=\"box\" type=\"checkbox\"/><input type=\"hidden\" name=\"sid\" value=\"$id\"/><label>$title</label>\r\n";
+					$html = $html . assi_tree_menu($val['_child'], $level,$deep,$other_nodes,$info);
+					$html = $html . "</li>\r\n";
+				} else {
+					$other_nodes="";
+					$html = $html . "<li class=\"zz_li\">\r\n<img src=\"Public/img/new_versions/add.png\"/><input $chd name=\"box\" type=\"checkbox\"/><input type=\"hidden\" name=\"sid\" value=\"$id\"/><label>$title</label>\r\n</li>\r\n";
 				}
 			}
 		}
@@ -1298,6 +1326,55 @@ function popup_menu_organization_checkbox($tree, $level = 0,$deep=100,$position_
 				if (isset($val['_child'])) {
 					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"".__ROOT__."/Public/img/xl.png\"/><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label>\r\n";
 					$html = $html . popup_menu_organization_checkbox($val['_child'], $level,$deep,$position_id);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li class=\"zz_li1\"><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label></li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+function popup_menu_dept_position_checkbox($tree, $level = 0,$deep=100,$child_depts,$child_positions) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$i = $level>1?'1':'';
+		$html = "<ul class=\"zz_ul$i\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title = $val["name"];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				if(substr($id, 0,1) == 'p'){
+					//岗位
+					if(in_array(substr($id, 2), $child_positions)){
+						$is_checked = ' checked="checked"';
+					}else{
+						$is_checked = ' ';
+					}
+				}else{
+					//部门
+					if(in_array($id, $child_depts)){
+						$is_checked = ' checked="checked"';
+					}else{
+						$is_checked = ' ';
+					}
+				}
+// 				if(!empty($position_id)){
+// 					$res = M('RDeptPosition')->where(array('position_id'=>$position_id,'dept_id'=>$id))->find();
+// 					$is_checked = $res?' checked="checked"':'';
+// 				}else{
+// 					$is_checked = '';
+// 				}
+
+				if (isset($val['_child'])) {
+					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"".__ROOT__."/Public/img/xl.png\"/><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label>\r\n";
+					$html = $html . popup_menu_dept_position_checkbox($val['_child'], $level,$deep,$child_depts,$child_positions);
 					$html = $html . "</li>\r\n";
 				} else {
 					$html = $html . "<li class=\"zz_li1\"><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label></li>\r\n";

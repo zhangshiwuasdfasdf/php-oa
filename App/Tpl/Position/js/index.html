@@ -14,6 +14,13 @@
 	    }
 	    return this.click( toggle );
 	}
+	$('#all').click(function(){
+		if(this.checked){                                     
+			$("[name='id[]']:checkbox").prop("checked",true);  
+		}else{
+			$("[name='id[]']:checkbox").prop("checked",false);  
+		}	
+	});
 	function add() {
 		window.open("{:U('add')}", "_self");
 	}

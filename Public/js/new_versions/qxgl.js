@@ -35,22 +35,24 @@ $(".a_glbj").click(function(){
 	$("#tc_glbj input[name='role_name']").val(name);
 	$("#tc_glbj select[name='status']").find("option[value='"+status+"']").prop("selected",true);
 	$("#tc_glbj").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
+	$(".bottom_sp3").click(function(){
 		$("#tc_glbj").hide();	
 	})	
 })
 $("#a_gltj").click(function(){
 	$("#tc_gltj input").val("");
 	$("#tc_gltj").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
+	$(".bottom_sp3").click(function(){
 		$("#tc_gltj").hide();	
 	})
 })
 
 
 $('.a_cd').click(function(){
+	var id = $(this).parent().parent().find("span.span2_0 input:eq(1)").val().trim();
+	$("#tc_cd .bottom_qxql .bottom_sp2").attr('rid',id);
 	$("#tc_cd").show();
-	$(".bottom_sp1,.bottom_sp2").click(function(){
+	$(".bottom_sp1").click(function(){
 		$("#tc_cd").hide();	
 	})	
 })

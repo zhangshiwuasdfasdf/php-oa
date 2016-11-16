@@ -69,6 +69,7 @@ function add_child_dept(dept_id){
 	$.ajax({
 		type:'post',
 		data:{dept_id:dept_id},
+		async:false,
 		url:"{:U('ajax_get_dept_info')}",
 		success:function(data){
 			//alert(JSON.stringify(data));
@@ -76,9 +77,12 @@ function add_child_dept(dept_id){
 			$("#belong_dept").html(data.info.name);
 			$("#belong_dept_id").val(data.info.id);
 		}
-	})
+	});
+	validate();
 	$('#tc_xzz').show();	
 	$('.bottom_sp3').click(function(){
+		$("#dept_name").val('');
+		$("#dept_no").val('');
 		$('#tc_xzz').hide();	
 	})
 	$('.bottom_sp4').click(function(){
@@ -117,5 +121,42 @@ function set_use(dept_id,is_use){
 			alert('操作失败');
 		}
 	})
+}
+function validate(){
+    $.formValidator.initConfig({formID:"form_data_dept_add",debug:false,submitOnce:true,
+        onError:function(msg,obj,errorlist){
+       		alert(msg);
+    	},
+    	submitAfterAjaxPrompt : "正在进行校验，请稍候"
+	});
+    var id = $("#id").val();
+    var belong_dept_id = $("#belong_dept_id").val();
+    $("#dept_name").formValidator({
+        tipID:"dept_nameTip",
+        empty:false,
+        onShow:" ",
+        onFocus:" ",
+        onCorrect:"<span style='color:green;'>√</span>"
+    }).inputValidator({
+        min:1,max:255,
+        onErrorMin:"部门名称不能为空",
+        onErrorMax:"部门名称超过最大长度"
+    });
+    $("#dept_name").ajaxValidator({
+    	dataType : "json",
+        type : "GET",
+		isValid : true,
+        async : false,
+        data:{id:id,belong_dept_id:belong_dept_id},
+        url : "{:U('validate')}",
+        success : function(data){
+            if( data.status == 1 ) return false;
+            if( data.status == 0 ) return true;
+            return false;
+        },
+        error: function(jqXHR, textStatus, errorThrown){alert("服务器没有返回数据，可能服务器忙，请重试"+errorThrown);},
+        onError : "已存在该部门名称",
+        onWait : "正在对部门名称进行合法性校验，请稍候"
+    });
 }
 </script>
