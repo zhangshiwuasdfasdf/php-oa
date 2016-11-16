@@ -48,7 +48,7 @@ input,select,textarea{ margin: 0; padding: 0; outline:none;}
 .li_sp0_4 a{display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
 
 /*添加*/
-.tc{ width:100%; height:100%; position:fixed; top:0; left:0; background:rgba(0,0,0,0.5); display:none;}
+.tc{ width:100%; height:100%; position:fixed; top:0; left:0; background:rgba(0,0,0,0.5); display:none;z-index:999;}
 .tc_title{ width:100%; height:50px; line-height:50px; overflow:hidden; border-bottom:solid 1px #bdd3e0;}
 .js_sp1{ float:left; display:block; font-size:18px; font-weight:bold; color:#22bd9b; margin-left:50px;}
 .tc_div1{background:#f1f5fa; width:400px; height:550px; position:absolute; left:50%; margin-left:-200px; top:60%; margin-top:-300px; border-radius:5px;}
@@ -186,10 +186,10 @@ input,select,textarea{ margin: 0; padding: 0; outline:none;}
                     <select id="company" name="company">
                     </select>
                 </li>
-                <!-- <li>
-                    <label>部门名称：</label>
-                    <input class="tc_inp" type="text"/>
-                </li> -->  
+                <li>
+                    <label>排序：</label>
+                    <input class="tc_inp" type="text" name="sort"/>
+                </li> 
             </ul>
         </div>
         
@@ -224,6 +224,10 @@ input,select,textarea{ margin: 0; padding: 0; outline:none;}
                     <input class="tc_inp" name="dept_name" id="dept_name" type="text"/>
                     <span id="dept_nameTip" style="color:red;position:absolute;top:44px;left:85px;line-height:14px;"></span>
                 </li>  
+                <li>
+                    <label>排序：</label>
+                    <input class="tc_inp" name="sort" type="text"/>
+                </li>
                  
             </ul>
         </div>

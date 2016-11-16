@@ -119,6 +119,7 @@ class DeptAction extends CommonAction {
 	public function company_add(){
 		$data['pid'] = 0;
 		$data['name'] = $_POST['company'];
+		$data['sort'] = $_POST['sort'];
 		$data['is_del'] = 0;
 		$data['is_use'] = 1;
 		$res = M('Dept')->add($data);
@@ -135,7 +136,7 @@ class DeptAction extends CommonAction {
 			
 			$last_dept_no = M('Dept')->where(array('dept_no'=>array('like','D%')))->order('dept_no desc')->limit(1)->getField('dept_no');
 			$data['dept_no'] = 'D'.formatto4w(intval(substr($last_dept_no, 1))+1);
-// 			$data['dept_no'] = $_POST['dept_no'];
+			$data['sort'] = $_POST['sort'];
 			$data['is_del'] = '0';
 			$data['is_use'] = '1';
 			$res = M('Dept')->add($data);
@@ -209,7 +210,7 @@ class DeptAction extends CommonAction {
 		if(!empty($_POST['pid'])){
 			$data['pid'] = $_POST['pid'];
 		}
-// 		$data['dept_no'] = $_POST['dept_no'];
+		$data['sort'] = $_POST['sort'];
 		$data['name'] = $_POST['name'];
 		$data['is_use'] = $_POST['is_use'];
 		$res = M('Dept')->where(array('id'=>$_POST['id']))->save($data);
@@ -262,6 +263,7 @@ class DeptAction extends CommonAction {
 		$this->display();
 	}
 	public function validate($model=''){
+		
 		if($this->isAjax()){
 			if(!$this->_request('clientid','trim') || !$this->_request($this->_request('clientid','trim'),'trim')){
 				$this->ajaxReturn("","",3);
@@ -270,6 +272,9 @@ class DeptAction extends CommonAction {
 			if($where['dept_name']){
 				$where['name'] = $where['dept_name'];
 				unset($where['dept_name']);
+				if($_REQUEST['belong_dept_id']){
+					$where['pid'] = $_REQUEST['belong_dept_id'];
+				}
 			}
 			if($where['belong_dept_id']){
 				$where['pid'] = $where['belong_dept_id'];
@@ -288,6 +293,11 @@ class DeptAction extends CommonAction {
 			
 			if($this->_request('clientid','trim')) {
 				$model = $model?$model:MODULE_NAME;
+				$open=fopen("C:\log.txt","a" );
+				fwrite($open,json_encode($_REQUEST)."\r\n");
+				fwrite($open,json_encode($where)."\r\n");
+				fclose($open);
+				
 				if (M($model)->where($where)->find()) {
 					$this->ajaxReturn("","",1);
 				} else {
