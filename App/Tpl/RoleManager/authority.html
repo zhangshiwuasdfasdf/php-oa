@@ -1,0 +1,72 @@
+<layout name='Layout/ace_layout' />
+<link type="text/css" href="__PUBLIC__/css/new_versions/qxgl_sz.css" rel="stylesheet"/>
+
+<div class="content">
+    <div class="content_title">
+        <span class="content_sp1"></span>
+        <span class="content_sp2">权限设置</span> 
+    </div>
+    <div class="qx_div">
+         <div class="qx_div_l">
+            <span class="qx_sp1">每月考勤表</span>
+            <select class="qx_select">
+                <option>1_全局范围</option>
+                <option>2_行政管辖范围</option>
+                <option>3_仅自己</option>
+                <option>4_业务管辖公司</option>
+                <option>5_业务管辖部门</option>
+                <option>6_考勤管辖部门</option>
+            </select>
+            <input class="qx_inp" id="kq_inp" type="checkbox"/>
+         </div>
+         <ul class="qx_ul">
+        	<li>
+            	<input type="checkbox" id="kq1" name="check_kq"/>
+                <label for="kq1">每月考勤删除</label>
+            </li>
+            <li>
+            	<input type="checkbox" id="kq2" name="check_kq"/>
+                <label for="kq2">每月考勤删除</label>
+            </li>
+            <li>
+            	<input type="checkbox" id="kq3" name="check_kq"/>
+                <label for="kq3">每月考勤删除</label>
+            </li>
+         </ul>
+    </div>
+    <div class="qx_div">
+         <div class="qx_div_l">
+            <span class="qx_sp1">员工请假申请</span>
+            <select class="qx_select">
+                <option>1_全局范围</option>
+                <option>2_行政管辖范围</option>
+                <option>3_仅自己</option>
+                <option>4_业务管辖公司</option>
+                <option>5_业务管辖部门</option>
+                <option>6_考勤管辖部门</option>
+            </select>
+            <input class="qx_inp" id="qj_inp" type="checkbox"/>
+         </div>
+         <ul class="qx_ul">
+        	<li>
+            	<input type="checkbox" id="qj1" name="check_qj"/>
+                <label for="qj1">请假申请删除</label>
+            </li>
+            <li>
+            	<input type="checkbox" id="qj2" name="check_qj"/>
+                <label for="qj2">请假申请删除</label>
+            </li>
+            <li>
+            	<input type="checkbox" id="qj3" name="check_qj"/>
+                <label for="qj3">请假申请删除</label>
+            </li>
+         </ul>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/new_versions/qxgl_sz.js"></script>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>系统设置</li><li>权限管理</li><li>角色管理</li>";
+	$("#breadcrumbs ul").append(html);
+});
+</script>

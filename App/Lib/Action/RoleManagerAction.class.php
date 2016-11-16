@@ -1,6 +1,6 @@
 <?php
 class RoleManagerAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('ass_menu' => 'read' , 'import_client' => 'read' ,'export_info' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('ass_menu' => 'read' , 'assi_menu_save' => 'read' ,'authority' => 'read'));
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -35,6 +35,7 @@ class RoleManagerAction extends CommonAction {
 			$data['company'] = I('post.company');
 			$data['role_name'] = I('post.role_name');
 			$data['status'] = I('post.status');
+			$data['sort'] = I('post.sort');
 			$data['create_time'] =  time();
 			/*保存当前数据对象 */
 			$list = $model -> add($data);
@@ -65,19 +66,43 @@ class RoleManagerAction extends CommonAction {
 			}
 		}
 	}
-	//分配菜单
+	//分配菜单(页面)
 	function ass_menu(){
 		$model = M('RoleManager');
-		$data['id'] = I('post.id');
+		$id = I('post.id');
 		/*保存当前数据对象 */
 		$sql = "SELECT * FROM `smeoa_menu_new` WHERE ( `is_del` = '0' AND `menu_status` = '1' ) ORDER BY `id` asc ";
 		$list = M()->query($sql);
 		if (!empty($list)) {//保存成功
-			$list = assi_tree_menu(list_to_tree($list));
+			$cheinfo = M("RRoleMenu") -> where(" role_id = $id ") -> select();
+			$list = assi_tree_menu(list_to_tree($list),0,100,"",rotate($cheinfo));
 			$this -> ajaxReturn($list, "获取菜单成功", 1);
 		} else {
 			//失败提示
 			$this -> ajaxReturn($list, "获取菜单失败", 0);
 		}
+	}
+	//分配菜单(保存)
+	function assi_menu_save(){
+		$ids = I('post.ids');
+		$rid = I('post.rid');
+		if(!empty($ids)){
+			$id = array_filter(explode(',',$ids));
+			$model = M('RRoleMenu');
+			foreach ($id as $k => $v){
+				$model -> add(array('role_id'=>$rid,'menu_id'=>$v));
+			}
+			$this -> ajaxReturn($id,"分配成功",1);
+		}else{
+			$this -> ajaxReturn($ids,' 请选择菜单',0);
+		}
+	}
+	//分配权限
+	function authority(){
+		$this ->display();
+	}
+	//删除
+	function del(){
+		$this -> _del();
 	}
 }

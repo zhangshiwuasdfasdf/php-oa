@@ -1,0 +1,20 @@
+@charset "utf-8";
+/* CSS Document */
+*{ font-family:"微软雅黑";}
+a{ text-decoration:none;}
+ul,li{ margin:0; padding:0; list-style:none;}
+body{ margin:0; padding:0; background:#e5e5e5;}
+input,select{ margin:0; padding:0; outline:none;}
+
+.content_title{ background:#bdd3e0; height:40px; line-height:40px; margin-top:10px; position:relative;}
+.content_sp1{ display:block; position:absolute;width:6px; height:20px; background-color:#20b891; border:solid 1px #3da396;top:10px; border-radius:3px;left:20px;}
+.content_sp2{ display:block; font-size:12px; left:40px; position:absolute;}
+
+.qx_div{ width:100%;border-bottom:1px solid #eaedf1; background:#fff; overflow:auto;}
+.qx_div_l{ width:25%;float:left; margin-left:2%; position:relative;}
+.qx_sp1{ display:block; font-size:14px; position:absolute;}
+.qx_select{ position:absolute; left:35%;}
+.qx_inp{ position:absolute; left:75%;}
+.qx_ul{ float:left; width:74%; overflow:auto; margin-right:2%; margin-left:25%;}
+.qx_ul li{ float:left; height:30px; line-height:30px; font-size:14px; margin-right:5%; overflow:hidden; white-space:nowrap;}
+.qx_ul input{ float:left; margin-top:9px; margin-right:1%;}

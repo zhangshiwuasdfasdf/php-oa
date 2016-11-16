@@ -85,14 +85,16 @@ $(".a1_0,.a1_1").click(function(){
 		var menu_name = $(this).parent().parent().find(".li_sp0_2 span:eq(0)").text();
 		var menu_addr = $(this).parent().parent().find("span:eq(3)").text();
 		var id = $(this).parent().parent().find(".li_sp3 input:eq(2)").val();
+		var sort = $(this).attr('msg').trim();
 		if(id === "0"){$("select[name='pid']").prop("disabled",true);}
 		$("#tc_ejtj input[name='menu_no']").val(menu_no)
 		$("#tc_ejtj input[name='menu_name']").val(menu_name)
 		$("#tc_ejtj input[name='menu_addr']").val(menu_addr)
+		$("#tc_ejtj input[name='sort']").val(sort);
 	}
 	$("select[name='pid']").find("option[value="+id+"]").prop("selected","selected");
 	$("#tc_ejtj").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
+	$(".bottom_sp3").click(function(){
 		$("select[name='pid']").prop("disabled",false);
 		$("#tc_ejtj").hide();
 	})	
