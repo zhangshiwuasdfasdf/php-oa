@@ -65,7 +65,6 @@ class PositionAction extends CommonAction {
 		$model -> create_time = time();
 		$list = $model -> add();
 		if ($list !== false) {//保存成功
-			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('新增成功!');
 		}else {
 			$this -> error('新增失败!');
