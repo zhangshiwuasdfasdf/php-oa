@@ -790,17 +790,17 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 						}
 						dept_temp += '</span>';
 						
-						dept_temp += '<span class="span2"><a class="content_a" id="start_use_dept_'+v.id+'" onclick="start_use_dept(\''+v.id+'\')">';
+						dept_temp += '<span class="span2 span3"><a class="content_a" id="start_use_dept_'+v.id+'" onclick="start_use_dept(\''+v.id+'\')">';
 						if(v.is_use == '0'){
 							dept_temp += '启用';
 						}
 						dept_temp += '</a></span>';
-						dept_temp += '<span class="span2"><a class="content_a" id="end_use_dept_'+v.id+'" onclick="end_use_dept(\''+v.id+'\')">';
+						dept_temp += '<span class="span2 span3"><a class="content_a" id="end_use_dept_'+v.id+'" onclick="end_use_dept(\''+v.id+'\')">';
 						if(v.is_use == '1'){
 							dept_temp += '禁用';
 						}
 						dept_temp += '</a></span>';
-						dept_temp += '<span class="span2"><a class="content_a" id="a_bmbj" onclick="edit_dept(\''+v.id+'\',\''+v.dept_no+'\')">编辑</a></span>';
+						dept_temp += '<span class="span2 span3"><a class="content_a" id="a_bmbj" onclick="edit_dept(\''+v.id+'\',\''+v.dept_no+'\')">编辑</a></span>';
 						dept_temp += '</li>';
 					});
 					$('.dept_content').html(dept_temp);

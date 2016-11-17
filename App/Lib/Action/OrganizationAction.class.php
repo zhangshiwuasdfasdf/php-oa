@@ -123,7 +123,11 @@ class OrganizationAction extends CommonAction {
 					$where = array();
 					$where['is_del'] = 0;
 					if(!empty($_REQUEST['dept_id'])){
-						$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+						/*
+						 * 改为部门直接下属部门，而不是子孙部门
+						 */
+// 						$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+						$where['pid'] = array('eq',$_REQUEST['dept_id']);
 					}
 					$list_dept = $model->where($where)->page($p.',10')-> order('sort asc')->select();
 					$list_dept = $this->_getRootDept($list_dept);
@@ -135,7 +139,11 @@ class OrganizationAction extends CommonAction {
 					$model = D("PositionView");
 					$where = array();
 					if(!empty($_REQUEST['dept_id'])){
-						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+						/*
+						 * 改为部门直接下属岗位，而不是子孙岗位
+						 */
+// 						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+						$where['dept_id'] = array('eq',$_REQUEST['dept_id']);
 						$position_ids = M('RDeptPosition')->where($where)->getField('position_id',true);
 						$position_dept = M('RDeptPosition')->where($where)->getField('position_id,dept_id');
 						$list_position = M('Position')->where(array('id'=>array('in',$position_ids),'is_del'=>'0'))->page($p.',10')->select();
@@ -152,10 +160,12 @@ class OrganizationAction extends CommonAction {
 					$where = array();
 // 					$where['is_del'] = 0;
 					if(!empty($_REQUEST['dept_id'])){
-						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+						/*
+						 * 改为部门直接下属员工，而不是子孙员工
+						 */
+// 						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+						$where['dept_id'] = array('eq',$_REQUEST['dept_id']);
 						$where_r_user_position['dept_id'] = $where['dept_id'];
-						
-						
 					}
 					if('' != $_REQUEST['is_part_time_job']){
 						if($_REQUEST['is_part_time_job'] == '0'){
