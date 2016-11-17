@@ -9,11 +9,11 @@ function h0(){
 }
 h0();
 
-$("#kq_inp").click(function() {
+$(".kq_inp").click(function() {
   if(this.checked){                                     
-    $("[name=check_kq]:checkbox").prop("checked",true);  
+    $(this).parent().next().find("input[name=check_kq]:checkbox").prop("checked",true); 
   }else{
-    $("[name=check_kq]:checkbox").prop("checked",false);  
+	  $(this).parent().next().find("input[name=check_kq]:checkbox").prop("checked",false); 
   }
 });
 /*$("[name=check_kq]:checkbox").click(function(){

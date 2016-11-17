@@ -118,6 +118,28 @@ class RoleManagerAction extends CommonAction {
 	}
 	//分配权限
 	function authority(){
+		$rid = I('get.id');
+		$map = $this -> _search();
+		if (method_exists($this, '_search_filter')) {
+			$this -> _search_filter($map);
+		}
+		$model = M('Privilege');
+		if($model){
+			$list = $this -> _list($model, $map);
+			$pr = M('PrivilegeRole')->where(array('role_id'=>$rid))->select();
+			$arr = array();
+			//找到已经分配的权限
+			foreach ($list as $k => $v){
+				foreach ($pr as $kk => $vv){
+					if($vv['privilege_id'] == $v['id']){
+						$v['check'] = "checked";
+					}
+				}
+				$arr[$v['menu_new_id']][] = $v;
+			}
+// 			dump($arr);die;
+			$this -> assign('menuList',$arr);
+		}
 		$this ->display();
 	}
 	//删除

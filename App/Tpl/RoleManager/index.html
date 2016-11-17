@@ -48,10 +48,10 @@
 	                    <span class="span2">{$vo.company}</span>
 	                    <span class="span2">{$vo.role_name}</span>
 	                    <span class="span2" msg="{$vo.status}"><eq name="vo.status" value="1">启用<else/>禁用</eq></span>
-	                    <span class="span2"><a class="content_a a_glbj">编辑</a></span>
+	                    <span class="span2"><a class="content_a a_glbj" msg="{$vo.sort}">编辑</a></span>
 	                    <span class="span2"><a class="content_a a_cd">分配菜单</a></span>
 	                    <span class="span2"><a class="content_a" id="a_qx" href="{:U('authority','id='.$vo['id'])}" target="_blank">分配权限</a></span>
-	                    <span class="span2"><a class="content_a">复制</a></span>
+	                    <span class="span2"><a class="content_a a_copy">复制</a></span>
 	                </li>
                 </volist>
             </ul>
@@ -97,12 +97,17 @@
                         <option value="0">禁用</option>
                     </select>
                 </li> 
+                 <li>
+                    <label>排序：</label>
+                    <input class="tc_inp" type="text" name="sort"/>
+                </li>
             </ul>
+            <span  style="color: red;display: none;top: 20px;height: 20px;line-height: 20px;" id="vali_role_name"></span>
         </div>
         
         <div class="bottom_qxql">
         	<span class="bottom_sp3">取消</span>
-            <span class="bottom_sp4" onclick="save();">确定</span>
+            <span class="bottom_sp4" onclick="valiRole(this);">确定</span>
         </div>
     </div>
 </div>
