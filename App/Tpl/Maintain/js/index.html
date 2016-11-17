@@ -63,4 +63,31 @@
 			});
 		}
 	});
+	$(".a1_3").click(function(){
+		var menu_id=$(this).attr('id');
+		$("#menu_id_gljs").val(menu_id);
+		$.ajax({
+			type:'post',
+			url:"{:U('show_role')}",
+			data:{id:id},
+			success:function(data){
+				if(data.status == '1'){
+					var span='';
+					for (var s in data.data) {
+						$(".tc_ul_div #span span").remove();
+						$("#pri_id_gljs").attr('value',id);
+					}
+					$("input[name='role_id[]']").each(function(){
+						var role_id=$(this).val();
+						if(data.data['role_id']){
+							if(contains(data.data['role_id'],role_id)){
+								$(this).prop("checked",true);
+							}
+						}
+					});	
+				}
+			}
+		})
+	});
+	
 </script>

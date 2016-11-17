@@ -25,7 +25,7 @@ class PrivilegeAction extends CommonAction {
 		}
 		$priModel = D('PrivilegeView');
 		if (!empty($priModel)) {
-			$info = $this -> _list($priModel, $map,'menu_name','asc');
+			$info = $this -> _list($priModel, $map,'menu_name',true);
 		}
 		
 		//取出所有的角色

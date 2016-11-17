@@ -337,7 +337,7 @@ input{ margin:0; padding:0; outline:none;}
             <foreach name="role['_company']" item="vo">
             <div class="tc_div_jt"><span>{$key}:</span></div>
             <ul class="tc_ul">
-                <li>
+                <li style="display:inline-table">
                 	<foreach name="vo" item="vo1">
                 	<span>
                         <input type="checkbox" id="js1_role_id{$key}" name="role_id[]" value="{$key}"/>

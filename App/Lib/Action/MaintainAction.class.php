@@ -1,6 +1,6 @@
 <?php
 class MaintainAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read','add_role' => 'read'));
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -19,6 +19,19 @@ class MaintainAction extends CommonAction {
 		$list = M()->query($sql);
 		$this -> assign('menu',new_tree_menu(list_to_tree($list),4));
 		$this -> assign('menuList',popup_menu_option(list_to_tree($list)));
+		//取出所有的角色
+		$where["is_del"]=array('eq',0);
+		if (!empty($_REQUEST['name'])) {
+			$where['role_name'] = array('like','%'.$_REQUEST['name'].'%');
+		}
+		$role=M("RoleManager")->where($where)->select();
+		$company=array();
+		foreach($role as $k=>$v){
+			$company[$v['company']][$v['id']]=$v['role_name'];
+			$role['_company']=$company;
+		}
+		//dump($role);
+		$this->assign('role',$role);
 		$this -> display();	
 		
 	}
@@ -100,4 +113,8 @@ class MaintainAction extends CommonAction {
 	function del(){
 		$this -> _del();
 	}
+	
+	
+	
+	
 }

@@ -70,55 +70,29 @@
                 </a>       
             </span>
         </div>
+        <form action="{:U(add_role)}" method="post" >
+        <input type="hidden" name="id" id="menu_id_gljs">
         <div class="tc_ul_div">
-        	<div class="tc_div_jt">集团总部：</div>
+        <foreach name="role['_company']" item="vo">
+        	<div class="tc_div_jt">{$key}:</div>
             <ul class="tc_ul">
-                <li>
-                    <span>
-                        <input type="checkbox" id="js1" name="sp4"/>
-                        <label for="js1">产品专员</label>
+                <li style="display:inline-table">
+                <foreach name="vo" item="vo1">
+                    <span style="width:170px">
+                        <input type="checkbox" id="js1_role_id{$key}" name="role_id[]" value="{$key}"/>
+                        <label for="js1">{$vo1}</label>
                     </span>
-                    <span>
-                        <input type="checkbox" id="js2" name="sp4"/>
-                        <label for="js2">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js3" name="sp4"/>
-                        <label for="js3">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js4" name="sp4"/>
-                        <label for="js4">产品专员</label>
-                    </span>
+                </foreach>
                 </li>  
             </ul>
-            <div class="tc_div_jt">金华园区:</div>
-            <ul class="tc_ul">
-                <li>
-                    <span>
-                        <input type="checkbox" id="js1" name="sp4"/>
-                        <label for="js1">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js2" name="sp4"/>
-                        <label for="js2">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js3" name="sp4"/>
-                        <label for="js3">产品专员</label>
-                    </span>
-                    <span>
-                        <input type="checkbox" id="js4" name="sp4"/>
-                        <label for="js4">产品专员</label>
-                    </span>
-                </li>  
-            </ul>
+        </foreach>
         </div>
         
         <div class="bottom_cdwh">
         	<span class="bottom_sp1">取消</span>
-            <span class="bottom_sp2">确定</span>
+            <span><input class="bottom_sp2" type="submit" value="确定"></span>
         </div>
+        </form>
     </div>
 </div>
 

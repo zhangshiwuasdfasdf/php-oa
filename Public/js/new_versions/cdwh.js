@@ -122,9 +122,9 @@ else if($(".li_sp3").html()=="禁用"){
 
 $("#js_sp4,#js_sp5").click(function() {
   if(this.checked){                                     
-    $("[name=sp4]:checkbox").prop("checked",true);  
+    $("[name='role_id[]']:checkbox").prop("checked",true);  
   }else{
-    $("[name=sp4]:checkbox").prop("checked",false);  
+    $("[name='role_id[]']:checkbox").prop("checked",false);  
   }
 });
 

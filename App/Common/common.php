@@ -1162,7 +1162,7 @@ function new_tree_menu($tree, $level = 0,$deep=100) {
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\" msg=\"$sort\">修改</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
-					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\">关联角色</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\" id=\"{$id}\">关联角色</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\">关联角色复制</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp$level isChild\"><a class=\"content_a a1_4\">关联数据控制策略</a></span>\r\n";
 					$html = $html . new_tree_menu($val['_child'], $level,$deep);
@@ -1175,7 +1175,7 @@ function new_tree_menu($tree, $level = 0,$deep=100) {
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\" msg=\"$sort\">修改</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
-					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\">关联角色</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\" id=\"{$id}\">关联角色</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\">关联角色复制</a></span>\r\n";
 					$html = $html . "<span class=\"li_sp$level isParent\"><a class=\"content_a a1_4\">关联数据控制策略</a></span>\r\n";
 					$html = $html . "</li>\r\n";
