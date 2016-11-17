@@ -13,36 +13,77 @@
 			},'json');
 		});
 	});
-	function save(flag,obj){
-		window.onbeforeunload=null;
-		var status,menu_no,pid,id;
-		var url = "{:U('add')}";
-		if(flag == 1){
-			var name = $("#tc_yjtj input[name='menu_name']").val().trim();
-			var addr = $("#tc_yjtj input[name='menu_addr']").val().trim();
-			status = $("#tc_yjtj select[name='menu_status']").val().trim();
-			var sort = $("#tc_yjtj input[name='sort']").val().trim();
-			if(name == ""){ui_error("请输入菜单名称！");return false;}
-			if(addr == ""){ui_error("请输入菜单地址！");return false;}
-			if(status == ""){ui_error("请输入菜单状态！");return false;}
-		}else{
-			var name = $("#tc_ejtj input[name='menu_name']").val().trim();
-			var addr = $("#tc_ejtj input[name='menu_addr']").val().trim();
-			menu_no = $("#tc_ejtj input[name='menu_no']").val().trim();
-			var sort = $("#tc_ejtj input[name='sort']").val().trim();
-			if($("select[name='pid']").prop("disabled")){
-				pid = "0";
+	//添加验证
+	function avliAdd(){
+		var name = $("#tc_yjtj input[name='menu_name']").val().trim(); 
+		$.post("{:U('avliName')}",{"id":"0","pid":"0","name":name},function(data){
+			if (data.status) {
+				add();			
 			}else{
-				pid = $("#tc_ejtj select[name='pid']").find("option:selected").val().trim();
+				$("#tc_yjtj_vali").text(data.info).show();
 			}
-			if(menu_no == ""){ui_error("请输入菜单编码！");return false;}
-			if(name == ""){ui_error("请输入菜单名称！");return false;}
-			if(addr == ""){ui_error("请输入菜单地址！");return false;}
-			if($(obj).text() == "修改"){
-				url = "{:U('save')}";
-				id = $("#menuId").val();
+		},'json');
+	}
+	//添加菜单
+	function add(){
+		var status,menu_no,pid;
+		var url = "{:U('add')}";
+		var name = $("#tc_yjtj input[name='menu_name']").val().trim();
+		var addr = $("#tc_yjtj input[name='menu_addr']").val().trim();
+		status = $("#tc_yjtj select[name='menu_status']").val().trim();
+		var sort = $("#tc_yjtj input[name='sort']").val().trim();
+		if(name == ""){ui_error("请输入菜单名称！");return false;}
+		if(addr == ""){ui_error("请输入菜单地址！");return false;}
+		if(status == ""){ui_error("请输入菜单状态！");return false;}
+		$.post(url,{"name":name,"addr":addr,"status":status,"menu_no":menu_no,"pid":pid,"sort":sort},function(data){
+			if (data.status) {
+				$("#tc_yjtj").hide();
+				ui_alert(data.info,function(){
+					location.reload();
+				});				
 			}
+		},'json');
+	}
+	//验证修改
+	function avliSave(obj){
+		var url,pid,id;
+		if($(obj).text() == "修改"){
+			url = "{:U('save')}";
+			id = $("#menuId").val();
+		}else{
+			url = "{:U('add')}";
+			id = "0";
 		}
+		var name = $("#tc_ejtj input[name='menu_name']").val().trim();
+		if($("select[name='pid']").prop("disabled")){
+			pid = "0";
+		}else{
+			pid = $("#tc_ejtj select[name='pid']").find("option:selected").val().trim();
+		}
+		$.post("{:U('avliName')}",{"id":id,"pid":pid,"name":name},function(data){
+			if (data.status) {
+				save(url,id);			
+			}else{
+				$("#tc_ejtj_vali").text(data.info).show();
+			}
+		},'json');
+	}
+	
+	//修改菜单
+	function save(url,id){
+		var status,menu_no,pid;
+		var name = $("#tc_ejtj input[name='menu_name']").val().trim();
+		var addr = $("#tc_ejtj input[name='menu_addr']").val().trim();
+		menu_no = $("#tc_ejtj input[name='menu_no']").val().trim();
+		var sort = $("#tc_ejtj input[name='sort']").val().trim();
+		if($("select[name='pid']").prop("disabled")){
+			pid = "0";
+		}else{
+			pid = $("#tc_ejtj select[name='pid']").find("option:selected").val().trim();
+		}
+		if(menu_no == ""){ui_error("请输入菜单编码！");return false;}
+		if(name == ""){ui_error("请输入菜单名称！");return false;}
+		if(addr == ""){ui_error("请输入菜单地址！");return false;}
 		$.post(url,{"id":id,"name":name,"addr":addr,"status":status,"menu_no":menu_no,"pid":pid,"sort":sort},function(data){
 			if (data.status) {
 				ui_alert(data.info,function(){
@@ -51,7 +92,7 @@
 			}
 		},'json');
 	}
-	
+	//删除菜单
 	$(".b2").click(function(){
 		var ids = "";
 		$(".content_div2 input:checkbox[name='box']:checked").each(function(){

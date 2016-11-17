@@ -38,26 +38,26 @@ $(".content_div2 img").each(function(){
 $(".a1_1").click(function(){
 	$("#bj1").text('修改')
 	$("#tc_yjtj").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
-		$("#tc_yjtj").hide();	
+	$(".bottom_sp3").click(function(){
+		$("#tc_yjtj").hide();
 	})
 })
 
 $(".a1_3").click(function(){
 	$("#tc_js").show();
-	$(".bottom_sp1,.bottom_sp2").click(function(){
+	$(".bottom_sp1").click(function(){
 		$("#tc_js").hide();	
 	})
 })
 $(".a1_4").click(function(){
 	$("#tc_sj").show();
-	$(".bottom_sp1,.bottom_sp2").click(function(){
+	$(".bottom_sp1").click(function(){
 		$("#tc_sj").hide();	
 	})
 })
 $(".a1_5").click(function(){
 	$("#tc_jsfz").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
+	$(".bottom_sp3").click(function(){
 		$("#tc_jsfz").hide();	
 	})
 })
@@ -66,7 +66,7 @@ $(".a1_5").click(function(){
 $("#a_yjtj").click(function(){
 	$("#bj1").text('添加')
 	$("#tc_yjtj").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
+	$(".bottom_sp3").click(function(){
 		$("#tc_yjtj").hide();	
 	})	
 })

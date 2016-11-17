@@ -10,7 +10,7 @@ function addRole(){
 	var company = $("#tc_gltj select[name='company']").find("option:selected").text().trim();
 	var role_name = $("#tc_gltj input[name='role_name']").val().trim();
 	var status = $("#tc_gltj select[name='status']").val().trim();
-	var sort = $("#tc_gltj select[name='sort']").val().trim();
+	var sort = $("#tc_gltj input[name='sort']").val().trim();
 	if(company == ""){ui_error("请输入公司名称");return false;}
 	if(role_name == ""){ui_error("请输入角色名称");return false;}
 	if(status == ""){ui_error("请输入状态");return false;}
@@ -23,16 +23,33 @@ function addRole(){
 		}
 	},'json');
 }
-function save(){
+function valiRole(obj){
+	var role_name = $("#tc_glbj input[name='role_name']").val().trim();
+	var id = $("#tc_glbj input[name='id']").val().trim();
+	var isEdit = "0";
+	if($(obj).attr('msg') == "1"){
+		isEdit = "1";		
+	}
+	$.post("{:U('valiRole')}",{"roleName":role_name,"isEdit":isEdit,"id":id},function(data){
+		if(data.status){
+			save(isEdit);
+		}else{
+			$("#vali_role_name").text(data.info).show();
+		}
+	},'json');
+}
+function save(isEdit){
+	var url = (isEdit == "1") ? "{:U('save')}" : "{:U('add')}" ;
 	var id = $("#tc_glbj input[name='id']").val().trim();
 	var company_id = $("#tc_glbj select[name='company']").val().trim();
 	var company = $("#tc_glbj select[name='company']").find("option:selected").text().trim();
 	var role_name = $("#tc_glbj input[name='role_name']").val().trim();
 	var status = $("#tc_glbj select[name='status']").val().trim();
+	var sort = $("#tc_glbj input[name='sort']").val().trim();
 	if(company == ""){ui_error("请输入公司名称");return false;}
 	if(role_name == ""){ui_error("请输入角色名称");return false;}
 	if(status == ""){ui_error("请输入状态");return false;}
-	$.post("{:U('save')}",{"id":id,"company_id":company_id,"company":company,"role_name":role_name,"status":status},function(data){
+	$.post(url,{"id":id,"company_id":company_id,"company":company,"role_name":role_name,"status":status,"sort":sort},function(data){
 		if (data.status) {
 			$("#tc_glbj").hide();
 			ui_alert(data.info,function(){
