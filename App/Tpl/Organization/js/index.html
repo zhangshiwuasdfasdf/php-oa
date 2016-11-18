@@ -727,6 +727,7 @@ function start_use_dept(dept_id){
 			if(data.status == '1'){
 				$("#start_use_dept_"+data.data).html('');
 				$("#end_use_dept_"+data.data).html('禁用');
+				$("#start_use_dept_"+data.data).parent().parent().css('background','white');
 			}
 		}
 	});
@@ -741,6 +742,7 @@ function end_use_dept(dept_id){
 			if(data.status == '1'){
 				$("#start_use_dept_"+data.data).html('启用');
 				$("#end_use_dept_"+data.data).html('');
+				$("#start_use_dept_"+data.data).parent().parent().css('background','silver');
 			}
 		}
 	});
@@ -778,7 +780,11 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 				if(data.data.list_dept != null){
 					dept_temp = '';
 					$.each(data.data.list_dept, function(k, v){
-						dept_temp += '<li class="content_li">';
+						var background = '';
+						if(v.is_use == '0'){
+							background = 'style="background:silver;"';
+						}
+						dept_temp += '<li class="content_li" '+background+'>';
 						dept_temp += '<span class="span2_0"><input name="box_dept[]" class="box_dept" type="checkbox" value="'+v.id+'"/></span>';
 						dept_temp += '<span class="span2">'+v.root_name+'</span>';
 						dept_temp += '<span class="span2">'+v.name+'</span>';
@@ -865,10 +871,15 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 				if(data.data.list_user != null){
 					user_temp = '';
 					$.each(data.data.list_user, function(k, v){
-						user_temp += '<li class="content_li">';
+						var background = '';
+						if(v.status == '离职'){
+							background = 'style="background:silver;"';
+						}
+						user_temp += '<li class="content_li" '+background+'>';
 						user_temp += '<span class="span2_0"><input name="box_user[]" class="box_user" type="checkbox" value="'+v.id+'"/></span>';
 						var url = "{:U('profile/user',array('id'=>'"+v.id+"'))}";
-						user_temp += '<span class="span2"><a class="content_a" href="'+url+'">'+v.name+'</a></span>';
+						user_temp += '<span class="span2"><a class="content_a" href="'+url+'">'+v.no+'</a></span>';
+						user_temp += '<span class="span2">'+v.name+'</span>';
 						user_temp += '<span class="span2">'+v.dept_name+'</span>';
 						user_temp += '<span class="span2">'+v.position_name+'</span>';
 						user_temp += '<span class="span2">'+v.major+'</span>';

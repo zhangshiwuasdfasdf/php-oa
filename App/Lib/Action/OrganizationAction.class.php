@@ -129,7 +129,7 @@ class OrganizationAction extends CommonAction {
 // 						$where['id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
 						$where['pid'] = array('eq',$_REQUEST['dept_id']);
 					}
-					$list_dept = $model->where($where)->page($p.',10')-> order('sort asc')->select();
+					$list_dept = $model->where($where)->page($p.',10')-> order('is_use desc,sort asc')->select();
 					$list_dept = $this->_getRootDept($list_dept);
 					$count_dept = $model->where($where)->count();
 				}
@@ -160,11 +160,8 @@ class OrganizationAction extends CommonAction {
 					$where = array();
 // 					$where['is_del'] = 0;
 					if(!empty($_REQUEST['dept_id'])){
-						/*
-						 * 改为部门直接下属员工，而不是子孙员工
-						 */
-// 						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
-						$where['dept_id'] = array('eq',$_REQUEST['dept_id']);
+						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+// 						$where['dept_id'] = array('eq',$_REQUEST['dept_id']);
 						$where_r_user_position['dept_id'] = $where['dept_id'];
 					}
 					if('' != $_REQUEST['is_part_time_job']){
@@ -194,12 +191,14 @@ class OrganizationAction extends CommonAction {
 					$where_user['id'] = array('in',$user_ids);
 					$where_user['is_del'] = '0';
 					if(!empty($_REQUEST['name_no'])){
-						$where_user['id|name|emp_no'] = array('like','%'.$_REQUEST['name_no'].'%');
+						$keyword = preg_replace('/^0+/','',trim($_REQUEST['name_no']));
+						$where_user['id|name|emp_no'] = array('like','%'.$keyword.'%');
 					}
 					
 					$list_user = M('User')->field('id,emp_no,name,sex,is_del')->where($where_user)->page($p.',10')->select();
 					
 					foreach ($list_user as $k=>$v){
+						$list_user[$k]['no'] = formatto4w($v['id']).'_'.$v['name'];
 						$list_user[$k]['dept_id'] = $r_dept_user[$v['id']];
 						$list_user[$k]['dept_name'] = M('Dept')->where(array('id'=>$list_user[$k]['dept_id']))->getField('name');
 // 						$r_user_position = M('RUserPosition')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
@@ -216,6 +215,16 @@ class OrganizationAction extends CommonAction {
 // 						$list_user[$k]['company_id'] = getRootDept($list[$k]['dept_id'])['id'];
 // 						$list_user[$k]['all_company'] = $this->_get_all_company_html($list[$k]['company_id']);
 					}
+					$sorted_list_user = array();
+					foreach ($list_user as $k=>$v){
+						if($v['status'] != '离职'){
+							$sorted_list_user[] = $v;
+							unset($list_user[$k]);
+						}
+					}
+					foreach ($list_user as $k=>$v){
+						$sorted_list_user[] = $v;
+					}
 					$count_user = M('User')->where(array('id'=>array('in',$where_user)))->count();
 				}else{
 					
@@ -224,7 +233,7 @@ class OrganizationAction extends CommonAction {
 			$data['type'] = $type;
 			$data['list_dept'] = $list_dept;
 			$data['list_position'] = $list_position;
-			$data['list_user'] = $list_user;
+			$data['list_user'] = $sorted_list_user;
 			
 			//以下的当前页只有一个对，但是前端不采用，所以无影响
 			$data['p_dept'] = $p;
