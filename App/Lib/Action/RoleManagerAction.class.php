@@ -1,6 +1,6 @@
 <?php
 class RoleManagerAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('ass_menu' => 'read' , 'assi_menu_save' => 'read' ,'authority' => 'read' ,'valirole'=>'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('ass_menu' => 'read' , 'assi_menu_save' => 'read' ,'authority' => 'read' ,'valirole'=>'read' ,'setauth'=>'read'));
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -137,10 +137,43 @@ class RoleManagerAction extends CommonAction {
 				}
 				$arr[$v['menu_new_id']][] = $v;
 			}
-// 			dump($arr);die;
 			$this -> assign('menuList',$arr);
+			$this -> assign('rid',$rid);
 		}
 		$this ->display();
+	}
+	function setAuth(){
+		if($this -> isAjax()){
+			$rid = I('post.rid');
+			$pids = I('post.pids');
+			$drs = I('post.drs');
+			$flag = true;
+			if(!empty($rid)){
+				//功能权限
+				$pv = array_filter(explode(',', $pids));
+				$pr = M('PrivilegeRole');
+				$where['role_id'] = $rid;
+				$where['privilege_id'] = array('not in',$pv);
+				$pr -> where($where) -> delete();
+				$info = $pr ->where(array('role_id'=>$rid)) -> getField('privilege_id',true);
+				$ps = array_diff($pv, $info);
+				foreach ($ps as $k => $v){
+					$data['role_id'] = $rid;
+					$data['privilege_id'] = $v;
+					$flag=$pr -> add($data);
+				}
+				//数据权限
+				$space = array_filter(explode(',',$drs));
+				$rm = M('RRoleMenu');
+				$where['role_id'] = $rid;
+				
+			}
+			if($flag){
+				$this -> ajaxReturn($pids,'修改成功',1);
+			}else{
+				$this -> ajaxReturn($pids,'修改失败',0);
+			}
+		}
 	}
 	//删除
 	function del(){

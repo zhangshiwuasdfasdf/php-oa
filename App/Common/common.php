@@ -3791,6 +3791,6 @@ function getRootDept($dept_id){
 	return $dept;
 }
 function showPriName($id){
-	return M('Privilege')->where(array('menu_new_id'=>$id))->getField('pri_name');
+	return M('MenuNew')->where(array('id'=>$id))->getField('menu_name');
 }
 ?>
