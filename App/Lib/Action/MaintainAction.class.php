@@ -1,6 +1,6 @@
 <?php
 class MaintainAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read','add_role' => 'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read','add_role' => 'read','show_role' => 'read','copy_role' => 'read','add_data' => 'read','ajax_get_data' => 'read'));
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -30,7 +30,10 @@ class MaintainAction extends CommonAction {
 			$company[$v['company']][$v['id']]=$v['role_name'];
 			$role['_company']=$company;
 		}
-		//dump($role);
+		//取出所有的菜单
+		$menuModel=D("MenuNew");
+		$menuData=$this->getTree();
+		$this->assign('menuData',$menuData);
 		$this->assign('role',$role);
 		$this -> display();	
 		
@@ -114,7 +117,124 @@ class MaintainAction extends CommonAction {
 		$this -> _del();
 	}
 	
+	//关联角色
+    function add_role(){
+        $menu_id=I("post.id");
+        $role_id=I("post.role_id");
+        $model=M("RRoleMenu");
+        $has=$model->where(array('menu_id'=>$menu_id))->count();
+        if($has){
+            M("RRoleMenu")->where(array('menu_id'=>$menu_id))->delete();
+        }
+        foreach ($role_id as $k => $v) {
+            $res=$model->add(array(
+                    'menu_id'=>$menu_id,
+                    'role_id'=>$v,
+                ));
+        }
+        if($res){
+            $this->success("关联角色成功！",U('index'));
+        }else{
+            $this->error("关联角色失败！");
+        }
+    }
+    
+    function show_role(){
+        $menu_id=I("post.id");
+        $where["is_del"]=array('eq',0);
+        if (!empty($_REQUEST['name'])) {
+            $where['role_name'] = array('like','%'.$_REQUEST['name'].'%');
+        }
+        
+        $role=M("RoleManager")->where($where)->select();
+        $data=M("RRoleMenu")->where(array('menu_id' => $menu_id ))->distinct(true)->select();
+        if($data){
+            foreach ($data as $k => $v) {
+            $role["role_id"][]=$v['role_id'];
+            }
+        }
+        $this->ajaxReturn($role,'success','1');
+    }
 	
+	public function getTree()
+	{
+		$menuModel=D("MenuNew");
+		$data = $menuModel->order('menu_name asc')->select();
+		return $this->_reSort($data);
+	}
+	private function _reSort($data, $parent_id=0, $level=0, $isClear=TRUE)
+	{
+		static $ret = array();
+		if($isClear)
+			$ret = array();
+		foreach ($data as $k => $v)
+		{
+			if($v['pid'] == $parent_id)
+			{
+				$v['level'] = $level;
+				$ret[] = $v;
+				$this->_reSort($data, $v['id'], $level+1, FALSE);
+			}
+		}
+		return $ret;
+	}
 	
+	public function copy_role(){
+		$now_menu_id=I('post.now_menu_id');
+		$where['menu_new_id']=array('eq',I("post.menu_new_id"));
+		$has=M("RRoleMenu")->where(array('menu_id'=>$now_menu_id))->count();
+		$copy_role_id=M("RRoleMenu")->field('role_id')->where(array('menu_id'=>I("post.menu_new_id")))->select();
+		if($has){
+			M("RRoleMenu")->where(array('menu_id'=>$now_menu_id))->delete();
+		}
+		foreach ($copy_role_id as $k => $v) {
+		$res=M("RRoleMenu")->add(array(
+				'menu_id'=>$now_menu_id,
+				'role_id'=>$v['role_id'],
+			));
+		}
+		if($res){
+			$this->success("关联角色复制成功！",U('index'));
+		}else{
+			$this->error("关联角色复制失败！");
+			}
+	}
+	
+	public function ajax_get_data(){
+		$menu_id=I("post.id");
+        $data=M("RRoleMenu")
+        ->field('a.menu_id,a.role_id,a.scope,b.id,b.company,b.role_name')
+        ->alias('a')
+        ->join('LEFT JOIN __ROLE_MANAGER__  b ON a.role_id=b.id')
+        ->where(array('menu_id' => $menu_id ))->distinct(true)->select();
+        $company=array();
+        $scope=array();
+		/*foreach($data as $k=>$v){
+			$company[$v['company']][$v['id']]=$v['role_name'];
+			$data['_company']=$company;
+			$scope[$v['id']]=$v['scope'];
+			$data['_scope']=$scope;
+		}*/
+		foreach($data as $k=>$v){
+			$scope=$v['id'].','.$v['scope'];
+			$company[$v['company']][$scope]=$v['role_name'];
+			$data['_company']=$company;
+		}
+		$this->assign('info',$info);
+		$this->assign('data',$data);
+		$this->display('data');
+	}
+	
+	public function add_data(){
+		$menu_id=I('post.id');
+		$scope=I('post.scope');
+		foreach($scope as $k=>$v){
+			$data['scope']=$v;
+			$where['menu_id']=array('eq',$menu_id);
+			$where['role_id']=array('eq',$k);
+			$res=M("RRoleMenu")->where($where)->save($data);
+		}
+			$this->success("关联数据成功！",U('index'));
+	}
 	
 }

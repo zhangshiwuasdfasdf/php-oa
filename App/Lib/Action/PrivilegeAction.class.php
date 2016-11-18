@@ -3,14 +3,14 @@ class PrivilegeAction extends CommonAction {
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
-		if (!empty($_POST['pri_no'])) {
-			$map['pri_no'] = array('like','%'.$_POST['pri_no'].'%');
+		if (!empty($_POST['li_pri_no'])) {
+			$map['pri_no'] = array('like','%'.$_POST['li_pri_no'].'%');
 		}
-		if (!empty($_POST['pri_name'])) {
-			$map['pri_name'] = array('like','%'.$_POST['pri_name'].'%');
+		if (!empty($_POST['li_pri_name'])) {
+			$map['pri_name'] = array('like','%'.$_POST['li_pri_name'].'%');
 		}
-		if (!empty($_POST['menu_name'])) {
-			$map['menu_name'] = array('like','%'.$_POST['menu_name'].'%');
+		if (!empty($_POST['li_menu_name'])) {
+			$map['menu_name'] = array('like','%'.$_POST['li_menu_name'].'%');
 		}
 	}
 	
@@ -179,7 +179,7 @@ class PrivilegeAction extends CommonAction {
 	public function getTree()
 	{
 		$menuModel=D("MenuNew");
-		$data = $menuModel->select();
+		$data = $menuModel->order('menu_name asc')->select();
 		return $this->_reSort($data);
 	}
 	private function _reSort($data, $parent_id=0, $level=0, $isClear=TRUE)

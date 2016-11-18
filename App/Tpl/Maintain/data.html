@@ -1,0 +1,29 @@
+<div class="tc_ul_div" style="overflow-x:hidden">
+        <ul class="sousuo" id="span"></ul>
+        <foreach name="data['_company']" item="vo">
+        	<div class="tc_div_jt">{$key}:</div>
+            <ul class="tc_ul">
+                <li style="display:inline-table">
+                <foreach name="vo" item="vo1">
+                    <span style="width:210px">
+                        <label for="js1">{$vo1}</label>
+                        <?php  
+							$vegetables = explode(",", $key);  
+						?>
+                        <select style="height:25px;line-height:25px;" name="scope[{$vegetables[0]}]" id="scope">
+                        	<option <?php if($vegetables[1] == 1): ?>selected="selected"<?php endif; ?> value="1">全局范围</option>
+                            <option value="2" <?php if($vegetables[1] == 2): ?>selected="selected"<?php endif; ?> >行政管辖范围</option>
+                            <option value="3" <?php if($vegetables[1] == 3): ?>selected="selected"<?php endif; ?> >仅自己</option>
+                            <option value="4" <?php if($vegetables[1] == 4): ?>selected="selected"<?php endif; ?> >业务管辖公司</option>
+                            <option value="5" <?php if($vegetables[1] == 5): ?>selected="selected"<?php endif; ?> >业务管辖部门</option>
+                            <option value="6" <?php if($vegetables[1] == 6): ?>selected="selected"<?php endif; ?> >考勤管辖部门</option>
+                            
+                        </select>
+                    </span>
+                </foreach>
+                </li>  
+            </ul>
+        </foreach>
+</div>
+
+       

@@ -597,8 +597,8 @@ class ProfileAction extends CommonAction {
 		}
 		
 		//管理状态
-		$stufStatus=M("SimpleDataMapping")->field("id,data_name")->where(array('data_type'=>"员工状态"))->select();
-		$noStatus=M("SimpleDataMapping")->field("id,data_name")->where(array('data_type'=>"账号状态"))->select();
+		$stufStatus=M("SimpleDataMapping")->field("id,data_name")->where(array('data_type'=>"员工状态",'is_del'=>'0'))->select();
+		$noStatus=M("SimpleDataMapping")->field("id,data_name")->where(array('data_type'=>"账号状态",'is_del'=>'0'))->select();
 		$this->assign('stufStatus',$stufStatus);
 		$this->assign('noStatus',$noStatus);
 		

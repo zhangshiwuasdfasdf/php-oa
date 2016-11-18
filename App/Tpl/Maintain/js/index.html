@@ -104,20 +104,26 @@
 			});
 		}
 	});
+	
+	function contains(arr, obj) {
+	    var i = arr.length;
+	    while (i--) {
+	        if (arr[i] === obj) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
 	$(".a1_3").click(function(){
 		var menu_id=$(this).attr('id');
 		$("#menu_id_gljs").val(menu_id);
 		$.ajax({
 			type:'post',
 			url:"{:U('show_role')}",
-			data:{id:id},
+			data:{id:menu_id},
 			success:function(data){
 				if(data.status == '1'){
-					var span='';
-					for (var s in data.data) {
-						$(".tc_ul_div #span span").remove();
-						$("#pri_id_gljs").attr('value',id);
-					}
 					$("input[name='role_id[]']").each(function(){
 						var role_id=$(this).val();
 						if(data.data['role_id']){
@@ -130,5 +136,72 @@
 			}
 		})
 	});
-	
+	$(".a1_5").click(function(){
+		var menu_id=$(this).attr('id');
+		var menu_name=$(this).attr('menu_name');
+		$("#now_menu").text(menu_name);
+		$("#now_menu_id").val(menu_id);
+	});
+	$("#search_role").click(function(){
+	    var id=$("#menu_id_gljs").attr('value');
+	    var name=$("#role_name").val();
+	    $(".tc_ul_div #span span").remove();
+	    $.ajax({
+	        type:'post',
+	        url:"{:U('show_role')}",
+	        data:{id:id,name:name},
+	        success:function(data){
+	            if(data.status == '1'){
+	                var span='';
+	                var s;
+	                for (s in data.data) {
+	                    $(".tc_div_jt").remove();
+	                    span += '<span><input type="checkbox" id="js1_role_id'+data.data[s].id+'" name="role_id[]" value="'+data.data[s].id+'"/><label for="js1_role_id'+data.data[s].id+'">'+data.data[s].role_name +'</label></span>';
+	                    
+	                }
+	                $(".tc_ul_div #span").append(span);
+	                $("input[name='role_id[]']").each(function(){
+	                    var role_id=$(this).val();
+	                    //alert(contains(data.data['role_id'],role_id));
+	                    if(contains(data.data['role_id'],role_id)){
+	                        $(this).prop("checked",true);
+	                    }
+	                }); 
+	                var sousuo_id=[];
+	                for (s in data.data){
+	                	sousuo_id.push(data.data[s].id);
+	                }
+	                $(".tc_ul input[name='role_id[]']").each(function(){
+	                    var role_id=$(this).val();
+	                    if(!contains(sousuo_id,role_id)){
+	                        $(".tc_ul span").remove();
+	                    	$(".tc_ul_div #span").append($(this));
+	                    	$(this).css('visibility','hidden');
+	                    }
+	                }); 
+	                $(".tc_ul_div #span #js1_role_idundefined").remove();
+	                $(".tc_ul_div #span label[for='js1_role_idundefined']").remove();
+	            }
+	        }
+	    })
+	});
+	  $(".a1_4").click(function(){
+	        var menu_id=$(this).attr('id');
+	        $("#menu_id_sjkz").val(menu_id);
+	        $.ajax({
+	            type:'post',
+	            url:"{:U('ajax_get_data')}",
+	            data:{id:menu_id},
+	            success: function(data){
+	            	$(".tc_ul_div").html(data);
+	            	/* $("#scope option").each(function(){
+	            		var scope=$(this).val();
+	            		if($data[] == scope){
+	            			$(this).prop("selected",true);
+	            		}
+	            	}) */
+	             }
+	            
+	        })
+	  });
 </script>

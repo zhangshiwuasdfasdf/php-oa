@@ -2,11 +2,11 @@
 class PositionSequenceAction extends CommonAction {
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
-		if (!empty($_POST['sequence_number'])) {
-			$map['sequence_number'] = array('like','%'.$_POST['sequence_number'].'%');
+		if (!empty($_POST['li_sequence_number'])) {
+			$map['sequence_number'] = array('like','%'.$_POST['li_sequence_number'].'%');
 		}
-		if (!empty($_POST['sequence_name'])) {
-			$map['sequence_name'] = array('like','%'.$_POST['sequence_name'].'%');
+		if (!empty($_POST['li_sequence_name'])) {
+			$map['sequence_name'] = array('like','%'.$_POST['li_sequence_name'].'%');
 		}
 // 		dump($map);
 	}

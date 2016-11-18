@@ -64,15 +64,16 @@
                 <label for="js_sp4">全选</label>
             </span>
             <span class="js_sp2">
-            	<input class="js_inp" type="search"/>
-                <a class="left1">
+            	<input class="js_inp" type="text" name="name" id="role_name"/>
+                <div class="left1" id="search_role">
                 	<img src="__PUBLIC__/img/new_versions/left1.png"/>
-                </a>       
+                </div>
             </span>
         </div>
         <form action="{:U(add_role)}" method="post" >
         <input type="hidden" name="id" id="menu_id_gljs">
         <div class="tc_ul_div">
+        <ul class="sousuo" id="span"></ul>
         <foreach name="role['_company']" item="vo">
         	<div class="tc_div_jt">{$key}:</div>
             <ul class="tc_ul">
@@ -96,6 +97,7 @@
     </div>
 </div>
 
+
 <div class="tc" id="tc_sj">
 	<div class="tc_div">
     	<div class="tc_title">
@@ -107,77 +109,14 @@
                 </a>       
             </span>
         </div>
-        <div class="tc_ul_div">
-        	<div class="tc_div_jt">集团总部：</div>
-            <ul class="tc_ul">
-                <li>
-                    <span>
-                        <label for="js1">产品专员</label>
-                        <select>
-                        	<option>全局范围</option>
-                            <option>行政管辖范围</option>
-                            <option>仅自己</option>
-                            <option>业务管辖部门</option>
-                        </select>
-                    </span>
-                    <span>
-                        <label for="js2">产品专员</label>
-                        <select>
-                        	<option>全局范围</option>
-                            <option>行政管辖范围</option>
-                            <option>仅自己</option>
-                            <option>业务管辖部门</option>
-                        </select>
-                    </span>
-                    <span>
-                        <label for="js3">产品专员</label>
-                        <select>
-                        	<option>全局范围</option>
-                            <option>行政管辖范围</option>
-                            <option>仅自己</option>
-                            <option>业务管辖部门</option>
-                        </select>
-                    </span>
-                </li>  
-            </ul>
-            <div class="tc_div_jt">金华园区：</div>
-            <ul class="tc_ul">
-                <li>
-                    <span>
-                        <label for="js1">产品专员</label>
-                        <select>
-                        	<option>全局范围</option>
-                            <option>行政管辖范围</option>
-                            <option>仅自己</option>
-                            <option>业务管辖部门</option>
-                        </select>
-                    </span>
-                    <span>
-                        <label for="js2">产品专员</label>
-                        <select>
-                        	<option>全局范围</option>
-                            <option>行政管辖范围</option>
-                            <option>仅自己</option>
-                            <option>业务管辖部门</option>
-                        </select>
-                    </span>
-                    <span>
-                        <label for="js3">产品专员</label>
-                        <select>
-                        	<option>全局范围</option>
-                            <option>行政管辖范围</option>
-                            <option>仅自己</option>
-                            <option>业务管辖部门</option>
-                        </select>
-                    </span>
-                </li>  
-            </ul>
-        </div>
-        
+        <form action="{:U(add_data)}" method="post" >
+        <input type="hidden" name="id" id="menu_id_sjkz">
+        <include file="Maintain:data" />
         <div class="bottom_cdwh">
         	<span class="bottom_sp1">取消</span>
-            <span class="bottom_sp2">确定</span>
+            <span><input class="bottom_sp2" type="submit" value="确定"></span>
         </div>
+        </form>
     </div>
 </div>
 
@@ -265,16 +204,21 @@
     	<div class="tc_title">
         	<span class="js_sp1" id="bj1">关联角色复制</span>
         </div>
+        <form method="POST" action="{:U('copy_role')}">
+        <input type="hidden" name="now_menu_id" id="now_menu_id" />
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
             	<li>
                     <label>当前菜单：</label>
-                    <span>ARNS</span>
+                    <span id="now_menu"></span>
                 </li>
                 <li>
                     <label>复制菜单源：</label>
-                    <select>
-                        <option>一级菜单</option>
+                    <select name="menu_new_id" id="copy_menu">
+                    <option value="">请选择</option>
+                    <foreach name="menuData" item="vo">
+                        <option value="{$vo.id}"><?php echo str_repeat('-', $vo['level']).$vo['menu_name']; ?></option>
+                    </foreach>
                     </select>
                 </li>
             </ul>
@@ -282,8 +226,9 @@
         
         <div class="bottom_cdwh">
         	<span class="bottom_sp3">取消</span>
-            <span class="bottom_sp4">确定</span>
+            <span><input class="bottom_sp4" type="submit" value="确定"></span>
         </div>
+        </form>
     </div>
 </div>
 <script type="text/javascript" src="__PUBLIC__/js/new_versions/cdwh.js"></script>
