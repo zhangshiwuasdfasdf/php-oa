@@ -534,10 +534,12 @@ function business_jurisdiction(upid){
 		success:function(data){
 			$("#business_jurisdiction").html(data);
 			$(".tc_ul_div img").each(function(){
-				$(this).toggle(function(){
-					$(this).parent('li').children('ul').slideDown()
-				},function(){
-					$(this).parent('li').children('ul').slideUp()
+				$(this).click(function(){
+					if($(this).parent('li').children('ul').is(":hidden")){   
+						$(this).parent('li').children('ul').slideDown()
+					}else{
+						$(this).parent('li').children('ul').slideUp()
+					}
 				})
 				
 				$("[name='dept[]']").click(function(){
@@ -571,12 +573,13 @@ function business_base(upid){
 		success:function(data){
 			$("#business_base").html(data);
 			$(".tc_ul_div img").each(function(){
-				$(this).toggle(function(){
-					$(this).parent('li').children('ul').slideDown()
-				},function(){
-					$(this).parent('li').children('ul').slideUp()
+				$(this).click(function(){
+					if($(this).parent('li').children('ul').is(":hidden")){   
+						$(this).parent('li').children('ul').slideDown()
+					}else{
+						$(this).parent('li').children('ul').slideUp()
+					}
 				})
-				
 			})
 			//alert(JSON.stringify(data));
 		}
@@ -601,10 +604,12 @@ function attendance_dept(upid){
 		success:function(data){
 			$("#attendance_dept").html(data);
 			$(".tc_ul_div img").each(function(){
-				$(this).toggle(function(){
-					$(this).parent('li').children('ul').slideDown()
-				},function(){
-					$(this).parent('li').children('ul').slideUp()
+				$(this).click(function(){
+					if($(this).parent('li').children('ul').is(":hidden")){   
+						$(this).parent('li').children('ul').slideDown()
+					}else{
+						$(this).parent('li').children('ul').slideUp()
+					}
 				})
 				
 				$("[name='dept[]']").click(function(){
