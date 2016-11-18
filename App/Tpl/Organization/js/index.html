@@ -495,10 +495,12 @@ function admin_jurisdiction(upid){
 		success:function(data){
 			$("#admin_jurisdiction").html(data);
 			$(".tc_ul_div img").each(function(){
-				$(this).toggle(function(){
-					$(this).parent('li').children('ul').slideDown()
-				},function(){
-					$(this).parent('li').children('ul').slideUp()
+				$(this).click(function(){
+					if($(this).parent('li').children('ul').is(":hidden")){   
+						$(this).parent('li').children('ul').slideDown()
+					}else{
+						$(this).parent('li').children('ul').slideUp()
+					}
 				})
 				
 				$("[name='dept[]']").click(function(){
