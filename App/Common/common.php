@@ -1342,7 +1342,8 @@ function popup_menu_dept_position_checkbox($tree, $level = 0,$deep=100,$child_de
 	$html = "";
 	if (is_array($tree) && $deep>0) {
 		$i = $level>1?'1':'';
-		$html = "<ul class=\"zz_ul$i\">\r\n";
+		$style = $level>1?'style="display:none;"':'';
+		$html = "<ul class=\"zz_ul$i\" $style>\r\n";
 		foreach ($tree as $val) {
 			if (isset($val["name"])) {
 				$title = $val["name"];

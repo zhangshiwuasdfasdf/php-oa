@@ -2,7 +2,7 @@
 <script type="text/javascript" src="__PUBLIC__/js/formValidator-4.0.1.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="__PUBLIC__/js/formValidatorRegex.js" charset="UTF-8"></script>
 <style>
-*{ font-family:"微软雅黑";}
+*{ font-family:"微软雅黑";font-size:13px;}
 a{ text-decoration:none;}
 ul,li{ margin:0; padding:0; list-style:none;}
 body{ margin:0; padding:0; background:#e5e5e5;}
@@ -10,7 +10,7 @@ input,select{ margin:0; padding:0; outline:none;}
 
 .content_title{ background:#bdd3e0; height:40px; line-height:40px; margin-top:10px; position:relative;}
 .content_sp1{ display:block; position:absolute;width:6px; height:20px; background-color:#20b891; border:solid 1px #3da396;top:10px; border-radius:3px;left:20px;}
-.content_sp2{ display:block; font-size:12px; left:40px; position:absolute;}
+.content_sp2{ display:block; font-size:13px; left:40px; position:absolute;}
 .img_tj{ display:block; float:left; margin-top:14px;}
 .content_sp3{display:block;position:absolute;right:20px;font-size:12px; color:#4c6456; font-weight:bold; cursor:pointer; overflow:hidden;}
 .content_sp3 span{ display:block; float:left;}
@@ -33,7 +33,7 @@ input,select{ margin:0; padding:0; outline:none;}
 
 .top_k{ height:54px; line-height:54px;}
 .top2{ height:54px; background:#fff; line-height:54px; white-space:nowrap;}
-.top2 span{ display:block; font-size:12px; float:left; margin-left:20px;}
+.top2 span{ display:block; font-size:13px; float:left; margin-left:20px;}
 .top_in{ width:114px; height:24px;border:solid 1px #aaaaaa;}
 .top_select{ width:98px; height:24px; outline:none;}
 .top_button{ overflow:hidden;}
@@ -49,11 +49,12 @@ input,select{ margin:0; padding:0; outline:none;}
 .content_t{overflow:auto; float:left; margin-left:1%; width:83%;}
 .content_ul_w{ overflow:auto; height:270px;}
 .content_li{border-bottom:1px solid #eaedf1; background:#fff; overflow:hidden; height:28px;}
-.content_li span{ display:block; float:left; white-space:nowrap;color:#323232; font-size:12px; height:28px;line-height:28px; text-align:center;}
+.content_li span{ display:block; float:left; white-space:nowrap;color:#323232; font-size:13px; height:28px;line-height:28px; text-align:center;}
 .span1_0{ width:30px; font-weight:bold;}
-.span1{ font-weight:bold; width:150px;}
+.span1{ font-weight:bold; width:100px;}
 .span2_0{ width:30px;}
-.span2{ width:150px;}
+.span2{ width:100px;}
+.span3{ width:33px;}
 .content_a{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
 
 #bmlb,#gwlb,#yglb{ display:none;}
@@ -221,9 +222,6 @@ input,select{ margin:0; padding:0; outline:none;}
                         <span class="span1">部门</span>
                         <span class="span1">数据状态</span>
                         <span class="span1">操作</span>
-                        <span class="span1"></span>
-                        <span class="span1"></span>
-                        <span class="span1"></span>
                     </li>
                     <div class="dept_content">
                     </div>
@@ -308,6 +306,7 @@ input,select{ margin:0; padding:0; outline:none;}
             	<ul class="content_ul">
                 	<li class="content_li">
                     	<span class="span1_0"></span>
+                    	<span class="span1">档案号</span>
                         <span class="span1">姓名</span>
                         <span class="span1">部门</span>
                         <span class="span1">岗位</span>
@@ -660,13 +659,13 @@ input,select{ margin:0; padding:0; outline:none;}
                     <select id="user_major" name="user_major">
                     </select>
                 </li>
-                <li>
+                <!-- <li>
                     <label>员工状态：</label>
 					<select id="user_status" name="user_status">
                         <option>已转正</option>
                         <option>已转正</option>
                     </select>
-                </li>
+                </li> -->
                 <li>
                     <label>序列名称：</label>
                     <!-- <input class="tc_inp" id="user_position_sequence_id" name="user_position_sequence_id" type="hidden"/>

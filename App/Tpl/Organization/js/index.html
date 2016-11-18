@@ -495,10 +495,12 @@ function admin_jurisdiction(upid){
 		success:function(data){
 			$("#admin_jurisdiction").html(data);
 			$(".tc_ul_div img").each(function(){
-				$(this).toggle(function(){
-					$(this).parent('li').children('ul').slideDown()
-				},function(){
-					$(this).parent('li').children('ul').slideUp()
+				$(this).click(function(){
+					if($(this).parent('li').children('ul').is(":hidden")){   
+						$(this).parent('li').children('ul').slideDown()
+					}else{
+						$(this).parent('li').children('ul').slideUp()
+					}
 				})
 				
 				$("[name='dept[]']").click(function(){
@@ -532,10 +534,12 @@ function business_jurisdiction(upid){
 		success:function(data){
 			$("#business_jurisdiction").html(data);
 			$(".tc_ul_div img").each(function(){
-				$(this).toggle(function(){
-					$(this).parent('li').children('ul').slideDown()
-				},function(){
-					$(this).parent('li').children('ul').slideUp()
+				$(this).click(function(){
+					if($(this).parent('li').children('ul').is(":hidden")){   
+						$(this).parent('li').children('ul').slideDown()
+					}else{
+						$(this).parent('li').children('ul').slideUp()
+					}
 				})
 				
 				$("[name='dept[]']").click(function(){
@@ -569,12 +573,13 @@ function business_base(upid){
 		success:function(data){
 			$("#business_base").html(data);
 			$(".tc_ul_div img").each(function(){
-				$(this).toggle(function(){
-					$(this).parent('li').children('ul').slideDown()
-				},function(){
-					$(this).parent('li').children('ul').slideUp()
+				$(this).click(function(){
+					if($(this).parent('li').children('ul').is(":hidden")){   
+						$(this).parent('li').children('ul').slideDown()
+					}else{
+						$(this).parent('li').children('ul').slideUp()
+					}
 				})
-				
 			})
 			//alert(JSON.stringify(data));
 		}
@@ -599,10 +604,12 @@ function attendance_dept(upid){
 		success:function(data){
 			$("#attendance_dept").html(data);
 			$(".tc_ul_div img").each(function(){
-				$(this).toggle(function(){
-					$(this).parent('li').children('ul').slideDown()
-				},function(){
-					$(this).parent('li').children('ul').slideUp()
+				$(this).click(function(){
+					if($(this).parent('li').children('ul').is(":hidden")){   
+						$(this).parent('li').children('ul').slideDown()
+					}else{
+						$(this).parent('li').children('ul').slideUp()
+					}
 				})
 				
 				$("[name='dept[]']").click(function(){
@@ -727,6 +734,7 @@ function start_use_dept(dept_id){
 			if(data.status == '1'){
 				$("#start_use_dept_"+data.data).html('');
 				$("#end_use_dept_"+data.data).html('禁用');
+				$("#start_use_dept_"+data.data).parent().parent().css('background','white');
 			}
 		}
 	});
@@ -741,6 +749,7 @@ function end_use_dept(dept_id){
 			if(data.status == '1'){
 				$("#start_use_dept_"+data.data).html('启用');
 				$("#end_use_dept_"+data.data).html('');
+				$("#start_use_dept_"+data.data).parent().parent().css('background','silver');
 			}
 		}
 	});
@@ -778,7 +787,11 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 				if(data.data.list_dept != null){
 					dept_temp = '';
 					$.each(data.data.list_dept, function(k, v){
-						dept_temp += '<li class="content_li">';
+						var background = '';
+						if(v.is_use == '0'){
+							background = 'style="background:silver;"';
+						}
+						dept_temp += '<li class="content_li" '+background+'>';
 						dept_temp += '<span class="span2_0"><input name="box_dept[]" class="box_dept" type="checkbox" value="'+v.id+'"/></span>';
 						dept_temp += '<span class="span2">'+v.root_name+'</span>';
 						dept_temp += '<span class="span2">'+v.name+'</span>';
@@ -790,17 +803,17 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 						}
 						dept_temp += '</span>';
 						
-						dept_temp += '<span class="span2"><a class="content_a" id="start_use_dept_'+v.id+'" onclick="start_use_dept(\''+v.id+'\')">';
+						dept_temp += '<span class="span2 span3"><a class="content_a" id="start_use_dept_'+v.id+'" onclick="start_use_dept(\''+v.id+'\')">';
 						if(v.is_use == '0'){
 							dept_temp += '启用';
 						}
 						dept_temp += '</a></span>';
-						dept_temp += '<span class="span2"><a class="content_a" id="end_use_dept_'+v.id+'" onclick="end_use_dept(\''+v.id+'\')">';
+						dept_temp += '<span class="span2 span3"><a class="content_a" id="end_use_dept_'+v.id+'" onclick="end_use_dept(\''+v.id+'\')">';
 						if(v.is_use == '1'){
 							dept_temp += '禁用';
 						}
 						dept_temp += '</a></span>';
-						dept_temp += '<span class="span2"><a class="content_a" id="a_bmbj" onclick="edit_dept(\''+v.id+'\',\''+v.dept_no+'\')">编辑</a></span>';
+						dept_temp += '<span class="span2 span3"><a class="content_a" id="a_bmbj" onclick="edit_dept(\''+v.id+'\',\''+v.dept_no+'\')">编辑</a></span>';
 						dept_temp += '</li>';
 					});
 					$('.dept_content').html(dept_temp);
@@ -865,10 +878,15 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 				if(data.data.list_user != null){
 					user_temp = '';
 					$.each(data.data.list_user, function(k, v){
-						user_temp += '<li class="content_li">';
+						var background = '';
+						if(v.status == '离职'){
+							background = 'style="background:silver;"';
+						}
+						user_temp += '<li class="content_li" '+background+'>';
 						user_temp += '<span class="span2_0"><input name="box_user[]" class="box_user" type="checkbox" value="'+v.id+'"/></span>';
 						var url = "{:U('profile/user',array('id'=>'"+v.id+"'))}";
-						user_temp += '<span class="span2"><a class="content_a" href="'+url+'">'+v.name+'</a></span>';
+						user_temp += '<span class="span2"><a class="content_a" href="'+url+'">'+v.no+'</a></span>';
+						user_temp += '<span class="span2">'+v.name+'</span>';
 						user_temp += '<span class="span2">'+v.dept_name+'</span>';
 						user_temp += '<span class="span2">'+v.position_name+'</span>';
 						user_temp += '<span class="span2">'+v.major+'</span>';

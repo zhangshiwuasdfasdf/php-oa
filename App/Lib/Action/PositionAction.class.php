@@ -22,7 +22,7 @@ class PositionAction extends CommonAction {
 			$map['code'] = array('like','%'.$_POST['code'].'%');
 		}
 		if (!empty($_POST['li_position_name'])) {
-			$map['position_name'] = array('like','%'.$_POST['li_position_name'].'%');
+			$map['position_name'] = array('like','%'.trim($_POST['li_position_name']).'%');
 		}
 		if (false !== $_POST['eq_is_use'] && '' != $_POST['eq_is_use']) {
 			$map['is_use'] = array('eq',$_POST['eq_is_use']);
@@ -80,7 +80,6 @@ class PositionAction extends CommonAction {
 		$model -> update_time = time();
 		$list = $model -> save();
 		if ($list !== false) {//保存成功
-			$this -> assign('jumpUrl', get_return_url());
 			$this -> success('保存成功!');
 		}else {
 			$this -> error('保存失败!');

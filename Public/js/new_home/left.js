@@ -290,6 +290,7 @@ $("#left_a1").toggle(function(){
 	var w=$(".left").width()
 	$(".ani_ss").css({"top":t,"left":w})
 	$(".ani_ss").animate({opacity:1,width:'210px'})
+	$(".ani_ss>ss_div").css({"width":'210px'}); 
 	$(window).scroll(function(){
 		var j=$(window).scrollTop()
 		var j1=t-j
