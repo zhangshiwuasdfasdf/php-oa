@@ -19,7 +19,7 @@ $(".content_a").click(function(){
 })
 $("#a_gltj").click(function(){
 	$("#tc_gltj").show();
-	$(".bottom_sp3,.bottom_sp4").click(function(){
+	$(".bottom_sp3").click(function(){
 		$("#tc_gltj").hide();	
 	})
 })

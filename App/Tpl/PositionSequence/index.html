@@ -1,4 +1,5 @@
 <layout name='Layout/ace_layout' />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.js"></script>
 <style>
 *{ font-family:"微软雅黑";}
 a{ text-decoration:none;}
@@ -58,6 +59,7 @@ input,select{ margin:0; padding:0; outline:none;}
 .tc_ul_s{ height:auto;}
 .tc_ul_s li{ overflow:hidden; height:50px; width:100%; line-height:50px;font-size:14px; text-align:center; position:relative;}
 .tc_ul_s label{ position:absolute; left:0;}
+label.error{color:red;font-size:12px;top:22px;left:85px;}
 .tc_ul_s select{ width:195px;position:absolute; left:85px; top:15px;}
 .tc_inp{ width:190px;position:absolute; left:85px; top:15px;}
 
@@ -195,37 +197,109 @@ input,select{ margin:0; padding:0; outline:none;}
     	<div class="tc_title">
         	<span class="js_sp1" id="bj1">添加</span>
         </div>
-        <form name="main_form" method="POST" action="{:U('add')}" enctype="multipart/form-data">
+        <form name="main_form" id="sequenceForm" method="POST" action="{:U('add')}" enctype="multipart/form-data">
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
-                <li>
+                <li style="height:60px;line-height:60px">
                     <label>序列代码：</label>
-                    <input class="tc_inp" type="text" name="sequence_number"/>
+                    <input class="tc_inp" type="text" name="sequence_number" id="sequence_no"/>
                 </li>
-                <li>
+                <li style="height:60px;line-height:60px">
                     <label>序列名称：</label>
-                    <input class="tc_inp" type="text" name="sequence_name"/>
+                    <input class="tc_inp" type="text" name="sequence_name" id="sequence_na" />
                 </li> 
-                <li>
+                <li style="height:60px;line-height:60px">
                     <label>级别：</label>
-                    <input class="tc_inp" type="text" name="sequence_degree"/>
+                    <input class="tc_inp" type="text" name="sequence_degree" id="sequence_de"/>
                 </li>
             </ul>
         </div>
         
         <div class="bottom" style="position:static">
         	<span class="bottom_sp3">取消</span>
-            <span ><input class="bottom_sp4" type="submit" value="确定"></span>
+            <span ><a class="bottom_sp4" onclick="submitBtn();" href="javascript:void(0);">确定</a></span> 
+             
         </div>
         </form>
     </div>
 </div>
 </form>
 <script type="text/javascript" src="__PUBLIC__/js/gwxl.js"></script>
+
 <script>
 	$(function() {
 		var html = "<li>系统管理</li><li>组织结构管理</li><li>岗位序列</li>";
 		$("#breadcrumbs ul").append(html);
 	});
+	
+	function JqValidate()  
+	{  
+	    return $( '#sequenceForm' ).validate({  
+	    	//errorElement : 'span',
+	    	onkeyup:false,
+	    	rules:{  
+	    		sequence_number : {
+					required : true,
+					remote : {
+						url : "{:U('checkNo')}",
+						type : 'post',
+						dataType : 'json',
+						data : {
+							sequence_number : function () {
+								return $('#sequence_no').val();
+							}
+						}
+					}
+				},
+				sequence_name : {
+					required : true,
+					remote : {
+						url : "{:U('checkName')}",
+						type : 'post',
+						dataType : 'json',
+						data : {
+							sequence_name : function () {
+								return $('#sequence_na').val();
+							}
+						}
+					}
+				},  
+				sequence_degree : {
+					required : true,
+					remote : {
+						url : "{:U('checkDegree')}",
+						type : 'post',
+						dataType : 'json',
+						data : {
+							sequence_degree : function () {
+								return $('#sequence_de').val();
+							}
+						}
+					}
+				}
+	            },  
+	        messages:{  
+	        	sequence_number : {
+					required : '序列代码不能为空',
+					remote : '序列代码已存在'
+				}, 
+				sequence_name : {
+					required : '序列名称不能为空',
+					remote : '序列名称已存在'
+				},
+				sequence_degree : {
+					required : '级别不能为空',
+					remote : '级别已存在'
+				}
+	            }
+	    });  
+	}  
+	  
+	function submitBtn()  
+	{  
+	     if( JqValidate() ){    
+	         $( '#sequenceForm' ).submit();  
+	     }  
+	} 
 </script>
 
