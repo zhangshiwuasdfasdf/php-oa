@@ -3810,6 +3810,38 @@ function getRootDept($dept_id){
 	$dept = M('Dept')->where(array('id'=>$id))->find();
 	return $dept;
 }
+function getDefaultRoleIdsByUserId($user_id){
+	$position_ids = M('RUserPosition')->where(array('user_id'=>$user_id))->getField('position_id',true);
+	$default_role_ids = M('RPositionRole')->where(array('position_id'=>array('in',$position_ids)))->getField('role_id',true);
+	return $default_role_ids;
+}
+function getRoleIdsByUserId($user_id){
+	$default_role_ids = getDefaultRoleIdsByUserId($user_id);
+	$upids = M('RUserPosition')->where(array('user_id'=>$user_id))->getField('id',true);
+	$role_ids = M('RUserPositionRole')->where(array('upid'=>array('in',$upids)))->getField('role_id',true);
+	foreach ($role_ids as $k=>$v){
+		if(!in_array($v, $default_role_ids)){
+			$default_role_ids[] = $v;
+		}
+	}
+	return $default_role_ids;
+}
+function getDefaultRoleIdsByUpid($upid){
+	$position_id = M('RUserPosition')->where(array('id'=>$upid))->getField('position_id');
+	$default_role_ids = M('RPositionRole')->where(array('position_id'=>array('eq',$position_id)))->getField('role_id',true);
+	return $default_role_ids;
+}
+function getRoleIdsByUpid($upid){
+	$default_role_ids = getDefaultRoleIdsByUpid($upid);
+// 	$upids = M('RUserPosition')->where(array('user_id'=>$user_id))->getField('id',true);
+	$role_ids = M('RUserPositionRole')->where(array('upid'=>array('eq',$upid)))->getField('role_id',true);
+	foreach ($role_ids as $k=>$v){
+		if(!in_array($v, $default_role_ids)){
+			$default_role_ids[] = $v;
+		}
+	}
+	return $default_role_ids;
+}
 function showPriName($id){
 	return M('MenuNew')->where(array('id'=>$id))->getField('menu_name');
 }

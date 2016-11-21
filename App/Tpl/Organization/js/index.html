@@ -464,12 +464,12 @@ function put_on(id,name){
 	$("#user_user_name").val(name);
 	$(".user_name_search").hide();
 }
-function distribution_user_role(user_id){
-	$("#user_role_user_id").val(user_id);
+function distribution_user_role(upid){
+	$("#user_role_upid").val(upid);
 	$.ajax({
-		data:{user_id:user_id},
+		data:{upid:upid},
 		type:'post',
-		url:"{:U('get_user_role_html')}",
+		url:"{:U('get_user_position_role_html')}",
 		success:function(data){
 			$("#distribution_user").html(data);
 			//alert(JSON.stringify(data));
@@ -893,7 +893,7 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 						user_temp += '<span class="span2">'+v.status+'</span>';
 						user_temp += '<span class="span2">'+v.position_sequence+'</span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_ygbj" onclick="edit_user(\''+v.user_id+'\',\''+v.name+'\',\''+v.dept_id+'\',\''+v.position_id+'\',\''+v.is_del+'\',\''+v.position_sequence+'\')">编辑</a></span>';
-						user_temp += '<span class="span2"><a class="content_a" id="a_js" onclick="distribution_user_role(\''+v.user_id+'\')">角色分配</a></span>';
+						user_temp += '<span class="span2"><a class="content_a" id="a_js" onclick="distribution_user_role(\''+v.id+'\')">角色分配</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_xz" onclick="admin_jurisdiction(\''+v.upid+'\')">行政关系范围</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_yw" onclick="business_jurisdiction(\''+v.upid+'\')">业务管辖部门</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_jd" onclick="business_base(\''+v.upid+'\')">业务管辖基地</a></span>';

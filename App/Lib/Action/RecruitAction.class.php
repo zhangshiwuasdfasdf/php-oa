@@ -25,6 +25,8 @@ class RecruitAction extends CommonAction {
 		$widget['date'] = true;
 		$this -> assign("widget", $widget);
 		
+		dump(getDefaultRoleIdsByUserId('3'));
+		dump(getRoleIdsByUserId('3'));die;
 		$model = M("DeptGrade");
 		$list = $model -> order('sort') -> select();
 		$this -> assign('list', $list);
