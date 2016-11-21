@@ -1,0 +1,21 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	set_return_url();
+});
+function save(o){
+	var rid = $(o).attr('rid');
+	var drs = ''; 
+	$(".qx_div select[name='data_role']").each(function(){
+		drs += $(this).find("option:selected").val().trim() + ',';
+	});
+	var pids = '';
+	$(".qx_div li input:checkbox[name='check_kq']:checked").each(function(){
+		pids += $(this).val() + ',';
+	});
+	$.post("{:U('setAuth')}",{"rid":rid,"pids":pids,"drs":drs},function(data){
+		ui_alert(data.info,function(){
+			location.reload();
+		});
+	},'json');
+}
+</script>

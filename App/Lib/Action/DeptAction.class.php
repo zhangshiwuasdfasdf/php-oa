@@ -31,6 +31,8 @@ class DeptAction extends CommonAction {
 			$where['is_use'] = array('eq',$_POST['is_use']);
 		}
 		
+		
+		
 		$menu = $node -> where($where) -> field('id,pid,name,dept_no,is_use') -> order('sort asc') -> select();
 		$tree = list_to_tree($menu);
 		

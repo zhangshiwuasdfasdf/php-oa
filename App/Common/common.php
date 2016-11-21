@@ -1806,7 +1806,27 @@ function getfirstchar($s0) {
 		return "Z";
 	return null;
 }
-
+function create_emp_no($name){
+	import("@.ORG.Util.Pinyin");
+	$py = new Pinyin();
+	$charlist = mb_str_split($name);
+	$s = '';
+	if(!empty($charlist) && is_array($charlist)){
+		foreach ($charlist as $k=>$v){
+			if($k == '0'){
+				$s .= $py->getAllPY($v);
+			}else{
+				$s .= $py->getFirstPY($v);
+			}
+		}
+		$regexp = '"^'.$s.'[0-9]*$"';
+		$last = M('User')->where(array('_string'=>'emp_no REGEXP '.$regexp))->order('emp_no desc')->getField('emp_no');
+		$a = explode($s,$last);
+		$new = $s.(intval($a[1])+1);
+		return $new;
+	}
+	return null;
+}
 function get_folder_name($id) {
 
 	if ($id == 1) {
@@ -3791,6 +3811,6 @@ function getRootDept($dept_id){
 	return $dept;
 }
 function showPriName($id){
-	return M('Privilege')->where(array('menu_new_id'=>$id))->getField('pri_name');
+	return M('MenuNew')->where(array('id'=>$id))->getField('menu_name');
 }
 ?>

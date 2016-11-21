@@ -4,27 +4,30 @@
 <div class="content">
     <div class="content_title">
         <span class="content_sp1"></span>
-        <span class="content_sp2">权限设置</span> 
+        <span class="content_sp2">权限设置</span>
+        <span style="display: block;position: absolute;right: 20px;line-height: 37px;">
+        	<a  class="btn btn-sm btn-primary" onclick="save(this);" rid="{$rid}">保存</a>
+        </span>
     </div>
     <volist name="menuList" id="vo"> 
-	    <div class="qx_div">
+	    <div class="qx_div qx_div{$key}">
 	         <div class="qx_div_l">
 	            <span class="qx_sp1">{$key|showPriName}</span>
-	            <select class="qx_select">
-	                <option>1_全局范围</option>
-	                <option>2_行政管辖范围</option>
-	                <option>3_仅自己</option>
-	                <option>4_业务管辖公司</option>
-	                <option>5_业务管辖部门</option>
-	                <option>6_考勤管辖部门</option>
+	            <select class="qx_select" name="data_role">
+	                <option value="1">1_全局范围</option>
+	                <option value="2">2_行政管辖范围</option>
+	                <option value="3">3_仅自己</option>
+	                <option value="4">4_业务管辖公司</option>
+	                <option value="5">5_业务管辖部门</option>
+	                <option value="6">6_考勤管辖部门</option>
 	            </select>
-	            <input class="qx_inp kq_inp" type="checkbox"/>
+	            <input class="qx_inp kq_inp" type="checkbox" name="hand_role"/>
 	         </div>
 	         <ul class="qx_ul">
 	        	 <foreach name="vo" item="vv" key="k">
 		        	<li>
-		            	<input type="checkbox" id="kq1" name="check_kq" {$vv.check}/>
-		                <label for="kq1">{$key|showPriName}{$vv.pri_act}</label>
+		            	<input type="checkbox" id="kq1{$vv.id}" name="check_kq" {$vv.check} value="{$vv.id}"/>
+		                <label for="kq1{$vv.id}" msg="{$vv.pri_name}">{$key|showPriName}{$vv.pri_act}</label>
 		            </li>
 	            </foreach>
 	         </ul>

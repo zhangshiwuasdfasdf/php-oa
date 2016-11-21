@@ -1,0 +1,366 @@
+<layout name='Layout/ace_layout' />
+<style>
+.zong{ overflow:auto;margin-top:50px; position: relative;}
+.top_k{position: relative;}
+.top1{ background:#fff; overflow:auto; white-space:nowrap; position: relative;}
+.top1 li{width:100%; overflow: hidden; height: 50px; line-height: 50px;}
+.top1 span{ display:block; font-size:13px; float:left; margin-left:20px; margin-right: 20px;}
+.top_in{ width:124px; height:24px;border:solid 1px #aaaaaa;}
+.top_select{ width:98px; height:24px; outline:none;}
+.top_button{ overflow:hidden;}
+.top_button img{ float:left; margin-top:8px; margin-left:16px; margin-right:5px;}
+
+.content_title{ background:#bdd3e0; height:40px; line-height:40px; margin-top:10px; position:relative;}
+.content_sp1{ display:block; position:absolute;width:6px; height:20px; background-color:#20b891; border:solid 1px #3da396;top:10px; border-radius:3px;left:20px;}
+.content_sp2{ display:block; font-size:13px; left:40px; position:absolute;}
+.img_tj{ display:block; float:left; margin-top:14px;}
+.content_sp3{display:block;position:absolute;right:20px;font-size:13px; color:#4c6456; font-weight:bold; cursor:pointer; overflow:hidden;}
+.content_sp3 span{ display:block; float:left;}
+
+.content_t{overflow:auto; float:left; margin-left:1%; width:83%;}
+.content_ul_w{ overflow:auto; height:270px;}
+.content_li{border-bottom:1px solid #eaedf1; background:#fff; overflow:hidden; height:28px;}
+.content_li span{ display:block; float:left; white-space:nowrap;color:#323232; font-size:13px; height:28px;line-height:28px; text-align:center;}
+.span1_0{ width:30px; font-weight:bold;}
+.span1{ font-weight:bold; width:100px;}
+.span2_0{ width:30px;}
+.span2{ width:100px;}
+.content_a{ display:block; height:28px; line-height:28px;font-size:13px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+
+.content_bottom1{ background:#fff; height:30px; margin-top:10px;}
+.content_bottom2{ background:#fff; height:42px; margin-top:2px; line-height:42px; position:relative;}
+.b1{ margin-left:10px; position:absolute; overflow:hidden;}
+.b1 input{ float:left; margin-top:15px;}
+.b1 label{ display:block; font-size:12px; color:#323232; float:left; margin-left:2px;}
+.b2{ width:32px; height:20px; line-height:20px; border:solid 1px #ced3d7; background:#d0e0e7; color:#323232; float:left; font-size:12px; text-align:center; position:absolute; left:60px; top:11px; cursor:default;}
+.b3{ height:20px; line-height:20px; position:absolute; right:360px; top:11px; border: solid 1px #13b58e;}
+.b3_s1{ font-size:12px; color:#13b58e;}
+.b3_s2{ font-size:12px; color:#323232;}
+
+.b4{ height:20px; line-height:20px; position:absolute; right:280px; top:11px; color:#323232; font-size:12px;}
+.b5{ height:20px; line-height:20px; position:absolute; right:15px; top:11px;}
+.b5_s1{ color:#13b58e; font-size:12px; border: solid 1px #13b58e; padding:0 3px; cursor:pointer;}
+.b5_s3 input{ color:#323232; width:25px; font-size:12px; border: solid 1px #13b58e;}
+.b5_s2{ color:#fff; background:#13b58e;}
+
+.ul1 ul{ display:none;}
+.gs_div{ width:202px; height:320px; overflow:hidden;}
+.bm_c{ width:204px; height:322px; overflow:hidden;border:solid 1px #c1c1c1;position: absolute; top: 38px;left: 264px; background: #fff; display: none;}
+.gw_c{ width:204px; height:322px; overflow:hidden;border:solid 1px #c1c1c1;position: absolute; top: 38px;left: 469px; background: #fff; display: none;}
+.gs_c{ width:204px; height:322px; overflow:hidden; border:solid 1px #c1c1c1;position: absolute; top: 38px;left: 59px; background: #fff;  display: none;}
+.gs_title1{ width:100%; height:30px; line-height:30px; background:#eff1f1; border-bottom:solid 1px #dadbdb;}
+.top_s1{ display:block; float:left; color:#526856; font-size:12px; font-weight:bold; margin-left:5px;cursor:default;}
+.top_s2{ display:block; float:right; color:#22bf9b; font-size:12px; margin-right:5px; cursor:default;}
+.ss{ background:#fff; width:100%; height:34px; overflow:hidden;}
+.ss_inp1{ height:24px; width:156px; border: solid 1px #e3e8ec; outline:none; float:left; background:#f3f5f7; margin-top:5px; margin-left:5px;}
+.ss_inp2{ display:block; width:36px; height:24px; background:#22bf9b; float:left; margin-top:5px;}
+.ss_inp2 img{ width:20px; height:auto; margin-top:2px; margin-left:8px;}
+.gs_title2{ width:202px; height:199px; overflow:auto; border-bottom:solid 1px #dadbdb;}
+.gs_title2 li{margin: 10px 0; white-space:nowrap; font-size:12px; color:#222222;}
+.gs_title2 ul{margin:0px; -webkit-padding-start:10px !important; width:auto; height:auto;}
+.gs_title2 img{display: block; float: left; margin: 2px 5px 0 0;}
+.bottom1{ width:100%; height:54px; overflow:hidden;}
+.bottom_s1{ display:block; width:74px; height:30px; line-height:30px; text-align:center; background:#1eb891; float:left; border-radius:2px; margin-left:22px; color:#fff; font-size:14px; margin-top:12px;cursor:pointer;}
+.bottom_s2{ display:block; width:74px; height:30px; line-height:30px; text-align:center; background:#465a6e; float:left; border-radius:2px; margin-left:10px; color:#fff; font-size:14px; margin-top:12px;cursor:pointer;}
+
+</style>
+<div class="zong">
+    <div class="top_k">
+    	<form method='post' id="form_adv_search" name="form_adv_search" enctype="multipart/form-data">
+        <ul class="top1">
+            <li>
+				<span>公司：
+					<select class="top_select" name="company">
+	                    <option selected="selected" value="-1">不限</option>
+	                    <option value="1">启用</option>
+	                    <option value="0">禁用</option>
+	                </select>
+				</span>
+				<span>部门：
+					<select class="top_select" name="dept">
+	                    <option selected="selected" value="-1">不限</option>
+	                    <option value="1">启用</option>
+	                    <option value="0">禁用</option>
+	                </select>
+				</span>
+				<span>岗位：
+					<select class="top_select" name="position">
+	                    <option selected="selected" value="-1">不限</option>
+	                    <option value="1">启用</option>
+	                    <option value="0">禁用</option>
+	                </select>
+				</span>
+				<span>姓名：<input class="top_in" type="text"/></span>
+				<span>入职日期：<input data-date-format="yyyy-mm-dd" id="entry_date" name="entry_date" type="text" class="form-control input-date in1"></span>
+            </li>
+            <li>
+            	<span>招聘状态：
+					<select class="top_select">
+						<option selected="selected">请选择</option>
+					</select>
+				</span>
+            
+				<span>招聘渠道：<input class="top_in" type="text"/></span>
+				<span>人事专员：<input class="top_in" type="text"/></span>
+				<div class="top_button">
+					<img src="img/cx.png"/>
+				</div>
+            </li>   
+        </ul>
+        </form>
+    </div>
+    <div class="content">
+    	<div class="content_title">
+            <span class="content_sp1"></span>
+            <span class="content_sp2">招聘信息跟进</span>
+            <a class="content_sp3" href="zpxxgj_tj.html">
+            	<img class="img_tj" src="img/tj3.png"/>
+            </a>  
+        </div>
+        <div class="content_ul_w">
+            <ul class="content_ul">
+                <li class="content_li">
+                    <span class="span1_0"></span>
+                    <span class="span1">公司</span>
+                    <span class="span1">部门</span>
+                    <span class="span1">岗位</span>
+                    <span class="span1">姓名</span>
+                    <span class="span1">性别</span>
+                    <span class="span1">手机号码</span>
+                    <span class="span1">录用日期</span>
+                    <span class="span1">入职日期</span>
+                    <span class="span1">员工状态</span>
+                    <span class="span1">招聘截至日期</span>
+                    <span class="span1">人事专员</span>
+                    <span class="span1">招聘状态</span>
+                    <span class="span1">操作</span>
+                    <span class="span1"></span>
+                    <span class="span1"></span>
+                    <span class="span1"></span>
+                    <span class="span1"></span>
+                </li>
+                <li class="content_li">
+                    <span class="span2_0"><input name="box" type="checkbox"/></span>
+                    <span class="span2">公司总部</span>
+                    <span class="span2">技术部</span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"><a class="content_a" id="a_gjck" href="zpxxgj_tj.html">查看</a></span>
+                    <span class="span2"><a class="content_a" id="a_gjbj" href="zpxxgj_tj.html">编辑</a></span>
+                    <span class="span2"><a class="content_a" id="a_gjbd">报到</a></span>
+                    <span class="span2"><a class="content_a" id="a_gjwbd">未报到</a></span>
+                    <span class="span2"><a class="content_a">建档</a></span>
+                </li>
+                <li class="content_li">
+                    <span class="span2_0"><input name="box" type="checkbox"/></span>
+                    <span class="span2">公司总部</span>
+                    <span class="span2">技术部</span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"></span>
+                    <span class="span2"><a class="content_a">查看</a></span>
+                    <span class="span2"><a class="content_a">编辑</a></span>
+                    <span class="span2"><a class="content_a">报到</a></span>
+                    <span class="span2"><a class="content_a">未报到</a></span>
+                    <span class="span2"><a class="content_a">建档</a></span>
+                </li>
+            </ul>
+        </div> 
+	</div>
+	<div class="content_bottom">
+        <div class="content_bottom1"></div>
+        <div class="content_bottom2">
+            <div class="b1">
+                <input id="all" type="checkbox"/>
+                <label for="all">全选</label>
+            </div>
+            
+            <div class="b2">删除</div>
+            
+            <div class="b3">
+                <span class="b3_s1">共有</span>
+                <span class="b3_s2">37872</span>
+                <span class="b3_s1">条记录</span>
+            </div>
+            <div class="b4">
+                <span>每页:</span>
+                <select>
+                    <option>10</option>
+                    <option>20</option>
+                </select>
+            </div>
+            <div class="b5">
+                <span class="b5_s1">1</span>
+                <span class="b5_s1">2</span>
+                <span class="b5_s1">3</span>
+                <span class="b5_s1">4</span>
+                <span class="b5_s1">5</span>
+                <span>...</span>
+                <span class="b5_s1">3788</span>
+                <span class="b5_s1">下一页</span>
+                <span class="b5_s3"><input type="text"/></span>
+                <span class="b5_s1">go</span>
+            </div>
+        </div>
+    </div>
+    <!--公司-->
+	<div class="gs_a">
+	<div class="gs_c" >
+		<div class="gs_div" id="gs_xz"> 
+			<div class="gs_title1">
+				<span class="top_s1">公司选择</span>
+				<span class="top_s2" id="gb1">【关闭】</span>
+				<span class="top_s2" id="qk1">【清空】</span>
+			</div>
+			<div class="ss">
+				<input class="ss_inp1" type="search"/>
+				<span class="ss_inp2">
+					<img src="img/left1.png"/>
+				</span>
+			</div>
+			<div class="gs_title2">
+				<ul>
+				  <li>
+					<img src="img/hl.png"/>
+					<input type="checkbox" name="tall" id="tall0">
+					<label for="tall0">神洲</label>
+				  </li>
+				  <li>
+					<img src="img/hl.png"/>
+					<input type="checkbox" name="tall" id="tall0">
+					<label for="tall0">神洲</label>
+				  </li>
+				</ul>
+			</div>
+			<div class="bottom1">
+				<span class="bottom_s1" id="qr1">确定</span>
+				<span class="bottom_s2" id="qx1">取消</span>
+			</div>
+		</div>
+	</div>
+	</div>
+	<!--部门-->
+	<div class="bm_a">
+	<div class="bm_c">
+		<div class="gs_div"> 
+			<div class="gs_title1">
+				<span class="top_s1">部门选择</span>
+				<span class="top_s2" id="gb2">【关闭】</span>
+				<span class="top_s2" id="qk2">【清空】</span>
+			</div>
+			<div class="ss">
+				<input class="ss_inp1" type="search"/>
+				<span class="ss_inp2">
+					<img src="img/left1.png"/>
+				</span>
+			</div>
+			<div class="gs_title2">
+				<ul>
+				  <li>
+					<img src="img/hl.png"/>
+					<input type="checkbox" name="tall" id="tall">
+					<label for="tall">神洲</label>
+
+					<ul>
+					  <li>
+						<img src="img/hl.png"/>
+						<input type="checkbox" name="tall-2" id="tall-2">
+						<label for="tall-2">总部</label>
+						<ul class="ul1">
+						  <li>
+								<img src="img/zk.png"/>
+								<input type="checkbox" name="tall-3" id="tall-3">
+								<label for="tall-3">人事部</label>
+						  </li>
+						  <li>
+							<img src="img/zk.png"/>
+							<input type="checkbox" name="tall-2-1" id="tall-2-1">
+							<label for="tall-2-1">技术部</label>
+							<ul >
+								<li>
+									<img src="img/zk.png"/>
+									<input type="checkbox" name="tall-2-2" id="tall-2-2">
+									<label for="tall-2-2">产品线</label>
+									<ul>
+										<li>
+											<img src="img/zk.png"/>
+											<input type="checkbox" name="tall-2-2" id="tall-2-3">
+											<label for="tall-2-3">业务组</label>
+										</li>
+										<li>
+											<img src="img/zk.png"/>
+											<input type="checkbox" name="tall-2-2" id="tall-2-4">
+											<label for="tall-2-4">业务组</label>
+										</li>
+										<li>
+											<img src="img/zk.png"/>
+											<input type="checkbox" name="tall-2-2" id="tall-2-5">
+											<label for="tall-2-5">业务组</label>
+										</li>
+									</ul>
+								 </li>
+							 </ul>
+						  </li>
+						</ul>
+					  </li>
+					</ul>
+				  </li>
+				</ul>
+			</div>
+			<div class="bottom1">
+				<span class="bottom_s1" id="qr2">确定</span>
+				<span class="bottom_s2" id="qx2">取消</span>
+			</div>
+		</div>
+	</div>
+	</div>
+	<!--岗位-->
+	<div class="gw_a">
+	<div class="gw_c">
+		<div class="gs_div"> 
+			<div class="gs_title1">
+				<span class="top_s1">岗位选择</span>
+				<span class="top_s2" id="gb3">【关闭】</span>
+				<span class="top_s2" id="qk3">【清空】</span>
+			</div>
+			<div class="ss">
+				<input class="ss_inp1" type="search"/>
+				<span class="ss_inp2">
+					<img src="img/left1.png"/>
+				</span>
+			</div>
+			<div class="gs_title2">
+				<ul>
+				  <li>
+					<input type="checkbox" id="tall1_1">
+					<label for="tall1_1">JAVA开发工程师</label>
+				  </li>
+				  <li>
+					<input type="checkbox" id="tall1">
+					<label for="tall1">PHP开发工程师</label>
+				  </li>   
+				</ul>
+			</div>
+			<div class="bottom1">
+				<span class="bottom_s1" id="qr3">确定</span>
+				<span class="bottom_s2" id="qx3">取消</span>
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
