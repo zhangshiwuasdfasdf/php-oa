@@ -160,20 +160,20 @@ class OrganizationAction extends CommonAction {
 					$where = array();
 // 					$where['is_del'] = 0;
 					if(!empty($_REQUEST['dept_id'])){
-						$where['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
+						$where_user['dept_id'] = array('in',get_child_dept_all($_REQUEST['dept_id']));
 // 						$where['dept_id'] = array('eq',$_REQUEST['dept_id']);
-						$where_r_user_position['dept_id'] = $where['dept_id'];
+// 						$where_user['dept_id'] = $where['dept_id'];
 					}
 					if('' != $_REQUEST['is_part_time_job']){
 						if($_REQUEST['is_part_time_job'] == '0'){
-							$where_r_user_position['is_major'] = '1';
+							$where_user['is_major'] = '1';
 						}elseif($_REQUEST['is_part_time_job'] == '1'){
-							$where_r_user_position['is_major'] = '0';
+							$where_user['is_major'] = '0';
 						}
 					}
-					$user_ids3 = M('RUserPosition')->where($where_r_user_position)->getField('user_id',true);
-					$r_dept_user = M("RDeptUser")->where($where)->getField('user_id,dept_id');
-					$user_ids1 = M("RDeptUser")->where($where)->getField('user_id',true);
+// 					$user_ids3 = M('RUserPosition')->where($where_r_user_position)->getField('user_id',true);
+// 					$r_dept_user = M("RDeptUser")->where($where)->getField('user_id,dept_id');
+// 					$user_ids1 = M("RDeptUser")->where($where)->getField('user_id',true);
 					
 					if(!empty($_REQUEST['status'])){
 						$name_array = array('实习生','试用期','已转正','拟离职','离职');
@@ -181,36 +181,36 @@ class OrganizationAction extends CommonAction {
 						foreach ((explode(',', $_REQUEST['status'])) as $k=>$v){
 							$where_status_manage_part[] = $name_array[$v];
 						}
-						$where_status_manage['stuff_status'] = array('in',array_filter($where_status_manage_part));
+						$where_user['stuff_status'] = array('in',array_filter($where_status_manage_part));
 					}else{
-						$where_status_manage['stuff_status'] = array('in',array('实习生','试用期','已转正','拟离职'));
+						$where_user['stuff_status'] = array('in',array('实习生','试用期','已转正','拟离职'));
 					}
-					$user_ids2 = M("StatusManage")->where($where_status_manage)->getField('user_id',true);
-					$user_ids_status = M('StatusManage')->where($where_status_manage)->getField('user_id,stuff_status');
-					$user_ids = array_intersect($user_ids1,$user_ids2,$user_ids3);
-					$where_user['id'] = array('in',$user_ids);
+// 					$user_ids2 = M("StatusManage")->where($where_status_manage)->getField('user_id',true);
+// 					$user_ids_status = M('StatusManage')->where($where_status_manage)->getField('user_id,stuff_status');
+// 					$user_ids = array_intersect($user_ids1,$user_ids2,$user_ids3);
+// 					$where_user['id'] = array('in',$user_ids);
 					$where_user['is_del'] = '0';
 					if(!empty($_REQUEST['name_no'])){
 						$keyword = preg_replace('/^0+/','',trim($_REQUEST['name_no']));
-						$where_user['id|name|emp_no'] = array('like','%'.$keyword.'%');
+						$where_user['RUserPosition.user_id|User.name|User.emp_no'] = array('like','%'.$keyword.'%');
 					}
 					
-					$list_user = M('User')->field('id,emp_no,name,sex,is_del')->where($where_user)->page($p.',10')->select();
+					$list_user = D('UserPositionView')->where($where_user)->select();
 					
 					foreach ($list_user as $k=>$v){
-						$list_user[$k]['no'] = formatto4w($v['id']).'_'.$v['name'];
-						$list_user[$k]['dept_id'] = $r_dept_user[$v['id']];
-						$list_user[$k]['dept_name'] = M('Dept')->where(array('id'=>$list_user[$k]['dept_id']))->getField('name');
+						$list_user[$k]['no'] = formatto4w($v['user_id']).'_'.$v['name'];
+// 						$list_user[$k]['dept_id'] = $r_dept_user[$v['id']];
+// 						$list_user[$k]['dept_name'] = M('Dept')->where(array('id'=>$list_user[$k]['dept_id']))->getField('name');
 // 						$r_user_position = M('RUserPosition')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
-						$position_view = D('UserPositionView')->field('id,is_major,position_id,position_name,sequence_name')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
+// 						$position_view = D('UserPositionView')->field('id,is_major,position_id,position_name,sequence_name')->where(array('user_id'=>$v['id'],'dept_id'=>$list_user[$k]['dept_id']))->find();
 						
-						$list_user[$k]['position_id'] = $position_view['position_id'];
-						$list_user[$k]['position_name'] = $position_view['position_name'];
-						$list_user[$k]['position_sequence'] = $position_view['sequence_name'];
-						$list_user[$k]['major'] = $position_view['is_major']==1?'主要':'兼职';
+// 						$list_user[$k]['position_id'] = $position_view['position_id'];
+// 						$list_user[$k]['position_name'] = $position_view['position_name'];
+						$list_user[$k]['position_sequence'] = $v['sequence_name'];
+						$list_user[$k]['major'] = $v['is_major']==1?'主要':'兼职';
 // 						$list_user[$k]['is_del'] = $list_user[$k]['is_del']==1?'离职':'在职';
-						$list_user[$k]['status'] = $user_ids_status[$v['id']];
-						$list_user[$k]['upid'] = $position_view['id'];
+						$list_user[$k]['status'] = $v['stuff_status'];
+						$list_user[$k]['upid'] = $v['id'];
 // 						$list_user[$k]['company_name'] = getRootDept($list[$k]['dept_id'])['name'];
 // 						$list_user[$k]['company_id'] = getRootDept($list[$k]['dept_id'])['id'];
 // 						$list_user[$k]['all_company'] = $this->_get_all_company_html($list[$k]['company_id']);

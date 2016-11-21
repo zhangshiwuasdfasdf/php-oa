@@ -883,8 +883,8 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 							background = 'style="background:silver;"';
 						}
 						user_temp += '<li class="content_li" '+background+'>';
-						user_temp += '<span class="span2_0"><input name="box_user[]" class="box_user" type="checkbox" value="'+v.id+'"/></span>';
-						var url = "{:U('profile/user',array('id'=>'"+v.id+"'))}";
+						user_temp += '<span class="span2_0"><input name="box_user[]" class="box_user" type="checkbox" value="'+v.user_id+'"/></span>';
+						var url = "{:U('profile/user',array('id'=>'"+v.user_id+"'))}";
 						user_temp += '<span class="span2"><a class="content_a" href="'+url+'">'+v.no+'</a></span>';
 						user_temp += '<span class="span2">'+v.name+'</span>';
 						user_temp += '<span class="span2">'+v.dept_name+'</span>';
@@ -892,8 +892,8 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 						user_temp += '<span class="span2">'+v.major+'</span>';
 						user_temp += '<span class="span2">'+v.status+'</span>';
 						user_temp += '<span class="span2">'+v.position_sequence+'</span>';
-						user_temp += '<span class="span2"><a class="content_a" id="a_ygbj" onclick="edit_user(\''+v.id+'\',\''+v.name+'\',\''+v.dept_id+'\',\''+v.position_id+'\',\''+v.is_del+'\',\''+v.position_sequence+'\')">编辑</a></span>';
-						user_temp += '<span class="span2"><a class="content_a" id="a_js" onclick="distribution_user_role(\''+v.id+'\')">角色分配</a></span>';
+						user_temp += '<span class="span2"><a class="content_a" id="a_ygbj" onclick="edit_user(\''+v.user_id+'\',\''+v.name+'\',\''+v.dept_id+'\',\''+v.position_id+'\',\''+v.is_del+'\',\''+v.position_sequence+'\')">编辑</a></span>';
+						user_temp += '<span class="span2"><a class="content_a" id="a_js" onclick="distribution_user_role(\''+v.user_id+'\')">角色分配</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_xz" onclick="admin_jurisdiction(\''+v.upid+'\')">行政关系范围</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_yw" onclick="business_jurisdiction(\''+v.upid+'\')">业务管辖部门</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_jd" onclick="business_base(\''+v.upid+'\')">业务管辖基地</a></span>';
