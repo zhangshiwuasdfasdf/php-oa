@@ -114,7 +114,7 @@ class MaintainAction extends CommonAction {
 	}
 	
 	function del(){
-		$this -> _del();
+		$this -> _del(null,'MenuNew');
 	}
 	//验证同级菜单名称是否存在
 	public function avliName(){

@@ -13,6 +13,9 @@ class RoleManagerAction extends CommonAction {
 	}
 	//列表页
 	function index (){
+// 		$uid;
+// 		$upid = M('RUserPosition')->where(array('user_id'=>$uid,'is_major'=>'1'))->getField('id');
+// 		$role_ids = getRoleIdsByUpid($upid);
 		$map = $this -> _search();
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
