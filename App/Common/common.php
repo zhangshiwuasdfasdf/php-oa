@@ -3813,4 +3813,11 @@ function getRootDept($dept_id){
 function showPriName($id){
 	return M('MenuNew')->where(array('id'=>$id))->getField('menu_name');
 }
+function showBusiness($rid,$mid){
+	$info = M('RRoleMenu') -> where(array('menu_id'=>$mid,'role_id'=>$rid))->getField('scope');
+	return $info ? $info : "1";
+}
+function showBusinessSave($rid,$mid){
+	return $info = M('RRoleMenu') -> where(array('menu_id'=>$mid,'role_id'=>$rid))->getField('id');
+}
 ?>

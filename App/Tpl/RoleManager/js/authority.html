@@ -8,11 +8,15 @@ function save(o){
 	$(".qx_div select[name='data_role']").each(function(){
 		drs += $(this).find("option:selected").val().trim() + ',';
 	});
+	var rmid = ''; 
+	$(".qx_div select[name='data_role']").each(function(){
+		rmid += $(this).attr('rmid').trim() + ',';
+	});
 	var pids = '';
 	$(".qx_div li input:checkbox[name='check_kq']:checked").each(function(){
 		pids += $(this).val() + ',';
 	});
-	$.post("{:U('setAuth')}",{"rid":rid,"pids":pids,"drs":drs},function(data){
+	$.post("{:U('setAuth')}",{"rid":rid,"pids":pids,"drs":drs,"rmid":rmid},function(data){
 		ui_alert(data.info,function(){
 			location.reload();
 		});

@@ -13,7 +13,7 @@
 	    <div class="qx_div qx_div{$key}">
 	         <div class="qx_div_l">
 	            <span class="qx_sp1">{$key|showPriName}</span>
-	            <select class="qx_select" name="data_role">
+	            <select class="qx_select" name="data_role" node={$key|showBusiness=$rid,###} rmid={$key|showBusinessSave=$rid,###}>
 	                <option value="1">1_全局范围</option>
 	                <option value="2">2_行政管辖范围</option>
 	                <option value="3">3_仅自己</option>
@@ -39,5 +39,8 @@
 $(function() {
 	var html = "<li>系统设置</li><li>权限管理</li><li>角色管理</li>";
 	$("#breadcrumbs ul").append(html);
+	$(".qx_select").each(function(){
+		$(this).val($(this).attr('node'));
+	});
 });
 </script>
