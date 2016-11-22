@@ -70,24 +70,16 @@
         <ul class="top1">
             <li>
 				<span>公司：
-					<select class="top_select" name="company">
-	                    <option selected="selected" value="-1">不限</option>
-	                    <option value="1">启用</option>
-	                    <option value="0">禁用</option>
+					<select class="top_select" name="company" id="company" onchange="change_dept($(this).val())">
+	                    {$company}
 	                </select>
 				</span>
 				<span>部门：
-					<select class="top_select" name="dept">
-	                    <option selected="selected" value="-1">不限</option>
-	                    <option value="1">启用</option>
-	                    <option value="0">禁用</option>
+					<select class="top_select" name="dept" id="dept" onchange="change_position($(this).val())">
 	                </select>
 				</span>
 				<span>岗位：
-					<select class="top_select" name="position">
-	                    <option selected="selected" value="-1">不限</option>
-	                    <option value="1">启用</option>
-	                    <option value="0">禁用</option>
+					<select class="top_select" name="position" id="position">
 	                </select>
 				</span>
 				<span>姓名：<input class="top_in" type="text"/></span>
@@ -97,13 +89,19 @@
             	<span>招聘状态：
 					<select class="top_select">
 						<option selected="selected">请选择</option>
+						<option value="1">招聘中</option>
+						<option value="2">待报到</option>
+						<option value="3">已报到</option>
+						<option value="4">已建档</option>
+						<option value="5">未报到</option>
+						<option value="6">任务未完成</option>
 					</select>
 				</span>
             
 				<span>招聘渠道：<input class="top_in" type="text"/></span>
 				<span>人事专员：<input class="top_in" type="text"/></span>
 				<div class="top_button">
-					<img src="img/cx.png"/>
+					<img src="__PUBLIC__/img/cx.png"/>
 				</div>
             </li>   
         </ul>
@@ -113,8 +111,8 @@
     	<div class="content_title">
             <span class="content_sp1"></span>
             <span class="content_sp2">招聘信息跟进</span>
-            <a class="content_sp3" href="zpxxgj_tj.html">
-            	<img class="img_tj" src="img/tj3.png"/>
+            <a class="content_sp3" href="{:U('add')}">
+            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
             </a>  
         </div>
         <div class="content_ul_w">
@@ -139,46 +137,40 @@
                     <span class="span1"></span>
                     <span class="span1"></span>
                 </li>
-                <li class="content_li">
-                    <span class="span2_0"><input name="box" type="checkbox"/></span>
-                    <span class="span2">公司总部</span>
-                    <span class="span2">技术部</span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"><a class="content_a" id="a_gjck" href="zpxxgj_tj.html">查看</a></span>
-                    <span class="span2"><a class="content_a" id="a_gjbj" href="zpxxgj_tj.html">编辑</a></span>
-                    <span class="span2"><a class="content_a" id="a_gjbd">报到</a></span>
-                    <span class="span2"><a class="content_a" id="a_gjwbd">未报到</a></span>
-                    <span class="span2"><a class="content_a">建档</a></span>
-                </li>
-                <li class="content_li">
-                    <span class="span2_0"><input name="box" type="checkbox"/></span>
-                    <span class="span2">公司总部</span>
-                    <span class="span2">技术部</span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"></span>
-                    <span class="span2"><a class="content_a">查看</a></span>
-                    <span class="span2"><a class="content_a">编辑</a></span>
-                    <span class="span2"><a class="content_a">报到</a></span>
-                    <span class="span2"><a class="content_a">未报到</a></span>
-                    <span class="span2"><a class="content_a">建档</a></span>
-                </li>
+               	<empty name="list">
+					<li class="no-data">
+						没找到数据
+					</li>
+				<else/>
+					<form method="post" action="" id="form_data2">
+					<foreach name="list" item="vo">
+					
+		                <li class="content_li">
+		                    <span class="span2_0"><input name="box" type="checkbox"/></span>
+		                    <span class="span2">{$vo.company_name}&nbsp;</span>
+		                    <span class="span2">{$vo.dept_name}&nbsp;</span>
+		                    <span class="span2">{$vo.position_name}&nbsp;</span>
+		                    <span class="span2">{$vo.name}&nbsp;</span>
+		                    <span class="span2">{$vo.sex|showsex}&nbsp;</span>
+		                    <span class="span2">{$vo.mobile}&nbsp;</span>
+		                    <span class="span2">{$vo.employed_date}&nbsp;</span>
+		                    <span class="span2">{$vo.entry_date}&nbsp;</span>
+		                    <span class="span2">{$vo.stuff_status}&nbsp;</span>
+		                    <span class="span2">{$vo.recruit_deadline}&nbsp;</span>
+		                    <span class="span2">{$vo.hr_specialist_name}&nbsp;</span>
+		                    <span class="span2">{$vo.recruit_status_name}&nbsp;</span>
+		                    <span class="span2"><a class="content_a" href="{:U('read?id='.$vo['id'])}">查看</a></span>
+		                    <span class="span2"><a class="content_a" href="{:U('edit?id='.$vo['id'])}">编辑</a></span>
+		                    <if condition="$vo.recruit_status eq '0'">
+		                    	<span class="span2"><a class="content_a" onclick="set_recruit_status('{$vo.id}','1')">报到</a></span>
+		                    	<span class="span2"><a class="content_a" onclick="set_recruit_status('{$vo.id}','3')">未报到</a></span>
+		                    <elseif condition="$vo.recruit_status eq '1'"/>
+		                    	<span class="span2"><a class="content_a" onclick="set_recruit_status('{$vo.id}','2')">建档</a></span>
+		                    </if>
+		                </li>
+		             </foreach>
+		             </form>
+		          </empty>
             </ul>
         </div> 
 	</div>
@@ -236,12 +228,12 @@
 			<div class="gs_title2">
 				<ul>
 				  <li>
-					<img src="img/hl.png"/>
+					<img src="__PUBLIC__/img/hl.png"/>
 					<input type="checkbox" name="tall" id="tall0">
 					<label for="tall0">神洲</label>
 				  </li>
 				  <li>
-					<img src="img/hl.png"/>
+					<img src="__PUBLIC__/img/hl.png"/>
 					<input type="checkbox" name="tall" id="tall0">
 					<label for="tall0">神洲</label>
 				  </li>
@@ -266,19 +258,19 @@
 			<div class="ss">
 				<input class="ss_inp1" type="search"/>
 				<span class="ss_inp2">
-					<img src="img/left1.png"/>
+					<img src="__PUBLIC__/img/left1.png"/>
 				</span>
 			</div>
 			<div class="gs_title2">
 				<ul>
 				  <li>
-					<img src="img/hl.png"/>
+					<img src="__PUBLIC__/img/hl.png"/>
 					<input type="checkbox" name="tall" id="tall">
 					<label for="tall">神洲</label>
 
 					<ul>
 					  <li>
-						<img src="img/hl.png"/>
+						<img src="__PUBLIC__/img/hl.png"/>
 						<input type="checkbox" name="tall-2" id="tall-2">
 						<label for="tall-2">总部</label>
 						<ul class="ul1">
