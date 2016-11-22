@@ -16,7 +16,7 @@ class PositionSequenceAction extends CommonAction {
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
-		$model = D('PositionSequence');
+		$model = M('PositionSequence');
 		if (!empty($model)) {
 			$info = $this -> _list($model, $map,'sequence_degree');
 		}
@@ -26,7 +26,7 @@ class PositionSequenceAction extends CommonAction {
 	function add(){
 		if(IS_POST)
     	{
-    		$model = D('PositionSequence');
+    		$model = M('PositionSequence');
     		if($model->create(I('post.'), 1))
     		{
     			if($id = $model->add())
@@ -73,6 +73,36 @@ class PositionSequenceAction extends CommonAction {
 			} else {
 				$this -> ajaxReturn('', "删除失败", 0);
 			}
+	}
+	
+	Public function checkNo () {
+		$sequence_number = $this->_post('sequence_number');
+		$where = array('sequence_number' => $sequence_number);
+		if (M('PositionSequence')->where($where)->getField('id')) {
+			echo 'false';
+		} else {
+			echo 'true';
+		}
+	}
+	
+	Public function checkName () {
+		$sequence_name = $this->_post('sequence_name');
+		$where = array('sequence_name' => $sequence_name);
+		if (M('PositionSequence')->where($where)->getField('id')) {
+			echo 'false';
+		} else {
+			echo 'true';
+		}
+	}
+	
+	Public function checkDegree () {
+		$sequence_degree = $this->_post('sequence_degree');
+		$where = array('sequence_degree' => $sequence_degree);
+		if (M('PositionSequence')->where($where)->getField('id')) {
+			echo 'false';
+		} else {
+			echo 'true';
+		}
 	}
 	
 }
