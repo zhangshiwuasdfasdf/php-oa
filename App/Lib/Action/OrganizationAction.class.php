@@ -399,13 +399,18 @@ class OrganizationAction extends CommonAction {
 		$this->ajaxReturn($data,1,1);
 	}
 	function user_edit(){
-		$res_user = M('User')->where(array('id'=>$_POST['user_user_id']))->save(array('name'=>$_POST['user_user_name']));
-		$res_r_dept_user = M('RDeptUser')->where(array('dept_id'=>$_POST['user_origin_dept_id'],'user_id'=>$_POST['user_user_id']))->save(array('dept_id'=>$_POST['user_dept']));
-		$res_r_user_position = M('RUserPosition')->where(array('position_id'=>$_POST['user_origin_position_id'],'user_id'=>$_POST['user_user_id']))->save(array('position_id'=>$_POST['user_position'],'is_major'=>$_POST['user_major'],'dept_id'=>$_POST['user_dept'],'position_sequence_id'=>$_POST['user_position_sequence_id']));
-		if(false !== $res_user && false !== $res_r_dept_user && false !== $res_r_user_position){
-			$this->success('修改成功');
+		$find = M('RUserPosition')->where(array('is_major'=>'1','user_id'=>$_POST['user_user_id'],'is_del'=>'0'))->find();
+		if(false != $find && $_POST['user_major'] == '1'){
+			$this->error('此人已有主要岗位，只能添加兼职岗位');
 		}else{
-			$this->error('修改失败');
+			$res_user = M('User')->where(array('id'=>$_POST['user_user_id']))->save(array('name'=>$_POST['user_user_name']));
+			$res_r_dept_user = M('RDeptUser')->where(array('dept_id'=>$_POST['user_origin_dept_id'],'user_id'=>$_POST['user_user_id']))->save(array('dept_id'=>$_POST['user_dept']));
+			$res_r_user_position = M('RUserPosition')->where(array('position_id'=>$_POST['user_origin_position_id'],'user_id'=>$_POST['user_user_id']))->save(array('position_id'=>$_POST['user_position'],'is_major'=>$_POST['user_major'],'dept_id'=>$_POST['user_dept'],'position_sequence_id'=>$_POST['user_position_sequence_id']));
+			if(false !== $res_user && false !== $res_r_dept_user && false !== $res_r_user_position){
+				$this->success('修改成功');
+			}else{
+				$this->error('修改失败');
+			}
 		}
 	}
 	function user_dept_position_set(){
@@ -421,9 +426,12 @@ class OrganizationAction extends CommonAction {
 		if(false != $find){
 			$this->error('此部门下已有此人！');
 		}else{
-			$find = M('RUserPosition')->where(array('position_id'=>$position_id,'user_id'=>$user_id))->find();
+			$find = M('RUserPosition')->where(array('position_id'=>$position_id,'user_id'=>$user_id,'is_del'=>'0'))->find();
+			$find2 = M('RUserPosition')->where(array('is_major'=>'1','user_id'=>$user_id,'is_del'=>'0'))->find();
 			if(false != $find){
 				$this->error('此岗位下已有此人！');
+			}elseif(false != $find2 && $is_major == '1'){
+				$this->error('此人已有主要岗位，只能添加兼职岗位！');
 			}else{
 				$res1 = M('RDeptUser')->add(array('dept_id'=>$dept_id,'user_id'=>$user_id));
 				$res2 = M('RUserPosition')->add(array('position_id'=>$position_id,'user_id'=>$user_id,'is_major'=>$is_major,'dept_id'=>$dept_id,'position_sequence_id'=>$sequence_id));
