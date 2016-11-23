@@ -7,15 +7,12 @@ class RoleManagerAction extends CommonAction {
 		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
 			$map['role_name'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
-		if($_REQUEST['status'] !== "-1" && !empty($_REQUEST['status'])){
+		if($_REQUEST['status'] !== "" && $_REQUEST['status'] !== null){
 			$map['status'] = array('eq',$_REQUEST['status']);
 		}
 	}
 	//列表页
 	function index (){
-// 		$uid;
-// 		$upid = M('RUserPosition')->where(array('user_id'=>$uid,'is_major'=>'1'))->getField('id');
-// 		$role_ids = getRoleIdsByUpid($upid);
 		$map = $this -> _search();
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
@@ -26,6 +23,7 @@ class RoleManagerAction extends CommonAction {
 		}
 		$dept = M('dept')->where(array('pid'=>'0','is_del'=>'0','is_use'=>'1'))->select();
 		$this -> assign('dept',$dept);
+		$this -> assign('status',$_REQUEST['status']);
 		$this -> display();	
 		
 	}

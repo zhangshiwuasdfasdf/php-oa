@@ -1464,7 +1464,33 @@ function dropdown_menu($tree, $level = 0) {
 	}
 	return $html;
 }
-
+//页面菜单栏的显示
+function left_new_tree_menu($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"content_ul\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["menu_name"])) {
+				$title = $val["menu_name"];
+				$id = $val["id"];
+				$pid = $val["pid"];
+				$url = U($val["menu_addr"]);
+				$sort = $val['sort'];
+				if (isset($val['_child'])) {
+					$html = $html . "<li>\r\n<a class=\"menu_li2_a\"><span class=\"cd_span2\"></span><div class=\"cd_div\" id=\"cd_div2\">{$title}</div><img class=\"cd_ts\" src=\"__PUBLIC__/img/new_home/jian2.png\"/></a>\r\n";
+					$html = $html . left_new_tree_menu($val['_child'], $level,$deep);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li class='menu_li2'><a href=\"$url\"><span class='cd_span2'></span><div class='cd_div'>{$title}</div></a></li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
 function f_encode($str) {
 	$str = base64_encode($str);
 	$str = rand_string(10) . $str . rand_string(10);
