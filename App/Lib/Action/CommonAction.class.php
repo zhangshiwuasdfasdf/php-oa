@@ -325,7 +325,7 @@ class CommonAction extends Action {
 	}
 
 	/** 删除标记  **/
-	protected function _del($id = null, $name = null, $return_flag = false) {
+	protected function _del($id = null, $name = null, $return_flag = false,$return_url = "") {
 		if (empty($id)) {
 			$id = $_REQUEST['id'];
 			if (empty($id)) {
@@ -348,7 +348,11 @@ class CommonAction extends Action {
 					return $result;
 				}
 				if ($result !== false) {
-					$this -> assign('jumpUrl', get_return_url());
+					if(!empty($return_url)){
+						$this -> assign('jumpUrl', U($return_url));
+					}else{
+						$this -> assign('jumpUrl', get_return_url());
+					}
 					$this -> success("成功删除{$result}条!");
 				} else {
 					$this -> error('删除失败!');

@@ -104,8 +104,11 @@ class RoleManagerAction extends CommonAction {
 		$roleName = I('post.roleName');
 		$isEdit = I('post.isEdit');
 		$ids = I('post.id');
+		$company = I('post.company');
 		if(!empty($roleName)){
 			$where['role_name'] = array('eq',$roleName);
+			$where['is_del'] = '0';
+			$where['company'] = array('eq',$company);
 			if($isEdit){
 				$where['id'] = array('neq',$ids);
 			}
@@ -187,6 +190,6 @@ class RoleManagerAction extends CommonAction {
 	}
 	//删除
 	function del(){
-		$this -> _del();
+		$this -> _del(null,null,false,"RoleManager/index");
 	}
 }
