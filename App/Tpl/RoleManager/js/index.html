@@ -25,6 +25,7 @@ function addRole(){
 }
 function valiRole(obj){
 	var role_name = $("#tc_glbj input[name='role_name']").val().trim();
+	if(role_name == ""){ui_error("角色名称不能为空！");return false;}
 	var id = $("#tc_glbj input[name='id']").val().trim();
 	var isEdit = "0";
 	if($(obj).attr('msg') == "1"){
