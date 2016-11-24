@@ -150,6 +150,9 @@ class OrganizationAction extends CommonAction {
 						foreach ($list_position as $k=>$v){
 							$list_position[$k]['dept_id'] = $position_dept[$v['id']];
 							$list_position[$k]['dept_name'] = M('Dept')->where(array('id'=>$list_position[$k]['dept_id']))->getField('name');
+							$role_ids = M('RPositionRole')->where(array('position_id'=>$v['id']))->getField('role_id',true);
+							$role_names = M('RoleManager')->where(array('id'=>array('in',$role_ids)))->getField('role_name',true);
+							$list_position[$k]['default_role'] = implode(',', $role_names)?implode(',', $role_names):'暂无分配';
 						}
 						$count_position = M('Position')->where(array('id'=>array('in',$position_ids),'is_del'=>'0'))->count();
 					}
@@ -399,7 +402,7 @@ class OrganizationAction extends CommonAction {
 		$this->ajaxReturn($data,1,1);
 	}
 	function user_edit(){
-		$find = M('RUserPosition')->where(array('is_major'=>'1','user_id'=>$_POST['user_user_id'],'is_del'=>'0'))->find();
+		$find = M('RUserPosition')->where(array('is_major'=>'1','user_id'=>$_POST['user_user_id']))->find();
 		if(false != $find && $_POST['user_major'] == '1'){
 			$this->error('此人已有主要岗位，只能添加兼职岗位');
 		}else{
@@ -426,8 +429,8 @@ class OrganizationAction extends CommonAction {
 		if(false != $find){
 			$this->error('此部门下已有此人！');
 		}else{
-			$find = M('RUserPosition')->where(array('position_id'=>$position_id,'user_id'=>$user_id,'is_del'=>'0'))->find();
-			$find2 = M('RUserPosition')->where(array('is_major'=>'1','user_id'=>$user_id,'is_del'=>'0'))->find();
+			$find = M('RUserPosition')->where(array('position_id'=>$position_id,'user_id'=>$user_id))->find();
+			$find2 = M('RUserPosition')->where(array('is_major'=>'1','user_id'=>$user_id))->find();
 			if(false != $find){
 				$this->error('此岗位下已有此人！');
 			}elseif(false != $find2 && $is_major == '1'){
@@ -476,9 +479,33 @@ class OrganizationAction extends CommonAction {
 		if($_GET['type'] == '1'){
 			$res = M('Dept')->where(array('id'=>array('in',$_POST['box_dept'])))->save(array('is_del'=>'1'));
 		}elseif($_GET['type'] == '2'){
-			$res = M('Position')->where(array('id'=>array('in',$_POST['box_position'])))->save(array('is_del'=>'1'));
+			if(!empty($_POST['box_position']) && is_array($_POST['box_position'])){
+				foreach ($_POST['box_position'] as $r_position_dept){
+					$r_position_dept_arr = explode('_', $r_position_dept);
+					$position_id = $r_position_dept_arr[0];
+					$dept_id = $r_position_dept_arr[1];
+					$res = M('RDeptPosition')->where(array('dept_id'=>$dept_id,'position_id'=>$position_id))->delete();
+					if(false === $res){
+						break;
+					}
+				}
+			}
 		}elseif($_GET['type'] == '3'){
-			$res = M('User')->where(array('id'=>array('in',$_POST['box_user'])))->save(array('is_del'=>'1'));
+			if(!empty($_POST['box_user']) && is_array($_POST['box_user'])){
+				foreach ($_POST['box_user'] as $r_user_dept_position){
+					$r_user_dept_position_arr = explode('_', $r_user_dept_position);
+					$user_id = $r_user_dept_position_arr[0];
+					$dept_id = $r_user_dept_position_arr[1];
+					$position_id = $r_user_dept_position_arr[2];
+					$upid = M('RUserPosition')->where(array('user_id'=>$user_id,'position_id'=>$position_id))->getField('id');
+					$res = M('RUserPosition')->delete($upid);
+					$res1 = M('RDeptUser')->where(array('user_id'=>$user_id,'dept_id'=>$dept_id))->delete();
+					$res2 = M('RUserPositionRole')->where(array('upid'=>$upid))->delete();
+					if(false === $res || false === $res1 || false === $res2){
+						break;
+					}
+				}
+			}
 		}
 		if(false !== $res){
 			$this->success('删除成功');;

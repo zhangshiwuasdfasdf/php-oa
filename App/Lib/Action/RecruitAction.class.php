@@ -76,7 +76,7 @@ class RecruitAction extends CommonAction {
 			$array[$k]['company_name'] = M('Dept')->where(array('id'=>$v['company_id']))->getField('name');
 			$array[$k]['dept_name'] = M('Dept')->where(array('id'=>$v['dept_id']))->getField('name');
 			$array[$k]['position_name'] = M('Position')->where(array('id'=>$v['position_id']))->getField('position_name');
-			$array[$k]['stuff_status'] = M('SimpleDataMapping')->where(array('data_type'=>'员工状态','data_code'=>$v['stuff_status']))->getField('data_name');
+			$array[$k]['stuff_status'] = M('SimpleDataMapping')->where(array('data_type'=>'员工状态','data_code'=>$v['stuff_status'],'is_del'=>'0'))->getField('data_name');
 			$array[$k]['hr_specialist_name'] = M('User')->where(array('id'=>$v['hr_specialist_id']))->getField('name');
 			$array[$k]['recruit_status_name'] = $recruit_status[$v['recruit_status']];
 		}
@@ -89,7 +89,7 @@ class RecruitAction extends CommonAction {
 		$recruit['company_name'] = M('Dept')->where(array('id'=>$recruit['company_id']))->getField('name');
 		$recruit['dept_name'] = M('Dept')->where(array('id'=>$recruit['dept_id']))->getField('name');
 		$recruit['position_name'] = M('Position')->where(array('id'=>$recruit['position_id']))->getField('position_name');
-		$recruit['stuff_status'] = M('SimpleDataMapping')->where(array('data_type'=>'员工状态','data_code'=>$recruit['stuff_status']))->getField('data_name');
+		$recruit['stuff_status'] = M('SimpleDataMapping')->where(array('data_type'=>'员工状态','data_code'=>$recruit['stuff_status'],'is_del'=>'0'))->getField('data_name');
 		$recruit['hr_specialist_name'] = M('User')->where(array('id'=>$recruit['hr_specialist_id']))->getField('name');
 		$recruit['recruit_status_name'] = $recruit_status[$recruit['recruit_status']];
 		$recruit['position_sequence_name'] = M('PositionSequence')->where(array('id'=>$recruit['position_sequence_id']))->getField('sequence_name');
@@ -130,7 +130,7 @@ class RecruitAction extends CommonAction {
 		}
 		$this -> assign("position_sequence", $position_sequence_html);
 		
-		$qualifications = M('SimpleDataMapping')->field('data_code,data_name')->where(array('data_type'=>'学历'))->select();
+		$qualifications = M('SimpleDataMapping')->field('data_code,data_name')->where(array('data_type'=>'学历','is_del'=>'0'))->select();
 		$qualifications_html = '<option>请选择学历</option>';
 		foreach ($qualifications as $k=>$v){
 			if($v['data_code'] == $recruit['qualifications']){
@@ -141,7 +141,7 @@ class RecruitAction extends CommonAction {
 		}
 		$this -> assign("qualifications", $qualifications_html);
 		
-		$stuff_status = M('SimpleDataMapping')->field('data_code,data_name')->where(array('data_type'=>'员工状态','data_code'=>array('not in',array('98','99'))))->select();
+		$stuff_status = M('SimpleDataMapping')->field('data_code,data_name')->where(array('data_type'=>'员工状态','data_code'=>array('not in',array('98','99')),'is_del'=>'0'))->select();
 		$stuff_status_html = '<option>请选择员工状态</option>';
 		foreach ($stuff_status as $k=>$v){
 			if($v['data_code'] == $recruit['stuff_status']){
@@ -170,7 +170,7 @@ class RecruitAction extends CommonAction {
 		$recruit['company_name'] = M('Dept')->where(array('id'=>$recruit['company_id']))->getField('name');
 		$recruit['dept_name'] = M('Dept')->where(array('id'=>$recruit['dept_id']))->getField('name');
 		$recruit['position_name'] = M('Position')->where(array('id'=>$recruit['position_id']))->getField('position_name');
-		$recruit['stuff_status'] = M('SimpleDataMapping')->where(array('data_type'=>'员工状态','data_code'=>$recruit['stuff_status']))->getField('data_name');
+		$recruit['stuff_status'] = M('SimpleDataMapping')->where(array('data_type'=>'员工状态','data_code'=>$recruit['stuff_status'],'is_del'=>'0'))->getField('data_name');
 		$recruit['hr_specialist_name'] = M('User')->where(array('id'=>$recruit['hr_specialist_id']))->getField('name');
 		$recruit['recruit_status_name'] = $recruit_status[$recruit['recruit_status']];
 // 		$recruit['position_sequence_name'] = M('PositionSequence')->where(array('id'=>$recruit['position_sequence_id']))->getField('sequence_name');
@@ -199,7 +199,6 @@ class RecruitAction extends CommonAction {
 				$r_user_position['user_id'] = $user_id;
 				$r_user_position['position_id'] = $recruit['position_id'];
 				$r_user_position['is_major'] = '1';
-				$r_user_position['is_del'] = '0';
 				$r_user_position['dept_id'] = $recruit['dept_id'];
 				$r_user_position['position_sequence_id'] = $recruit['position_sequence_id'];
 				$r_user_position_id = M('RUserPosition')->add($r_user_position);
@@ -210,7 +209,7 @@ class RecruitAction extends CommonAction {
 				
 				$status_manager['user_id'] = $user_id;
 				$status_manager['no_status'] = '正常';
-				$status_manager['stuff_status'] = M('SimpleDataMapping')->where(array('data_type'=>'员工状态','data_code'=>$recruit['stuff_status']))->getField('data_name');
+				$status_manager['stuff_status'] = M('SimpleDataMapping')->where(array('data_type'=>'员工状态','data_code'=>$recruit['stuff_status'],'is_del'=>'0'))->getField('data_name');
 				$status_manager['entry_time'] = $recruit['entry_date'];
 				$status_manager['create_time'] = date('Y/m/d H:i:s',time());
 				$status_manager['create_name'] = get_user_name();
@@ -230,13 +229,7 @@ class RecruitAction extends CommonAction {
 						$message['sender_name']='管理员';
 						$message['create_time']=time();
 						$position_ids = M('Position')->where(array('position_name'=>array('in',array('人事专员','网络运维工程师','网络管理员'))))->getField('id',true);
-						$user_ids = M('RUserPosition')->where(array('position_id'=>array('in',$position_ids),'is_del'=>'0','dept_id'=>array('in',get_child_dept_all($root_dept['id']))))->getField('user_id',true);
-						
-						$open=fopen("C:\log.txt","a" );
-						fwrite($open,json_encode($position_ids)."\r\n");
-						fwrite($open,json_encode($user_ids)."\r\n");
-						fclose($open);
-						
+						$user_ids = M('RUserPosition')->where(array('position_id'=>array('in',$position_ids),'dept_id'=>array('in',get_child_dept_all($root_dept['id']))))->getField('user_id',true);
 						foreach ($user_ids as $user_id){
 							$message['receiver_id']=$user_id;
 							$message['receiver_name']=M('User')->where(array('id'=>$user_id))->getField('name');
@@ -284,15 +277,15 @@ class RecruitAction extends CommonAction {
 		}
 		$this -> assign("position_sequence_id", $position_sequence_id_html);
 		
-		$qualifications = M('SimpleDataMapping')->field('data_code,data_name')->where(array('data_type'=>'学历'))->select();
+		$qualifications = M('SimpleDataMapping')->field('data_code,data_name')->where(array('data_type'=>'学历','is_del'=>'0'))->select();
 		$qualifications_html = '<option>请选择学历</option>';
 		foreach ($qualifications as $k=>$v){
 			$qualifications_html .='<option value="'.$v['data_code'].'">'.$v['data_name'].'</option>';
 		}
 		$this -> assign("qualifications", $qualifications_html);
 		
-		$stuff_status = M('SimpleDataMapping')->field('data_code,data_name')->where(array('data_type'=>'员工状态','data_code'=>array('not in',array('98','99'))))->select();
-		$stuff_status_html = '<option>请选择学历</option>';
+		$stuff_status = M('SimpleDataMapping')->field('data_code,data_name')->where(array('data_type'=>'员工状态','data_code'=>array('not in',array('98','99')),'is_del'=>'0'))->select();
+		$stuff_status_html = '<option>请选择员工状态</option>';
 		foreach ($stuff_status as $k=>$v){
 			$stuff_status_html .='<option value="'.$v['data_code'].'">'.$v['data_name'].'</option>';
 		}
