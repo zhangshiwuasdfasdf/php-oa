@@ -401,7 +401,7 @@ class OrganizationAction extends CommonAction {
 		$this->ajaxReturn($data,1,1);
 	}
 	function user_edit(){
-		$find = M('RUserPosition')->where(array('is_major'=>'1','user_id'=>$_POST['user_user_id']))->find();
+		$find = M('RUserPosition')->where(array('is_major'=>'1','user_id'=>$_POST['user_user_id'],'position_id'=>array('neq',$_POST['user_origin_position_id'])))->find();
 		if(false != $find && $_POST['user_major'] == '1'){
 			$this->error('此人已有主要岗位，只能添加兼职岗位');
 		}else{

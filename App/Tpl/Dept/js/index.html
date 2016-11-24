@@ -107,10 +107,12 @@ function set_use(dept_id,is_use){
 			//	alert(data.is_use);
 				if(data.is_use == '1'){
 					$("#a0_"+dept_id).html('启用');
+					$("#a0_"+dept_id).css('font-weight','normal');
 					$("#a1_"+dept_id).html('禁用');
 					$("#a1_"+dept_id).attr('onclick','set_use("'+data.dept_id+'","0")');
 				}else{
 					$("#a0_"+dept_id).html('禁用');
+					$("#a0_"+dept_id).css('font-weight','bold');
 					$("#a1_"+dept_id).html('启用');
 					$("#a1_"+dept_id).attr('onclick','set_use("'+data.dept_id+'","1")');
 				}

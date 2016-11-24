@@ -1218,7 +1218,7 @@ function assi_tree_menu($tree, $level = 0,$deep=100,$other_nodes="",$info) {
 	return $html;
 }
 //部门档案管理列表
-function popup_tree_menu_dept($tree, $level = 0,$deep=100) {
+function popup_tree_menu_dept($tree, $level = 0,$deep=100,$default_ids=array()) {
 	$level++;
 	$deep--;
 	if($level == 1){
@@ -1244,21 +1244,29 @@ function popup_tree_menu_dept($tree, $level = 0,$deep=100) {
 				$status = ($val['is_use'] == '1' ? "启用" : "禁用");
 				$activate = ($val['is_use'] == '1' ? "禁用" : "启用");
 				$set_use = $val['is_use'] == '1' ? "0" : "1";
+				$style_bold = $val['is_use'] == '1' ? '' : "style=\"font-weight:bold;\"";
 				$edit = '编辑';
 				if($level == 1){
 					$edit_url = U('edit_company?id='.$id);
 				}else{
 					$edit_url = U('edit_dept?id='.$id);
 				}
+				$style_color = '';
+				if(!empty($default_ids) && is_array($default_ids)){
+					if(in_array($id, $default_ids)){
+						$style_color = "style=\"color:magenta;\"";
+					}
+				}
 				$html = $html . "<li>\r\n<span class=\"li_sp0_1\" style=\"width:".$width."px;\"><img src=\"__PUBLIC__/img/ajj.png\"/>";
 				if($level == '1'){
 					$html = $html . "<span>$code</span>";
 				}else{
-					$html = $html . "<a href=".U('view?id='.$id).">$code</a>";
+					$html = $html . "<a href=".U('view?id='.$id)." $style_color>$code</a>";
 				}
+				
 				$html = $html . "\r\n</span>\r\n";
 				$html = $html . "<span class=\"li_sp1\">$title</span>\r\n";
-				$html = $html . "<span class=\"li_sp2\" id=\"a0_$id\">$status</span>\r\n";
+				$html = $html . "<span class=\"li_sp2\" id=\"a0_$id\" $style_bold>$status</span>\r\n";
 				$html = $html . "<span class=\"li_sp3\">";
 				$html = $html . "<a class=\"content_a\" id=\"a1_$id\" onclick=\"set_use('$id','$set_use')\">$activate</a>";
 // 				$html = $html . "<a class=\"content_a\" id=\"a1_0\">$activate</a>";
@@ -1266,7 +1274,7 @@ function popup_tree_menu_dept($tree, $level = 0,$deep=100) {
 				$html = $html . "<a class=\"content_a\" id=\"a3_$id\" onclick=\"add_child_dept('$id')\">新增子部门</a>";
 				$html = $html . "</span>\r\n";
 				if (isset($val['_child'])) {
-					$html = $html . popup_tree_menu_dept($val['_child'], $level,$deep);
+					$html = $html . popup_tree_menu_dept($val['_child'], $level,$deep,$default_ids);
 				}
 				$html = $html . "</li>\r\n";
 			}

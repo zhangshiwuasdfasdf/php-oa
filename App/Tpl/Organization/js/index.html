@@ -421,6 +421,7 @@ $("#a_ygtj").click(function(){
 	})
 	$("#tc_ygbj").show();
 	$("#user_user_name").keyup(function(){
+		$("#user_user_id").val('');
 		$.ajax({
 			type:'post',
 			url:"{:U('search_user')}",
@@ -449,6 +450,9 @@ $("#a_ygtj").click(function(){
 	$("#user_user_name").focus(function(){
 		$(".user_name_search").show();
 	});
+	$("#user_user_name").blur(function(){
+		validate3();
+	});
 	$(".bottom_sp4").click(function(){
 		window.onbeforeunload = null;
 		if (check_form("form_data_user_edit")) {
@@ -463,6 +467,7 @@ function put_on(id,name){
 	$("#user_user_id").val(id);
 	$("#user_user_name").val(name);
 	$(".user_name_search").hide();
+	validate3();
 }
 function distribution_user_role(upid){
 	$("#user_role_upid").val(upid);
@@ -1056,6 +1061,28 @@ function validate3(){
     }).inputValidator({
         min:1,
         onErrorMin:"没找到此人"
+    });
+    
+    $("#user_position").formValidator({
+        tipID:"user_positionTip",
+        empty:false,
+        onShow:" ",
+        onFocus:" ",
+        onCorrect:"<span style='color:green;'>√</span>"
+    }).inputValidator({
+        min:1,
+        onErrorMin:"请选择岗位"
+    });
+    
+    $("#user_position_sequence_id").formValidator({
+        tipID:"user_position_sequence_idTip",
+        empty:false,
+        onShow:" ",
+        onFocus:" ",
+        onCorrect:"<span style='color:green;'>√</span>"
+    }).inputValidator({
+        min:1,
+        onErrorMin:"请选择岗位序列"
     });
 }
 </script>

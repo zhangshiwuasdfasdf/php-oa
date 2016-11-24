@@ -649,6 +649,7 @@ input,select{ margin:0; padding:0; outline:none;}
                 <li>
                     <label>岗位：</label>
                     <input id="user_origin_position_id" name="user_origin_position_id" type="hidden"/>
+                    <span id="user_positionTip" style="color:red;position:absolute;top:50px;left:85px;line-height:14px;"></span>
                     <select id="user_position" name="user_position">
                     </select>
                 </li>
@@ -668,6 +669,7 @@ input,select{ margin:0; padding:0; outline:none;}
                     <label>序列名称：</label>
                     <!-- <input class="tc_inp" id="user_position_sequence_id" name="user_position_sequence_id" type="hidden"/>
                     <input class="tc_inp" id="user_position_sequence" name="user_position_sequence" type="text" readonly check="require" msg="请选择一个已设置序列的岗位"/> -->
+                    <span id="user_position_sequence_idTip" style="color:red;position:absolute;top:50px;left:85px;line-height:14px;"></span>
                     <select id="user_position_sequence_id" name="user_position_sequence_id">
                     </select>
                 </li>  

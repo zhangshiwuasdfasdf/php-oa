@@ -14,13 +14,15 @@
 class RecruitAction extends CommonAction {
 	//app 类型
 // 	protected $config = array('app_type' => 'master');
-
 	function _search_filter(&$map) {
 		if (!empty($_POST['li_name'])) {
 			$map['name'] = array('like', "%" . $_POST['li_name'] . "%");
 		}
-		if (!empty($_POST['eq_entry_date'])) {
-			$map['entry_date'] = array('eq', $_POST['eq_entry_date']);
+		if (!empty($_POST['be_entry_date'])) {
+			$map['entry_date'] = array('egt', $_POST['be_entry_date']);
+		}
+		if (!empty($_POST['en_entry_date'])) {
+			$map['_complex']['entry_date'] = array('elt', $_POST['en_entry_date']);
 		}
 		if ($_POST['eq_recruit_status']>-1) {
 			$map['recruit_status'] = array('eq', $_POST['eq_recruit_status']);
