@@ -58,6 +58,7 @@ class CommonAction extends Action {
 		}
 		$this -> assign('js_file', 'js/' . ACTION_NAME);
 		$this -> _assign_menu();
+		$this -> _assign_menu_new();
 		$this -> _assign_new_count();
 		$this -> _display_sign();
 	}
@@ -119,6 +120,31 @@ class CommonAction extends Action {
 		} else {
 			$this -> assign("title", get_system_config("SYSTEM_NAME"));
 		}
+	}
+	
+	/** 新版top menu和left menu **/
+	protected function _assign_menu_new(){
+		$uid = get_user_id();
+		$upid = M('RUserPosition')->where(array('user_id'=>$uid,'is_major'=>'1')) -> getField('id');
+		$role_ids = getRoleIdsByUpid($upid);//更具用户租id找到该用户的所有绑定角色ids
+		if(!empty($role_ids)){
+			$menu = M('RRoleMenu');
+			$menus = array();//找出所有角色id对应的菜单ids
+			foreach ($role_ids as $k => $v){
+				$tmp = $menu -> where(array('role_id'=>$v))->field('menu_id') -> select();
+				foreach ($tmp as $kk => $vv){
+					$menus[] = $vv['menu_id'];
+				}
+			}
+			//更具菜单ids找出所有对应的菜单信息
+			$where['id'] = array('in',array_unique($menus));
+			$where['is_del'] = '0';
+			$menuList = M('MenuNew') -> where($where) -> select();
+			$tree = left_new_tree_menu(list_to_tree($menuList));
+		}else{
+			$tree = array();
+		}
+		$this -> assign('tree',$tree);
 	}
 
 	protected function _assign_new_count() {
@@ -299,7 +325,7 @@ class CommonAction extends Action {
 	}
 
 	/** 删除标记  **/
-	protected function _del($id = null, $name = null, $return_flag = false) {
+	protected function _del($id = null, $name = null, $return_flag = false,$return_url = "") {
 		if (empty($id)) {
 			$id = $_REQUEST['id'];
 			if (empty($id)) {
@@ -322,7 +348,11 @@ class CommonAction extends Action {
 					return $result;
 				}
 				if ($result !== false) {
-					$this -> assign('jumpUrl', get_return_url());
+					if(!empty($return_url)){
+						$this -> assign('jumpUrl', U($return_url));
+					}else{
+						$this -> assign('jumpUrl', get_return_url());
+					}
 					$this -> success("成功删除{$result}条!");
 				} else {
 					$this -> error('删除失败!');

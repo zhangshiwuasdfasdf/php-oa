@@ -24,28 +24,47 @@ function addRole(){
 	},'json');
 }
 function valiRole(obj){
-	var role_name = $("#tc_glbj input[name='role_name']").val().trim();
-	var id = $("#tc_glbj input[name='id']").val().trim();
 	var isEdit = "0";
+	var role_name,id,company;
 	if($(obj).attr('msg') == "1"){
 		isEdit = "1";		
+		role_name = $("#tc_glbj input[name='role_name']").val().trim();
+		id = $("#tc_glbj input[name='id']").val().trim();
+		company = $("#tc_glbj select[name='company']").find("option:selected").text().trim();
+	}else{
+		role_name = $("#tc_gltj input[name='role_name']").val().trim();
+		id = "";
+		company=$("#tc_gltj select[name='company']").find("option:selected").text().trim();
 	}
-	$.post("{:U('valiRole')}",{"roleName":role_name,"isEdit":isEdit,"id":id},function(data){
+	if(role_name == ""){ui_error("角色名称不能为空！");return false;}
+	
+	$.post("{:U('valiRole')}",{"roleName":role_name,"isEdit":isEdit,"id":id,"company":company},function(data){
 		if(data.status){
 			save(isEdit);
 		}else{
-			$("#vali_role_name").text(data.info).show();
+			$(".vali_role_name").text(data.info).show();
 		}
 	},'json');
 }
 function save(isEdit){
-	var url = (isEdit == "1") ? "{:U('save')}" : "{:U('add')}" ;
-	var id = $("#tc_glbj input[name='id']").val().trim();
-	var company_id = $("#tc_glbj select[name='company']").val().trim();
-	var company = $("#tc_glbj select[name='company']").find("option:selected").text().trim();
-	var role_name = $("#tc_glbj input[name='role_name']").val().trim();
-	var status = $("#tc_glbj select[name='status']").val().trim();
-	var sort = $("#tc_glbj input[name='sort']").val().trim();
+	var id,company_id,company,role_name,status,sort,url;
+	if(isEdit == "1"){
+		url = "{:U('save')}";
+		id = $("#tc_glbj input[name='id']").val().trim();
+		company_id = $("#tc_glbj select[name='company']").val().trim();
+		company = $("#tc_glbj select[name='company']").find("option:selected").text().trim();
+		role_name = $("#tc_glbj input[name='role_name']").val().trim();
+		status = $("#tc_glbj select[name='status']").val().trim();
+		sort = $("#tc_glbj input[name='sort']").val().trim();
+	}else{
+		url = "{:U('add')}";
+		id = "";
+		company_id = $("#tc_gltj select[name='company']").val().trim();
+		company = $("#tc_gltj select[name='company']").find("option:selected").text().trim();
+		role_name = $("#tc_gltj input[name='role_name']").val().trim();
+		status = $("#tc_gltj select[name='status']").val().trim();
+		sort = $("#tc_gltj input[name='sort']").val().trim();
+	}
 	if(company == ""){ui_error("请输入公司名称");return false;}
 	if(role_name == ""){ui_error("请输入角色名称");return false;}
 	if(status == ""){ui_error("请输入状态");return false;}
@@ -53,7 +72,7 @@ function save(isEdit){
 		if (data.status) {
 			$("#tc_glbj").hide();
 			ui_alert(data.info,function(){
-				location.reload();
+				window.open(fix_url("{:U('index')}"), "_self");
 			});				
 		}
 	},'json');
