@@ -81,42 +81,7 @@
             <ul class="ani_ss_ul">
             </ul>
         </div>
-        <!-- <volist name="left_menu" id="menu1" key="k1">
-			<a class="left_a" id="left_a{$k1+1}">
-	        	<img src="__PUBLIC__/img/new_home/{$menu1.remark}"/>
-	        </a>   
-	        <ul class="menu_ul{$k1*2}">
-	        	<volist name="menu1._child" id="menu2" key="k2">
-	        		<if condition="$menu2['_child']">
-	        			<li class="menu_li{$k1*2}">
-			                <a class="menu_li{$k1*2}_a">
-			                    <span class="cd_span{$k1*2}"></span>
-			                    <div class="cd_div" id="cd_div2">{$menu2.name}</div>
-			                    <img class="cd_ts" src="__PUBLIC__/img/new_home/jian2.png"/>
-			                </a>
-			                <if condition="($k1*2 eq 16)">
-			                	<ul class="menu_ul{$k1*2+1}_{$k2-1}">
-				                	<volist name="menu2._child" id="menu3" key="k3">
-				                		<li class="menu_li{$k1*2+1}_{$k2-1}"><a href="{:U($menu3['url'])}"><span class="cd_span{$k1*2+1}"></span><div class="cd_div">{$menu3.name}</div></a></li>
-				                	</volist>
-				                </ul>
-				            <else/>
-				            	<ul class="menu_ul{$k1*2+1}">
-				                	<volist name="menu2._child" id="menu3" key="k3">
-				                		<li class="menu_li{$k1*2+1}"><a href="{:U($menu3['url'])}"><span class="cd_span{$k1*2+1}"></span><div class="cd_div">{$menu3.name}</div></a></li>
-				                	</volist>
-				                </ul>
-			                </if>
-		                	
-			            </li>
-			        <else/>
-			        	<li class="menu_li{$k1*2}"><a href="{:U($menu2['url'])}"><span class="cd_span{$k1*2}"></span><div class="cd_div">{$menu2.name}</div></a></li>
-	        		</if>
-	        	</volist>
-	        </ul>
-		</volist> -->
-	
-			
+        
         <a class="left_a" id="left_a2">
         	<img src="__PUBLIC__/img/new_home/left_grzx1.png"/>
         </a>   
@@ -146,7 +111,6 @@
             <li class="menu_li2"><a href="{:U('monthly_report/index')}"><span class="cd_span2"></span><div class="cd_div">月报</div></a></li>
             <li class="menu_li2"><a href="{:U('notice/folder?fid=94')}"><span class="cd_span2"></span><div class="cd_div">工作计划</div></a></li>
         </ul>
-  
         <a class="left_a" id="left_a3">
         	<img src="__PUBLIC__/img/new_home/left_rlzy1.png"/>
         </a>

@@ -36,7 +36,11 @@ function is_weixin() {
 	}
 	return false;
 }
-
+function dump2($var){
+	echo "<pre>";
+	print_r($var);
+	echo "</pre>";die;
+}
 function get_new_count() {
 
 	$emp_no = get_emp_no();
@@ -1491,7 +1495,7 @@ function left_new_tree_menu($tree, $level = 0,$deep=100) {
 	$deep--;
 	$html = "";
 	if (is_array($tree) && $deep>0) {
-		$html = "<ul class=\"content_ul\">\r\n";
+		$html = "<ul class=\"menu_ul2\">\r\n";
 		foreach ($tree as $val) {
 			if (isset($val["menu_name"])) {
 				$title = $val["menu_name"];
