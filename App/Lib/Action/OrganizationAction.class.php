@@ -192,7 +192,6 @@ class OrganizationAction extends CommonAction {
 // 					$user_ids_status = M('StatusManage')->where($where_status_manage)->getField('user_id,stuff_status');
 // 					$user_ids = array_intersect($user_ids1,$user_ids2,$user_ids3);
 // 					$where_user['id'] = array('in',$user_ids);
-					$where_user['is_del'] = '0';
 					if(!empty($_REQUEST['name_no'])){
 						$keyword = preg_replace('/^0+/','',trim($_REQUEST['name_no']));
 						$where_user['RUserPosition.user_id|User.name|User.emp_no'] = array('like','%'.$keyword.'%');
