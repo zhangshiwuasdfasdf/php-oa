@@ -658,6 +658,7 @@ class OrganizationAction extends CommonAction {
 		$upid = $_POST['user_role_upid'];
 		$role_ids = $_POST['role']?$_POST['role']:'';
 		$default_role_id = getDefaultRoleIdsByUpid($upid);
+		$default_role_id = $default_role_id?$default_role_id:array();
 		$role_ids = array_diff($role_ids,$default_role_id);
 		$role_ids = empty($role_ids)?'':$role_ids;
 		

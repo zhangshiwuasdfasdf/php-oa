@@ -26,9 +26,9 @@ wli();
 //全选
 $('#all').click(function(){
 	if(this.checked){                                     
-		$("[name=box]:checkbox").prop("checked",true);  
+		$("[name='id[]']:checkbox").prop("checked",true);  
 	}else{
-		$("[name=box]:checkbox").prop("checked",false);  
+		$("[name='id[]']:checkbox").prop("checked",false);  
 	}	
 });
 
@@ -89,14 +89,35 @@ $('input[type="checkbox"]').change(function(e) {
 
 
 
-$("li img").each(function(){
+$(".gs_title2 li img").each(function(){
 	$(this).toggle(function(){
-		$(this).attr('src','img/hl.png')
+		$(this).attr('src','__PUBLIC__/img/hl.png')
 		$(this).parent('li').children('ul').slideDown()
 	},function(){
-		$(this).attr('src','img/zk.png')	
+		$(this).attr('src','__PUBLIC__/img/zk.png')	
 		$(this).parent('li').children('ul').slideUp()
 	})
+})
+$("#qk1").click(function(){
+	$(".gs_c .gs_title2 [name='company_id[]']:checkbox:checked").each(function(){
+		$(this).prop('checked',false);
+	})
+	$("#company_id").val('');
+	$("#gs").val('');
+})
+$("#qk2").click(function(){
+	$(".bm_c .gs_title2 [name='dept_id[]']:checkbox:checked").each(function(){
+		$(this).prop('checked',false);
+	})
+	$("#dept_id").val('');
+	$("#bm").val('');
+})
+$("#qk3").click(function(){
+	$(".gw_c .gs_title2 [name='position_id[]']:checkbox:checked").each(function(){
+		$(this).prop('checked',false);
+	})
+	$("#position_id").val('');
+	$("#gw").val('');
 })
 
 $("#gb1").click(function(){
@@ -152,13 +173,94 @@ $(function(){
     $(document).on('click',function(){M1.find('.gw_c').hide()})
 })
 
-$("#qr1,#qx1").click(function(){
+$("#qr1").click(function(){
+	var company_name = '';
+	var company_id = '';
+	$(".gs_c .gs_title2 [name='company_id[]']:checkbox:checked").each(function(){
+		company_name += $(this).next().html()+',';
+		company_id += $(this).val()+',';
+	})
+	$("#company_id").val(company_id);
+	$("#gs").val(company_name);
+	$(".gs_c").slideUp();
+	$.ajax({
+		type:'post',
+		url:"{:U('get_dept_search_html')}",
+		data:{company_id:company_id},
+		success:function(result){
+			$(".bm_c .gs_title2").html(result.data);
+			$(".gw_c .gs_title2").html('');
+			
+			$(".bm_c .gs_title2 li img").each(function(){
+				$(this).toggle(function(){
+					$(this).attr('src','__PUBLIC__/img/hl.png')
+					$(this).parent('li').children('ul').slideDown()
+				},function(){
+					$(this).attr('src','__PUBLIC__/img/zk.png')	
+					$(this).parent('li').children('ul').slideUp()
+				})
+			})
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
+})
+$("#qx1").click(function(){
+	$(".gs_c .gs_title2 [name='company_id[]']:checkbox:checked").each(function(){
+		$(this).prop('checked',false);
+	})
+	$("#company_id").val('');
+	$("#gs").val('');
 	$(".gs_c").slideUp()	
 })
-$("#qr2,#qx2").click(function(){
+$("#qr2").click(function(){
+	var dept_name = '';
+	var dept_id = '';
+	$(".bm_c .gs_title2 [name='dept_id[]']:checkbox:checked").each(function(){
+		dept_name += $(this).next().html()+',';
+		dept_id += $(this).val()+',';
+	})
+	$("#dept_id").val(dept_id);
+	$("#bm").val(dept_name);
+	$(".bm_c").slideUp();
+	$.ajax({
+		type:'post',
+		url:"{:U('get_position_search_html')}",
+		data:{dept_id:dept_id},
+		success:function(result){
+			$(".gw_c .gs_title2").html(result.data);
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
+})
+$("#qx2").click(function(){
+	$(".bm_c .gs_title2 [name='dept_id[]']:checkbox:checked").each(function(){
+		$(this).prop('checked',false);
+	})
+	$("#dept_id").val('');
+	$("#bm").val('');
 	$(".bm_c").slideUp()	
 })
-$("#qr3,#qx3").click(function(){
+$("#qr3").click(function(){
+	var position_name = '';
+	var position_id = '';
+	$(".gw_c .gs_title2 [name='position_id[]']:checkbox:checked").each(function(){
+		position_name += $(this).next().html()+',';
+		position_id += $(this).val()+',';
+	})
+	$("#position_id").val(position_id);
+	$("#gw").val(position_name);
+	$(".gw_c").slideUp()	
+})
+$("#qx3").click(function(){
+	$(".gw_c .gs_title2 [name='position_id[]']:checkbox:checked").each(function(){
+		$(this).prop('checked',false);
+	})
+	$("#position_id").val('');
+	$("#gw").val('');
 	$(".gw_c").slideUp()	
 })
 
@@ -195,7 +297,11 @@ function set_recruit_status(id,status){
 		url:"{:U('set_recruit_status')}",
 		data:{id:id,status:status},
 		success:function(result){
-			alert(JSON.stringify(result));
+			if(result.status == '1'){
+				location.reload();
+			}
+			
+			//alert(JSON.stringify(result));
 			//$("#position").html(result.data.position);
 		},
 		error:function(){

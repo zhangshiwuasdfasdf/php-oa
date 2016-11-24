@@ -87,61 +87,29 @@ $("li img").each(function(){
 	});
 });
 
-function bm(){
-	var bm=$('#bm').offset().left;
-	$('.bm_c').css('left',bm);
-	var gw=$('#gw').offset().left;
-	$('.gw_c').css('left',gw);
-}
-bm();
-$('#bm').click(function(){
-	$('.bm_c').slideDown();
-});
-$('#gw').click(function(){
-	$('.gw_c').slideDown();
-});
-
-$(function(){
-	$('#bm').click(function(){
-		$(".bm_c").slideDown();
-	})
-    var M1 = $('.bm_a')
-    M1.on('click',function(e){e.stopPropagation();})
-    .find('div[class="ss"]').on('click',function(){
-        M1.find('.bm_c').show();
-    });
-    $(document).on('click',function(){M1.find('.bm_c').hide()})
-})
-$(function(){
-	$('#gw').click(function(){
-		$(".gw_c").slideDown();
-	})
-    var M1 = $('.gw_a')
-    M1.on('click',function(e){e.stopPropagation();})
-    .find('div[class="ss"]').on('click',function(){
-        M1.find('.gw_c').show();
-    });
-    $(document).on('click',function(){M1.find('.gw_c').hide()})
-})
-function change_dept(company_id){
+change_dept("{$recruit.company_id}","{$recruit.dept_id}",'1');
+change_position("{$recruit.dept_id}","{$recruit.position_id}");
+function change_dept(company_id,dept_id,is_default){
 	$.ajax({
 		type:'post',
 		url:"{:U('get_dept_html')}",
-		data:{company_id:company_id},
+		data:{company_id:company_id,dept_id},
 		success:function(result){
 			$("#dept").html(result.data.dept);
-			$("#position").html('');
+			if(is_default != '1'){
+				$("#position").html('');
+			}
 		},
 		error:function(){
 			alert('数据错误');
 		}
 	})
 }
-function change_position(dept_id){
+function change_position(dept_id,position_id){
 	$.ajax({
 		type:'post',
 		url:"{:U('get_position_html')}",
-		data:{dept_id:dept_id},
+		data:{dept_id:dept_id,position_id:position_id},
 		success:function(result){
 			$("#position").html(result.data.position);
 		},
@@ -152,8 +120,6 @@ function change_position(dept_id){
 }
 function save() {
 	window.onbeforeunload=null;
-	$("#opmode").val("add");
-	
 	if (check_form("form_data")) {
 		sendForm("form_data", "{:U('save')}","{:U('index')}");
 	}

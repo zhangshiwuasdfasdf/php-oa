@@ -43,8 +43,8 @@
 </style>
 
 <form method='post' id="form_data" name="form_data" enctype="multipart/form-data"  class="well form-horizontal">
-	<input type="hidden" id="opmode" name="opmode" value="add">
-
+	<input type="hidden" id="opmode" name="opmode" value="edit">
+	<input type="hidden" id="id" name="id" value="{$recruit.id}">
 	<div class="ma_ta">
 		<div class="ma_title">招聘信息跟进</div>
 		<ul class="main_ul">
@@ -70,30 +70,30 @@
 			<li class="li1">岗位序列：</li>
 			<li class="li2">
 				<select name="position_sequence_id">
-					{$position_sequence_id}
+					{$position_sequence}
 				</select>
 			</li>
 			<li class="li1">姓名：</li>
-			<li class="li2"><input type="text" name="name" check="require" msg="请输入姓名"/></li>
+			<li class="li2"><input type="text" name="name" value="{$recruit.name}" check="require" msg="请输入姓名"/></li>
 			<li class="li1">ERP登录名：</li>
-			<li class="li2"><input type="text" id="emp_no" readonly/>
+			<li class="li2"><input type="text" id="emp_no" value="{$recruit.emp_no}" readonly/>
 			</li>
 			<li class="li1">性别：</li>
 			<li class="li2">
 				<select name="sex">
-					<option value="male" selected="selected">男</option>
-					<option value="female">女</option>
+					<option value="male" <if condition="$recruit.sex eq 'male'"> selected="selected"</if>>男</option>
+					<option value="female" <if condition="$recruit.sex eq 'female'"> selected="selected"</if>>女</option>
 				</select>
 			</li>
 			<li class="li1">手机号码：</li>
-			<li class="li2"><input type="text" name="mobile" check="require" msg="请输入手机号码"/></li>
+			<li class="li2"><input type="text" name="mobile" value="{$recruit.mobile}" check="require" msg="请输入手机号码"/></li>
 			<li class="li1">毕业院校：</li>
-			<li class="li2"><input type="text" name="graduate_school" check="require" msg="请输入毕业院校"/></li>
+			<li class="li2"><input type="text" name="graduate_school" value="{$recruit.graduate_school}" check="require" msg="请输入毕业院校"/></li>
 			<li class="li1">专业：</li>
-			<li class="li2"><input type="text" name="major" check="require" msg="请输入专业"/>
+			<li class="li2"><input type="text" name="major" value="{$recruit.major}" check="require" msg="请输入专业"/>
 			</li>
 			<li class="li1">毕业日期：</li>
-			<li class="li2"><input data-date-format="yyyy-mm-dd" id="graduate_date" type="text" class="form-control input-date in1" name="graduate_date" check="require" msg="请输入毕业日期"/></li>
+			<li class="li2"><input data-date-format="yyyy-mm-dd" id="graduate_date" type="text" class="form-control input-date in1" name="graduate_date" value="{$recruit.graduate_date}" check="require" msg="请输入毕业日期"/></li>
 			<li class="li1">学历：</li>
 			<li class="li2">
 				<select name="qualifications" id="qualifications">
@@ -101,7 +101,7 @@
 				</select>
 			</li>
 			<li class="li1">相关工作年限：</li>
-			<li class="li2"><input type="text" name="work_year" id="work_year"/></li>
+			<li class="li2"><input type="text" name="work_year" id="work_year" value="{$recruit.work_year}"/></li>
 			<li class="li1">员工状态：</li>
 			<li class="li2">
 				<select name="stuff_status" id="stuff_status">
@@ -111,35 +111,35 @@
 			<li class="li1">社保缴纳公司：</li>
 			<li class="li2">
 				<select name="social_security_company_id" id="social_security_company_id">
-					{$company}
+					{$company2}
 				</select>
 			</li>
 			<li class="li1">录用日期：</li>
-			<li class="li2"><input data-date-format="yyyy-mm-dd" id="employed_date" type="text" class="form-control input-date in1" name="employed_date" check="require" msg="请输入录用日期"/></li>
+			<li class="li2"><input data-date-format="yyyy-mm-dd" id="employed_date" type="text" class="form-control input-date in1" name="employed_date" value="{$recruit.employed_date}" check="require" msg="请输入录用日期"/></li>
 			<li class="li1">入职日期：</li>
-			<li class="li2"><input data-date-format="yyyy-mm-dd" id="entry_date" type="text" class="form-control input-date in1" name="entry_date" check="require" msg="请输入入职日期"/></li>
+			<li class="li2"><input data-date-format="yyyy-mm-dd" id="entry_date" type="text" class="form-control input-date in1" name="entry_date" value="{$recruit.entry_date}" check="require" msg="请输入入职日期"/></li>
 			<li class="li1">招聘渠道：</li>
-			<li class="li2"><input type="text" name="recruitment_channel" id="recruitment_channel" check="require" msg="请输入招聘渠道"/></li>
+			<li class="li2"><input type="text" name="recruitment_channel" id="recruitment_channel" value="{$recruit.recruitment_channel}" check="require" msg="请输入招聘渠道"/></li>
 			<li class="li1">面试总体评价：</li>
 			<li class="li2">
-				<input type="radio" name="interview_evaluation" id="yx" value="3" class="inp"/>
+				<input type="radio" name="interview_evaluation" id="yx" value="3" class="inp" <if condition="$recruit.interview_evaluation eq '3'">checked="checked"</if>/>
 				<label class="lb1" for="yx">优秀</label>
-				<input type="radio" name="interview_evaluation" id="lh" value="2" class="inp"/>
+				<input type="radio" name="interview_evaluation" id="lh" value="2" class="inp" <if condition="$recruit.interview_evaluation eq '2'">checked="checked"</if>/>
 				<label class="lb1" for="lh">良好</label>
-				<input type="radio" name="interview_evaluation" id="jg" value="1" class="inp"/>
+				<input type="radio" name="interview_evaluation" id="jg" value="1" class="inp" <if condition="$recruit.interview_evaluation eq '1'">checked="checked"</if>/>
 				<label class="lb1" for="jg">及格</label>
 			</li>
 			<li class="li1"></li>
 			<li class="li2">
 			</li>
 			<li class="li4">面试评价说明：</li>
-			<li class="li3"><textarea name="interview_evaluation_explain" id="interview_evaluation_explain"></textarea></li>
+			<li class="li3"><textarea name="interview_evaluation_explain" id="interview_evaluation_explain">{$recruit.interview_evaluation_explain}</textarea></li>
 			<li class="li4">备注：</li>
-			<li class="li3"><textarea name="remark" id="remark"></textarea></li>
+			<li class="li3"><textarea name="remark" id="remark">{$recruit.remark}</textarea></li>
 			<li class="li1">员工档案号：</li>
-			<li class="li2"><span class="sp1" id="user_id"></span></li>
+			<li class="li2"><span class="sp1" id="user_id">{$recruit.user_id}</span></li>
 			<li class="li1">招聘截至日期：</li>
-			<li class="li2"><input data-date-format="yyyy-mm-dd" id="recruit_deadline" type="text" class="form-control input-date in1" name="recruit_deadline" check="require" msg="请输入招聘截至日期"/></li>
+			<li class="li2"><input data-date-format="yyyy-mm-dd" id="recruit_deadline" type="text" class="form-control input-date in1" name="recruit_deadline" value="{$recruit.recruit_deadline}" check="require" msg="请输入招聘截至日期"/></li>
 			<li class="li1">人事专员：</li>
 			<li class="li2">
 				<span class="sp1"></span>{$hr_specialist_name}
@@ -147,15 +147,15 @@
 			</li>
 			<li class="li1">招聘状态：</li>
 			<li class="li2">
-				<span class="sp1">待报到</span>
-				<input type="hidden" name="recruit_status" value="0">
+				<span class="sp1">{$recruit.recruit_status_name}</span>
+				<input type="hidden" name="recruit_status" value="{$recruit.recruit_status}">
 			</li>
 			<li class="li1">建档人：</li>
-			<li class="li2"><span class="sp1" id="create_record_user_id"></span></li>
+			<li class="li2"><span class="sp1" id="create_record_user_id">{$recruit.create_record_user_name}</span></li>
 			<li class="li1">建档时间：</li>
-			<li class="li2"><span class="sp1" id="create_record_time"></span></li>
+			<li class="li2"><span class="sp1" id="create_record_time">{$recruit.create_record_time}</span></li>
 			<li class="li1">录入时间：</li>
-			<li class="li2"><input data-date-format="yyyy-mm-dd" id="create_time" type="text" class="form-control input-date in1" name="create_time" check="require" msg="请输入录入时间"/></li>
+			<li class="li2"><input data-date-format="yyyy-mm-dd" id="create_time" type="text" class="form-control input-date in1" name="create_time" value="{$recruit.create_time}" check="require" msg="请输入录入时间"/></li>
 			<li class="li1"></li>
 			<li class="li2"><span class="sp1"></span></li>
 		</ul>
@@ -169,9 +169,7 @@
 <script type="text/javascript">
 $(function() {
 	var html = "<li>行政管理</li><li>公告管理</li><li>{$menu_title.$folder}</li><li>新建</li>";
-	if({$folder} == '94'){
-		html = "<li>个人中心</li><li>{$menu_title.$folder}</li><li>新建</li>";
-	}
+	
 	$("#breadcrumbs ul").append(html);
 });
 </script>

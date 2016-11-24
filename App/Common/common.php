@@ -1366,12 +1366,6 @@ function popup_menu_dept_position_checkbox($tree, $level = 0,$deep=100,$child_de
 						$is_checked = ' ';
 					}
 				}
-// 				if(!empty($position_id)){
-// 					$res = M('RDeptPosition')->where(array('position_id'=>$position_id,'dept_id'=>$id))->find();
-// 					$is_checked = $res?' checked="checked"':'';
-// 				}else{
-// 					$is_checked = '';
-// 				}
 
 				if (isset($val['_child'])) {
 					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"".__ROOT__."/Public/img/xl.png\"/><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label>\r\n";
@@ -1379,6 +1373,33 @@ function popup_menu_dept_position_checkbox($tree, $level = 0,$deep=100,$child_de
 					$html = $html . "</li>\r\n";
 				} else {
 					$html = $html . "<li class=\"zz_li1\"><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label></li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+function popup_dept_search_checkbox($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul>\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title = $val["name"];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				
+				if (isset($val['_child'])) {
+					$html = $html . "<li>\r\n<img src=\"".__ROOT__."/Public/img/hl.png\"/><input type=\"checkbox\" id=\"dept_id_$id\" name=\"dept_id[]\" value=\"$id\"/><label for=\"dept_id_$id\">$title</label>\r\n";
+					$html = $html . popup_dept_search_checkbox($val['_child'], $level,$deep);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li>\r\n<img src=\"".__ROOT__."/Public/img/hl.png\"/><input type=\"checkbox\" id=\"dept_id_$id\" name=\"dept_id[]\" value=\"$id\"/><label for=\"dept_id_$id\">$title</label>\r\n</li>\r\n";
 				}
 			}
 		}
@@ -1821,8 +1842,12 @@ function create_emp_no($name){
 		}
 		$regexp = '"^'.$s.'[0-9]*$"';
 		$last = M('User')->where(array('_string'=>'emp_no REGEXP '.$regexp))->order('emp_no desc')->getField('emp_no');
-		$a = explode($s,$last);
-		$new = $s.(intval($a[1])+1);
+		if(false != $last){
+			$a = explode($s,$last);
+			$new = $s.(intval($a[1])+1);
+		}else{
+			$new = $s;
+		}
 		return $new;
 	}
 	return null;
