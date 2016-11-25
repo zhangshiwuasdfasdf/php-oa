@@ -50,26 +50,26 @@
 		<ul class="main_ul">
 			<li class="li1">公司：</li>
 			<li class="li2">
-				<select name="company_id" id="company" onchange="change_dept($(this).val())">
+				<select name="company_id" id="company" onchange="change_dept($(this).val())" check="require" neq="请选择公司" msg="请选择公司">
 					{$company}
 				</select>
 			</li>
 			<li class="li1">部门：</li>
 			<li class="li2">
-				<select name="dept_id" id="dept" onchange="change_position($(this).val())">
+				<select name="dept_id" id="dept" onchange="change_position($(this).val())" check="require" msg="请选择部门">
 					
 				</select>
 			</li>
 			
 			<li class="li1">岗位：</li>
 			<li class="li2">
-				<select name="position_id" id="position" >
+				<select name="position_id" id="position" check="require" neq="请选择岗位" msg="请选择岗位">
 					
 				</select>
 			</li>
 			<li class="li1">岗位序列：</li>
 			<li class="li2">
-				<select name="position_sequence_id">
+				<select name="position_sequence_id" check="require" neq="请选择岗位序列" msg="请选择岗位序列">
 					{$position_sequence}
 				</select>
 			</li>
@@ -96,7 +96,7 @@
 			<li class="li2"><input data-date-format="yyyy-mm-dd" id="graduate_date" type="text" class="form-control input-date in1" name="graduate_date" value="{$recruit.graduate_date}" check="require" msg="请输入毕业日期"/></li>
 			<li class="li1">学历：</li>
 			<li class="li2">
-				<select name="qualifications" id="qualifications">
+				<select name="qualifications" id="qualifications" check="require" neq="请选择学历" msg="请选择学历">
 					{$qualifications}
 				</select>
 			</li>
@@ -104,13 +104,13 @@
 			<li class="li2"><input type="text" name="work_year" id="work_year" value="{$recruit.work_year}"/></li>
 			<li class="li1">员工状态：</li>
 			<li class="li2">
-				<select name="stuff_status" id="stuff_status">
+				<select name="stuff_status" id="stuff_status" check="require" neq="请选择员工状态" msg="请选择员工状态">
 					{$stuff_status}
 				</select>
 			</li>
 			<li class="li1">社保缴纳公司：</li>
 			<li class="li2">
-				<select name="social_security_company_id" id="social_security_company_id">
+				<select name="social_security_company_id" id="social_security_company_id" check="require" neq="请选择公司" msg="请选择社保缴纳公司">
 					{$company2}
 				</select>
 			</li>
