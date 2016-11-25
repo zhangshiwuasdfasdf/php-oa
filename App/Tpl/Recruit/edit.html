@@ -75,9 +75,6 @@
 			</li>
 			<li class="li1">姓名：</li>
 			<li class="li2"><input type="text" name="name" value="{$recruit.name}" check="require" msg="请输入姓名"/></li>
-			<li class="li1">ERP登录名：</li>
-			<li class="li2"><input type="text" id="emp_no" value="{$recruit.emp_no}" readonly/>
-			</li>
 			<li class="li1">性别：</li>
 			<li class="li2">
 				<select name="sex">
@@ -129,15 +126,10 @@
 				<input type="radio" name="interview_evaluation" id="jg" value="1" class="inp" <if condition="$recruit.interview_evaluation eq '1'">checked="checked"</if>/>
 				<label class="lb1" for="jg">及格</label>
 			</li>
-			<li class="li1"></li>
-			<li class="li2">
-			</li>
 			<li class="li4">面试评价说明：</li>
 			<li class="li3"><textarea name="interview_evaluation_explain" id="interview_evaluation_explain">{$recruit.interview_evaluation_explain}</textarea></li>
 			<li class="li4">备注：</li>
 			<li class="li3"><textarea name="remark" id="remark">{$recruit.remark}</textarea></li>
-			<li class="li1">员工档案号：</li>
-			<li class="li2"><span class="sp1" id="user_id">{$recruit.user_id}</span></li>
 			<li class="li1">招聘截至日期：</li>
 			<li class="li2"><input data-date-format="yyyy-mm-dd" id="recruit_deadline" type="text" class="form-control input-date in1" name="recruit_deadline" value="{$recruit.recruit_deadline}" check="require" msg="请输入招聘截至日期"/></li>
 			<li class="li1">人事专员：</li>
@@ -150,14 +142,8 @@
 				<span class="sp1">{$recruit.recruit_status_name}</span>
 				<input type="hidden" name="recruit_status" value="{$recruit.recruit_status}">
 			</li>
-			<li class="li1">建档人：</li>
-			<li class="li2"><span class="sp1" id="create_record_user_id">{$recruit.create_record_user_name}</span></li>
-			<li class="li1">建档时间：</li>
-			<li class="li2"><span class="sp1" id="create_record_time">{$recruit.create_record_time}</span></li>
 			<li class="li1">录入时间：</li>
-			<li class="li2"><input data-date-format="yyyy-mm-dd" id="create_time" type="text" class="form-control input-date in1" name="create_time" value="{$recruit.create_time}" check="require" msg="请输入录入时间"/></li>
-			<li class="li1"></li>
-			<li class="li2"><span class="sp1"></span></li>
+			<li class="li2"><input data-date-format="yyyy-mm-dd" id="create_time" type="text" class="form-control input-date in1" name="create_time" value="{$recruit.create_time}" check="require" msg="请输入录入时间" disabled/></li>
 		</ul>
 		<span class="but_span">
 			<a class="but" onclick="save()">提交</a>

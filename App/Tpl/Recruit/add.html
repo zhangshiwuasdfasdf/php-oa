@@ -75,9 +75,6 @@
 			</li>
 			<li class="li1">姓名：</li>
 			<li class="li2"><input type="text" name="name" check="require" msg="请输入姓名"/></li>
-			<li class="li1">ERP登录名：</li>
-			<li class="li2"><input type="text" id="emp_no" readonly/>
-			</li>
 			<li class="li1">性别：</li>
 			<li class="li2">
 				<select name="sex">
@@ -124,20 +121,16 @@
 			<li class="li2">
 				<input type="radio" name="interview_evaluation" id="yx" value="3" class="inp"/>
 				<label class="lb1" for="yx">优秀</label>
-				<input type="radio" name="interview_evaluation" id="lh" value="2" class="inp"/>
+				<input type="radio" name="interview_evaluation" checked="checked" id="lh" value="2" class="inp"/>
 				<label class="lb1" for="lh">良好</label>
 				<input type="radio" name="interview_evaluation" id="jg" value="1" class="inp"/>
 				<label class="lb1" for="jg">及格</label>
-			</li>
-			<li class="li1"></li>
-			<li class="li2">
 			</li>
 			<li class="li4">面试评价说明：</li>
 			<li class="li3"><textarea name="interview_evaluation_explain" id="interview_evaluation_explain"></textarea></li>
 			<li class="li4">备注：</li>
 			<li class="li3"><textarea name="remark" id="remark"></textarea></li>
-			<li class="li1">员工档案号：</li>
-			<li class="li2"><span class="sp1" id="user_id"></span></li>
+			
 			<li class="li1">招聘截至日期：</li>
 			<li class="li2"><input data-date-format="yyyy-mm-dd" id="recruit_deadline" type="text" class="form-control input-date in1" name="recruit_deadline" check="require" msg="请输入招聘截至日期"/></li>
 			<li class="li1">人事专员：</li>
@@ -150,14 +143,6 @@
 				<span class="sp1">待报到</span>
 				<input type="hidden" name="recruit_status" value="0">
 			</li>
-			<li class="li1">建档人：</li>
-			<li class="li2"><span class="sp1" id="create_record_user_id"></span></li>
-			<li class="li1">建档时间：</li>
-			<li class="li2"><span class="sp1" id="create_record_time"></span></li>
-			<li class="li1">录入时间：</li>
-			<li class="li2"><input data-date-format="yyyy-mm-dd" id="create_time" type="text" class="form-control input-date in1" name="create_time" check="require" msg="请输入录入时间"/></li>
-			<li class="li1"></li>
-			<li class="li2"><span class="sp1"></span></li>
 		</ul>
 		<span class="but_span">
 			<a class="but" onclick="save()">提交</a>

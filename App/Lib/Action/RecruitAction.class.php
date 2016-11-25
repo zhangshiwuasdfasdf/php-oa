@@ -354,5 +354,29 @@ class RecruitAction extends CommonAction {
 		$id = $_POST['id'];
 		$this -> _del($id);
 	}
+	protected function _insert() {
+		$model = D('Recruit');
+		if(is_mobile_request()){
+			unset($_GET['id']);
+			unset($_GET['token']);
+			if (false === $model -> create($_GET)) {
+				$this -> error($model -> getError());
+			}
+		}else{
+			if (false === $model -> create()) {
+				$this -> error($model -> getError());
+			}
+		}
+		$model->create_time = date('Y-m-d');
+		/*保存当前数据对象 */
+		$list = $model -> add();
+		if ($list !== false) {//保存成功
+			$this -> assign('jumpUrl', get_return_url());
+			$this -> success('新增成功!'.$list);
+		} else {
+			$this -> error('新增失败!');
+			//失败提示
+		}
+	}
 }
 ?>
