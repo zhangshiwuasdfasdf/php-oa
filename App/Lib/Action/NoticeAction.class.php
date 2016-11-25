@@ -277,6 +277,7 @@ class NoticeAction extends CommonAction {
 
 	public function folder() {
 		$folder_id = $_REQUEST['fid'];
+		$this->assign('folder_id',$folder_id);
 		//有可见部门
 		if(in_array($folder_id , array('72','74','94','96','97'))){
 			$this -> inform($folder_id);die;
@@ -476,7 +477,7 @@ class NoticeAction extends CommonAction {
 		foreach($follow_ids as $k=>$v){
 			$user_id=$v;
 			$user_info=M("User")->field("name,dept_id")->where("id=$user_id")->find();
-			$dept_id=$user_info['dept_name'];
+			$dept_id=$user_info['dept_id'];
 			$user_name=$user_info['name'];
 			$dept_name=M("Dept")->where("id=$dept_id")->getField("name");
 			$user_info['dept_name']=$dept_name;
