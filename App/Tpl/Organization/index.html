@@ -93,8 +93,8 @@ input,select{ margin:0; padding:0; outline:none;}
 .tc_ul_div{width:700px; height:260px;margin-top:20px; margin-left:50px; overflow:auto;}
 .tc_div_jt{ font-size:14px; font-weight:bold; float:left; color:#333;}
 .tc_ul{ margin-bottom:10px; height:auto;}
-.tc_ul li{ overflow:hidden; height:30px; width:100%; line-height:30px;}
-.tc_ul span{ display:block; float:left; height:30px; width:170px; font-size:14px; text-align:center;}
+.tc_ul li{ overflow:hidden; width:100%; line-height:30px;}
+.tc_ul span{ display:block; float:left; height:30px; width:170px; font-size:14px;}
 
 .bottom2{ width:100%; height:70px; line-height:70px; overflow:hidden;}
 .bottom_sp1{ display:block; width:80px; height:36px; float:left; background:#475c6f; color:#fff; line-height:36px; text-align:center; font-size:14px; border-radius:3px; margin-left:290px; margin-right:40px; cursor:pointer;}
@@ -307,7 +307,6 @@ input,select{ margin:0; padding:0; outline:none;}
                 	<li class="content_li">
                     	<span class="span1_0"></span>
                     	<span class="span1">档案号</span>
-                        <span class="span1">姓名</span>
                         <span class="span1">部门</span>
                         <span class="span1">岗位</span>
                         <span class="span1">主要</span>
@@ -323,7 +322,6 @@ input,select{ margin:0; padding:0; outline:none;}
                     <div class="user_content">
                     <li class="content_li">
                     	<span class="span2_0"><input name="box" type="checkbox"/></span>
-                        <span class="span2"></span>
                         <span class="span2"></span>
                         <span class="span2"></span>
                         <span class="span2"></span>
@@ -651,6 +649,7 @@ input,select{ margin:0; padding:0; outline:none;}
                 <li>
                     <label>岗位：</label>
                     <input id="user_origin_position_id" name="user_origin_position_id" type="hidden"/>
+                    <span id="user_positionTip" style="color:red;position:absolute;top:50px;left:85px;line-height:14px;"></span>
                     <select id="user_position" name="user_position">
                     </select>
                 </li>
@@ -670,6 +669,7 @@ input,select{ margin:0; padding:0; outline:none;}
                     <label>序列名称：</label>
                     <!-- <input class="tc_inp" id="user_position_sequence_id" name="user_position_sequence_id" type="hidden"/>
                     <input class="tc_inp" id="user_position_sequence" name="user_position_sequence" type="text" readonly check="require" msg="请选择一个已设置序列的岗位"/> -->
+                    <span id="user_position_sequence_idTip" style="color:red;position:absolute;top:50px;left:85px;line-height:14px;"></span>
                     <select id="user_position_sequence_id" name="user_position_sequence_id">
                     </select>
                 </li>  
@@ -686,7 +686,7 @@ input,select{ margin:0; padding:0; outline:none;}
 <!--员工角色分配-->
 <div class="tc" id="tc_js">
 	<form method='post' id="form_data_distribution_user_role" name="form_data_distribution_user_role" enctype="multipart/form-data">
-	<input type="hidden" name="user_role_user_id" id="user_role_user_id">
+	<input type="hidden" name="user_role_upid" id="user_role_upid">
 	<div class="tc_div">
     	<div class="tc_title">
         	<span class="js_sp1">角色</span>

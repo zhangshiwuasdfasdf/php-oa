@@ -7,7 +7,7 @@ class RoleManagerAction extends CommonAction {
 		if (!empty($_REQUEST['keyword']) && empty($map['64'])) {
 			$map['role_name'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
-		if($_REQUEST['status'] !== "-1" && !empty($_REQUEST['status'])){
+		if($_REQUEST['status'] !== "" && $_REQUEST['status'] !== null){
 			$map['status'] = array('eq',$_REQUEST['status']);
 		}
 	}
@@ -23,6 +23,7 @@ class RoleManagerAction extends CommonAction {
 		}
 		$dept = M('dept')->where(array('pid'=>'0','is_del'=>'0','is_use'=>'1'))->select();
 		$this -> assign('dept',$dept);
+		$this -> assign('status',$_REQUEST['status']);
 		$this -> display();	
 		
 	}
@@ -103,8 +104,11 @@ class RoleManagerAction extends CommonAction {
 		$roleName = I('post.roleName');
 		$isEdit = I('post.isEdit');
 		$ids = I('post.id');
+		$company = I('post.company');
 		if(!empty($roleName)){
 			$where['role_name'] = array('eq',$roleName);
+			$where['is_del'] = '0';
+			$where['company'] = array('eq',$company);
 			if($isEdit){
 				$where['id'] = array('neq',$ids);
 			}
@@ -123,8 +127,13 @@ class RoleManagerAction extends CommonAction {
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
+		//先找出已经绑定到角色的菜单
+		$mr = M('RRoleMenu');
+		$info = $mr -> where(array('role_id'=>$rid)) -> getField('menu_id',true);
+		$map['menu_new_id'] = array('in',$info);
 		$model = M('Privilege');
 		if($model){
+			//找出所有帮定的菜单->动作
 			$list = $this -> _list($model, $map);
 			$pr = M('PrivilegeRole')->where(array('role_id'=>$rid))->select();
 			$arr = array();
@@ -147,7 +156,7 @@ class RoleManagerAction extends CommonAction {
 			$rid = I('post.rid');
 			$pids = I('post.pids');
 			$drs = I('post.drs');
-			$flag = true;
+			$rmid = I('post.rmid');
 			if(!empty($rid)){
 				//功能权限
 				$pv = array_filter(explode(',', $pids));
@@ -156,27 +165,31 @@ class RoleManagerAction extends CommonAction {
 				$where['privilege_id'] = array('not in',$pv);
 				$pr -> where($where) -> delete();
 				$info = $pr ->where(array('role_id'=>$rid)) -> getField('privilege_id',true);
-				$ps = array_diff($pv, $info);
-				foreach ($ps as $k => $v){
-					$data['role_id'] = $rid;
-					$data['privilege_id'] = $v;
-					$flag=$pr -> add($data);
+				$ps = empty($info) ? $pv : array_diff($pv, $info);
+				//如果有差集
+				if(!is_null($ps)){
+					foreach ($ps as $k => $v){
+						$data['role_id'] = $rid;
+						$data['privilege_id'] = $v;
+						$pr -> add($data);
+					}
 				}
 				//数据权限
-				$space = array_filter(explode(',',$drs));
+				$scope = array_filter(explode(',',$drs));
+				$ids = array_filter(explode(',',$rmid));
 				$rm = M('RRoleMenu');
-				$where['role_id'] = $rid;
-				
-			}
-			if($flag){
+				foreach ($ids as $key =>$id){
+					$data['id'] = $id;
+					$data['scope'] = $scope[$key];
+					$rm -> save($data);
+				}
 				$this -> ajaxReturn($pids,'修改成功',1);
-			}else{
-				$this -> ajaxReturn($pids,'修改失败',0);
 			}
+			$this -> ajaxReturn($pids,'修改失败',0);
 		}
 	}
 	//删除
 	function del(){
-		$this -> _del();
+		$this -> _del(null,null,false,"RoleManager/index");
 	}
 }

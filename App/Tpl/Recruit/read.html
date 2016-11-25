@@ -1,0 +1,150 @@
+<layout name='Layout/ace_layout' />
+<style>
+/*main*/
+.ma_ta{ width:100%;}
+.ma_title{ width:99%; height:28px; line-height:28px; padding-left:1%; font-size:13px; background:#bdd3e0;}
+.main_ul{ overflow:hidden; font-size:13px; border-left:solid 1px #e5e5e5;}
+.li1{ float:left; background:#fff; height:37px; line-height:37px; text-align:right; color:#393939; border-bottom: solid 2px #e5e5e5;border-right: solid 2px #e5e5e5; overflow:hidden; white-space:nowrap;}
+.li2{ float:left; background:#fff; height:37px; line-height:37px; text-align:left;border-bottom: solid 2px #e5e5e5; color:#393939;overflow:hidden; white-space:nowrap;border-right: solid 2px #e5e5e5; position: relative;padding-left:5px;}
+.li2 input{ width:150px; height:26px; border:solid 1px #ccc; margin-left:5px;padding-left:5px; font-size: 13px;}
+.li2 .inp{ width: 20px; height: 13px; margin-top: 12px; float: left;}
+.li2 .inp2{width: 20px; height: 13px; float: left;}
+.li2 .lb1{ float:left; color:#333;}
+.li2 .sp1{margin-left:5px;font-size: 13px;}
+.li2 select{width:152px; height:26px; border:solid 1px #ccc; margin-left:5px;font-size: 13px;}
+.li3{float: left;background:#fff; height:60px; line-height:60px; text-align:left;border-bottom: solid 2px #e5e5e5; color:#393939;overflow:hidden; white-space:nowrap;border-right: solid 2px #e5e5e5;}
+.li3 textarea{height: 50px;border: none; resize: none; width: 98%; margin-left: 1%;font-size: 13px; margin-top: 5px;}
+.li4{float: left;background:#fff; height:60px; line-height:60px; text-align:left;border-bottom: solid 2px #e5e5e5; color:#393939;overflow:hidden; white-space:nowrap;border-right: solid 2px #e5e5e5;text-align: right;}
+
+/*返回，提交*/
+.but_span{ display:block; margin:auto; overflow:hidden; width:180px; margin-top:50px;}
+.but{ display:block; float:left; width:80px; height:26px; color:#fff; line-height:26px; text-align:center; font-size:13px; background:#22bd9b; margin-right:10px;}
+
+
+.ul1 ul{ display:none;}
+.gs_div{ width:202px; height:320px; overflow:hidden;border:solid 1px #c1c1c1;}
+.bm_c{ width:204px; height:322px; overflow:hidden; position: absolute; top: 53px; background: #fff; display: none;z-index: 30;}
+.gw_c{ width:204px; height:322px; overflow:hidden; position: absolute; top: 85px; background: #fff;display: none; z-index: 30;}
+.gs_title1{ width:100%; height:30px; line-height:30px; background:#eff1f1; border-bottom:solid 1px #dadbdb;}
+.top_s1{ display:block; float:left; color:#526856; font-size:12px; font-weight:bold; margin-left:5px;cursor:default;}
+.top_s2{ display:block; float:right; color:#22bf9b; font-size:12px; margin-right:5px; cursor:default;}
+.ss{ background:#fff; width:100%; height:34px; overflow:hidden;}
+.ss_inp1{ height:24px; width:156px; border: solid 1px #e3e8ec; outline:none; float:left; background:#f3f5f7; margin-top:5px; margin-left:5px;}
+.ss_inp2{ display:block; width:36px; height:24px; background:#22bf9b; float:left; margin-top:5px;}
+.ss_inp2 img{ width:20px; height:auto; margin-top:2px; margin-left:8px;}
+.gs_title2{ width:202px; height:199px; overflow:auto; border-bottom:solid 1px #dadbdb;}
+.gs_title2 li{margin: 10px 0; white-space:nowrap; font-size:12px; color:#222222; overflow: auto; width: 100%;}
+.gs_title2 ul{margin:0px; -webkit-padding-start:10px !important; width:auto; height:auto;}
+.gs_title2 img{display: block; float: left; margin: 2px 5px 0 0;}
+.bottom1{ width:100%; height:54px; overflow:hidden;}
+.bottom_s1{ display:block; width:74px; height:30px; line-height:30px; text-align:center; background:#1eb891; float:left; border-radius:2px; margin-left:22px; color:#fff; font-size:14px; margin-top:12px;cursor:pointer;}
+.bottom_s2{ display:block; width:74px; height:30px; line-height:30px; text-align:center; background:#465a6e; float:left; border-radius:2px; margin-left:10px; color:#fff; font-size:14px; margin-top:12px;cursor:pointer;}
+
+</style>
+
+	<input type="hidden" id="opmode" name="opmode" value="add">
+
+	<div class="ma_ta">
+		<div class="ma_title">招聘信息跟进</div>
+		<ul class="main_ul">
+			<li class="li1">公司：</li>
+			<li class="li2">
+					{$recruit.company_name}
+			</li>
+			<li class="li1">部门：</li>
+			<li class="li2">
+				{$recruit.dept_name}
+			</li>
+			
+			<li class="li1">岗位：</li>
+			<li class="li2">
+				{$recruit.position_name}
+			</li>
+			<li class="li1">岗位序列：</li>
+			<li class="li2">
+				{$recruit.position_sequence_name}
+			</li>
+			<li class="li1">姓名：</li>
+			<li class="li2">{$recruit.name}</li>
+			<li class="li1">ERP登录名：</li>
+			<li class="li2">{$recruit.emp_no}
+			</li>
+			<li class="li1">性别：</li>
+			<li class="li2">
+				{$recruit.sex|showsex}
+			</li>
+			<li class="li1">手机号码：</li>
+			<li class="li2">{$recruit.mobile}</li>
+			<li class="li1">毕业院校：</li>
+			<li class="li2">{$recruit.graduate_school}</li>
+			<li class="li1">专业：</li>
+			<li class="li2">{$recruit.major}
+			</li>
+			<li class="li1">毕业日期：</li>
+			<li class="li2">{$recruit.graduate_date}</li>
+			<li class="li1">学历：</li>
+			<li class="li2">
+				{$recruit.qualifications}
+			</li>
+			<li class="li1">相关工作年限：</li>
+			<li class="li2">{$recruit.work_year}</li>
+			<li class="li1">员工状态：</li>
+			<li class="li2">
+				{$recruit.stuff_status}
+			</li>
+			<li class="li1">社保缴纳公司：</li>
+			<li class="li2">
+				{$recruit.social_security_company_id}
+			</li>
+			<li class="li1">录用日期：</li>
+			<li class="li2">{$recruit.employed_date}</li>
+			<li class="li1">入职日期：</li>
+			<li class="li2">{$recruit.entry_date}</li>
+			<li class="li1">招聘渠道：</li>
+			<li class="li2">{$recruit.recruitment_channel}</li>
+			<li class="li1">面试总体评价：</li>
+			<li class="li2">
+				{$recruit.interview_evaluation}
+			</li>
+			<li class="li1"></li>
+			<li class="li2">
+			</li>
+			<li class="li4">面试评价说明：</li>
+			<li class="li3">{$recruit.interview_evaluation_explain}</li>
+			<li class="li4">备注：</li>
+			<li class="li3">{$recruit.remark}</li>
+			<li class="li1">员工档案号：</li>
+			<li class="li2"><span class="sp1" id="user_id">{$recruit.user_id}</span></li>
+			<li class="li1">招聘截至日期：</li>
+			<li class="li2">{$recruit.recruit_deadline}</li>
+			<li class="li1">人事专员：</li>
+			<li class="li2">
+				{$recruit.hr_specialist_name}
+			</li>
+			<li class="li1">招聘状态：</li>
+			<li class="li2">
+				{$recruit.recruit_status_name}
+			</li>
+			<li class="li1">建档人：</li>
+			<li class="li2">{$recruit.create_record_user_name}</li>
+			<li class="li1">建档时间：</li>
+			<li class="li2">{$recruit.create_record_time}</li>
+			<li class="li1">录入时间：</li>
+			<li class="li2">{$recruit.create_time}</li>
+			<li class="li1"></li>
+			<li class="li2"><span class="sp1"></span></li>
+		</ul>
+		<span class="but_span">
+			<a class="but" href="{:U('index')}">返回</a>
+		</span>
+		
+	</div>
+<script type="text/javascript">
+$(function() {
+	var html = "<li>行政管理</li><li>公告管理</li><li>{$menu_title.$folder}</li><li>新建</li>";
+	if({$folder} == '94'){
+		html = "<li>个人中心</li><li>{$menu_title.$folder}</li><li>新建</li>";
+	}
+	$("#breadcrumbs ul").append(html);
+});
+</script>

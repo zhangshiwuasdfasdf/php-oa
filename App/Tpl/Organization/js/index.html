@@ -421,6 +421,7 @@ $("#a_ygtj").click(function(){
 	})
 	$("#tc_ygbj").show();
 	$("#user_user_name").keyup(function(){
+		$("#user_user_id").val('');
 		$.ajax({
 			type:'post',
 			url:"{:U('search_user')}",
@@ -449,6 +450,9 @@ $("#a_ygtj").click(function(){
 	$("#user_user_name").focus(function(){
 		$(".user_name_search").show();
 	});
+	$("#user_user_name").blur(function(){
+		validate3();
+	});
 	$(".bottom_sp4").click(function(){
 		window.onbeforeunload = null;
 		if (check_form("form_data_user_edit")) {
@@ -463,13 +467,14 @@ function put_on(id,name){
 	$("#user_user_id").val(id);
 	$("#user_user_name").val(name);
 	$(".user_name_search").hide();
+	validate3();
 }
-function distribution_user_role(user_id){
-	$("#user_role_user_id").val(user_id);
+function distribution_user_role(upid){
+	$("#user_role_upid").val(upid);
 	$.ajax({
-		data:{user_id:user_id},
+		data:{upid:upid},
 		type:'post',
-		url:"{:U('get_user_role_html')}",
+		url:"{:U('get_user_position_role_html')}",
 		success:function(data){
 			$("#distribution_user").html(data);
 			//alert(JSON.stringify(data));
@@ -648,9 +653,18 @@ function distribution_position(position_id){
 	$("#tc_fp").show();
 	$(".bottom_sp2").click(function(){
 		window.onbeforeunload = null;
-		if (check_form("form_data_distribution_position")) {
-			sendForm("form_data_distribution_position", "{:U('distribution_position_to_role')}");
-		}	
+		var count = 0;
+		$("#distribution_position [name='role[]']:checked").each(function(){
+			count++;
+		});
+		if(count>1){
+			ui_alert('一个岗位只能分配一个角色',function(){return false;});
+		}else{
+			if (check_form("form_data_distribution_position")) {
+				sendForm("form_data_distribution_position", "{:U('distribution_position_to_role')}");
+			}
+		}
+			
 	})
 	$(".bottom_sp1").click(function(){
 		$("#tc_fp").hide();	
@@ -843,11 +857,11 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 					position_temp = '';
 					$.each(data.data.list_position, function(k, v){
 						position_temp += '<li class="content_li">';
-						position_temp += '<span class="span2_0"><input name="box_position[]" class="box_position" type="checkbox" value="'+v.id+'"/></span>';
+						position_temp += '<span class="span2_0"><input name="box_position[]" class="box_position" type="checkbox" value="'+v.id+'_'+v.dept_id+'"/></span>';
 						position_temp += '<span class="span2">'+v.dept_name+'</span>';
 						position_temp += '<span class="span2">'+v.position_name+'</span>';
 						position_temp += '<span class="span2"></span>';
-						position_temp += '<span class="span2"></span>';
+						position_temp += '<span class="span2">'+v.default_role+'</span>';
 						position_temp += '<span class="span2"><a class="content_a" id="a_gwbj" onclick="edit_r_dept_position(\''+v.dept_id+'\',\''+v.id+'\')">编辑</a></span>';
 						position_temp += '<span class="span2"><a class="content_a" id="a_fp" onclick="distribution_position(\''+v.id+'\')">分配情况</a></span>';
 						position_temp += '</li>';
@@ -883,17 +897,16 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 							background = 'style="background:silver;"';
 						}
 						user_temp += '<li class="content_li" '+background+'>';
-						user_temp += '<span class="span2_0"><input name="box_user[]" class="box_user" type="checkbox" value="'+v.user_id+'"/></span>';
+						user_temp += '<span class="span2_0"><input name="box_user[]" class="box_user" type="checkbox" value="'+v.user_id+'_'+v.dept_id+'_'+v.position_id+'"/></span>';
 						var url = "{:U('profile/user',array('id'=>'"+v.user_id+"'))}";
 						user_temp += '<span class="span2"><a class="content_a" href="'+url+'">'+v.no+'</a></span>';
-						user_temp += '<span class="span2">'+v.name+'</span>';
 						user_temp += '<span class="span2">'+v.dept_name+'</span>';
 						user_temp += '<span class="span2">'+v.position_name+'</span>';
 						user_temp += '<span class="span2">'+v.major+'</span>';
 						user_temp += '<span class="span2">'+v.status+'</span>';
 						user_temp += '<span class="span2">'+v.position_sequence+'</span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_ygbj" onclick="edit_user(\''+v.user_id+'\',\''+v.name+'\',\''+v.dept_id+'\',\''+v.position_id+'\',\''+v.is_del+'\',\''+v.position_sequence+'\')">编辑</a></span>';
-						user_temp += '<span class="span2"><a class="content_a" id="a_js" onclick="distribution_user_role(\''+v.user_id+'\')">角色分配</a></span>';
+						user_temp += '<span class="span2"><a class="content_a" id="a_js" onclick="distribution_user_role(\''+v.id+'\')">角色分配</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_xz" onclick="admin_jurisdiction(\''+v.upid+'\')">行政关系范围</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_yw" onclick="business_jurisdiction(\''+v.upid+'\')">业务管辖部门</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_jd" onclick="business_base(\''+v.upid+'\')">业务管辖基地</a></span>';
@@ -1048,6 +1061,28 @@ function validate3(){
     }).inputValidator({
         min:1,
         onErrorMin:"没找到此人"
+    });
+    
+    $("#user_position").formValidator({
+        tipID:"user_positionTip",
+        empty:false,
+        onShow:" ",
+        onFocus:" ",
+        onCorrect:"<span style='color:green;'>√</span>"
+    }).inputValidator({
+        min:1,
+        onErrorMin:"请选择岗位"
+    });
+    
+    $("#user_position_sequence_id").formValidator({
+        tipID:"user_position_sequence_idTip",
+        empty:false,
+        onShow:" ",
+        onFocus:" ",
+        onCorrect:"<span style='color:green;'>√</span>"
+    }).inputValidator({
+        min:1,
+        onErrorMin:"请选择岗位序列"
     });
 }
 </script>

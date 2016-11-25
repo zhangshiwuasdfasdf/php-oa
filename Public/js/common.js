@@ -502,6 +502,16 @@ function check_form(form_id) {
 			}
 		}
 	});
+	$("#" + form_id + " select").each(function(i) {
+		if ($(this).attr("check")) {
+			if (!validate2($(this).val(), $(this).attr("check"), $(this).attr("neq"))) {
+				ui_error($(this).attr("msg"));
+				$(this).focus();				
+				check_flag=false;
+				return false;
+			}
+		}
+	});
 	return check_flag;
 }
 
@@ -535,6 +545,28 @@ function validate(data, datatype) {
 		case "eqt":
 			data2 = $("#" + data2).val();
 			return data >= data2
+			break;
+	}
+}
+
+function validate2(data, datatype, neq) {
+	switch (datatype) {
+		case "require":
+			if(neq == ""){
+				if (data == "") {
+					return false;
+				} else {
+					return true;
+				}
+			}else{
+				console.log(data);
+				if (data == "" || data == null || data == neq) {
+					
+					return false;
+				} else {
+					return true;
+				}
+			}
 			break;
 	}
 }

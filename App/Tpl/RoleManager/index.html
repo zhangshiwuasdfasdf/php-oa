@@ -4,11 +4,11 @@
 	<div class="adv_search panel panel-default "  id="adv_search">
 		<div class="panel-body">
 			<div class="top_qxql">
-            <span>角色代码：<input class="top_in" type="text" name="li_role_no"/></span>
+            <span>公司：<input class="top_in" type="text" name="li_company"/></span>
             <span>角色名称：<input class="top_in" type="text" name="li_role_name"/></span>
             <span>数据状态：
                 <select class="top_select" name="status">
-					<option value="-1">请选择</option>
+					<option value="">请选择</option>
                     <option value="1">启用</option>
                     <option value="0">禁用</option>
                 </select>
@@ -102,7 +102,7 @@
                     <input class="tc_inp" type="text" name="sort"/>
                 </li>
             </ul>
-            <span  style="color: red;display: none;top: 20px;height: 20px;line-height: 20px;" id="vali_role_name"></span>
+            <span  style="color: red;display: none;top: 20px;height: 20px;line-height: 20px;" class="vali_role_name"></span>
         </div>
         
         <div class="bottom_qxql">
@@ -142,11 +142,12 @@
                     <input class="tc_inp" type="text" name="sort"/>
                 </li>
             </ul>
+            <span  style="color: red;display: none;top: 20px;height: 20px;line-height: 20px;" class="vali_role_name"></span>
         </div>
         
         <div class="bottom_qxql">
         	<span class="bottom_sp3">取消</span>
-            <span class="bottom_sp4" onclick="addRole();">确定</span>
+            <span class="bottom_sp4" onclick="valiRole(this);">确定</span>
         </div>
     </div>
 </div>
@@ -170,5 +171,7 @@
 $(function() {
 	var html = "<li>系统设置</li><li>权限管理</li><li>角色管理</li>";
 	$("#breadcrumbs ul").append(html);
+	var li = "{$status}";
+	$(".top_select").val(li);
 });
 </script>

@@ -1,0 +1,128 @@
+<script type="text/javascript">
+$.fn.toggle = function( fn, fn2 ) {
+    var args = arguments,guid = fn.guid || $.guid++,i=0,
+    toggle = function( event ) {
+      var lastToggle = ( $._data( this, "lastToggle" + fn.guid ) || 0 ) % i;
+      $._data( this, "lastToggle" + fn.guid, lastToggle + 1 );
+      event.preventDefault();
+      return args[ lastToggle ].apply( this, arguments ) || false;
+    };
+    toggle.guid = guid;
+    while ( i < args.length ) {
+      args[ i++ ].guid = guid;
+    }
+    return this.click( toggle );
+}
+function wi(){
+	var wi=($('.ma_ta').width()-30)/4;
+	$('.li1,.li2,.li4').css('width',wi);
+	var wi2=wi*3;
+	$('.li3').css('width',wi2);
+}
+wi();
+//checkbox
+$("#qk").click(function(){
+	$('input[type="checkbox"]').prop({
+        checked: false
+      })	
+})
+$('input[type="checkbox"]').change(function(e) {
+
+  var checked = $(this).prop("checked"),
+      container = $(this).parent(),
+      siblings = container.siblings();
+
+  container.find('input[type="checkbox"]').prop({
+    indeterminate: false,
+    checked: checked
+  });
+
+  function checkSiblings(el) {
+
+    var parent = el.parent().parent(),
+        all = true;
+
+    el.siblings().each(function() {
+      return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+    });
+
+    if (all && checked) {
+
+      parent.children('input[type="checkbox"]').prop({
+        indeterminate: false,
+        checked: checked
+      });
+
+      checkSiblings(parent);
+
+    } else if (all && !checked) {
+
+      parent.children('input[type="checkbox"]').prop("checked", checked);
+      parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
+      checkSiblings(parent);
+
+    } else {
+
+      el.parents("li").children('input[type="checkbox"]').prop({
+        indeterminate: true,
+        checked: false
+      });
+
+    }
+
+  }
+
+  checkSiblings(container);
+});
+
+
+
+$("li img").each(function(){
+	$(this).toggle(function(){
+		$(this).attr('src','img/hl.png')
+		$(this).parent('li').children('ul').slideDown()
+	},function(){
+		$(this).attr('src','img/zk.png')	
+		$(this).parent('li').children('ul').slideUp()
+	});
+});
+
+change_dept("{$recruit.company_id}","{$recruit.dept_id}",'1');
+change_position("{$recruit.dept_id}","{$recruit.position_id}");
+function change_dept(company_id,dept_id,is_default){
+	$.ajax({
+		type:'post',
+		url:"{:U('get_dept_html')}",
+		data:{company_id:company_id,dept_id},
+		success:function(result){
+			$("#dept").html(result.data.dept);
+			if(is_default != '1'){
+				$("#position").html('');
+			}
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
+}
+function change_position(dept_id,position_id){
+	$.ajax({
+		type:'post',
+		url:"{:U('get_position_html')}",
+		data:{dept_id:dept_id,position_id:position_id},
+		success:function(result){
+			$("#position").html(result.data.position);
+		},
+		error:function(){
+			alert('数据错误');
+		}
+	})
+}
+function save() {
+	window.onbeforeunload=null;
+	if (check_form("form_data")) {
+		sendForm("form_data", "{:U('save')}","{:U('index')}");
+	}
+}
+	
+</script>

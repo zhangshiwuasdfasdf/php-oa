@@ -16,45 +16,33 @@ class DeptAction extends CommonAction {
 	protected $config = array('app_type' => 'master', 'action_auth' => array('index' => 'admin', 'winpop4' => 'read','get_company_candidate'=>'read','company_add'=>'read','dept_add'=>'read','edit_company'=>'read','edit_dept'=>'read','update_dept'=>'read','get_dept_by_company_id'=>'read','set_dept'=>'read','ajax_get_dept_info'=>'read','view'=>'read','validate'=>'read'));
 
 	public function index(){
-		
 		$node = M("Dept");
 		$menu = array();
+		$map = array();
+		$ids = array();
 		$where['is_del'] = '0';
-		
 		if(!empty($_POST['dept_no'])){
-			$where['dept_no'] = array('like','%'.$_POST['dept_no'].'%');
+			$map['dept_no'] = array('like','%'.$_POST['dept_no'].'%');
 		}
 		if(!empty($_POST['name'])){
-			$where['name'] = array('like','%'.$_POST['name'].'%');
+			$map['name'] = array('like','%'.$_POST['name'].'%');
 		}
 		if(!empty($_POST['is_use']) && $_POST['is_use']>-1){
-			$where['is_use'] = array('eq',$_POST['is_use']);
+			$map['is_use'] = array('eq',$_POST['is_use']);
 		}
-		
-		
-		
+		if(!empty($map)){
+			$map['is_del'] = '0';
+			$ids = $node -> where($map) -> getField('id',true);
+		}
+		$open=fopen("C:\log.txt","a" );
+		fwrite($open,json_encode($ids)."\r\n");
+		fclose($open);
 		$menu = $node -> where($where) -> field('id,pid,name,dept_no,is_use') -> order('sort asc') -> select();
 		$tree = list_to_tree($menu);
 		
-		$a = popup_tree_menu_dept($tree);
+		$a = popup_tree_menu_dept($tree,'0','100',$ids);
 // 		dump($a);die;
 		$this -> assign('menu', $a);
-
-// 		$open=fopen("C:\log.txt","a" );
-// 		fwrite($open,json_encode($where)."\r\n");
-// 		fwrite($open,json_encode($menu)."\r\n");
-// 		fwrite($open,json_encode($tree)."\r\n");
-// 		fclose($open);
-		
-		
-// 		$model = M("Dept");
-// 		$list = $model -> order('sort asc') -> getField('id,name');
-// 		$this -> assign('dept_list', $list);
-
-// 		$model = M("DeptGrade");
-// 		$list = $model -> where('is_del=0') -> order('sort asc') -> getField('id,name');
-// 		$this -> assign('dept_grade_list',$list);
-
 		$this -> display();
 	}
 
