@@ -13,7 +13,7 @@
 
 class NoticeAction extends CommonAction {
 
-	protected $config = array('app_type' => 'folder', 'action_auth' => array('folder' => 'read','sign'=>'read','mark' => 'read', 'upload' => 'read' ,'changeplan' => 'read' ,'confirm' => 'read'));
+	protected $config = array('app_type' => 'folder', 'action_auth' => array('folder' => 'read','sign'=>'read','mark' => 'read', 'upload' => 'read' ,'changeplan' => 'read' ,'confirm' => 'read' ,'get_follow' => 'read'));
 
 	//过滤查询字段
 	function _search_filter(&$map) {
@@ -242,6 +242,31 @@ class NoticeAction extends CommonAction {
 			$model -> where("id = $id") -> setInc("views");
 			$notnews = false;
 		}
+		
+		//公司制度与规定关注账户
+		if($folder_id == '71'){
+			$uid=get_user_id();
+			$follow=M("Notice")-> where("id = $id")->getField("follow");
+			$follow_list=M("Notice")->find($id);
+			if(empty($follow)){
+				$data['follow'] = $uid . ',';
+				$data['views']=1;
+				M("Notice")->where("id = $id")->setField($data);
+			}else{
+				$tmp = array_filter(explode(',',rtrim($follow_list['follow'],',')));
+				$flag = true;
+				foreach ($tmp as $k => $v){
+					if($v == $uid){
+						$flag = false;
+					}
+				}
+				if($flag){
+					$follow_list['follow'] .=  $user_id .',';
+					$follow_list['views'] += 1;
+					M("Notice")->where("id = $id")->setField($follow_list);
+				}
+			}
+		}
 		$this -> assign('notnews',$notnews);
 		//工作计划
 		if($folder_id == '94'){
@@ -249,7 +274,6 @@ class NoticeAction extends CommonAction {
 		}
 		$this -> _edit(null,$id);
 	}
-
 
 	public function folder() {
 		$folder_id = $_REQUEST['fid'];
@@ -443,5 +467,22 @@ class NoticeAction extends CommonAction {
 		$readed_notice=implode(",",array_keys($readed_notice));
 		$where['id']=array('eq',get_user_id());
 		return M("UserConfig") -> where($where) -> setField('readed_notice', $readed_notice);
+	}
+	
+	public function get_follow(){
+		$id=$_REQUEST['id'];
+		$follow_ids=M("Notice")->where("id=$id")->getField("follow");
+		$follow_ids = array_filter(explode(',',rtrim($follow_ids,',')));
+		$data=array();
+		foreach($follow_ids as $k=>$v){
+			$user_id=$v;
+			$user_info=M("User")->field("name,dept_name")->where("id=$user_id")->find();
+			$dept_id=$user_info['dept_name'];
+			$user_name=$user_info['name'];
+			$dept_name=M("Dept")->where("id=$dept_id")->getField("name");
+			$user_info['dept_name']=$dept_name;
+			$data[]=$user_info;
+		}
+		$this->ajaxReturn($data,'success','1');
 	}
 }

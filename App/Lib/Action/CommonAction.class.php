@@ -748,6 +748,7 @@ class CommonAction extends Action {
 // 		$html .= "</div>\r\n";
 		$this -> ajaxReturn($html);
 	}
+	
 	public function get_real_dept(){
 		$node = D("Dept");
 		$menu = array();

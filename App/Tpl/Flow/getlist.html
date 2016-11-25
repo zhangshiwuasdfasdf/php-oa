@@ -38,3 +38,18 @@
 <include file="Flow/list:common" />
 
 </if>
+<script>
+$(function(){
+	$("#qd3").click(function(){
+	var company_ids=$("#company_name_multi_data").val();
+	$.ajax({
+		type:'post',
+		url:"{:U('get_dept')}",
+		data:{company_ids:company_ids},
+		success:function(data){
+			$(".content0").html(data);	
+		} 
+	})
+	});
+});
+</script>

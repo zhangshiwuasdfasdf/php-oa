@@ -2,6 +2,29 @@
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default "  id="adv_search">
 		<div class="panel-body">
+		<div class="col-sm-3" style="width:350px;">
+				<label class="col-sm-4 control-label" for="">公司：</label>
+				<div class="col-sm-8">
+					<input class="form-control input-sm" type="text" id="company_name_multi" name="company_name_multi" onfocus="$('.content000').show()" readonly>
+					<input type="hidden" id="company_name_multi_data" name="company_name_multi_data"/>
+					<div class="content000"> 
+						<div class="top2">
+					        <span class="top_s1">公司选择</span>
+					        <span class="top_s2" id="gb3">【关闭】</span>
+					        <span class="top_s2" id="qk3">【清空】</span>
+					    </div>
+					    <div class="ss">
+					    </div>
+						<div class="content3">
+							{$company_list_new}
+				    	</div>
+					    <div class="bottom2">
+					    	<span class="bottom_s1" id="qd3">确定</span>
+					        <span class="bottom_s2" id="qx3">取消</span>
+					    </div>
+					</div>
+				</div>
+			</div>
 			<div class="form-group col-sm-3">
 				<label class="col-sm-4 control-label" for="">部门：</label>
 				<div class="col-sm-8">
@@ -104,6 +127,7 @@
 			<div class="pull-left">
 				<span class="col-8 ">编号</span>
 				<span class="col-15 ">申请时间</span>	
+				<span class="col-10 ">公司</span>
 				<span class="col-8 ">部门</span>	
 				<span class="col-8 ">岗位</span>	
 				<span class="col-8 ">申请人</span>				
@@ -135,6 +159,7 @@
 						<div class="pull-left">
 							<span class="col-8">&nbsp;{$flow_ext.$key.flow_no}</span>
 							<span class="col-15">&nbsp;{$vo.create_time|date='Y-m-d H:i:s',###}</span>
+							<span class="col-10 ">&nbsp;{$flow_common.$key.company_name}</span>
 							<span class="col-8">&nbsp;{$vo.dept_name}</span>	
 							<span class="col-8">&nbsp;{$flow_ext.$key.pos_name}</span>
 							<span class="col-8">&nbsp;{$vo.user_name}</span>

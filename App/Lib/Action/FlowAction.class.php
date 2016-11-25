@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class FlowAction extends CommonAction {
-	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'read', 'report' => 'read','ajaxgetflow' =>'read','ajaxgettime' =>'read','editflow' =>'read','export_office_supplies_application'=>'read','import_office_supplies_application'=>'read','export_goods_procurement_allocation'=>'read','import_goods_procurement_allocation'=>'read','del'=>'write','winpop_goods'=>'read','getlist'=>'read','get_dept_child'=>'read','export_excel'=>'read'));
+	protected $config = array('app_type' => 'flow', 'action_auth' => array('folder' => 'read','cancel'=>'read', 'mark' => 'read', 'report' => 'read','ajaxgetflow' =>'read','ajaxgettime' =>'read','editflow' =>'read','export_office_supplies_application'=>'read','import_office_supplies_application'=>'read','export_goods_procurement_allocation'=>'read','import_goods_procurement_allocation'=>'read','del'=>'write','winpop_goods'=>'read','getlist'=>'read','get_dept_child'=>'read','export_excel'=>'read','get_dept'=>'read'));
 
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -3276,12 +3276,13 @@ class FlowAction extends CommonAction {
 // 		$outside_outside_type = M('FlowOutside') -> field('outside_type as id,outside_type as name') ->distinct(true) -> select();
 // 		$this -> assign('outside_outside_type', $outside_outside_type);
 
-		$node = D("Dept");
-		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		/*$node = D("Dept");
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_use=1") -> order('sort asc') -> select();
 		$dept_tree = list_to_tree($dept_menu);
 		if(!is_mobile_request()){
 			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
-		}
+		}*/
+		//dump($dept_menu);die;
 		//搜索条件预设结束
 		
 		//搜索条件处理
@@ -3296,6 +3297,17 @@ class FlowAction extends CommonAction {
 // 			$where['user_id'] = array('in',$user_id_in);
 			
 // 		}
+
+
+		if (!empty($_REQUEST['company_name_multi_data'])) {
+			$company_id_mul = $_REQUEST['company_name_multi_data'];
+			$company_id_mul = array_filter(explode('|',$company_id_mul));
+			$company_ids = array();
+			foreach ($company_id_mul as $company_id){
+				$company_ids = array_merge($company_ids,get_child_dept_all($company_id));
+			}
+			$where['dept_id'] = array('in', $company_ids);
+		}
 		if (!empty($_REQUEST['dept_name_multi_data'])) {
 			$dept_id_mul = $_REQUEST['dept_name_multi_data'];
 			$dept_id_mul = array_filter(explode('|',$dept_id_mul));
@@ -3369,6 +3381,7 @@ class FlowAction extends CommonAction {
 		$this -> assign('auth', $auth);
 		if (!$auth['admin']) {
 			$flow_me = M('Flow')->field('id')->where(array('user_id'=>get_user_id()))->select();
+			
 			if(empty($flow_me)){
 				$flow_me = array();
 			}else{
@@ -3393,6 +3406,23 @@ class FlowAction extends CommonAction {
 		}else{
 			$flow_common = $this->_list(M('Flow'), $map);
 		}
+		foreach($flow_common as $k=>$v){
+				$did=$v['dept_id'];
+				$pid = $did;
+				while($pid){
+					$id = $pid;
+					$pid = M('Dept')->where(array('id'=>$id))->getField('pid');
+				}
+				$company_id = $id;
+				$company_name = M('Dept')->where(array('id'=>$company_id))->getField('name');
+				$flow_common[$k]['company_name']=$company_name;
+			}
+			$this -> assign("flow_common",$flow_common);
+		//搜索框中的 公司下拉菜单
+		$company_menu = M('Dept')->field('id,pid,name')->where("is_del=0 and pid=0")->select();
+		$company_tree = list_to_tree($company_menu);
+		$this -> assign('company_list_new', select_tree_menu_mul($company_tree));
+		
 		$flow_ext = array();
 		foreach ($flow_common as $k=>$v){
 			$model_name = getModelName($v['id']);
@@ -3405,7 +3435,6 @@ class FlowAction extends CommonAction {
 // 		$flow = M('Flow')->where(array('type'=>$type,'user_id'=>get_user_id()))->select();
 		$this -> assign("flow_ext", $flow_ext);
 		$this -> assign("user_id", get_user_id());
-		
 
 		$this -> assign("post", json_encode($_POST));
 		if($_GET['export']=='1'){
@@ -3413,6 +3442,23 @@ class FlowAction extends CommonAction {
 		}else{
 			$this -> display();
 		}
+	}
+	
+	function get_dept(){
+		$company_id_mul=I("post.company_ids");
+		$company_id_mul = array_filter(explode('|',$company_id_mul));
+		$company_ids = array();
+		foreach ($company_id_mul as $company_id){
+			$company_ids = array_merge($company_ids,get_child_dept_all($company_id));
+		}
+		$where['id'] = array('in', $company_ids);
+		$where['is_del'] = array('eq', 0);
+		$where['is_use'] = array('eq', 1);
+		$node = D("Dept");
+		$dept_menu = $node -> field('id,pid,name')  -> where($where) -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
+		$this->display('dept');	
 	}
 	
 	function _search_provide($ModelName,$field_id,$field_name){
