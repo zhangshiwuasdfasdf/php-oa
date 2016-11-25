@@ -36,7 +36,11 @@ function is_weixin() {
 	}
 	return false;
 }
-
+function dump2($var){
+	echo "<pre>";
+	print_r($var);
+	echo "</pre>";die;
+}
 function get_new_count() {
 
 	$emp_no = get_emp_no();
@@ -1047,7 +1051,9 @@ function select_tree_menu_mul($tree,$level=0) {
 	}
 	return $html;
 }
-
+/*
+ * 物品选择
+ */
 function popup_menu($tree, $level = 0,$deep=100,$other_nodes=array()) {
 	$level++;
 	$deep--;
@@ -1133,7 +1139,150 @@ function popup_tree_menu($tree, $level = 0,$deep=100,$other_nodes=array()) {
 	}
 	return $html;
 }
-
+//菜单维护列表
+function new_tree_menu($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"content_ul\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["menu_name"])) {
+				$title = $val["menu_name"];
+				$id = $val["id"];
+				$pid = $val["pid"];
+				$menu_no = $val["menu_no"];
+				$sort = $val['sort'];
+				if (empty($val["id"])) {
+					$id = $val["menu_name"];
+				}
+				$status = $val['menu_status'] ? "启用" : "禁用" ;
+				$activate = $val['menu_status'] ? "禁用" : "启用" ;
+				if (isset($val['_child'])) {
+					$html = $html . "<li>\r\n<span class=\"li_sp3\"><input name=\"box\" type=\"checkbox\"/><input name=\"sid\" type=\"hidden\" value=\"{$id}\"/><input name=\"pid\" type=\"hidden\" value=\"{$pid}\"/><input name=\"menu_no\" type=\"hidden\" value=\"{$menu_no}\"/></span>\r\n";
+					$html = $html . "<span class=\"li_sp0_2\"><img src=\"__PUBLIC__/img/new_versions/add.png\"/><span>{$title}</span></span>\r\n";
+					$html = $html . "<span class=\"li_sp1\">{$val['menu_addr']}</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\">$status</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\" msg=\"$sort\">修改</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\" id=\"{$id}\">关联角色</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\" id=\"{$id}\" menu_name=\"{$title}\">关联角色复制</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp$level isChild\"><a class=\"content_a a1_4\" id=\"{$id}\">关联数据控制策略</a></span>\r\n";
+					$html = $html . new_tree_menu($val['_child'], $level,$deep);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li>\r\n<span class=\"li_sp3\"><input name=\"box\" type=\"checkbox\"/><input name=\"sid\" type=\"hidden\" value=\"{$id}\"/><input name=\"pid\" type=\"hidden\" value=\"{$pid}\"/><input name=\"menu_no\" type=\"hidden\" value=\"{$menu_no}\"/></span>\r\n";
+					$html = $html . "<span class=\"li_sp0_2\"><img src=\"__PUBLIC__/img/new_versions/add.png\"/><span>{$title}</span></span>\r\n";
+					$html = $html . "<span class=\"li_sp1\">{$val['menu_addr']}</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\">$status</span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_0\">添加</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_1\" msg=\"$sort\">修改</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_2\">{$activate}</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_3\" id=\"{$id}\">关联角色</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp2\"><a class=\"content_a a1_5\" id=\"{$id}\" menu_name=\"{$title}\">关联角色复制</a></span>\r\n";
+					$html = $html . "<span class=\"li_sp$level isParent\"><a class=\"content_a a1_4\" id=\"{$id}\">关联数据控制策略</a></span>\r\n";
+					$html = $html . "</li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+//分配菜单页面
+function assi_tree_menu($tree, $level = 0,$deep=100,$other_nodes="",$info) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"zz_ul$level\" $other_nodes>\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["menu_name"])) {
+				$title = $val["menu_name"];
+				$id = $val["id"];
+				$chd = in_array($id, $info['menu_id']) ? "checked" : "";   
+				if (isset($val['_child'])) {
+					$other_nodes = "style=\"display:none;\"";
+					$html = $html . "<li class=\"zz_li\">\r\n<img src=\"Public/img/new_versions/add.png\"/><input $chd name=\"box\" type=\"checkbox\"/><input type=\"hidden\" name=\"sid\" value=\"$id\"/><label>$title</label>\r\n";
+					$html = $html . assi_tree_menu($val['_child'], $level,$deep,$other_nodes,$info);
+					$html = $html . "</li>\r\n";
+				} else {
+					$other_nodes="";
+					$html = $html . "<li class=\"zz_li\">\r\n<img src=\"Public/img/new_versions/add.png\"/><input $chd name=\"box\" type=\"checkbox\"/><input type=\"hidden\" name=\"sid\" value=\"$id\"/><label>$title</label>\r\n</li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+//部门档案管理列表
+function popup_tree_menu_dept($tree, $level = 0,$deep=100,$default_ids=array()) {
+	$level++;
+	$deep--;
+	if($level == 1){
+		$width = 283;
+		$class = "content_ul";
+	}else{
+		$width = 283-($level-1)*18;
+		$class = "content_ul1";
+	}
+	
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"$class\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title =  $level == '1'?'':$val["name"];
+				$id = $val["id"];
+				$pid = $val["pid"];
+				$code = $level == '1'?$val["name"]:$val["dept_no"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				$status = ($val['is_use'] == '1' ? "启用" : "禁用");
+				$activate = ($val['is_use'] == '1' ? "禁用" : "启用");
+				$set_use = $val['is_use'] == '1' ? "0" : "1";
+				$style_bold = $val['is_use'] == '1' ? '' : "style=\"font-weight:bold;\"";
+				$edit = '编辑';
+				if($level == 1){
+					$edit_url = U('edit_company?id='.$id);
+				}else{
+					$edit_url = U('edit_dept?id='.$id);
+				}
+				$style_color = '';
+				if(!empty($default_ids) && is_array($default_ids)){
+					if(in_array($id, $default_ids)){
+						$style_color = "style=\"color:magenta;\"";
+					}
+				}
+				$html = $html . "<li>\r\n<span class=\"li_sp0_1\" style=\"width:".$width."px;\"><img src=\"__PUBLIC__/img/ajj.png\"/>";
+				if($level == '1'){
+					$html = $html . "<span>$code</span>";
+				}else{
+					$html = $html . "<a href=".U('view?id='.$id)." $style_color>$code</a>";
+				}
+				
+				$html = $html . "\r\n</span>\r\n";
+				$html = $html . "<span class=\"li_sp1\">$title</span>\r\n";
+				$html = $html . "<span class=\"li_sp2\" id=\"a0_$id\" $style_bold>$status</span>\r\n";
+				$html = $html . "<span class=\"li_sp3\">";
+				$html = $html . "<a class=\"content_a\" id=\"a1_$id\" onclick=\"set_use('$id','$set_use')\">$activate</a>";
+// 				$html = $html . "<a class=\"content_a\" id=\"a1_0\">$activate</a>";
+				$html = $html . "<a class=\"content_a\" id=\"a2_$id\" href=\"$edit_url\">$edit</a>";
+				$html = $html . "<a class=\"content_a\" id=\"a3_$id\" onclick=\"add_child_dept('$id')\">新增子部门</a>";
+				$html = $html . "</span>\r\n";
+				if (isset($val['_child'])) {
+					$html = $html . popup_tree_menu_dept($val['_child'], $level,$deep,$default_ids);
+				}
+				$html = $html . "</li>\r\n";
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
 function popup_menu_organization($tree, $level = 0,$deep=100) {
 	$level++;
 	$deep--;
@@ -1141,6 +1290,9 @@ function popup_menu_organization($tree, $level = 0,$deep=100) {
 	if (is_array($tree) && $deep>0) {
 		$i = $level>2?'2':'';
 		$html = "<ul class=\"zz_ul$i\">\r\n";
+// 		if($level == '2'){
+// 			$html = $html . "<li class=\"zz_li1\" onclick=show_list('".$tree[0]['id']."','1')>"."公司领导"."</li>\r\n";
+// 		}
 		foreach ($tree as $val) {
 			if (isset($val["name"])) {
 				$title = $val["name"];
@@ -1150,11 +1302,11 @@ function popup_menu_organization($tree, $level = 0,$deep=100) {
 				}
 
 				if (isset($val['_child'])) {
-					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"__PUBLIC__/img/xl.png\"/><span onclick=show_list($id)>$title</span>\r\n";
+					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"__PUBLIC__/img/xl.png\"/><span onclick=show_list('$id')>$title</span>\r\n";
 					$html = $html . popup_menu_organization($val['_child'], $level,$deep);
 					$html = $html . "</li>\r\n";
 				} else {
-					$html = $html . "<li class=\"zz_li1\" onclick=show_list($id)>$title</li>\r\n";
+					$html = $html . "<li class=\"zz_li1\" onclick=show_list('$id')>$title</li>\r\n";
 				}
 			}
 		}
@@ -1162,11 +1314,90 @@ function popup_menu_organization($tree, $level = 0,$deep=100) {
 	}
 	return $html;
 }
-function popup_menu_option($tree, $level = 0,$deep=100) {
+function popup_menu_organization_checkbox($tree, $level = 0,$deep=100,$position_id) {
 	$level++;
 	$deep--;
 	$html = "";
 	if (is_array($tree) && $deep>0) {
+		$i = $level>1?'1':'';
+		$html = "<ul class=\"zz_ul$i\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title = $val["name"];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				if(!empty($position_id)){
+					$res = M('RDeptPosition')->where(array('position_id'=>$position_id,'dept_id'=>$id))->find();
+					$is_checked = $res?' checked="checked"':'';
+				}else{
+					$is_checked = '';
+				}
+				
+				if (isset($val['_child'])) {
+					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"".__ROOT__."/Public/img/xl.png\"/><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label>\r\n";
+					$html = $html . popup_menu_organization_checkbox($val['_child'], $level,$deep,$position_id);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li class=\"zz_li1\"><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label></li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+function popup_menu_dept_position_checkbox($tree, $level = 0,$deep=100,$child_depts,$child_positions) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$i = $level>1?'1':'';
+		$style = $level>1?'style="display:none;"':'';
+		$html = "<ul class=\"zz_ul$i\" $style>\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["name"])) {
+				$title = $val["name"];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				if(substr($id, 0,1) == 'p'){
+					//岗位
+					if(in_array(substr($id, 2), $child_positions)){
+						$is_checked = ' checked="checked"';
+					}else{
+						$is_checked = ' ';
+					}
+				}else{
+					//部门
+					if(in_array($id, $child_depts)){
+						$is_checked = ' checked="checked"';
+					}else{
+						$is_checked = ' ';
+					}
+				}
+
+				if (isset($val['_child'])) {
+					$html = $html . "<li class=\"zz_li\" >\r\n<img src=\"".__ROOT__."/Public/img/xl.png\"/><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label>\r\n";
+					$html = $html . popup_menu_dept_position_checkbox($val['_child'], $level,$deep,$child_depts,$child_positions);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li class=\"zz_li1\"><input type=\"checkbox\" id=\"dept_$id\" name=\"dept[]\" value=\"$id\"'.$is_checked.'/><label for=\"dept_$id\">$title</label></li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+function popup_dept_search_checkbox($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul>\r\n";
 		foreach ($tree as $val) {
 			if (isset($val["name"])) {
 				$title = $val["name"];
@@ -1176,14 +1407,43 @@ function popup_menu_option($tree, $level = 0,$deep=100) {
 				}
 				
 				if (isset($val['_child'])) {
-					$html = $html . "<option value=\"$id\">".substr('----------',0,$level-1).$title."</option>\r\n";
-					$html = $html . popup_menu_option($val['_child'], $level,$deep);
+					$html = $html . "<li>\r\n<img src=\"".__ROOT__."/Public/img/hl.png\"/><input type=\"checkbox\" id=\"dept_id_$id\" name=\"dept_id[]\" value=\"$id\"/><label for=\"dept_id_$id\">$title</label>\r\n";
+					$html = $html . popup_dept_search_checkbox($val['_child'], $level,$deep);
+					$html = $html . "</li>\r\n";
 				} else {
-					$html = $html . "<option value=\"$id\">".substr('----------',0,$level-1).$title."</option>\r\n";
+					$html = $html . "<li>\r\n<img src=\"".__ROOT__."/Public/img/hl.png\"/><input type=\"checkbox\" id=\"dept_id_$id\" name=\"dept_id[]\" value=\"$id\"/><label for=\"dept_id_$id\">$title</label>\r\n</li>\r\n";
 				}
 			}
 		}
 		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
+function popup_menu_option($tree, $level = 0,$default='') {
+	$level++;
+	$html = "";
+	if (is_array($tree)) {
+		foreach ($tree as $val) {
+			if (isset($val["name"]) || isset($val['menu_name'])) {
+				$title = isset($val["name"]) ? $val['name'] : $val['menu_name'];
+				$id = $val["id"];
+				if (empty($val["id"])) {
+					$id = $val["name"];
+				}
+				if($id == $default){
+					$ext = "selected=\"selected\"";
+				}else{
+					$ext = "";
+				}
+				if (isset($val['_child'])) {
+					$html = $html . "<option ".$ext." value=\"$id\">".substr('----------',0,$level-1).$title."</option>\r\n";
+					$html = $html . popup_menu_option($val['_child'], $level,$default);
+				} else {
+					$html = $html . "<option ".$ext." value=\"$id\">".substr('----------',0,$level-1).$title."</option>\r\n";
+				}
+			}
+		}
+		$html = $html . "\r\n";
 	}
 	return $html;
 }
@@ -1237,7 +1497,33 @@ function dropdown_menu($tree, $level = 0) {
 	}
 	return $html;
 }
-
+//页面菜单栏的显示
+function left_new_tree_menu($tree, $level = 0,$deep=100) {
+	$level++;
+	$deep--;
+	$html = "";
+	if (is_array($tree) && $deep>0) {
+		$html = "<ul class=\"menu_ul2\">\r\n";
+		foreach ($tree as $val) {
+			if (isset($val["menu_name"])) {
+				$title = $val["menu_name"];
+				$id = $val["id"];
+				$pid = $val["pid"];
+				$url = U($val["menu_addr"]);
+				$sort = $val['sort'];
+				if (isset($val['_child'])) {
+					$html = $html . "<li>\r\n<a class=\"menu_li2_a\"><span class=\"cd_span2\"></span><div class=\"cd_div\" id=\"cd_div2\">{$title}</div><img class=\"cd_ts\" src=\"__PUBLIC__/img/new_home/jian2.png\"/></a>\r\n";
+					$html = $html . left_new_tree_menu($val['_child'], $level,$deep);
+					$html = $html . "</li>\r\n";
+				} else {
+					$html = $html . "<li class='menu_li2'><a href=\"$url\"><span class='cd_span2'></span><div class='cd_div'>{$title}</div></a></li>\r\n";
+				}
+			}
+		}
+		$html = $html . "</ul>\r\n";
+	}
+	return $html;
+}
 function f_encode($str) {
 	$str = base64_encode($str);
 	$str = rand_string(10) . $str . rand_string(10);
@@ -1579,7 +1865,31 @@ function getfirstchar($s0) {
 		return "Z";
 	return null;
 }
-
+function create_emp_no($name){
+	import("@.ORG.Util.Pinyin");
+	$py = new Pinyin();
+	$charlist = mb_str_split($name);
+	$s = '';
+	if(!empty($charlist) && is_array($charlist)){
+		foreach ($charlist as $k=>$v){
+			if($k == '0'){
+				$s .= $py->getAllPY($v);
+			}else{
+				$s .= $py->getFirstPY($v);
+			}
+		}
+		$regexp = '"^'.$s.'[0-9]*$"';
+		$last = M('User')->where(array('_string'=>'emp_no REGEXP '.$regexp))->order('emp_no desc')->getField('emp_no');
+		if(false != $last){
+			$a = explode($s,$last);
+			$new = $s.(intval($a[1])+1);
+		}else{
+			$new = $s;
+		}
+		return $new;
+	}
+	return null;
+}
 function get_folder_name($id) {
 
 	if ($id == 1) {
@@ -2941,11 +3251,11 @@ function getHourPlan($user_id,$hour,$timestamp,$create=''){
 	$over_time_hours = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$user_id),'create_time'=>array('between',array($three_month_ago,$timestamp-1)),'status'=>array('eq','1'),'hour'=>array('gt',0)))->order('create_time asc')->select();
 	$leave_hours = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$user_id),'create_time'=>array('between',array($three_month_ago,strtotime("+4 months",$timestamp))),'status'=>array('eq','1'),'hour'=>array('lt',0)))->order('create_time asc')->select();
 	foreach ($over_time_hours as $k=>$v){
-		if($v['is_use'] !== '1'){//没用完
+		if($v['use'] !== '1'){//没用完
 			$cur_hour = intval($v['hour']);
 			foreach ($leave_hours as $kk=>$vv){
 				$next_over_time = false;
-				$use = unserialize($vv['is_use']);
+				$use = unserialize($vv['use']);
 				foreach ($use as $kkk=>$vvv){
 					if($v['id'] == $kkk){
 						$cur_hour -= $vvv;
@@ -2966,13 +3276,13 @@ function getHourPlan($user_id,$hour,$timestamp,$create=''){
 				$part[] = array('id'=>$v['id'],'hour'=>$hour*(-1));
 				
 				if($hour*(-1) == $cur_hour){//加班单设为1，表示用完
-					M('FlowHour'.$create)->where(array('id'=>$v['id']))->save(array('is_use'=>'1'));
+					M('FlowHour'.$create)->where(array('id'=>$v['id']))->save(array('use'=>'1'));
 				}
 				break;
 			}elseif ($cur_hour>0){
 				$part[] = array('id'=>$v['id'],'hour'=>$cur_hour);
 				$hour = $hour + $cur_hour;
-				M('FlowHour'.$create)->where(array('id'=>$v['id']))->save(array('is_use'=>'1'));
+				M('FlowHour'.$create)->where(array('id'=>$v['id']))->save(array('use'=>'1'));
 			}
 		}
 	}
@@ -2987,41 +3297,7 @@ function getHourPlan($user_id,$hour,$timestamp,$create=''){
 	}
 // 	return array('70'=>1,'60'=>2);
 }
-function getAvailableHour3($timestamp,$uid,$create=''){
-	if(empty($timestamp)){
-		$timestamp = time();
-	}
-	if(empty($uid)){
-		$uid = get_user_id();
-	}
-	//如果调休过期计算方式为按月，则把now改为月初
-	if(get_system_config("LEAVE_CALCULATE_TYPE")=='按月'){
-		$d = date('Y-m',$timestamp);
-		$now = strtotime($d.'-1');
-	}else{
-		$now = $timestamp;
-	}
 
-	$use_sum = 0;
-	$three_month_ago = strtotime("-3 months",$now);
-	$over_time_hours_ids = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$uid),'create_time'=>array('between',array($three_month_ago,$timestamp)),'status'=>array('eq','1'),'hour'=>array('gt',0),'is_use'=>array('neq','1')))->getField('id',true);
-	$over_time_hours_sum = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$uid),'create_time'=>array('between',array($three_month_ago,$timestamp)),'status'=>array('eq','1'),'hour'=>array('gt',0),'is_use'=>array('neq','1')))->sum('hour');
-	$leave_hours = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$uid),'create_time'=>array('between',array($three_month_ago,strtotime("+4 months",$timestamp))),'status'=>array('eq','1'),'hour'=>array('lt',0)))->select();
-	$leave_hours_wait = M('FlowHour'.$create)->where(array('user_id'=>array('eq',$uid),'create_time'=>array('between',array($three_month_ago,strtotime("+4 months",$timestamp))),'status'=>array('eq','0'),'hour'=>array('lt',0)))->sum('hour');
-	foreach ($leave_hours as $k=>$v){
-		$use = unserialize($v['is_use']);
-		foreach ($use as $kk=>$vv){
-			if(in_array($kk, $over_time_hours_ids)){
-				$use_sum += $vv;
-			}
-		}
-	}
-	if($over_time_hours_sum>=$use_sum-$leave_hours_wait){
-		return $over_time_hours_sum-$use_sum+$leave_hours_wait;
-	}else{
-		return false;
-	}
-}
 function getAvailableHour2($timestamp,$uid,$create=''){
 	if(empty($timestamp)){
 		$timestamp = time();
@@ -3390,6 +3666,9 @@ function tree_to_html($tree){
 function user_status($is_del){
 	return $is_del=='1'?'禁用':'启用';
 }
+function is_use($is_use){
+	return $is_use=='1'?'启用':'禁用';
+}
 function formatto4w($num){
 	if($num>=1000){
 		return substr($num,-4);
@@ -3585,5 +3864,55 @@ function show_status_color($name){
 }
 function test($a='a',$b='b',$c='c'){
 	return $a.$b.$c;
+}
+function getRootDept($dept_id){
+	while($dept_id){
+		$id = $dept_id;
+		$dept_id = M('Dept')->where(array('id'=>$dept_id))->getField('pid');
+	}
+	$dept = M('Dept')->where(array('id'=>$id))->find();
+	return $dept;
+}
+function getDefaultRoleIdsByUserId($user_id){
+	$position_ids = M('RUserPosition')->where(array('user_id'=>$user_id))->getField('position_id',true);
+	$default_role_ids = M('RPositionRole')->where(array('position_id'=>array('in',$position_ids)))->getField('role_id',true);
+	return $default_role_ids;
+}
+function getRoleIdsByUserId($user_id){
+	$default_role_ids = getDefaultRoleIdsByUserId($user_id);
+	$upids = M('RUserPosition')->where(array('user_id'=>$user_id))->getField('id',true);
+	$role_ids = M('RUserPositionRole')->where(array('upid'=>array('in',$upids)))->getField('role_id',true);
+	foreach ($role_ids as $k=>$v){
+		if(!in_array($v, $default_role_ids)){
+			$default_role_ids[] = $v;
+		}
+	}
+	return $default_role_ids;
+}
+function getDefaultRoleIdsByUpid($upid){
+	$position_id = M('RUserPosition')->where(array('id'=>$upid))->getField('position_id');
+	$default_role_ids = M('RPositionRole')->where(array('position_id'=>array('eq',$position_id)))->getField('role_id',true);
+	return $default_role_ids;
+}
+function getRoleIdsByUpid($upid){
+	$default_role_ids = getDefaultRoleIdsByUpid($upid);
+// 	$upids = M('RUserPosition')->where(array('user_id'=>$user_id))->getField('id',true);
+	$role_ids = M('RUserPositionRole')->where(array('upid'=>array('eq',$upid)))->getField('role_id',true);
+	foreach ($role_ids as $k=>$v){
+		if(!in_array($v, $default_role_ids)){
+			$default_role_ids[] = $v;
+		}
+	}
+	return $default_role_ids;
+}
+function showPriName($id){
+	return M('MenuNew')->where(array('id'=>$id))->getField('menu_name');
+}
+function showBusiness($rid,$mid){
+	$info = M('RRoleMenu') -> where(array('menu_id'=>$mid,'role_id'=>$rid))->getField('scope');
+	return $info ? $info : "1";
+}
+function showBusinessSave($rid,$mid){
+	return $info = M('RRoleMenu') -> where(array('menu_id'=>$mid,'role_id'=>$rid))->getField('id');
 }
 ?>
