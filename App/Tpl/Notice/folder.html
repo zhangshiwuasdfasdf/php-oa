@@ -94,6 +94,7 @@
 				<span class="col-10"> 编号 </span>
 			</div>
 			<div class="pull-right">
+				<span class="col-10  "> 关注账户 (人)</span>
 				<span class="col-10  "> 发布时间 </span>
 				<span class="col-6  "> 发布人 </span>			
 				<span class="col-6  "> 状态 </span>
@@ -120,6 +121,7 @@
 								<span class="col-10"> {$vo.notice_no} </span>
 							</div>
 							<div class="pull-right">
+								<span class="col-10 "  style="text-align:center;color:#428bca;" onmouseover="showFollow({$vo.id})" onmouseout="disappear()">{$vo.views}</span>
 								<span class="col-10 "> {$vo.create_time|toDate='Y-m-d'} </span>
 								<span class="col-6 "> {$vo.user_name} </span>
 								<span class="col-6 "> 
