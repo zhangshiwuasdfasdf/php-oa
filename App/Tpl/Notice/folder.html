@@ -1,5 +1,13 @@
 <layout name='Layout/ace_layout' />
+<style>
+#follow_list{ width:500px; min-height: 150px; border: solid 4px #bdd3df; border-radius:20px; position:absolute; top:197px; background: #fff; display: none;}
 
+#follow_list span{ font-size: 14px; font-weight: bold; margin: 0 10px; line-height: 30px;}
+#follow_list p{ font-size: 14px; margin: 0 20px; line-height: 20px; border:1px solid #eaedf1; padding: 5px; border-radius: 10px;}
+#follow_list .div1{position: relative; width: 100%; height: 100%;}
+#follow_list .div2{ background:url(__PUBLIC__/img/rq_bt.png); height:36px; width:400px; border-radius:20px; color:#6b6a6a; font-size:16px; font-weight:bold; text-align:center; line-height:36px; position:absolute; top:-40px; left:-20px;}
+#follow_list .div3{ width:570px; margin-top:30px; margin-left:18px; overflow:auto;}
+</style>
 <form method="post" name="form_adv_search" id="form_adv_search">
 	<div class="adv_search panel panel-default "  id="adv_search">
 		<div class="panel-body">
@@ -143,4 +151,37 @@ $(function() {
 	var html = "<li>行政管理</li><li>公告管理</li><li>{$menu_title.$folder_id}</li>";
 	$("#breadcrumbs ul").append(html);
 });
+
+function showFollow(id){
+	document.getElementById("follow_list").style.display="block";
+	var cons = "";
+	$.post("{:U('Notice/get_follow')}",{'id':id},function(result){
+		$(".div3 span").remove();
+		/* $(".div3 p").remove(); */
+		for (var s in result.data) {
+			cons += "<div><span>"+result.data[s].dept_name+":</span><span>"+ result.data[s].name +"</span></div>";
+		}
+	$(".div3").append(cons); 
+	});
+	return false;
+}
+function disappear(){
+	document.getElementById("follow_list").style.display="none";
+} 
+
+$('#follow_list').hover(function(){
+	$('#follow_list').show();
+},function(){
+	$('#follow_list').hide();
+})
+
+function f(){
+	var f=$('#follow-col-10').offset().left+770;
+	$('#follow_list').css('left',f);
+	var f1=$('#form_data').height();
+	$('#follow_list').css('height',f1);
+	var f2=$('#follow_list').height()-60;
+	$('.div3').css('height',f2);
+}
+f();
 </script>

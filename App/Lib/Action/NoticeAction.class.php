@@ -242,6 +242,30 @@ class NoticeAction extends CommonAction {
 			$model -> where("id = $id") -> setInc("views");
 			$notnews = false;
 		}
+		//公司制度与规定关注账户
+		if($folder_id == '71'){
+			$uid=get_user_id();
+			$follow=M("Notice")-> where("id = $id")->getField("follow");
+			$follow_list=M("Notice")->find($id);
+			if(empty($follow)){
+				$data['follow'] = $uid . ',';
+				$data['views']=1;
+				M("Notice")->where("id = $id")->setField($data);
+			}else{
+				$tmp = array_filter(explode(',',rtrim($follow_list['follow'],',')));
+				$flag = true;
+				foreach ($tmp as $k => $v){
+					if($v == $uid){
+						$flag = false;
+					}
+				}
+				if($flag){
+					$follow_list['follow'] .=  $user_id .',';
+					$follow_list['views'] += 1;
+					M("Notice")->where("id = $id")->setField($follow_list);
+				}
+			}
+		}
 		$this -> assign('notnews',$notnews);
 		//工作计划
 		if($folder_id == '94'){
