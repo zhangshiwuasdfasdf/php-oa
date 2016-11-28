@@ -83,7 +83,7 @@
 				</select>
 			</li>
 			<li class="li1">手机号码：</li>
-			<li class="li2"><input type="text" name="mobile" check="require" msg="请输入手机号码"/></li>
+			<li class="li2"><input type="text" name="mobile" id="mobile" check="mobile" msg="请输入正确的手机号码" unique="true" u_msg="手机号码已存在，不能保存" url="{:U('validate')}"/></li>
 			<li class="li1">毕业院校：</li>
 			<li class="li2"><input type="text" name="graduate_school" check="require" msg="请输入毕业院校"/></li>
 			<li class="li1">专业：</li>

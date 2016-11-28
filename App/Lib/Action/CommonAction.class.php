@@ -852,6 +852,11 @@ class CommonAction extends Action {
 	}
 	public function validate($model=''){
 		if($this->isAjax()){
+			$open=fopen("C:\log.txt","a" );
+			fwrite($open,json_encode($_POST)."\r\n");
+			fclose($open);
+			
+			$model = $model?$model:MODULE_NAME;
 			if(!$this->_request('clientid','trim') || !$this->_request($this->_request('clientid','trim'),'trim')){
 				$this->ajaxReturn("","",3);
 			}
@@ -859,13 +864,13 @@ class CommonAction extends Action {
 			$where[$this->_request('clientid','trim')] = array('eq',$this->_request($this->_request('clientid','trim'),'trim'));
 			//针对编辑的情况
 			if($this->_request('id','intval',0)){
-				$where[M('Position')->getpk()] = array('neq',$this->_request('id','intval',0));
+				$where[M($model)->getpk()] = array('neq',$this->_request('id','intval',0));
 			}
 	
 			if($this->_request('clientid','trim')) {
-				$model = $model?$model:MODULE_NAME;
+				
 				if (M($model)->where($where)->find()) {
-					$this->ajaxReturn("","",1);
+					$this->ajaxReturn($this->_request('clientid','trim'),$this->_request('msg','trim'),1);
 				} else {
 					$this->ajaxReturn("","",0);
 				}
