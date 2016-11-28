@@ -292,22 +292,28 @@ function change_position(dept_id){
 	})
 }
 function set_recruit_status(id,status){
-	$.ajax({
-		type:'post',
-		url:"{:U('set_recruit_status')}",
-		data:{id:id,status:status},
-		success:function(result){
-			if(result.status == '1'){
-				location.reload();
+	if(status == '1'){
+		var msg = '确定要报到吗？';
+	}else if(status == '2'){
+		var msg = '确定要建档吗？';
+	}else if(status == '3'){
+		var msg = '确定要未报到吗？';
+	}
+	ui_confirm(msg, function() {
+		$.ajax({
+			type:'post',
+			url:"{:U('set_recruit_status')}",
+			data:{id:id,status:status},
+			success:function(result){
+				if(result.status == '1'){
+					location.reload();
+				}
+			},
+			error:function(){
+				alert('数据错误');
 			}
-			
-			//alert(JSON.stringify(result));
-			//$("#position").html(result.data.position);
-		},
-		error:function(){
-			alert('数据错误');
-		}
-	})
+		})
+	});
 }
 function add() {
 	$("#opmode").val("add");
