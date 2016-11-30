@@ -2069,7 +2069,7 @@ class FlowAction extends CommonAction {
 			$hour = floor($hour_sum - $day*24);
 			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour),null,1);
 		}elseif($type=='over_time'){//加班向下取整，8小时为一天
-			$hour_sum = (strtotime($end_time)-strtotime($start_time))/3600;
+			$hour_sum = get_overtime_seconds(strtotime($start_time),strtotime($end_time))/3600;
 			$day = floor($hour_sum/8);
 			$hour = floor($hour_sum - $day*8);
 			$this->ajaxReturn(array('day'=>$day,'hour'=>$hour),null,1);
