@@ -50,6 +50,20 @@ class HomeAction extends CommonAction {
 		$this -> display();
 	}
 	public function index() {
+// 		S('test','aa');
+// 		$test = S('test'); 
+// 		echo $test;die;
+		
+// 		$Cache = Cache::getInstance('Memcache');
+// 		$Cache->set("uid",'1231');
+// 		$t = $Cache->get("uid");
+// 		echo $t;die;
+		
+// 		$m = new Memcache();
+// 		$m->connect('127.0.0.1','11211');
+// 		$m->set('a',11);
+// 		echo $m->get('a');die;
+		
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
 	

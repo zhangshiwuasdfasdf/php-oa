@@ -28,8 +28,14 @@
         'DB_LIKE_FIELDS'            =>'content|remark',
 		'SAVE_PATH'=>"Data/Files/",
         'ADMIN_MAIL_ACCOUNT'=>array('smtpsvr'=>'smtp.163.com','email'=>'zhang6970153@163.com','mail_id'=>'zhang6970153@163.com','mail_pwd'=>'zx6624000
-        ','mail_name'=>'神洲酷奇')
+        ','mail_name'=>'神洲酷奇'),
+    	
+    	'DATA_CACHE_TYPE' => 'Memcache',
+    	'DATA_CACHE_TIME' => '3600',
     		
+//     	'SESSION_TYPE'          =>  'Memcache',
+    	'MEMCACHE_HOST'=>'127.0.0.1',
+    	'MEMCACHE_PORT'=>'11211',
     );
     return $array;
 ?>
