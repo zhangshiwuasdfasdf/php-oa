@@ -47,7 +47,6 @@ $(".a1_3").click(function(){
 	$("#tc_js").show();
 	$(".bottom_sp1").click(function(){
 		$("#tc_js").hide();
-		location.reload();
 	})
 })
 $(".a1_4").click(function(){

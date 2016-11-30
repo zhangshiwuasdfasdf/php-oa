@@ -59,6 +59,7 @@ class CommonAction extends Action {
 		$this -> assign('js_file', 'js/' . ACTION_NAME);
 		$this -> _assign_menu();
 		$this -> _assign_menu_new();
+		$this -> _assign_data_new();
 		$this -> _assign_new_count();
 		$this -> _display_sign();
 	}
@@ -170,6 +171,45 @@ class CommonAction extends Action {
 						break;
 				}
 			}
+		}
+	}
+	
+	//分配数据
+	protected function _assign_data_new(){
+		$uid = get_user_id();
+		$upid = M('RUserPosition')->where(array('user_id'=>$uid,'is_major'=>'1')) -> getField('id');
+		$role_ids = getRoleIdsByUpid($upid);//根据用户组id找到该用户的所有绑定角色ids
+		if(!empty($role_ids)){
+			$model = M('RRoleMenu');
+			$menu = $this -> config['menu'];
+			$where['menu_id'] = $menu['menu_new_id'];
+			$where['role_id'] = array('IN',$role_ids);
+			$data = $model -> where($where) -> select();//根据菜单id和角色id查询所角色所以定的数据权限
+			$scope = array();
+			foreach ($data as $k => $v){
+				$scope = empty($v['scope']) ? '1' : $v['scope'];
+				switch ($scope){
+					case '1' ://全局范围
+							
+						break;
+					case '2' ://行政管辖
+						
+						break;
+					case '3' ://仅自己
+						
+						break;
+					case '4' ://业务管辖公司
+						
+						break;
+					case '5' ://业务管辖部门
+						
+						break;
+					case '6' ://考勤管辖部门
+							
+						break;
+				}
+			}
+			
 		}
 	}
 

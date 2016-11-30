@@ -14,6 +14,11 @@
 class AuthCheckBehavior extends Behavior {
 	protected $config;
 	public function run(&$params) {
+		//获取本次访问的url路径
+		$url = $this -> convertUrlQuery(parse_url(__SELF__,PHP_URL_QUERY));
+		$urls = $url['m'].'/'.$url['a'];
+		$urls .= isset($url['fid']) ? ('?fid='.$url['fid']) : isset($url['type']) ? ('?type='.$url['type']) : '' ;
+		$urlInfo = M('Privilege')->where(array('url'=>$urls,'is_del'=>'0'))->find();
 		//个人数据
 		$this -> config = &$params;
 		$app_type = $params['app_type'];
@@ -116,6 +121,7 @@ class AuthCheckBehavior extends Behavior {
 		// 当前访问Action中配置的权限是否存在
 		if ($auth[$action_auth[ACTION_NAME]]) {
 			$this -> config['auth'] = $auth;
+			$this -> config['menu'] = $urlInfo;
 			return true;
 		} else {
 			$auth_id = session(C('USER_AUTH_KEY'));
@@ -175,6 +181,16 @@ class AuthCheckBehavior extends Behavior {
 			return true;
 		}
 		return false;
+	}
+	
+	function convertUrlQuery($query){
+		$queryParts = explode('&', $query);
+		$params = array();
+		foreach ($queryParts as $param) {
+			$item = explode('=', $param);
+			$params[$item[0]] = $item[1];
+		}
+		return $params;
 	}
 
 }
