@@ -21,7 +21,7 @@ function wli(){
 		wsp0+=wsp.eq(i).outerWidth();
 	}
 	$('.content_div1,.content_div2').css('width',wsp0);
-	$(".isChild").next().hide();
+	//$(".isChild").next().hide();
 }
 wli();
 

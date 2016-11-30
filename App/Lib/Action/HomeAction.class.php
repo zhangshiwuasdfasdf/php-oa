@@ -12,7 +12,7 @@
  -------------------------------------------------------------------------*/
 
 class HomeAction extends CommonAction {
-	protected $config = array('app_type' => 'asst','repair_over_time'=>'admin','create_flow_hour'=>'admin','modify_flow_hour_use'=>'admin','create_station'=>'admin','export_available_hour'=>'admin');
+	protected $config = array('app_type' => 'asst','repair_over_time'=>'admin','create_flow_hour'=>'admin','modify_flow_hour_use'=>'admin','create_station'=>'admin','export_available_hour'=>'admin','test_mysql_key'=>'admin');
 	//过滤查询字段
 
 	function _search_filter(&$map) {
@@ -50,20 +50,6 @@ class HomeAction extends CommonAction {
 		$this -> display();
 	}
 	public function index() {
-// 		S('test','aa');
-// 		$test = S('test'); 
-// 		echo $test;die;
-		
-// 		$Cache = Cache::getInstance('Memcache');
-// 		$Cache->set("uid",'1231');
-// 		$t = $Cache->get("uid");
-// 		echo $t;die;
-		
-// 		$m = new Memcache();
-// 		$m->connect('127.0.0.1','11211');
-// 		$m->set('a',11);
-// 		echo $m->get('a');die;
-		
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
 	
@@ -845,7 +831,7 @@ class HomeAction extends CommonAction {
 		$users = M('User')->field('id,emp_no,name')->select();
 		$ext = array();
 		foreach ($users as $k=>$user){
-			$hour = getAvailableHour(null,$user['id']);
+			$hour = getAvailableHour3(null,$user['id']);
 			$users[$k]['hour'] = $hour;
 			if($hour<0){
 				$ext[] = $users[$k];
@@ -1009,7 +995,7 @@ class HomeAction extends CommonAction {
 				$j++;
 				$q = $q -> setCellValue("A$j", $v['id']);
 				$q = $q -> setCellValue("B$j", $v['name']);
-				$q = $q -> setCellValue("C$j", getAvailableHour2($time,$v['id'],'Create'));
+				$q = $q -> setCellValue("C$j", getAvailableHour3($time,$v['id'],'Create'));
 			}
 		}
 		
@@ -1030,6 +1016,10 @@ class HomeAction extends CommonAction {
 		//readfile($filename);
 		$objWriter -> save('php://output');
 		exit ;
+	}
+	function test_mysql_key(){
+		$res = M('FlowHourCreate')->where(array('use'=>array('neq','1')))->select();
+		dump($res);die;
 	}
 }
 ?>

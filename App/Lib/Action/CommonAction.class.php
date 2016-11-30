@@ -126,7 +126,8 @@ class CommonAction extends Action {
 	protected function _assign_menu_new(){
 		$uid = get_user_id();
 		$upid = M('RUserPosition')->where(array('user_id'=>$uid,'is_major'=>'1')) -> getField('id');
-		$role_ids = getRoleIdsByUpid($upid);//更具用户租id找到该用户的所有绑定角色ids
+		$role_ids = getRoleIdsByUpid($upid);//根据用户组id找到该用户的所有绑定角色ids
+		$tree = "";
 		if(!empty($role_ids)){
 			$menu = M('RRoleMenu');
 			$menus = array();//找出所有角色id对应的菜单ids
@@ -139,12 +140,37 @@ class CommonAction extends Action {
 			//更具菜单ids找出所有对应的菜单信息
 			$where['id'] = array('in',array_unique($menus));
 			$where['is_del'] = '0';
-			$menuList = M('MenuNew') -> where($where) -> select();
-			$tree = left_new_tree_menu(list_to_tree($menuList));
-		}else{
-			$tree = array();
+			$menuList = M('MenuNew') -> where($where) ->order('sort asc') -> select();
+			$list = list_to_tree($menuList);
+			foreach ($list as $v){ 
+				switch ($v['menu_name']){
+					case '个人中心':
+						$this->assign('personal',left_new_tree_menu($v['_child'],"menu_ul2",2));
+						break;
+					case '人力资源':
+						$this->assign('ziyuan',left_new_tree_menu($v['_child'],"menu_ul3",3));
+						break;
+					case '行政管理':
+						$this->assign('xingzheng',left_new_tree_menu($v['_child'],"menu_ul4",4));
+						break;
+					case '信息管理':
+						$this->assign('xinxi',left_new_tree_menu($v['_child'],"menu_ul5",5));
+						break;
+					case '统计中心' :
+						$this->assign('tongji',left_new_tree_menu($v['_child'],"menu_ul6",6));
+						break;
+					case '档案中心':
+						$this->assign('dangan',left_new_tree_menu($v['_child'],"menu_ul7",7));
+						break;
+					case '知识中心':
+						$this->assign('zhishi',left_new_tree_menu($v['_child'],"menu_ul8",8));
+						break;
+					case '系统管理':
+						$this->assign('xitong',left_new_tree_menu($v['_child'],"menu_ul9",5));
+						break;
+				}
+			}
 		}
-		$this -> assign('tree',$tree);
 	}
 
 	protected function _assign_new_count() {
@@ -582,7 +608,10 @@ class CommonAction extends Action {
 		} else {
 			$sort = $asc ? 'asc' : 'desc';
 		}
-
+		//获取该用户所对应的角色数据权限
+		$uid = get_user_id();
+		$upid = M('RUserPosition')->where(array('user_id'=>$uid,'is_major'=>'1')) -> getField('id');
+		$role_ids = getRoleIdsByUpid($upid);//根据用户组id找到该用户的所有绑定角色ids
 		//取得满足条件的记录数
 		$count_model = clone $model;
 		//取得满足条件的记录数
