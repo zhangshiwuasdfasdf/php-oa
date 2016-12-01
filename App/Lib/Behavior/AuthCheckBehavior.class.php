@@ -118,11 +118,11 @@ class AuthCheckBehavior extends Behavior {
 				$auth = $this -> get_auth();
 				break;
 		}
-		// 当前访问Action中配置的权限是否存在
-		if ($auth[$action_auth[ACTION_NAME]]) {
 			$this -> config['auth'] = $auth;
 			$this -> config['menu'] = $urlInfo;
 			return true;
+		// 当前访问Action中配置的权限是否存在
+		if ($auth[$action_auth[ACTION_NAME]]) {
 		} else {
 			$auth_id = session(C('USER_AUTH_KEY'));
 			if (!isset($auth_id)) {
