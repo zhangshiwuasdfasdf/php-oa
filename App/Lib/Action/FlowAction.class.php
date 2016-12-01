@@ -2919,6 +2919,51 @@ class FlowAction extends CommonAction {
 							$this -> addAttendance($flow_id);
 						}elseif (getModelName($flow_id)=='FlowAttendance' || getModelName($flow_id)=='FlowOutside'){
 							$this -> addAttendance($flow_id );
+						}elseif (getModelName($flow_id)=='FlowRegularWorkerApplication'){
+							$flow = M('flow') -> find($flow_id);
+							$find = M('StatusManage')->where(array('user_id'=>$flow['user_id']))->find();
+							if($find){
+								M('StatusManage')->where(array('user_id'=>$flow['user_id']))->save(array('stuff_status'=>'已转正','regular_time'=>date('Y-m-d')));
+							}else{
+								$data = array();
+								$data['user_id'] = $flow['user_id'];
+								$data['no_status'] = '正常';
+								$data['stuff_status'] = '已转正';
+								$data['regular_time'] = date('Y-m-d');
+								$data['create_time'] = date('Y/m/d H:i:s');
+								$data['create_name'] = get_user_name();
+								M('StatusManage')->add($data);
+							}
+						}elseif (getModelName($flow_id)=='FlowResignationApplication'){
+							$flow = M('flow') -> find($flow_id);
+							$find = M('StatusManage')->where(array('user_id'=>$flow['user_id']))->find();
+							if($find){
+								M('StatusManage')->where(array('user_id'=>$flow['user_id']))->save(array('stuff_status'=>'拟离职'));
+							}else{
+								$data = array();
+								$data['user_id'] = $flow['user_id'];
+								$data['no_status'] = '正常';
+								$data['stuff_status'] = '拟离职';
+								$data['create_time'] = date('Y/m/d H:i:s');
+								$data['create_name'] = get_user_name();
+								M('StatusManage')->add($data);
+							}
+						}elseif (getModelName($flow_id)=='FlowResignationList'){
+							$flow = M('flow') -> find($flow_id);
+							$find = M('StatusManage')->where(array('user_id'=>$flow['user_id']))->find();
+							if($find){
+								M('StatusManage')->where(array('user_id'=>$flow['user_id']))->save(array('stuff_status'=>'离职','leave_time'=>date('Y-m-d'),'no_status'=>'关闭'));
+							}else{
+								$data = array();
+								$data['user_id'] = $flow['user_id'];
+								$data['no_status'] = '关闭';
+								$data['stuff_status'] = '离职';
+								$data['leave_time'] = date('Y-m-d');
+								$data['create_time'] = date('Y/m/d H:i:s');
+								$data['create_name'] = get_user_name();
+								M('StatusManage')->add($data);
+							}
+							M('User')->where(array('id'=>$flow['user_id']))->save(array('is_del'=>'1'));
 						}
 						//当最后一个审批人通过以后发送一条信息给提交人
 						$flow = M('flow') -> find($flow_id);

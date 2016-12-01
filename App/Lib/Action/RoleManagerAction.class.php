@@ -73,7 +73,7 @@ class RoleManagerAction extends CommonAction {
 		$model = M('RoleManager');
 		$id = I('post.id');
 		/*保存当前数据对象 */
-		$sql = "SELECT * FROM `smeoa_menu_new` WHERE ( `is_del` = '0' AND `menu_status` = '1' ) ORDER BY `id` asc ";
+		$sql = "SELECT * FROM `smeoa_menu_new` WHERE ( `is_del` = '0' AND `menu_status` = '1' ) ORDER BY `sort` asc ";
 		$list = M()->query($sql);
 		if (!empty($list)) {//保存成功
 			$cheinfo = M("RRoleMenu") -> where(" role_id = $id ") -> select();
@@ -88,15 +88,24 @@ class RoleManagerAction extends CommonAction {
 	function assi_menu_save(){
 		$ids = I('post.ids');
 		$rid = I('post.rid');
-		if(!empty($ids)){
+		if(!empty($rid)){
 			$id = array_filter(explode(',',$ids));
 			$model = M('RRoleMenu');
-			foreach ($id as $k => $v){
-				$model -> add(array('role_id'=>$rid,'menu_id'=>$v));
+			if(!empty($id)){
+				$where['role_id'] = $rid;
+				$where['menu_id'] = array('not in',$id);
+				$model -> where($where) -> delete();
+				$oldRM = $model -> where(array('role_id'=>$rid)) -> getField('menu_id',true);
+				$nowRM = empty($oldRM) ? $id : array_diff($id, $oldRM);
+				foreach ($nowRM as $k => $v){
+					$model -> add(array('role_id'=>$rid,'menu_id'=>$v));
+				}
+			}else{
+				$model -> where(array('role_id'=>$rid)) -> delete();
 			}
 			$this -> ajaxReturn($id,"分配成功",1);
 		}else{
-			$this -> ajaxReturn($ids,' 请选择菜单',0);
+			$this -> ajaxReturn($ids,' 请选择角色!',0);
 		}
 	}
 	//验证角色名是否存在
@@ -130,15 +139,16 @@ class RoleManagerAction extends CommonAction {
 		//先找出已经绑定到角色的菜单
 		$mr = M('RRoleMenu');
 		$info = $mr -> where(array('role_id'=>$rid)) -> getField('menu_id',true);
-		$map['menu_new_id'] = array('in',$info);
-		$model = M('Privilege');
+		$map['id'] = array('in',array_unique($info));
+		$model = M('MenuNew');
 		if($model){
 			//找出所有帮定的菜单->动作
-			$list = $this -> _list($model, $map);
+			$list = $model -> where($map) -> select();
 			$pr = M('PrivilegeRole')->where(array('role_id'=>$rid))->select();
+			$privilege = M('Privilege') -> where(array('is_del'=>'0','menu_new_id'=>array('in',array_unique($info)))) -> select();
 			$arr = array();
 			//找到已经分配的权限
-			foreach ($list as $k => $v){
+			foreach ($privilege as $k => $v){
 				foreach ($pr as $kk => $vv){
 					if($vv['privilege_id'] == $v['id']){
 						$v['check'] = "checked";
@@ -146,7 +156,18 @@ class RoleManagerAction extends CommonAction {
 				}
 				$arr[$v['menu_new_id']][] = $v;
 			}
-			$this -> assign('menuList',$arr);
+			foreach ($list as $k => $v){
+				if($v['menu_addr'] == "#"){
+					unset($list[$k]);
+				}else{
+					foreach ($arr as $a => $r){
+						if($a == $v['id']){
+							$list[$k]['child'] = $r;
+						}
+					}	
+				}
+			}
+			$this -> assign('menuList',$list);
 			$this -> assign('rid',$rid);
 		}
 		$this ->display();
@@ -159,20 +180,24 @@ class RoleManagerAction extends CommonAction {
 			$rmid = I('post.rmid');
 			if(!empty($rid)){
 				//功能权限
-				$pv = array_filter(explode(',', $pids));
 				$pr = M('PrivilegeRole');
-				$where['role_id'] = $rid;
-				$where['privilege_id'] = array('not in',$pv);
-				$pr -> where($where) -> delete();
-				$info = $pr ->where(array('role_id'=>$rid)) -> getField('privilege_id',true);
-				$ps = empty($info) ? $pv : array_diff($pv, $info);
-				//如果有差集
-				if(!is_null($ps)){
-					foreach ($ps as $k => $v){
-						$data['role_id'] = $rid;
-						$data['privilege_id'] = $v;
-						$pr -> add($data);
+				if(!empty($pids)){//如果有选中的功能权限
+					$pv = array_filter(explode(',', $pids));
+					$where['role_id'] = $rid;
+					$where['privilege_id'] = array('not in',$pv);
+					$pr -> where($where) -> delete();
+					$info = $pr ->where(array('role_id'=>$rid)) -> getField('privilege_id',true);
+					$ps = empty($info) ? $pv : array_diff($pv, $info);
+					//如果有差集
+					if(!empty($ps)){
+						foreach ($ps as $k => $v){
+							$data['role_id'] = $rid;
+							$data['privilege_id'] = $v;
+							$pr -> add($data);
+						}
 					}
+				}else{//没有选中功能权限
+					$pr -> where(array('role_id'=>$rid)) -> delete();
 				}
 				//数据权限
 				$scope = array_filter(explode(',',$drs));

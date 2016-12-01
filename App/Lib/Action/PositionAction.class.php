@@ -116,18 +116,29 @@ class PositionAction extends CommonAction {
 		$html = popup_menu_organization_checkbox($tree,0,100,$_POST['position_id']);
 		$this->ajaxReturn($html,1,0);
 	}
-// 	function test(){
-// 		$ids = M('User')->field('id')->select();
-// 		foreach ($ids as $k=>$v){
-// 			$data['user_id'] = $v['id'];
-// 			$data['no_status'] = '正常';
-// 			$data['stuff_status'] = '已转正';
-// 			$data['entry_time'] = '2016-03-14';
-// 			$data['regular_time'] = '2016-06-13';
-// 			$data['create_time'] = date('Y/m/d H:i:s');
-// 			$data['create_name'] = get_user_name();
-// 			M('StatusManage')->add($data);
-// 		}
-// 	}
+	public function validate($model=''){
+		if($this->isAjax()){
+			if(!$this->_request('clientid','trim') || !$this->_request($this->_request('clientid','trim'),'trim')){
+				$this->ajaxReturn("","",3);
+			}
+	
+			$where[$this->_request('clientid','trim')] = array('eq',$this->_request($this->_request('clientid','trim'),'trim'));
+			//针对编辑的情况
+			if($this->_request('id','intval',0)){
+				$where[M('Position')->getpk()] = array('neq',$this->_request('id','intval',0));
+			}
+	
+			if($this->_request('clientid','trim')) {
+				$model = $model?$model:MODULE_NAME;
+				if (M($model)->where($where)->find()) {
+					$this->ajaxReturn("","",1);
+				} else {
+					$this->ajaxReturn("","",0);
+				}
+			}else{
+				$this->ajaxReturn("","",0);
+			}
+		}
+	}
 }
 ?>
