@@ -10,7 +10,7 @@ input,select{ margin:0; padding:0; outline:none;}
 .content_sp1{ display:block; position:absolute;width:6px; height:20px; background-color:#20b891; border:solid 1px #3da396;top:10px; border-radius:3px;left:20px;}
 .content_sp2{ display:block; font-size:12px; left:40px; position:absolute;}
 
-.qx_div{ width:100%;border-bottom:1px solid #eaedf1; background:#fff; overflow:auto;}
+.qx_div{ width:100%;border-bottom:1px solid #eaedf1; background:#fff; overflow:auto;height: 34px;}
 .qx_div_l{ width:25%;float:left; margin-left:2%; position:relative;}
 .qx_sp1{ display:block; font-size:14px; position:absolute;}
 .qx_select{ position:absolute; left:35%;}

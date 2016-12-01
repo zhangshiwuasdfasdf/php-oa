@@ -21,7 +21,7 @@ function wli(){
 		wsp0+=wsp.eq(i).outerWidth();
 	}
 	$('.content_div1,.content_div2').css('width',wsp0);
-	$(".isChild").next().hide();
+	//$(".isChild").next().hide();
 }
 wli();
 
@@ -47,7 +47,6 @@ $(".a1_3").click(function(){
 	$("#tc_js").show();
 	$(".bottom_sp1").click(function(){
 		$("#tc_js").hide();
-		location.reload();
 	})
 })
 $(".a1_4").click(function(){

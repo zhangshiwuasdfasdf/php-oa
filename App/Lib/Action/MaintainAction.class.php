@@ -14,10 +14,14 @@ class MaintainAction extends CommonAction {
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
-		$name = isset($_POST['li_menu_name']) ? " AND `menu_name` LIKE '%".$_POST['li_menu_name']."%' AND `pid` = 0 " : "" ;
+		$name = isset($_POST['li_menu_name']) ? " AND `menu_name` LIKE '%".$_POST['li_menu_name']."%' " : "" ;
 		$sql = "SELECT * FROM `smeoa_menu_new` WHERE ( `is_del` = '0' $name ) ORDER BY `sort` asc ";
 		$list = M()->query($sql);
-		$this -> assign('menu',new_tree_menu(list_to_tree($list),4));
+		if(isset($_POST['li_menu_name']) && empty($_POST['li_menu_name'])){
+			$this -> assign('menu',new_tree_menu(list_to_tree($list),4));
+		}else{
+			$this -> assign('menu',new_tree_menu($list,4));
+		}
 		$this -> assign('menuList',popup_menu_option(list_to_tree($list)));
 		//取出所有的角色
 		$where["is_del"]=array('eq',0);
