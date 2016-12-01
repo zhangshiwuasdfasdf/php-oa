@@ -1404,7 +1404,8 @@ function popup_menu_dept_position_checkbox($tree, $level = 0,$deep=100,$child_de
 				}
 				if(substr($id, 0,1) == 'p'){
 					//岗位
-					if(in_array(substr($id, 2), $child_positions)){
+					$arr = explode('_', $id);
+					if(in_array(array('dept_id'=>$arr[1],'position_id'=>$arr[2]), $child_positions)){
 						$is_checked = ' checked="checked"';
 					}else{
 						$is_checked = ' ';

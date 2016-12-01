@@ -629,13 +629,13 @@ class OrganizationAction extends CommonAction {
 	}
 	function get_admin_jurisdiction_html(){
 		$upid = $_POST['upid'];
-		$child_depts = M('RUserPositionDeptPosition')->where(array('upid'=>$upid))->getField('dept_id',true);
-		$child_positions = M('RUserPositionDeptPosition')->where(array('upid'=>$upid))->getField('position_id',true);
+		$child_depts = M('RUserPositionDeptPosition')->where(array('upid'=>$upid,'_string'=>'dept_id is not null and position_id is null'))->getField('dept_id',true);
+		$child_positions = M('RUserPositionDeptPosition')->field('dept_id,position_id')->where(array('upid'=>$upid,'_string'=>'dept_id is not null and position_id is not null'))->select();
 		$list = M('Dept')->field('id,pid,name') ->where(array('is_del'=>0)) -> order('sort asc') -> select();
 		$dept_ids = M('Dept') ->where(array('is_del'=>0)) -> order('sort asc') -> getField('id',true);
-		$list2 = D('DeptPositionView')->field('dept_id as pid,position_id as id,position_name as name')->where(array('dept_id'=>array('in',$dept_ids)))->select();
+		$list2 = D('DeptPositionView')->field('dept_id as pid,position_id as id,position_name as name')->where(array('dept_id'=>array('in',$dept_ids),'Position.is_del'=>'0','Position.is_use'=>'1'))->select();
 		foreach ($list2 as $k=>$v){
-			$list2[$k]['id'] = 'p_'.$list2[$k]['id'];
+			$list2[$k]['id'] = 'p_'.$list2[$k]['pid'].'_'.$list2[$k]['id'];
 		}
 		$tree = list_to_tree(array_merge($list,$list2));
 		$html = popup_menu_dept_position_checkbox($tree,0,100,$child_depts,$child_positions);
@@ -703,16 +703,17 @@ class OrganizationAction extends CommonAction {
 	function distribution_admin_jurisdiction(){
 		$upid = $_POST['admin_jurisdiction_upid'];
 		$dept_id = array('');
-		$position_id = array('');
+		$dept_position_id = array('');
 		foreach ($_POST['dept'] as $k=>$v){
 			if(substr($v, 0,1) == 'p'){
-				$position_id[] = substr($v, 2);
+				$arr = explode('_', $v);
+				$dept_position_id[] = array('dept_id'=>$arr[1],'position_id'=>$arr[2]);
 			}else{
 				$dept_id[] = $v;
 			}
 		}
 		M('RUserPositionDeptPosition')->where(array('upid'=>$upid,'dept_id'=>array('not in',$dept_id),'_string'=>'position_id is null'))->delete();
-		M('RUserPositionDeptPosition')->where(array('upid'=>$upid,'position_id'=>array('not in',$position_id),'_string'=>'dept_id is null'))->delete();
+		M('RUserPositionDeptPosition')->where(array('upid'=>$upid,'_string'=>'position_id is not null'))->delete();
 		foreach ($dept_id as $k=>$v){
 			if($v != ''){
 				$find = M('RUserPositionDeptPosition')->where(array('upid'=>$upid,'dept_id'=>$v,'_string'=>'position_id is null'))->find();
@@ -724,15 +725,15 @@ class OrganizationAction extends CommonAction {
 				}
 			}
 		}
-		foreach ($position_id as $k=>$v){
+		foreach ($dept_position_id as $k=>$v){
 			if($v != ''){
-				$find = M('RUserPositionDeptPosition')->where(array('upid'=>$upid,'position_id'=>$v,'_string'=>'dept_id is null'))->find();
-				if(!$find){
-					$res = M('RUserPositionDeptPosition')->add(array('upid'=>$upid,'position_id'=>$v));
+// 				$find = M('RUserPositionDeptPosition')->where(array('upid'=>$upid,'dept_id'=>$v['dept_id'],'position_id'=>$v['position_id']))->find();
+// 				if(!$find){
+					$res = M('RUserPositionDeptPosition')->add(array('upid'=>$upid,'dept_id'=>$v['dept_id'],'position_id'=>$v['position_id']));
 					if(!$res){
 						$this->error('分配失败');
 					}
-				}
+// 				}
 			}
 		}
 		$this->success('分配成功');
