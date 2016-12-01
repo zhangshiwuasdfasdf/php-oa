@@ -234,14 +234,13 @@ $(".grxx_xial").click(function(){
 
 $('.right_ge1').click(function(){
 	var url = $(this).children("#url").val();
-	var id = $(this).children("#o_id").val();
-	var emp_no = $(this).children("#o_emp_no").val();
-	var name = $(this).children("#o_name").val();
+	var user_id = $(this).children("#o_id").val();
+	var position_id = $(this).children("#o_position_id").val();
 	var dept_id = $(this).children("#o_dept_id").val();
 	$.ajax({
 		type : "POST",
 		url : url,
-		data : "id="+id+"&emp_no="+emp_no+"&name="+name+"&dept_id="+dept_id+"&ajax=1",
+		data : "user_id="+user_id+"&position_id="+position_id+"&dept_id="+dept_id+"&ajax=1",
 		dataType : "json",
 		beforeSend:function(){
 			ui_info('loading...');

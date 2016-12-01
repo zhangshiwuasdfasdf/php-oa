@@ -14,7 +14,7 @@
         <div class="right_ge">
             <span class="sc">{$info.dept}</span>
             <span>></span>
-            <span>{$info.duty}</span>
+            <span>{$info.position}</span>
             <span>></span>
             <a class="ge_name" href="{:U('profile/user','id='.$info['id'])}">{$info.name}</a>
 
@@ -28,12 +28,11 @@
         		<div class="right_ge1">
 	                <span class="sc1">{$o_user.dept_name}</span>
 	                <span>></span>
-	                <span>{$o_user.duty}</span>
+	                <span>{$o_user.position_name}</span>
 	                <span>></span>
-	                <span class="ge_name">{$o_user.name}</span>
-	                <input type="hidden" id="o_id" value="{$o_user.id}"/>
-	                <input type="hidden" id="o_emp_no" value="{$o_user.emp_no}"/>
-	                <input type="hidden" id="o_name" value="{$o_user.name}"/>
+	                <span class="ge_name">{$info.name}</span>
+	                <input type="hidden" id="o_id" value="{$info.id}"/>
+	                <input type="hidden" id="o_position_id" value="{$o_user.position_id}"/>
 	                <input type="hidden" id="o_dept_id" value="{$o_user.dept_id}"/>
 	                <input type="hidden" id="o_remember_password" value="{$Think.session.remember_password}"/>
 	                <input type="hidden" id="url" value="{:U('Login/change_user')}"/>

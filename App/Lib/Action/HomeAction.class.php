@@ -50,6 +50,7 @@ class HomeAction extends CommonAction {
 		$this -> display();
 	}
 	public function index() {
+		
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
 	
@@ -671,58 +672,67 @@ class HomeAction extends CommonAction {
 	}
 	public function get_user_info(){
 		$user_id = get_user_id();
+		$dept_id = get_dept_id();
+		$position_id = get_position_id();
 		$model = D('User');
 		$where = array();
 		$where = array('id'=>$user_id);
-		$info = $model->where($where)-> field('id,name,more_role,dept_id,pos_id,position_id,sex,birthday,pic,email,duty,office_tel,mobile_tel,create_time')->find();
+		$info = $model->where($where)-> field('id,name,more_role,sex,birthday,pic,email,duty,office_tel,mobile_tel,create_time')->find();
 		$info['create_time'] = date('Y年m月d日',$info['create_time']);
 		$model = D('Dept');
 		$where = array();
-		$where = array('id'=>$info['dept_id']);
+		$where = array('id'=>$dept_id);
 		$dept_info = $model->where($where)-> field('name')->find();
 		$info['dept'] = $dept_info['name'];
 		$model = D('Position');
 		$where = array();
-		$where = array('id'=>$info['position_id']);
-		$position_info = $model->where($where)-> field('name')->find();
-		$info['position'] = $position_info['name']?$position_info['name']:'';
-		$pos_name = M('Dept')-> field('name')->find($info['pos_id']);
-		$info['pos_name'] = $pos_name['name']?$pos_name['name']:'';
+		$where = array('id'=>$position_id);
+		$info['position'] = $model->where($where)-> getField('position_name');
 		
-		//找上级用户
-		if($info['more_role']){
-			$p_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id,duty')->find($info['more_role']);
-			$pos_name = D('Dept')->field('name')->find($p_user['pos_id']);
-			$p_user['pos_name'] = $pos_name['name'];
-			$info['p_user'] = $p_user;
-			//找兄弟用户
-			$b_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id,duty')->where(array('more_role'=>$p_user['id'],'id'=>array('neq',$user_id)))->select();
-			if(!empty($b_user) && is_array($b_user)){
-				$info['b_user'] = $b_user;
-			}
-		}else{//找下级用户
-			$c_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id,duty')->where(array('more_role'=>$user_id))->select();
-			if(!empty($c_user) && is_array($c_user)){
-				$info['c_user'] = $c_user;
-			}
-		}
+		$r_user_position_id = M('RUserPosition')->where(array('user_id'=>$user_id,'dept_id'=>$dept_id,'position_id'=>$position_id,'is_del'=>'0'))->getField('id');
+		$r_user_position_other = M('RUserPosition')->where(array('user_id'=>$user_id,'id'=>array('neq',$r_user_position_id),'is_del'=>'0'))->select();
 		$info['users'] = array();
-		if(!empty($p_user)){
-			$p_user['role'] = 'p';
-			$info['users'][] = $p_user;
+		foreach ($r_user_position_other as $k=>$v){
+			$user['dept_id'] = $v['dept_id'];
+			$user['dept_name'] = get_dept_name($v['dept_id']);
+			$user['position_id'] = $v['position_id'];
+			$user['position_name'] = get_position_name($v['position_id']);
+			$info['users'][] = $user;
 		}
-		if(!empty($c_user)){
-			foreach ($c_user as $k=>$v){
-				$c_user[$k]['role'] = 'c';
-				$info['users'][] = $c_user[$k];
-			}
-		}
-		if(!empty($b_user)){
-			foreach ($b_user as $k=>$v){
-				$b_user[$k]['role'] = 'b';
-				$info['users'][] = $b_user[$k];
-			}
-		}
+		//找上级用户
+// 		if($info['more_role']){
+// 			$p_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id,duty')->find($info['more_role']);
+// 			$pos_name = D('Dept')->field('name')->find($p_user['pos_id']);
+// 			$p_user['pos_name'] = $pos_name['name'];
+// 			$info['p_user'] = $p_user;
+// 			//找兄弟用户
+// 			$b_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id,duty')->where(array('more_role'=>$p_user['id'],'id'=>array('neq',$user_id)))->select();
+// 			if(!empty($b_user) && is_array($b_user)){
+// 				$info['b_user'] = $b_user;
+// 			}
+// 		}else{//找下级用户
+// 			$c_user = D('UserView')->field('id,emp_no,more_role,name,dept_id,dept_name,pos_id,duty')->where(array('more_role'=>$user_id))->select();
+// 			if(!empty($c_user) && is_array($c_user)){
+// 				$info['c_user'] = $c_user;
+// 			}
+// 		}
+// 		$info['users'] = array();
+// 		if(!empty($p_user)){
+// 			$p_user['role'] = 'p';
+// 			$info['users'][] = $p_user;
+// 		}
+// 		if(!empty($c_user)){
+// 			foreach ($c_user as $k=>$v){
+// 				$c_user[$k]['role'] = 'c';
+// 				$info['users'][] = $c_user[$k];
+// 			}
+// 		}
+// 		if(!empty($b_user)){
+// 			foreach ($b_user as $k=>$v){
+// 				$b_user[$k]['role'] = 'b';
+// 				$info['users'][] = $b_user[$k];
+// 			}
+// 		}
 		
 		if(!is_mobile_request()){
 			$this->assign('info',$info);

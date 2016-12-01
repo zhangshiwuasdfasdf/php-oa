@@ -164,9 +164,9 @@ class FlowAction extends CommonAction {
 					//$map加上自己园区的
 					if(isHeadquarters(get_user_id())==0){//总部
 						//云客服部考勤单独做
-						$pos_id = get_user_info(get_user_id(), 'pos_id');
-						$pos = M('Dept')->find($pos_id);
-						if($pos['name']=='云客服前台'){
+// 						$pos_id = get_user_info(get_user_id(), 'pos_id');
+// 						$pos = M('Dept')->find($pos_id);
+						if(get_position_name()=='云客服前台'){
 							$map['dept_id'] = array('in',get_child_dept_all($pos['pid']));
 						}else{
 							$map['dept_id'] = array('in',get_child_dept_all(27));
@@ -622,9 +622,9 @@ class FlowAction extends CommonAction {
 	function _folder_export_detail($data,$table_name,$type,$date,$hui){
 		if($type=='leave'){//请假调休单特殊处理
 			//云客服部考勤单独做
-			$pos_id = get_user_info(get_user_id(), 'pos_id');
-			$pos = M('Dept')->find($pos_id);
-			if($pos['name']=='云客服前台'){
+// 			$pos_id = get_user_info(get_user_id(), 'pos_id');
+// 			$pos = M('Dept')->find($pos_id);
+			if(get_position_name()=='云客服前台'){
 				$dept_id = $pos['pid'];
 				$this -> _folder_export_detail_leave($date,$dept_id);
 			}else{
@@ -1351,12 +1351,16 @@ class FlowAction extends CommonAction {
 		$uid = get_user_id();
 		if($uid){
 			$info = array();
-			$user_info = get_user_info($uid,'name,dept_name,dept_id,office_tel,mobile_tel,duty,email');
+			$user_info = get_user_info($uid,'name,office_tel,mobile_tel,duty,email');
 			foreach ($user_info as $v){
 				$info = $v;
 			}
 			$info['user_id'] = $uid;
 		}
+		$info['dept_id'] = get_dept_id();
+		$info['dept_name'] = get_dept_name();
+		$info['position_id'] = get_position_id();
+		$info['position_name'] = get_position_name();
 		$info['available_hour'] = getAvailableHour();
 		$info['available_hour2'] = getAvailableHour2(time(),$uid,'Create');
 		$info['available_year'] = getAvailableYearHour()/2;
