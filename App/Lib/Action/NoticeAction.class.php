@@ -177,6 +177,9 @@ class NoticeAction extends CommonAction {
 		if(in_array($fid , array('72','74','94','96','97'))){
 			$this ->assign('ckdept','1');
 		}
+		//制度分类
+		$sys_class=M("SimpleDataMapping")->field("id,data_name")->where(array("data_type"=>"制度分类"))->select();
+		$this -> assign('sys_class', $sys_class);
 		//企业概况
 		if(in_array($fid , array('68','96','97'))){
 			$this -> assign('ckfile','1');

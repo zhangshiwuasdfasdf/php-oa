@@ -179,7 +179,7 @@ class MaintainAction extends CommonAction {
 	public function getTree()
 	{
 		$menuModel=D("MenuNew");
-		$data = $menuModel->order('menu_name asc')->select();
+		$data = $menuModel->select();
 		return $this->_reSort($data);
 	}
 	private function _reSort($data, $parent_id=0, $level=0, $isClear=TRUE)
