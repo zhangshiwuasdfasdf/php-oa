@@ -1,15 +1,11 @@
-<div class="tc_ul_div" style="margin-left:26px;margin-top:5px;">
+<div class="tc_ul_div" style="overflow-x:hidden">
         <ul class="sousuo" id="span"></ul>
         <foreach name="data['_company']" item="vo">
         	<div class="tc_div_jt">{$key}:</div>
             <ul class="tc_ul">
                 <li style="display:inline-table">
                 <foreach name="vo" item="vo1">
-<<<<<<< HEAD
-                    <span style="width:215px;text-align:right;">
-=======
-                    <span style="">
->>>>>>> f440bd36b8acb02078c68ae74a25ec4e25555d69
+                    <span style="width:210px">
                         <label for="js1">{$vo1}</label>
                         <?php  
 							$vegetables = explode(",", $key);  
