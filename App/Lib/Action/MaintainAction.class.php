@@ -1,6 +1,6 @@
 <?php
 class MaintainAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read','add_role' => 'read','show_role' => 'read','copy_role' => 'read','add_data' => 'read','ajax_get_data' => 'read', 'avliname'=>'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read','add_role' => 'read','show_role' => 'read','copy_role' => 'read','add_data' => 'read','ajax_get_data' => 'read', 'avliName'=>'read'));
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -118,7 +118,7 @@ class MaintainAction extends CommonAction {
 	}
 	
 	function del(){
-		$this -> _del(null,'MenuNew');
+		$this -> _del();
 	}
 	//验证同级菜单名称是否存在
 	public function avliName(){
