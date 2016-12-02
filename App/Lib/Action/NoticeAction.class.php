@@ -21,6 +21,9 @@ class NoticeAction extends CommonAction {
 		if (!empty($_REQUEST['keyword']) && empty($map['name'])) {
 			$map['name'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
+		if (!empty($_REQUEST['li_system_classify']) && empty($map['li_system_classify'])) {
+            $map['system_classify'] = array('eq',  $_POST['li_system_classify']);
+        }
 	}
 
 	public function index() {
@@ -181,6 +184,9 @@ class NoticeAction extends CommonAction {
 		if(in_array($fid , array('68','96','97'))){
 			$this -> assign('ckfile','1');
 		}
+		//制度分类
+        $sys_class=M("SimpleDataMapping")->field("id,data_name")->where(array("data_type"=>"制度分类"))->select();
+        $this -> assign('sys_class', $sys_class);
 		//工作计划
 		if($fid == '94'){
 			$widget['date'] = true;	
@@ -278,6 +284,8 @@ class NoticeAction extends CommonAction {
 	public function folder() {
 		$folder_id = $_REQUEST['fid'];
 		$this->assign('folder_id',$folder_id);
+		$sys_class=M("SimpleDataMapping")->field("id,data_name")->where(array("data_type"=>"制度分类"))->select();
+        $this -> assign('sys_class', $sys_class);
 		//有可见部门
 		if(in_array($folder_id , array('72','74','94','96','97'))){
 			$this -> inform($folder_id);die;
@@ -321,6 +329,11 @@ class NoticeAction extends CommonAction {
 		if(!empty($model)){
 			$res = $this -> _list($model, $map);
 		}
+		foreach($res as $k=>$v){
+            $sys_class=$v['system_classify'];
+            $sys_name=M("SimpleDataMapping")->where(array("id"=>$sys_class))->getField("data_name");
+            $res[$k]['sys_name']=$sys_name;
+        }
 		$this -> assign('res',$res);
 		$this -> assign("folder_name", D("SystemFolder") -> get_folder_name($folder_id));
 		$this -> assign('auth', $this -> config['auth']);

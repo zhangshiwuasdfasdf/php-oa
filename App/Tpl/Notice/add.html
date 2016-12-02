@@ -23,6 +23,17 @@
 			<input type="radio" name="type" value="2" onclick="$('#div_content').attr('style','display:none')" />图片 
 		</div>
 	</div>
+	<if condition="$folder eq '71'">
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="name">制度分类：*</label>
+        <select class="col-sm-10" name="system_classify" id="system_classify" check="require" msg="请选择制度分类">
+            <option value="">请选择</option>
+                <foreach name="sys_class" item="vo">
+                    <option value="{$vo.id}">{$vo.data_name}</option>
+                </foreach>
+        </select>
+    </div>
+    </if>
 	<if condition="$ckplan eq '1'">
 		<div class="form-group">
 			<label class="col-sm-2 control-label" for="type">计划时间：*</label>

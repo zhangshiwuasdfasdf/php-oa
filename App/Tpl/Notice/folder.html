@@ -49,6 +49,19 @@
 					</div>
 				</div>
 			</div>
+			<?php if($folder_id == '71'): ?>
+            <div class="form-group col-sm-3">
+                <label class="col-sm-4 control-label" for="eq_user_name">制度分类：</label>
+                <div class="col-sm-8">
+                    <select class="col-sm-10" name="li_system_classify" id="li_system_classify" check="require" msg="请选择制度分类">
+                    <option value="">请选择</option>
+                    <foreach name="sys_class" item="vo">
+                    <option value="{$vo.id}">{$vo.data_name}</option>
+                    </foreach>
+                    </select>
+                </div>
+            </div>
+            <?php endif;?>
 			<div class="col-sm-3" style="float:right; width:8%">
 					<a  class="btn btn-sm btn-info" onclick="submit_adv_search();">搜索</a>
 				</div>
@@ -95,6 +108,7 @@
 			</div>
 			<div class="pull-right">
 			<?php if($folder_id == '71'): ?>
+				<span class="col-6  "> 制度分类 </span>
 				<span class="col-10  "> 关注账户 (人)</span>
 			<?php endif;?>
 				<span class="col-10  "> 发布时间 </span>
@@ -124,6 +138,7 @@
 							</div>
 							<div class="pull-right">
 							<?php if($folder_id == '71'): ?>
+								<span class="col-6 ">&nbsp;{$res.$key.sys_name}</span>
 								<span class="col-10 "  style="text-align:center;color:#428bca;" onmouseover="showFollow({$vo.id})" onmouseout="disappear()">{$vo.views}</span>
 							<?php endif;?>
 								<span class="col-10 "> {$vo.create_time|toDate='Y-m-d'} </span>
