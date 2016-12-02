@@ -104,7 +104,7 @@ class LoginAction extends Action {
 			$is_admin=true;
 			session(C('ADMIN_AUTH_KEY'), true);
 		}
-
+		
 		if(C("LDAP_LOGIN")&&!$is_admin){
 			$ldap_host = C("LDAP_SERVER");//LDAP 服务器地址
 			$ldap_port = C("LDAP_PORT");//LDAP 服务器端口号
@@ -137,11 +137,14 @@ class LoginAction extends Action {
 		if (false == $auth_info){
 			$this -> error('帐号或密码错误！');
 		} else {
+			
+			$r_user_position = M('RUserPosition')->field('position_id,dept_id')->where(array('user_id'=>$auth_info['id'],'is_major'=>'1','is_del'=>'0'))->find();
 			session(C('USER_AUTH_KEY'),$auth_info['id']);
 			session('user_id',$auth_info['id']);
 			session('emp_no', $auth_info['emp_no']);
 			session('user_name', $auth_info['name']);
-			session('dept_id', $auth_info['dept_id']);
+			session('dept_id', $r_user_position['dept_id']);
+			session('position_id', $r_user_position['position_id']);
 			
 			//保存登录信息
 			$User = M('User');
@@ -291,35 +294,39 @@ class LoginAction extends Action {
 	}
 	public function change_user(){
 // 		$_POST['id'];
-		if(!empty($_POST['id']) && !empty($_POST['emp_no']) && !empty($_POST['name']) && !empty($_POST['dept_id'])){
-			session(C('USER_AUTH_KEY'),$_POST['id']);
-			session('user_id',$_POST['id']);
-			session('emp_no', $_POST['emp_no']);
-			session('user_name', $_POST['name']);
-			session('dept_id', $_POST['dept_id']);
+		if(!empty($_POST['user_id']) && !empty($_POST['position_id']) && !empty($_POST['dept_id'])){
+			$find = M('RUserPosition')->where(array('user_id'=>$_POST['user_id'],'position_id'=>$_POST['position_id'],'dept_id'=>$_POST['dept_id'],'is_del'=>'0'))->find();
+			if($find){
+				session('dept_id', $_POST['dept_id']);
+				session('position_id', $_POST['position_id']);
 				
-			//保存登录信息
-			$User = M('User');
-			$ip = get_client_ip();
-			$time = time();
-			$data = array();
-			$data['id'] = $_POST['id'];
-			$data['last_login_time'] = $time;
-			$data['login_count'] = array('exp', 'login_count+1');
-			$data['last_login_ip'] = $ip;
+				//保存登录信息
+				$User = M('User');
+				$ip = get_client_ip();
+				$time = time();
+				$data = array();
+				$data['id'] = $_POST['user_id'];
+				$data['last_login_time'] = $time;
+				$data['login_count'] = array('exp', 'login_count+1');
+				$data['last_login_ip'] = $ip;
 				
-// 			if(is_mobile_request()){//如果是手机端登录，则返回id和token
-// 				$data['last_mobile_login_time'] = $time;
-// 				$User -> save($data);
-// 				$this -> assign('jumpUrl', U("index/index"));
-// 				$this -> assign('id', $auth_info['id']);
-// 				$this -> assign('token', md5($auth_info['password'].md5($time)));
-// 				$this -> display();
-// 			}
-			$User -> save($data);
-			$this ->ajaxReturn(1,1,1);
+				if(is_mobile_request()){//如果是手机端登录，则返回id和token
+					$data['last_mobile_login_time'] = $time;
+					$User -> save($data);
+					$this -> assign('jumpUrl', U("index/index"));
+					$this -> assign('id', $auth_info['id']);
+					$this -> assign('token', md5($auth_info['password'].md5($time)));
+					$this -> display();
+				}
+				
+				$User -> save($data);
+				$this ->ajaxReturn(1,1,1);
+			}else{
+				$this ->ajaxReturn(0,0,0);
+			}
+		}else{
+			$this ->ajaxReturn(0,0,0);
 		}
-		$this ->ajaxReturn(0,0,0);
 	}
 }
 ?>

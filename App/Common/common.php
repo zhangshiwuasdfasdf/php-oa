@@ -439,7 +439,7 @@ function get_user_config($field) {
 }
 
 function get_user_info($id, $field) {
-	$model = D("UserView");
+	$model = D("User");
 	$where['id'] = array('eq', $id);
 	$result = $model -> where($where) -> getfield($field);
 	return $result;
@@ -647,12 +647,51 @@ function get_user_name() {
 }
 
 function get_dept_id() {
-	return session('dept_id');
+	if(session('dept_id')){
+		return session('dept_id');
+	}else{
+		$user_id = get_user_id();
+		if($user_id){
+			return M('RUserPosition')->where(array('user_id'=>$user_id,'is_major'=>'1','is_del'=>'0'))->getField('dept_id');
+		}else{
+			return 0;
+		}
+	}
+}
+function get_position_id() {
+	if(session('position_id')){
+		return session('position_id');
+	}else{
+		$user_id = get_user_id();
+		if($user_id){
+			$dept_id = get_dept_id();
+			if($dept_id){
+				return M('RUserPosition')->where(array('user_id'=>$user_id,'dept_id'=>$dept_id,'is_del'=>'0'))->getField('position_id');
+			}else{
+				return M('RUserPosition')->where(array('user_id'=>$user_id,'is_major'=>'1','is_del'=>'0'))->getField('position_id');
+			}
+		}else{
+			return 0;
+		}
+	}
 }
 
-function get_dept_name() {
-	$result = M("Dept") -> find(session("dept_id"));
+function get_dept_name($dept_id) {
+	if($dept_id){
+		$result = M("Dept") -> find($dept_id);
+	}else{
+		$result = M("Dept") -> find(get_dept_id());
+	}
 	return $result['name'];
+}
+
+function get_position_name($position_id) {
+	if($position_id){
+		$result = M("Position") -> find($position_id);
+	}else{
+		$result = M("Position") -> find(get_position_id());
+	}
+	return $result['position_name'];
 }
 function get_dept_name_by_id($val) {
 	$result = M("Dept") -> find($val);
@@ -1365,7 +1404,8 @@ function popup_menu_dept_position_checkbox($tree, $level = 0,$deep=100,$child_de
 				}
 				if(substr($id, 0,1) == 'p'){
 					//岗位
-					if(in_array(substr($id, 2), $child_positions)){
+					$arr = explode('_', $id);
+					if(in_array(array('dept_id'=>$arr[1],'position_id'=>$arr[2]), $child_positions)){
 						$is_checked = ' checked="checked"';
 					}else{
 						$is_checked = ' ';
@@ -2057,21 +2097,21 @@ function get_sid() {
 	return md5(bin2hex(time()) . rand_string());
 }
 
-function get_position_name($id) {
-	$data = D('UserView') -> find($id);
-	if(empty($data['position_name'])){//可能是建立视图时表链接时某些字段不写导致无法生成视图
-		$user = D('User')->find($id);
-		$position = D('position')->find($user['position_id']);
-		if(empty($position['name'])){
-			return '不明';
-		}else{
-			return $position['name'];
-		}
+// function get_position_name($id) {
+// 	$data = D('UserView') -> find($id);
+// 	if(empty($data['position_name'])){//可能是建立视图时表链接时某些字段不写导致无法生成视图
+// 		$user = D('User')->find($id);
+// 		$position = D('position')->find($user['position_id']);
+// 		if(empty($position['name'])){
+// 			return '不明';
+// 		}else{
+// 			return $position['name'];
+// 		}
 		
-	}else{
-		return $data['position_name'];
-	}
-}
+// 	}else{
+// 		return $data['position_name'];
+// 	}
+// }
 
 function get_emp_pic($id) {
 	$data = M("User") -> where("id=$id") -> getField("pic");

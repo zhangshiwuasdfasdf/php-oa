@@ -216,7 +216,7 @@ class ProblemFeedbackAction extends CommonAction {
 		$model -> create_user_name = get_user_name();
 		$model -> dept_id = get_dept_id();
 		$model -> dept_name = get_dept_name();
-		$model -> pos_id = get_user_info(get_user_id(), 'pos_id');
+		$model -> pos_id = get_position_id();
 		$pos_name = M('Dept')->field('name')->find($model -> pos_id);
 		$model -> pos_name = $pos_name['name'];
 		$model -> browser = getBrowser().' '.getBrowserVer();
@@ -299,7 +299,7 @@ class ProblemFeedbackAction extends CommonAction {
 		$model -> reply_time = time();
 		$model -> dept_id = get_dept_id();
 		$model -> dept_name = get_dept_name();
-		$model -> pos_id = get_user_info(get_user_id(), 'pos_id');
+		$model -> pos_id = get_position_id();
 		$pos_name = M('Dept')->field('name')->find($model -> pos_id);
 		$model -> pos_name = $pos_name['name'];
 		
