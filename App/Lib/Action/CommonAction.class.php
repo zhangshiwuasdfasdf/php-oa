@@ -176,9 +176,11 @@ class CommonAction extends Action {
 	//分配数据
 	protected function _assign_data_new(){
 		$uid = get_user_id();
-		$upid = M('RUserPosition')->where(array('user_id'=>$uid,'is_major'=>'1')) -> getField('id');
+		$rup = M('RUserPosition');
+		$upid = $rup->where(array('user_id'=>$uid,'is_major'=>'1')) -> getField('id');
 		$role_ids = getRoleIdsByUpid($upid);//根据用户组id找到该用户的所有绑定角色ids
 		$scopes = array();
+		$all_users['user_id'] = array();
 		if(!empty($role_ids)){
 			$model = M('RRoleMenu');
 			$menu = $this -> config['menu'];
@@ -192,28 +194,48 @@ class CommonAction extends Action {
 						$scopes = true;
 						break;
 					case '2' ://行政管辖
-						$scopes = array();
+						$updp = M('RUserPositionDeptPosition') -> where(array('upid'=>$upid,'_string'=>'dept_id is not null and position_id is not null')) -> select();
+						if(!empty($updp)){
+							$all_user = array();
+							foreach($updp as $k => $v){
+								$uids = $rup->where(array('dept_id'=>$v['dept_id'],'position_id'=>$v['position_id'])) -> getField('user_id',true);
+								$all_user = array_merge($all_user,$uids);
+							}
+							$scopes['user_id'] = array_unique($all_user);
+						}
 						break;
 					case '3' ://仅自己
-						$scopes['user_id'] = array('eq',$uid);
+						$scopes['user_id'] = array($uid);
 						break;
-					case '4' ://业务管辖公司
-						$scopes = array();
+					case '4' ://业务管辖基地
+						$dept_ids = M('RUserPositionBase')->where(array('upid'=>$upid)) -> getField('dept_id',true);
+						$child_dept_all = array();
+						foreach ($dept_ids as $dept_id){
+							$child_dept_all = array_merge($child_dept_all,get_child_dept_all($dept_id));
+						}
+						$scopes['user_id'] = $rup -> where(array('dept_id'=>array('in',$child_dept_all))) -> getField('user_id',true);
 						break;
 					case '5' ://业务管辖部门
-						$scopes = array();
+						$dept_ids = M('RUserPositionDept')->where(array('upid'=>$upid)) -> getField('dept_id',true);
+						$scopes['user_id'] = $rup -> where(array('dept_id'=>array('in',$dept_ids))) -> getField('user_id',true);
 						break;
 					case '6' ://考勤管辖部门
-						$scopes = array();
+						$dept_ids = M('RUserPositionAttendanceDept')->where(array('upid'=>$upid)) -> getField('dept_id',true);
+						$scopes['user_id'] = $rup -> where(array('dept_id'=>array('in',$dept_ids))) -> getField('user_id',true);
 						break;
 					default:
-						$scopes['user_id'] = array('IN',$uid);
+						$scopes['user_id'] = array($uid);
 						break;
 				}
 				if($scopes === true){break;}
+				$all_users['user_id']=array_merge($all_users['user_id'],$scopes['user_id']);
+			}
+			$all_users['user_id'] = array_unique($all_users['user_id']);
+			if(is_array($all_users['user_id'])){
+				$all_users['user_id'] = array('in',$all_users['user_id']);
 			}
 		}
-		return $scopes; 
+		return $all_users; 
 	}
 
 	protected function _assign_new_count() {
@@ -636,6 +658,9 @@ class CommonAction extends Action {
 			unset($map['user_id']);
 		} 
 		if(is_array($newMap)){
+			if(isset($map['user_id'])){
+				unset($map['user_id']);
+			}
 			$map = array_merge($map, $newMap);
 		}
 		//排序字段 默认为主键名
