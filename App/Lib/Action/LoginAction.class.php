@@ -321,5 +321,14 @@ class LoginAction extends Action {
 		}
 		$this ->ajaxReturn(0,0,0);
 	}
+	public function check_user_name(){
+		if($_REQUEST['user_name']){
+			$user = M('User')->field('id')->where(array('emp_no'=>$_REQUEST['user_name'],'is_del'=>'0'))->find();
+			if($user){
+				$this ->ajaxReturn(1,$user['id'],1);
+			}
+		}
+		$this ->ajaxReturn(0,null,0);
+	}
 }
 ?>
