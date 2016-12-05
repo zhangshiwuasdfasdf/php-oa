@@ -272,8 +272,8 @@ class UserAction extends CommonAction {
 		$this ->ajaxReturn("aaa");
 	}
 	public function check_user_name(){
-		if($_POST['user_name']){
-			$user = M('User')->field('id')->where(array('emp_no'=>$_POST['user_name'],'more_role'=>0))->find();
+		if($_REQUEST['user_name']){
+			$user = M('User')->field('id')->where(array('emp_no'=>$_REQUEST['user_name'],'is_del'=>'0'))->find();
 			if($user){
 				$this ->ajaxReturn(1,$user['id'],1);
 			}
