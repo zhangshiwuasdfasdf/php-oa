@@ -72,18 +72,21 @@
 			<div class="btn-group">
 				<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#">管理<b class="fa fa-caret-down"></b></a>
 				<ul class="dropdown-menu">
+					<php>if(isAction('attendance/import_attendance')){</php>
 					<li>
 						<a class="link down" onclick="import_attendance();">导入</a>
 					</li>
 					<li>
 						<a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode('2548'))}">模板</a> 
 					</li>
+					<php>}</php><php>if(isAction('attendance/export_attendance')){</php>
 					<li>
 						<a class="link down" onclick="export_attendance();">导出</a>
-					</li>
+					</li><php>}</php>
 				</ul>
 			</div>
-			<a class="btn btn-sm btn-danger" onclick="mark('del');">删除</a>
+			<php>if(isAction('attendance/mark')){</php>
+			<a class="btn btn-sm btn-danger" onclick="mark('del');">删除</a><php>}</php>
 		</div>
 		<div class="pull-right"></div>
 	</div>

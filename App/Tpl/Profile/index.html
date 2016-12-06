@@ -5,7 +5,9 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">基本资料</span>
 		</div>
 		<div class="pull-right">
-			<a onclick="save()"  class="btn btn-sm btn-primary">保存</a>
+			<php>if(isAction('profile/save')){</php>
+	            <a onclick="save()"  class="btn btn-sm btn-primary">保存</a>
+            <php>}</php>  
 		</div>
 	</div>
 </div>

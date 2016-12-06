@@ -3993,4 +3993,14 @@ function showBusiness($rid,$mid){
 function showBusinessSave($rid,$mid){
 	return $info = M('RRoleMenu') -> where(array('menu_id'=>$mid,'role_id'=>$rid))->getField('id');
 }
+function isAction($url){
+	$pid = M('PrivilegeRole') -> where(array('role_id'=>array('in',session('rids')))) -> getField('privilege_id',true);
+	$privilege = M('Privilege') -> where(array('is_del'=>'0','id'=>array('in',$pid)))->select();
+	foreach ($privilege as $k => $v){
+		if($v['url'] == $url){
+			return true;
+		}
+	}
+	return false;
+}
 ?>

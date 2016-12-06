@@ -113,9 +113,11 @@
     	<div class="content_title">
             <span class="content_sp1"></span>
             <span class="content_sp2">招聘信息跟进</span>
-            <a class="content_sp3" href="{:U('add')}">
-            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
-            </a>  
+            <php>if(isAction('recruit/add')){</php>
+	            <a class="content_sp3" href="{:U('add')}">
+	            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+	            </a>
+            <php>}</php>  
         </div>
         <div class="content_ul_w">
             <ul class="content_ul">

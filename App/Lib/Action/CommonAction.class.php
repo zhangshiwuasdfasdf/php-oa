@@ -129,6 +129,7 @@ class CommonAction extends Action {
 		$role_ids = getRoleIdsByUpid($upid);//根据用户组id找到该用户的所有绑定角色ids
 		$tree = "";
 		if(!empty($role_ids)){
+			session('rids',$role_ids);
 			$menu = M('RRoleMenu');
 			$menus = array();//找出所有角色id对应的菜单ids
 			foreach ($role_ids as $k => $v){
