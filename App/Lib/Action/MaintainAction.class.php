@@ -17,7 +17,7 @@ class MaintainAction extends CommonAction {
 		$name = isset($_POST['li_menu_name']) ? " AND `menu_name` LIKE '%".$_POST['li_menu_name']."%' " : "" ;
 		$sql = "SELECT * FROM `smeoa_menu_new` WHERE ( `is_del` = '0' $name ) ORDER BY `sort` asc ";
 		$list = M()->query($sql);
-		if(isset($_POST['li_menu_name']) && empty($_POST['li_menu_name'])){
+		if(empty($_POST['li_menu_name'])){
 			$this -> assign('menu',new_tree_menu(list_to_tree($list),4));
 		}else{
 			$this -> assign('menu',new_tree_menu($list,4));
