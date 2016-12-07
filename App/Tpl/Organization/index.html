@@ -210,9 +210,10 @@ input,select{ margin:0; padding:0; outline:none;}
             <div class="content_title">
                 <span class="content_sp1"></span>
                 <span class="content_sp2">部门列表</span>
+                <php>if(isAction('organization/getDept')){</php>
                 <a class="content_sp3" id="a_bmtj">
                     <img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
-                </a>  
+                </a><php>}</php>
             </div>
             <div class="content_ul_w" id="content_div1">
             	<ul class="content_ul">
@@ -230,12 +231,13 @@ input,select{ margin:0; padding:0; outline:none;}
             <div class="content_bottom">
 	            <div class="content_bottom1"></div>
 	            <div class="content_bottom2">
+	            <php>if(isAction('organization/delete?type=1')){</php>
 	                <div class="b1">
 	                    <input id="all_dept" type="checkbox"/>
 	                    <span>全选</span>
 	                </div>
 	                <div class="b2" id="delete_dept">删除</div>
-	                
+	                <php>}</php>
 	                <div class="b3">
 	                    <span id="counts_dept" class="b3_s1"></span>
 	                    <span id="ps_dept" class="b3_s2"></span>
@@ -253,9 +255,10 @@ input,select{ margin:0; padding:0; outline:none;}
             <div class="content_title">
                 <span class="content_sp1"></span>
                 <span class="content_sp2">岗位列表</span>
+                <php>if(isAction('organization/get_edit_user_html')){</php>
                 <a class="content_sp3" id="a_gwtj">
                     <img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
-                </a>  
+                </a><php>}</php>
             </div>
             <div class="content_ul_w" id="content_div2">
             	<ul class="content_ul">
@@ -275,12 +278,13 @@ input,select{ margin:0; padding:0; outline:none;}
             <div class="content_bottom">
 	            <div class="content_bottom1"></div>
 	            <div class="content_bottom2">
+	            	<php>if(isAction('organization/delete?type=2')){</php>
 	                <div class="b1">
 	                    <input id="all_position" type="checkbox"/>
 	                    <span>全选</span>
 	                </div>
 	                <div class="b2" id="delete_position">删除</div>
-	                
+	                <php>}</php>
 	                <div class="b3">
 	                    <span id="counts_position" class="b3_s1"></span>
 	                    <span id="ps_position" class="b3_s2"></span>
@@ -298,9 +302,10 @@ input,select{ margin:0; padding:0; outline:none;}
             <div class="content_title">
                 <span class="content_sp1"></span>
                 <span class="content_sp2">员工列表</span>
+                <php>if(isAction('organization/get_edit_user_html')){</php>
                 <a class="content_sp3" id="a_ygtj">
                     <img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
-                </a>  
+                </a><php>}</php>
             </div>
             <div class="content_ul_w" id="content_div3">
             	<ul class="content_ul">
@@ -340,12 +345,13 @@ input,select{ margin:0; padding:0; outline:none;}
             <div class="content_bottom">
 	            <div class="content_bottom1"></div>
 	            <div class="content_bottom2">
+	            <php>if(isAction('organization/delete?type=3')){</php>
 	                <div class="b1">
 	                    <input id="all_user" type="checkbox"/>
 	                    <span>全选</span>
 	                </div>
 	                <div class="b2" id="delete_user">删除</div>
-	                
+	                <php>}</php>
 	                <div class="b3">
 	                    <span id="counts_user" class="b3_s1"></span>
 	                    <span id="ps_user" class="b3_s2"></span>

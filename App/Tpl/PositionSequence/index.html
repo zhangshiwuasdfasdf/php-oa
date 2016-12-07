@@ -86,9 +86,10 @@ label.error{color:red;font-size:12px;top:22px;left:85px;}
     	<div class="content_title">
             <span class="content_sp1"></span>
             <span class="content_sp2">岗位序列</span>
+            <php>if(isAction('position_sequence/add')){</php>
             <a class="content_sp3" id="a_gltj">
             	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
-            </a>  
+            </a><php>}</php>
         </div>
         <div class="content_ul_w" id="content_div2">
             <ul class="content_ul">
@@ -114,8 +115,10 @@ label.error{color:red;font-size:12px;top:22px;left:85px;}
                     <span class="span2" style="text-align:left">{$vo.sequence_name}</span>
                     <span class="span2">{$vo.sequence_degree}</span>
                     <span class="span2">
-                    <a class="content_a" id="a_glbj" onclick="show('{$vo.id}','{$vo.sequence_number}','{$vo.sequence_name}','{$vo.sequence_degree}');"><input id="bj_{$vo.id}" type="hidden" value="{$vo.id}">编辑</a>
+                    <php>if(isAction('position_sequence/edit_sequence')){</php>
+                   	 <a class="content_a" id="a_glbj" onclick="show('{$vo.id}','{$vo.sequence_number}','{$vo.sequence_name}','{$vo.sequence_degree}');"><input id="bj_{$vo.id}" type="hidden" value="{$vo.id}">编辑</a>
                     </span>
+                    <php>}</php>
                 </li>
                 </foreach> 
                 </form>
@@ -128,11 +131,12 @@ label.error{color:red;font-size:12px;top:22px;left:85px;}
     	<!-- <div class="content_bottom1">
         </div> -->
         <div class="content_bottom2">
+        <php>if(isAction('position_sequence/del_sequence')){</php>
         	<div class="b1">
                 <input id="all" type="checkbox"/>
                 <span>全选</span>
             </div>
-         <div class="b2"><a onclick="del();">删除</a> </div>
+         <div class="b2"><a onclick="del();">删除</a> </div><php>}</php>
           <div class="pagination" style="float:right;line-height:25px;">
                 {$page}
           </div>

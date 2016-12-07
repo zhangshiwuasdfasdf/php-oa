@@ -145,7 +145,7 @@
 							<span class="col-6  "><if condition="($vo.step eq '10')">
 								<php>if(isAction('flow/edit?fid=darft')){</php>
 								<a href="{:U('edit','fid=darft&id='.$vo['id'])}">修改</a>
-								<php>}</php><php>if(isAction('flow/add?type=52')){</php>
+								<php>}</php><php>if(isAction('flow/del')){</php>
 								<a href="{:U('del','id='.$vo['id'])}">删除</a><php>}</php>
 							</if></span>
 						</div>
@@ -160,7 +160,7 @@
 								<eq name="vo.name|strlen" value="0">
 									无标题
 								</eq>
-								</a> 
+								</a>
 							<else/>
 								<a href="{:U('read','id='.$vo['id'].'&fid=confirm')}" target="_blank">{$vo.name}
 								<eq name="vo.name|strlen" value="0">

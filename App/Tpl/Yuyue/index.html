@@ -92,8 +92,9 @@
 					</div>
 					<div class="pull-right">
 						<if condition="1">
-							<span class="col-7 "><a href="{:U('lookyy',array('id'=>$vo['meet_id'],'yid'=>$vo['id']))}">查看</a></span>
-							<if condition="$vo.user_id eq $user_id"><span class="col-8 "><a href="{:U('cancel_yuyue','id='.$vo['id'])}">取消预约</a></span></if>
+							<php>if(isAction('yuyue/lookyy')){</php>
+							<span class="col-7 "><a href="{:U('lookyy',array('id'=>$vo['meet_id'],'yid'=>$vo['id']))}">查看</a></span><php>}</php>
+							<php>if(isAction('yuyue/cancel_yuyue')){</php><if condition="$vo.user_id eq $user_id"><span class="col-8 "><a href="{:U('cancel_yuyue','id='.$vo['id'])}">取消预约</a></span></if><php>}</php>
 						</if>
 					</div>
 				</li>

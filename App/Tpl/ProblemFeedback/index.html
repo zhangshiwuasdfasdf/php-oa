@@ -91,7 +91,8 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">ERP问题反馈</span>
 		</div>
 		<div class="pull-right">
-			<a class="btn btn-sm btn-primary" onclick="add()">新建</a>
+			<php>if(isAction('problem_feedback/add')){</php>
+			<a class="btn btn-sm btn-primary" onclick="add()">新建</a><php>}</php>
 		</div>
 	</div>
 </div>
@@ -139,9 +140,11 @@
 							<span class="col-10" style="color:{$vo.status|show_mapping|show_status_color}">{$vo.status|show_mapping}&nbsp;</span>
 							<span class="col-10">{$vo.deal_user_name}&nbsp;</span>
 							<span class="col-10">
+								<php>if(isAction('problem_feedback/edit')){</php>
 								<if condition="((get_user_id() eq $vo['create_user_id']) && (($vo['status'] eq 'oa处理状态_01') or ($vo['status'] eq 'oa处理状态_00')))">
 									<a href="{:U('problem_feedback/edit?id='.$vo['id'])}">编辑&nbsp;</a>
 								</if>
+								<php>}</php>
 							</span>
 						</div>
 					</li>

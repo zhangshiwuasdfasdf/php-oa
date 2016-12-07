@@ -44,12 +44,14 @@
 			<div class="btn-group">
 					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#">管理<b class="fa fa-caret-down"></b></a>
 					<ul class="dropdown-menu">
+						<php>if(isAction('report/import_delivery_report')){</php>
 						<li>
 							<a onclick="import_delivery_report();">导入</a>
 						</li>
 						<li>
 							<a onclick="export_delivery_report();">导出模板</a>
 						</li>
+						<php>}</php>
 					</ul>
 				</div>
 		</div>
@@ -83,8 +85,9 @@
 							<span class="col-20">{$voo.$key.date}&nbsp;</span>
 						</div>
 						<div class="pull-right">
+							<php>if(isAction('report/delivery_del')){</php>
 							<span class="col-8"><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('delivery_del','id='.$vo['id'])}">删除&nbsp;</a></span>
-						
+							<php>}</php>
 						</div>
 					</li>
 				</foreach>

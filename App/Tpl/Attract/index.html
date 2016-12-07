@@ -42,12 +42,14 @@
 			<div class="btn-group">
 					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#">管理<b class="fa fa-caret-down"></b></a>
 					<ul class="dropdown-menu">
+						<php>if(isAction('attract/import_client')){</php>
 						<li>
 							<a class="link down" onclick="import_report();">导入信息</a>
 						</li>
 						<li>
 							<a class="link down" target="_blank" href="{:U('down?attach_id='.f_encode('2338'))}">导出模板</a> 
 						</li>
+						<php>}</php>
 					</ul>
 				</div>
 		</div>
@@ -94,8 +96,10 @@
 						<span class="col-10 ">{$vo.base}&nbsp;</span>
 					</div>
 					<div class="pull-right">
-						<span class="col-10 "><a target="_blank" href="{:U('read','id='.$vo['id'])}">查看详情</a></span>
-						<span class="col-5 "><a href="{:U('del','id='.$vo['id'])}">删除</a></span>
+						<php>if(isAction('attract/read')){</php>
+						<span class="col-10 "><a target="_blank" href="{:U('read','id='.$vo['id'])}">查看详情</a></span><php>}</php>
+						<php>if(isAction('attract/del')){</php>
+						<span class="col-5 "><a href="{:U('del','id='.$vo['id'])}">删除</a></span><php>}</php>
 					</div>
 				</li>
 			</foreach>

@@ -33,7 +33,8 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">到访客户池统计</span>
 		</div>
 		<div class="pull-right">
-			<a  class="btn btn-sm btn-primary" onclick="export_info();">导出</a>
+			<php>if(isAction('visitor/export_info')){</php>
+			<a  class="btn btn-sm btn-primary" onclick="export_info();">导出</a><php>}</php>
 		</div>
 	</div>
 </div>

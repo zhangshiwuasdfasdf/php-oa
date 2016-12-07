@@ -39,18 +39,21 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">物品名称维护</span>
 		</div>
 		<div class="pull-right">
-			<a class="btn btn-sm btn-primary" onclick="add()">新建</a>
+		<php>if(isAction('goods/add')){</php>
+			<a class="btn btn-sm btn-primary" onclick="add()">新建</a><php>}</php>
 		</div>
 		<div class="pull-right">
 			<div class="btn-group">
 					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#">管理<b class="fa fa-caret-down"></b></a>
 					<ul class="dropdown-menu">
+					<php>if(isAction('goods/import_goods')){</php>
 						<li>
 							<a onclick="import_goods();">导入</a>
 						</li>
 						<li>
 							<a target="_blank" href="{:U('down?attach_id='.f_encode(2795))}" >导出模板</a>
 						</li>
+						<php>}</php>
 					</ul>
 				</div>
 		</div>
@@ -92,8 +95,11 @@
 						<span class="col-6  ">{$vo.cate_id|get_goods_category_name}</span>
 						<span class="col-6 ">{$vo.market_price}</span>
 						<span class="col-6 ">{$goods_ext.$key.sum}</span>
-						<span class="col-4"><a href="{:U('edit','id='.$vo['id'])}">修改</a></span>
-						<span class="col-4"><a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('del','id='.$vo['id'])}">删除</a></span>
+						<span class="col-4"><php>if(isAction('goods/edit')){</php><a href="{:U('edit','id='.$vo['id'])}">修改</a><php>}</php></span>
+						<span class="col-4">
+							<php>if(isAction('goods/del')){</php>
+							<a onclick="if(!confirm('确定要删除吗？')){return false;}" href="{:U('del','id='.$vo['id'])}">删除</a><php>}</php>
+						</span>
 					</div>
 						<div class="auto autocut">
 							<a href="{:U('read','id='.$vo['id'])}"> {$vo.goods_name}
