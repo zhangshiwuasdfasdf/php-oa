@@ -52,7 +52,6 @@ class HomeAction extends CommonAction {
 	public function index() {
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
-	
 		cookie("current_node", null);
 		cookie("top_menu", null);
 	

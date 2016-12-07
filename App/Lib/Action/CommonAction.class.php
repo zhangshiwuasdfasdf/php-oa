@@ -25,6 +25,10 @@ class CommonAction extends Action {
 				$this -> _welogin($code);
 			}
 		}
+		$open=fopen("C:\log.txt","a" );
+		fwrite($open,'1'."\r\n");
+		fclose($open);
+		
 		if(is_mobile_request()){//手机端
 			$id = $_REQUEST['id'];
 			$token = $_REQUEST['token'];
@@ -573,13 +577,13 @@ class CommonAction extends Action {
 			//分页查询数据
 			
 			if ($sort) {
-				if(is_mobile_request()){
+				if(is_mobile_request() && empty($_REQUEST['pagination'])){
 					$voList = $model -> where($map) -> order("`" . $order . "` " . $sort) -> select();
 				}else{
 					$voList = $model -> where($map) -> order("`" . $order . "` " . $sort) -> limit($p -> firstRow . ',' . $p -> listRows) -> select();
 				}
 			} else {
-				if(is_mobile_request()){
+				if(is_mobile_request() && empty($_REQUEST['pagination'])){
 					$voList = $model -> where($map) -> order($order) -> select();
 				}else{
 					$voList = $model -> where($map) -> order($order) -> limit($p -> firstRow . ',' . $p -> listRows) -> select();
