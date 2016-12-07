@@ -57,7 +57,8 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">每月考勤表</span>
 		</div>
 	<div>
-		<a style="float:right" class="btn btn-sm btn-primary" onclick="add()">生成</a>
+		<php>if(isAction('attendance/create_attendance')){</php>
+		<a style="float:right" class="btn btn-sm btn-primary" onclick="add()">生成</a><php>}</php>
 		<div class="col-sm-3" style="float:right;">
 				<label class="col-sm-4 control-label" for="">考勤部门：</label>
 				<div class="col-sm-8">
@@ -160,11 +161,14 @@
 						<span class="col-20 ">&nbsp;<a href="{:U('read_attendance_detail','id='.$vo['id'].'&dept_ids='.$vo['attendance_dept'])}">{$vo.month}</a></span>
 					</div>
 					<div class="pull-right">
+						<php>if(isAction('attendance/edit_table')){</php>
 						<span class="col-3 "><a href="{:U('edit_table','id='.$vo['id'].'&dept_ids='.$vo['attendance_dept'])}">编辑</a></span>
+						<php>}</php>
 					</div>
 				</li>
 			</foreach>
-			<a class="btn btn-sm btn-danger" onclick="del();">删除</a>
+			<php>if(isAction('attendance/del_attendance')){</php>
+			<a class="btn btn-sm btn-danger" onclick="del();">删除</a><php>}</php>
 			</form>
 			<div class="pagination">
 				{$page}

@@ -175,8 +175,9 @@ img{ margin:0; padding:0;}
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">工作日报</span>
 		</div>
 		<div class="pull-right">
-			<a class="btn btn-sm btn-primary" onclick="open_and_show_dept()">查看</a>
-			<a class="btn btn-sm btn-primary" onclick="add()">新建</a>
+			<php>if(isAction('daily_report/add')){</php>
+				<a class="btn btn-sm btn-primary" onclick="open_and_show_dept()">查看</a>
+				<a class="btn btn-sm btn-primary" onclick="add()">新建</a> <php>}</php>
 		</div>
 	</div>
 </div>
@@ -525,8 +526,12 @@ img{ margin:0; padding:0;}
 						<div class="pull-right">
 							<span class="col-10">{$vo.is_submit|is_submit}&nbsp;</span>
 							<if condition="($vo.user_id eq $user_id) && ($now_time elt $end_time[$key])">
+								<php>if(isAction('daily_report/edit')){</php>
 								<span class="col-4"><a href="{:U('edit','id='.$vo['id'])}">修改</a></span>
+								<php>}</php>
+								<php>if(isAction('daily_report/del')){</php>
 								<span class="col-4"><a href="{:U('del','id='.$vo['id'])}">删除</a></span>
+								<php>}</php>
 							<else/>
 								<span class="col-8"></span>
 							</if>

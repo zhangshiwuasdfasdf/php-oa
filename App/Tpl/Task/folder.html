@@ -72,7 +72,10 @@
 				</ul>
 		</div>
 		<div class="pull-right">
-			<a class="btn btn-sm btn-primary" onclick="add()">发布任务</a>
+			<php>if(isAction('task/add')){</php>
+				<a class="btn btn-sm btn-primary" onclick="add()">发布任务</a>
+      	    <php>}</php>  
+			
 		</div>
 	</div>
 </div>
@@ -110,8 +113,12 @@
 						<span class="col-15">&nbsp;{$vo.expected_time}</span>
 						<span class="col-10">&nbsp;{$task_extension[$key].status|task_status}</span>
 						<span class="col-6 text-center">
+							
 							<if condition="($vo.status lt 3) and ($vo.user_id eq $user_id)">
-								<a href="{:U('edit','id='.$vo['id'])}">修改</a>&nbsp;<a href="{:U('del','id='.$vo['id'])}">删除</a>
+								<php>if(isAction('task/edit')){</php>
+								<a href="{:U('edit','id='.$vo['id'])}">修改</a><php>}</php>&nbsp;
+								<php>if(isAction('task/del')){</php>
+								<a href="{:U('del','id='.$vo['id'])}">删除</a><php>}</php>
 							</if></span>
 					</div>
 					<div class="auto autocut">

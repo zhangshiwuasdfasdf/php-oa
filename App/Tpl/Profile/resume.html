@@ -224,7 +224,12 @@
     <p style="margin-left:70%;">签名/日期　<input type="text" name="qianming" value="{$list['signature_time'][0]}" class="" check="require" msg="请输入签名/日期"></p></td>
   </tr>
   <tr>
-    <td colspan="9" bgcolor="#FFFFFF" align="center"><a onclick="save()"  class="btn btn-sm btn-primary" style="margin: 5px;">保存</a><a onclick="quit()"  class="btn btn-sm btn-danger" style="margin: 5px;">取消</a></td>
+    <td colspan="9" bgcolor="#FFFFFF" align="center">
+    	<php>if(isAction('profile/save_resume')){</php>
+			<a onclick="save()"  class="btn btn-sm btn-primary" style="margin: 5px;">保存</a>
+        <php>}</php>  
+    	<a onclick="quit()"  class="btn btn-sm btn-danger" style="margin: 5px;">取消</a>
+    </td>
   </tr>
 </table>
 <!-- 员工在职履历档案表 -->
