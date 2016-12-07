@@ -50,7 +50,6 @@ class HomeAction extends CommonAction {
 		$this -> display();
 	}
 	public function index() {
-		
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
 	
