@@ -13,14 +13,17 @@
 
 class DeptAction extends CommonAction {
 
-	protected $config = array('app_type' => 'master', 'action_auth' => array('index' => 'admin', 'winpop4' => 'read'));
+	protected $config = array('app_type' => 'asst', 'action_auth' => array('index' => 'admin', 'winpop4' => 'read'));
 
 	public function index(){
 		
 		$node = M("Dept");
 		$menu = array();
-		$menu = $node -> where($map) -> field('id,pid,name,is_del') -> order('sort asc') -> select();
+		$menu = $node -> where($map) -> field('id,pid,name,is_del') -> where('is_del=0') -> order('sort asc') -> select();
 		$tree = list_to_tree($menu);
+		if($_REQUEST['tree']){
+			$this -> assign('dept_tree', $tree);
+		}
 		
 		$a = popup_tree_menu($tree);
 		$a = str_replace('tree_menu','submenu',$a);
