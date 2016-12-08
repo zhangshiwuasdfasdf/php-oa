@@ -17,11 +17,14 @@
 				</select>
 			</div>
 			<div class="pull-right">
+				<php>if(isAction('user/password')){</php>
 				<a onclick="reset_pwd()" class="btn btn-sm btn-primary">设置密码</a>
+				<php>}</php><php>if(isAction('user/add')){</php>
 				<a href="{:U('add')}"  class="btn btn-sm btn-primary">新增</a>
+				<php>}</php><php>if(isAction('user/save')){</php>
 				<a onclick="save()"  class="btn btn-sm btn-primary">保存</a>
-			|
-			<a onclick="del()"  class="btn btn-sm btn-danger">删除</a>
+			|<php>}</php><php>if(isAction('user/del')){</php>
+			<a onclick="del()"  class="btn btn-sm btn-danger">删除</a><php>}</php>
 			</div>
 		</div>
 	</div>

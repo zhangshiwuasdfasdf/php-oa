@@ -71,11 +71,12 @@
 		            <li>开放时间段：{$vo.time_frame}</li>
 		        </ul>
 		        <div>
-		            <a href="{:U('yuyue',array('id'=>$vo['id']))}">预约</a>
-		            <if condition="$auth['admin']">
-		            <a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a>
-		            <a href="{:U('del_meet',array('id'=>$vo['id']))}">删除</a>
-		            </if>
+		        	<php>if(isAction('room/yuyue')){</php>
+		            <a href="{:U('yuyue',array('id'=>$vo['id']))}">预约</a><php>}</php>
+		            <php>if(isAction('room/edit')){</php>
+		            <a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a><php>}</php>
+		            <php>if(isAction('room/del_meet')){</php>
+		            <a href="{:U('del_meet',array('id'=>$vo['id']))}">删除</a><php>}</php>
 		        </div>
     		</div>
 		</foreach>

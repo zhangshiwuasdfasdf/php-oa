@@ -87,9 +87,10 @@ input,select,textarea{ margin: 0; padding: 0; outline:none;}
     	<div class="content_title">
             <span class="content_sp1"></span>
             <span class="content_sp2">部门档案管理</span>
-            <a class="content_sp3" id="a_yjtj">
-            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
-            </a>  
+            <php>if(isAction('dept/company_add')){</php>
+	            <a class="content_sp3" id="a_yjtj">
+	            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+            </a><php>}</php>
         </div>
         <div class="content_div">
             <div class="content_div1">

@@ -123,9 +123,10 @@
 <div class="content_title">
     <span class="content_sp1"></span>
     <span class="content_sp2">岗位列表</span>
+    <php>if(isAction('position/insert')){</php>
     <a class="content_sp3" id="a_lbtj">
     	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
-    </a>  
+    </a><php>}</php>  
 </div>
 
 
@@ -176,10 +177,14 @@
 						<span class="col-10">
 							<input type="hidden"  value="{$vo.position_name}">
 							<input type="hidden"  value="{$vo.is_use}">
+							<php>if(isAction('position/update')){</php>
 							<a onclick="show_edit_dialog('{$vo.id}','{$vo.position_name}','{$vo.is_use}')">编辑&nbsp;</a>
+							<php>}</php>  
 						</span>
 						<span class="col-10">
+							<php>if(isAction('position/distribute')){</php>
 							<a onclick="distribute('{$vo.id}')">分配到部门&nbsp;</a>
+							<php>}</php>  
 						</span>
 					</div>
 				</li>
@@ -187,11 +192,12 @@
 			</form>
 			<div class="content_bottom">
 				<div class="content_bottom2">
+				<php>if(isAction('position/del')){</php>
 		        	<div class="b1">
 		                <input id="all" type="checkbox"/> 
 		                <span>全选</span>
 		            </div>
-		            <div class="b2"><a onclick="del();">删除</a> </div>
+		            <div class="b2"><a onclick="del();">删除</a> </div><php>}</php>
 					<div class="pagination" style="float:right;line-height:25px;">
 						{$page}
 					</div>

@@ -96,8 +96,10 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">{$flow_name['name']}</span>
 		</div>
 		<div class="pull-right">
+			<php>if(isAction('flow/add?type=53')){</php>
 			<a class="btn btn-sm btn-primary" href="{:U('add','type='.$flow_name['id'])}" onclick="add()">新建</a>
-			<a class="btn btn-sm btn-primary" onclick="export_excel()">导出</a>
+			<php>}</php><php>if(isAction('flow/add?type=53&export=1&line1=编号|申请时间|公司|部门|岗位|申请人|标题|审批状态|操作|')){</php>
+			<a class="btn btn-sm btn-primary" onclick="export_excel()">导出</a><php>}</php>
 		</div>
 	</div>
 </div>
@@ -142,7 +144,12 @@
 						</div>
 						<div class="pull-right">
 							<span class="col-6  ">&nbsp;{$vo.step|show_step}</span>
-							<span class="col-6  "><if condition="($vo.step eq '10')"><a href="{:U('edit','id='.$vo['id'].'&fid=darft')}">修改</a><a href="{:U('del','id='.$vo['id'])}">删除</a></if></span>
+							<span class="col-6  "><if condition="($vo.step eq '10')">
+								<php>if(isAction('flow/edit?fid=darft')){</php>
+								<a href="{:U('edit','fid=darft&id='.$vo['id'])}">修改</a>
+								<php>}</php><php>if(isAction('flow/del')){</php>
+								<a href="{:U('del','id='.$vo['id'])}">删除</a><php>}</php>
+							</if></span>
 						</div>
 						<div class="autocut auto">
 							<if condition="($vo.step eq '10')">

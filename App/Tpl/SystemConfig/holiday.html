@@ -4,7 +4,8 @@
 <div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-right" >
-			<a onclick="add()" class="btn btn-sm btn-primary">新增</a>
+		<php>if(isAction('system_config/holiday_add')){</php>
+			<a onclick="add()" class="btn btn-sm btn-primary">新增</a><php>}</php>
 		</div>
 	</div>
 </div>
@@ -50,7 +51,8 @@
 			</nobr></td>
 			<td>
 			<nobr>
-			<a onclick="del({$vo.id});">删除</a>
+			<php>if(isAction('system_config/holiday_del')){</php>
+			<a onclick="del({$vo.id});">删除</a><php>}</php>
 			</nobr></td>
 		</tr>
 	</foreach>
