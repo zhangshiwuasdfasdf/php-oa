@@ -50,6 +50,18 @@ class HomeAction extends CommonAction {
 		$this -> display();
 	}
 	public function index() {
+// 		$m = new MongoClient();
+// 		$db = $m->test;
+// 		$collection = $db->col; // 选择集合
+// 		$collection->remove(array('title'=>'sb1'),array("justOne" => true));
+		
+// 		$cursor = $collection->find();
+		
+// 		// 迭代显示文档标题
+// 		foreach ($cursor as $document) {
+// 			dump($document);
+// 		}
+// 		die;
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
 		cookie("current_node", null);

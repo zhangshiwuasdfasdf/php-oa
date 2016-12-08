@@ -16,10 +16,6 @@ class UserAction extends CommonAction {
 	protected $config=array('app_type'=>'asst','action_auth'=>array('password'=>'admin','reset_pwd'=>'admin','createname'=>'read'));
 	
 	function _search_filter(&$map) {
-		$open=fopen("C:\log.txt","a" );
-		fwrite($open,($_POST['keyword'])."\r\n");
-		fclose($open);
-		
 		if (!empty($_POST['keyword'])) {
 			$map['name|emp_no'] = array('like', "%" . $_POST['keyword'] . "%");
 		}
