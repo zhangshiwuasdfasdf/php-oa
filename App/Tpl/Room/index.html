@@ -37,18 +37,17 @@
 		</div>
 	</div>
 </form>
-<if condition="$auth['admin']">
 <div class="operate panel panel-default">
 	<div class="panel-body" style="background: #BDD3DF;padding: 3px;">
 		<div class="pull-left">
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">会议室管理</span>
 		</div>
 		<div class="pull-right">
-			<a  onclick="add();" class="btn btn-sm btn-primary" >新建</a>
+			<php>if(isAction('room/add')){</php>
+			<a  onclick="add();" class="btn btn-sm btn-primary" >新建</a><php>}</php>
 		</div>
 	</div>
 </div>
-</if>
 	<empty name="list">
 		<li class="no-data">
 			没找到数据

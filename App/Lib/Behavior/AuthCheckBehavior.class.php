@@ -21,6 +21,7 @@ class AuthCheckBehavior extends Behavior {
 		$urlInfo = M('Privilege')->where(array('url'=>$urls,'is_del'=>'0'))->find();
 		//个人数据
 		$this -> config = &$params;
+		$this -> config['menu'] = $urlInfo;
 		$app_type = $params['app_type'];
 
 		switch($app_type) {
@@ -118,9 +119,8 @@ class AuthCheckBehavior extends Behavior {
 				$auth = $this -> get_auth();
 				break;
 		}
-			$this -> config['auth'] = $auth;
-			$this -> config['menu'] = $urlInfo;
-			return true;
+		$this -> config['auth'] = $auth;
+		return true;
 		// 当前访问Action中配置的权限是否存在
 		if ($auth[$action_auth[ACTION_NAME]]) {
 		} else {

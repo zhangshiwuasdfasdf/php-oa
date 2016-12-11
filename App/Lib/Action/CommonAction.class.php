@@ -187,7 +187,7 @@ class CommonAction extends Action {
 			$menu = $this -> config['menu'];
 			$where['menu_id'] = $menu['menu_new_id'];
 			$where['role_id'] = array('IN',$role_ids);
-			$data = $model ->distinct(true) -> where($where) -> select();//根据菜单id和角色id查询所角色所以定的数据权限
+			$data = $model -> where($where) -> select();//根据菜单id和角色id查询所角色所以定的数据权限
 			foreach ($data as $k => $v){
 				$scope = empty($v['scope']) ? '1' : $v['scope'];
 				switch ($scope){
@@ -228,7 +228,7 @@ class CommonAction extends Action {
 						$scopes['user_id'] = array($uid);
 						break;
 				}
-				if($scopes === true){break;}
+				if($scopes === true){ return true;break;}
 				$all_users['user_id']=array_merge($all_users['user_id'],$scopes['user_id']);
 			}
 			$all_users['user_id'] = array_unique($all_users['user_id']);
@@ -657,8 +657,7 @@ class CommonAction extends Action {
 		$newMap = $this -> _assign_data_new();
 		if($newMap === true && isset($map['user_id'])){
 			unset($map['user_id']);
-		} 
-		if(is_array($newMap)){
+		}elseif(is_array($newMap)){
 			if(isset($map['user_id'])){
 				unset($map['user_id']);
 			}

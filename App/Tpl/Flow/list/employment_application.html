@@ -147,31 +147,38 @@
 							<span class="col-6  ">&nbsp;{$vo.step|show_step}</span>
 							<span class="col-6  ">
 							<if condition="($vo.step eq '10')">
-								<php>if(isAction('flow/edit?fid=darft')){</php>
+								<php>if(isAction('flow/edit??type=48&fid=darft')){</php>
 								<a href="{:U('edit','fid=darft&id='.$vo['id'])}">修改</a>
-								<php>}</php><php>if(isAction('flow/del')){</php>
+								<php>}</php><php>if(isAction('flow/del?type=48')){</php>
 								<a href="{:U('del','id='.$vo['id'])}">删除</a><php>}</php>
 							</if></span>
 						</div>
 						<div class="autocut auto">
-							<if condition="($vo.step eq '10')">
+						<php>if(isAction('flow/read?type=48')){</php>
+								<if condition="($vo.step eq '10')">
 								{$vo.name}
 								<eq name="vo.name|strlen" value="0">
 									无标题
 								</eq>
 							<elseif  condition="($vo.user_id eq $user_id or $auth['admin'] eq true)"/>
-								<a href="{:U('read','id='.$vo['id'].'&fid=submit')}" target="_blank">{$vo.name}
+								<a href="{:U('read','type=48&id='.$vo['id'].'&fid=submit')}" target="_blank">{$vo.name}
 								<eq name="vo.name|strlen" value="0">
 									无标题
 								</eq>
 								</a> 
 							<else/>
-								<a href="{:U('read','id='.$vo['id'].'&fid=confirm')}" target="_blank">{$vo.name}
+								<a href="{:U('read','type=48&id='.$vo['id'].'&fid=confirm')}" target="_blank">{$vo.name}
 								<eq name="vo.name|strlen" value="0">
 									无标题
 								</eq>
 								</a> 
 							</if>
+						<php>}else{</php>
+							{$vo.name}
+								<eq name="vo.name|strlen" value="0">
+									无标题
+								</eq>
+							<php>}</php>
 						</div>
 					</li>
 				</foreach>

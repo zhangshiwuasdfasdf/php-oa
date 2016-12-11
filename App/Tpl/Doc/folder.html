@@ -44,15 +44,15 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">{$folder_name}</span>
 		</div>
 		<div class="pull-right">
-				<php>if(isAction('doc/mark?action=del')){</php>
+				<php>if(isAction('doc/mark?action=del&type='.$folder)){</php>
 				<a class="btn btn-sm btn-danger" onclick="mark('del');">删除</a><php>}</php>
-				<php>if(isAction('doc/mark?action=move_folder')){</php>
+				<php>if(isAction('doc/mark?action=move_folder&type='.$folder)){</php>
 				<div class="btn-group" id="move_to">
 					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#" > 转移到 <span class="fa fa-caret-down"></span> </a>
 					<ul class="dropdown-menu">
 						{$folder_list}
 					</ul>
-				</div><php>}</php><php>if(isAction('doc/add')){</php>
+				</div><php>}</php><php>if(isAction('doc/add?type='.$folder)){</php>
 			<a class="btn btn-sm btn-primary" onclick="add()">新建</a><php>}</php>
 		</div>
 			

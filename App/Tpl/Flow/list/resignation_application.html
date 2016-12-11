@@ -157,14 +157,20 @@
 							<span class="col-12  ">&nbsp;{$flow_ext.$key.resignation_time}</span>
 							<span class="col-6  ">&nbsp;{$vo.step|show_step}</span>
 							<span class="col-6  "><if condition="($vo.step eq '10')">
-							<php>if(isAction('flow/edit?fid=darft')){</php>
+							<php>if(isAction('flow/edit?type=49&fid=darft')){</php>
 								<a href="{:U('edit','fid=darft&id='.$vo['id'])}">修改</a>
-								<php>}</php><php>if(isAction('flow/del')){</php>
+								<php>}</php><php>if(isAction('flow/del?type=49')){</php>
 								<a href="{:U('del','id='.$vo['id'])}">删除</a><php>}</php>
 							</if>
 							</span>
 						</div>
 						<div class="autocut auto">
+							<php>if(!isAction('flow/read?type=49')){</php>
+								{$vo.name}
+								<eq name="vo.name|strlen" value="0">
+									无标题
+								</eq>
+							<php>}else{</php>
 							<if condition="($vo.step eq '10')">
 								{$vo.name}
 								<eq name="vo.name|strlen" value="0">
@@ -182,7 +188,7 @@
 									无标题
 								</eq>
 								</a> 
-							</if>
+							</if><php>}</php>
 						</div>
 					</li>
 				</foreach>

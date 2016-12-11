@@ -77,19 +77,19 @@
         <input type="hidden" name="id" id="menu_id_gljs">
         <div class="tc_ul_div">
         <ul class="sousuo" id="span"></ul>
-        <foreach name="role['_company']" item="vo">
-        	<div class="tc_div_jt">{$key}:</div>
-            <ul class="tc_ul">
-                <li style="display:inline-table">
-                <foreach name="vo" item="vo1">
-                    <span style="width:170px">
-                        <input type="checkbox" id="js1_role_id{$key}" name="role_id[]" value="{$key}"/>
-                        <label for="js1">{$vo1}</label>
-                    </span>
-                </foreach>
-                </li>  
-            </ul>
-        </foreach>
+	        <foreach name="role['_company']" item="vo">
+	        	<div class="tc_div_jt">{$key}:</div>
+	            <ul class="tc_ul">
+	                <li style="display:inline-table">
+	                <foreach name="vo" item="vo1">
+	                    <span style="width:170px">
+	                        <input type="checkbox" id="js1_role_id{$key}" name="role_id[]" value="{$key}"/>
+	                        <label for="js1">{$vo1}</label>
+	                    </span>
+	                </foreach>
+	                </li>  
+	            </ul>
+	        </foreach>
         </div>
         
         <div class="bottom_cdwh">
@@ -114,7 +114,7 @@
         </div>
         <form action="{:U(add_data)}" method="post" >
         <input type="hidden" name="id" id="menu_id_sjkz">
-        <include file="Maintain:data" />
+        <div class="tc_ul_div_tc_sj"></div>
         <div class="bottom_cdwh">
         	<span class="bottom_sp1">取消</span>
             <span><input class="bottom_sp2" type="submit" value="确定"></span>

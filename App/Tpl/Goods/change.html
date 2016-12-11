@@ -94,10 +94,13 @@
 						<span class="col-6">{$vo.mark}</span>
 					</div>
 						<div class="auto autocut">
+							<php>if(isAction('goods/read')){</php>
 							<a target="_blank" href="{:U('read','id='.$vo['goods_id'])}"> {$vo.goods_name}
 							<eq name="vo.goods_name|strlen" value="0">
 								无名称
-							</eq> </a>
+							</eq> </a><php>}else{</php>
+								{$vo.goods_name}<eq name="vo.goods_name|strlen" value="0">无名称</eq> 
+							<php>}</php>
 						</div>
 					</li>
 				</foreach>

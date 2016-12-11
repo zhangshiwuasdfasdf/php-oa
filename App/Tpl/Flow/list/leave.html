@@ -119,7 +119,7 @@
 		<div class="pull-right">
 			<php>if(isAction('flow/add?type=39')){</php>
 			<a class="btn btn-sm btn-primary" href="{:U('add','type='.$flow_name['id'])}" onclick="add()">新建</a>
-			<php>}</php><php>if(isAction('flow/add?type=39&export=1&line1=编号|申请时间|公司|部门|岗位|申请人|标题|请假类型|请假时长|请假开始时间|请假结束时间|审批状态|操作|')){</php>
+			<php>}</php><php>if(isAction('flow/getlist?type=39&export=1&line1=编号|申请时间|公司|部门|岗位|申请人|标题|请假类型|请假时长|请假开始时间|请假结束时间|审批状态|操作|')){</php>
 			<a class="btn btn-sm btn-primary" onclick="export_excel()">导出</a><php>}</php>
 		</div>
 	</div>
@@ -175,14 +175,20 @@
 							<span class="col-6  ">&nbsp;{$vo.step|show_step}</span>
 							<span class="col-6  ">
 							<if condition="($vo.step eq '10')">
-								<php>if(isAction('flow/edit?fid=darft')){</php>
+								<php>if(isAction('flow/edit?type=39&fid=darft')){</php>
 								<a href="{:U('edit','fid=darft&id='.$vo['id'])}">修改</a>
-								<php>}</php><php>if(isAction('flow/del')){</php>
+								<php>}</php><php>if(isAction('flow/del?type=39')){</php>
 								<a href="{:U('del','id='.$vo['id'])}">删除</a><php>}</php>
 							</if>
 							</span>
 						</div>
 						<div class="autocut auto">
+							<php>if(!isAction('flow/read?type=39')){</php>
+								{$vo.name}
+								<eq name="vo.name|strlen" value="0">
+									无标题
+								</eq>
+							<php>}else{</php>
 							<if condition="($vo.step eq '10')">
 								{$vo.name}
 								<eq name="vo.name|strlen" value="0">
@@ -200,7 +206,7 @@
 									无标题
 								</eq>
 								</a> 
-							</if>
+							</if><php>}</php>
 						</div>
 					</li>
 				</foreach>

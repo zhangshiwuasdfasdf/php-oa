@@ -78,7 +78,8 @@
 			</ul>
 		</div>
 		<div class="pull-right">
-			<a class="btn btn-sm btn-primary" onclick="add()">发布任务</a>
+			<php>if(isAction('task/add')){</php>
+			<a class="btn btn-sm btn-primary" onclick="add()">发布任务</a><php>}</php>
 		</div>
 	</div>
 </div>
@@ -114,7 +115,12 @@
 						<span class="col-15 ">{$vo.expected_time}</span>
 						<span class="col-15 ">{$vo.status}</span>
 						<span class="col-15 autocut">{$vo.executor|show_contact}</span>
-						<span class="col-9 text-center"><a href="{:U('edit','id='.$vo['id'])}">修改</a><a href="{:U('del','id='.$vo['id'])}">删除</a></span>
+						<span class="col-9 text-center">
+							<php>if(isAction('task/edit')){</php>
+							<a href="{:U('edit','id='.$vo['id'])}">修改</a>
+							<php>}</php><php>if(isAction('task/del')){</php>
+							<a href="{:U('del','id='.$vo['id'])}">删除</a><php>}</php>
+						</span>
 					</div>
 					<div class="auto autocut">
 						<a href="{:U('read','id='.$vo['id'])}">{$vo.name}</a>
