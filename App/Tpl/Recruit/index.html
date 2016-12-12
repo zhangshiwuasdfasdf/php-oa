@@ -113,9 +113,11 @@
     	<div class="content_title">
             <span class="content_sp1"></span>
             <span class="content_sp2">招聘信息跟进</span>
-            <a class="content_sp3" href="{:U('add')}">
-            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
-            </a>  
+            <php>if(isAction('recruit/add')){</php>
+	            <a class="content_sp3" href="{:U('add')}">
+	            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+	            </a>
+            <php>}</php>  
         </div>
         <div class="content_ul_w">
             <ul class="content_ul">
@@ -161,10 +163,12 @@
 		                    <span class="span2">{$vo.recruit_deadline}&nbsp;</span>
 		                    <span class="span2">{$vo.hr_specialist_name}&nbsp;</span>
 		                    <span class="span2">{$vo.recruit_status_name}&nbsp;</span>
+		                    <php>if(isAction('recruit/read')){</php>
 		                    <span class="span2"><a class="content_a" href="{:U('read?id='.$vo['id'])}">查看</a></span>
+		                    <php>}</php><php>if(isAction('recruit/edit')){</php>
 		                    <if condition="$vo.recruit_status eq '0' or $vo.recruit_status eq '1'">
 		                    	<span class="span2"><a class="content_a" href="{:U('edit?id='.$vo['id'])}">编辑</a></span>
-		                    </if>
+		                    </if><php>}</php>
 		                    <if condition="$vo.recruit_status eq '0'">
 		                    	<span class="span2"><a class="content_a" onclick="set_recruit_status('{$vo.id}','1')">报到</a></span>
 		                    	<span class="span2"><a class="content_a" onclick="set_recruit_status('{$vo.id}','3')">未报到</a></span>

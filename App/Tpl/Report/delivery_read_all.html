@@ -56,7 +56,8 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">基地发货日报表</span>
 		</div>
 		<div class="pull-right">
-			<a  class="btn btn-sm btn-primary" onclick="export_delivery_report_condition();">导出</a>
+			<php>if(isAction('report/delivery_read_all')){</php>
+			<a  class="btn btn-sm btn-primary" onclick="export_delivery_report_condition();">导出</a><php>}</php>
 		</div>
 	</div>
 </div>

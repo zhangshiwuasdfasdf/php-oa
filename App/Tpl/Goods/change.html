@@ -39,18 +39,21 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">物品数量维护</span>
 		</div>
 		<div class="pull-right">
-			<a class="btn btn-sm btn-primary" onclick="add()">新建</a>
+			<php>if(isAction('goods/addchange')){</php>
+			<a class="btn btn-sm btn-primary" onclick="add()">新建</a><php>}</php>
 		</div>
 		<div class="pull-right">
 			<div class="btn-group">
 					<a class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="#">管理<b class="fa fa-caret-down"></b></a>
 					<ul class="dropdown-menu">
+						<php>if(isAction('goods/import_goods_change')){</php>
 						<li>
 							<a onclick="import_goods_change();">导入</a>
 						</li>
 						<li>
 							<a target="_blank" href="{:U('down?attach_id='.f_encode(2796))}" >导出模板</a>
 						</li>
+						<php>}</php>
 					</ul>
 				</div>
 		</div>
@@ -91,10 +94,13 @@
 						<span class="col-6">{$vo.mark}</span>
 					</div>
 						<div class="auto autocut">
+							<php>if(isAction('goods/read')){</php>
 							<a target="_blank" href="{:U('read','id='.$vo['goods_id'])}"> {$vo.goods_name}
 							<eq name="vo.goods_name|strlen" value="0">
 								无名称
-							</eq> </a>
+							</eq> </a><php>}else{</php>
+								{$vo.goods_name}<eq name="vo.goods_name|strlen" value="0">无名称</eq> 
+							<php>}</php>
 						</div>
 					</li>
 				</foreach>

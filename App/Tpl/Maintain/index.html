@@ -20,9 +20,10 @@
     	<div class="content_title">
             <span class="content_sp1"></span>
             <span class="content_sp2">菜单维护</span>
+            <php>if(isAction('maintain/avliName')){</php>
             <a class="content_sp3" id="a_yjtj">
             	<img class="img_tj" src="__PUBLIC__/img/new_versions/tj3.png"/>
-            </a>  
+            </a><php>}</php>
         </div>
         <div class="content_div">
             <div class="content_div1">
@@ -45,11 +46,13 @@
          <div class="content_bottom">
             <div class="content_bottom1"></div>
             <div class="content_bottom2">
+            <php>if(isAction('maintain/del')){</php>
                 <div class="b1">
                     <input id="all" type="checkbox"/>
                     <span>全选</span>
                 </div>
                 <div class="b2">删除</div>
+                <php>}</php>
             </div>
         </div> 
     </div>     
@@ -74,19 +77,19 @@
         <input type="hidden" name="id" id="menu_id_gljs">
         <div class="tc_ul_div">
         <ul class="sousuo" id="span"></ul>
-        <foreach name="role['_company']" item="vo">
-        	<div class="tc_div_jt">{$key}:</div>
-            <ul class="tc_ul">
-                <li style="display:inline-table">
-                <foreach name="vo" item="vo1">
-                    <span style="width:170px">
-                        <input type="checkbox" id="js1_role_id{$key}" name="role_id[]" value="{$key}"/>
-                        <label for="js1">{$vo1}</label>
-                    </span>
-                </foreach>
-                </li>  
-            </ul>
-        </foreach>
+	        <foreach name="role['_company']" item="vo">
+	        	<div class="tc_div_jt">{$key}:</div>
+	            <ul class="tc_ul">
+	                <li style="display:inline-table">
+	                <foreach name="vo" item="vo1">
+	                    <span style="width:170px">
+	                        <input type="checkbox" id="js1_role_id{$key}" name="role_id[]" value="{$key}"/>
+	                        <label for="js1">{$vo1}</label>
+	                    </span>
+	                </foreach>
+	                </li>  
+	            </ul>
+	        </foreach>
         </div>
         
         <div class="bottom_cdwh">
@@ -111,7 +114,7 @@
         </div>
         <form action="{:U(add_data)}" method="post" >
         <input type="hidden" name="id" id="menu_id_sjkz">
-        <include file="Maintain:data" />
+        <div class="tc_ul_div_tc_sj"></div>
         <div class="bottom_cdwh">
         	<span class="bottom_sp1">取消</span>
             <span><input class="bottom_sp2" type="submit" value="确定"></span>

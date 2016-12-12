@@ -33,7 +33,8 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">简单数据映射</span>
 		</div>
 		<div class="pull-right">
-			<a class="btn btn-sm btn-primary" onclick="add()">新建</a>
+			<php>if(isAction('system_config/add?type=simple')){</php>
+			<a class="btn btn-sm btn-primary" onclick="add()">新建</a><php>}</php>
 		</div>
 	</div>
 </div>
@@ -107,8 +108,9 @@
 			</nobr></td>
 			<td class="text-center">
 			<nobr>
-				<a onclick="edit('{$vo.id}')">编辑</a>
-				<a href="{:U('del_simple_data_mapping','id='.$vo['id'])}" onclick="if(!confirm('真的要删除吗?')){return false;}">删除</a>
+				<php>if(isAction('system_config/edit_simple_data_mapping')){</php>
+				<a onclick="edit('{$vo.id}')">编辑</a><php>}</php><php>if(isAction('system_config/del_simple_data_mapping')){</php>
+				<a href="{:U('del_simple_data_mapping','id='.$vo['id'])}" onclick="if(!confirm('真的要删除吗?')){return false;}">删除</a><php>}</php>
 			</nobr></td>
 		</tr>
 	</foreach>

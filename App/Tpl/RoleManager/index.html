@@ -25,9 +25,10 @@
     	<div class="content_title">
             <span class="content_sp1"></span>
             <span class="content_sp2">角色列表</span>
+            <php>if(isAction('role_manager/valiRole')){</php>
             <a class="content_sp3" id="a_gltj">
             	<img class="img_tj" src="__PUBLIC__/img/new_versions/tj3.png"/>
-            </a>  
+            </a><php>}</php>
         </div>
         
         <div class="content_ul_w">
@@ -61,11 +62,13 @@
     <div class="content_bottom">
         <div class="content_bottom1"></div>
         <div class="content_bottom2">
+        <php>if(isAction('role_manager/del')){</php>
             <div class="b1">
                 <input id="all" type="checkbox"/>
                 <span>全选</span>
             </div>
             <div class="b2">删除</div>
+            <php>}</php>
             <div class="pagination b3">
 			{$page}
 			</div>

@@ -9,10 +9,12 @@
 				</select>
 			</div>
 			<div class="pull-right">
+			<php>if(isAction('node/save?type=add')){</php>
 				<a onclick="add();" class="btn btn-sm btn-primary">新增</a>
+				<php>}</php><php>if(isAction('node/save?type=save')){</php>
 				<a onclick="save();"  class="btn btn-sm btn-primary">保存</a>
-				|
-				<a onclick="del();"  class="btn btn-sm btn-danger">删除</a>
+				|<php>}</php><php>if(isAction('node/del')){</php>
+				<a onclick="del();"  class="btn btn-sm btn-danger">删除</a><php>}</php>
 			</div>
 		</div>
 	</div>

@@ -87,9 +87,10 @@ input,select,textarea{ margin: 0; padding: 0; outline:none;}
     	<div class="content_title">
             <span class="content_sp1"></span>
             <span class="content_sp2">部门档案管理</span>
-            <a class="content_sp3" id="a_yjtj">
-            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
-            </a>  
+            <php>if(isAction('dept/company_add')){</php>
+	            <a class="content_sp3" id="a_yjtj">
+	            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+            </a><php>}</php>
         </div>
         <div class="content_div">
             <div class="content_div1">
@@ -104,69 +105,6 @@ input,select,textarea{ margin: 0; padding: 0; outline:none;}
         
 	        <div class="content_div2">
 	        {$menu}
-	            <!-- <ul class="content_ul">
-	                <li>
-	                    <span class="li_sp0_1">
-	                        <img src="__PUBLIC__/img/ajj.png"/>
-	                        <span>公司总部</span>
-	                    </span>
-	                    <span class="li_sp1">技术部</span>
-	                    <span class="li_sp2">启用</span>
-	                    <span class="li_sp3">
-	                        <a class="content_a" id="a1_0">禁用</a>
-	                        <a class="content_a" id="a1_2" href="bmdagl_bj.html">编辑</a>
-	                        <a class="content_a" id="a1_3">新增子部门</a>
-	                    </span>
-	                    <ul class="content_ul1">
-	                        <li>
-	                            <span class="li_sp0_1" style="width:277px;">
-	                                <img src="__PUBLIC__/img/ajj.png"/>
-	                                <a href="bmdagl_ck.html">DOO75</a>
-	                            </span>
-	                            <span class="li_sp1">技术部</span>
-	                            <span class="li_sp2">新增</span>
-	                            <span class="li_sp3">
-	                                <a class="content_a" id="a2_0">禁用</a>
-	                                <a class="content_a" id="a2_1">删除</a>
-	                                <a class="content_a" id="a2_2">编辑</a>
-	                                <a class="content_a" id="a2_3">新增子部门</a>
-	                            </span>
-	                            <ul class="content_ul1">
-	                                <li>
-	                                    <span class="li_sp0_1" style="width:259px;">
-	                                        <img src="__PUBLIC__/img/ajj.png"/>
-	                                        <a>DOO75</a>
-	                                    </span>
-	                                    <span class="li_sp1">技术部</span>
-	                                    <span class="li_sp2">新增</span>
-	                                    <span class="li_sp3">
-	                                        <a class="content_a" id="a2_0">禁用</a>
-	                                        <a class="content_a" id="a2_1">删除</a>
-	                                        <a class="content_a" id="a2_2">编辑</a>
-	                                        <a class="content_a" id="a2_3">新增子部门</a>
-	                                    </span>
-	                                    <ul class="content_ul1">
-	                                        <li>
-	                                            <span class="li_sp0_1" style="width:241px;">
-	                                                <img src="__PUBLIC__/img/ajj.png"/>
-	                                                <a>DOO75</a>
-	                                            </span>
-	                                            <span class="li_sp1">技术部</span>
-	                                            <span class="li_sp2">新增</span>
-	                                            <span class="li_sp3">
-	                                                <a class="content_a" id="a2_0">禁用</a>
-	                                                <a class="content_a" id="a2_1">删除</a>
-	                                                <a class="content_a" id="a2_2">编辑</a>
-	                                                <a class="content_a" id="a2_3">新增子部门</a>
-	                                            </span>
-	                                        </li>
-	                                    </ul>
-	                                </li>
-	                            </ul>
-	                        </li>
-	                    </ul>
-	                </li>
-	            </ul> -->
 	        </div>
 	    </div>
     </div>

@@ -4,12 +4,8 @@
 <div class="operate panel panel-default">
 	<div class="panel-body">
 		<div class="pull-right" >
-			<a onclick="noneDR(this)" id="1" class="btn btn-sm btn-primary">日报总部</a>
-			<a onclick="noneDR(this)" id="31" class="btn btn-sm btn-primary">杭州</a>
-			<a onclick="noneDR(this)" id="28" class="btn btn-sm btn-primary">金华</a>
-			<a onclick="noneDR(this)" id="61" class="btn btn-sm btn-primary">宁波</a>
-			<a onclick="noneDR(this)" id="88" class="btn btn-sm btn-primary">嘉兴</a>
-			<a onclick="add()" class="btn btn-sm btn-primary">新增</a>
+		<php>if(isAction('system_config/add')){</php>
+			<a onclick="add()" class="btn btn-sm btn-primary">新增</a><php>}</php>
 		</div>
 	</div>
 </div>
@@ -23,7 +19,6 @@
 		<nobr>
 			名称
 		</nobr></th>
-
 		<th >
 		<nobr>
 			数据
@@ -45,10 +40,15 @@
 			</nobr></td>
 			<td>
 			<nobr>
+			<php>if(isAction('system_config/edit')){</php>
 				<a href="{:U('edit?id='.$vo['id'])}">
 				<nobr>
 					{$vo.name}
-				</nobr></a>
+				</nobr></a><php>}else{</php>
+					<nobr>
+						{$vo.name}
+					</nobr>
+				<php>}</php>
 			</nobr></td>
 			<td>
 			<nobr>

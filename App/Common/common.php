@@ -1300,17 +1300,24 @@ function popup_tree_menu_dept($tree, $level = 0,$deep=100,$default_ids=array()) 
 				if($level == '1'){
 					$html = $html . "<span>$code</span>";
 				}else{
-					$html = $html . "<a href=".U('view?id='.$id)." $style_color>$code</a>";
+					if(isAction('dept/view')){
+						$html = $html . "<a href=".U('view?id='.$id)." $style_color>$code</a>";
+					}else{
+						$html = $html . "<span  $style_color>$code</span>";
+					}
 				}
 				
 				$html = $html . "\r\n</span>\r\n";
 				$html = $html . "<span class=\"li_sp1\">$title</span>\r\n";
 				$html = $html . "<span class=\"li_sp2\" id=\"a0_$id\" $style_bold>$status</span>\r\n";
 				$html = $html . "<span class=\"li_sp3\">";
-				$html = $html . "<a class=\"content_a\" id=\"a1_$id\" onclick=\"set_use('$id','$set_use')\">$activate</a>";
-// 				$html = $html . "<a class=\"content_a\" id=\"a1_0\">$activate</a>";
-				$html = $html . "<a class=\"content_a\" id=\"a2_$id\" href=\"$edit_url\">$edit</a>";
-				$html = $html . "<a class=\"content_a\" id=\"a3_$id\" onclick=\"add_child_dept('$id')\">新增子部门</a>";
+				if(isAction('dept/set_dept')){
+					$html = $html . "<a class=\"content_a\" id=\"a1_$id\" onclick=\"set_use('$id','$set_use')\">$activate</a>";
+				}if(isAction('dept/edit_company')){
+					$html = $html . "<a class=\"content_a\" id=\"a2_$id\" href=\"$edit_url\">$edit</a>";
+				}if(isAction('dept/ajax_get_dept_info')){
+					$html = $html . "<a class=\"content_a\" id=\"a3_$id\" onclick=\"add_child_dept('$id')\">新增子部门</a>";
+				}
 				$html = $html . "</span>\r\n";
 				if (isset($val['_child'])) {
 					$html = $html . popup_tree_menu_dept($val['_child'], $level,$deep,$default_ids);
@@ -3992,5 +3999,16 @@ function showBusiness($rid,$mid){
 }
 function showBusinessSave($rid,$mid){
 	return $info = M('RRoleMenu') -> where(array('menu_id'=>$mid,'role_id'=>$rid))->getField('id');
+}
+function isAction($url){
+	$pid = M('PrivilegeRole') -> where(array('role_id'=>array('in',session('rids')))) -> getField('privilege_id',true);
+	$privilege = M('Privilege') -> where(array('is_del'=>'0','id'=>array('in',$pid)))->select();
+	$flag = false;
+	foreach ($privilege as $k => $v){
+		if($url == $v['url']){
+			$flag =  true;break;
+		}
+	}
+	return $flag;
 }
 ?>

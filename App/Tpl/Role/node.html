@@ -6,10 +6,11 @@
 			<span style="font-weight: bold;color: #000;font-size: 16px;display: block;line-height: 35px;margin-left: 10px;">权限设置</span>
 		</div>
 			<div class="pull-right">
+				<php>if(isAction('role/set_node')){</php>
 				<select name="eq_pid" id="eq_pid" class="form-control col-10 pull-left" onchange="submit_search();">
 					{:fill_option($groupList)}
 				</select>
-				<a onclick="save()" class="btn btn-sm btn-primary pull-left">保存</a>
+				<a onclick="save()" class="btn btn-sm btn-primary pull-left">保存</a><php>}</php>
 			</div>
 		</div>
 	</div>

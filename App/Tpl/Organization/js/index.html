@@ -905,7 +905,9 @@ function show_list(id,show_leader,p,type,name_no,status,is_part_time_job){
 						user_temp += '<span class="span2">'+v.major+'</span>';
 						user_temp += '<span class="span2">'+v.status+'</span>';
 						user_temp += '<span class="span2">'+v.position_sequence+'</span>';
-						user_temp += '<span class="span2"><a class="content_a" id="a_ygbj" onclick="edit_user(\''+v.user_id+'\',\''+v.name+'\',\''+v.dept_id+'\',\''+v.position_id+'\',\''+v.is_del+'\',\''+v.position_sequence+'\')">编辑</a></span>';
+						<php>if(isAction('organization/get_edit_user_html')){</php>
+							user_temp += '<span class="span2"><a class="content_a" id="a_ygbj" onclick="edit_user(\''+v.user_id+'\',\''+v.name+'\',\''+v.dept_id+'\',\''+v.position_id+'\',\''+v.is_del+'\',\''+v.position_sequence+'\')">编辑</a></span>';
+						<php>}</php>
 						user_temp += '<span class="span2"><a class="content_a" id="a_js" onclick="distribution_user_role(\''+v.id+'\')">角色分配</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_xz" onclick="admin_jurisdiction(\''+v.upid+'\')">行政关系范围</a></span>';
 						user_temp += '<span class="span2"><a class="content_a" id="a_yw" onclick="business_jurisdiction(\''+v.upid+'\')">业务管辖部门</a></span>';

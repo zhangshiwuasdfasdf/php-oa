@@ -67,68 +67,6 @@ class HomeAction extends CommonAction {
 		$this -> _memo_task();
 		$this -> _bbs_info();
 		$this -> _task_list();
-//		$this -> _shouxing_list();
-//		$this -> _jinianri_list();
-//		$this -> _xinjin_list();
-//		$this -> _daily_list();
-//		$this -> shuoshuo();
-		
-//		$menu = array();
-//		$menu = M('NodeNew') -> field('id,pid,name,sort,url,remark') -> order('sort asc') -> select();
-//		$tree = list_to_tree($menu, 0);
-//		$this -> assign("left_menu", $tree);
-// 		dump($tree);
-// 		die;
-		
-// 		$left_menu = array();
-// 		$left_menu['个人中心']['用户设置']['用户资料'] = U('profile/index');
-// 		$left_menu['个人中心']['用户设置']['修改密码'] = U('profile/password');
-// 		$left_menu['个人中心']['用户设置']['个人简历'] = U('profile/resume');
-// 		$left_menu['个人中心']['用户设置']['用户设置'] = U('user_config/index');
-// 		$left_menu['个人中心']['每日说说'] = U('shuo/index');
-// 		$left_menu['个人中心']['代办事项'] = U('ftodo/index');
-// 		$left_menu['个人中心']['联系人'] = U('contact/index');
-// 		$left_menu['个人中心']['意见箱'] = U('complaint/index');
-// 		$left_menu['个人中心']['日程'] = U('schedule/index');
-// 		$left_menu['个人中心']['消息'] = U('message/index');
-// 		$left_menu['个人中心']['日报'] = U('daily_report/index');
-// 		$left_menu['个人中心']['周报'] = U('weekly_report/index');
-// 		$left_menu['个人中心']['月报'] = U('monthly_report/index');
-		
-// 		$left_menu['人力资源']['请假/调休单'] = U('flow/getlist?type=39');
-// 		$left_menu['人力资源']['外勤/出差单'] = U('flow/getlist?type=46');
-// 		$left_menu['人力资源']['用人申请流程'] = U('flow/getlist?type=48');
-// 		$left_menu['人力资源']['员工调岗/调职申请'] = U('flow/getlist?type=52');
-// 		$left_menu['人力资源']['试用期评估表'] = U('flow/getlist?type=50');
-// 		$left_menu['人力资源']['员工调薪申请'] = U('flow/getlist?type=56');
-// 		$left_menu['人力资源']['转正申请'] = U('flow/getlist?type=51');
-// 		$left_menu['人力资源']['离职申请流程'] = U('flow/getlist?type=49');
-// 		$left_menu['人力资源']['离职交接流程'] = U('flow/getlist?type=40');
-// 		$left_menu['人力资源']['出勤证明流程'] = U('flow/getlist?type=47');
-// 		$left_menu['人力资源']['加班调休申请'] = U('flow/getlist?type=57');
-// 		$left_menu['人力资源']['每月考勤表'] = U('attendance/table');
-// 		$left_menu['人力资源']['每月打卡信息'] = U('attendance/index');
-		
-// 		$left_menu['行政管理']['文件审批流程'] = U('flow/getlist?type=39');
-// 		$left_menu['个人中心']['内部联络单'] = U('flow/getlist?type=46');
-// 		$left_menu['个人中心']['名片使用'] = U('flow/getlist?type=48');
-// 		$left_menu['个人中心']['合同审阅流程'] = U('flow/getlist?type=52');
-// 		$left_menu['个人中心']['会务证明流程'] = U('flow/getlist?type=50');
-// 		$left_menu['个人中心']['用印申请'] = U('flow/getlist?type=56');
-// 		$left_menu['个人中心']['物品采购调拨申请单'] = U('flow/getlist?type=51');
-// 		$left_menu['个人中心']['人事任免、业务提成通知'] = U('flow/getlist?type=49');
-// 		$left_menu['个人中心']['办公用品采购'] = U('flow/getlist?type=40');
-// 		$left_menu['个人中心']['办公用品领用'] = U('flow/getlist?type=47');
-// 		$left_menu['个人中心']['公交卡使用申请'] = U('flow/getlist?type=57');
-// 		$left_menu['个人中心']['私车公用申请流程'] = U('attendance/table');
-// 		$left_menu['个人中心']['会议室预定']['会议室管理'] = U('attendance/index');
-// 		$left_menu['个人中心']['会议室预定']['预约列表'] = U('attendance/index');
-// 		$left_menu['个人中心']['会议室预定']['参数配置'] = U('attendance/index');
-// 		$left_menu['个人中心']['资产管理']['资产目录'] = U('attendance/index');
-// 		$left_menu['个人中心']['会议室预定']['资产目录级别'] = U('attendance/index');
-// 		$left_menu['个人中心']['会议室预定']['资产'] = U('attendance/index');
-// 		dump($left_menu);
-// 		die;
 		$this -> display();
 	}
 	

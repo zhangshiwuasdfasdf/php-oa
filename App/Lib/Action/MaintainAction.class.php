@@ -1,6 +1,6 @@
 <?php
 class MaintainAction extends CommonAction {
-	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read','add_role' => 'read','show_role' => 'read','copy_role' => 'read','add_data' => 'read','ajax_get_data' => 'read', 'avliName'=>'read'));
+	protected $config = array('app_type' => 'common', 'action_auth' => array('changestatus' => 'read' , 'import_client' => 'read' ,'export_info' => 'read','add_role' => 'read','show_role' => 'read','copy_role' => 'read','add_data' => 'read','ajax_get_data' => 'read', 'avliname'=>'read'));
 	
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq', '0');
@@ -17,7 +17,7 @@ class MaintainAction extends CommonAction {
 		$name = isset($_POST['li_menu_name']) ? " AND `menu_name` LIKE '%".$_POST['li_menu_name']."%' " : "" ;
 		$sql = "SELECT * FROM `smeoa_menu_new` WHERE ( `is_del` = '0' $name ) ORDER BY `sort` asc ";
 		$list = M()->query($sql);
-		if(isset($_POST['li_menu_name']) && empty($_POST['li_menu_name'])){
+		if(empty($_POST['li_menu_name'])){
 			$this -> assign('menu',new_tree_menu(list_to_tree($list),4));
 		}else{
 			$this -> assign('menu',new_tree_menu($list,4));
@@ -118,7 +118,7 @@ class MaintainAction extends CommonAction {
 	}
 	
 	function del(){
-		$this -> _del();
+		$this -> _del(null,'MenuNew');
 	}
 	//验证同级菜单名称是否存在
 	public function avliName(){
@@ -233,12 +233,6 @@ class MaintainAction extends CommonAction {
         ->where(array('menu_id' => $menu_id ))->distinct(true)->select();
         $company=array();
         $scope=array();
-		/*foreach($data as $k=>$v){
-			$company[$v['company']][$v['id']]=$v['role_name'];
-			$data['_company']=$company;
-			$scope[$v['id']]=$v['scope'];
-			$data['_scope']=$scope;
-		}*/
 		foreach($data as $k=>$v){
 			$scope=$v['id'].','.$v['scope'];
 			$company[$v['company']][$scope]=$v['role_name'];

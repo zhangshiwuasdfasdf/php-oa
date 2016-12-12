@@ -3301,6 +3301,7 @@ class FlowAction extends CommonAction {
 		$type = $_REQUEST['type'];
 		$flow_name = M('FlowType')->field('id,name')->find($type);
 		$this -> assign("flow_name", $flow_name);
+		$this -> assign('type',$type);
 		//搜索条件预设
 		$menu = array();
 		$dept_menu = D("Dept") -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();

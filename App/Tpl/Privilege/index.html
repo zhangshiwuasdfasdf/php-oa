@@ -116,9 +116,10 @@ input{ margin:0; padding:0; outline:none;}
     	<div class="content_title">
             <span class="content_sp1"></span>
             <span class="content_sp2">权限列表</span>
+            <php>if(isAction('privilege/add')){</php>
             <a class="content_sp3" id="a_qxtj">
             	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
-            </a>  
+            </a><php>}</php>
         </div>
         <div class="content_ul_w">
             <ul class="content_ul">
@@ -159,35 +160,16 @@ input{ margin:0; padding:0; outline:none;}
     <div class="content_bottom">
         <!-- <div class="content_bottom1"></div> -->
         <div class="content_bottom2">
+        <php>if(isAction('privilege/pri_del')){</php>
             <div class="b1">
                 <input id="all" type="checkbox"/>
                 <span>全选</span>
             </div>
             
-            <div class="b2"><a onclick="del();">删除</a></div>
+            <div class="b2"><a onclick="del();">删除</a></div><php>}</php>
                 <div class="pagination" style="float:right;line-height:25px;">
                 {$page}
           		</div>
-            
-            <!-- <div class="b4">
-                <span>每页:</span>
-                <select>
-                    <option>10</option>
-                    <option>20</option>
-                </select>
-            </div>
-            <div class="b5">
-                <span class="b5_s1">1</span>
-                <span class="b5_s1">2</span>
-                <span class="b5_s1">3</span>
-                <span class="b5_s1">4</span>
-                <span class="b5_s1">5</span>
-                <span>...</span>
-                <span class="b5_s1">3788</span>
-                <span class="b5_s1">下一页</span>
-                <span class="b5_s3"><input type="text"/></span>
-                <span class="b5_s1">go</span>
-            </div> -->
         </div>
     </div>   
 </div>
@@ -288,10 +270,11 @@ input{ margin:0; padding:0; outline:none;}
                         <option value="自定义">自定义</option>
                         <option value="添加">添加</option>
                         <option value="删除">删除</option>
-                        <option value="导入">导入</option>
-                        <option value="导出">导出</option>
                        	<option value="编辑">编辑</option>
                         <option value="查看">查看</option>
+                        <option value="导入">导入</option>
+                        <option value="导出">导出</option>
+                        <option value="列表">列表</option>
                     </select>
                     <input class="tc_inp1" type="text" name="pri_act_zdy"/>
                 </li> 

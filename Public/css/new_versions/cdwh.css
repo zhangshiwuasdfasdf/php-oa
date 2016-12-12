@@ -84,7 +84,7 @@ input,select{ margin:0; padding:0; outline:none;}
 .left1{ display:block; width:28px; height:26px; line-height:26px; background:#20b891; float:left;}
 .left1 img{ margin-left:4px; margin-top:3px;}
 
-.tc_ul_div{width:700px; height:260px;margin-top:20px; margin-left:50px; overflow:auto;}
+.tc_ul_div{width:760px; height:260px;margin-top:20px; margin-left:25px; overflow:auto;}
 .tc_div_jt{ font-size:14px; font-weight:bold; float:left; color:#333;}
 .tc_ul{ height:auto; margin-bottom:10px;}
 .tc_ul li{ overflow:hidden; height:30px; width:100%; line-height:30px;}
