@@ -78,10 +78,16 @@
 							<span class="col-6">{$vo.user_name}</span>
 						</div>
 						<div class="auto autocut">
+							<php>if(!isAction('doc/read')){</php>
+								{$vo.name}<eq name="vo.name|strlen" value="0">
+								无标题
+							</eq> </a>
+							<php>}else{</php>
 							<a target="_blank" href="{:U('read','id='.$vo['id'])}"> {$vo.name}
 							<eq name="vo.name|strlen" value="0">
 								无标题
 							</eq> </a>
+							<php>}</php>
 						</div>
 					</li>
 				</foreach>

@@ -233,12 +233,6 @@ class MaintainAction extends CommonAction {
         ->where(array('menu_id' => $menu_id ))->distinct(true)->select();
         $company=array();
         $scope=array();
-		/*foreach($data as $k=>$v){
-			$company[$v['company']][$v['id']]=$v['role_name'];
-			$data['_company']=$company;
-			$scope[$v['id']]=$v['scope'];
-			$data['_scope']=$scope;
-		}*/
 		foreach($data as $k=>$v){
 			$scope=$v['id'].','.$v['scope'];
 			$company[$v['company']][$scope]=$v['role_name'];

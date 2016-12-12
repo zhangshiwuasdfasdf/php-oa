@@ -158,7 +158,11 @@
 						<span class="col-15 ">&nbsp;{$vo.dept_name}</span>
 					</div>
 					<div class="pull-left">
-						<span class="col-20 ">&nbsp;<a href="{:U('read_attendance_detail','id='.$vo['id'].'&dept_ids='.$vo['attendance_dept'])}">{$vo.month}</a></span>
+						<php>if(isAction('attendance/read_attendance_detail')){</php>
+							<span class="col-20 ">&nbsp;<a href="{:U('read_attendance_detail','id='.$vo['id'].'&dept_ids='.$vo['attendance_dept'])}">{$vo.month}</a></span>
+						<php>}else{</php>
+							<span class="col-20 ">{$vo.month}</span>
+						<php>}</php>
 					</div>
 					<div class="pull-right">
 						<php>if(isAction('attendance/edit_table')){</php>

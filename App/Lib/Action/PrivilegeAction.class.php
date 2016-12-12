@@ -25,9 +25,8 @@ class PrivilegeAction extends CommonAction {
 		}
 		$priModel = D('PrivilegeView');
 		if (!empty($priModel)) {
-			$info = $this -> _list($priModel, $map,'menu_name',true);
+			$info = $this -> _list($priModel, $map,'id',true);
 		}
-		
 		//取出所有的角色
 		$where["is_del"]=array('eq',0);
 		if (!empty($_REQUEST['name'])) {
@@ -179,7 +178,7 @@ class PrivilegeAction extends CommonAction {
 	public function getTree()
 	{
 		$menuModel=D("MenuNew");
-		$data = $menuModel->select();
+		$data = $menuModel-> where(array('is_del'=>'0')) ->select();
 		return $this->_reSort($data);
 	}
 	private function _reSort($data, $parent_id=0, $level=0, $isClear=TRUE)
