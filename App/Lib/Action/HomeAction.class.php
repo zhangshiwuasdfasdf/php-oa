@@ -50,6 +50,11 @@ class HomeAction extends CommonAction {
 		$this -> display();
 	}
 	public function index() {
+// 		D('Test')->clear();
+// 		D('Test')->add(array('title1'=>'aa','name1'=>array('inc',2)));
+// 		$a = D('Test')->select();
+// 		dump($a);
+
 // 		$m = new MongoClient();
 // 		$db = $m->test;
 // 		$collection = $db->col; // 选择集合
@@ -62,6 +67,15 @@ class HomeAction extends CommonAction {
 // 			dump($document);
 // 		}
 // 		die;
+
+// 		$a = D('Dept')->relation(true)->find(8);
+// 		dump($a);
+// 		die;
+		
+// 		$a = D('AttendanceTable','Logic')->select();
+// 		dump($a);
+// 		die;
+		
 		$widget['jquery-ui'] = true;
 		$this -> assign("widget", $widget);
 		cookie("current_node", null);
