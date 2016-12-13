@@ -89,6 +89,8 @@ input,select{ margin:0; padding:0; outline:none;}
 .tc_ul{ height:auto; margin-bottom:10px;}
 .tc_ul li{ overflow:hidden; height:30px; width:100%; line-height:30px;}
 .tc_ul span{ display:block; float:left; height:30px; width:233px; font-size:14px; text-align:center;}
+.tc_ul span input {width: 15%;text-align: right;}
+.tc_ul span label {width: 80%;text-align: left;overflow: hidden;}
 .sousuo{ height:auto; margin-bottom:10px;}
 .sousuo span{ display:block; float:left; height:30px; width:170px; font-size:14px; text-align:center;}
 

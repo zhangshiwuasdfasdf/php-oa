@@ -439,9 +439,8 @@ class ProfileAction extends CommonAction {
 		//取出数据
 		$users = $this->_list(D("UserView"), $where,'id',true);
 		foreach ($users as $k=>$v){
-			$pos_id = M('Dept')->field('name')->find($v['pos_id']);
-			$users_extension[$k]['pos_name'] = $pos_id['name'];
-			if(!empty($v['more_role'])){
+			$more_role = M('RUserPosition')->where(array('user_id'=>$v['id'],'is_major'=>'0'))->count();
+			if($more_role){
 				$users_extension[$k]['more_role'] = '是';
 			}else{
 				$users_extension[$k]['more_role'] = '否';

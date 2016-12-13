@@ -37,6 +37,8 @@
 //     	'SESSION_TYPE'          =>  'Memcache',
     	'MEMCACHE_HOST'=>'127.0.0.1',
     	'MEMCACHE_PORT'=>'11211',
+    		
+    	'TEST_PARAM' =>true,
     );
     return $array;
 ?>
