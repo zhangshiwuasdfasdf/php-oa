@@ -4034,4 +4034,18 @@ function GetMyLeader($start,$end,$user_id=null,$position_id=null,$dept_id=null){
 	$res = M('RUserPosition')->where(array('id'=>array('in',$upids),'position_sequence_id'=>array('between',array($start,$end))))->order('position_sequence_id asc')->select();
 	return $res;
 }
+function GetAllMyLeader($user_id=null,$position_id=null,$dept_id=null){
+	if(empty($user_id)){
+		$user_id = get_user_id();
+	}
+	if(empty($position_id)){
+		$position_id = get_position_id();
+	}
+	if(empty($dept_id)){
+		$dept_id = get_dept_id();
+	}
+	$upids = M('RUserPositionDeptPosition')->where(array('dept_id'=>$dept_id,'position_id'=>$position_id))->getField('upid',true);
+	$res = M('RUserPosition')->where(array('id'=>array('in',$upids)))->order('position_sequence_id asc')->select();
+	return $res;
+}
 ?>

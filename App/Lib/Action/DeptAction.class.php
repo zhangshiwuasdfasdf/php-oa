@@ -34,9 +34,9 @@ class DeptAction extends CommonAction {
 			$map['is_del'] = '0';
 			$ids = $node -> where($map) -> getField('id',true);
 		}
-		$open=fopen("C:\log.txt","a" );
-		fwrite($open,json_encode($ids)."\r\n");
-		fclose($open);
+// 		$open=fopen("C:\log.txt","a" );
+// 		fwrite($open,json_encode($ids)."\r\n");
+// 		fclose($open);
 		$menu = $node -> where($where) -> field('id,pid,name,dept_no,is_use') -> order('sort asc') -> select();
 		$tree = list_to_tree($menu);
 		
