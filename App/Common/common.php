@@ -4011,6 +4011,15 @@ function isAction($url){
 	}
 	return $flag;
 }
+function approve_display($approve_display){
+	return $approve_display=='1'?'显示审批人姓名':'显示审批人工号';
+}
+function is_refactor($is_refactor){
+	return $is_refactor=='1'?'重构':'不重构';
+}
+function is_emerg($is_emerg){
+	return $is_emerg=='1'?'是':'否';
+}
 function GetMyLeader($start,$end,$user_id=null,$position_id=null,$dept_id=null){
 	if(empty($user_id)){
 		$user_id = get_user_id();
