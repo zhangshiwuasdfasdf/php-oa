@@ -1,0 +1,69 @@
+<script type="text/javascript">
+function del() {
+	var vars = $("#form_data_sc").serialize();
+	ui_confirm('确定要删除吗?',function(){
+		//alert(vars);
+		sendAjax("{:U('del')}", vars, function(data) {
+			if (data.status) {
+				ui_alert(data.info,function(){
+					$("input[name='id[]']:checkbox:checked").each(function() {
+						$(this).parents("li").remove();
+					});
+				});				
+			}
+		});
+	});
+}
+function wli(){
+	var wsp0=0;
+	var wsp=$('.content_ul_w ul li').eq(0).children('span');
+	for( var i=0; i<wsp.length;i++){
+		wsp0+=wsp.eq(i).outerWidth();
+	}
+	$('.content_ul_w ul li').css('width',wsp0);	
+}
+wli();
+
+$('#a_lbtj').click(function(){
+	$('#tc_xzjd').show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_xzjd").hide();	
+	});
+});
+
+$('.a_lbbj').click(function(){
+	$("#id").val(($(this).attr('node')));
+	$("#node_type").val($(this).parent().prev().prev().prev().prev().prev().prev().html());
+	$("#node_name").val($(this).parent().prev().prev().prev().prev().prev().html());
+	$("#sort").val(($(this).attr('sort')));
+	$('#tc_xzjd2').show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_xzjd2").hide();
+	});
+});
+
+$('.a_idpz').click(function(){
+	$("#idd").val(($(this).attr('node')));
+	$("#rule_expression").val($(this).attr('rule_expression'));
+	$("#rule_explain").val($(this).attr('rule_explain'));
+	$('#tc_pzjd').show();
+	$(".bottom_sp3,.bottom_sp4").click(function(){
+		$("#tc_pzjd").hide();	
+	});
+});
+
+$('#tc_gz').click(function(){
+	$('.gz_k').show();
+	$('#gz_gb').click(function(){
+		$('.gz_k').hide();
+	})
+});
+
+$('#all').click(function(){
+	if(this.checked){                                     
+		$("[name='id[]']:checkbox").prop("checked",true);  
+	}else{
+		$("[name='id[]']:checkbox").prop("checked",false);  
+	}	
+});
+</script>

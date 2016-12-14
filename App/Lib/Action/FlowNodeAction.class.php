@@ -11,7 +11,7 @@
   Support: https://git.oschina.net/smeoa/smeoa               
  -------------------------------------------------------------------------*/
 
-class FlowVersionAction extends CommonAction {
+class FlowNodeAction extends CommonAction {
     protected $config=array('app_type'=>'master');
 
 	//过滤查询字段
@@ -36,23 +36,29 @@ class FlowVersionAction extends CommonAction {
 	}
 	
 	function index(){
-		$model = D("FlowVersionView");
+		$model = D("FlowNodeView");
 		$map = $this -> _search();
-		$map['flow_type_setting_id'] = $_GET['flow_type_setting_id'];
+		$map['flow_version_id'] = $_GET['flow_version_id'];
 		$map['is_del'] = '0';
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
 		}
 		$this -> _list($model, $map);
-		$flow_name = M('FlowTypeSetting')->where(array('id'=>$_GET['flow_type_setting_id']))->getField('flow_name');
-		$this -> assign('flow_name', $flow_name);
+		$flow_version = M('FlowVersion')->find($_GET['flow_version_id']);
+		$this -> assign('version', $flow_version['version']);
+		
+		$flow_type_setting = M('FlowTypeSetting')->find($flow_version['flow_type_setting_id']);
+		$this -> assign('flow_name', $flow_type_setting['flow_name']);
+		
+		$fields = M($flow_type_setting['table_name'])->getDbFields();
+		$this -> assign('fields', $fields);
 
-		cookie('return_url',U('index?flow_type_setting_id='.$_GET['flow_type_setting_id']));
+		cookie('return_url',U('index?flow_version_id='.$_GET['flow_version_id']));
 		$this -> display();
 	}
 	function del(){
 		if(!empty($_REQUEST['id']) && is_array($_REQUEST['id'])){
-			$res = M('FlowVersion')->where(array('id'=>array('in',$_REQUEST['id'])))->save(array('is_del'=>'1'));
+			$res = M('FlowNode')->where(array('id'=>array('in',$_REQUEST['id'])))->save(array('is_del'=>'1'));
 			if(false != $res){
 				$this->ajaxReturn('1','删除成功','1');
 			}else{

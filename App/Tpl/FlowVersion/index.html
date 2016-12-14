@@ -103,7 +103,7 @@
 		                    <span class="span2">{$vo.create_time|date="Y-m-d H:i:s",###}</span>
 		                    <span class="span2">{$vo.version_remark}</span>
 		                    <span class="span2"><a class="content_a a_lbbj" node="{$vo.id}">编辑</a></span>
-		                    <span class="span2"><a class="content_a" id="a_fpbm" href="jdpz.html">节点配置</a></span>
+		                    <span class="span2"><a class="content_a" id="a_fpbm" href="{:U('flow_node/index?flow_version='.$vo['id'])}">节点配置</a></span>
 		                </li>
 	                </foreach>
 	            </form>
@@ -112,7 +112,7 @@
         </div> 
         <div class="content_bottom">
 	        <div class="content_bottom2">
-	        <php>if(isAction('position_sequence/del_sequence')){</php>
+	        <php>if(isAction('flow_version/del')){</php>
 	        	<div class="b1">
 	                <input id="all" type="checkbox"/>
 	                <span>全选</span>
