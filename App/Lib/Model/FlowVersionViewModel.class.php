@@ -13,7 +13,7 @@
 
 class FlowVersionViewModel extends ViewModel {
 	public $viewFields=array(
-		'FlowVersion'=>array('id','flow_type_setting_id','status','version','create_time','version_remark'),
+		'FlowVersion'=>array('id','flow_type_setting_id','status','version','create_time','version_remark','is_del'),
 		'FlowTypeSetting'=>array('flow_name','_on'=>'FlowVersion.flow_type_setting_id=FlowTypeSetting.id')
 		);
 }

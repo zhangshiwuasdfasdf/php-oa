@@ -44,6 +44,8 @@ class FlowVersionAction extends CommonAction {
 			$this -> _search_filter($map);
 		}
 		$this -> _list($model, $map);
+// 		$s = $model->where($map)->select();
+// 		dump($s);die;
 		$flow_name = M('FlowTypeSetting')->where(array('id'=>$_GET['flow_type_setting_id']))->getField('flow_name');
 		$this -> assign('flow_name', $flow_name);
 
