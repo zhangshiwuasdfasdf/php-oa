@@ -11,10 +11,11 @@
   Support: https://git.oschina.net/smeoa/smeoa               
  -------------------------------------------------------------------------*/
 
-class FlowVersionViewModel extends ViewModel {
+class FlowNodeViewModel extends ViewModel {
 	public $viewFields=array(
-		'FlowVersion'=>array('id','flow_type_setting_id','status','version','create_time','version_remark','is_del'),
-		'FlowTypeSetting'=>array('flow_name','_on'=>'FlowVersion.flow_type_setting_id=FlowTypeSetting.id')
+		'FlowNode'=>array('id','flow_version_id','node_type','node_name','rule_expression','rule_explain','is_del','sort','_type'=>'LEFT'),
+		'FlowVersion'=>array('version','flow_type_setting_id','_on'=>'FlowNode.flow_version_id=FlowVersion.id','_type'=>'LEFT'),
+		'FlowTypeSetting'=>array('module_name','flow_name','_on'=>'FlowVersion.flow_type_setting_id=FlowTypeSetting.id'),
 		);
 }
 ?>
