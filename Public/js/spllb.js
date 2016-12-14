@@ -14,8 +14,8 @@ wli();
 
 $('#all').click(function(){
 	if(this.checked){                                     
-		$("[name=box]:checkbox").prop("checked",true);  
+		$("[name='id[]']:checkbox").prop("checked",true);  
 	}else{
-		$("[name=box]:checkbox").prop("checked",false);  
+		$("[name='id[]']:checkbox").prop("checked",false);  
 	}	
 });

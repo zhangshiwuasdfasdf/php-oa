@@ -1,0 +1,17 @@
+<script>
+function del() {
+	var vars = $("#form_data_scwf").serialize();
+	ui_confirm('确定要删除吗?',function(){
+	sendAjax("{:U('del')}", vars, function(data) {
+	if (data.status) {
+		ui_alert(data.info,function(){
+			$("input[name='id[]']:checkbox:checked").each(function() {
+			$(this).parents("li").remove();
+					});
+				});				
+			}
+		});
+	});
+}
+
+</script>
