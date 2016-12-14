@@ -19,10 +19,14 @@ class DeptAction extends CommonAction {
 		
 		$node = M("Dept");
 		$menu = array();
-		$menu = $node -> where($map) -> field('id,pid,name,is_del') -> where('is_del=0') -> order('sort asc') -> select();
-		$tree = list_to_tree($menu);
+		
 		if($_REQUEST['tree']){
+			$menu = $node -> where($map) -> field('id,pid,name,dept_no,is_del') -> where(array('is_del'=>'0','is_real_dept'=>'1')) -> order('sort asc') -> select();
+			$tree = list_to_tree($menu);
 			$this -> assign('dept_tree', $tree);
+		}else{
+			$menu = $node -> where($map) -> field('id,pid,name,is_del') -> where('is_del=0') -> order('sort asc') -> select();
+			$tree = list_to_tree($menu);
 		}
 		
 		$a = popup_tree_menu($tree);
