@@ -1,0 +1,150 @@
+<layout name='Layout/ace_layout' />
+<link type="text/css" href="__PUBLIC__/css/gwts.css" rel="stylesheet"/>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.12.3.min.js"></script>
+
+<div class="zong">
+	<div class="top_k">
+        <div class="top1">
+			<span>表单名称：</span><span class="top_sp">员工请假申请</span>
+            <span>公司名称：<input class="top_in" type="text"/></span>
+            <span>部门：<input class="top_in" type="text"/></span>
+            <span>岗位：<input class="top_in" type="text"/></span>
+            <span>仅显示当前版本：<input type="checkbox"/></span>
+            <div class="top_button">
+                <img src="__PUBLIC__/img/cx.png"/>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+    	<div class="content_title">
+            <span class="content_sp1"></span>
+            <span class="content_sp2">岗位特殊流程配置列表</span>
+            <span class="content_sp5">流程测试</span>
+            <a class="content_sp3" id="a_lbtj">
+            	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
+            </a>  
+        </div>
+        <div class="content_ul_w" id="content_div2">
+            <ul class="content_ul">
+                <li class="content_li">
+                    <span class="span1_0"></span>
+                    <span class="span1">公司</span>
+                    <span class="span1">部门</span>
+                    <span class="span1">岗位</span>
+                    <span class="span1">备注</span>
+                    <span class="span1">版本状态</span>
+                    <span class="span1">操作</span>
+                    <span class="span1"></span>
+                    <span class="span1"></span>
+                    <span class="span1"></span>
+                </li>
+                <li class="content_li">
+                    <span class="span2_0"><input name="box" type="checkbox"/></span>
+                    <span class="span2">集团总部</span>
+                    <span class="span2">人事行政部</span>
+                    <span class="span2">招聘专员</span>
+                    <span class="span2"></span>
+                    <span class="span2">当前</span>
+                    <span class="span2"><a class="content_a" id="a_typz">配置</a></span>
+                    <span class="span2"><a class="content_a" id="a_lbbj">编辑</a></span>
+                    <span class="span2"><a class="content_a" >复制版本</a></span>
+                    <span class="span2"><a class="content_a" >设置为当前版本</a></span>
+                </li>
+                <li class="content_li">
+                    <span class="span2_0"><input name="box" type="checkbox"/></span>
+                    <span class="span2">集团总部</span>
+                    <span class="span2">人事行政部</span>
+                    <span class="span2">招聘专员</span>
+                    <span class="span2"></span>
+                    <span class="span2">当前</span>
+                    <span class="span2"><a class="content_a">配置</a></span>
+                    <span class="span2"><a class="content_a">编辑</a></span>
+                    <span class="span2"><a class="content_a" >复制版本</a></span>
+                    <span class="span2"><a class="content_a" >设置为当前版本</a></span>
+                </li>
+            </ul>
+        </div> 
+        <div class="content_bottom">
+			<div class="content_bottom1"></div>
+			<div class="content_bottom2">
+				<div class="b1">
+					<input id="all" type="checkbox"/>
+					<span>全选</span>
+				</div>
+
+				<div class="b2">删除</div>
+
+				<div class="b3">
+					<span class="b3_s1">共有</span>
+					<span class="b3_s2">37872</span>
+					<span class="b3_s1">条记录</span>
+				</div>
+				<div class="b4">
+					<span>每页:</span>
+					<select>
+						<option>10</option>
+						<option>20</option>
+					</select>
+				</div>
+				<div class="b5">
+					<span class="b5_s1">1</span>
+					<span class="b5_s1">2</span>
+					<span class="b5_s1">3</span>
+					<span class="b5_s1">4</span>
+					<span class="b5_s1">5</span>
+					<span>...</span>
+					<span class="b5_s1">3788</span>
+					<span class="b5_s1">下一页</span>
+					<span class="b5_s3"><input type="text"/></span>
+					<span class="b5_s1">go</span>
+				</div>
+			</div>
+		</div>     
+    </div>
+</div>
+
+<div class="tc" id="tc_xztypz">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj1">岗位特殊添加</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
+            <input type="hidden" name="fid" value="{$fid}">
+                <li>
+                    <label>公司：</label>
+                    <select name="company_id" id="change_dept">
+                    <option value="">请选择</option>
+                    <foreach name="company" item="vo">
+                    	<option value="{$vo.id}">{$vo.name}</option>
+                   	</foreach>
+                    </select>
+                </li>
+                <li>
+                    <label>部门：</label>
+                    <select>
+                    	<option>人事行政部</option>
+                    	<option>技术部</option>
+                    </select>
+                </li>
+                <li>
+                    <label>岗位：</label>
+                    <select>
+                    	<option>招聘专员</option>
+                    </select>
+                </li>
+                <li class="tc_li1">
+                    <label>备注：</label>
+                    <textarea></textarea>
+                </li>
+                
+            </ul>
+        </div>
+        
+        <div class="bottom" style="position:initial">
+        	<span class="bottom_sp3">取消</span>
+            <span class="bottom_sp4">确定</span>
+        </div>
+    </div>
+</div>
+

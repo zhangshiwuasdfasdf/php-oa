@@ -4,14 +4,23 @@
 
 <div class="zong">
 	<div class="top_k">
+	<form method="post" name="form_adv_search" id="form_adv_search">
         <div class="top1">
 			<span>表单名称：</span><span class="top_sp">{$flow_name}</span>
-            <span>公司名称：<input class="top_in" type="text"/></span>
+            <span>公司名称：
+            <select name="li_company_id" class="top_in">
+                <option value="">请选择</option>
+                <foreach name="company" item="vo">
+                 	<option value="{$vo.id}">{$vo.name}</option>
+                </foreach>
+            </select>	
+            </span>
             <span>仅显示当前版本：<input type="checkbox"/></span>
             <div class="top_button">
-                <img src="__PUBLIC__/img/cx.png"/>
+                <a onclick="submit_adv_search();"><img src="__PUBLIC__/img/cx.png"/></a>
             </div>
         </div>
+    </form>
     </div>
 	<div class="content">
     	<div class="content_title">
@@ -34,18 +43,26 @@
                     <span class="span1"></span>
                     <span class="span1"></span>
                 </li>
+                <empty name="info">
+				<li style="border: 1px solid #eaedf1;border-top: 0px;line-height: 120px;text-align: center;font-size: 24px;">
+					没找到数据
+				</li>
+				<else/>
+                <form method="post" action="" name="form_data_scwf" id="form_data_scwf">
                 <foreach name="info" item="vo">
                 <li class="content_li">
-                    <span class="span2_0"><input name="box" type="checkbox"/></span>
+                    <span class="span2_0"><input name="id[]" type="checkbox" value="{$vo.id}"/></span>
                     <span class="span2">{$vo.company}</span>
                     <span class="span2">{$vo.remark}</span>
-                    <span class="span2">当前</span>
+                    <span class="span2">{$vo.vertion}</span>
                     <span class="span2"><a class="content_a" id="a_typz">配置</a></span>
-                    <span class="span2"><a class="content_a" id="a_lbbj">编辑</a></span>
-                    <span class="span2"><a class="content_a" >复制版本</a></span>
-                    <span class="span2"><a class="content_a" >设置为当前版本</a></span>
+                    <span class="span2"><a class="content_bj" id="a_lbbj" onclick="show('{$vo.id}','{$vo.company_id}','{$vo.remark}');">编辑</a></span>
+                    <span class="span2"><a class="content_fz" >复制版本</a></span>
+                    <span class="span2"><input type="button" value="设置为当前版本" class="content_set" id="{$vo.id}" onclick="set_vertion('{$vo.id}');" <if condition="($vo.vertion eq '当前')"> disabled="disabled" </if> /></span> 
                 </li>
                 </foreach>
+                </form>
+                </empty>
             </ul>
         </div> 
         <div class="content_bottom">
@@ -55,34 +72,14 @@
 					<input id="all" type="checkbox"/>
 					<span>全选</span>
 				</div>
-
-				<div class="b2">删除</div>
-
-				<div class="b3">
-					<span class="b3_s1">共有</span>
-					<span class="b3_s2">37872</span>
-					<span class="b3_s1">条记录</span>
+				<div class="b2"><a onclick="del();">删除</a></div>
+				<div class="pagination" style="float:right;line-height:25px;">
+				       {$page}
 				</div>
-				<div class="b4">
-					<span>每页:</span>
-					<select>
-						<option>10</option>
-						<option>20</option>
-					</select>
-				</div>
-				<div class="b5">
-					<span class="b5_s1">1</span>
-					<span class="b5_s1">2</span>
-					<span class="b5_s1">3</span>
-					<span class="b5_s1">4</span>
-					<span class="b5_s1">5</span>
-					<span>...</span>
-					<span class="b5_s1">3788</span>
-					<span class="b5_s1">下一页</span>
-					<span class="b5_s3"><input type="text"/></span>
-					<span class="b5_s1">go</span>
-				</div>
-			</div>
+				<!-- <php>if(isAction('company_config/del')){</php> -->
+		            <!-- <php>}</php> -->
+						
+					</div>
 		</div>     
     </div>
 </div>
@@ -95,6 +92,7 @@
         <form method="POST" action="{:U('add')}">
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
+            	<input type="hidden" name="fid" value="{$fid}">
                 <li>
                     <label>公司：</label>
                     <select name="company_id">
@@ -126,6 +124,36 @@
         </div>
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
+            	<input type="hidden" id="typz_id">
+                <li>
+                    <label>公司：</label>
+                    <select name="company_id" id="typz_company">
+                    <option value="">请选择</option>
+                    <foreach name="company" item="vo">
+                    	<option value="{$vo.id}">{$vo.name}</option>
+                   	</foreach>
+                    </select>
+                </li>
+                <li class="tc_li1">
+                    <label>备注：</label>
+                    <textarea name="remark" id="typz_remark"></textarea>
+                </li>
+                
+            </ul>
+        </div>
+        <div class="bottom" style="position:initial">
+        	<span class="bottom_sp3">取消</span>
+            <span ><a class="bottom_sp4" onclick="save();">确定</a></span>
+        </div>
+    </div>
+</div>
+<div class="tc" id="tc_typzfz">
+	<div class="tc_div1">
+    	<div class="tc_title">
+        	<span class="js_sp1" id="bj1">通用配置复制</span>
+        </div>
+        <div class="tc_ul_div1">
+            <ul class="tc_ul_s">
                 <li>
                     <label>公司：</label>
                     <select>
@@ -142,12 +170,10 @@
                 
             </ul>
         </div>
-        
         <div class="bottom" style="position:initial">
         	<span class="bottom_sp3">取消</span>
             <span class="bottom_sp4">确定</span>
         </div>
     </div>
 </div>
-<script type="text/javascript" src="__PUBLIC__/js/gsty.js"></script>
 

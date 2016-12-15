@@ -1,6 +1,6 @@
 <?php
-class CompanyConfigAction extends CommonAction {
-	function _search_filter(&$map) {
+class PositionConfigAction extends CommonAction {
+	/*function _search_filter(&$map) {
 		$fid=$_REQUEST['fid'];
 		$map['is_del'] = array('eq','0');
 		$map['fid'] = array('eq',$fid);
@@ -8,17 +8,16 @@ class CompanyConfigAction extends CommonAction {
 			$map['company_id'] = array('eq',$_POST['li_company_id']);
 		}
  		//dump($map);die;
-}
+}*/
 
 	function index(){
 		$fid=$_REQUEST['fid'];
-		$map = $map = $this -> _search();
+		/*$map = $map = $this -> _search();
 		if (method_exists($this, '_search_filter')) {
 			$this -> _search_filter($map);
-		}
-		$model = M('CompanyConfig');
+		}*/
+		$model = M('PositionConfig');
 		if (!empty($model)) {
-			//$info = $this -> _list($model, $map);
 			$info = $model->where($map)->select();
 		}
 		foreach($info as $k=>$v){
@@ -35,8 +34,7 @@ class CompanyConfigAction extends CommonAction {
 		$this->display();
 	}
 	
-	function add(){
-		$fid=$_POST['fid'];
+	/*function add(){
 		if(IS_POST)
     	{
     		$model = M('CompanyConfig');
@@ -44,7 +42,7 @@ class CompanyConfigAction extends CommonAction {
     		{
     			if($id = $model->add())
     			{
-    				$this->success('添加成功！', U('index?fid='.$fid));
+    				$this->success('添加成功！', U('index'));
     				exit;
     			}
     		}
@@ -76,7 +74,7 @@ class CompanyConfigAction extends CommonAction {
 		$data=M("CompanyConfig")->where(array('id'=>$id))->setField('vertion','当前');
 		$data=M("CompanyConfig")->where("id != $id")->setField('vertion','历史');
 		exit(json_encode($data));
-	}
+	}*/
 	function del(){
 		$id = $_REQUEST['id'];
 		$where['id'] = array('in', $id);
@@ -86,6 +84,17 @@ class CompanyConfigAction extends CommonAction {
 			} else {
 				$this -> ajaxReturn('', "删除失败", 0);
 			}
+	}
+	function ajax_get_dept(){
+		$pid=$_POST['pid'];
+		$dept_ids=get_child_dept_all($pid);
+		$where['id'] = array('in', $dept_ids);
+		$where['is_del'] = array('eq', 0);
+		$where['is_use'] = array('eq', 1);
+		$dept_menu = D("Dept") -> field('id,pid,name')  -> where($where) -> order('sort asc') -> select();
+		$dept_tree = list_to_tree($dept_menu);
+		$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));
+		dump(select_tree_menu_mul($dept_tree));die;
 	}
 }
 ?>

@@ -32,9 +32,9 @@
             <foreach name="list" item="vo">
                 <li class="content_li">
                     <span class="span2_0"><input name="id[]" type="checkbox" value="{$vo.id}"/></span>
-                    <span class="span2">{$vo.name}</span>
+                    <span class="span2">{$vo.flow_name}</span>
                     <span class="span2"><a class="content_a" href="{:U('company_config/index?fid='.$vo['id'])}">公司通用配置</a></span>
-                    <span class="span2"><a class="content_a" href="gwts.html">岗位特殊配置</a></span>
+                    <span class="span2"><a class="content_a" href="{:U('position_config/index?fid='.$vo['id'])}">岗位特殊配置</a></span>
                 </li>
             </foreach>
             </form>
@@ -58,5 +58,4 @@
     </div>
 </div>
 
-<script type="text/javascript" src="__PUBLIC__/js/spllb.js"></script>
 
