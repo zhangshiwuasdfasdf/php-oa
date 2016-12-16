@@ -11,7 +11,7 @@ input{ margin:0; padding:0; outline:none;}
 .top_k{ height:54px; line-height:54px;}
 .top1{ height:54px; background:#fff; line-height:54px; overflow:auto; white-space:nowrap;}
 .top1 span{ display:block; font-size:12px; float:left; margin-left:20px;}
-.top_in{ width:114px; height:24px;border:solid 1px #aaaaaa;}
+.top_in{ width:214px; height:24px;border:solid 1px #aaaaaa;}
 .top_select{ width:114px; height:24px; outline:none;}
 .top_button{ overflow:hidden;}
 .top_button img{ float:left; margin-top:8px; margin-left:16px; margin-right:5px;}

@@ -7,36 +7,13 @@
   <form method="post" name="form_adv_search" id="form_adv_search">
         <div class="top1">
         <span>模块分类：
-        <select class="top_select" name="li_module_name">
+        <select id="top_select" class="mkfl_name_tj" name="li_module_name">
            <option value="">请选择</option>
            <option value="人力资源">人力资源</option>
-           <option value="部门招聘需求申请">--部门招聘需求申请</option>
-           <option value="加班申请">--加班申请</option>
-           <option value="员工请假申请">--员工请假申请</option>
-           <option value="出勤异常申请">--出勤异常申请</option>
-           <option value="外勤/出差申请">--外勤/出差申请</option>
-           <option value="员工调动申请">--员工调动申请</option>
-           <option value="试用期评估表">--试用期评估表</option>
-           <option value="员工转正申请">--员工转正申请</option>
-           <option value="员工离职申请">--员工离职申请</option>
-           <option value="员工离职交接申请">--员工离职交接申请</option>
-           <option value="员工调薪申请">--员工调薪申请</option>
            <option value="行政管理">行政管理</option>
-           <option value="私车公用申请">--私车公用申请</option>
-           <option value="公交卡使用申请">--公交卡使用申请</option>
-           <option value="物品采购调拨申请">--物品采购调拨申请</option>
-           <option value="办公用品采购申请">--办公用品采购申请</option>
-           <option value="办公用品领用申请">--办公用品领用申请</option>
-           <option value="文件审批申请">--文件审批申请</option>
-           <option value="内部联络单">--内部联络单</option>
-           <option value="名片申请">--名片申请</option>
-           <option value="合同申请">--合同申请</option>
-           <option value="公章申请">--公章申请</option>
-           <option value="人事任命、业务提成申请">--人事任命、业务提成申请</option>
-           <option value="会务申请">--会务申请</option>
         </select>
         </span>
-            <span>流程名称：<input class="top_in" type="text" name="li_flow_name"/></span>
+            <span>流程名称：<select name="li_flow_name" class="flow_name_tj" id="top_in"></select></span>
             <span>数据库表名：<input class="top_in" type="text" name="li_table_name"/></span>
             <div class="top_button">
                 <a onclick="submit_adv_search();"><img src="__PUBLIC__/img/cx.png"/></a>
@@ -268,5 +245,4 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="__PUBLIC__/js/gzlpz.js"></script>
 

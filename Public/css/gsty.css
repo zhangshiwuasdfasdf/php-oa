@@ -43,8 +43,8 @@ textarea{outline:none; resize: none;}
 .span1{ font-weight:bold; width:200px;}
 .span2_0{ width:30px;}
 .span2{ width:200px;}
-.content_a{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
-
+.content_a,.content_bj,.content_fz,.content_set{ display:block; height:28px; line-height:28px;font-size:12px; color:#b9b9b9; font-weight:bold; cursor:pointer;}
+input[type="button"]{border: 0px;background: #fff;}
 .content_bottom1{ background:#fff; height:30px; margin-top:10px;}
 .content_bottom2{ background:#fff; height:42px; margin-top:2px; line-height:42px; position:relative;}
 .b1{ margin-left:10px; position:absolute; overflow:hidden;}
@@ -73,7 +73,7 @@ textarea{outline:none; resize: none;}
 .tc_ul_s .tc_li1{height: 110px;}
 .tc_ul_s label{ position:absolute; left:0;}
 .tc_ul_s span{ display:block; position:absolute; left:85px;}
-.tc_ul_s select{ width:195px;position:absolute; left:85px; top:15px;}
+.tc_ul_s select{ width:195px;position:absolute; left:85px; top:15px;height:30px;}
 .tc_ul_s textarea{width:195px; height: 80px; position:absolute; left:85px; top:15px;}
 .tc_inp{ width:190px;position:absolute; left:85px; top:15px;}
 

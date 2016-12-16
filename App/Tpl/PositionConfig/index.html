@@ -1,5 +1,5 @@
 <layout name='Layout/ace_layout' />
-<link type="text/css" href="__PUBLIC__/css/gsty.css" rel="stylesheet"/>
+<link type="text/css" href="__PUBLIC__/css/gwts.css" rel="stylesheet"/>
 <script type="text/javascript" src="__PUBLIC__/js/jquery-1.12.3.min.js"></script>
 <style>
 input[disabled="disabled"]{color:#22bd9b !important;}
@@ -8,15 +8,20 @@ input[disabled="disabled"]{color:#22bd9b !important;}
 	<div class="top_k">
 	<form method="post" name="form_adv_search" id="form_adv_search">
         <div class="top1">
-			<span>表单名称：</span><span class="top_sp">{$flow_name}</span>
+			<span>表单名称：</span><span class="top_sp">员工请假申请</span>
+            <!-- <span>公司名称：<input class="top_in" type="text"/></span> -->
             <span>公司名称：
-            <select name="li_company_id" class="top_in">
+            <select name="li_company_id" class="change_dept">
                 <option value="">请选择</option>
                 <foreach name="company" item="vo">
                  	<option value="{$vo.id}">{$vo.name}</option>
                 </foreach>
             </select>	
             </span>
+            <span>部门：<select name="li_dept_id" class="change_pos">
+                    </select></span>
+            <span>岗位：<select name="li_pos_id" class="get_pos">
+                    </select></span>
             <span>仅显示当前版本：<input type="checkbox" name="li_version" value="当前"/></span>
             <div class="top_button">
                 <a onclick="submit_adv_search();"><img src="__PUBLIC__/img/cx.png"/></a>
@@ -24,11 +29,11 @@ input[disabled="disabled"]{color:#22bd9b !important;}
         </div>
     </form>
     </div>
-	<div class="content">
+    <div class="content">
     	<div class="content_title">
             <span class="content_sp1"></span>
-            <span class="content_sp2">公司通用配置列表</span>
-            <a class="content_sp5" href="lccs.html">流程测试</a>
+            <span class="content_sp2">岗位特殊流程配置列表</span>
+            <span class="content_sp5">流程测试</span>
             <a class="content_sp3" id="a_lbtj">
             	<img class="img_tj" src="__PUBLIC__/img/tj3.png"/>
             </a>  
@@ -38,6 +43,8 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                 <li class="content_li">
                     <span class="span1_0"></span>
                     <span class="span1">公司</span>
+                    <span class="span1">部门</span>
+                    <span class="span1">岗位</span>
                     <span class="span1">备注</span>
                     <span class="span1">版本状态</span>
                     <span class="span1">操作</span>
@@ -53,14 +60,16 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                 <form method="post" action="" name="form_data_scwf" id="form_data_scwf">
                 <foreach name="info" item="vo">
                 <li class="content_li">
-                    <span class="span2_0"><input name="id[]" type="checkbox" value="{$vo.id}"/></span>
+                    <span class="span2_0"><input name="id[]" type="checkbox"/></span>
                     <span class="span2">{$vo.company}</span>
+                    <span class="span2">{$vo.dept}</span>
+                    <span class="span2">{$vo.position}</span>
                     <span class="span2">{$vo.remark}</span>
                     <span class="span2">{$vo.version}</span>
-                    <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_a" id="a_typz_{$vo.id}">配置</a></span>
-                    <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_bj" id="a_lbbj" onclick="show('{$vo.id}','{$vo.company_id}','{$vo.remark}');">编辑</a></span>
-                    <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_fz" id="a_fzbb" >复制版本</a></span>
-                    <span class="span2"><input style="color:#b9b9b9" type="button" value="设置为当前版本" class="content_set" id="{$vo.id}" onclick="set_version('{$vo.id}','{$vo.company_id}');" <if condition="($vo.version eq '当前')"> disabled="disabled" </if> /></span> 
+                    <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_a" id="a_typz">配置</a></span>
+                    <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_bj" id="a_lbbj" onclick="show('{$vo.id}','{$vo.company_id}','{$vo.dept_id}','{$vo.pos_id}','{$vo.remark}')">编辑</a></span>
+                    <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_fz" >复制版本</a></span>
+                    <span class="span2"><input style="color:#b9b9b9" type="button" value="设置为当前版本" class="content_set" id="{$vo.id}" onclick="set_version('{$vo.id}','{$vo.company_id}','{$vo.dept_id}','{$vo.pos_id}');" <if condition="($vo.version eq '当前')"> disabled="disabled" </if> /></span>
                 </li>
                 </foreach>
                 </form>
@@ -70,6 +79,7 @@ input[disabled="disabled"]{color:#22bd9b !important;}
         <div class="content_bottom">
 			<div class="content_bottom1"></div>
 			<div class="content_bottom2">
+				<div class="content_bottom2">
 				<div class="b1">
 					<input id="all" type="checkbox"/>
 					<span>全选</span>
@@ -82,6 +92,7 @@ input[disabled="disabled"]{color:#22bd9b !important;}
 		            <!-- <php>}</php> -->
 						
 			</div>
+			</div>
 		</div>     
     </div>
 </div>
@@ -89,19 +100,29 @@ input[disabled="disabled"]{color:#22bd9b !important;}
 <div class="tc" id="tc_xztypz">
 	<div class="tc_div1">
     	<div class="tc_title">
-        	<span class="js_sp1" id="bj1">通用配置添加</span>
+        	<span class="js_sp1" id="bj1">岗位特殊添加</span>
         </div>
         <form method="POST" action="{:U('add')}">
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
-            	<input type="hidden" name="fid" value="{$fid}">
+            <input type="hidden" name="fid" value="{$fid}">
                 <li>
                     <label>公司：</label>
-                    <select name="company_id">
+                    <select name="company_id" class="change_dept">
                     <option value="">请选择</option>
                     <foreach name="company" item="vo">
                     	<option value="{$vo.id}">{$vo.name}</option>
                    	</foreach>
+                    </select>
+                </li>
+                <li>
+                    <label>部门：</label>
+                    <select name="dept_id" class="change_pos">
+                    </select>
+                </li>
+                <li>
+                    <label>岗位：</label>
+                    <select name="pos_id" class="get_pos">
                     </select>
                 </li>
                 <li class="tc_li1">
@@ -119,21 +140,32 @@ input[disabled="disabled"]{color:#22bd9b !important;}
         </form>
     </div>
 </div>
-<div class="tc" id="tc_typzbj">
+
+<div class="tc" id="tc_xztypzbj">
 	<div class="tc_div1">
     	<div class="tc_title">
-        	<span class="js_sp1" id="bj1">通用配置编辑</span>
+        	<span class="js_sp1" id="bj1">岗位特殊编辑</span>
         </div>
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
-            	<input type="hidden" id="typz_id">
+            <input type="hidden" id="typz_id">
                 <li>
                     <label>公司：</label>
-                    <select name="company_id" id="typz_company">
+                    <select name="company_id" class="change_dept" id="change_dept">
                     <option value="">请选择</option>
                     <foreach name="company" item="vo">
                     	<option value="{$vo.id}">{$vo.name}</option>
                    	</foreach>
+                    </select>
+                </li>
+                <li>
+                    <label>部门：</label>
+                    <select name="dept_id" class="change_pos" id="change_pos">
+                    </select>
+                </li>
+                <li>
+                    <label>岗位：</label>
+                    <select name="pos_id" class="get_pos" id="get_pos">
                     </select>
                 </li>
                 <li class="tc_li1">
@@ -143,39 +175,53 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                 
             </ul>
         </div>
+        
         <div class="bottom" style="position:initial">
         	<span class="bottom_sp3">取消</span>
             <span ><a class="bottom_sp4" onclick="save();">确定</a></span>
         </div>
     </div>
 </div>
-<div class="tc" id="tc_typzfz">
+<div class="tc" id="tc_xztypzfz">
 	<div class="tc_div1">
     	<div class="tc_title">
-        	<span class="js_sp1" id="bj1">通用配置复制</span>
+        	<span class="js_sp1" id="bj1">岗位特殊复制</span>
         </div>
+        <form method="POST" action="{:U('add')}">
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
+            <input type="hidden" name="fid" value="{$fid}">
                 <li>
                     <label>公司：</label>
-                    <select>
+                    <select name="company_id" class="change_dept">
                     <option value="">请选择</option>
                     <foreach name="company" item="vo">
                     	<option value="{$vo.id}">{$vo.name}</option>
                    	</foreach>
                     </select>
                 </li>
+                <li>
+                    <label>部门：</label>
+                    <select name="dept_id" class="change_pos">
+                    </select>
+                </li>
+                <li>
+                    <label>岗位：</label>
+                    <select name="pos_id" class="get_pos">
+                    </select>
+                </li>
                 <li class="tc_li1">
                     <label>备注：</label>
-                    <textarea></textarea>
+                    <textarea name="remark"></textarea>
                 </li>
                 
             </ul>
         </div>
+        
         <div class="bottom" style="position:initial">
         	<span class="bottom_sp3">取消</span>
-            <span class="bottom_sp4">确定</span>
+            <input type="submit" class="bottom_sp4" value="确定">
         </div>
+        </form>
     </div>
 </div>
-

@@ -474,6 +474,34 @@ $("#qx2").click(function(){
 	$("#pos_name_multi_data").val('');
     $('.content00').hide();
 })
+$("#qk3").click(function(){
+	$('div[class="content3"] input[type="checkbox"]').prop({
+        checked: false
+    })
+})
+$("#gb3").click(function(){
+	$('.content000').hide();
+})
+$("#qd3").click(function(){
+	var s = '';
+	var data = '';
+	$('div[class="content3"] input[type="checkbox"]:checked').each(function(){
+		s += $(this).attr('name2')+';';
+		data += $(this).val()+'|';
+    });
+	$("#company_name_multi").val(s);
+	$("#company_name_multi_data").val(data);
+    $('.content000').hide();
+    
+})
+$("#qx3").click(function(){
+	$('div[id="content3"] input[type="checkbox"]').prop({
+        checked: false
+    })
+    $("#company_name_multi").val('');
+	$("#company_name_multi_data").val('');
+    $('.content000').hide();
+})
 $('input[type="checkbox"]').change(function(e) {
 
   var checked = $(this).prop("checked"),
