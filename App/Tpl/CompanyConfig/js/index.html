@@ -85,10 +85,10 @@ function save(){
 	})
 }
 
-function set_vertion(id){
+function set_version(id,company_id){
 	$.ajax({
-		url:"{:U('update_vertion')}",
-		data:{id:id},
+		url:"{:U('update_version')}",
+		data:{id:id,company_id:company_id},
 		type:'post',
 		success:function(data){
 		ui_alert("设置成功",function(){

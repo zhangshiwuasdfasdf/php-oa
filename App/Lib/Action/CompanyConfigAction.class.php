@@ -7,6 +7,9 @@ class CompanyConfigAction extends CommonAction {
 		if (!empty($_POST['li_company_id'])) {
 			$map['company_id'] = array('eq',$_POST['li_company_id']);
 		}
+		if (!empty($_POST['li_version'])) {
+			$map['version'] = array('eq',$_POST['li_version']);
+		}
  		//dump($map);die;
 }
 
@@ -19,7 +22,7 @@ class CompanyConfigAction extends CommonAction {
 		$model = M('CompanyConfig');
 		if (!empty($model)) {
 			//$info = $this -> _list($model, $map);
-			$info = $model->where($map)->select();
+			$info = $model->where($map)->order("id desc")->select();
 		}
 		foreach($info as $k=>$v){
 			$id=$v['company_id'];
@@ -71,10 +74,11 @@ class CompanyConfigAction extends CommonAction {
 		}
 	}
 	
-	function update_vertion(){
+	function update_version(){
 		$id = $_POST['id'];
-		$data=M("CompanyConfig")->where(array('id'=>$id))->setField('vertion','当前');
-		$data=M("CompanyConfig")->where("id != $id")->setField('vertion','历史');
+		$company_id = $_POST['company_id'];
+		$data=M("CompanyConfig")->where(array('id'=>$id))->setField('version','当前');
+		$data=M("CompanyConfig")->where("id != $id and company_id = $company_id")->setField('version','历史');
 		exit(json_encode($data));
 	}
 	function del(){

@@ -43,7 +43,7 @@ textarea{outline:none; resize: none;}
 .span1{ font-weight:bold; width:200px;}
 .span2_0{ width:30px;}
 .span2{ width:200px;}
-.content_a,.content_bj,.content_fz,.content_set{ display:block; height:28px; line-height:28px;font-size:12px; color:#22bd9b; font-weight:bold; cursor:pointer;}
+.content_a,.content_bj,.content_fz,.content_set{ display:block; height:28px; line-height:28px;font-size:12px; color:#b9b9b9; font-weight:bold; cursor:pointer;}
 input[type="button"]{border: 0px;background: #fff;}
 .content_bottom1{ background:#fff; height:30px; margin-top:10px;}
 .content_bottom2{ background:#fff; height:42px; margin-top:2px; line-height:42px; position:relative;}
