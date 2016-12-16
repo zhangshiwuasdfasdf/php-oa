@@ -16,7 +16,19 @@ function del() {
 
 function change_module(name){
 	$(".flow_name_tj option").remove();
-	if(name == "人力资源"){
+	$.ajax({
+		type:'post',
+		data:{name:name},
+		async:false,
+		url:"{:U('getFlowNameByModuleName')}",
+		success:function(data){
+			$(".flow_name_tj").append(data.info);
+		},
+		error:function(){
+			
+		}
+	})
+	/* if(name == "人力资源"){
 		var html='';
 		html += "<option value=''>请选择</option>";
 		html += "<option value='部门招聘需求申请'>部门招聘需求申请</option>";
@@ -49,14 +61,14 @@ function change_module(name){
 		html += "<option value='人事任命、业务提成申请'>人事任命、业务提成申请</option>";
 		html += "<option value='会务申请'>会务申请</option>";
 		$(".flow_name_tj").append(html);
-	}
+	} */
 }
 $(".mkfl_name_tj").change(function(){
 	var module_name = $(".mkfl_name_tj").val();
 	change_module(module_name);
 });
 
-function show(id,module_name,flow_name,table_name,approve_url,look_url,approve_display,is_use,is_refactor,form_fields,is_emerg){
+function show(id,module_name,flow_name,table_name,approve_url,look_url,approve_display,is_use,is_refactor,form_fields,is_emerg,flow_type_id){
 	$("#workflow_id").val(id);
 	$("#mkfl_name option").each(function(){
 		if($(this).val() == module_name){
@@ -69,6 +81,7 @@ function show(id,module_name,flow_name,table_name,approve_url,look_url,approve_d
 			$(this).prop('selected','true');
 		}
 	})
+	$("#flow_type_id").val(flow_type_id);
 	$("#table_name").val(table_name);
 	$("#approve_url").val(approve_url);
 	$("#look_url").val(look_url);
@@ -96,6 +109,7 @@ function show(id,module_name,flow_name,table_name,approve_url,look_url,approve_d
 }
 function save(){
 	var id=$("#workflow_id").val();
+	var flow_type_id = $("#flow_type_id").val();
 	var module_name=$("#mkfl_name").val();
 	var flow_name=$("#flow_name").val();
 	var table_name=$("#table_name").val();
@@ -110,7 +124,7 @@ function save(){
 	$.ajax({
 		type: "post",
 		url: "{:U('edit')}",    
-		data:{id:id,module_name:module_name,flow_name:flow_name,table_name:table_name,approve_url:approve_url,look_url:look_url,approve_display:approve_display,is_use:is_use,is_refactor:is_refactor,form_fields:form_fields,is_emerg:is_emerg},
+		data:{id:id,module_name:module_name,flow_name:flow_name,table_name:table_name,approve_url:approve_url,look_url:look_url,approve_display:approve_display,is_use:is_use,is_refactor:is_refactor,form_fields:form_fields,is_emerg:is_emerg,flow_type_id:flow_type_id},
 		dataType: "json",
 		success:function(result){
 			if(result.data){

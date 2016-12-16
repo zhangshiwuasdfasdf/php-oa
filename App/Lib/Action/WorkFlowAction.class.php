@@ -71,6 +71,37 @@ class WorkFlowAction extends CommonAction {
 				$this -> ajaxReturn('', "删除失败", 0);
 			}
 	}
-	
+	function get_child_menu($menu_id,&$array){
+		$menu = M('MenuNew')->where(array('pid'=>$menu_id,'is_del'=>'0'))->order('sort asc')->getField('id,menu_name,menu_addr');
+		if($menu){
+			$array = array_merge($array,$menu);
+		}
+		foreach ($menu as $k=>$v){
+			$this->get_child_menu($v['id'],$array);
+		}
+	}
+	function getFlowNameByModuleName(){
+		$module_name = I('name');
+		$menu_id = M('MenuNew')->where(array('menu_name'=>$module_name,'is_del'=>'0'))->getField('id');
+		$array = array();
+		$this->get_child_menu($menu_id,$array);
+		foreach ($array as $k=>$v){
+			if(false === strpos($v['menu_addr'], 'flow/getlist?type=')){
+				unset($array[$k]);
+			}
+		}
+		$html = '<option value="">请选择</option>';
+		foreach ($array as $k=>$v){
+			$query = parse_url($v['menu_addr'])['query'];
+			$params = explode('&', $query);
+			$query_arr = array();
+			foreach ($params as $kk=>$vv){
+				$param = explode('=', $vv);
+				$query_arr[$param[0]] = $param[1];
+			}
+			$html .= '<option value="'.$v['menu_name'].'" node="'.$query_arr['type'].'">'.$v['menu_name'].'</option>';
+		}
+		$this -> ajaxReturn(1, $html, 1);
+	}
 }
 ?>

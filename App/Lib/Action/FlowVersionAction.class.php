@@ -62,5 +62,16 @@ class FlowVersionAction extends CommonAction {
 			}
 		}
 	}
+	function set_default(){
+		if(!empty($_REQUEST['id']) && !empty($_REQUEST['flow_type_setting_id'])){
+			$res = M('FlowVersion')->where(array('id'=>array('eq',I('id'))))->save(array('status'=>'1'));
+			$res2 = M('FlowVersion')->where(array('id'=>array('neq',I('id')),'flow_type_setting_id'=>array('eq',I('flow_type_setting_id'))))->save(array('status'=>'0'));
+			if(false !== $res && false !== $res2){
+				$this->ajaxReturn('1','设置成功','1');
+			}else{
+				$this->ajaxReturn('1','设置失败','0');
+			}
+		}
+	}
 }
 ?>

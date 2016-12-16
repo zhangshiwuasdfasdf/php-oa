@@ -36,11 +36,6 @@ class FlowNodeAction extends CommonAction {
 	}
 	
 	function index(){
-		$str = M('FlowNode')->find(7);
-		$table = M('FlowLeave')->find(10);
-		eval('$if='.$str['rule_expression'].';');
-		dump($if);
-		dump($table);die;
 		$model = D("FlowNodeView");
 		$map = $this -> _search();
 		$map['flow_version_id'] = $_GET['flow_version_id'];

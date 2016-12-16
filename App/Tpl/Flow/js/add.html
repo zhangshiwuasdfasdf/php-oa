@@ -216,6 +216,7 @@
 		var dept_id = $("#dept_id").val();
 		var dept_id_from = $("#dept_id_from").val();
 		var dept_id_to = $("#dept_id_to").val();
+		var type = $("#type").val();
 		
 		var url = getUrlByName();
 		var available_hour = $("#available_hour_save").val();
@@ -242,13 +243,14 @@
 		$.ajax({
 			type: "post",
 			url: url,    
-			data:{uid:uid,day:day_num,dept_id:dept_id,dept_id_from:dept_id_from,dept_id_to:dept_id_to},
+			data:{uid:uid,day:day_num,dept_id:dept_id,dept_id_from:dept_id_from,dept_id_to:dept_id_to,type:type},
 			dataType: "json",
 			async:false, //关闭异步
 			success: function(result){
 				if(result){
 					if(result.data){
 						$("#confirm").val(result.data.confirm);
+						$("#confirm_upid").val(result.data.upid_no);
 						$("#confirm_name").val(result.data.confirm_name);
 					}else{
 						ui_alert("暂时无法获取审批流程，请联系管理员",function(){
@@ -285,7 +287,7 @@
 		*/
 		$("#step").val(step);
 		if (check_form("form_data")) {
-			sendForm("form_data", "{:U('save')}");
+			//sendForm("form_data", "{:U('save')}");
 		}
 	}
 	function getUrlByName(){

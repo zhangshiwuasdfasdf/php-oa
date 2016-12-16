@@ -3096,29 +3096,31 @@ function slice_time_day_over_time($start,$end){
 	}
 }
 /*
- * 输入id(或者数组)，输出emp_no，emp_name，emp_name_display
+ * 输入upid(或者数组)，输出emp_no，emp_name，emp_name_display
  */
-function getFlowData($ids,$mark='->'){
-	if(empty($ids)){
+function getFlowData($upids,$mark='->'){
+	if(empty($upids)){
 		return false;
-	}elseif(!is_array($ids)){
-		$ids = array($ids);
+	}elseif(!is_array($upids)){
+		$upids = array($upids);
 	}
 	$emp_no = '';
 	$emp_name = '';
 	$emp_name_display = '';
-	foreach ($ids as $id){
-		if(!empty($id)){
+	foreach ($upids as $upid){
+		if(!empty($upid)){
+			$id = M('RUserPosition')->where(array('id'=>$upid))->getField('user_id');
 			$flow_emp_no = get_user_info($id,'emp_no');
 			$flow_name = get_user_info($id,'name');
 			
+			$upid_no .= $upid.'|';
 			$emp_no .= 'emp_'.$flow_emp_no.'|';
 			$emp_name .= $flow_name.'<>';
 			$emp_name_display .= $mark.$flow_name;
 		}
 	}
 	$emp_name_display = substr($emp_name_display,strlen($mark));
-	return array('confirm'=>$emp_no,'confirm_name'=>$emp_name,'confirm_name_display'=>$emp_name_display);
+	return array('confirm'=>$emp_no,'confirm_name'=>$emp_name,'upid_no'=>$upid_no,'confirm_name_display'=>$emp_name_display);
 }
 /*
  * 根据flow表的type字段判断使用哪张表
@@ -4045,6 +4047,28 @@ function GetAllMyLeader($user_id=null,$position_id=null,$dept_id=null){
 		$dept_id = get_dept_id();
 	}
 	$upids = M('RUserPositionDeptPosition')->where(array('dept_id'=>$dept_id,'position_id'=>$position_id))->getField('upid',true);
+	$res = M('RUserPosition')->where(array('id'=>array('in',$upids)))->order('position_sequence_id asc')->select();
+	return $res;
+}
+function GetMyLeaderBusiness($start,$end,$user_id=null,$dept_id=null){
+	if(empty($user_id)){
+		$user_id = get_user_id();
+	}
+	if(empty($dept_id)){
+		$dept_id = get_dept_id();
+	}
+	$upids = M('RUserPositionDept')->where(array('dept_id'=>$dept_id))->getField('upid',true);
+	$res = M('RUserPosition')->where(array('id'=>array('in',$upids),'position_sequence_id'=>array('between',array($start,$end))))->order('position_sequence_id asc')->select();
+	return $res;
+}
+function GetAllMyLeaderBusiness($user_id=null,$dept_id=null){
+	if(empty($user_id)){
+		$user_id = get_user_id();
+	}
+	if(empty($dept_id)){
+		$dept_id = get_dept_id();
+	}
+	$upids = M('RUserPositionDept')->where(array('dept_id'=>$dept_id))->getField('upid',true);
 	$res = M('RUserPosition')->where(array('id'=>array('in',$upids)))->order('position_sequence_id asc')->select();
 	return $res;
 }

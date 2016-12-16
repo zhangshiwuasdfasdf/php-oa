@@ -95,7 +95,7 @@ class FlowTypeAction extends CommonAction {
 	}
 	
 	function tag_manage() {
-		$this -> _tag_manage("分组管理",false);
+		$this -> _tag_manage("模块管理",false);
 	}
 
 	function edit() {
