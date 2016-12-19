@@ -1,0 +1,24 @@
+<layout name='Layout/ace_layout' />
+<link type="text/css" href="__PUBLIC__/css/gzldb.css" rel="stylesheet"/>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.12.3.min.js"></script>
+
+<div class="content_title">
+	<span class="content_sp1"></span>
+	<span class="content_sp2">工作流信息</span>  
+</div>
+<form action="{:U('agency')}" method="post">
+<div class="db_con">
+	<ul>
+		<li>
+			<label>当前委托人</label>
+			<input type="text" name="current_client"/>
+		</li>
+		<li>
+			<label>委托审批人</label>
+			<input type="text" name="to_client"/>
+		</li>
+		<li>
+			<input type="submit" class="bottom_sp4" value="提交">
+		</li>
+	</ul>
+</div>

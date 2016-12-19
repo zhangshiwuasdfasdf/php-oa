@@ -140,10 +140,10 @@ function save(){
 		}
 	})
 }
-function set_version(id,company_id,dept_id,pos_id){
+function set_version(id,pos_id){
 	$.ajax({
 		url:"{:U('update_version')}",
-		data:{id:id,company_id:company_id,dept_id:dept_id,pos_id:pos_id},
+		data:{id:id,pos_id:pos_id},
 		type:'post',
 		success:function(data){
 		ui_alert("设置成功",function(){

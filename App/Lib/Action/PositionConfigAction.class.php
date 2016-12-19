@@ -88,11 +88,9 @@ class PositionConfigAction extends CommonAction {
 	
 	function update_version(){
 		$id = $_POST['id'];
-		$company_id = $_POST['company_id'];
-		$dept_id = $_POST['dept_id'];
 		$pos_id = $_POST['pos_id'];
 		$data=M("PositionConfig")->where(array('id'=>$id))->setField('version','当前');
-		$data=M("PositionConfig")->where("id != $id and company_id = $company_id and dept_id=$dept_id and pos_id=$pos_id")->setField('version','历史');
+		$data=M("PositionConfig")->where("id != $id and pos_id=$pos_id")->setField('version','历史');
 		exit(json_encode($data));
 	}
 	function del(){
