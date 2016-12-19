@@ -14,6 +14,32 @@ function del() {
 		});
 	});
 }
+$(".set_default").click(function(){
+	var id = $(this).parent().prev().prev().prev().prev().prev().prev().find('input').val();
+	var flow_type_setting_id = "{$Think.get.flow_type_setting_id}";
+	var vars = 'id='+id+'&flow_type_setting_id='+flow_type_setting_id;
+	sendAjax("{:U('set_default')}", vars, function(data) {
+		if (data.status) {
+			ui_alert(data.info,function(){
+				location.reload();
+			});				
+		}
+	});
+})
+function set_default(id,flow_type_setting_id){
+	alert("{$Think.get.flow_type_setting_id}");
+	var vars = 'id='+id+'&flow_type_setting_id='+flow_type_setting_id;
+	sendAjax("{:U('set_default')}", vars, function(data) {
+		if (data.status) {
+			ui_alert(data.info,function(){
+				alert($(this).attr('class'));
+				//$("input[name='id[]']:checkbox:checked").each(function() {
+					//$(this).parents("li").remove();
+				//});
+			});				
+		}
+	});
+}
 function wli(){
 	var wsp0=0;
 	var wsp=$('.content_ul_w ul li').eq(0).children('span');

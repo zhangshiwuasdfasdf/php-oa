@@ -260,7 +260,8 @@ class FlowModel extends CommonModel {
 			} else {
 				$data['emp_no'] = $this -> duty_emp_no($flow_id, $step);
 			}
-
+			$data['upid'] = $this -> duty_upid($flow_id, $step);
+			
 			if (strpos($data['emp_no'], ",") !== false) {
 				$emp_list = explode(",", $data['emp_no']);
 				foreach ($emp_list as $emp) {
@@ -348,7 +349,23 @@ class FlowModel extends CommonModel {
 		if (substr($step, 0, 1) == 3) {
 			$consult = M("Flow") -> where("id=$flow_id") -> getField("consult");
 			$arr_consult = array_filter(explode("|", $consult));
-			return $arr_consult[fmod($step, 10) - 1];
+			
+			return $arr_confirm[fmod($step, 10) - 1];
+		}
+	}
+	function duty_upid($flow_id, $step) {
+		if (substr($step, 0, 1) == 2) {
+			$confirm = M("Flow") -> where("id=$flow_id") -> getField("confirm_upid");
+			$arr_confirm = array_filter(explode("|", $confirm));
+	
+			return $arr_confirm[fmod($step, 10) - 1];
+		}
+	
+		if (substr($step, 0, 1) == 3) {
+			$consult = M("Flow") -> where("id=$flow_id") -> getField("consult");
+			$arr_consult = array_filter(explode("|", $consult));
+				
+			return $arr_confirm[fmod($step, 10) - 1];
 		}
 	}
 

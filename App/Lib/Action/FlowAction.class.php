@@ -49,12 +49,16 @@ class FlowAction extends CommonAction {
 	function _flow_auth_filter($folder, &$map) {
 		$emp_no = get_emp_no();
 		$user_id = get_user_id();
+		$dept_id = get_dept_id();
+		$position_id = get_position_id();
+		$upid = M('RUserPosition')->where(array('user_id'=>$user_id,'position_id'=>$position_id,'dept_id'=>$dept_id))->getField('id');
 		switch ($folder) {
 			case 'confirm' :
 				$this -> assign("folder_name", '待办');
 				$FlowLog = M("FlowLog");
 				$where['emp_no'] = $emp_no;
 				$where['_string'] = "result is null";
+				$where['upid'] = array('in',array('0',$upid));
 				$log_list = $FlowLog -> where($where) -> field('flow_id') -> select();
 				$log_list = rotate($log_list);
 				if (!empty($log_list)) {
@@ -1409,6 +1413,9 @@ class FlowAction extends CommonAction {
 		$this -> display();
 	}
 	public function ajaxgetflow(){
+		$flow_type_setting_id = M('FlowTypeSetting')->where(array('flow_type_id'=>$_POST['type'],'is_use'=>'1','is_del'=>'0'))->getField('id');
+// 		$this->getRootDept();
+// 		M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0'));
 		$type = $_GET['type'];
 		switch($type){
 			case 'leave' : $this->ajaxgetflow_leave();
@@ -1502,6 +1509,8 @@ class FlowAction extends CommonAction {
 		}
 	}
 	public function ajaxgetflow_over_time($array=array(),$flow_log){
+		
+		
 		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
 		$dept_id = $_POST['dept_id']?$_POST['dept_id']:$array['dept_id'];
 		if(empty($uid)){
@@ -1515,6 +1524,8 @@ class FlowAction extends CommonAction {
 			$isYuanQuCaiWuBu = false;
 			$flow = checkFlowNotMe(array($Parentid,getHRDeputyGeneralManagerId($uid)));
 		}
+		//upid
+		$flow = array('10','20');
 		
 		if($this->isAjax()){
 			$this->ajaxReturn(getFlowData(array_unique2($flow)),null,1);
@@ -2858,6 +2869,7 @@ class FlowAction extends CommonAction {
 				$is_last_confirm = D("Flow") -> is_last_confirm($flow_id);
 				
 				$model = D("FlowLog");
+				//多余的去除
 				$model -> where("step=$step and flow_id=$flow_id and result is null") -> delete();
 
 				if ($list !== false) {//保存成功
@@ -3438,12 +3450,14 @@ class FlowAction extends CommonAction {
 				$flow_me = rotate($flow_me);
 				$flow_me = $flow_me['id'];
 			}
-			$flow_to_me = M('FlowLog')->field('flow_id')->distinct(true)->where(array('user_id'=>get_user_id(),'_complex'=>'result is null'))->select();
+			$upid = M('RUserPosition')->where(array('user_id'=>get_user_id(),'position_id'=>get_position_id(),'dept_id'=>get_dept_id()))->getField('id');
+			$flow_to_me = M('FlowLog')->field('flow_id,upid')->distinct(true)->where(array('user_id'=>get_user_id(),'upid'=>array('in',array('0',$upid)),'_complex'=>'result is null'))->select();
 			if(empty($flow_to_me)){
 				$flow_to_me = array();
 			}else{
 				$flow_to_me = rotate($flow_to_me);
 				$flow_to_me = $flow_to_me['flow_id'];
+				
 			}
 			$map['id'] = array('in',array_merge($flow_me,$flow_to_me));
 		}

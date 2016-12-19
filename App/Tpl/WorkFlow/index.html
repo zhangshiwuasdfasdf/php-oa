@@ -67,8 +67,8 @@
                     <span class="span2">{$vo.form_fields}</span>
                     <span class="span2">{$vo.is_emerg|is_emerg}</span>
                     <span class="span2"><a class="content_a" id="a_lbbj_{$vo.id}" 
-                    onclick="show('{$vo.id}','{$vo.module_name}','{$vo.flow_name}','{$vo.table_name}','{$vo.approve_url}','{$vo.look_url}','{$vo.approve_display}','{$vo.is_use}','{$vo.is_refactor}','{$vo.form_fields}','{$vo.is_emerg}');">编辑</a></span>
-                    <span class="span2"><a class="content_b" id="a_fpbm" href="{:U('flow_version/index?flow_type_setting_id='.$vo['id'])}">流程版本</a></span>
+                    onclick="show('{$vo.id}','{$vo.module_name}','{$vo.flow_name}','{$vo.table_name}','{$vo.approve_url}','{$vo.look_url}','{$vo.approve_display}','{$vo.is_use}','{$vo.is_refactor}','{$vo.form_fields}','{$vo.is_emerg}','{$vo.flow_type_id}');">编辑</a></span>
+                    <span class="span2"><a class="content_a" id="a_fpbm" href="{:U('flow_version/index?flow_type_setting_id='.$vo['id'])}">流程版本</a></span>
                 </li>
                 </foreach>
                 </form>
@@ -100,6 +100,7 @@
           <span class="js_sp1" id="bj1">新增流程</span>
         </div>
         <form method="POST" action="{:U('add')}">
+        <input name="flow_type_id" id="flow_type_id" type="hidden"/>
         <div class="tc_ul_div1">
             <ul class="tc_ul_s">
                 <li>
@@ -112,7 +113,7 @@
                 </li>
                 <li>
                     <label>流程名称：</label>
-                    <select name="flow_name" class="flow_name_tj"></select>
+                    <select name="flow_name" class="flow_name_tj" onchange="$('#flow_type_id').val($(this).find('option:selected').attr('node'))"></select>
                     <!-- <input class="tc_inp" type="text" name="flow_name"/> -->
                 </li> 
                 <li>
@@ -188,7 +189,7 @@
                 </li>
                  <li>
                     <label>流程名称：</label>
-                    <select name="flow_name" class="flow_name_tj" id="flow_name"></select>
+                    <select name="flow_name" class="flow_name_tj" id="flow_name" onchange="$('#flow_type_id').val($(this).find('option:selected').attr('node'))"></select>
                     <!-- <input class="tc_inp" type="text" name="flow_name" id="flow_name"/> -->
                 </li> 
                 <li>

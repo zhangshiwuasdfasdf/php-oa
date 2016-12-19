@@ -81,6 +81,7 @@
                     <span class="span1">版本备注</span>
                     <span class="span1"></span>
                     <span class="span1"></span>
+                    <span class="span1"></span>
                 </li>
                 <empty name="list">
 					<li style="border: 1px solid #eaedf1;border-top: 0px;line-height: 120px;text-align: center;font-size: 24px;">
@@ -102,6 +103,11 @@
 		                    <span class="span2">{$vo.version}</span>
 		                    <span class="span2">{$vo.create_time|date="Y-m-d H:i:s",###}</span>
 		                    <span class="span2">{$vo.version_remark}</span>
+		                    <span class="span2 version">
+		                    	<if condition="$vo.status neq '1'">
+		                    		<a class="content_a set_default">设为当前版本</a>
+		                    	</if>
+		                    </span>
 		                    <span class="span2"><a class="content_a a_lbbj" node="{$vo.id}">编辑</a></span>
 		                    <span class="span2"><a class="content_a" id="a_fpbm" href="{:U('flow_node/index?flow_version_id='.$vo['id'])}">节点配置</a></span>
 		                </li>
