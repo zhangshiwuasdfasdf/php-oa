@@ -85,12 +85,13 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                 <form method="post" action="" name="form_data_scwf" id="form_data_scwf">
                 <foreach name="info" item="vo">
                 <li class="content_li">
+                
                     <span class="span2_0"><input name="id[]" type="checkbox" value="{$vo.id}"/></span>
-                    <span class="span2">{$vo.company}</span>
-                    <span class="span2">{$vo.dept}</span>
-                    <span class="span2">{$vo.position}</span>
-                    <span class="span2">{$vo.remark}</span>
-                    <span class="span2">{$vo.version}</span>
+                    <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.company}</span>
+                    <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.dept}</span>
+                    <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.position}</span>
+                    <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.remark}</span>
+                    <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.version}</span>
                     <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_a" id="a_typz">配置</a></span>
                     <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_bj" id="a_lbbj" onclick="show2('{$vo.id}','{$vo.company_id}','{$vo.dept_id}','{$vo.pos_id}','{$vo.remark}','{$vo.dept}')">编辑</a></span>
                     <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_fz" >复制版本</a></span>
@@ -99,7 +100,6 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                     <else/>
                     	<span class="span2"><input style="color:#b9b9b9" type="button" value="设置为当前版本" class="content_set" id="{$vo.id}" onclick="set_version('{$vo.id}','{$vo.company_id}','{$vo.dept_id}','{$vo.pos_id}','1');"/></span>
                     </if>
-                    
                 </li>
                 </foreach>
                 </form>
@@ -116,11 +116,8 @@ input[disabled="disabled"]{color:#22bd9b !important;}
 				</div>
 				<div class="b2"><a onclick="del();">删除</a></div>
 				<div class="pagination" style="float:right;line-height:25px;">
-				       {$page}
-				</div>
-				<!-- <php>if(isAction('company_config/del')){</php> -->
-		            <!-- <php>}</php> -->
-						
+             	{$page}
+        		</div>
 			</div>
 			</div>
 		</div>     
