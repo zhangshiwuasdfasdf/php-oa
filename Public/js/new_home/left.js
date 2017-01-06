@@ -502,62 +502,69 @@ $("#qx3").click(function(){
 	$("#company_name_multi_data").val('');
     $('.content000').hide();
 })
-$('input[type="checkbox"]').change(function(e) {
 
-  var checked = $(this).prop("checked"),
-      container = $(this).parent(),
-      siblings = container.siblings();
 
-  container.find('input[type="checkbox"]').prop({
-    indeterminate: false,
-    checked: checked
-  });
-
-  function checkSiblings(el) {
-
+function checkSiblings(el) {
     var parent = el.parent().parent(),
-        all = true;
-
+    all = true;
     el.siblings().each(function() {
-      return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+    	return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
     });
 
     if (all && checked) {
-
-      parent.children('input[type="checkbox"]').prop({
-        indeterminate: false,
-        checked: checked
-      });
-
-      checkSiblings(parent);
-
+    	parent.children('input[type="checkbox"]').prop({
+    		indeterminate: false,
+    		checked: checked
+    	});
+    	checkSiblings(parent);
     } else if (all && !checked) {
-
-      parent.children('input[type="checkbox"]').prop("checked", checked);
-      parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
-      checkSiblings(parent);
-
+    	parent.children('input[type="checkbox"]').prop("checked", checked);
+    	parent.children('input[type="checkbox"]').prop("indeterminate", (parent.find('input[type="checkbox"]:checked').length > 0));
+    	checkSiblings(parent);
     } else {
-
-      el.parents("li").children('input[type="checkbox"]').prop({
-        indeterminate: true,
-        checked: false
-      });
-
+    	el.parents("li").children('input[type="checkbox"]').prop({
+    		indeterminate: true,
+    		checked: false
+    	});
     }
-
-  }
-
-  checkSiblings(container);
-});
-
-$("div[class='content1'] li img").each(function(){
-	$(this).toggle(function(){
-		$(this).attr('src','./Public/img/hl.png')
-		$(this).parent('li').children('ul').slideDown()
-	},function(){
-		$(this).attr('src','./Public/img/zk.png')	
-		$(this).parent('li').children('ul').slideUp()
-	})
+}
+  
+/* $("div[class='content1'] li img").each(function(){
+$(this).toggle(function(){
+	$(this).attr('src','./Public/img/hl.png')
+	$(this).parent('li').children('ul').slideDown()
+},function(){
+	$(this).attr('src','./Public/img/zk.png')	
+	$(this).parent('li').children('ul').slideUp()
 })
-//以上为多选部门和岗位
+}) */
+/*
+ * 以上点击树形结构的加减图片展开缩放，改为以下代码。可以支持ajax动态加载树形结构
+ * 再加上级联选中
+ */
+$("div[class='content1']").click(function(ev){
+	var ev = ev || window.event;
+	var target = ev.target || ev.srcElement;
+	if($(target).is('img')){
+		if($(target).attr('src') == './Public/img/hl.png'){
+			$(target).attr('src','./Public/img/zk.png')	
+			$(target).parent('li').children('ul').slideUp()
+		}else if($(target).attr('src') == './Public/img/zk.png'){
+			$(target).attr('src','./Public/img/hl.png')
+			$(target).parent('li').children('ul').slideDown()
+		}
+	}else if($(target).is("input[type='checkbox']")){
+		var jilian = $(this).attr('isjilian');
+		if(jilian!='0'){
+		  	checked = $(target).prop("checked"),
+		    container = $(target).parent(),
+		    siblings = container.siblings();
+		
+		  	container.find('input[type="checkbox"]').prop({
+		  		indeterminate: false,
+		  		checked: checked
+		  	});
+		  	checkSiblings(container);
+		}
+	}
+})
