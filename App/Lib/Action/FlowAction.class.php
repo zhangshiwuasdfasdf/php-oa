@@ -1414,8 +1414,37 @@ class FlowAction extends CommonAction {
 	}
 	public function ajaxgetflow(){
 		$flow_type_setting_id = M('FlowTypeSetting')->where(array('flow_type_id'=>$_POST['type'],'is_use'=>'1','is_del'=>'0'))->getField('id');
-// 		$this->getRootDept();
-// 		M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0'));
+		//有限考虑岗位特殊配置
+		$type = 2;
+		$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','dept_id'=>array('like','|'.get_dept_id().'|'),'pos_id'=>get_position_id()))->find();
+		if(empty($company_position_config)){
+			$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','pos_id'=>get_position_id()))->find();
+			if(empty($company_position_config)){
+				$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','dept_id'=>array('like','|'.get_dept_id().'|')))->find();
+				if(empty($company_position_config)){
+					$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','dept_id'=>array('like','|'.get_dept_id().'|')))->find();
+					if(empty($company_position_config)){
+						$type = 1;
+						$root_dept = getRootDept(get_dept_id());
+						$company_position_config = M('CompanyConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','company_id'=>$root_dept['id']))->find();
+					}
+				}
+			}
+		}
+		if(empty($company_position_config)){
+			//获取不到合适的公司通用配置和岗位特殊配置
+			$this->ajaxReturn(null,null,0);
+		}else{
+			$flow_config_detail = M('FlowConfigDetail')->where(array('flow_config_id'=>$company_position_config['id'],'type'=>$type,'is_using'=>'1'))->order('sheet_id,step')->select();
+			foreach ($flow_config_detail as $k=>$v){
+				if($this->check_condition($v['sheet_condition_id'])){
+					$open=fopen("C:\log.txt","a" );
+					fwrite($open,json_encode($v['id'])."\r\n");
+					fclose($open);
+				}
+			}
+		}
+		die;
 		$type = $_GET['type'];
 		switch($type){
 			case 'leave' : $this->ajaxgetflow_leave();
@@ -3736,6 +3765,13 @@ class FlowAction extends CommonAction {
 			$info['mark'] = 'out';
 			$info['attendance_time'] = $finish_time;
 			$atten -> add($info);
+		}
+	}
+	function check_condition($condition_id){
+		if($condition_id == '0'){
+			return true;
+		}else{
+			return false;
 		}
 	}
 }

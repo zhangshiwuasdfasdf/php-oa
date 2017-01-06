@@ -221,7 +221,6 @@
 		var url = getUrlByName();
 		var available_hour = $("#available_hour_save").val();
 		var style = $("input[name='style']:checked").val();
-		
 		if(day_num != undefined && hour_num != undefined){
 			if((Number(day_num)!=parseInt(Number(day_num))) || (Number(hour_num)!=parseInt(Number(hour_num)))){
 				ui_alert("请输入整数时间！",function(){
@@ -357,6 +356,8 @@
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'chops_use'))}";
 		}else if($("#name").val()=='私车公用申请'){
 			var url = "{:U('flow/ajaxgetflow',array('type'=>'car_use'))}";
+		}else{
+			var url = "{:U('flow/ajaxgetflow')}";
 		}
 		return url;
 	}

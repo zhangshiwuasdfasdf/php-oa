@@ -48,6 +48,19 @@ function del() {
 		});
 	});
 }
+$(".change_dept_simple").change(function(){
+	var pid=$(this).val();
+	$.ajax({
+		type: "post",
+		url: "{:U('ajax_get_dept_simple')}",
+		data:{pid:pid},
+		dataType: "json",
+		success:function(result){
+			$(".change_pos_simple").html(result);
+			
+		}
+	})
+})
 $(".change_dept").change(function(){
 	var pid=$(this).val();
 	$.ajax({
@@ -56,7 +69,8 @@ $(".change_dept").change(function(){
 		data:{pid:pid},
 		dataType: "json",
 		success:function(result){
-			$(".change_pos").html(result);
+			$("#tc_xztypz .content1").html(result);
+			
 		}
 	})
 })
@@ -74,8 +88,24 @@ $(".change_pos").change(function(){
 		}
 	});
 })
-function show(id,company_id,dept_id,pos_id,remark){
+$(".change_pos_simple").change(function(){
+	var dep_id=$(this).val();
+	$.ajax({
+		type:'post', 
+		url: "{:U('ajax_get_pos')}",
+		data:{dep_id:dep_id},
+		dataType: "json",
+		success: function(result){
+			$(".get_pos_simple").html(result);
+		},
+		error:function(e){
+		}
+	});
+})
+function show2(id,company_id,dept_id,pos_id,remark,dept){
 	$("#typz_id").val(id);
+	$("#dept_name_multi_data2").val(dept_id);
+	$("#dept_name_multi2").val(dept);
 	$("#change_dept option").each(function(){
 		if($(this).val() == company_id){
 			$(this).prop('selected','true');
@@ -84,15 +114,17 @@ function show(id,company_id,dept_id,pos_id,remark){
 	$.ajax({
 		type:'post', 
 		url: "{:U('ajax_get_dept')}",
-		data:{pid:company_id},
+		data:{pid:company_id,dept_id:dept_id},
 		dataType: "json",
 		success: function(result){
-			$("#change_pos").html(result);
+			$("#tc_xztypzbj .content1").html(result);
+			
+			/* $("#change_pos").html(result);
 			$("#change_pos option").each(function(){
 				if($(this).val() == dept_id){
 					$(this).prop('selected','true');
 				}
-			})
+			}) */
 		},
 		error:function(e){
 		}
@@ -119,8 +151,8 @@ function show(id,company_id,dept_id,pos_id,remark){
 function save(){
 	var id=$("#typz_id").val();
 	var company_id=$("#change_dept").val();
-	var dept_id=$("#change_pos").val();
-	var pos_id=$("#get_pos").val();
+	var dept_id=$("#dept_name_multi_data2").val();
+	var pos_id=$("#tc_xztypzbj #get_pos").val();
 	var remark=$("#typz_remark").val();
 	$.ajax({
 		type: "post",
@@ -140,20 +172,83 @@ function save(){
 		}
 	})
 }
-function set_version(id,company_id,dept_id,pos_id){
+function set_version(id,company_id,dept_id,pos_id,type){
 	$.ajax({
 		url:"{:U('update_version')}",
-		data:{id:id,company_id:company_id,dept_id:dept_id,pos_id:pos_id},
+		data:{id:id,company_id:company_id,dept_id:dept_id,pos_id:pos_id,type:type},
 		type:'post',
 		success:function(data){
-		ui_alert("设置成功",function(){
-			location.reload();
-		});
+			ui_alert(data.info,function(){
+				location.reload();
+			});
 		},
 		error:function(e){
-		ui_alert("系统发生错误",function(){
-		});
-	}
+			ui_alert("系统发生错误",function(){
+			});
+		}
 	});
+}
+$(function(){
+    var M1 = $('.aa')
+    M1.on('click',function(e){e.stopPropagation();})
+    .find('div[class="content1"]').on('click',function(){
+        M1.find('.content2').show();
+    });
+    $(document).on('click',function(){
+    	M1.find('.content2').hide();
+    })
+})
+function check() {
+    var str=document.getElementsByName("box");
+    var objarray=str.length;
+    var chestr="";
+    for (i=0;i<objarray;i++) {
+        if (str[i].checked == true) {
+            chestr += str[i].value + ",";
+        }
+    }
+    $(".w").val(chestr)
+}
+function show(type){
+	var s = '';
+	var data = '|';
+	if(type == 'add'){
+		$('#tc_xztypz div[class="content1"] input[type="checkbox"]:checked').each(function(){
+			s += $(this).attr('name2')+';';
+			data += $(this).val()+'|';
+	    });
+		$("#tc_xztypz #dept_name_multi").val(s);
+		$("#tc_xztypz #dept_name_multi_data").val(data);
+	    $('#tc_xztypz .content2').hide();
+	}else if(type == 'edit'){
+		$('#tc_xztypzbj div[class="content1"] input[type="checkbox"]:checked').each(function(){
+			s += $(this).attr('name2')+';';
+			data += $(this).val()+'|';
+	    });
+		$("#tc_xztypzbj #dept_name_multi2").val(s);
+		$("#tc_xztypzbj #dept_name_multi_data2").val(data);
+	    $('#tc_xztypzbj .content2').hide();
+	}
+	
+    
+    $.ajax({
+		type:'post', 
+		url: "{:U('ajax_get_pos')}",
+		data:{dep_id:data},
+		dataType: "json",
+		success: function(result){
+			$(".get_pos").html(result);
+			/* $(".get_pos option").each(function(){
+				if($(this).val() == pos_id){
+					$(this).prop('selected','true');
+				}
+			}) */
+		},
+		error:function(e){
+		}
+	});
+}
+function cancel(){
+	$('.content2').hide();
 }
 </script>

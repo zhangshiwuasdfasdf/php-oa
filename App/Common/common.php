@@ -1054,7 +1054,7 @@ function select_tree_menu($tree) {
 	}
 	return $html;
 }
-function select_tree_menu_mul($tree,$level=0) {
+function select_tree_menu_mul($tree,$level=0,$selected=array(),$ext='') {
 	$level++;
 	$html = "";
 	if (is_array($tree)) {
@@ -1070,17 +1070,18 @@ function select_tree_menu_mul($tree,$level=0) {
 				if (empty($val["id"])) {
 					$id = $val["name"];
 				}
+				$selected_html = in_array($id, $selected)?'checked="checked"':'';
 				if (isset($val['_child'])) {
 					$html = $html . "<li>\r\n";
 					$html = $html . "<img src=\"./Public/img/zk.png\"/>\r\n";
-					$html = $html . "<input type=\"checkbox\" name=\"dept[]\" name2=\"$title\" id=\"dept_$id\" value=\"$id\">\r\n";
+					$html = $html . "<input type=\"checkbox\" name=\"dept[]\" name2=\"$title\" id=\"dept_$id\" value=\"$id\" $selected_html $ext>\r\n";
 					$html = $html . "<label for=\"dept_$id\">$title</label>\r\n";
-					$html = $html . select_tree_menu_mul($val['_child'],$level);
+					$html = $html . select_tree_menu_mul($val['_child'],$level,$selected,$ext);
 					$html = $html . "</li>\r\n";
 				} else {
 					$html = $html . "<li>\r\n";
 					$html = $html . "<img src=\"./Public/img/hl.png\"/>\r\n";
-					$html = $html . "<input type=\"checkbox\" name=\"dept[]\" name2=\"".$title."\" id=\"dept_".$id."\" value=\"".$id."\">\r\n";
+					$html = $html . "<input type=\"checkbox\" name=\"dept[]\" name2=\"".$title."\" id=\"dept_".$id."\" value=\"".$id."\" $selected_html $ext>\r\n";
 					$html = $html . "<label for=\"dept_$id\">$title</label>\r\n";
 					$html = $html . "</li>\r\n";
 				}
@@ -4022,6 +4023,9 @@ function is_refactor($is_refactor){
 function is_emerg($is_emerg){
 	return $is_emerg=='1'?'是':'否';
 }
+/*
+ * 根据行政管辖找岗位级别介于$start和$end之间的UserPosition
+ */
 function GetMyLeader($start,$end,$user_id=null,$position_id=null,$dept_id=null){
 	if(empty($user_id)){
 		$user_id = get_user_id();
@@ -4033,9 +4037,19 @@ function GetMyLeader($start,$end,$user_id=null,$position_id=null,$dept_id=null){
 		$dept_id = get_dept_id();
 	}
 	$upids = M('RUserPositionDeptPosition')->where(array('dept_id'=>$dept_id,'position_id'=>$position_id))->getField('upid',true);
-	$res = M('RUserPosition')->where(array('id'=>array('in',$upids),'position_sequence_id'=>array('between',array($start,$end))))->order('position_sequence_id asc')->select();
+	$where['id'] = array('in',$upids);
+	if($start){
+		$where['_complex']['position_sequence_id'][] = array('egt',$start);
+	}
+	if($end){
+		$where['_complex']['position_sequence_id'][] = array('elt',$end);
+	}
+	$res = M('RUserPosition')->where($where)->order('position_sequence_id asc')->select();
 	return $res;
 }
+/*
+ * 根据行政管辖找全部上级的UserPosition
+ */
 function GetAllMyLeader($user_id=null,$position_id=null,$dept_id=null){
 	if(empty($user_id)){
 		$user_id = get_user_id();
@@ -4050,6 +4064,32 @@ function GetAllMyLeader($user_id=null,$position_id=null,$dept_id=null){
 	$res = M('RUserPosition')->where(array('id'=>array('in',$upids)))->order('position_sequence_id asc')->select();
 	return $res;
 }
+/*
+ * 根据行政管辖找连续上级至一级部门负责人的UserPosition
+ */
+function GetMyLeaderToOne($user_id=null,$position_id=null,$dept_id=null){
+	if(empty($user_id)){
+		$user_id = get_user_id();
+	}
+	if(empty($position_id)){
+		$position_id = get_position_id();
+	}
+	if(empty($dept_id)){
+		$dept_id = get_dept_id();
+	}
+	$upids = M('RUserPositionDeptPosition')->where(array('dept_id'=>$dept_id,'position_id'=>$position_id))->getField('upid',true);
+	$res = M('RUserPosition')->where(array('id'=>array('in',$upids),'position_sequence_id'=>array('elt',26)))->order('position_sequence_id asc')->select();
+	foreach ($res as $k=>$v){
+		$find = M('Dept')->where(array('id'=>$v['dept_id'],'pid'=>array('in',array(1,2,3,4,5))))->find();
+		if(false == $find){
+			unset($res[$k]);
+		}
+	}
+	return $res;
+}
+/*
+ * 根据业务管辖找岗位级别介于$start和$end之间的UserPosition
+ */
 function GetMyLeaderBusiness($start,$end,$user_id=null,$dept_id=null){
 	if(empty($user_id)){
 		$user_id = get_user_id();
@@ -4058,9 +4098,19 @@ function GetMyLeaderBusiness($start,$end,$user_id=null,$dept_id=null){
 		$dept_id = get_dept_id();
 	}
 	$upids = M('RUserPositionDept')->where(array('dept_id'=>$dept_id))->getField('upid',true);
-	$res = M('RUserPosition')->where(array('id'=>array('in',$upids),'position_sequence_id'=>array('between',array($start,$end))))->order('position_sequence_id asc')->select();
+	$where['id'] = array('in',$upids);
+	if($start){
+		$where['_complex']['position_sequence_id'][] = array('egt',$start);
+	}
+	if($end){
+		$where['_complex']['position_sequence_id'][] = array('elt',$end);
+	}
+	$res = M('RUserPosition')->where($where)->order('position_sequence_id asc')->select();
 	return $res;
 }
+/*
+ * 根据业务管辖找全部上级的UserPosition
+ */
 function GetAllMyLeaderBusiness($user_id=null,$dept_id=null){
 	if(empty($user_id)){
 		$user_id = get_user_id();

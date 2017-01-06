@@ -3,26 +3,51 @@
 <script type="text/javascript" src="__PUBLIC__/js/jquery-1.12.3.min.js"></script>
 <style>
 input[disabled="disabled"]{color:#22bd9b !important;}
+
+.e ul,li{ list-style: none; margin: 0; padding: 0;}
+.w{ width: 195px; background:#fff; height: 30px; color: #000; font-size: 12px; line-height: 30px; border: solid 1px #aaaaaa;position:absolute;left:10px;top:0px;}
+.e{ width: 195px; max-height: 80px; background-color:#fff; overflow: auto; border: solid 1px #aaaaaa; border-top:none;position:absolute; top:45px; left:85px; z-index:999;display:none;}
+.e ul{ width: 100%; height: auto;}
+.e ul li{ width: 100%; overflow: hidden; height: 20px;}
+.e input{ margin: 0; padding: 0; float: left; width: 14px; height: 14px; margin-top: 3px; margin-left: 3px; cursor: pointer;}
+.e label{ float: left; height: 20px; line-height: 20px; font-size: 12px; cursor: pointer; left:20px;}
+
+.content_z{ width:205px; height:308px; overflow:hidden;left:75px;position:absolute;top:15px;}
+.content2{ width:195px; height:auto; overflow:hidden; border:solid 1px #c1c1c1;left:0px;position:absolute;top:30px;z-index:999;background:#fff;}
+.content1{ width:185px; height:222px; overflow:auto; border-bottom:solid 1px #dadbdb;}
+.content1 label { left:30px;}
+.content1 li{line-height:30px;height:auto;}
+.top2{ width:100%; height:30px; line-height:30px; background:#eff1f1; border-bottom:solid 1px #dadbdb;}
+.top_s1{ display:block; float:left; color:#526856; font-size:12px; font-weight:bold; margin-left:5px;cursor:default;}
+.top_s2{ display:block; float:right; color:#22bf9b; font-size:12px; margin-right:5px; cursor:default;}
+.ss{ background:#fff; width:100%; height:34px; overflow:hidden;}
+.ss_inp1{ height:24px; width:156px; border: solid 1px #e3e8ec; outline:none; float:left; background:#f3f5f7; margin-top:5px; margin-left:5px;}
+.ss_inp2{ display:block; width:36px; height:24px; background:#22bf9b; float:left; margin-top:5px;}
+.ss_inp2 img{ width:20px; height:auto; margin-top:2px; margin-left:8px;}
+.bottom2{ width:100%; height:54px; overflow:hidden;}
+.bottom_s1{ display:block; width:74px; height:30px; line-height:30px; text-align:center; background:#1eb891; float:left; border-radius:2px; margin-left:22px; color:#fff; font-size:14px; margin-top:12px;}
+.bottom_s2{ display:block; width:74px; height:30px; line-height:30px; text-align:center; background:#465a6e; float:left; border-radius:2px; margin-left:10px; color:#fff; font-size:14px; margin-top:12px;}
+
 </style>
 <div class="zong">
 	<div class="top_k">
 	<form method="post" name="form_adv_search" id="form_adv_search">
         <div class="top1">
-			<span>表单名称：</span><span class="top_sp">员工请假申请</span>
+			<span>表单名称：</span><span class="top_sp">{$flow_name}</span>
             <!-- <span>公司名称：<input class="top_in" type="text"/></span> -->
             <span>公司名称：
-            <select name="li_company_id" class="change_dept">
+            <select name="eq_company_id" class="change_dept_simple">
                 <option value="">请选择</option>
                 <foreach name="company" item="vo">
                  	<option value="{$vo.id}">{$vo.name}</option>
                 </foreach>
             </select>	
             </span>
-            <span>部门：<select name="li_dept_id" class="change_pos">
+            <span>部门：<select name="li_dept_id" class="change_pos_simple">
                     </select></span>
-            <span>岗位：<select name="li_pos_id" class="get_pos">
+            <span>岗位：<select name="eq_pos_id" class="get_pos_simple">
                     </select></span>
-            <span>仅显示当前版本：<input type="checkbox" name="li_version" value="当前"/></span>
+            <span>仅显示当前版本：<input type="checkbox" name="eq_version" value="当前"/></span>
             <div class="top_button">
                 <a onclick="submit_adv_search();"><img src="__PUBLIC__/img/cx.png"/></a>
             </div>
@@ -60,16 +85,21 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                 <form method="post" action="" name="form_data_scwf" id="form_data_scwf">
                 <foreach name="info" item="vo">
                 <li class="content_li">
-                    <span class="span2_0"><input name="id[]" type="checkbox"/></span>
-                    <span class="span2">{$vo.company}</span>
-                    <span class="span2">{$vo.dept}</span>
-                    <span class="span2">{$vo.position}</span>
-                    <span class="span2">{$vo.remark}</span>
-                    <span class="span2">{$vo.version}</span>
+                
+                    <span class="span2_0"><input name="id[]" type="checkbox" value="{$vo.id}"/></span>
+                    <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.company}</span>
+                    <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.dept}</span>
+                    <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.position}</span>
+                    <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.remark}</span>
+                    <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.version}</span>
                     <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_a" id="a_typz">配置</a></span>
-                    <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_bj" id="a_lbbj" onclick="show('{$vo.id}','{$vo.company_id}','{$vo.dept_id}','{$vo.pos_id}','{$vo.remark}')">编辑</a></span>
+                    <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_bj" id="a_lbbj" onclick="show2('{$vo.id}','{$vo.company_id}','{$vo.dept_id}','{$vo.pos_id}','{$vo.remark}','{$vo.dept}')">编辑</a></span>
                     <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_fz" >复制版本</a></span>
-                    <span class="span2"><input style="color:#b9b9b9" type="button" value="设置为当前版本" class="content_set" id="{$vo.id}" onclick="set_version('{$vo.id}','{$vo.company_id}','{$vo.dept_id}','{$vo.pos_id}');" <if condition="($vo.version eq '当前')"> disabled="disabled" </if> /></span>
+                    <if condition="($vo.version eq '当前')">
+                    	<span class="span2"><input style="color:#b9b9b9" type="button" value="设置为历史版本" class="content_set" id="{$vo.id}" onclick="set_version('{$vo.id}','{$vo.company_id}','{$vo.dept_id}','{$vo.pos_id}','0');"/></span>
+                    <else/>
+                    	<span class="span2"><input style="color:#b9b9b9" type="button" value="设置为当前版本" class="content_set" id="{$vo.id}" onclick="set_version('{$vo.id}','{$vo.company_id}','{$vo.dept_id}','{$vo.pos_id}','1');"/></span>
+                    </if>
                 </li>
                 </foreach>
                 </form>
@@ -86,11 +116,8 @@ input[disabled="disabled"]{color:#22bd9b !important;}
 				</div>
 				<div class="b2"><a onclick="del();">删除</a></div>
 				<div class="pagination" style="float:right;line-height:25px;">
-				       {$page}
-				</div>
-				<!-- <php>if(isAction('company_config/del')){</php> -->
-		            <!-- <php>}</php> -->
-						
+             	{$page}
+        		</div>
 			</div>
 			</div>
 		</div>     
@@ -115,10 +142,20 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                    	</foreach>
                     </select>
                 </li>
-                <li>
+                <li class="aa">
                     <label>部门：</label>
-                    <select name="dept_id" class="change_pos">
-                    </select>
+                    <div class="content_z">
+					<input type="text" class="w" id="dept_name_multi" name="dept_name_multi" onfocus="$('#tc_xztypz .content2').show()" readonly>
+					<input name="dept_name_multi_data" id="dept_name_multi_data" type="hidden"/>
+					<div class="content2" style="display:none;">
+					    <div class="content1">
+					    </div>
+					    <div class="bottom2">
+					    	<span class="bottom_s1" onclick="show('add')">确定</span>
+					        <span class="bottom_s2" onclick="cancel()" style="left:10px;">取消</span>
+					    </div>
+					</div>
+					</div>
                 </li>
                 <li>
                     <label>岗位：</label>
@@ -132,7 +169,12 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                 
             </ul>
         </div>
-        
+        <div style="position:absolute;width:55px;top:114px;right:6px;">
+        	<input name="jilian" id="" type="radio" value="1" onclick="$('#tc_xztypz .content1').attr('isjilian','1')" checked/>
+        	<label style="margin-bottom:0;font-size:12px;">级联</label>
+			<input name="jilian" id="" type="radio" value="0" onclick="$('#tc_xztypz .content1').attr('isjilian','0')"/>
+			<label style="margin-bottom:0;font-size:12px;">不级联</label>
+        </div>
         <div class="bottom" style="position:initial">
         	<span class="bottom_sp3">取消</span>
             <input type="submit" class="bottom_sp4" value="确定">
@@ -158,11 +200,26 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                    	</foreach>
                     </select>
                 </li>
-                <li>
+                <li class="aa">
+                    <label>部门：</label>
+                    <div class="content_z">
+					<input type="text" class="w" id="dept_name_multi2" onfocus="$('#tc_xztypzbj .content2').show()" readonly>
+					<input id="dept_name_multi_data2" type="hidden"/>
+					<div class="content2" style="display:none;">
+					    <div class="content1">
+					    </div>
+					    <div class="bottom2">
+					    	<span class="bottom_s1" onclick="show('edit')">确定</span>
+					        <span class="bottom_s2" onclick="cancel()" style="left:10px;">取消</span>
+					    </div>
+					</div>
+					</div>
+                </li>
+                <!-- <li>
                     <label>部门：</label>
                     <select name="dept_id" class="change_pos" id="change_pos">
                     </select>
-                </li>
+                </li> -->
                 <li>
                     <label>岗位：</label>
                     <select name="pos_id" class="get_pos" id="get_pos">
@@ -175,7 +232,12 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                 
             </ul>
         </div>
-        
+        <div style="position:absolute;width:55px;top:114px;right:6px;">
+        	<input name="jilian" id="" type="radio" value="1" onclick="$('#tc_xztypzbj .content1').attr('isjilian','1')" checked/>
+        	<label style="margin-bottom:0;font-size:12px;">级联</label>
+			<input name="jilian" id="" type="radio" value="0" onclick="$('#tc_xztypzbj .content1').attr('isjilian','0')"/>
+			<label style="margin-bottom:0;font-size:12px;">不级联</label>
+        </div>
         <div class="bottom" style="position:initial">
         	<span class="bottom_sp3">取消</span>
             <span ><a class="bottom_sp4" onclick="save();">确定</a></span>

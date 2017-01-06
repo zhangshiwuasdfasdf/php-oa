@@ -1,0 +1,63 @@
+<layout name='Layout/ace_layout' />
+<style type="text/css"> 
+body { 
+font-family: "微软雅黑"; 
+font-size: 11px; 
+color: #000; 
+} 
+h3 { 
+margin: 0px; 
+padding: 0px; 
+} 
+.suggestionsBox { 
+position: relative; 
+left: 30px; 
+margin: -110px 0px 0px 114px; 
+width: 200px; 
+-moz-border-radius: 7px; 
+-webkit-border-radius: 7px; 
+border: 1px solid #d5d5d5; 
+background:#f1efef;
+} 
+.suggestionList { 
+margin: 0px; 
+padding: 0px; 
+} 
+.suggestionList li { 
+margin: 0px 0px 3px 0px; 
+padding: 3px; 
+cursor: pointer; 
+} 
+.suggestionList li:hover { 
+background-color: #659CD8; 
+} 
+</style>
+<link type="text/css" href="__PUBLIC__/css/gzldb.css" rel="stylesheet"/>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.12.3.min.js"></script>
+
+<div class="content_title">
+	<span class="content_sp1"></span>
+	<span class="content_sp2">工作流信息</span>  
+</div>
+<form action="{:U('agency')}" method="post">
+<div class="db_con">
+	<ul>
+		<li>
+			<label>当前委托人</label>
+			<input type="text" name="current_client" id="inputString" autocomplete="off" onkeyup="lookup(this.value);" onblur="fill();"/>
+		</li>
+		<li>
+			<label>委托审批人</label>
+			<input type="text" name="to_client"/>
+		</li>
+		<li>
+			<input type="submit" class="bottom_sp4" value="提交">
+		</li>
+	</ul>
+</div>
+<div class="suggestionsBox" id="suggestions" style="display: none;"> 
+<div class="suggestionList" id="autoSuggestionsList"> 
+  
+</div> 
+</div> 
+</form>

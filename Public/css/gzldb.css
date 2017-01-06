@@ -1,0 +1,17 @@
+@charset "utf-8";
+/* CSS Document */
+*{ font-family:"微软雅黑";}
+a{ text-decoration:none;}
+ul,li{ margin:0; padding:0; list-style:none;}
+body{ margin:0; padding:0; background:#e5e5e5;}
+input{ margin:0; padding:0; outline:none;}
+
+.content_title{ background:#bdd3e0; height:40px; line-height:40px; position:relative;}
+.content_sp1{ display:block; position:absolute;width:6px; height:20px; background-color:#20b891; border:solid 1px #3da396;top:10px; border-radius:3px;left:20px;}
+.content_sp2{ display:block; font-size:12px; left:40px; position:absolute;}
+
+.db_con{ margin-left: 20px;}
+.db_con li{margin-bottom: 10px; margin-top: 20px;}
+.db_con label{width:120px; text-align: right; font-size: 14px;}
+.db_con input{width:200px; height: 26px; border: solid 1px #ccc;}
+.db_con .bottom_sp4{width: 70px; height: 30px; line-height: 30px; text-align: center; color: #fff; border-radius: 3px; font-size: 14px; background: #1eb891; margin-left: 100px; cursor: pointer;}

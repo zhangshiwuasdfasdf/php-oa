@@ -131,7 +131,7 @@ class DailyReportAction extends CommonAction {
 		}
 
 		$node = D("Dept");
-		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0 and is_real_dept=1") -> order('sort asc') -> select();
+		$dept_menu = $node -> field('id,pid,name') -> where("is_del=0") -> order('sort asc') -> select();
 		$dept_tree = list_to_tree($dept_menu);
 		if(!is_mobile_request()){
 			$this -> assign('dept_list_new', select_tree_menu_mul($dept_tree));

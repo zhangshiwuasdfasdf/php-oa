@@ -82,6 +82,10 @@ class WorkFlowAction extends CommonAction {
 	}
 	function getFlowNameByModuleName(){
 		$module_name = I('name');
+		if($module_name == '通用'){
+			$html = '<option value="通用">通用</option>';
+			$this -> ajaxReturn(1, $html, 1);
+		}
 		$menu_id = M('MenuNew')->where(array('menu_name'=>$module_name,'is_del'=>'0'))->getField('id');
 		$array = array();
 		$this->get_child_menu($menu_id,$array);
