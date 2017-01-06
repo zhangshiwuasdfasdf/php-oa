@@ -231,12 +231,13 @@ class CommonAction extends Action {
 				if($scopes === true){ return true;break;}
 				$all_users['user_id']=array_merge($all_users['user_id'],$scopes['user_id']);
 			}
-			$all_users['user_id'] = array_unique($all_users['user_id']);
 			if(is_array($all_users['user_id'])){
+				$all_users['user_id'] = array_unique($all_users['user_id']);
 				$all_users['user_id'] = array('in',$all_users['user_id']);
+				return $all_user;
 			}
 		}
-		return $all_users; 
+		return ""; 
 	}
 
 	protected function _assign_new_count() {

@@ -5,7 +5,6 @@ class ApprovalFlowAction extends CommonAction {
 		if (!empty($_POST['li_module_name'])) {
 			$map['flow_name'] = array('like','%'.$_POST['li_module_name'].'%');
 		}
- 		//dump($map);die;
 }
 
 	function index(){

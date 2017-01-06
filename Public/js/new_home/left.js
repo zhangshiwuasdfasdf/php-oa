@@ -296,11 +296,19 @@ $(".menu_li9_a3").click(function(){
 })
 
 $(".menu_li9_a4").click(function(){
-	$(".menu_ul2,.menu_ul2_0,.menu_ul3,.menu_ul4_3,.menu_ul4_0,.menu_ul4_1,.menu_ul5,.menu_ul7,.menu_ul8,.menu_ul6,.menu_ul9_1,.menu_ul9_0,.menu_ul9_2,.menu_ul9_3,.menu_ul9_5,.menu_ul6_0").hide()
+	$(".menu_ul2,.menu_ul2_0,.menu_ul3,.menu_ul4_3,.menu_ul4_0,.menu_ul4_1,.menu_ul5,.menu_ul7,.menu_ul8,.menu_ul6,.menu_ul9_1,.menu_ul9_0,.menu_ul9_2,.menu_ul9_3,.menu_ul9_5,.menu_ul6_0,.menu_ul9_4_4").hide()
 	$(".ani_ss").animate({opacity:0,width:'0px'})
 	$(".menu_li9_a0,.menu_li9_a1,.menu_li9_a2,.menu_li9_a3,.menu_li9_a5").removeClass("hover_bg9")
 	$(".menu_li9_a4").toggleClass("hover_bg9")
 	$(".menu_ul9_4").slideToggle()	
+})
+$(".menu_li9_4_a4").click(function(){
+	$(".menu_ul2,.menu_ul2_0,.menu_ul3,.menu_ul4_3,.menu_ul4_0,.menu_ul4_1,.menu_ul5,.menu_ul7,.menu_ul8,.menu_ul6,.menu_ul9_1,.menu_ul9_0,.menu_ul9_2,.menu_ul9_3,.menu_ul9_5,.menu_ul6_0").hide()
+	$(".ani_ss").animate({opacity:0,width:'0px'})
+	$(".menu_li9_a0,.menu_li9_a1,.menu_li9_a2,.menu_li9_a3,.menu_li9_a5").removeClass("hover_bg9")
+	$(".menu_li9_a4").toggleClass("hover_bg9")
+	$(".menu_li9_4_a4").toggleClass("hover_bg9")
+	$(".menu_ul9_4_4").slideToggle()	
 })
 $(".menu_li9_a5").click(function(){
 	$(".menu_ul2,.menu_ul2_0,.menu_ul3,.menu_ul4_3,.menu_ul4_0,.menu_ul4_1,.menu_ul5,.menu_ul7,.menu_ul8,.menu_ul6,.menu_ul9_1,.menu_ul9_0,.menu_ul9_2,.menu_ul9_3,.menu_ul9_4,.menu_ul6_0").hide()
@@ -503,7 +511,7 @@ $("#qx3").click(function(){
     $('.content000').hide();
 })
 $('input[type="checkbox"]').change(function(e) {
-
+	
   var checked = $(this).prop("checked"),
       container = $(this).parent(),
       siblings = container.siblings();
@@ -512,7 +520,7 @@ $('input[type="checkbox"]').change(function(e) {
     indeterminate: false,
     checked: checked
   });
-
+  
   function checkSiblings(el) {
 
     var parent = el.parent().parent(),

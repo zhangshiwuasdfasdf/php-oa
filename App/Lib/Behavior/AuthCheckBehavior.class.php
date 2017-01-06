@@ -14,14 +14,8 @@
 class AuthCheckBehavior extends Behavior {
 	protected $config;
 	public function run(&$params) {
-		//获取本次访问的url路径
-		$url = $this -> convertUrlQuery(parse_url(__SELF__,PHP_URL_QUERY));
-		$urls = $url['m'].'/'.$url['a'];
-		$urls .= isset($url['fid']) ? ('?fid='.$url['fid']) : isset($url['type']) ? ('?type='.$url['type']) : '' ;
-		$urlInfo = M('Privilege')->where(array('url'=>$urls,'is_del'=>'0'))->find();
 		//个人数据
 		$this -> config = &$params;
-		$this -> config['menu'] = $urlInfo;
 		$app_type = $params['app_type'];
 
 		switch($app_type) {
@@ -119,10 +113,17 @@ class AuthCheckBehavior extends Behavior {
 				$auth = $this -> get_auth();
 				break;
 		}
-		$this -> config['auth'] = $auth;
-		return true;
+		//获取本次访问的url路径
+		$url = $this -> convertUrlQuery(parse_url(__SELF__,PHP_URL_QUERY));
+		$urls = $url['m'].'/'.$url['a'];
+		$urls .= isset($url['fid']) ? ('?fid='.$url['fid']) : isset($url['type']) ? ('?type='.$url['type']) : '' ;
+		$urlInfo = M('Privilege')->where(array('url'=>$urls,'is_del'=>'0'))->find();
 		// 当前访问Action中配置的权限是否存在
-		if ($auth[$action_auth[ACTION_NAME]]) {
+		
+			$this -> config['menu'] = $urlInfo;
+			$this -> config['auth'] = $auth;
+			return true;
+		if (!empty($urlInfo)) {
 		} else {
 			$auth_id = session(C('USER_AUTH_KEY'));
 			if (!isset($auth_id)) {

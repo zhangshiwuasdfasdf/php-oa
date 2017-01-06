@@ -1,0 +1,188 @@
+<layout name='Layout/ace_layout' />
+<link type="text/css" href="__PUBLIC__/css/new_versions/lcjdpz.css" rel="stylesheet"/>
+<div class="lc_top">
+	<ul class="lc_head_list">
+		<img class="mr_tj" src="__PUBLIC__/img/new_versions/mr_tj.png"/>
+		<foreach name="pageCount" item="pc">
+		<li class="lc_li" msg="">
+			<span>默认流程</span>
+			<img class="mr_gb" src="__PUBLIC__/img/new_versions/mr_gb.png"/>
+		</li>
+		</foreach>
+	</ul>
+</div>
+<input type="hidden" value="{$fid}" name="fid" id="fid"/>
+<input type="hidden" value="{$type}" name="type" id="type"/>
+<ul class="lc_con_ul processList">
+<foreach name="pageCount" item="pc">
+	<li class="lc_con_li">
+		<div class="lc_con">
+			<div class="lc_div1">
+				<label>流程分支条件：</label>
+				<select name="fenzhi" class="fenzhi">
+					<option value="">请选择</option>
+					<foreach name="list" item="vo">
+						<if condition="$vo.node_type eq '条件节点'">
+							<option value="{$vo.id}">{$vo.node_name}</option>
+						</if>
+					</foreach>
+				</select>
+			</div>
+			<ul class="lc_ul">
+				<li>
+					<div class="lc_ul_div1">
+						<div class="lc_ks1">创建人</div>
+						<div class="lc_ks2">创建人</div>
+					</div>
+					<div class="lc_ul_div2">
+						<div class="lc_box">
+							<input type="checkbox" class="lc_tx1" name="htx"/>
+							<label for="lc_tx1">提醒</label>
+							<input type="checkbox" class="lc_hb1" name="hhb"/>
+							<label for="lc_hb1">合并重复</label>
+						</div>
+						<div class="lc_kz">
+							<a class="xxcr">向下插入</a>
+						</div>
+					</div>
+				</li>
+				<foreach name="pc" item="vv">
+				<li>
+					<div class="lc_ul_div3">
+						<div class="lc_ul_div3_1">
+							<div class="lc_ks1">待填</div>
+							<div class="lc_ks2">待填<div><a class="lc_bj">(编辑</a><a class="lc_gjjd">关键节点)</a></div></div>
+						</div>
+						<div class="lc_ul_div3_2">
+							<div class="lc_xz">
+								<div class="lc_jd">
+									<div>节点类型</div>
+									<select class="lc_select" name="node_result[]">
+										<option value="">请选择</option>
+										<option value="1">连续领导节点</option>
+										<option value="2">规则节点</option>
+										<option value="3">岗位节点</option>
+										<option value="4">个人节点</option>
+										<option value="5">领导节点</option>
+									</select>
+								</div>
+								<div class="lc_jdmc_k">
+									<div class="lc_jdmc">
+										<div class="lc_jdmc_div1">节点名称</div>
+										<select>
+											<foreach name="list" item="hd">
+											<if condition="$hd.node_type eq '活动的'">
+												<option>{$hd.node_name}</option>
+											</if>
+										</foreach>
+										</select>
+										<div class="lc_jdmc_div2">保存</div>
+									</div>
+									<div class="lc_jdmc">
+										<div class="lc_jdmc_div1">节点名称</div>
+										<select>
+											<option>分管副总裁（来自原版节点配置）</option>
+										</select>
+										<div class="lc_jdmc_div2">保存</div>
+									</div>
+									<div class="lc_jdmc">
+										<div class="lc_jdmc_div0">
+											<div class="lc_jdmc_div1">公司</div>
+											<select>
+												<option>集团总部</option>
+												<option>杭州基地</option>
+											</select>
+										</div>
+										<div class="lc_jdmc_div0">
+											<div class="lc_jdmc_div1">部门</div>
+											<select>
+												<option>总经办</option>
+												<option>技术部</option>
+											</select>
+										</div>
+										<div class="lc_jdmc_div0">
+											<div class="lc_jdmc_div1">岗位</div>
+											<select>
+												<option>执行总裁</option>
+											</select>
+										</div>
+										<div class="lc_jdmc_div3">保存</div>
+									</div>
+									<div class="lc_jdmc">
+										<div class="lc_jdmc_div1">节点名称</div>
+										<select>
+											<option>周周（员工自动完成控件）</option>
+										</select>
+										<div class="lc_jdmc_div2">保存</div>
+									</div>
+									<div class="lc_jdmc">
+										<div class="lc_jdmc_div1">岗位</div>
+										<select>
+											<option>经理</option>
+										</select>
+										<div class="lc_jdmc_div2">保存</div>
+									</div>
+								</div>
+							</div>
+							<div class="lc_bc">
+								<div class="lc_bc1">保存</div>
+								<div class="lc_bc2">取消</div>
+							</div>
+						</div>
+					</div>
+					<div class="lc_ul_div4">
+						<div class="lc_ul_div3_1">
+							<div class="lc_ks1">待填</div>
+							<div class="lc_ks2">待填</div>
+						</div>
+					</div>
+					<div class="lc_ul_div2">
+						<div class="lc_box">
+							<input type="checkbox" class="lc_tx" name="tixing[]"/>
+							<label>提醒</label>
+							<input type="checkbox" class="lc_hb" name="hebing[]"/>
+							<label>合并重复</label>
+						</div>
+						<div class="lc_sz">
+							<select name="liuzhan[]">
+								<foreach name="list" item="lz">
+									<if condition="$lz.node_type eq '条件节点'">
+										<option value="{$lz.id}" <if condition="$vv['node_condition_id'] eq $lz['id']">selected</if>>{$lz.node_name}</option>
+									</if>
+								</foreach>
+							</select>
+							<div onclick="tiaojian(this);">保存</div>
+						</div>
+						<div class="lc_kz">
+							<a class="szlzgz">设置流转规则</a>
+							<a class="sy">上移</a>
+							<a class="xy">下移</a>
+							<a class="xxcr">向下插入</a>
+							<a class="qx">取消</a>
+							<a class="hf">恢复</a>
+							<a class="sc">删除</a>
+						</div>
+					</div>
+				</li>
+				</foreach>
+				<li>
+					<div class="lc_ul_div1">
+						<div class="lc_ks1">结束</div>
+						<div class="lc_ks2">结束</div>
+					</div>
+					<div class="lc_ul_div2">
+						<div class="lc_box">
+							<input type="checkbox" class="lc_tx2"/>
+							<label for="lc_tx">提醒</label>
+							<input type="checkbox" class="lc_hb2"/>
+							<label for="lc_hb">合并重复</label>
+						</div>
+						<div class="lc_kz">
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</li>
+</foreach>
+</ul>

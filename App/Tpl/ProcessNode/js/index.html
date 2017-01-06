@@ -1,0 +1,176 @@
+<script type="text/javascript">
+function bj(){
+	$('.lc_bj,.lc_gjjd').click(function(){
+		$(this).parent().parent().parent().hide();
+		$(this).parent().parent().parent().siblings().show();
+		$('.lc_bc2').click(function(){
+			$(this).parent().parent().siblings().show();
+			$(this).parent().parent().hide();	
+		});		
+ 	});
+
+	$('.szlzgz').click(function(){
+		$(this).parent().siblings('.lc_sz').show();
+	});	
+	
+	//删除
+	$('.sc').click(function(){
+		$(this).parent().parent().parent().remove();
+	});
+	
+	$('.lc_select').change(function(){
+		$('div[class="lc_jdmc"]').hide();
+		var v=$(this).find("option:selected").text();
+		if (v ==  "连续领导节点" ){
+			$('div[class="lc_jdmc"]').eq(0).show();
+		}else if (v == "规则节点"){ 
+			$('div[class="lc_jdmc"]').eq(1).show();
+		}else if (v == "岗位节点"){ 
+			$('div[class="lc_jdmc"]').eq(2).show();
+		}else if (v == "个人节点"){ 
+			$('div[class="lc_jdmc"]').eq(3).show();
+		}else if (v == "领导节点"){ 
+			$('div[class="lc_jdmc"]').eq(4).show();
+		}
+	});
+	
+	
+	$('.qx').click(function(){
+		$(this).parent().parent().siblings('.lc_ul_div4').show();
+		$(this).css('color','#ccc');
+		$(this).siblings('.hf').css('color','#ff0000');
+		$(this).siblings().not('.hf').css('color','#ccc');
+	});
+	$('.hf').click(function(){	
+		$(this).parent().parent().siblings('.lc_ul_div4').hide();
+		$(this).css('color','#22be9b');
+		$(this).siblings().css('color','#22be9b');
+	});
+	$(".lc_ul li").each(function(e){
+		$(this).attr('node',e);
+	});
+	$(".lc_head_list li").each(function(e){
+		$(this).attr('node',e+1);
+	});
+}
+bj();
+
+//向下插入
+	$(".xxcr").click(function(){
+		$(this).parent().parent().parent().after('<li><div class="lc_ul_div3"><div class="lc_ul_div3_1"><div class="lc_ks1">待填</div><div class="lc_ks2">待填<div><a class="lc_bj">(编辑</a><a class="lc_gjjd">关键节点)</a></div></div></div><div class="lc_ul_div3_2"><div class="lc_xz"><div class="lc_jd"><div>节点类型</div><select class="lc_select"><option>请选择</option><option>连续领导节点</option><option>规则节点</option><option>岗位节点</option><option>个人节点</option><option>领导节点</option></select></div><div class="lc_jdmc_k"><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>连续上级至一级部门负责人（来自原版节点配置）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>分管副总裁（来自原版节点配置）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">公司</div><select><option>集团总部</option><option>杭州基地</option></select></div><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">部门</div><select><option>总经办</option><option>技术部</option></select></div><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">岗位</div><select><option>执行总裁</option></select></div><div class="lc_jdmc_div3">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>周周（员工自动完成控件）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">岗位</div><select><option>经理</option></select><div class="lc_jdmc_div2">保存</div></div></div></div><div class="lc_bc"><div class="lc_bc1">保存</div><div class="lc_bc2">取消</div></div></div></div></div><div class="lc_ul_div4"><div class="lc_ul_div3_1"><div class="lc_ks1">待填</div><div class="lc_ks2">待填</div></div></div><div class="lc_ul_div2"><div class="lc_box"><input type="checkbox" id="lc_tx"/><label for="lc_tx">提醒</label><input type="checkbox" id="lc_hb"/><label for="lc_hb">合并重复</label></div><div class="lc_sz"><select><option>请选择</option></select><div onClick="tiaojian($(this))">保存</div></div><div class="lc_kz"><a class="szlzgz">设置流转规则</a><a class="sy">上移</a><a class="xy">下移</a><a class="xxcr" onClick="xx($(this))">向下插入</a><a class="qx">取消</a><a class="hf">恢复</a><a class="sc">删除</a></div></div></li>');
+		bj();
+	});	
+
+function xx(a){
+	a.parent().parent().parent().after('<li><div class="lc_ul_div3"><div class="lc_ul_div3_1"><div class="lc_ks1">待填</div><div class="lc_ks2">待填<div><a class="lc_bj">(编辑</a><a class="lc_gjjd">关键节点)</a></div></div></div><div class="lc_ul_div3_2"><div class="lc_xz"><div class="lc_jd"><div>节点类型</div><select class="lc_select"><option>请选择</option><option>连续领导节点</option><option>规则节点</option><option>岗位节点</option><option>个人节点</option><option>领导节点</option></select></div><div class="lc_jdmc_k"><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>连续上级至一级部门负责人（来自原版节点配置）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>分管副总裁（来自原版节点配置）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">公司</div><select><option>集团总部</option><option>杭州基地</option></select></div><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">部门</div><select><option>总经办</option><option>技术部</option></select></div><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">岗位</div><select><option>执行总裁</option></select></div><div class="lc_jdmc_div3">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>周周（员工自动完成控件）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">岗位</div><select><option>经理</option></select><div class="lc_jdmc_div2">保存</div></div></div></div><div class="lc_bc"><div class="lc_bc1">保存</div><div class="lc_bc2">取消</div></div></div></div></div><div class="lc_ul_div4"><div class="lc_ul_div3_1"><div class="lc_ks1">待填</div><div class="lc_ks2">待填</div></div></div><div class="lc_ul_div2"><div class="lc_box"><input type="checkbox" id="lc_tx"/><label for="lc_tx">提醒</label><input type="checkbox" id="lc_hb"/><label for="lc_hb">合并重复</label></div><div class="lc_sz"><select><option>请选择</option></select><div onClick="tiaojian($(this))">保存</div></div><div class="lc_kz"><a class="szlzgz">设置流转规则</a><a class="sy">上移</a><a class="xy">下移</a><a class="xxcr" onClick="xx($(this))">向下插入</a><a class="qx">取消</a><a class="hf">恢复</a><a class="sc">删除</a></div></div></li>');
+	bj();
+}
+
+//默认流程
+$('.lc_con_li').eq(0).show();
+$('.mr_tj').click(function(){
+	$(".lc_top span").parent().css({'background':'#e5e5e5','color':'#333'});
+	$('.lc_top ul').append('<li class="aa"><span>默认流程</span><img class="mr_gb" onClick="t($(this))" src="__PUBLIC__/img/new_versions/mr_gb.png"/></li>');
+	var m=$('.lc_top span').index(this);
+	$('.lc_con_ul').append('<li class="lc_con_li"><div class="lc_con"><div class="lc_div1"><label>流程分支条件：</label><select><option>请选择</option></select></div><ul class="lc_ul"><li><div class="lc_ul_div1"><div class="lc_ks1">创建人</div><div class="lc_ks2">创建人</div></div><div class="lc_ul_div2"><div class="lc_box"><input type="checkbox" id="lc_tx"/><label for="lc_tx">提醒</label><input type="checkbox" id="lc_hb"/><label for="lc_hb">合并重复</label></div><div class="lc_kz"><a class="sy"></a><a class="xy"></a><a class="xxcr" onClick="xx($(this))">向下插入</a></div></div></li><li><div class="lc_ul_div1"><div class="lc_ks1">结束</div><div class="lc_ks2">结束</div></div><div class="lc_ul_div2"><div class="lc_box"><input type="checkbox" id="lc_tx"/><label for="lc_tx">提醒</label><input type="checkbox" id="lc_hb"/><label for="lc_hb">合并重复</label></div><div class="lc_kz"><a></a><a></a><a class="xxcr" onClick="xx($(this))"></a></div></div></li></ul></div></li>');	
+	
+	$('.lc_con_li').hide();
+	$('.lc_con_li').eq(m).show();
+	$('.lc_head_list li').attr('msg','').eq(m).attr('msg','ok');
+	bj();
+});
+
+function t(a){
+	var q=$('.mr_gb').index(a);
+	var q1=q+1;
+	$('li[class="lc_con_li"]').eq(q1).remove();
+	a.parent().siblings().css({'background':'#e5e5e5','color':'#333'});
+	$('.lc_li,.mr_tj').css({'background':'#4f5f6f','color':'#fff'});
+	a.parent().remove();
+	$('li[class="lc_con_li"]').hide();
+	$('li[class="lc_con_li"]').eq(0).show();
+}
+//保存条件
+function tiaojian(obj){
+	var fnode = $(obj).prev().val();//条件id
+	var fid = $("#fid").val();//流程id
+	var type = $("#type").val();//配置类型，1公司通用 2部门配置
+	var fenzhi = $(".processList .lc_con_li[display!='none']").find("select[name='fenzhi']").val();
+	var remind = $(obj).parent().prev().find(".lc_tx").is(":checked") ? '1' : '0';//提醒
+	var merge = $(obj).parent().prev().find(".lc_hb").is(":checked") ? '1' : '0';//合并
+	var step = $(obj).parent().parent().parent().attr('node');//步骤
+	var sheet = $('.lc_head_list li[msg="ok"]').attr('node');//当前标签页
+	$.post("{:U('editProcess')}",
+			{'id':'0','fnode': fnode,'fid':fid,'type':type,'fenzhi':fenzhi,'step':step,'remind':remind,'merge':merge,'sheet':sheet},
+			function(data){
+		if(!data.status){
+			ui_error(data.info);
+		}
+	},'json');
+}
+//换位置之后修改step
+function changeOpt(){
+	var fid = $("#fid").val();//流程id
+	var type = $("#type").val();//配置类型，1公司通用 2部门配置
+	var sheet = $('.lc_head_list li[msg="ok"]').attr('node');//便签页
+	
+}
+
+$(function(){
+	//上移
+	$('.lc_ul').on('click','.sy',function(){
+		 var p_node = $(this).parent().parent().parent();
+		 var pnode = p_node.prev().attr('node').trim();
+		//说明已经是第一个了
+		 if(pnode == '0'){
+			 ui_error('无法上移,已经是第一个了！');
+		 	return false;
+		 }else{
+			 var node = p_node.attr('node').trim();
+			 var items = $('.lc_ul').find('li').toArray();
+			 var tmp;
+			 tmp = items[node-1];
+			 items[node-1] = items[node];
+			 items[node] = tmp;
+			 $('.lc_ul').html(items);
+			 bj();
+		 }
+	})
+	//下移
+	$('.lc_ul').on('click','.xy',function(){
+		 var items = $('.lc_ul').find('li').toArray();
+		 var p_node = $(this).parent().parent().parent();
+		 var pnode = p_node.next().attr('node').trim();
+		//说明已经是最后一个了
+		 if(pnode >= items.length-1){
+			 ui_error('无法下移,已经是最后一个了！');
+		 	return false;
+		 }else{
+			 var node = p_node.attr('node').trim();
+			 var node2=parseInt(node)+1,tmp;
+			 tmp = items[node2];
+			 items[node2] = items[node];
+			 items[node] = tmp;
+			 $('.lc_ul').html(items);
+			 bj();
+		 }
+	})
+	$(".lc_top span").parent().css({'background':'#e5e5e5','color':'#333'});
+	$('.lc_head_list .lc_li').eq(0).attr('msg','ok').css({'background':'#4f5f6f','color':'#fff'});
+	$('.lc_con_li').hide().eq(0).show();
+	
+	$('.lc_top').on('click','span',function(){
+		$('.lc_top span').parent().css({'background':'#e5e5e5','color':'#333'});
+		$(this).parent().css({'background':'#4f5f6f','color':'#fff'});
+		$('.lc_top span').parent().attr('msg','');
+		$(this).parent().attr('msg','ok');
+		$('li[class="lc_con_li"]').hide();
+		var n=$('.lc_top span').index(this);
+		$('li[class="lc_con_li"]').eq(n).show();
+	});	
+})
+</script>
+
+
+
+
