@@ -58,7 +58,7 @@ input[disabled="disabled"]{color:#22bd9b !important;}
                     <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.company}</span>
                     <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.remark}</span>
                     <span class="span2" <if condition="($vo.version neq '当前')"> style="color:#b9b9b9" </if>>{$vo.version}</span>
-                    <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_a" id="a_typz_{$vo.id}">配置</a></span>
+                    <span class="span2"><a href="{:U('ProcessNode/index?id='.$vo['id'].'&fid='.$fid.'&type='.$type)}" <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_a" id="a_typz_{$vo.id}">配置</a></span>
 
                     <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_bj" id="a_lbbj" onclick="show('{$vo.id}','{$vo.company_id}','{$vo.remark}');">编辑</a></span>
                     <span class="span2"><a <if condition="($vo.version eq '当前')"> style="color:#22bd9b" </if> class="content_fz" id="a_fzbb" >复制版本</a></span>

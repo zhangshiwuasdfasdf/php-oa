@@ -141,6 +141,7 @@ class CommonAction extends Action {
 			//更具菜单ids找出所有对应的菜单信息
 			$where['id'] = array('in',array_unique($menus));
 			$where['is_del'] = '0';
+			$where['menu_status'] = '1';
 			$menuList = M('MenuNew') -> where($where) ->order('sort asc') -> select();
 			$list = list_to_tree($menuList);
 			foreach ($list as $v){ 

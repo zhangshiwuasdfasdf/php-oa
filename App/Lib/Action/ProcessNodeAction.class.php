@@ -3,7 +3,7 @@ class ProcessNodeAction extends CommonAction {
 	function _search_filter(&$map) {
 		$map['is_del'] = array('eq','0');
 }
-	//ÅäÖÃÒ³Ãæ
+	//é…ç½®é¡µé¢
 	function index(){
 		$map = $this -> _search();
 		if (method_exists($this, '_search_filter')) {
@@ -11,27 +11,31 @@ class ProcessNodeAction extends CommonAction {
 		}
 		$fid = $_REQUEST['fid'];
 		$type = $_REQUEST['type'];
-		//Ìí¼ÓÍ¨ÓÃÁ÷³Ì
-		$tid = M('FlowTypeSetting') -> where(array('flow_name'=>'Í¨ÓÃ','is_del'=>'0')) -> getField('id');
-		//ÕÒ³öÁ÷³ÌµÄ°æ±¾
+		//æ·»åŠ é€šç”¨æµç¨‹
+		$tid = M('FlowTypeSetting') -> where(array('flow_name'=>'é€šç”¨','is_del'=>'0')) -> getField('id');
+		//æ‰¾å‡ºæµç¨‹çš„ç‰ˆæœ¬
 		$vid = M("FlowVersion") -> where(array('flow_type_setting_id' => array('in',array($fid,$tid)),'is_del'=>'0','status'=>'1')) -> getField('id',true);
-		//°æ±¾ÖÐµÄ½Úµã
+		//ç‰ˆæœ¬ä¸­çš„èŠ‚ç‚¹
 		$node = M("FlowNode") -> where(array('flow_version_id'=>array('in',$vid),'is_del'=>'0'))->select();
 		$this -> assign('list',$node);
 		/**
-		 * µ±Ç°ÅäÖÃÏîµÄËùÓÐÐÅÏ¢
+		 * å½“å‰é…ç½®é¡¹çš„æ‰€æœ‰ä¿¡æ¯
 		 */
 		$info = M('FlowConfigDetail') -> where(array('flow_config_id'=>$fid,'type'=>$type,'is_del'=>'0')) -> select();
 		foreach ($info as $k => $v){
-			$sheet_info[$v['sheet_id']][] = $v; 
+			$sheet_info[$v['sheet_id']][] = $v;
 		}
-		$this -> assign('pageCount',$sheet_info);
+		$sheet = array();
+		foreach ($sheet_info as $k => $v){
+			$sheet[$k] = $this -> array_sort($v,'step','asc');
+		}
+		$this -> assign('pageCount',$sheet);
 		$this -> assign('fid',$fid);
 		$this -> assign('type',$type);
 		$this->display();
 	}
 	
-	//Ìí¼Ó»òÕßÐÞ¸ÄÅäÖÃÏî
+	//æ·»åŠ æˆ–è€…ä¿®æ”¹é…ç½®é¡¹
 	function editProcess(){
 		$model = M('FlowConfigDetail');
 		$data['node_condition_id'] = $_POST['fnode'];
@@ -47,21 +51,59 @@ class ProcessNodeAction extends CommonAction {
 			
 		}else{
 			$model ->add($data);
-			$this->ajaxReturn($data,'Ìí¼Ó³É¹¦',1);
+			$this->ajaxReturn($data,'æ·»åŠ æˆåŠŸ',1);
 		}
 	}
-	//¶þÎ¬Êý×éÄ³Ò»¼üÃûµÄÖµ²»ÄÜÖØ¸´£¬É¾³ýÖØ¸´Ïî
+	//ç»„ç»‡æž¶æž„è”åŠ¨
+	function frameInfo(){
+		$pid = I('post.id');
+		$node = D("Dept");
+		$menu = array();
+		$where['is_del'] = array('eq',0);
+		$where['pid'] = $pid;
+		$menu = $node -> field('id,pid,name') ->where($where)-> order('sort asc') -> select();
+		$this->ajaxReturn($menu,'æ·»åŠ æˆåŠŸ',1);
+	}
+	
+	//	ä¿å­˜é€‰æ‹©ç»“æžœ
+	function save_result(){
+		$id = I('post.id');
+		$nr = I('post.result');
+		$ni = I('post.result_id');
+		$list = M('FlowConfigDetail') -> save(array('id'=>$id,'node_result_id'=>$ni,'node_result_val'=>$nr));
+		if (false !== $list) {
+			$this->ajaxReturn($list,'ä¿®æ”¹æˆåŠŸ',1);
+		} else {
+			$this->ajaxReturn($list,'ä¿®æ”¹å¤±è´¥',0);
+		}
+	}
+	
+	//äºŒç»´æ•°ç»„æŸä¸€é”®åçš„å€¼ä¸èƒ½é‡å¤ï¼Œåˆ é™¤é‡å¤é¡¹
 	private function assoc_unique($arr, $key) {
 		$tmp_arr = array();
 		foreach ($arr as $k => $v) {
-			if (in_array($v[$key], $tmp_arr)) {//ËÑË÷$v[$key]ÊÇ·ñÔÚ$tmp_arrÊý×éÖÐ´æÔÚ£¬Èô´æÔÚ·µ»Øtrue
+			if (in_array($v[$key], $tmp_arr)) {//æœç´¢$v[$key]æ˜¯å¦åœ¨$tmp_arræ•°ç»„ä¸­å­˜åœ¨ï¼Œè‹¥å­˜åœ¨è¿”å›žtrue
 				unset($arr[$k]);
 			} else {
 				$tmp_arr[] = $v[$key];
 			}
 		}
-		sort($arr); //sortº¯Êý¶ÔÊý×é½øÐÐÅÅÐò
+		sort($arr); //sortå‡½æ•°å¯¹æ•°ç»„è¿›è¡ŒæŽ’åº
 		return $arr;
+	}
+	//äºŒç»´æ•°ç»„æŽ’åº
+	function array_sort($array,$row,$type){
+		$array_temp = array();
+		foreach($array as $v){
+			$array_temp[$v[$row]] = $v;
+		}
+		if($type == 'asc'){
+			ksort($array_temp);
+		}elseif($type='desc'){
+			krsort($array_temp);
+		}else{
+		}
+		return $array_temp;
 	}
 }
 ?>

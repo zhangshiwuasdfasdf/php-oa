@@ -58,74 +58,56 @@
 								<div class="lc_jd">
 									<div>节点类型</div>
 									<select class="lc_select" name="node_result[]">
-										<option value="">请选择</option>
+										<option value="0">请选择</option>
 										<option value="1">连续领导节点</option>
 										<option value="2">规则节点</option>
 										<option value="3">岗位节点</option>
 										<option value="4">个人节点</option>
-										<option value="5">领导节点</option>
 									</select>
 								</div>
 								<div class="lc_jdmc_k">
 									<div class="lc_jdmc">
 										<div class="lc_jdmc_div1">节点名称</div>
-										<select>
+										<select name="node_result1">
 											<foreach name="list" item="hd">
 											<if condition="$hd.node_type eq '活动的'">
-												<option>{$hd.node_name}</option>
+												<option value="{$hd.id}">{$hd.node_name}</option>
 											</if>
 										</foreach>
 										</select>
-										<div class="lc_jdmc_div2">保存</div>
 									</div>
 									<div class="lc_jdmc">
 										<div class="lc_jdmc_div1">节点名称</div>
-										<select>
-											<option>分管副总裁（来自原版节点配置）</option>
+										<select name="node_result2">
+											<option value="0">分管副总裁（来自原版节点配置）</option>
 										</select>
-										<div class="lc_jdmc_div2">保存</div>
 									</div>
 									<div class="lc_jdmc">
 										<div class="lc_jdmc_div0">
 											<div class="lc_jdmc_div1">公司</div>
-											<select>
-												<option>集团总部</option>
-												<option>杭州基地</option>
+											<select name="node_result3_1" class="node_result3_1" onchange="showCompany(this,2);">
 											</select>
 										</div>
 										<div class="lc_jdmc_div0">
 											<div class="lc_jdmc_div1">部门</div>
-											<select>
-												<option>总经办</option>
-												<option>技术部</option>
+											<select name="node_result3_2" class="node_result3_2" onchange="showCompany(this,3);">
 											</select>
 										</div>
 										<div class="lc_jdmc_div0">
 											<div class="lc_jdmc_div1">岗位</div>
-											<select>
-												<option>执行总裁</option>
+											<select name="node_result3_3" class="node_result3_3">
 											</select>
 										</div>
-										<div class="lc_jdmc_div3">保存</div>
 									</div>
 									<div class="lc_jdmc">
 										<div class="lc_jdmc_div1">节点名称</div>
-										<select>
-											<option>周周（员工自动完成控件）</option>
-										</select>
-										<div class="lc_jdmc_div2">保存</div>
-									</div>
-									<div class="lc_jdmc">
-										<div class="lc_jdmc_div1">岗位</div>
-										<select>
-											<option>经理</option>
-										</select>
-										<div class="lc_jdmc_div2">保存</div>
+										<input type="text" name="node_result4"/>
 									</div>
 								</div>
 							</div>
 							<div class="lc_bc">
-								<div class="lc_bc1">保存</div>
+								<input type="hidden" name="ids" value="{$vv.id}"/>
+								<div class="lc_bc1" onclick="saveLead(this);">保存</div>
 								<div class="lc_bc2">取消</div>
 							</div>
 						</div>
@@ -138,9 +120,9 @@
 					</div>
 					<div class="lc_ul_div2">
 						<div class="lc_box">
-							<input type="checkbox" class="lc_tx" name="tixing[]"/>
+							<input type="checkbox" class="lc_tx" name="tixing[]" <if condition="$vv['is_remind']">checked</if>/>
 							<label>提醒</label>
-							<input type="checkbox" class="lc_hb" name="hebing[]"/>
+							<input type="checkbox" class="lc_hb" name="hebing[]" <if condition="$vv['is_merge']">checked</if>/>
 							<label>合并重复</label>
 						</div>
 						<div class="lc_sz">

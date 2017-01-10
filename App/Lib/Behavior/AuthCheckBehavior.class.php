@@ -119,7 +119,6 @@ class AuthCheckBehavior extends Behavior {
 		$urls .= isset($url['fid']) ? ('?fid='.$url['fid']) : isset($url['type']) ? ('?type='.$url['type']) : '' ;
 		$urlInfo = M('Privilege')->where(array('url'=>$urls,'is_del'=>'0'))->find();
 		// 当前访问Action中配置的权限是否存在
-		
 			$this -> config['menu'] = $urlInfo;
 			$this -> config['auth'] = $auth;
 			return true;
