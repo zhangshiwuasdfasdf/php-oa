@@ -31,9 +31,13 @@ class ProcessNodeAction extends CommonAction {
 		}
 		//虚拟个空的数组
 		if(empty($sheet)){$sheet = array(array(''));}
+		//查询以及部门
+		$company=M("Dept")->where("pid=0")->field("name,id")->select();
+		$this->assign("company",$company);
 		$this -> assign('pageCount',$sheet);
 		$this -> assign('cid',$cid);
 		$this -> assign('type',$type);
+		$this -> assign('fid',$fid);
 		$this->display();
 	}
 	
@@ -94,6 +98,80 @@ class ProcessNodeAction extends CommonAction {
 		}
 	}
 	
+	//联想用户名
+	function assocName(){
+		$name = I('post.name');
+		if(!empty($name)){
+			$user = M('User') -> where(array('is_del'=>'0','name'=>array('like',"%$name%")))->field('id,name')->select();
+			if (!empty($user)) {
+				$this->ajaxReturn($user,'修改成功',1);
+			} else {
+				$this->ajaxReturn($user,'修改失败',0);
+			}
+		}
+	}
+	//根据id获取员工姓名
+	function assocUser(){
+		$id = I('post.id');
+		if(!empty($id)){
+			$user = M('User') -> where(array('is_del'=>'0','id'=>$id))->field('id,name')->find();
+			if (!empty($user)) {
+				$this->ajaxReturn($user,'修改成功',1);
+			} else {
+				$this->ajaxReturn($user,'修改失败',0);
+			}
+		}
+	}
+	//获取公司下面所有岗位
+	function ajax_get_dept(){
+		$depts = M('Dept')->field('id,pid,name')->where(array('id'=>array('in',get_child_dept_all($_POST['pid'])),'is_del'=>'0','is_use'=>'1','name'=>array('neq','公司领导')))->select();
+		$tree = list_to_tree($depts);
+		$html = select_tree_menu_mul($tree,0,array(),1);
+		$this -> ajaxReturn($html);
+	}
+	//根据部门id查询岗位id
+	function ajax_get_pos(){
+		$dep_id=$_POST['dep_id'];
+		$dep_id = array_filter(explode('|', $dep_id));
+		//$dept_ids=get_child_dept_all($dep_id);
+		$res = M('RDeptPosition')->field('position_id')->where(array('dept_id'=>array('in',$dep_id)))->Distinct(true)->select();
+		$html = "";
+		$html .= "<option value=\"\">请选择</option>\r\n";
+		foreach ($res as $v){
+			$pos_id=$v['position_id'];
+			$name=M("Position")->where(array('id'=>$pos_id,'is_del'=>0,'is_use'=>1))->getField("position_name");
+			if($name){
+				$html .= "<option value=\"$pos_id\">$name</option>\r\n";
+			}
+		}
+		$this -> ajaxReturn($html);
+	}
+	function guanjNode(){
+		$fid = I('post.fid');
+		if(!empty($fid)){
+			//找出流程的版本
+			$vid = M("FlowVersion") -> where(array('flow_type_setting_id' => array('in',array($fid)),'is_del'=>'0','status'=>'1')) -> getField('id',true);
+			//版本中的节点
+			$node = M("FlowNode") -> where(array('flow_version_id'=>array('in',$vid),'is_del'=>'0','node_type'=>'关键节点'))->select();
+			$this->ajaxReturn($node,'修改成功',1);
+		}
+	}
+	//取消节点
+	function quitNode(){
+		$id = I('post.id');
+		$is_using = I('post.flag');
+		if(M('FlowConfigDetail')->save(array('id'=>$id,'is_using'=>$is_using))){
+			$this->ajaxReturn('','修改成功',1);
+		}
+	}
+	//删除节点
+	function delNode(){
+		$id = I('post.id');
+		$is_del = I('post.flag');
+		if(M('FlowConfigDetail')->save(array('id'=>$id,'is_del'=>$is_del))){
+			$this->ajaxReturn('','删除成功',1);
+		}
+	}
 	//二维数组某一键名的值不能重复，删除重复项
 	private function assoc_unique($arr, $key) {
 		$tmp_arr = array();

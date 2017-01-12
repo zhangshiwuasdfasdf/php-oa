@@ -13,6 +13,7 @@
 </div>
 <input type="hidden" value="{$cid}" name="cid" id="cid"/>
 <input type="hidden" value="{$type}" name="type" id="type"/>
+<input type="hidden" value="{$fid}" name="fid" id="fid"/>
 <ul class="lc_con_ul processList">
 <foreach name="pageCount" item="pc">
 	<li class="lc_con_li">
@@ -79,30 +80,55 @@
 									<div class="lc_jdmc">
 										<div class="lc_jdmc_div1">节点名称</div>
 										<select name="node_result2">
-											<option value="0">分管副总裁（来自原版节点配置）</option>
+											<foreach name="list" item="gj">
+												<if condition="$gj['node_type'] eq '规则节点'">
+													<option value="{$gj.id}">{$hd.node_name}</option>
+												</if>
+											</foreach>
 										</select>
 									</div>
 									<div class="lc_jdmc">
 										<div class="lc_jdmc_div0">
 											<div class="lc_jdmc_div1">公司</div>
-											<select name="node_result3_1" class="node_result3_1" onchange="showCompany(this,2);">
-											</select>
+											<select name="company_id" class="change_dept">
+							                    <option value="">请选择</option>
+							                    <foreach name="company" item="vo">
+							                    	<option value="{$vo.id}">{$vo.name}</option>
+							                   	</foreach>
+						                     </select>
 										</div>
 										<div class="lc_jdmc_div0">
 											<div class="lc_jdmc_div1">部门</div>
-											<select name="node_result3_2" class="node_result3_2" onchange="showCompany(this,3);">
-											</select>
+											 <div class="content_z">
+												<input type="text" class="w" id="dept_name_multi" name="dept_name_multi" onfocus="$('.content2').show()" readonly>
+												<input name="dept_name_multi_data" id="dept_name_multi_data" class="wd" type="hidden"/>
+												<div class="content2" style="display:none;">
+												    <div class="content1">
+												    </div>
+												    <div class="bottom2">
+												    	<span class="bottom_s1" onclick="show('add',this)">确定</span>
+												        <span class="bottom_s2" onclick="cancel()" style="left:10px;">取消</span>
+												    </div>
+												</div>
+											</div>
 										</div>
 										<div class="lc_jdmc_div0">
 											<div class="lc_jdmc_div1">岗位</div>
-											<select name="node_result3_3" class="node_result3_3">
+											<select name="node_result3_3" class="node_result3_3 get_pos">
 											</select>
+										</div>
+										<div class="lc_bc" style="float: left;margin-top: 25px;">
+											<input type="hidden" name="ids" value="{$vv.id}"/>
+											<div class="lc_bc1" onclick="saveLead(this);">保存</div>
+											<div class="lc_bc22">取消</div>
 										</div>
 									</div>
 									<div class="lc_jdmc">
 										<div class="lc_jdmc_div1">节点名称</div>
-										<input type="text" name="node_result4"/>
+										<input type="text" name="node_result4" placeholder="请输入员工名称" value=""/>
 									</div>
+									<ul class="nrassoc" style="display: none;">
+									</ul>
 								</div>
 							</div>
 							<div class="lc_bc">
@@ -136,13 +162,23 @@
 							<div onclick="tiaojian(this);">保存</div>
 						</div>
 						<div class="lc_kz">
-							<a class="szlzgz">设置流转规则</a>
-							<a class="sy">上移</a>
-							<a class="xy">下移</a>
-							<a class="xxcr">向下插入</a>
-							<a class="qx">取消</a>
-							<a class="hf">恢复</a>
-							<a class="sc">删除</a>
+							<if condition="$vv['is_using'] eq '0'">
+								<a class="szlzgz" style="color: #ccc">设置流转规则</a>
+								<a class="sy" style="color: #ccc">上移</a>
+								<a class="xy" style="color: #ccc">下移</a>
+								<a class="xxcr" style="color: #ccc">向下插入</a>
+								<a class="qx" style="color: #ccc">取消</a>
+								<a class="hf" style="color: #ff0000">恢复</a>
+								<a class="sc" style="color: #ccc">删除</a>
+							<else/>
+								<a class="szlzgz">设置流转规则</a>
+								<a class="sy">上移</a>
+								<a class="xy">下移</a>
+								<a class="xxcr">向下插入</a>
+								<a class="qx">取消</a>
+								<a class="hf">恢复</a>
+								<a class="sc">删除</a>
+							</if>
 						</div>
 					</div>
 				</li>

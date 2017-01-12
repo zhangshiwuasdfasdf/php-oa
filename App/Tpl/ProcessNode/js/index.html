@@ -1,23 +1,37 @@
 <script type="text/javascript">
 function bj(){
-	$('.lc_bj,.lc_gjjd').click(function(){
+	$('.lc_bj').click(function(){
 		//是否已经设置过
 		var nrd = $(this).attr('nrd').trim();
+		var pn = $(this).parent().parent().parent().next();
 		if(nrd != ""){
 			var nrv = $(this).attr('nrv').trim();
 			//岗位节点
 			switch(nrd){
+				case "2" :
+					pn.find('div[class="lc_jdmc"]').eq(1).show();
+					pn.find("select[name='node_result2']").val(nrv);
+					break;
 				case "3" :
+					var gw = nrv.split('|');
+					$.post("{:U('ajax_get_pos')}",{'dep_id':gw[1]},function(data){
+						pn.find(".get_pos").html(data).val(gw[2]);
+					});
+					pn.find('div[class="lc_jdmc"]').eq(2).show();
 					$.post("{:U('valiDetp')}",{"nrv":nrv},function(data){
 						$(".node_result3_1").val(data.data[0].id);
 					});
 					break;
 				case "4" :
 					
+					$.post("{:U('assocUser')}",{"id":nrv},function(data){
+						pn.find("input[name='node_result4']").val(data.data.name);
+						pn.find("input[name='node_result4']").attr('uid',data.data.id);
+					});
 					break;
 				default :
-					$(this).parent().parent().parent().next().find(".lc_select").val(nrd);
-					$(this).parent().parent().parent().next().find(".lc_jdmc").eq(nrd-1).val(nrv).show();
+					pn.find(".lc_select").val(nrd);
+					pn.find(".lc_jdmc").eq(nrd-1).val(nrv).show();
 					break;
 				}
 		}
@@ -36,6 +50,10 @@ function bj(){
 	//删除
 	$('.sc').click(function(){
 		$(this).parent().parent().parent().remove();
+		var id = $(this).parent().parent().parent().find(".lc_ul_div3 .lc_bc input[name='ids']").val().trim();
+		$.post("{:U('delNode')}",{'id':id,'flag':'1'},function(data){
+			ui_info(data.info);
+		});
 	});
 	
 	$('.lc_select').change(function(){
@@ -57,15 +75,23 @@ function bj(){
 	
 	
 	$('.qx').click(function(){
-		$(this).parent().parent().siblings('.lc_ul_div4').show();
+		$(this).parent().parent().siblings('.lc_ul_div3').show();
 		$(this).css('color','#ccc');
 		$(this).siblings('.hf').css('color','#ff0000');
 		$(this).siblings().not('.hf').css('color','#ccc');
+		var id = $(this).parent().parent().parent().find(".lc_ul_div3 .lc_bc input[name='ids']").val().trim();
+		$.post("{:U('quitNode')}",{'id':id,'flag':'0'},function(data){
+			ui_info(data.info);
+		});
 	});
 	$('.hf').click(function(){	
 		$(this).parent().parent().siblings('.lc_ul_div4').hide();
 		$(this).css('color','#22be9b');
 		$(this).siblings().css('color','#22be9b');
+		var id = $(this).parent().parent().parent().find(".lc_ul_div3 .lc_bc input[name='ids']").val().trim();
+		$.post("{:U('quitNode')}",{'id':id,'flag':'1'},function(data){
+			ui_info(data.info);
+		});
 	});
 	$(".lc_ul li").each(function(e){
 		$(this).attr('node',e);
@@ -103,9 +129,38 @@ $('.mr_tj').click(function(){
 	$('.lc_head_list li').attr('msg','').eq(m).attr('msg','ok');
 	bj();
 });
-
-function t(a){
-}
+//联想员工姓名
+$(".lc_ul").on('keyup','input[name="node_result4"]',function(){
+	var nr4 = $(this).val().trim();
+	if(nr4 == ""){return false;}
+	var tmp = "";
+	$.post("{:U('assocName')}",{'name':nr4},function(data){
+		for(s in data.data){
+			tmp += "<li><a uid="+data.data[s].id+">"+data.data[s].name+"</a></li>";
+		}
+		$(".nrassoc").html(tmp).show();
+	});
+})
+//选中联想的员工姓名
+$(".lc_ul").on('click',".nrassoc a",function(){
+	$(this).parent().parent().prev().find("input[name='node_result4']").val($(this).text());
+	$(this).parent().parent().prev().find("input[name='node_result4']").attr('uid',$(this).attr('uid'));
+	$(".nrassoc").html("");
+})
+//岗位修改取消
+$(".lc_ul").on('click',".lc_bc22",function(){
+	$(this).parent().parent().parent().parent().parent().siblings().show();
+	$(this).parent().parent().parent().parent().parent().hide();	
+})
+//关键节点
+$(".lc_ul").on('click',".lc_gjjd",function(){
+	$(this).parent().parent().parent().hide();
+	$(this).parent().parent().parent().siblings().show();
+	$('.lc_bc2').click(function(){
+		$(this).parent().parent().siblings().show();
+		$(this).parent().parent().hide();	
+	});		
+})
 //显示公司信息
 function showCompany(obj,i){
 	var id = (i == 1) ? '0' : $(obj).val();
@@ -151,7 +206,7 @@ function changeOpt(){
 function saveLead(obj){
 	var po = $(obj).parent().prev();
 	var id = $(obj).prev().val().trim();
-	var lc = po.find('.lc_select').val().trim();
+	var lc = $(obj).parent().parent().parent().parent().find('.lc_select').val().trim();
 	if(lc == '0'){
 		ui_info('请选择节点类型!');
 		return false;
@@ -168,17 +223,17 @@ function saveLead(obj){
 			break;
 		case '3' :
 			ni = 3;
-			var nr31 = po.find("select[name='node_result3_1']").val().trim();
-			if(nr31 == '-1'){ui_info('请选择公司');return false;}
-			var nr32 = po.find("select[name='node_result3_2']").val().trim();
-			if(nr32 == '-1'){ui_info('请选择部门');return false;}
+			var nr31 = po.prev().prev().find("select[name='company_id']").val().trim();
+			if(nr31 == ''){ui_info('请选择公司');return false;}
+			var nr32 = po.prev().find("input[name='dept_name_multi_data']").val().trim();
+			if(nr32 == ''){ui_info('请选择部门');return false;}
 			var nr33 = po.find("select[name='node_result3_3']").val().trim();
-			if(nr33 == '-1'){ui_info('请选择岗位');return false;}
-			nr = nr31 + '|' + nr32 + '|' + nr33;
+			if(nr33 == ''){ui_info('请选择岗位');return false;}
+			nr = nr31 + '' + nr32 + '' + nr33;
 			break;
 		case '4' :
 			ni = 4;
-			nr = po.find("select[name='node_result4']").val().trim();
+			nr = po.find("input[name='node_result4']").attr('uid').trim();
 			break;
 		default :
 			ni = '';
@@ -190,7 +245,55 @@ function saveLead(obj){
 		ui_info(data.info);
 	});
 }
-
+//获取公司下面所有岗位
+$(".change_dept").change(function(){
+	$(this).parent().next().find(".w").val('')
+	$(this).parent().next().find(".wd").val('')
+	var pid=$(this).val();
+	$.ajax({
+		type: "post",
+		url: "{:U('ajax_get_dept')}",
+		data:{pid:pid},
+		dataType: "json",
+		success:function(result){
+			$(".content1").html(result);
+			
+		}
+	})
+})
+//选择岗位
+function show(type,obj){
+	var s = '';
+	var data = '|';
+	if(type == 'add'){
+		$(obj).parent().prev().find('input[type="radio"]:checked').each(function(){
+			s += $(this).attr('name2')+';';
+			data += $(this).val()+'|';
+	    });
+		$(obj).parent().parent().parent().find(".w").val(s);
+		$(obj).parent().parent().parent().find(".wd").val(data);
+	    $('.content2').hide();
+	}else if(type == 'edit'){
+		$('div[class="content1"] input[type="checkbox"]:checked').each(function(){
+			s += $(obj).attr('name2')+';';
+			data += $(obj).val()+'|';
+	    });
+		$("#tc_xztypzbj #dept_name_multi2").val(s);
+		$("#tc_xztypzbj #dept_name_multi_data2").val(data);
+	    $('#tc_xztypzbj .content2').hide();
+	}
+    $.ajax({
+		type:'post', 
+		url: "{:U('ajax_get_pos')}",
+		data:{dep_id:data},
+		dataType: "json",
+		success: function(result){
+			$(".get_pos").html(result);
+		},
+		error:function(e){
+		}
+	});
+}
 $(function(){
 	//上移
 	$('.lc_ul').on('click','.sy',function(){

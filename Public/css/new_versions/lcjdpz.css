@@ -20,7 +20,7 @@ select{outline: none;}
 .lc_div1{height:40px; line-height: 40px; color: #fff; font-size: 12px; margin-left: 2%;}
 .lc_div1 select{height:28px; width:100px; outline: none;}
 .lc_ul{width: 94%; margin-left: 2%;}
-.lc_ul li{ height:124px; border-radius:5px; overflow:hidden; margin-bottom:10px; position: relative;}
+.lc_ul li{ height:124px; border-radius:5px; margin-bottom:10px; }
 .lc_ul_div1{ width:65%; background:#b9b9b9; height:100%; float:left;}
 .lc_ul_div2{width:35%;height:100%; background:#fff; float:left; position:relative;}
 .lc_ul_div3{width:65%; background:#afffc9; height:100%; float:left;}
@@ -37,13 +37,14 @@ select{outline: none;}
 .lc_jdmc_k{float: left; margin-top: 15px; margin-left: 10px;}
 .lc_jdmc{ overflow: hidden; display: none;}
 .lc_jdmc select{ float: left; outline: none; width: 150px;}
-.lc_jdmc_div0{float: left; overflow: hidden; margin-right: 5px;}
+.lc_jdmc_div0{float: left; overflow: hidden; margin-right: 5px;position: relative;}
 .lc_jdmc_div1{font-size:12px; font-weight:bold; margin-left:5px; margin-right:5px;}
 .lc_jdmc_div2{ float:left;width:38px; height:22px; line-height:22px; text-align:center; font-size:12px; background:#d3dfe6; border:1px solid #d3d3d3; margin-left:10px; cursor:pointer;}
 .lc_jdmc_div3{float:left;width:38px; height:22px; line-height:22px; text-align:center; font-size:12px; background:#d3dfe6; border:1px solid #d3d3d3; margin-left:10px; cursor:pointer; margin-top: 15px;}
 .lc_bc{margin-top:10px; overflow:hidden;}
 .lc_bc1{ width:38px; height:22px; line-height:22px; text-align:center; font-size:12px; background:#d3dfe6; border:1px solid #d3d3d3; float:left; margin-left:20px; cursor:pointer;}
 .lc_bc2{ width:38px; height:22px; line-height:22px; text-align:center; font-size:12px; background:#415466; border:1px solid #344353; color:#fff; float:left;margin-left:20px; cursor:pointer;}
+.lc_bc22{ width:38px; height:22px; line-height:22px; text-align:center; font-size:12px; background:#415466; border:1px solid #344353; color:#fff; float:left;margin-left:20px; cursor:pointer;}
 
 .lc_box{ font-size:14px; color:#333; position:absolute; top:10px; left:10px;}
 .lc_box input{ float:left; margin-left:5px; margin-right:5px; margin-top:5px;}
@@ -53,3 +54,12 @@ select{outline: none;}
 .lc_sz div{width:38px; height:22px; line-height:22px; text-align:center; font-size:12px; background:#d3dfe6; border:1px solid #d3d3d3; float:left; margin-left:10px; cursor:pointer;}
 .lc_kz{ overflow:hidden;position:absolute; bottom:10px; left:10px;}
 .lc_kz a{ display:block; color:#22be9b; font-weight:bold; font-size:12px; float:left; margin-right:10px; cursor:pointer;}
+.nrassoc {position: absolute;}
+.nrassoc li {height: 12px;line-height: 12px;margin-bottom: 5px;border-radius: 0px;position: "";}
+
+.w{width: 200px;}
+.content_z{ width:200px; height:308px;}
+.content2{ width:195px; height:auto; overflow:hidden; border:solid 1px #c1c1c1;z-index:999;background:#fff;margin-left: 0px;}
+.content1{ width:185px; height:222px; overflow:auto; border-bottom:solid 1px #dadbdb;}
+.content1 label { left:30px;}
+.content1 li{line-height:30px;height:auto;}

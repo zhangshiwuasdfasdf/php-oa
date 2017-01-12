@@ -1057,6 +1057,7 @@ function select_tree_menu($tree) {
 function select_tree_menu_mul($tree,$level=0,$selected=array(),$ext='') {
 	$level++;
 	$html = "";
+	$inpType = ($ext == '1') ? 'radio' : 'checkbox';
 	if (is_array($tree)) {
 		if($level == 3){
 			$html = "<ul class=\"ul1\">\r\n";
@@ -1074,14 +1075,14 @@ function select_tree_menu_mul($tree,$level=0,$selected=array(),$ext='') {
 				if (isset($val['_child'])) {
 					$html = $html . "<li>\r\n";
 					$html = $html . "<img src=\"./Public/img/zk.png\"/>\r\n";
-					$html = $html . "<input type=\"checkbox\" name=\"dept[]\" name2=\"$title\" id=\"dept_$id\" value=\"$id\" $selected_html $ext>\r\n";
+					$html = $html . "<input type=\"$inpType\" name=\"dept[]\" name2=\"$title\" id=\"dept_$id\" value=\"$id\" $selected_html $ext>\r\n";
 					$html = $html . "<label for=\"dept_$id\">$title</label>\r\n";
 					$html = $html . select_tree_menu_mul($val['_child'],$level,$selected,$ext);
 					$html = $html . "</li>\r\n";
 				} else {
 					$html = $html . "<li>\r\n";
 					$html = $html . "<img src=\"./Public/img/hl.png\"/>\r\n";
-					$html = $html . "<input type=\"checkbox\" name=\"dept[]\" name2=\"".$title."\" id=\"dept_".$id."\" value=\"".$id."\" $selected_html $ext>\r\n";
+					$html = $html . "<input type=\"$inpType\" name=\"dept[]\" name2=\"".$title."\" id=\"dept_".$id."\" value=\"".$id."\" $selected_html $ext>\r\n";
 					$html = $html . "<label for=\"dept_$id\">$title</label>\r\n";
 					$html = $html . "</li>\r\n";
 				}
