@@ -11,7 +11,7 @@
 		</foreach>
 	</ul>
 </div>
-<input type="hidden" value="{$fid}" name="fid" id="fid"/>
+<input type="hidden" value="{$cid}" name="cid" id="cid"/>
 <input type="hidden" value="{$type}" name="type" id="type"/>
 <ul class="lc_con_ul processList">
 <foreach name="pageCount" item="pc">
@@ -51,7 +51,7 @@
 					<div class="lc_ul_div3">
 						<div class="lc_ul_div3_1">
 							<div class="lc_ks1">待填</div>
-							<div class="lc_ks2">待填<div><a class="lc_bj">(编辑</a><a class="lc_gjjd">关键节点)</a></div></div>
+							<div class="lc_ks2">待填<div><a class="lc_bj" nrd="{$vv.node_result_id}" nrv="{$vv.node_result_val}">(编辑</a><a class="lc_gjjd">关键节点)</a></div></div>
 						</div>
 						<div class="lc_ul_div3_2">
 							<div class="lc_xz">

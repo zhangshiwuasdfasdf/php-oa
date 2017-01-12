@@ -11,6 +11,7 @@ class ProcessNodeAction extends CommonAction {
 		}
 		$fid = $_REQUEST['fid'];
 		$type = $_REQUEST['type'];
+		$cid = $_REQUEST['id'];
 		//添加通用流程
 		$tid = M('FlowTypeSetting') -> where(array('flow_name'=>'通用','is_del'=>'0')) -> getField('id');
 		//找出流程的版本
@@ -18,19 +19,20 @@ class ProcessNodeAction extends CommonAction {
 		//版本中的节点
 		$node = M("FlowNode") -> where(array('flow_version_id'=>array('in',$vid),'is_del'=>'0'))->select();
 		$this -> assign('list',$node);
-		/**
-		 * 当前配置项的所有信息
-		 */
-		$info = M('FlowConfigDetail') -> where(array('flow_config_id'=>$fid,'type'=>$type,'is_del'=>'0')) -> select();
+		// 当前配置项的所有信息
+		$info = M('FlowConfigDetail') -> where(array('flow_config_id'=>$cid,'type'=>$type,'is_del'=>'0')) -> select();
 		foreach ($info as $k => $v){
 			$sheet_info[$v['sheet_id']][] = $v;
 		}
 		$sheet = array();
+		//对配置条进行排序
 		foreach ($sheet_info as $k => $v){
 			$sheet[$k] = $this -> array_sort($v,'step','asc');
 		}
+		//虚拟个空的数组
+		if(empty($sheet)){$sheet = array(array(''));}
 		$this -> assign('pageCount',$sheet);
-		$this -> assign('fid',$fid);
+		$this -> assign('cid',$cid);
 		$this -> assign('type',$type);
 		$this->display();
 	}
@@ -39,7 +41,7 @@ class ProcessNodeAction extends CommonAction {
 	function editProcess(){
 		$model = M('FlowConfigDetail');
 		$data['node_condition_id'] = $_POST['fnode'];
-		$data['flow_config_id'] = $_POST['fid'];
+		$data['flow_config_id'] = $_POST['cid'];
 		$data['type'] = $_POST['type'];
 		$data['sheet_condition_id'] = $_POST['fenzhi'];
 		$data['id'] = $_POST['id'];
@@ -75,6 +77,20 @@ class ProcessNodeAction extends CommonAction {
 			$this->ajaxReturn($list,'修改成功',1);
 		} else {
 			$this->ajaxReturn($list,'修改失败',0);
+		}
+	}
+	
+	//验证部门岗位信息
+	function valiDetp(){
+		$nrv = I('post.nrv');
+		if(!empty($nrv)){
+			$cdp = explode('|',$nrv);
+			$dept = M('Dept') -> where(array('id' => array('in',$cdp),'is_del'=>'0')) -> field('id,pid,name') -> select();
+			if (!empty($dept)) {
+				$this->ajaxReturn($dept,'修改成功',1);
+			} else {
+				$this->ajaxReturn($dept,'修改失败',0);
+			}
 		}
 	}
 	

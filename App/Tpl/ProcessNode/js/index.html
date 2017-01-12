@@ -1,6 +1,26 @@
 <script type="text/javascript">
 function bj(){
 	$('.lc_bj,.lc_gjjd').click(function(){
+		//是否已经设置过
+		var nrd = $(this).attr('nrd').trim();
+		if(nrd != ""){
+			var nrv = $(this).attr('nrv').trim();
+			//岗位节点
+			switch(nrd){
+				case "3" :
+					$.post("{:U('valiDetp')}",{"nrv":nrv},function(data){
+						$(".node_result3_1").val(data.data[0].id);
+					});
+					break;
+				case "4" :
+					
+					break;
+				default :
+					$(this).parent().parent().parent().next().find(".lc_select").val(nrd);
+					$(this).parent().parent().parent().next().find(".lc_jdmc").eq(nrd-1).val(nrv).show();
+					break;
+				}
+		}
 		$(this).parent().parent().parent().hide();
 		$(this).parent().parent().parent().siblings().show();
 		$('.lc_bc2').click(function(){
@@ -105,7 +125,7 @@ function showCompany(obj,i){
 //保存条件
 function tiaojian(obj){
 	var fnode = $(obj).prev().val();//条件id
-	var fid = $("#fid").val();//流程id
+	var vid = $("#vid").val();//流程id
 	var type = $("#type").val();//配置类型，1公司通用 2部门配置
 	var fenzhi = $(".processList .lc_con_li[display!='none']").find("select[name='fenzhi']").val();
 	var remind = $(obj).parent().prev().find(".lc_tx").is(":checked") ? '1' : '0';//提醒
@@ -113,7 +133,7 @@ function tiaojian(obj){
 	var step = $(obj).parent().parent().parent().attr('node');//步骤
 	var sheet = $('.lc_head_list li[msg="ok"]').attr('node');//当前标签页
 	$.post("{:U('editProcess')}",
-			{'id':'0','fnode': fnode,'fid':fid,'type':type,'fenzhi':fenzhi,'step':step,'remind':remind,'merge':merge,'sheet':sheet},
+			{'id':'0','fnode': fnode,'cid':vid,'type':type,'fenzhi':fenzhi,'step':step,'remind':remind,'merge':merge,'sheet':sheet},
 			function(data){
 		if(!data.status){
 			ui_error(data.info);
