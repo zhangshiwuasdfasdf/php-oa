@@ -242,7 +242,7 @@
 		$.ajax({
 			type: "post",
 			url: url,    
-			data:{uid:uid,day:day_num,dept_id:dept_id,dept_id_from:dept_id_from,dept_id_to:dept_id_to,type:type},
+			data:{uid:uid,day_num:day_num,dept_id:dept_id,dept_id_from:dept_id_from,dept_id_to:dept_id_to,type:type},
 			dataType: "json",
 			async:false, //关闭异步
 			success: function(result){
@@ -286,7 +286,7 @@
 		*/
 		$("#step").val(step);
 		if (check_form("form_data")) {
-			//sendForm("form_data", "{:U('save')}");
+			sendForm("form_data", "{:U('save')}");
 		}
 	}
 	function getUrlByName(){

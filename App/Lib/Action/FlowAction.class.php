@@ -1436,41 +1436,57 @@ class FlowAction extends CommonAction {
 			$this->ajaxReturn(null,null,0);
 		}else{
 			$flow_config_detail = M('FlowConfigDetail')->where(array('flow_config_id'=>$company_position_config['id'],'type'=>$type,'is_using'=>'1'))->order('sheet_id,step')->select();
+			$upids = array();
 			foreach ($flow_config_detail as $k=>$v){
 				if($this->check_condition($v['sheet_condition_id'])){
-					$open=fopen("C:\log.txt","a" );
-					fwrite($open,json_encode($v['id'])."\r\n");
-					fclose($open);
+					if($this->check_condition($v['node_condition_id'])){
+						if($v['node_result_id'] == '1' || $v['node_result_id'] == '2'){
+							$rule_expression = M('Flow_node')->where(array('id'=>$v['node_result_val'],'is_del'=>'0'))->getField('rule_expression');
+							$res = eval('return '.$rule_expression.';');
+							if(!empty($res)){
+								if(is_array($res)){
+									foreach ($res as $k=>$v){
+										$upids[] = $v['id'];
+									}
+								}else{
+									$upids[] = $res['id'];
+								}
+							}
+						}
+					}
+					
 				}
 			}
+			$this->ajaxReturn(getFlowData($upids),null,1);
+			
 		}
-		die;
-		$type = $_GET['type'];
-		switch($type){
-			case 'leave' : $this->ajaxgetflow_leave();
-			case 'attendance' : $this->ajaxgetflow_attendance();
-			case 'over_time' : $this->ajaxgetflow_over_time();
-			case 'employment' : $this->ajaxgetflow_employment();
-			case 'internal' : $this->ajaxgetflow_internal();
-			case 'metting_communicate' : $this->ajaxgetflow_metting_communicate();
-			case 'card_application' :$this->ajaxgetflow_card_application();
-			case 'notice_file' :$this->ajaxgetflow_notice_file();
-			case 'notice_personnel' :$this->ajaxgetflow_notice_personnel();
-			case 'contract' :$this->ajaxgetflow_contract();
-			case 'resignation_application' : $this->ajaxgetflow_resignation();
-			case 'probation_evaluate' : $this->ajaxgetflow_probation();
-			case 'regular_work_application' : $this->ajaxgetflow_regular_work_application();
-			case 'personnel_changes' :$this->ajaxgetflow_personnel_changes();
-			case 'salary_changes' :$this->ajaxgetflow_salary_changes();
-			case 'resignation_list' :$this->ajaxgetflow_resignation_list();
-			case 'office_supplies_application' :$this->ajaxgetflow_office_supplies_application();
-			case 'office_use_application' :$this->ajaxgetflow_office_use_application();
-			case 'goods_procurement_allocation' :$this->ajaxgetflow_goods_procurement_allocation();
-			case 'bus_card_use' :$this->ajaxgetflow_bus_card_use();
-			case 'chops_use' :$this->ajaxgetflow_chops_use();
-			case 'car_use' :$this->ajaxgetflow_car_use();
-			default :return false;
-		}
+// 		die;
+// 		$type = $_GET['type'];
+// 		switch($type){
+// 			case 'leave' : $this->ajaxgetflow_leave();
+// 			case 'attendance' : $this->ajaxgetflow_attendance();
+// 			case 'over_time' : $this->ajaxgetflow_over_time();
+// 			case 'employment' : $this->ajaxgetflow_employment();
+// 			case 'internal' : $this->ajaxgetflow_internal();
+// 			case 'metting_communicate' : $this->ajaxgetflow_metting_communicate();
+// 			case 'card_application' :$this->ajaxgetflow_card_application();
+// 			case 'notice_file' :$this->ajaxgetflow_notice_file();
+// 			case 'notice_personnel' :$this->ajaxgetflow_notice_personnel();
+// 			case 'contract' :$this->ajaxgetflow_contract();
+// 			case 'resignation_application' : $this->ajaxgetflow_resignation();
+// 			case 'probation_evaluate' : $this->ajaxgetflow_probation();
+// 			case 'regular_work_application' : $this->ajaxgetflow_regular_work_application();
+// 			case 'personnel_changes' :$this->ajaxgetflow_personnel_changes();
+// 			case 'salary_changes' :$this->ajaxgetflow_salary_changes();
+// 			case 'resignation_list' :$this->ajaxgetflow_resignation_list();
+// 			case 'office_supplies_application' :$this->ajaxgetflow_office_supplies_application();
+// 			case 'office_use_application' :$this->ajaxgetflow_office_use_application();
+// 			case 'goods_procurement_allocation' :$this->ajaxgetflow_goods_procurement_allocation();
+// 			case 'bus_card_use' :$this->ajaxgetflow_bus_card_use();
+// 			case 'chops_use' :$this->ajaxgetflow_chops_use();
+// 			case 'car_use' :$this->ajaxgetflow_car_use();
+// 			default :return false;
+// 		}
 	}
 	public function ajaxgetflow_leave($array=array(),$flow_log){//外勤/出差申请,员工请假申请
 		$uid = $_POST['uid']?$_POST['uid']:$array['uid'];
@@ -3771,7 +3787,17 @@ class FlowAction extends CommonAction {
 		if($condition_id == '0'){
 			return true;
 		}else{
-			return false;
+			$rule_expression = M('FlowNode')->where(array('id'=>$condition_id,'is_del'=>'0'))->getField('rule_expression');
+			if($rule_expression){
+				extract($_POST);
+				if(eval('return '.$rule_expression.';')){
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				return true;
+			}
 		}
 	}
 }

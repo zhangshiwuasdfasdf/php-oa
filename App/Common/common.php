@@ -4039,12 +4039,16 @@ function GetMyLeader($start,$end,$user_id=null,$position_id=null,$dept_id=null){
 	}
 	$upids = M('RUserPositionDeptPosition')->where(array('dept_id'=>$dept_id,'position_id'=>$position_id))->getField('upid',true);
 	$where['id'] = array('in',$upids);
+	
+	$where_position_sequence = array();
 	if($start){
-		$where['_complex']['position_sequence_id'][] = array('egt',$start);
+		$where_position_sequence['_complex']['sequence_degree'][] = array('egt',$start);
 	}
 	if($end){
-		$where['_complex']['position_sequence_id'][] = array('elt',$end);
+		$where_position_sequence['_complex']['sequence_degree'][] = array('elt',$end);
 	}
+	$position_sequence_ids = M('PositionSequence')->where($where_position_sequence)->getField('id',true);
+	$where['position_sequence_id'] = array('in',$position_sequence_ids);
 	$res = M('RUserPosition')->where($where)->order('position_sequence_id asc')->select();
 	return $res;
 }
@@ -4079,13 +4083,14 @@ function GetMyLeaderToOne($user_id=null,$position_id=null,$dept_id=null){
 		$dept_id = get_dept_id();
 	}
 	$upids = M('RUserPositionDeptPosition')->where(array('dept_id'=>$dept_id,'position_id'=>$position_id))->getField('upid',true);
-	$res = M('RUserPosition')->where(array('id'=>array('in',$upids),'position_sequence_id'=>array('elt',26)))->order('position_sequence_id asc')->select();
-	foreach ($res as $k=>$v){
-		$find = M('Dept')->where(array('id'=>$v['dept_id'],'pid'=>array('in',array(1,2,3,4,5))))->find();
-		if(false == $find){
-			unset($res[$k]);
-		}
-	}
+	$position_sequence_ids = M('PositionSequence')->where(array('sequence_degree'=>array('elt','26')))->getField('id',true);
+	$res = M('RUserPosition')->where(array('id'=>array('in',$upids),'position_sequence_id'=>array('in',$position_sequence_ids)))->order('position_sequence_id asc')->select();
+// 	foreach ($res as $k=>$v){
+// 		$find = M('Dept')->where(array('id'=>$v['dept_id'],'pid'=>array('in',array(1,2,3,4,5))))->find();
+// 		if(false == $find){
+// 			unset($res[$k]);
+// 		}
+// 	}
 	return $res;
 }
 /*
@@ -4100,12 +4105,17 @@ function GetMyLeaderBusiness($start,$end,$user_id=null,$dept_id=null){
 	}
 	$upids = M('RUserPositionDept')->where(array('dept_id'=>$dept_id))->getField('upid',true);
 	$where['id'] = array('in',$upids);
+	
+	$where_position_sequence = array();
 	if($start){
-		$where['_complex']['position_sequence_id'][] = array('egt',$start);
+		$where_position_sequence['_complex']['sequence_degree'][] = array('egt',$start);
 	}
 	if($end){
-		$where['_complex']['position_sequence_id'][] = array('elt',$end);
+		$where_position_sequence['_complex']['sequence_degree'][] = array('elt',$end);
 	}
+	$position_sequence_ids = M('PositionSequence')->where($where_position_sequence)->getField('id',true);
+	$where['position_sequence_id'] = array('in',$position_sequence_ids);
+	
 	$res = M('RUserPosition')->where($where)->order('position_sequence_id asc')->select();
 	return $res;
 }

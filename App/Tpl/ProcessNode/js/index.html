@@ -14,6 +14,19 @@ function bj(){
 					break;
 				case "3" :
 					var gw = nrv.split('|');
+					var this_ = this;
+					$.ajax({
+						type: "post",
+						url: "{:U('ajax_get_dept')}",
+						data:{pid:gw[0],dept_id:gw[1]},
+						dataType: "json",
+						success:function(result){
+							$(".content1").html(result.data);
+							$(this_).parent().parent().parent().parent().find("#dept_name_multi").val(result.info);
+							$(this_).parent().parent().parent().parent().find("#dept_name_multi_data").val('|'+gw[1]+'|');
+						}
+					})
+					
 					$.post("{:U('ajax_get_pos')}",{'dep_id':gw[1]},function(data){
 						pn.find(".get_pos").html(data).val(gw[2]);
 					});
@@ -57,7 +70,7 @@ function bj(){
 	});
 	
 	$('.lc_select').change(function(){
-		$('div[class="lc_jdmc"]').hide();
+		$(this).parent().parent().find('div[class="lc_jdmc"]').hide();
 		var v=$(this).find("option:selected").text();
 		if (v ==  "连续领导节点" ){
 			$(this).parent().next().find('div[class="lc_jdmc"]').eq(0).show();
@@ -104,10 +117,16 @@ function bj(){
 	});
 }
 bj();
+var is_new = "{$is_new}";
+if(!is_new){
+	$('.lc_bj').click();
+	$('.szlzgz').click();
+}
 
 //向下插入
 	$(".xxcr").click(function(){
-		$(this).parent().parent().parent().after('<li><div class="lc_ul_div3"><div class="lc_ul_div3_1"><div class="lc_ks1">待填</div><div class="lc_ks2">待填<div><a class="lc_bj">(编辑</a><a class="lc_gjjd">关键节点)</a></div></div></div><div class="lc_ul_div3_2"><div class="lc_xz"><div class="lc_jd"><div>节点类型</div><select class="lc_select"><option>请选择</option><option>连续领导节点</option><option>规则节点</option><option>岗位节点</option><option>个人节点</option><option>领导节点</option></select></div><div class="lc_jdmc_k"><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>连续上级至一级部门负责人（来自原版节点配置）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>分管副总裁（来自原版节点配置）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">公司</div><select><option>集团总部</option><option>杭州基地</option></select></div><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">部门</div><select><option>总经办</option><option>技术部</option></select></div><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">岗位</div><select><option>执行总裁</option></select></div><div class="lc_jdmc_div3">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>周周（员工自动完成控件）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">岗位</div><select><option>经理</option></select><div class="lc_jdmc_div2">保存</div></div></div></div><div class="lc_bc"><div class="lc_bc1">保存</div><div class="lc_bc2">取消</div></div></div></div></div><div class="lc_ul_div4"><div class="lc_ul_div3_1"><div class="lc_ks1">待填</div><div class="lc_ks2">待填</div></div></div><div class="lc_ul_div2"><div class="lc_box"><input type="checkbox" id="lc_tx"/><label for="lc_tx">提醒</label><input type="checkbox" id="lc_hb"/><label for="lc_hb">合并重复</label></div><div class="lc_sz"><select><option>请选择</option></select><div onClick="tiaojian($(this))">保存</div></div><div class="lc_kz"><a class="szlzgz">设置流转规则</a><a class="sy">上移</a><a class="xy">下移</a><a class="xxcr" onClick="xx($(this))">向下插入</a><a class="qx">取消</a><a class="hf">恢复</a><a class="sc">删除</a></div></div></li>');
+		var liuzhuan_html = $("select[name='liuzhan[]']").html();
+		$(this).parent().parent().parent().after('<li><div class="lc_ul_div3"><div class="lc_ul_div3_1"><div class="lc_ks1">待填</div><div class="lc_ks2">待填<div><a class="lc_bj" nrd nrv>(编辑</a><a class="lc_gjjd">关键节点)</a></div></div></div><div class="lc_ul_div3_2"><div class="lc_xz"><div class="lc_jd"><div>节点类型</div><select class="lc_select"><option>请选择</option><option>连续领导节点</option><option>规则节点</option><option>岗位节点</option><option>个人节点</option><option>领导节点</option></select></div><div class="lc_jdmc_k"><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>连续上级至一级部门负责人（来自原版节点配置）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>分管副总裁（来自原版节点配置）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">公司</div><select><option>集团总部</option><option>杭州基地</option></select></div><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">部门</div><select><option>总经办</option><option>技术部</option></select></div><div class="lc_jdmc_div0"><div class="lc_jdmc_div1">岗位</div><select><option>执行总裁</option></select></div><div class="lc_jdmc_div3">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">节点名称</div><select><option>周周（员工自动完成控件）</option></select><div class="lc_jdmc_div2">保存</div></div><div class="lc_jdmc"><div class="lc_jdmc_div1">岗位</div><select><option>经理</option></select><div class="lc_jdmc_div2">保存</div></div></div></div><div class="lc_bc"><div class="lc_bc1">保存</div><div class="lc_bc2">取消</div></div></div></div></div><div class="lc_ul_div4"><div class="lc_ul_div3_1"><div class="lc_ks1">待填</div><div class="lc_ks2">待填</div></div></div><div class="lc_ul_div2"><div class="lc_box"><input type="checkbox" id="lc_tx"/><label for="lc_tx">提醒</label><input type="checkbox" id="lc_hb"/><label for="lc_hb">合并重复</label></div><div class="lc_sz"><select><option selected>请选择</option>'+liuzhuan_html+'</select><div onClick="tiaojian($(this))">保存</div></div><div class="lc_kz"><a class="szlzgz">设置流转规则</a><a class="sy">上移</a><a class="xy">下移</a><a class="xxcr" onClick="xx($(this))">向下插入</a><a class="qx">取消</a><a class="hf">恢复</a><a class="sc">删除</a></div></div></li>');
 		bj();
 	});	
 
@@ -179,8 +198,9 @@ function showCompany(obj,i){
 
 //保存条件
 function tiaojian(obj){
+	var id = $(obj).parent().attr('id');
 	var fnode = $(obj).prev().val();//条件id
-	var vid = $("#vid").val();//流程id
+	var cid = $("#cid").val();//company_config的id或position_config的id
 	var type = $("#type").val();//配置类型，1公司通用 2部门配置
 	var fenzhi = $(".processList .lc_con_li[display!='none']").find("select[name='fenzhi']").val();
 	var remind = $(obj).parent().prev().find(".lc_tx").is(":checked") ? '1' : '0';//提醒
@@ -188,10 +208,16 @@ function tiaojian(obj){
 	var step = $(obj).parent().parent().parent().attr('node');//步骤
 	var sheet = $('.lc_head_list li[msg="ok"]').attr('node');//当前标签页
 	$.post("{:U('editProcess')}",
-			{'id':'0','fnode': fnode,'cid':vid,'type':type,'fenzhi':fenzhi,'step':step,'remind':remind,'merge':merge,'sheet':sheet},
+			{'id':id,'fnode': fnode,'cid':cid,'type':type,'fenzhi':fenzhi,'step':step,'remind':remind,'merge':merge,'sheet':sheet},
 			function(data){
 		if(!data.status){
-			ui_error(data.info);
+			ui_error("操作失败");
+		}else{
+			ui_info(data.info);
+		}
+		if(data.data){
+			$(obj).parent().attr('id',data.data);
+			$(obj).parent().parent().prev().prev().find("[name='ids']").val(data.data);
 		}
 	},'json');
 }
@@ -256,7 +282,7 @@ $(".change_dept").change(function(){
 		data:{pid:pid},
 		dataType: "json",
 		success:function(result){
-			$(".content1").html(result);
+			$(".content1").html(result.data);
 			
 		}
 	})

@@ -15,16 +15,16 @@
 <input type="hidden" value="{$type}" name="type" id="type"/>
 <input type="hidden" value="{$fid}" name="fid" id="fid"/>
 <ul class="lc_con_ul processList">
-<foreach name="pageCount" item="pc">
+<foreach name="pageCount" item="pc" key="sheet_id">
 	<li class="lc_con_li">
 		<div class="lc_con">
 			<div class="lc_div1">
 				<label>流程分支条件：</label>
-				<select name="fenzhi" class="fenzhi">
+				<select name="fenzhi" class="fenzhi" <if condition="$can_edit eq false">disabled</if>>
 					<option value="">请选择</option>
 					<foreach name="list" item="vo">
 						<if condition="$vo.node_type eq '条件节点'">
-							<option value="{$vo.id}">{$vo.node_name}</option>
+							<option value="{$vo.id}" <if condition="$pc[1]['sheet_condition_id'] eq $vo['id']">selected="selected"</if>>{$vo.node_name}</option>
 						</if>
 					</foreach>
 				</select>
@@ -58,31 +58,31 @@
 							<div class="lc_xz">
 								<div class="lc_jd">
 									<div>节点类型</div>
-									<select class="lc_select" name="node_result[]">
-										<option value="0">请选择</option>
-										<option value="1">连续领导节点</option>
-										<option value="2">规则节点</option>
-										<option value="3">岗位节点</option>
-										<option value="4">个人节点</option>
+									<select class="lc_select" name="node_result[]" <if condition="$can_edit eq false">disabled</if>>
+										<option value="0" <if condition="$vv.node_result_id eq '0'">selected="selected"</if>>请选择</option>
+										<option value="1" <if condition="$vv.node_result_id eq '1'">selected="selected"</if>>连续领导节点</option>
+										<option value="2" <if condition="$vv.node_result_id eq '2'">selected="selected"</if>>规则节点</option>
+										<option value="3" <if condition="$vv.node_result_id eq '3'">selected="selected"</if>>岗位节点</option>
+										<option value="4" <if condition="$vv.node_result_id eq '4'">selected="selected"</if>>个人节点</option>
 									</select>
 								</div>
 								<div class="lc_jdmc_k">
 									<div class="lc_jdmc">
 										<div class="lc_jdmc_div1">节点名称</div>
-										<select name="node_result1">
+										<select name="node_result1" <if condition="$can_edit eq false">disabled</if>>
 											<foreach name="list" item="hd">
 											<if condition="$hd.node_type eq '活动的'">
-												<option value="{$hd.id}">{$hd.node_name}</option>
+												<option value="{$hd.id}" <if condition="$hd['id'] eq $vv['node_result_val']">selected="selected"</if>>{$hd.node_name}</option>
 											</if>
 										</foreach>
 										</select>
 									</div>
 									<div class="lc_jdmc">
 										<div class="lc_jdmc_div1">节点名称</div>
-										<select name="node_result2">
+										<select name="node_result2" <if condition="$can_edit eq false">disabled</if>>
 											<foreach name="list" item="gj">
 												<if condition="$gj['node_type'] eq '规则节点'">
-													<option value="{$gj.id}">{$hd.node_name}</option>
+													<option value="{$gj.id}" <if condition="$gj['id'] eq $vv['node_result_val']">selected="selected"</if>>{$hd.node_name}</option>
 												</if>
 											</foreach>
 										</select>
@@ -93,7 +93,7 @@
 											<select name="company_id" class="change_dept">
 							                    <option value="">请选择</option>
 							                    <foreach name="company" item="vo">
-							                    	<option value="{$vo.id}">{$vo.name}</option>
+							                    	<option value="{$vo.id}" <if condition="$vo['id'] eq explode('|',$vv['node_result_val'])[0]">selected="selected"</if>>{$vo.name}</option>
 							                   	</foreach>
 						                     </select>
 										</div>
@@ -133,7 +133,9 @@
 							</div>
 							<div class="lc_bc">
 								<input type="hidden" name="ids" value="{$vv.id}"/>
-								<div class="lc_bc1" onclick="saveLead(this);">保存</div>
+								<if condition="$can_edit eq true">
+									<div class="lc_bc1" onclick="saveLead(this);">保存</div>
+								</if>
 								<div class="lc_bc2">取消</div>
 							</div>
 						</div>
@@ -146,20 +148,23 @@
 					</div>
 					<div class="lc_ul_div2">
 						<div class="lc_box">
-							<input type="checkbox" class="lc_tx" name="tixing[]" <if condition="$vv['is_remind']">checked</if>/>
+							<input type="checkbox" class="lc_tx" name="tixing[]" <if condition="$vv['is_remind']">checked</if> <if condition="$can_edit eq false">disabled</if>/>
 							<label>提醒</label>
-							<input type="checkbox" class="lc_hb" name="hebing[]" <if condition="$vv['is_merge']">checked</if>/>
+							<input type="checkbox" class="lc_hb" name="hebing[]" <if condition="$vv['is_merge']">checked</if> <if condition="$can_edit eq false">disabled</if>/>
 							<label>合并重复</label>
 						</div>
-						<div class="lc_sz">
-							<select name="liuzhan[]">
+						<div class="lc_sz" id="{$vv['id']}">
+							<select name="liuzhan[]" <if condition="$can_edit eq false">disabled</if>>
+								<option>请选择</option>
 								<foreach name="list" item="lz">
 									<if condition="$lz.node_type eq '条件节点'">
 										<option value="{$lz.id}" <if condition="$vv['node_condition_id'] eq $lz['id']">selected</if>>{$lz.node_name}</option>
 									</if>
 								</foreach>
 							</select>
-							<div onclick="tiaojian(this);">保存</div>
+							<if condition="$can_edit eq true">
+								<div onclick="tiaojian(this);">保存</div>
+							</if>
 						</div>
 						<div class="lc_kz">
 							<if condition="$vv['is_using'] eq '0'">

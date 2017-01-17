@@ -45,6 +45,7 @@ class PositionConfigAction extends CommonAction {
 		$flow_name=M("FlowTypeSetting")->where("id=$fid")->getField("flow_name");
 		$company=M("Dept")->where("pid=0")->field("name,id")->select();
 		$this->assign("fid",$fid);
+		$this->assign('type',2);//岗位特殊
 		$this->assign("info",$info);
 		$this->assign("company",$company);
 		$this->assign("flow_name",$flow_name);

@@ -21,6 +21,13 @@ class ProcessNodeAction extends CommonAction {
 		$this -> assign('list',$node);
 		// 当前配置项的所有信息
 		$info = M('FlowConfigDetail') -> where(array('flow_config_id'=>$cid,'type'=>$type,'is_del'=>'0')) -> select();
+		if($info){
+			$is_new = false;
+		}else{
+			$is_new = true;
+		}
+		$this -> assign('is_new',$is_new);
+		
 		foreach ($info as $k => $v){
 			$sheet_info[$v['sheet_id']][] = $v;
 		}
@@ -33,11 +40,30 @@ class ProcessNodeAction extends CommonAction {
 		if(empty($sheet)){$sheet = array(array(''));}
 		//查询以及部门
 		$company=M("Dept")->where("pid=0")->field("name,id")->select();
+		
+		if($type == '1'){
+			$history = M('CompanyConfig')->where(array('id'=>$cid,'fid'=>$fid,'is_del'=>'0','version'=>'历史'))->find();
+			if($history){
+				$can_edit = true;
+			}else{
+				$can_edit = false;
+			}
+		}elseif ($type == '2'){
+			$history = M('PositionConfig')->where(array('id'=>$cid,'fid'=>$fid,'is_del'=>'0','version'=>'历史'))->find();
+			if($history){
+				$can_edit = true;
+			}else{
+				$can_edit = false;
+			}
+		}
+		
 		$this->assign("company",$company);
 		$this -> assign('pageCount',$sheet);
 		$this -> assign('cid',$cid);
 		$this -> assign('type',$type);
 		$this -> assign('fid',$fid);
+		$this -> assign('can_edit',$can_edit);
+// 		dump($node);die;
 		$this->display();
 	}
 	
@@ -53,11 +79,13 @@ class ProcessNodeAction extends CommonAction {
 		$data['is_remind'] = $_POST['remind'];
 		$data['is_merge'] = $_POST['merge'];
 		$data['sheet_id'] = $_POST['sheet'];
+		
 		if($data['id']){
-			
+			$model ->save($data);
+			$this->ajaxReturn(null,'修改成功',1);
 		}else{
-			$model ->add($data);
-			$this->ajaxReturn($data,'添加成功',1);
+			$id = $model ->add($data);
+			$this->ajaxReturn($id,'添加成功',1);
 		}
 	}
 	//组织架构联动
@@ -77,7 +105,7 @@ class ProcessNodeAction extends CommonAction {
 		$nr = I('post.result');
 		$ni = I('post.result_id');
 		$list = M('FlowConfigDetail') -> save(array('id'=>$id,'node_result_id'=>$ni,'node_result_val'=>$nr));
-		if (false !== $list) {
+		if (false != $list) {
 			$this->ajaxReturn($list,'修改成功',1);
 		} else {
 			$this->ajaxReturn($list,'修改失败',0);
@@ -126,8 +154,11 @@ class ProcessNodeAction extends CommonAction {
 	function ajax_get_dept(){
 		$depts = M('Dept')->field('id,pid,name')->where(array('id'=>array('in',get_child_dept_all($_POST['pid'])),'is_del'=>'0','is_use'=>'1','name'=>array('neq','公司领导')))->select();
 		$tree = list_to_tree($depts);
-		$html = select_tree_menu_mul($tree,0,array(),1);
-		$this -> ajaxReturn($html);
+		$html = select_tree_menu_mul($tree,0,array($_POST['dept_id']),1);
+		if($_POST['dept_id']){
+			$dept_name = M('Dept')->where(array('id'=>$_POST['dept_id']))->getField('name');
+		}
+		$this -> ajaxReturn($html,$dept_name,1);
 	}
 	//根据部门id查询岗位id
 	function ajax_get_pos(){
@@ -170,6 +201,8 @@ class ProcessNodeAction extends CommonAction {
 		$is_del = I('post.flag');
 		if(M('FlowConfigDetail')->save(array('id'=>$id,'is_del'=>$is_del))){
 			$this->ajaxReturn('','删除成功',1);
+		}else {
+			$this->ajaxReturn('','删除失败',0);
 		}
 	}
 	//二维数组某一键名的值不能重复，删除重复项
