@@ -1414,15 +1414,15 @@ class FlowAction extends CommonAction {
 	}
 	public function ajaxgetflow(){
 		$flow_type_setting_id = M('FlowTypeSetting')->where(array('flow_type_id'=>$_POST['type'],'is_use'=>'1','is_del'=>'0'))->getField('id');
-		//有限考虑岗位特殊配置
+		//优先考虑岗位特殊配置
 		$type = 2;
-		$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','dept_id'=>array('like','|'.get_dept_id().'|'),'pos_id'=>get_position_id()))->find();
+		$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','dept_id'=>array('like','%|'.get_dept_id().'|%'),'pos_id'=>get_position_id()))->find();
 		if(empty($company_position_config)){
 			$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','pos_id'=>get_position_id()))->find();
 			if(empty($company_position_config)){
-				$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','dept_id'=>array('like','|'.get_dept_id().'|')))->find();
+				$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','dept_id'=>array('like','%|'.get_dept_id().'|%')))->find();
 				if(empty($company_position_config)){
-					$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','dept_id'=>array('like','|'.get_dept_id().'|')))->find();
+					$company_position_config = M('PositionConfig')->where(array('fid'=>$flow_type_setting_id,'version'=>'当前','is_del'=>'0','dept_id'=>array('like','%|'.get_dept_id().'|%')))->find();
 					if(empty($company_position_config)){
 						$type = 1;
 						$root_dept = getRootDept(get_dept_id());
