@@ -1452,6 +1452,18 @@ class FlowAction extends CommonAction {
 									$upids[] = $res['id'];
 								}
 							}
+						}elseif($v['node_result_id'] == '3'){
+							$node_result_val = explode('|',$v['node_result_val']);
+							$r_user_position = M('RUserPosition')->where(array('dept_id'=>$node_result_val[1],'position_id'=>$node_result_val[2]))->getField('id',true);
+							foreach ($r_user_position as $v){
+								$upids[] = $v;
+							}
+						}elseif($v['node_result_id'] == '4'){
+							$user_id = $v['node_result_val'];
+							$upid = M('RUserPosition')->where(array('user_id'=>$user_id,'is_major'=>'1'))->getField('id');
+							if($upid){
+								$upids[] = $upid;
+							}
 						}
 					}
 					

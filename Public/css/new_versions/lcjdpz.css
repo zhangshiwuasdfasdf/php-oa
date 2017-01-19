@@ -59,7 +59,7 @@ select{outline: none;}
 
 .w{width: 200px;}
 .content_z{ width:200px; height:308px;}
-.content2{ width:195px; height:auto; overflow:hidden; border:solid 1px #c1c1c1;z-index:999;background:#fff;margin-left: 0px;}
+.content2{ width:195px; height:auto; overflow:hidden; border:solid 1px #c1c1c1;z-index:999;background:#fff;margin-left: 0px;position:absolute;}
 .content1{ width:185px; height:222px; overflow:auto; border-bottom:solid 1px #dadbdb;}
 .content1 label { left:30px;}
 .content1 li{line-height:30px;height:auto;}

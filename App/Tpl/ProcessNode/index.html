@@ -87,7 +87,7 @@
 											</foreach>
 										</select>
 									</div>
-									<div class="lc_jdmc">
+									<div class="lc_jdmc" style="position:absolute;">
 										<div class="lc_jdmc_div0">
 											<div class="lc_jdmc_div1">公司</div>
 											<select name="company_id" class="change_dept">
@@ -100,14 +100,14 @@
 										<div class="lc_jdmc_div0">
 											<div class="lc_jdmc_div1">部门</div>
 											 <div class="content_z">
-												<input type="text" class="w" id="dept_name_multi" name="dept_name_multi" onfocus="$('.content2').show()" readonly>
+												<input type="text" class="w" id="dept_name_multi" name="dept_name_multi" onfocus="$(this).parent().find('.content2').show()" readonly>
 												<input name="dept_name_multi_data" id="dept_name_multi_data" class="wd" type="hidden"/>
 												<div class="content2" style="display:none;">
 												    <div class="content1">
 												    </div>
 												    <div class="bottom2">
 												    	<span class="bottom_s1" onclick="show('add',this)">确定</span>
-												        <span class="bottom_s2" onclick="cancel()" style="left:10px;">取消</span>
+												        <span class="bottom_s2" onclick="cancel(this)" style="left:10px;">取消</span>
 												    </div>
 												</div>
 											</div>

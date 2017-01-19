@@ -153,11 +153,13 @@ $(".lc_ul").on('keyup','input[name="node_result4"]',function(){
 	var nr4 = $(this).val().trim();
 	if(nr4 == ""){return false;}
 	var tmp = "";
+	var this_ = this;
 	$.post("{:U('assocName')}",{'name':nr4},function(data){
 		for(s in data.data){
 			tmp += "<li><a uid="+data.data[s].id+">"+data.data[s].name+"</a></li>";
 		}
-		$(".nrassoc").html(tmp).show();
+		//$(".nrassoc").html(tmp).show();
+		$(this_).parent().parent().find(".nrassoc").html(tmp).show();
 	});
 })
 //选中联想的员工姓名
@@ -319,6 +321,9 @@ function show(type,obj){
 		error:function(e){
 		}
 	});
+}
+function cancel(obj){
+	$(obj).parent().parent().hide();
 }
 $(function(){
 	//上移
